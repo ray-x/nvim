@@ -12,8 +12,8 @@ lang["nvim-treesitter/nvim-treesitter-textobjects"] = {
     opt = true,
 }
 lang["nvim-treesitter/nvim-treesitter-refactor"] = {
-    after = "nvim-treesitter-textobjects",
-    config = conf.nvim_treesitter,   -- let the last loaded config treesitter
+    -- after = "nvim-treesitter-textobjects", -- manual loading
+    config = conf.nvim_treesitter_ref,   -- let the last loaded config treesitter
     opt = true,
 }
 
@@ -109,16 +109,18 @@ lang["michaelb/sniprun"] = {
 -- JqxList and JqxQuery json browsering
 lang['gennaro-tedesco/nvim-jqx'] = {opt = true, cmd = {'JqxList', 'JqxQuery'},}
 
-lang['windwp/nvim-ts-autotag'] = { opt = true, after = "nvim-treesitter",
+lang['windwp/nvim-ts-autotag'] = { opt = true, 
+  -- after = "nvim-treesitter",
   config = function() require'nvim-treesitter.configs'.setup {autotag = {enable = true}} end
 }
 
 lang['p00f/nvim-ts-rainbow'] = { opt = true,
-  after = "nvim-treesitter",
+  -- after = "nvim-treesitter",
   -- Highlight also non-parentheses delimiters, boolean or table: lang -> boolean
   config = function()
     require'nvim-treesitter.configs'.setup {rainbow = {enable = true, extended_mode = true}}
-  end
+  end,
+  opt = true
 }
 lang['mhartington/formatter.nvim'] = {
   opt = true,

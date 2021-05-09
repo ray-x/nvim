@@ -6,6 +6,10 @@ function config.nvim_treesitter()
   require("modules.lang.treesitter").treesitter()
 end
 
+function config.nvim_treesitter_ref()
+  require("modules.lang.treesitter").treesitter_ref()
+end
+
 function config.ale()
   vim.g.ale_sign_error = "ﴫ"
   vim.g.ale_sign_warning = ""

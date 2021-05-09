@@ -1,14 +1,15 @@
 local treesitter = function()
   print("loading ts")
-  if not packer_plugins['nvim-treesitter-textobjects'].loaded then
-    print("check: textobj not loaded")
-    require'packer'.loader("nvim-treesitter-textobjects nvim-treesitter-refactor")
-    -- vim.cmd([[packadd nvim-treesitter-textobjects]])
-    -- vim.cmd([[packadd nvim-treesitter-refactor]])
-    -- packer_plugins['nvim-treesitter-textobjects'].loaded = true
-    -- packer_plugins['nvim-treesitter-refactor'].loaded = true
-  end
+  -- if not packer_plugins['nvim-treesitter-textobjects'].loaded then
+  --   print("check: textobj not loaded")
+  --   require'packer'.loader("nvim-treesitter-textobjects nvim-treesitter-refactor")
+  --   -- vim.cmd([[packadd nvim-treesitter-textobjects]])
+  --   -- vim.cmd([[packadd nvim-treesitter-refactor]])
+  --   -- packer_plugins['nvim-treesitter-textobjects'].loaded = true
+  --   -- packer_plugins['nvim-treesitter-refactor'].loaded = true
+  -- end
   local enable = true
+  if fsize > 512*1024 then enable = false end
   -- if vim.fn.line('$') > 20000 then  -- skip for large file
   --   vim.cmd[[syntax on]]
   --   print('skip treesitter')
@@ -18,10 +19,10 @@ local treesitter = function()
 
   require "nvim-treesitter.configs".setup {
     highlight = {
-      enable = enable, -- false will disable the whole extension
+      enable = true, -- false will disable the whole extension
       disable = {"elm"}, -- list of language that will be disabled
       custom_captures = {},
-      use_languagetree = true
+      use_languagetree = enable
     },
     incremental_selection = {
       enable = enable,
@@ -32,30 +33,6 @@ local treesitter = function()
         node_incremental = "grn", -- increment to the upper named parent
         scope_incremental = "grc", -- increment to the upper scope (as defined in locals.scm)
         node_decremental = "grm" -- decrement to the previous node
-      }
-    },
-    refactor = {
-      highlight_definitions = {
-        enable = enable
-      },
-      highlight_current_scope = {
-        enable = enable
-      },
-      smart_rename = {
-        enable = enable,
-        keymaps = {
-          smart_rename = "<Leader>gr" -- mapping to rename reference under cursor
-        }
-      },
-      navigation = {
-        enable = true,
-        keymaps = {
-          goto_definition = "gnd", -- mapping to go to definition of symbol under cursor
-          list_definitions = "gnD", -- mapping to list all definitions in current file
-          list_definitions_toc = "gO",
-          -- goto_next_usage = "<c->>",
-          -- goto_previous_usage = "<c-<>",
-        }
       }
     },
     textobjects = {
@@ -145,8 +122,54 @@ local treesitter = function()
     ensure_installed = "maintained"
     --{ "go", "css", "html", "javascript", "typescript", "jsdoc", "json", "c", "java", "toml", "tsx", "lua", "cpp", "python", "rust", "jsonc", "dart", "css", "yaml", "vue"}
   }
-
 end
 
+
+local treesitter_ref = function()
+  print("loading ts")
+  -- if not packer_plugins['nvim-treesitter-textobjects'].loaded then
+  --   print("check: textobj not loaded")
+  --   require'packer'.loader("nvim-treesitter-textobjects nvim-treesitter-refactor")
+  --   -- vim.cmd([[packadd nvim-treesitter-textobjects]])
+  --   -- vim.cmd([[packadd nvim-treesitter-refactor]])
+  --   -- packer_plugins['nvim-treesitter-textobjects'].loaded = true
+  --   -- packer_plugins['nvim-treesitter-refactor'].loaded = true
+  -- end
+  local enable = true
+  -- if vim.fn.line('$') > 20000 then  -- skip for large file
+  --   vim.cmd[[syntax on]]
+  --   print('skip treesitter')
+  --   enable = false
+  -- end
+  -- print('load treesitter', vim.fn.line('$'))
+
+  require "nvim-treesitter.configs".setup {
+
+    refactor = {
+      highlight_definitions = {
+        enable = enable
+      },
+      highlight_current_scope = {
+        enable = enable
+      },
+      smart_rename = {
+        enable = enable,
+        keymaps = {
+          smart_rename = "<Leader>gr" -- mapping to rename reference under cursor
+        }
+      },
+      navigation = {
+        enable = true,
+        keymaps = {
+          goto_definition = "gnd", -- mapping to go to definition of symbol under cursor
+          list_definitions = "gnD", -- mapping to list all definitions in current file
+          list_definitions_toc = "gO"
+          -- goto_next_usage = "<c->>",
+          -- goto_previous_usage = "<c-<>",
+        }
+      }
+    },
+}
+end
 -- treesitter()
-return {treesitter = treesitter}
+return {treesitter = treesitter, treesitter_ref = treesitter_ref}
