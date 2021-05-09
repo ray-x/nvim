@@ -1,20 +1,8 @@
 # vim as a programming IDE
 
-The init.lua is highly optimized for loading performance. Packer lazy loading + After rendering async plugin loading. Maybe the
-only one that can render multiple files with treesitter in less than 100ms with ~80 plugins installed
-
-## Please check branches of this repo
-
-- plug branch (plug, coc)
-- lspsaga branch (lspsaga, packer, lspconfig)
-- nvim-comple branch (dein, nvim-complete)
-- master latest
-
-I used to use slickedit, qt-creator, idea (webstorm, goland), vscode, but I am back to vi now. Thanks for `Dein.vim` I do
-not need to configure my setup everytime....... I am still using sublime edit(as a notepad)
-
-vimr is one of the best nvim-gui. But it does not in active development(It is hard for a one developer
-project), some of the crash durning coding is annoying. I only use nvim(nightly) + kitty now.
+This init.lua is highly optimized for loading performance. Packer lazy loading + After rendering async plugin loading. Maybe the
+only one that can render multiple files with treesitter in less than 80ms with ~80 plugins installed
+In the test, I loaded util.lua(1686 loc) and lsp.lua(1538 loc) from neovim source code in 80.6ms
 
 
 The `Plug` config is located in branch [Plug branch](https://github.com/ray-x/dotfiles/tree/zprezto-plug)

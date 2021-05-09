@@ -81,7 +81,7 @@ function config.pears_setup()
     -- require'packer'.loader("pears.nvim")
     vim.cmd([[packadd pears.nvim]])
   end
-  
+  local R = require "pears.rule"
   require('pears').setup(
     function(conf)
       local fts = {"NvimTree", "clap_input", "guihua"}
