@@ -2,21 +2,24 @@
 
 call plug#begin('~/.vim/plugged')
 
-Plug 'neovim/nvim-lspconfig'
+" Plug 'neovim/nvim-lspconfig'
 " Plug 'ray-x/guihua.lua', {'do': 'cd lua/fzy && make' }
 " Plug 'ray-x/navigator.lua'
-Plug '/Users/ray.xu/github/guihua.lua', {'do': 'cd lua/fzy && make' }
-Plug '/Users/ray.xu/github/navigator.lua'
+" Plug '/Users/ray.xu/github/guihua.lua', {'do': 'cd lua/fzy && make' }
+" Plug '/Users/ray.xu/github/navigator.lua'
 " Plug 'hrsh7th/nvim-compe' and other plugins you commenly use...
 
 " optional, if you need treesitter symbol support
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-
+" Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+" Plug 'steelsojka/pears.nvim'
+Plug 'windwp/nvim-autopairs'
 call plug#end()
 
 " No need for rquire('lspconfig'), navigator will configure it for you
 lua <<EOF
-require'navigator'.setup()
+-- require'navigator'.setup()
+-- require "pears".setup()
+-- require('nvim-autopairs').setup()
 EOF
 
 

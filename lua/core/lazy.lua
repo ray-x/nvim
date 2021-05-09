@@ -9,31 +9,38 @@ function lazyload()
 	local loader = require'packer'.loader
 	loader(plugins)
 	-- vim.cmd([[packadd gitsigns.nvim]])
-	-- require('modules.tools.config').gitsigns()
+	require('modules.tools.config').gitsigns()
 	-- vim.cmd([[packadd nvim-treesitter]])
 
-	-- require('modules.lang.treesitter').treesitter()
+	require('modules.lang.treesitter').treesitter()
 
 	-- vim.cmd([[packadd nvim-lspconfig]])
-	-- require('modules.completion.config').nvim_lsp()
+	require('modules.completion.config').nvim_lsp()
  --    vim.cmd([[packadd guihua.lua]])
 	-- vim.cmd([[packadd navigator.lua]])
-	-- require('modules.lang.config').navigator()
+	require('modules.lang.config').navigator()
 
 	-- vim.cmd([[packadd indent-blankline.nvim]])
-	-- require('modules.ui.config').blankline()
+	require('modules.ui.config').blankline()
 
 	-- vim.cmd([[packadd pears.nvim]])
-	-- require('modules.editor.config').pears_setup()
-	-- vim.cmd([[packadd nvim-autopairs]])
-	-- require('modules.editor.config').autopairs()
-	-- require('modules.ui.config').nvim_bufferline()
+	
+	require('modules.ui.config').nvim_bufferline()
 
 	require('vscripts.cursorhold')
+end
 
+
+function lazyload_after()
+	-- local plugins = "pears.nvim"
+	-- local loader = require'packer'.loader
+	-- loader(plugins)
+	-- require('modules.editor.config').pears_setup()
 end
 
 vim.cmd([[autocmd User LoadLazyPlugin lua lazyload()]])
+
+vim.cmd([[autocmd User LoadLazyPlugin2 lua lazyload_after()]])
 
 vim.cmd([[autocmd User RedrawScreen colorscheme aurora]])
 
@@ -52,4 +59,8 @@ end, 80)
 
 vim.defer_fn(function ()
 	vim.cmd([[doautocmd ColorScheme]])
-end, 200)   
+end, 120)   
+
+vim.defer_fn(function ()
+	vim.cmd([[doautocmd User LoadLazyPlugin2]])
+end, 300) 

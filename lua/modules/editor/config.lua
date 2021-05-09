@@ -76,12 +76,13 @@ end
 -- still not working with compe ATM
 function config.pears_setup()
   -- body
-  -- if not packer_plugins['pears'] or not packer_plugins['pears'].loaded then
-  --   vim.cmd [[packadd pears.nvim]]
-  -- end
-  -- vim.cmd [[packadd pears.nvim]]
+  local has_pears, pears = pcall(require, "pears")
+  if not has_pears then
+    -- require'packer'.loader("pears.nvim")
+    vim.cmd([[packadd pears.nvim]])
+  end
   
-  require "pears".setup(
+  require('pears').setup(
     function(conf)
       local fts = {"NvimTree", "clap_input", "guihua"}
       vim.g.completion_confirm_key = ""

@@ -10,15 +10,15 @@ local conf = require('modules.editor.config')
 -- windwp/nvim-ts-autotag  'html', 'javascript', 'javascriptreact', 'typescriptreact', 'svelte', 'vue'
 -- windwp/nvim-autopairs
 
-editor['windwp/nvim-autopairs'] = {
-  -- keys = {{'i', '('}},
-  -- keys = {{'i'}},
-  -- after = "nvim-treesitter",
-  -- event = 'InsertEnter',
-  -- event = 'InsertEnter',  -- not working!
-  -- config = conf.autopairs,
-  opt = true
-}
+-- editor['windwp/nvim-autopairs'] = {
+--   -- keys = {{'i', '('}},
+--   -- keys = {{'i'}},
+--   -- after = "nvim-treesitter",
+--   -- event = 'InsertEnter',
+--   -- event = 'InsertEnter',  -- not working!
+--   -- config = conf.autopairs,
+--   opt = true
+-- }
 
 editor['tpope/vim-surround'] ={
   opt=true,
@@ -29,7 +29,7 @@ editor['tpope/vim-surround'] ={
 editor['steelsojka/pears.nvim'] = {
   -- keys = {{'(','[', '<', '{'}},
   event = 'InsertEnter',
-  --config =  conf.pears_setup(),
+  config =  conf.pears_setup(),
   opt = true
 }
 
