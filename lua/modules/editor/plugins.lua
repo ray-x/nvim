@@ -1,5 +1,6 @@
 local editor = {}
-local conf = require('modules.editor.config')
+
+local conf = require("modules.editor.config")
 
 -- editor['Raimondi/delimitMate'] = {
 --   event = 'InsertEnter',
@@ -10,18 +11,18 @@ local conf = require('modules.editor.config')
 -- windwp/nvim-ts-autotag  'html', 'javascript', 'javascriptreact', 'typescriptreact', 'svelte', 'vue'
 -- windwp/nvim-autopairs
 
-editor['windwp/nvim-autopairs'] = {
+editor["windwp/nvim-autopairs"] = {
   -- keys = {{'i', '('}},
   -- keys = {{'i'}},
   -- after = "nvim-treesitter",
-  event = 'InsertEnter',
+  event = "InsertEnter",
   -- event = 'InsertEnter',  -- not working!
   config = conf.autopairs,
   opt = true
 }
 
-editor['tpope/vim-surround'] ={
-  opt=true,
+editor["tpope/vim-surround"] = {
+  opt = true
   --event = 'InsertEnter',
   --keys={'c', 'd'}
 }
@@ -41,18 +42,17 @@ editor['tpope/vim-surround'] ={
 -- }
 
 -- nvim-colorizer replacement
-editor['rrethy/vim-hexokinase'] = {
+editor["rrethy/vim-hexokinase"] = {
   -- ft = { 'html','css','sass','vim','typescript','typescriptreact'},
   config = conf.hexokinase,
-  run = 'make hexokinase',
+  run = "make hexokinase",
   opt = true,
-  cmd = {'HexokinaseTurnOn', 'HexokinaseToggle'}
+  cmd = {"HexokinaseTurnOn", "HexokinaseToggle"}
 }
 
-
-editor['matze/vim-move'] = {
+editor["matze/vim-move"] = {
   opt = true,
-  event = 'InsertEnter',
+  event = "InsertEnter"
   -- fn = {'<Plug>MoveBlockDown', '<Plug>MoveBlockUp', '<Plug>MoveLineDown', '<Plug>MoveLineUp'}
 }
 -- editor['hrsh7th/vim-eft'] = {
@@ -70,52 +70,71 @@ editor['matze/vim-move'] = {
 --   requires = 'kana/vim-operator-user'
 -- }
 
-editor['kevinhwang91/nvim-hlslens'] = {
-  keys = {'/', '?'}, --'n', 'N', '*', '#', 'g'
+editor["kevinhwang91/nvim-hlslens"] = {
+  keys = {"/", "?"}, --'n', 'N', '*', '#', 'g'
   opt = true,
   config = conf.hlslens
 }
 
-editor['mg979/vim-visual-multi']  = {
-  keys = {'<C-n>','<C-n>','<M-n>','<S-Down>','<S-Up>','<M-Left>','<M-Right>','<M-D>','<M-Down>', '<C-d>', '<C-Down>', '<S-Right>', '<C-LeftMouse>', '<M-C-RightMouse>','<Leader>'},
+editor["mg979/vim-visual-multi"] = {
+  keys = {
+    "<C-n>",
+    "<C-n>",
+    "<M-n>",
+    "<S-Down>",
+    "<S-Up>",
+    "<M-Left>",
+    "<M-Right>",
+    "<M-D>",
+    "<M-Down>",
+    "<C-d>",
+    "<C-Down>",
+    "<S-Right>",
+    "<C-LeftMouse>",
+    "<M-C-RightMouse>",
+    "<Leader>"
+  },
   opt = true,
-  setup = conf.vmulti,
+  setup = conf.vmulti
 }
 -- EasyMotion in lua. -- maybe replace sneak
-editor['phaazon/hop.nvim']  = {
-  as = 'hop',
-  keys = {'$'},
-  cmd = {'HopWord', 'HopLine', 'HopChar1', 'HopChar2', 'HopPattern'},
-
+editor["phaazon/hop.nvim"] = {
+  as = "hop",
+  keys = {"$"},
+  cmd = {"HopWord", "HopLine", "HopChar1", "HopChar2", "HopPattern"},
   config = function()
     -- you can configure Hop the way you like here; see :h hop-config
-    require'hop'.setup { keys = 'etovxqpdygfblzhckisuran' }
+    require "hop".setup {keys = "etovxqpdygfblzhckisuran"}
     -- vim.api.nvim_set_keymap('n', '$', "<cmd>lua require'hop'.hint_words()<cr>", {})
   end
 }
 
-editor['preservim/nerdcommenter'] = {
+editor["preservim/nerdcommenter"] = {
   --- cmd = {'NERDCommenterComment', 'NERDCommenterToggle', 'NERDCommenterNested', 'NERDCommenterInvert', 'NERDCommenterSexy'},
-  keys = {'<Leader>c<space>', '\\c ', '<C-<Space>>', '<Leader>cc', '//', '<M-/>'},
+  keys = {"<Leader>c<space>", "\\c ", "<C-<Space>>", "<Leader>cc", "//", "<M-/>"},
   -- keys = {'<Leader>c<space>', '\\c ', '<Leader>cc', '//', '<M-/>'},
   setup = conf.nerdcommenter,
-  fn = {'NERDComment'},
+  fn = {"NERDComment"}
   -- opt = true,
 }
 -- copy paste failed in block mode when clipboard = unnameplus"
-editor['bfredl/nvim-miniyank']  = {
-  keys = {'p','y', '<C-v>'},
+editor["bfredl/nvim-miniyank"] = {
+  keys = {"p", "y", "<C-v>"},
   opt = true,
-  setup = function ()
-    vim.api.nvim_command('map p <Plug>(miniyank-autoput)')
-    vim.api.nvim_command('map P <Plug>(miniyank-autoPut)')
+  setup = function()
+    vim.api.nvim_command("map p <Plug>(miniyank-autoput)")
+    vim.api.nvim_command("map P <Plug>(miniyank-autoPut)")
   end
 }
 
 -- fix terminal color
-editor['norcalli/nvim-terminal.lua']  = { opt = true, ft={'log', 'terminal'}, config=function ()
-  require'terminal'.setup()
-end}
+editor["norcalli/nvim-terminal.lua"] = {
+  opt = true,
+  ft = {"log", "terminal"},
+  config = function()
+    require "terminal".setup()
+  end
+}
 
 -- python3 support is flaky
 -- editor['simnalamburt/vim-mundo']  = { opt = true, cmd ={'MundoToggle', 'MundoShow', 'MundoHide'},
@@ -124,19 +143,20 @@ end}
 --   vim.g.mundo_prefer_python3=1
 -- end
 -- }
-editor['mbbill/undotree']  = {opt = true, cmd = {'UndotreeToggle'}}
-editor['AndrewRadev/splitjoin.vim']  = {opt = true, 
-  cmd={'SplitjoinJoin','SplitjoinSplit'}, 
-  setup=function()
-    vim.g.splitjoin_split_mapping =""
+editor["mbbill/undotree"] = {opt = true, cmd = {"UndotreeToggle"}}
+editor["AndrewRadev/splitjoin.vim"] = {
+  opt = true,
+  cmd = {"SplitjoinJoin", "SplitjoinSplit"},
+  setup = function()
+    vim.g.splitjoin_split_mapping = ""
     vim.g.splitjoin_join_mapping = ""
   end
   -- keys = {'<space>S', '<space>J'}
 }
 -- editor['justinmk/vim-sneak']  = {opt = true, keys = {'s'}, config = function() vim.g['sneak#label']= 1 end}
-editor['chaoren/vim-wordmotion'] = {
+editor["chaoren/vim-wordmotion"] = {
   opt = true,
-  fn = {'<Plug>WordMotion_w'}
+  fn = {"<Plug>WordMotion_w"}
   -- keys = {'w','W', 'gE', 'aW'}
 }
 

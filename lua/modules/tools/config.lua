@@ -27,43 +27,43 @@ local function load_dbs()
   return dbs
 end
 
-function  config.diffview()
-  local cb = require'diffview.config'.diffview_callback
-  require'diffview'.setup {
-  diff_binaries = false,    -- Show diffs for binaries
-  file_panel = {
-    width = 35,
-    use_icons = true        -- Requires nvim-web-devicons
-  },
-  key_bindings = {
-    -- The `view` bindings are active in the diff buffers, only when the current
-    -- tabpage is a Diffview.
-    view = {
-      ["<tab>"]     = cb("select_next_entry"),  -- Open the diff for the next file 
-      ["<s-tab>"]   = cb("select_prev_entry"),  -- Open the diff for the previous file
-      ["<leader>e"] = cb("focus_files"),        -- Bring focus to the files panel
-      ["<leader>b"] = cb("toggle_files"),       -- Toggle the files panel.
-    },
+function config.diffview()
+  local cb = require "diffview.config".diffview_callback
+  require "diffview".setup {
+    diff_binaries = false, -- Show diffs for binaries
     file_panel = {
-      ["j"]         = cb("next_entry"),         -- Bring the cursor to the next file entry
-      ["<down>"]    = cb("next_entry"),
-      ["k"]         = cb("prev_entry"),         -- Bring the cursor to the previous file entry.
-      ["<up>"]      = cb("prev_entry"),
-      ["<cr>"]      = cb("select_entry"),       -- Open the diff for the selected entry.
-      ["o"]         = cb("select_entry"),
-      ["R"]         = cb("refresh_files"),      -- Update stats and entries in the file list.
-      ["<tab>"]     = cb("select_next_entry"),
-      ["<s-tab>"]   = cb("select_prev_entry"),
-      ["<leader>e"] = cb("focus_files"),
-      ["<leader>b"] = cb("toggle_files"),
+      width = 35,
+      use_icons = true -- Requires nvim-web-devicons
+    },
+    key_bindings = {
+      -- The `view` bindings are active in the diff buffers, only when the current
+      -- tabpage is a Diffview.
+      view = {
+        ["<tab>"] = cb("select_next_entry"), -- Open the diff for the next file
+        ["<s-tab>"] = cb("select_prev_entry"), -- Open the diff for the previous file
+        ["<leader>e"] = cb("focus_files"), -- Bring focus to the files panel
+        ["<leader>b"] = cb("toggle_files") -- Toggle the files panel.
+      },
+      file_panel = {
+        ["j"] = cb("next_entry"), -- Bring the cursor to the next file entry
+        ["<down>"] = cb("next_entry"),
+        ["k"] = cb("prev_entry"), -- Bring the cursor to the previous file entry.
+        ["<up>"] = cb("prev_entry"),
+        ["<cr>"] = cb("select_entry"), -- Open the diff for the selected entry.
+        ["o"] = cb("select_entry"),
+        ["R"] = cb("refresh_files"), -- Update stats and entries in the file list.
+        ["<tab>"] = cb("select_next_entry"),
+        ["<s-tab>"] = cb("select_prev_entry"),
+        ["<leader>e"] = cb("focus_files"),
+        ["<leader>b"] = cb("toggle_files")
+      }
     }
   }
-}
 end
 
 function config.vim_dadbod_ui()
   if packer_plugins["vim-dadbod"] and not packer_plugins["vim-dadbod"].loaded then
-    require'packer'.loader("vim-dadbod")
+    require "packer".loader("vim-dadbod")
   end
   vim.g.db_ui_show_help = 0
   vim.g.db_ui_win_position = "left"
@@ -113,28 +113,27 @@ function config.vim_vista()
   -- }
 end
 
-
 function config.far()
   -- body
-  vim.g['far#source']='rgnvim'
-  vim.g['far#cmdparse_mode'] ='shell'
+  vim.g["far#source"] = "rgnvim"
+  vim.g["far#cmdparse_mode"] = "shell"
 end
 
 function config.clap()
   vim.g.clap_preview_size = 10
   vim.g.airline_powerline_fonts = 1
-  vim.g.clap_layout = {relative = 'editor', width = "83%", row = '20%', col = "10%"} --height = "40%", row = "17%",
+  vim.g.clap_layout = {relative = "editor", width = "83%", row = "20%", col = "10%"} --height = "40%", row = "17%",
   vim.g.clap_popup_border = "rounded"
   vim.g.clap_selected_sign = {text = "", texthl = "ClapSelectedSign", linehl = "ClapSelected"}
   vim.g.clap_current_selection_sign = {text = "", texthl = "ClapCurrentSelectionSign", linehl = "ClapCurrentSelection"}
   vim.g.clap_always_open_preview = true
-  vim.g.clap_preview_direction = 'UD'
+  vim.g.clap_preview_direction = "UD"
   vim.api.nvim_command("autocmd FileType clap_input call compe#setup({ 'enabled': v:false }, 0)")
 end
 
 function config.clap_after()
   if not packer_plugins["nvim-compe"].loaded then
-    require'packer'.loader("nvim-compe")
+    require "packer".loader("nvim-compe")
   end
 end
 
@@ -171,7 +170,7 @@ function config.gitsigns()
     },
     sign_priority = 6,
     status_formatter = nil, -- Use default
-    debug_mode=true,
+    debug_mode = true
   }
 end
 
@@ -197,26 +196,24 @@ function config.markdown()
 end
 
 function config.floaterm()
--- Set floaterm window's background to black
--- Set floating window border line color to cyan, and background to orange
-vim.g.floaterm_wintype = 'float'
-vim.g.floaterm_width = 0.9
-vim.g.floaterm_height =0.9
-vim.cmd("hi Floaterm guibg=black")
--- vim.cmd('hi FloatermBorder guibg=orange guifg=cyan')
-vim.cmd("command! FZF FloatermNew fzf")
-vim.cmd("command! NNN FloatermNew --height=0.96 --width=0.96 nnn")
-vim.cmd("command! FN FloatermNew --height=0.96 --width=0.96")
-vim.cmd("command! LG FloatermNew --height=0.96 --width=0.96 lazygit" )
-vim.cmd(
-  "command! Ranger FloatermNew --height=0.96 --width=0.96 ranger"
-)
+  -- Set floaterm window's background to black
+  -- Set floating window border line color to cyan, and background to orange
+  vim.g.floaterm_wintype = "float"
+  vim.g.floaterm_width = 0.9
+  vim.g.floaterm_height = 0.9
+  vim.cmd("hi Floaterm guibg=black")
+  -- vim.cmd('hi FloatermBorder guibg=orange guifg=cyan')
+  vim.cmd("command! FZF FloatermNew fzf")
+  vim.cmd("command! NNN FloatermNew --height=0.96 --width=0.96 nnn")
+  vim.cmd("command! FN FloatermNew --height=0.96 --width=0.96")
+  vim.cmd("command! LG FloatermNew --height=0.96 --width=0.96 lazygit")
+  vim.cmd("command! Ranger FloatermNew --height=0.96 --width=0.96 ranger")
 
-vim.g.floaterm_gitcommit = "split"
-vim.g.floaterm_keymap_new = "<F19>" --S-f7
-vim.g.floaterm_keymap_prev = "<F20>"
-vim.g.floaterm_keymap_next = "<F21>"
-vim.g.floaterm_keymap_toggle = "<F24>"
+  vim.g.floaterm_gitcommit = "split"
+  vim.g.floaterm_keymap_new = "<F19>" --S-f7
+  vim.g.floaterm_keymap_prev = "<F20>"
+  vim.g.floaterm_keymap_next = "<F21>"
+  vim.g.floaterm_keymap_toggle = "<F24>"
 end
 
 function config.spelunker()
@@ -233,7 +230,7 @@ end
 function config.spellcheck()
   if not packer_plugins["kamykn/spelunker.vim"] or not packer_plugins["kamykn/spelunker.vim"].loaded then
     config.spelunker()
-    require'packer'.loader("spelunker.vim")
+    require "packer".loader("spelunker.vim")
   end
   vim.fn["spelunker#check"]()
 end
@@ -252,7 +249,7 @@ end
 function config.grammcheck()
   -- body
   if not packer_plugins["rhysd/vim-grammarous"] or not packer_plugins["rhysd/vim-grammarous"].loaded then
-    require'packer'.loader("vim-grammarous")
+    require "packer".loader("vim-grammarous")
   end
   vim.cmd [[GrammarousCheck]]
 end

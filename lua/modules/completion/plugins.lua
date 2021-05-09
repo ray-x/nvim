@@ -1,7 +1,7 @@
 local completion = {}
-local conf = require('modules.completion.config')
+local conf = require("modules.completion.config")
 
-completion['neovim/nvim-lspconfig'] = {
+completion["neovim/nvim-lspconfig"] = {
   -- event = 'BufRead',
   -- ft = {'html','css', 'javascript', 'java', 'javascriptreact', 'vue','typescript', 'typescriptreact', 'go', 'lua', 'cpp', 'c',
   -- 'markdown', 'makefile','python','bash', 'sh', 'php', 'yaml', 'json', 'sql', 'vim', 'sh'},
@@ -10,36 +10,36 @@ completion['neovim/nvim-lspconfig'] = {
   opt = true
 }
 
-completion['glepnir/lspsaga.nvim'] = {
-  cmd = 'Lspsaga',
+completion["glepnir/lspsaga.nvim"] = {
+  cmd = "Lspsaga"
 }
 
-completion['hrsh7th/nvim-compe'] = {
-  event = 'InsertEnter',
-  config = conf.nvim_compe,
+completion["hrsh7th/nvim-compe"] = {
+  event = "InsertEnter",
+  config = conf.nvim_compe
 }
 
-completion['hrsh7th/vim-vsnip'] = {
-  event = 'InsertCharPre',
-  setup = conf.vim_vsnip,
+completion["hrsh7th/vim-vsnip"] = {
+  event = "InsertCharPre",
+  setup = conf.vim_vsnip
   -- after = "hrsh7th/nvim-compe",
 }
 
-completion['nvim-telescope/telescope.nvim'] = {
-  cmd = 'Telescope',
+completion["nvim-telescope/telescope.nvim"] = {
+  cmd = "Telescope",
   config = conf.telescope,
   requires = {
-    {'nvim-lua/popup.nvim', opt = true},
-    {'nvim-lua/plenary.nvim',opt = true},
-    {'nvim-telescope/telescope-fzy-native.nvim',opt = true},
+    {"nvim-lua/popup.nvim", opt = true},
+    {"nvim-lua/plenary.nvim", opt = true},
+    {"nvim-telescope/telescope-fzy-native.nvim", opt = true}
   },
-  opt=true,
+  opt = true
 }
 
-completion['mattn/emmet-vim'] = {
-  event = 'InsertEnter',
-  ft = {'html','css','javascript','javascriptreact','vue','typescript','typescriptreact'},
-  setup = conf.emmet,
+completion["mattn/emmet-vim"] = {
+  event = "InsertEnter",
+  ft = {"html", "css", "javascript", "javascriptreact", "vue", "typescript", "typescriptreact"},
+  setup = conf.emmet
 }
 
 -- completion['RRethy/vim-illuminate'] = {
@@ -61,14 +61,17 @@ completion['mattn/emmet-vim'] = {
 --   opt=true,
 -- }
 
-completion['/Users/ray.xu/github/lsp_signature.nvim'] = {
-  config = function() require "lsp_signature".on_attach({
-      bind = true, -- This is mandatory, otherwise border config won't get registered.
-      handler_opts = {
-        border = "single"
+completion["/Users/ray.xu/github/lsp_signature.nvim"] = {
+  config = function()
+    require "lsp_signature".on_attach(
+      {
+        bind = true, -- This is mandatory, otherwise border config won't get registered.
+        handler_opts = {
+          border = "single"
+        }
       }
-    })
- end
+    )
+  end
 }
 -- completion['ray-x/lsp_signature.nvim'] = {
 --   config = function() require "lsp_signature".on_attach() end

@@ -2,38 +2,38 @@ local lang = {}
 local conf = require("modules.lang.config")
 
 lang["nvim-treesitter/nvim-treesitter"] = {
-    --event = "LoadLazyPlugin",
-    opt = true,
+  --event = "LoadLazyPlugin",
+  opt = true
 }
 
 lang["nvim-treesitter/nvim-treesitter-textobjects"] = {
-    after = "nvim-treesitter",
-    --config = conf.nvim_treesitter,
-    opt = true,
+  after = "nvim-treesitter",
+  --config = conf.nvim_treesitter,
+  opt = true
 }
 lang["nvim-treesitter/nvim-treesitter-refactor"] = {
-    -- after = "nvim-treesitter-textobjects", -- manual loading
-    config = conf.nvim_treesitter_ref,   -- let the last loaded config treesitter
-    opt = true,
+  -- after = "nvim-treesitter-textobjects", -- manual loading
+  config = conf.nvim_treesitter_ref, -- let the last loaded config treesitter
+  opt = true
 }
 
 lang["w0rp/ale"] = {
-    -- event = "BufEnter", --BufWritePre
-    cmd = {"ALEEnable", "ALEFix"},
-    ft = {"sql", "pgsql", "markdown"},
-    -- after = 'telescope.nvim',
-    setup = conf.ale,
-    opt = true
+  -- event = "BufEnter", --BufWritePre
+  cmd = {"ALEEnable", "ALEFix"},
+  ft = {"sql", "pgsql", "markdown"},
+  -- after = 'telescope.nvim',
+  setup = conf.ale,
+  opt = true
 }
 
 lang["shmup/vim-sql-syntax"] = {
-    ft = {"sql", "pgsql"}
+  ft = {"sql", "pgsql"}
 }
 
 lang["nanotee/sqls.nvim"] = {
-    ft = {"sql", "pgsql"},
-    setup = conf.sqls,
-    opt = true
+  ft = {"sql", "pgsql"},
+  setup = conf.sqls,
+  opt = true
 }
 
 -- lang["fatih/vim-go"] = {
@@ -45,14 +45,14 @@ lang["nanotee/sqls.nvim"] = {
 --     opt = true
 -- }
 
-lang['/Users/ray.xu/github/go.nvim'] = {
-  ft = 'go',
+lang["/Users/ray.xu/github/go.nvim"] = {
+  ft = "go",
   opt = false,
-  config = conf.go,
+  config = conf.go
 }
 
-lang['/Users/ray.xu/github/navigator.lua'] = {
-  requires = {'/Users/ray.xu/github/guihua.lua'},
+lang["/Users/ray.xu/github/navigator.lua"] = {
+  requires = {"/Users/ray.xu/github/guihua.lua"},
   config = conf.navigator,
   opt = true
 }
@@ -69,60 +69,63 @@ lang['/Users/ray.xu/github/navigator.lua'] = {
 -- }
 
 lang["bfredl/nvim-luadev"] = {
-    opt = true,
-    cmd = "Luadev",
-    setup = conf.luadev,
+  opt = true,
+  cmd = "Luadev",
+  setup = conf.luadev
 }
-lang['mfussenegger/nvim-dap'] = {
+lang["mfussenegger/nvim-dap"] = {
   config = conf.dap,
   cmd = "Luadev",
-  opt=true,
-
+  opt = true
 }
-lang['jbyuki/one-small-step-for-vimkind'] = {
-  opt=true,
-  ft = {"lua"},
+lang["jbyuki/one-small-step-for-vimkind"] = {
+  opt = true,
+  ft = {"lua"}
 }
 
-lang['nvim-telescope/telescope-dap.nvim'] = {
+lang["nvim-telescope/telescope-dap.nvim"] = {
   config = conf.dap,
   -- cmd = "Telescope",
-  opt=true,
+  opt = true
 }
-lang['mfussenegger/nvim-dap-python'] = {ft = {"python"}}
+lang["mfussenegger/nvim-dap-python"] = {ft = {"python"}}
 
 lang["mtdl9/vim-log-highlighting"] = {ft = {"text", "log"}}
 lang["michaelb/sniprun"] = {
-  run = 'bash install.sh',
+  run = "bash install.sh",
   opt = true,
-  cmd ={'SnipRun', 'SnipReset'}
---   config = function() require'sniprun'.setup({
---   -- selected_interpreters = {},     --" use those instead of the default for the current filetype
---   -- repl_enable = {},               --" enable REPL-like behavior for the given interpreters
---   -- repl_disable = {},              --" disable REPL-like behavior for the given interpreters
+  cmd = {"SnipRun", "SnipReset"}
+  --   config = function() require'sniprun'.setup({
+  --   -- selected_interpreters = {},     --" use those instead of the default for the current filetype
+  --   -- repl_enable = {},               --" enable REPL-like behavior for the given interpreters
+  --   -- repl_disable = {},              --" disable REPL-like behavior for the given interpreters
 
---   inline_messages = 1             --" inline_message (0/1) is a one-line way to display messages
---                                   --" to workaround sniprun not being able to display anything
--- })
---end
+  --   inline_messages = 1             --" inline_message (0/1) is a one-line way to display messages
+  --                                   --" to workaround sniprun not being able to display anything
+  -- })
+  --end
 }
 -- JqxList and JqxQuery json browsering
-lang['gennaro-tedesco/nvim-jqx'] = {opt = true, cmd = {'JqxList', 'JqxQuery'},}
+lang["gennaro-tedesco/nvim-jqx"] = {opt = true, cmd = {"JqxList", "JqxQuery"}}
 
-lang['windwp/nvim-ts-autotag'] = { opt = true, 
+lang["windwp/nvim-ts-autotag"] = {
+  opt = true,
   -- after = "nvim-treesitter",
-  config = function() require'nvim-treesitter.configs'.setup {autotag = {enable = true}} end
+  config = function()
+    require "nvim-treesitter.configs".setup {autotag = {enable = true}}
+  end
 }
 
-lang['p00f/nvim-ts-rainbow'] = { opt = true,
+lang["p00f/nvim-ts-rainbow"] = {
+  opt = true,
   -- after = "nvim-treesitter",
   -- Highlight also non-parentheses delimiters, boolean or table: lang -> boolean
   config = function()
-    require'nvim-treesitter.configs'.setup {rainbow = {enable = true, extended_mode = true}}
+    require "nvim-treesitter.configs".setup {rainbow = {enable = true, extended_mode = true}}
   end,
   opt = true
 }
-lang['mhartington/formatter.nvim'] = {
+lang["mhartington/formatter.nvim"] = {
   opt = true,
   event = {"BufWriteCmd", "FileWriteCmd"},
   -- Highlight also non-parentheses delimiters, boolean or table: lang -> boolean

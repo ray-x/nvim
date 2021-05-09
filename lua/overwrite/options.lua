@@ -75,7 +75,7 @@ function options:load_options()
     synmaxcol = 500,
     textwidth = 120,
     colorcolumn = "110",
-    wrap = true,
+    wrap = true
   }
   bind_option(bw_local)
   for name, value in pairs(self.global_local) do
@@ -89,8 +89,8 @@ function options:load_options()
   vim.cmd("imap <C-V> <C-R>*")
   vim.cmd('vmap <LeftRelease> "*ygv')
   vim.cmd("unlet loaded_matchparen")
-  vim.g.python3_host_prog='/usr/local/bin/python3'
-  vim.g.python_host_prog = ''
+  vim.g.python3_host_prog = "/usr/local/bin/python3"
+  vim.g.python_host_prog = ""
 end
 
 options:load_options()

@@ -12,7 +12,7 @@ end
 ui["kyazdani42/nvim-web-devicons"] = {}
 ui["glepnir/galaxyline.nvim"] = {
   branch = "main",
-  event = 'UIEnter',
+  event = "UIEnter",
   -- after = {"aurora"},
   config = conf.galaxyline,
   -- requires = {'kyazdani42/nvim-web-devicons'},
@@ -21,7 +21,7 @@ ui["glepnir/galaxyline.nvim"] = {
 
 ui["Akin909/nvim-bufferline.lua"] = {
   config = conf.nvim_bufferline,
-  event = 'UIEnter',
+  event = "UIEnter",
   -- after = {"aurora"}
   -- requires = {'kyazdani42/nvim-web-devicons'}
   opt = true
@@ -62,6 +62,6 @@ ui["shaunsingh/moonlight.nvim"] = {opt = true, config = conf.moonlight}
 ui["bluz71/vim-nightfly-guicolors"] = {opt = true, config = conf.nightfly}
 ui["ChristianChiarulli/nvcode-color-schemes.vim"] = {opt = true, config = conf.nvcode}
 ui["sainnhe/sonokai"] = {opt = true, config = conf.sonokai}
-ui['glepnir/zephyr-nvim'] = {opt = true, config = conf.zephyr}
+ui["glepnir/zephyr-nvim"] = {opt = true, config = conf.zephyr}
 
 return ui

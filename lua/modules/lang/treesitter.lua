@@ -9,7 +9,9 @@ local treesitter = function()
   --   -- packer_plugins['nvim-treesitter-refactor'].loaded = true
   -- end
   local enable = true
-  if fsize > 512*1024 then enable = false end
+  if fsize > 512 * 1024 then
+    enable = false
+  end
   -- if vim.fn.line('$') > 20000 then  -- skip for large file
   --   vim.cmd[[syntax on]]
   --   print('skip treesitter')
@@ -124,7 +126,6 @@ local treesitter = function()
   }
 end
 
-
 local treesitter_ref = function()
   print("loading ts")
   -- if not packer_plugins['nvim-treesitter-textobjects'].loaded then
@@ -144,7 +145,6 @@ local treesitter_ref = function()
   -- print('load treesitter', vim.fn.line('$'))
 
   require "nvim-treesitter.configs".setup {
-
     refactor = {
       highlight_definitions = {
         enable = enable
@@ -168,8 +168,8 @@ local treesitter_ref = function()
           -- goto_previous_usage = "<c-<>",
         }
       }
-    },
-}
+    }
+  }
 end
 -- treesitter()
 return {treesitter = treesitter, treesitter_ref = treesitter_ref}

@@ -82,7 +82,7 @@ function config.pears_setup()
     vim.cmd([[packadd pears.nvim]])
   end
   local R = require "pears.rule"
-  require('pears').setup(
+  require("pears").setup(
     function(conf)
       local fts = {"NvimTree", "clap_input", "guihua"}
       vim.g.completion_confirm_key = ""
@@ -115,22 +115,34 @@ function config.pears_setup()
               end
             end
           )
-          conf.pair("'", {
-            close = "'",
-            should_expand = R.not_(R.start_of_context "[a-zA-Z0-9]")       -- Don't expand a quote if it comes after an alpha character
-          })
-          conf.pair("\"", {
-            close = "\"",
-            should_expand = R.not_(R.start_of_context "[a-zA-Z0-9]")
-          })
-          conf.pair("(", {
-            close = ")",
-            should_expand = R.not_(R.start_of_context "[a-zA-Z0-9]")
-          })
-          conf.pair("{", {
-            close = "}",
-            should_expand = R.not_(R.start_of_context "[a-zA-Z0-9]")
-          })
+          conf.pair(
+            "'",
+            {
+              close = "'",
+              should_expand = R.not_(R.start_of_context "[a-zA-Z0-9]") -- Don't expand a quote if it comes after an alpha character
+            }
+          )
+          conf.pair(
+            '"',
+            {
+              close = '"',
+              should_expand = R.not_(R.start_of_context "[a-zA-Z0-9]")
+            }
+          )
+          conf.pair(
+            "(",
+            {
+              close = ")",
+              should_expand = R.not_(R.start_of_context "[a-zA-Z0-9]")
+            }
+          )
+          conf.pair(
+            "{",
+            {
+              close = "}",
+              should_expand = R.not_(R.start_of_context "[a-zA-Z0-9]")
+            }
+          )
         end
       ) -- on-enter
     end

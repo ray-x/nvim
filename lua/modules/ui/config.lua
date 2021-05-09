@@ -244,7 +244,6 @@ function config.aurora()
   vim.cmd("colorscheme aurora")
   vim.cmd("hi Normal guibg=NONE ctermbg=NONE") -- remove background
   vim.cmd("hi EndOfBuffer guibg=NONE ctermbg=NONE") -- remove background
-
 end
 
 function config.material()
@@ -278,7 +277,6 @@ function config.moonlight()
   require("material").set()
 
   vim.cmd [[colorscheme material]]
-
 end
 
 function config.tokyonight()
@@ -368,7 +366,7 @@ function config.minimap()
   end
 end
 
-function  config.nightfly()
+function config.nightfly()
   vim.g.nightflyCursorColor = 1
   vim.g.nightflyTerminalColors = 0
   vim.g.nightflyUndercurls = 1
@@ -378,19 +376,19 @@ function  config.nightfly()
   -- body
 end
 
-function  config.nvcode()
+function config.nvcode()
   local opt = {"nvcode", "onedark", "gruvbox"}
   local v = "colorscheme " .. opt[math.random(1, #opt)]
-  
+
   vim.cmd(v)
   -- body
 end
-function  config.zephyr()
-  require('zephyr')
+function config.zephyr()
+  require("zephyr")
   -- body
 end
-function  config.sonokai()
-  local opt = {"andromeda", "default", "andromeda", 'shusia', 'maia', 'atlantis'}
+function config.sonokai()
+  local opt = {"andromeda", "default", "andromeda", "shusia", "maia", "atlantis"}
   local v = opt[math.random(1, #opt)]
   vim.g.sonokai_style = v
   vim.g.sonokai_enable_italic = 1
@@ -401,7 +399,7 @@ function  config.sonokai()
 end
 
 vim.api.nvim_exec(
-[[
+  [[
   set cursorcolumn
   augroup vimrc_todo
   au!
@@ -410,11 +408,22 @@ vim.api.nvim_exec(
   hi def link MyTodo Todo
 ]],
   true
-  )
+)
 
-math.randomseed (os.time ())
-local themes = {"aurora", "tokyonight.nvim", "moonlight.nvim", "aurora",  "moonlight.nvim", "aurora", "sonokai", "zephyr-nvim", 
-"aurora", "nvcode-color-schemes.vim", "vim-nightfly-guicolors"} --"material.nvim",
+math.randomseed(os.time())
+local themes = {
+  "aurora",
+  "tokyonight.nvim",
+  "moonlight.nvim",
+  "aurora",
+  "moonlight.nvim",
+  "aurora",
+  "sonokai",
+  "zephyr-nvim",
+  "aurora",
+  "nvcode-color-schemes.vim",
+  "vim-nightfly-guicolors"
+} --"material.nvim",
 local v = math.random(1, #themes)
 local loading_theme = themes[v]
 local cmd =

@@ -47,44 +47,44 @@ local keys = {
   ["n|<Leader>fb"] = map_cu("Clap marks"):with_noremap():with_silent(),
   ["n|<C-x><C-f>"] = map_cu("Clap filer"):with_noremap():with_silent(),
   ["n|<Leader>ff"] = map_cu("Clap files ++finder=rg --ignore --hidden --files"):with_noremap():with_silent(),
-  ["n|<M-g>"]      = map_cu("Clap gfiles"):with_noremap():with_silent(),
+  ["n|<M-g>"] = map_cu("Clap gfiles"):with_noremap():with_silent(),
   ["n|<Leader>fw"] = map_cu("Clap grep ++query=<Cword>"):with_noremap():with_silent(),
-  ["n|<M-h>"]      = map_cu("Clap history"):with_noremap():with_silent(),
+  ["n|<M-h>"] = map_cu("Clap history"):with_noremap():with_silent(),
   ["n|<Leader>fW"] = map_cu("Clap windows"):with_noremap():with_silent(),
   ["n|<Leader>fl"] = map_cu("Clap loclist"):with_noremap():with_silent(),
   ["n|<Leader>fu"] = map_cu("Clap git_diff_files"):with_noremap():with_silent(),
   ["n|<Leader>fv"] = map_cu("Clap grep ++query=@visual"):with_noremap():with_silent(),
   ["n|<Leader>fd"] = map_cu("Clap dotfiles"):with_noremap():with_silent(),
-
-
   ["n|<Leader>bp"] = map_cu("BufferLinePick"):with_noremap():with_silent(),
-  
   -- ["n|Rn"] = map_cr("Lspsaga rename"):with_noremap():with_silent(),
   -- ["n|gr"] = map_cr("Lspsaga lsp_finder"):with_noremap():with_silent(),
   ["n|<Leader>fh"] = map_cu("Clap command_history"):with_noremap():with_silent(),
   ["n|<Leader><Leader>r"] = map_cmd("v:lua.run_or_test()"):with_expr(),
   ["v|<Leader><Leader>r"] = map_cmd("v:lua.run_or_test()"):with_expr(),
-
-
   -- DAP
   ["n|<leader><F5>"] = map_cr('<cmd>lua require"osv".launch()'):with_noremap():with_silent(),
   ["n|<leader>dc"] = map_cr('<cmd>lua require"dap".continue()'):with_noremap():with_silent(),
-  ["n|<leader><F10>"] = map_cr('<cmd>lua require"dap".step_over()'):with_noremap():with_silent(), 
-  ["n|<leader><F11>"] = map_cr('<cmd>lua require"dap".step_into()'):with_noremap():with_silent(), 
-  ["n|<leader>dso"] = map_cr('<cmd>lua require"dap".step_out()'):with_noremap():with_silent(), 
-  ["n|<leader><F9>"] = map_cr('<cmd>lua require"dap".toggle_breakpoint()'):with_noremap():with_silent(), 
-  ["n|<leader>dsbr"] = map_cr('<cmd>lua require"dap".set_breakpoint(vim.fn.input("Breakpoint condition: "))'):with_noremap():with_silent(), 
-  ["n|<leader>dsbm"] = map_cr('<cmd>lua require"dap".set_breakpoint(nil, nil, vim.fn.input("Log point message: "))'):with_noremap():with_silent(), 
+  ["n|<leader><F10>"] = map_cr('<cmd>lua require"dap".step_over()'):with_noremap():with_silent(),
+  ["n|<leader><F11>"] = map_cr('<cmd>lua require"dap".step_into()'):with_noremap():with_silent(),
+  ["n|<leader>dso"] = map_cr('<cmd>lua require"dap".step_out()'):with_noremap():with_silent(),
+  ["n|<leader><F9>"] = map_cr('<cmd>lua require"dap".toggle_breakpoint()'):with_noremap():with_silent(),
+  ["n|<leader>dsbr"] = map_cr('<cmd>lua require"dap".set_breakpoint(vim.fn.input("Breakpoint condition: "))'):with_noremap(
+
+  ):with_silent(),
+  ["n|<leader>dsbm"] = map_cr('<cmd>lua require"dap".set_breakpoint(nil, nil, vim.fn.input("Log point message: "))'):with_noremap(
+
+  ):with_silent(),
   ["n|<leader>dro"] = map_cr('<cmd>lua require"dap".repl.open()'):with_noremap():with_silent(),
   ["n|<leader>drl"] = map_cr('<cmd>lua require"dap".repl.run_last()'):with_noremap():with_silent(),
-
   --["n|[t"] = map_cr("lua require'nvim-treesitter-refactor.navigation'.goto_previous_usage(0)"):with_noremap():with_silent(),
-  --["n|]t"] = map_cr("lua require'nvim-treesitter-refactor.navigation'.goto_next_usage(0)"):with_noremap():with_silent(),  
-  ['n|<leader>dcc'] = map_cr('<cmd>lua require"telescope".extensions.dap.commands{}'):with_noremap():with_silent(),
-  ['n|<leader>dco'] = map_cr('<cmd>lua require"telescope".extensions.dap.configurations{}'):with_noremap():with_silent(),
-  ['n|<leader>dlb'] = map_cr('<cmd>lua require"telescope".extensions.dap.list_breakpoints{}'):with_noremap():with_silent(),
-  ['n|<leader>dv']  = map_cr('<cmd>lua require"telescope".extensions.dap.variables{}'):with_noremap():with_silent(),
-  ['n|<leader>df']  = map_cr('<cmd>lua require"telescope".extensions.dap.frames{}'):with_noremap():with_silent(),
+  --["n|]t"] = map_cr("lua require'nvim-treesitter-refactor.navigation'.goto_next_usage(0)"):with_noremap():with_silent(),
+  ["n|<leader>dcc"] = map_cr('<cmd>lua require"telescope".extensions.dap.commands{}'):with_noremap():with_silent(),
+  ["n|<leader>dco"] = map_cr('<cmd>lua require"telescope".extensions.dap.configurations{}'):with_noremap():with_silent(),
+  ["n|<leader>dlb"] = map_cr('<cmd>lua require"telescope".extensions.dap.list_breakpoints{}'):with_noremap():with_silent(
+
+  ),
+  ["n|<leader>dv"] = map_cr('<cmd>lua require"telescope".extensions.dap.variables{}'):with_noremap():with_silent(),
+  ["n|<leader>df"] = map_cr('<cmd>lua require"telescope".extensions.dap.frames{}'):with_noremap():with_silent(),
   --
   -- Plugin QuickRun
   -- ["n|<Leader>r"]     = map_cr("<cmd> lua require'selfunc'.run_command()"):with_noremap():with_silent(),
@@ -98,7 +98,7 @@ local keys = {
   ["n|hl"] = map_cr("HopLine"),
   ["n|h1"] = map_cr("HopChar1"),
   ["n|h2"] = map_cr("HopChar2"),
-  ["n|<Leader>F"] = map_cr("HopPattern"),
+  ["n|<Leader>F"] = map_cr("HopPattern")
 
   -- ["n|;"] = map_cmd("<Plug>Sneak_;"):with_silent()
 }
@@ -135,14 +135,16 @@ _G.run_or_test = function(...)
   -- end
   local ft = vim.bo.filetype
   local fn = vim.fn.expand("%")
-  if fn == '[nvim-lua]' then return t('<Plug>(Luadev-Run)') end
+  if fn == "[nvim-lua]" then
+    return t("<Plug>(Luadev-Run)")
+  end
   if ft == "lua" then
     local f = string.find(fn, "spec")
     if f == nil then
       -- let run lua test
-      return t('<cmd>luafile %<CR>')
+      return t("<cmd>luafile %<CR>")
     end
-    return t('<Plug>PlenaryTestFile')
+    return t("<Plug>PlenaryTestFile")
   end
 end
 --

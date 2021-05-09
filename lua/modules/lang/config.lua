@@ -25,16 +25,16 @@ function config.ale()
   vim.g.ale_go_golangci_lint_package = 1
   -- vim.g.ale_lua_luafmt_executable = "luafmt"
   -- vim.g.ale_lua_luafmt_options = "--indent-count 2"
-  vim.g.ale_python_flake8_args = '--ignore=E501'
-  vim.g.ale_python_flake8_executable = 'flake8'
-  vim.g.ale_python_flake8_options = '--ignore=E501'
+  vim.g.ale_python_flake8_args = "--ignore=E501"
+  vim.g.ale_python_flake8_executable = "flake8"
+  vim.g.ale_python_flake8_options = "--ignore=E501"
   --" 'go vet' not working
   vim.g.ale_linters = {
     javascript = {"eslint", "flow-language-server"},
     --javascript['jsx']  = {'eslint', 'flow-language-server'},
     -- go = {"govet", "golangci-lint", "revive"},
     markdown = {"mdl", "write-good"},
-    sql = {"sqlint"},
+    sql = {"sqlint"}
     -- lua = {"luacheck"},
     -- python = {"flake8", "pylint"}
   }
@@ -49,7 +49,7 @@ function config.ale()
     sql = {"pgformatter"},
     -- css = {"prettier"},
     -- php = {"php-cs-fixer"},
-    ale_fixers = {"prettier", "remark"},
+    ale_fixers = {"prettier", "remark"}
     -- lua = {"luafmt"},
     -- python = {"autopep8", "yapf"}
   }
@@ -59,18 +59,18 @@ function config.sqls()
 end
 
 function config.navigator()
-  require'navigator'.setup()
+  require "navigator".setup()
 end
-
 
 function config.playground()
   require "nvim-treesitter.configs".setup {
-  playground = {
-    enable = true,
-    disable = {},
-    updatetime = 25, -- Debounced time for highlighting nodes in the playground from source code
-    persist_queries =true -- Whether the query persists across vim sessions
-  }}
+    playground = {
+      enable = true,
+      disable = {},
+      updatetime = 25, -- Debounced time for highlighting nodes in the playground from source code
+      persist_queries = true -- Whether the query persists across vim sessions
+    }
+  }
 end
 
 function config.luadev()
@@ -78,7 +78,7 @@ function config.luadev()
 end
 
 function config.go()
-  require('go').setup()
+  require("go").setup()
 
   vim.cmd("augroup go")
   vim.cmd("autocmd!")
@@ -110,47 +110,49 @@ function config.go()
 end
 
 function config.dap()
-  require('modules.lang.dap.dap')
+  require("modules.lang.dap.dap")
 end
 
 function config.formatter()
   -- body
 
-  require('formatter').setup({
-  logging = false,
-  filetype = {
-    javascript = {
-        -- prettier
-       function()
-          return {
-            exe = "prettier",
-            args = {"--stdin-filepath", vim.api.nvim_buf_get_name(0), '--single-quote'},
-            stdin = true
-          }
-        end
-    },
-    rust = {
-      -- Rustfmt
-      function()
-        return {
-          exe = "rustfmt",
-          args = {"--emit=stdout"},
-          stdin = true
+  require("formatter").setup(
+    {
+      logging = false,
+      filetype = {
+        javascript = {
+          -- prettier
+          function()
+            return {
+              exe = "prettier",
+              args = {"--stdin-filepath", vim.api.nvim_buf_get_name(0), "--single-quote"},
+              stdin = true
+            }
+          end
+        },
+        rust = {
+          -- Rustfmt
+          function()
+            return {
+              exe = "rustfmt",
+              args = {"--emit=stdout"},
+              stdin = true
+            }
+          end
+        },
+        lua = {
+          -- luafmt
+          function()
+            return {
+              exe = "luafmt",
+              args = {"--indent-count", 2, "--stdin"},
+              stdin = true
+            }
+          end
         }
-      end
-    },
-    lua = {
-        -- luafmt
-        function()
-          return {
-            exe = "luafmt",
-            args = {"--indent-count", 2, "--stdin"},
-            stdin = true
-          }
-        end
       }
     }
-  })
+  )
   -- vim.api.nvim_exec([[
   -- augroup FormatAutogroup
   --   autocmd!
