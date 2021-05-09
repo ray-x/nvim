@@ -9,11 +9,11 @@ local treesitter = function()
     -- packer_plugins['nvim-treesitter-refactor'].loaded = true
   end
   local enable = true
-  if vim.fn.line('$') > 20000 then  -- skip for large file
-    vim.cmd[[syntax on]]
-    print('skip treesitter')
-    enable = false
-  end
+  -- if vim.fn.line('$') > 20000 then  -- skip for large file
+  --   vim.cmd[[syntax on]]
+  --   print('skip treesitter')
+  --   enable = false
+  -- end
   -- print('load treesitter', vim.fn.line('$'))
 
   require "nvim-treesitter.configs".setup {
