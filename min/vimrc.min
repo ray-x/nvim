@@ -1,0 +1,177 @@
+" Note: run PlugUpdate/Install first
+
+call plug#begin('~/.vim/plugged')
+
+Plug 'neovim/nvim-lspconfig'
+" Plug 'ray-x/guihua.lua', {'do': 'cd lua/fzy && make' }
+" Plug 'ray-x/navigator.lua'
+Plug '/Users/ray.xu/github/guihua.lua', {'do': 'cd lua/fzy && make' }
+Plug '/Users/ray.xu/github/navigator.lua'
+" Plug 'hrsh7th/nvim-compe' and other plugins you commenly use...
+
+" optional, if you need treesitter symbol support
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+
+call plug#end()
+
+" No need for rquire('lspconfig'), navigator will configure it for you
+lua <<EOF
+require'navigator'.setup()
+EOF
+
+
+
+
+" call plug#begin('~/.vim/plugged')
+" 
+" set noswapfile
+" 
+" Plug 'neovim/nvim-lspconfig'
+" 
+" " Plug 'lewis6991/gitsigns.nvim'
+" " Plug 'ray-x/guihua.lua', {'do': 'cd lua/fzy && make' }
+" 
+" Plug '/Users/ray.xu/github/guihua.lua', {'do': 'cd lua/fzy && " make' }
+" Plug '/Users/ray.xu/github/navigator.lua'
+" 
+" " Plug 'ray-x/lsp_signature.nvim'
+" Plug 'liuchengxu/vim-clap', { 'do': { -> " clap#installer#force_download() } }
+" Plug 'nvim-lua/popup.nvim'
+" Plug 'nvim-lua/plenary.nvim'
+" Plug 'nvim-telescope/telescope.nvim'
+" 
+" call plug#end()
+
+lua <<EOF
+
+
+-- require('navigator').setup()
+
+-- require'lspconfig'.pyright.setup {}
+-- require "lspconfig".efm.setup {
+--     init_options = {documentFormatting = true},
+--     settings = {
+--         rootMarkers = {".git/"},
+--         languages = {
+--             lua = {
+--                 {formatCommand = "lua-format -i", formatStdin = -- true}
+--             },
+--             python = {
+--                 {formatCommand = "python-flake8 -i", formatStdin = -- true}
+--             }
+--         }
+--     }
+-- }
+-- local sumneko_root_path = vim.fn.expand("$HOME")..'/github/sumneko/-- lua-language-server'
+-- local sumneko_binary = vim.fn.expand("$HOME")..'/github/sumneko/-- lua-language-server/bin/macOS/lua-language-server'
+
+
+-- local lua_cfg = {
+--   cmd = {sumneko_binary, "-E", sumneko_root_path .. "/main.lua"},
+--   settings = {
+--     Lua = {
+--       runtime = {
+--         -- Tell the language server which version of Lua you're -- using (most likely LuaJIT in the case of Neovim)
+--         version = "LuaJIT",
+--         -- Setup your lua path
+--         path = vim.split(package.path, ";")
+--       },
+--       diagnostics = {
+--         enable = true,
+--         -- Get the language server to recognize the `vim` global
+--         globals = {
+--           "vim",
+--           "describe",
+--           "it",
+--           "before_each",
+--           "after_each",
+--           "teardown",
+--           "pending"
+--         }
+--       },
+--       workspace = {
+--         -- Make the server aware of Neovim runtime files
+--         library = {
+--           [vim.fn.expand("$VIMRUNTIME/lua")] = true,
+--           [vim.fn.expand("$VIMRUNTIME/lua/vim")] = true,
+--           [vim.fn.expand("$VIMRUNTIME/lua/vim/lsp")] = true
+--           -- [vim.fn.expand("~/repos/nvim/lua")] = true
+--         }
+--       }
+--     }
+--   }
+-- }
+-- require'lspconfig'.sumneko_lua.setup (lua_cfg)
+
+EOF
+
+
+" 
+" 
+" -- require'lsp_signature'.on_attach()
+" 
+
+" Plug 'ray-x/guihua.lua', {'do': 'cd lua/fzy && make' }
+" Plug 'ray-x/navigator.lua'
+" Plug 'ray-x/lsp_signature.nvim'
+
+" -- require('lsp_config')  -- you may need my lsp_config.lua
+" require('lsp_signature').on_attach()
+
+" 
+" local on_attach = function(client, bufnr)
+"   require'lsp_signature'.on_attach()
+" 
+"   if client.resolved_capabilities.document_formatting then
+"     format.lsp_before_save()
+"   end
+"   vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+" 
+" end
+" 
+" local sumneko_root_path = vim.fn.expand("$HOME")..'/github/sumneko/lua-language-server'
+" local sumneko_binary = vim.fn.expand("$HOME")..'/github/sumneko/lua-language-server/bin/macOS/lua-language-server'
+
+" require'lspconfig'.sumneko_lua.setup {
+"   cmd = {sumneko_binary, "-E", sumneko_root_path .. "/main.lua"};
+"   on_attach = on_attach,
+" }
+" 
+" let s:config_home = stdpath('config')
+" source /Users/ray.xu/.config/nvim/pluginrc.d/lsp.vim
+" 
+" let g:deoplete#enable_at_startup = 1
+" set cmdheight=2
+" let g:echodoc#enable_at_startup = 1
+" let g:echodoc#type = 'floating'
+
+
+" lua require('treesitter')
+
+" inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+" inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+
+" Set completeopt to have a better completion experience
+" set completeopt=menuone,noinsert,noselect
+
+
+" nnoremap <silent> gd    <cmd>lua vim.lsp.buf.declaration()<CR>
+" nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<CR>
+" nnoremap <silent> K     <cmd>lua vim.lsp.buf.hover()<CR>
+" nnoremap <silent> gD    <cmd>lua vim.lsp.buf.implementation()<CR>
+" nnoremap <silent> <c-k> <cmd>lua vim.lsp.buf.signature_help()<CR>
+" nnoremap <silent> 1gD   <cmd>lua vim.lsp.buf.type_definition()<CR>
+" nnoremap <silent> gr    <cmd>lua vim.lsp.buf.references()<CR>
+" nnoremap <silent> g0    <cmd>lua vim.lsp.buf.document_symbol()<CR>
+" nnoremap <silent> gW    <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
+" nnoremap <buffer> <silent> <C-LeftMouse> <LeftMouse> <cmd>lua vim.lsp.buf.definition()<CR>
+" nnoremap <buffer> <silent> g<LeftMouse> <LeftMouse> <cmd>lua vim.lsp.buf.implementation()<CR>
+
+
+" let g:vsnip_filetypes = {}
+" let g:vsnip_filetypes.javascriptreact = ['javascript']
+" let g:vsnip_filetypes.typescriptreact = ['typescript']
+" let g:completion_trigger_character = ['.']
+" let g:vsnip_snippet_dir = '/Users/ray.xu/github/dotfiles/snips'
+" 
+" let g:min_load = 1" 

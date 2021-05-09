@@ -1,0 +1,4 @@
+set nocompatible
+set runtimepath^=~/.cache/dein/repos/github.com/liuchengxu/vim-clap
+syntax on
+filetype plugin indent on

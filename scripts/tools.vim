@@ -1,0 +1,290 @@
+" Strip trailing whitespace and newlines on save
+fun! <SID>StripTrailingWhitespace()
+    let l = line(".")
+    let c = col(".")
+    %s/\s\+$//e
+    %s/\($\n\s*\)\+\%$//e
+    call cursor(l, c)
+endfun
+autocmd BufWritePre * :call <SID>StripTrailingWhitespace()
+
+"
+"
+"
+" source /Users/rayx/.vim/vim/asc.vim
+" source /Users/rayx/.vim/vim/skywind.vim
+"
+" Search in project
+"
+function! FindProjectRoot(lookFor)
+    let s:root=expand('%:p:h')
+    let pathMaker='%:p'
+    while(len(expand(pathMaker))>len(expand(pathMaker.':h')))
+        let pathMaker=pathMaker.':h'
+        let fileToCheck=expand(pathMaker).'/'.a:lookFor
+        if filereadable(fileToCheck)||isdirectory(fileToCheck)
+            let s:root=expand(pathMaker)
+        endif
+    endwhile
+    return s:root
+endfunction
+   " 搜索 .git 为项目路径
+
+
+function! Golines()
+  lua require('internal.golines').golines_format()
+endfunction
+
+command GoLines call Golines()
+
+function! FindRoot()
+  let s:root = system('git rev-parse --show-toplevel 2> /dev/null')[:-2]
+  let s:list = ['go.mod', 'Makefile', 'CMakefile.txt']
+  if len(s:root) == 0
+    for k in s:list
+      let s:root =  FindProjectRoot(k)
+      if len(s:root) > 0
+        return s:root
+      endif
+    endfor
+  else
+    return s:root
+  endif
+  return expand("%:p:h")
+endfunction
+
+let g:root_dir = FindRoot()
+autocmd BufEnter * silent! lcd g:root_dir  " 设置当前路径为项目路径
+
+
+" Protect large files from sourcing and other overhead.
+" Files become read only
+let g:LargeFile=1
+if !exists("my_auto_commands_loaded")
+  let my_auto_commands_loaded = 1
+  " Large files are > 1M
+  " Set options:
+  " eventignore+=FileType (no syntax highlighting etc
+  " assumes FileType always on)
+  " noswapfile (save copy of file)
+  " bufhidden=unload (save memory when other file is viewed)
+  " buftype=nowrite (file is read-only)
+  " undolevels=-1 (no undo possible)
+  let g:LargeFile = 1024 * 1024 * 10
+  augroup LargeFile
+    autocmd BufReadPre * let f=expand("<afile>") | if getfsize(f) > g:LargeFile | set eventignore+=FileType | setlocal noswapfile bufhidden=unload buftype=nowrite undolevels=-1 | else | set eventignore-=FileType | endif
+    augroup END
+  endif
+
+command! Scratch new | setlocal bt=nofile bh=wipe nobl noswapfile nu
+
+" let s:hidden_all = 0
+" function! ToggleHiddenAll()
+"     if s:hidden_all  == 0
+"         let s:hidden_all = 1
+"         set noshowmode
+"         set noruler
+"         set laststatus=0
+"         set noshowcmd
+"     else
+"         let s:hidden_all = 0
+"         set showmode
+"         set ruler
+"         set laststatus=2
+"         set showcmd
+"     endif
+" endfunction
+
+" nnoremap <Leader><S-h> :call ToggleHiddenAll()<CR>
+
+function! LF()
+    let temp = tempname()
+    exec 'silent !lf -selection-path=' . shellescape(temp)
+    if !filereadable(temp)
+        redraw!
+        return
+    endif
+    let names = readfile(temp)
+    if empty(names)
+        redraw!
+        return
+    endif
+    exec 'edit ' . fnameescape(names[0])
+    for name in names[1:]
+        exec 'argadd ' . fnameescape(name)
+    endfor
+    redraw!
+endfunction
+command! -bar LF call LF()
+
+""" internal wordcount
+"function! WordCount()
+"    let currentmode = mode()
+"    if !exists("g:lastmode_wc")
+"        let g:lastmode_wc = currentmode
+"    endif
+"    " if we modify file, open a new buffer, be in visual ever, or switch modes
+"    " since last run, we recompute.
+"    if &modified || !exists("b:wordcount") || currentmode =~? '\c.*v' || currentmode != g:lastmode_wc
+"        let g:lastmode_wc = currentmode
+"        let l:old_position = getpos('.')
+"        let l:old_status = v:statusmsg
+"        execute "silent normal g\<c-g>"
+"        if v:statusmsg == "--No lines in buffer--"
+"            let b:wordcount = 0
+"        else
+"            let s:split_wc = split(v:statusmsg)
+"            if index(s:split_wc, "Selected") < 0
+"                let b:wordcount =  str2nr(s:split_wc[11]) ..'w' .. str2nr(s:split_wc[13]) .. 'c'
+"            else
+"                let b:wordcount = str2nr(s:split_wc[5]) .. 'w' .. str2nr(s:split_wc[9]) .. 'c'
+"            endif
+"            let v:statusmsg = l:old_status
+"        endif
+"        call setpos('.', l:old_position)
+"        return b:wordcount
+"    else
+"        return b:wordcount
+"    endif
+"endfunction
+
+
+"here is a more exotic version of my original Kwbd script
+"delete the buffer; keep windows; create a scratch buffer if no buffers left
+function s:Kwbd(kwbdStage)
+  if(a:kwbdStage == 1)
+    if(&modified)
+      let answer = confirm("This buffer has been modified.  Are you sure you want to delete it?", "&Yes\n&No", 2)
+      if(answer != 1)
+        return
+      endif
+    endif
+    if(!buflisted(winbufnr(0)))
+      bd!
+      return
+    endif
+    let s:kwbdBufNum = bufnr("%")
+    let s:kwbdWinNum = winnr()
+    windo call s:Kwbd(2)
+    execute s:kwbdWinNum . 'wincmd w'
+    let s:buflistedLeft = 0
+    let s:bufFinalJump = 0
+    let l:nBufs = bufnr("$")
+    let l:i = 1
+    while(l:i <= l:nBufs)
+      if(l:i != s:kwbdBufNum)
+        if(buflisted(l:i))
+          let s:buflistedLeft = s:buflistedLeft + 1
+        else
+          if(bufexists(l:i) && !strlen(bufname(l:i)) && !s:bufFinalJump)
+            let s:bufFinalJump = l:i
+          endif
+        endif
+      endif
+      let l:i = l:i + 1
+    endwhile
+    if(!s:buflistedLeft)
+      if(s:bufFinalJump)
+        windo if(buflisted(winbufnr(0))) | execute "b! " . s:bufFinalJump | endif
+      else
+        enew
+        let l:newBuf = bufnr("%")
+        windo if(buflisted(winbufnr(0))) | execute "b! " . l:newBuf | endif
+      endif
+      execute s:kwbdWinNum . 'wincmd w'
+    endif
+    if(buflisted(s:kwbdBufNum) || s:kwbdBufNum == bufnr("%"))
+      execute "bd! " . s:kwbdBufNum
+    endif
+    if(!s:buflistedLeft)
+      set buflisted
+      set bufhidden=delete
+      set buftype=
+      setlocal noswapfile
+    endif
+  else
+    if(bufnr("%") == s:kwbdBufNum)
+      let prevbufvar = bufnr("#")
+      if(prevbufvar > 0 && buflisted(prevbufvar) && prevbufvar != s:kwbdBufNum)
+        b #
+      else
+        bn
+      endif
+    endif
+  endif
+endfunction
+
+command! Kwbd call s:Kwbd(1)
+nnoremap <silent> <Plug>Kwbd :<C-u>Kwbd<CR>
+
+" Create a mapping (e.g. in your .vimrc) like this:
+"nmap <C-W>! <Plug>Kwbd
+
+nmap <C-t>c <Plug>Kwbd
+command! Bd bp\|bd \#
+
+" inoremap (; (<CR>);<C-c>O
+" inoremap (, (<CR>),<C-c>O
+" inoremap {; {<CR>};<C-c>O
+" inoremap {, {<CR>},<C-c>O
+" inoremap [; [<CR>];<C-c>O
+" inoremap [, [<CR>],<C-c>O
+"auto close {
+function! s:CloseBracket()
+    let line = getline('.')
+    if line =~# '^\s*\(struct\|class\|enum\) '
+        return "{\<Enter>};\<Esc>O"
+    elseif searchpair('(', '', ')', 'bmn', '', line('.'))
+        " Probably inside a function call. Close it off.
+        return "{\<Enter>});\<Esc>O"
+    else
+        return "{\<Enter>}\<Esc>O"
+    endif
+endfunction
+inoremap <expr> {<Enter> <SID>CloseBracket()
+
+" forma json" also :%!python3 -m json.tool
+
+
+"""""""""""""""""""""""maximizer""""""""""""""""""""""""""""
+fun! s:maximize()
+    let t:maximizer_sizes = { 'before': winrestcmd() }
+    vert resize | resize
+    let t:maximizer_sizes.after = winrestcmd()
+    normal! ze
+endfun
+
+fun! s:toggle(force)
+    if exists('t:maximizer_sizes') && (a:force || (t:maximizer_sizes.after == winrestcmd()))
+        call s:restore()
+    elseif winnr('$') > 1
+        call s:maximize()
+    endif
+endfun
+
+fun! s:maximize()
+    let t:maximizer_sizes = { 'before': winrestcmd() }
+    vert resize | resize
+    let t:maximizer_sizes.after = winrestcmd()
+    normal! ze
+endfun
+
+fun! s:restore()
+    if exists('t:maximizer_sizes')
+        silent! exe t:maximizer_sizes.before
+        if t:maximizer_sizes.before != winrestcmd()
+            wincmd =
+        endif
+        unlet t:maximizer_sizes
+        normal! ze
+    end
+endfun
+
+augroup maximizer
+    au!
+    au WinLeave * call s:restore()
+augroup END
+
+command! -bang -nargs=0 -range MaximizerToggle :call s:toggle(<bang>0)
+
+

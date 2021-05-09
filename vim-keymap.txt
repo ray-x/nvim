@@ -1,0 +1,545 @@
+
+
+copy the cmd output
+redir @* | echo &guifont | redir END
+
+
+copy/paste and repeat
+
+yiw  copy word, yi"  copy inner 
+
+ciw ^R0   (change word with register 0)
+
+.  (repete)
+
+Line:
+Vp select 2nd line, replace with yank
+V"0p  3rd line and replace with 1st
+
+word count g^g
+
+comments:
+[count]<leader>cc |NERDCommenterComment|
+
+Comment out the current line or text selected in visual mode.
+
+[count]<leader>cn |NERDCommenterNested|
+
+Same as cc but forces nesting.
+
+[count]<leader>c<space> |NERDCommenterToggle|
+
+Toggles the comment state of the selected line(s). If the topmost selected line is commented, all selected lines are uncommented and vice versa.
+
+[count]<leader>cm |NERDCommenterMinimal|
+
+Comments the given lines using only one set of multipart delimiters.
+
+[count]<leader>ci |NERDCommenterInvert|
+
+Toggles the comment state of the selected line(s) individually.
+
+[count]<leader>cs |NERDCommenterSexy|
+
+Comments out the selected lines with a pretty block formatted layout.
+
+[count]<leader>cy |NERDCommenterYank|
+
+Same as cc except that the commented line(s) are yanked first.
+
+<leader>c$ |NERDCommenterToEOL|
+
+Comments the current line from the cursor to the end of line.
+
+<leader>cA |NERDCommenterAppend|
+
+Adds comment delimiters to the end of line and goes into insert mode between them.
+
+|NERDCommenterInsert|
+
+Adds comment delimiters at the current cursor position and inserts between. Disabled by default.
+
+<leader>ca |NERDCommenterAltDelims|
+
+Switches to the alternative set of delimiters.
+
+[count]<leader>cl |NERDCommenterAlignLeft [count]<leader>cb |NERDCommenterAlignBoth
+
+Same as |NERDCommenterComment| except that the delimiters are aligned down the left side (<leader>cl) or both sides (<leader>cb).
+
+[count]<leader>cu |NERDCommenterUncomment|
+
+Uncomments the selected line(s).
+
+
+:execute "normal \<Plug>NiceCenterCursor"
+
+
+execute "normal \<Plug>CamelCaseMotion_iw"
+
+" highlight"
+echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<' . synIDattr(synID(line("."),col("."),0),"name") . "> lo<" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"
+
+
+replace with clipboard
+
+ciw^r0 (yiw if not in first char)  and then repeat with .
+
+search and replace 
+args `grep Neovim -l -r .` or args `rg Neovim -l`
+
+argdo %s/Neovim/Nvim/ge | update
+
+with register and clap
+:cfdo %s/<C-r>s/blabla/ge \| update
+
+replace from current line
+:,$s/old/new/c
+
+Note: use `cdo` is better
+:cdo[!] {cmd} - Execute {cmd} in each valid entry in the quickfix list.
+:cfdo[!] {cmd} - Execute {cmd} in each file in the quickfix list.
+:ld[o][!] {cmd} - Execute {cmd} in each valid entry in the location list for the current window.
+:lfdo[!] {cmd} - Execute {cmd} in each file in the location list for the current window.
+
+set grepprg=rg\ --vimgrep\ --no-heading\ --smart-case
+set grepformat=%f:%l:%c:%m
+grep whatever
+cfdo %s/Neovim/Nvim/ge | update
+
+
+:grep -r -l 'foo'
+:cfdo %s/foo/bar/g|w
+
+cfdo %s/float_win/floating_win/gc|w
+
+cfdo %s/floatinzrg_win/float_win/gc|w
+
+
+How to see which plugins are making Vim slow?
+You can use built-in profiling support: after launching vim do
+
+:profile start profile.log
+:profile func *
+:profile file *
+" At this point do slow actions
+:profile pause
+:noautocmd qall!
+"startup time"
+vim --startuptime timeCost.txt timeCost.txt
+
+
+"log all event"
+
+Building on the answers that suggest using Vp or VP to paste over a line -- to avoid changing the contents of the yank register I find the most ergonomic command is simply:
+
+VPY
+
+
+debug vim profile
+https://codeinthehole.com/tips/debugging-vim-by-example/#why-is-action-slow
+
+change file type hl `set ft=json`
+wc in visual   g<C>g
+python prettier    :%!jq    (%! means use file as stdin)
+
+repeat 
+@@
+.
+
+command history:    q:
+If you always want to use the command editing window, try these mappings:
+
+nnoremap : q:i
+nnoremap / q/i
+nnoremap ? q?i
+
+Using "finish" stops Vim from reading the rest of the file, it's much quicker
+than using if-endif around the whole file.
+
+let [s:plugin, s:enter] = maktaba#plugin#Enter(expand('<sfile>:p'))
+if !s:enter
+  finish
+endif
+
+Here is a TDD recipe for a small project. No plugins used:
+nvim feature.py
+Split a new terminal vertically
+
+:vsp | :terminal
+Get the terminal's job id.
+
+<C-[>
+:echo b:terminal_job_id
+3
+Switch to the other window
+
+<C-[>
+<C-w>w
+Add an autocmd that sends a command to the terminal to run the tests. The job id is used here.
+
+:au BufWritePost <buffer> :call jobsend(3, "\<C-c>clear\<CR>python3 feature_test.py\<CR>")
+# do tdd
+Clean up the buffer's autocmd. Run on the code window.
+
+:au! * <buffer>
+let g:lua_tree_bindings = {
+    \ 'edit':            ['<CR>', 'o'],
+    \ 'edit_vsplit':     '<C-v>',
+    \ 'edit_split':      '<C-x>',
+    \ 'edit_tab':        '<C-t>',
+    \ 'toggle_ignored':  'I',
+    \ 'toggle_dotfiles': 'H',
+    \ 'refresh':         'R',
+    \ 'preview':         '<Tab>',
+    \ 'cd':              '<C-]>',
+    \ 'create':          'a',
+    \ 'remove':          'd',
+    \ 'rename':          'r',
+    \ 'cut':             'x',
+    \ 'copy':            'c',
+    \ 'paste':           'p',
+    \ 'prev_git_item':   '[c',
+    \ 'next_git_item':   ']c',
+    \ }
+
+ replace the term currently under the cursor 
+%s/<c-r><c-w>/new value/g       "c-r, c-w insert word under cursor"
+or use * , the substitute command uses the last searched one.
+and %s//new value/
+
+
+color=$( convert filename.png -format "%[pixel:p{0,0}]" info:- )
+convert filename.png -alpha off -bordercolor $color -border 1 \
+    \( +clone -fuzz 30% -fill none -floodfill +0+0 $color \
+       -alpha extract -geometry 200% -blur 0x0.5 \
+       -morphology erode square:1 -geometry 50% \) \
+    -compose CopyOpacity -composite -shave 1 outputfilename.png
+
+
+
+Keybindings in `browser'
+           Q quitall
+           q quit
+          ZZ quit
+          ZQ quit
+           R reload_cwd
+           F set freeze_files!
+       <c-r> reset
+       <c-l> redraw_window
+       <c-c> abort
+    <escape> change_mode normal
+           ~ set viewmode!
+           i display_file
+      <alt>j scroll_preview 1
+      <alt>k scroll_preview -1
+<alt><right> tab_move 1
+ <alt><left> tab_move -1
+      <alt>1 tab_open 1
+      <alt>2 tab_open 2
+      <alt>3 tab_open 3
+      <alt>4 tab_open 4
+      <alt>5 tab_open 5
+      <alt>6 tab_open 6
+      <alt>7 tab_open 7
+      <alt>8 tab_open 8
+      <alt>9 tab_open 9
+      <alt>r tab_shift 1
+      <alt>l tab_shift -1
+      <alt>/ console fd_search -d5%space # Setting the depth to a different default, omit -d if you're fine with -d1
+      <alt>n fd_next
+      <alt>p fd_prev
+      <alt>o show_files_in_finder
+           ? help
+           W display_log
+           w taskview_open
+           S shell $SHELL
+           : console
+           ; console
+           ! console shell%space
+           @ console -p6 shell  %%s
+           # console shell -p%space
+           s console shell%space
+           r chain draw_possible_programs; console open_with%space
+           f console find%space
+          cd console cd%space
+          cw console rename%space
+          ct search_next order=tag
+          cs search_next order=size
+          ci search_next order=mimetype
+          cc search_next order=ctime
+          cm search_next order=mtime
+          ca search_next order=atime
+          cz console z%space
+       <c-p> chain console; eval fm.ui.console.history_move(-1)
+          Mf linemode filename
+          Mi linemode fileinfo
+          Mm linemode mtime
+          Mh linemode humanreadablemtime
+          Mp linemode permissions
+          Ms linemode sizemtime
+          MH linemode sizehumanreadablemtime
+          Mt linemode metatitle
+           t tag_toggle
+          ut tag_remove
+          uv mark_files all=True val=False
+          uV toggle_visual_mode reverse=True
+          ud uncut
+          uy uncut
+          uq tab_restore
+     um<any> unset_bookmark %any
+      um<bg> draw_bookmarks
+      "<any> tag_toggle tag=%any
+     <space> mark_files toggle=True
+           v mark_files all=True toggle=True
+           V toggle_visual_mode
+        <f1> help
+        <f2> rename_append
+        <f3> display_file
+        <f4> edit
+        <f5> copy
+        <f6> cut
+        <f7> console mkdir%space
+        <f8> console delete
+       <f10> exit
+        <up> move up=1
+      <down> move down=1
+      <left> move left=1
+     <right> move right=1
+      <home> move to=0
+       <end> move to=-1
+  <pagedown> move down=1   pages=True
+    <pageup> move up=1     pages=True
+       <c-j> move right=1
+    <insert> console touch%space
+           k move up=1
+           j move down=1
+           h move left=1
+           l move right=1
+          gg move to=0
+          gh cd ~
+          ge cd /etc
+          gu cd /usr
+          gd cd /dev
+          gl cd -r .
+          gL cd -r %f
+          go cd /opt
+          gv cd /var
+          gm cd /media
+          gi eval fm.cd('/run/media/' + os.getenv('USER'))
+          gM cd /mnt
+          gs cd /srv
+          gp cd /tmp
+          gr cd /
+          gR eval fm.cd(ranger.RANGERDIR)
+          g/ cd /
+          g? cd /usr/share/doc/ranger
+          gt tab_move 1
+          gT tab_move -1
+          gn tab_new
+          gc tab_close
+           G move to=-1
+       <c-f> fzf_select
+       <c-b> move up=1     pages=True
+           J move down=0.5  pages=True
+           K move up=0.5    pages=True
+       <c-d> move down=0.5  pages=True
+       <c-u> move up=0.5    pages=True
+           H history_go -1
+           L history_go 1
+           ] move_parent 1
+           [ move_parent -1
+           } traverse
+           { traverse_backwards
+           ) jump_non
+           E edit
+          du shell -p du --max-depth=1 -h --apparent-size
+          dU shell -p du --max-depth=1 -h --apparent-size | sort -rh
+          dD console delete
+          dT console trash
+          dd cut
+          da cut mode=add
+          dr cut mode=remove
+          dt cut mode=toggle
+         dgg eval fm.cut(dirarg=dict(to=0), narg=quantifier)
+          dG eval fm.cut(dirarg=dict(to=-1), narg=quantifier)
+          dj eval fm.cut(dirarg=dict(down=1), narg=quantifier)
+          dk eval fm.cut(dirarg=dict(up=1), narg=quantifier)
+          dc get_cumulative_size
+          yp yank path
+          yd yank dir
+          yn yank name
+          y. yank name_without_extension
+          yy copy
+          ya copy mode=add
+          yr copy mode=remove
+          yt copy mode=toggle
+         ygg eval fm.copy(dirarg=dict(to=0), narg=quantifier)
+          yG eval fm.copy(dirarg=dict(to=-1), narg=quantifier)
+          yj eval fm.copy(dirarg=dict(down=1), narg=quantifier)
+          yk eval fm.copy(dirarg=dict(up=1), narg=quantifier)
+           = chmod
+           a rename_append
+           A eval fm.open_console('rename ' + fm.thisfile.relative_path.replace("%", "%%"))
+           I eval fm.open_console('rename ' + fm.thisfile.relative_path.replace("%", "%%"), position=7)
+          pp paste
+          po paste overwrite=True
+          pP paste append=True
+          pO paste overwrite=True append=True
+          pl paste_symlink relative=False
+          pL paste_symlink relative=True
+         phl paste_hardlink
+         pht paste_hardlinked_subtree
+          pd console paste dest=
+     p`<any> paste dest=%any_path
+     p'<any> paste dest=%any_path
+           / console search%space
+           n search_next
+           N search_next forward=False
+       <c-n> tab_new
+       <c-w> tab_close
+       <c-i> tab_move 1
+     <s-tab> tab_move -1
+          or set sort_reverse!
+          oz set sort=random
+          os chain set sort=size;      set sort_reverse=False
+          ob chain set sort=basename;  set sort_reverse=False
+          on chain set sort=natural;   set sort_reverse=False
+          om chain set sort=mtime;     set sort_reverse=False
+          oc chain set sort=ctime;     set sort_reverse=False
+          oa chain set sort=atime;     set sort_reverse=False
+          ot chain set sort=type;      set sort_reverse=False
+          oe chain set sort=extension; set sort_reverse=False
+          oS chain set sort=size;      set sort_reverse=True
+          oB chain set sort=basename;  set sort_reverse=True
+          oN chain set sort=natural;   set sort_reverse=True
+          oM chain set sort=mtime;     set sort_reverse=True
+          oC chain set sort=ctime;     set sort_reverse=True
+          oA chain set sort=atime;     set sort_reverse=True
+          oT chain set sort=type;      set sort_reverse=True
+          oE chain set sort=extension; set sort_reverse=True
+          zc set collapse_preview!
+          zd set sort_directories_first!
+          zh set show_hidden!
+          zI set flushinput!
+          zi set preview_images!
+          zm set mouse_enabled!
+          zp set preview_files!
+          zP set preview_directories!
+          zs set sort_case_insensitive!
+          zu set autoupdate_cumulative_size!
+          zv set use_preview_script!
+          zf console filter%space
+          zz console filter%space
+       <c-h> set show_hidden!
+ <backspace> set show_hidden!
+<backspace2> set show_hidden!
+          .d filter_stack add type d
+          .f filter_stack add type f
+          .l filter_stack add type l
+          .m console filter_stack add mime%space
+          .n console filter_stack add name%space
+          .# console filter_stack add hash%space
+          ." filter_stack add duplicate
+          .' filter_stack add unique
+          .| filter_stack add or
+          .& filter_stack add and
+          .! filter_stack add not
+          .r filter_stack rotate
+          .c filter_stack clear
+          .* filter_stack decompose
+          .p filter_stack pop
+          .. filter_stack show
+      `<any> enter_bookmark %any
+       `<bg> draw_bookmarks
+      '<any> enter_bookmark %any
+       '<bg> draw_bookmarks
+      m<any> set_bookmark %any
+       m<bg> draw_bookmarks
+         +ur shell -f chmod u+r %s
+         +uw shell -f chmod u+w %s
+         +ux shell -f chmod u+x %s
+         +uX shell -f chmod u+X %s
+         +us shell -f chmod u+s %s
+         +ut shell -f chmod u+t %s
+         +gr shell -f chmod g+r %s
+         +gw shell -f chmod g+w %s
+         +gx shell -f chmod g+x %s
+         +gX shell -f chmod g+X %s
+         +gs shell -f chmod g+s %s
+         +gt shell -f chmod g+t %s
+         +or shell -f chmod o+r %s
+         +ow shell -f chmod o+w %s
+         +ox shell -f chmod o+x %s
+         +oX shell -f chmod o+X %s
+       <c-g> fzf_locate
+        <M>c YankContent
+        <M>o show_files_in_finder
+          \f fzf_rga_documents_search
+
+Keybindings in `console'
+       <c-i> eval fm.ui.console.tab()
+     <s-tab> eval fm.ui.console.tab(-1)
+    <escape> eval fm.ui.console.close()
+       <c-j> eval fm.ui.console.execute()
+       <c-l> redraw_window
+       <c-c> eval fm.ui.console.close()
+        <up> eval fm.ui.console.history_move(-1)
+      <down> eval fm.ui.console.history_move(1)
+      <left> eval fm.ui.console.move(left=1)
+     <right> eval fm.ui.console.move(right=1)
+      <home> eval fm.ui.console.move(right=0, absolute=True)
+       <end> eval fm.ui.console.move(right=-1, absolute=True)
+      <alt>b eval fm.ui.console.move_word(left=1)
+      <alt>f eval fm.ui.console.move_word(right=1)
+ <alt><left> eval fm.ui.console.move_word(left=1)
+<alt><right> eval fm.ui.console.move_word(right=1)
+      <alt>d eval fm.ui.console.delete_word(backward=False)
+ <backspace> eval fm.ui.console.delete(-1)
+    <delete> eval fm.ui.console.delete(0)
+       <c-w> eval fm.ui.console.delete_word()
+       <c-k> eval fm.ui.console.delete_rest(1)
+       <c-u> eval fm.ui.console.delete_rest(-1)
+       <c-y> eval fm.ui.console.paste()
+       <c-g> eval fm.ui.console.close()
+       <c-p> eval fm.ui.console.history_move(-1)
+       <c-n> eval fm.ui.console.history_move(1)
+       <c-b> eval fm.ui.console.move(left=1)
+       <c-f> eval fm.ui.console.move(right=1)
+:
+Keybindings in `pager'
+      <down> pager_move  down=1
+        <up> pager_move  up=1
+      <left> pager_move  left=4
+     <right> pager_move  right=4
+      <home> pager_move  to=0
+       <end> pager_move  to=-1
+  <pagedown> pager_move  down=1.0  pages=True
+    <pageup> pager_move  up=1.0    pages=True
+       <c-d> pager_move  down=0.5  pages=True
+       <c-u> pager_move  up=0.5    pages=True
+           k pager_move  up=1
+       <c-p> pager_move  up=1
+           j pager_move  down=1
+       <c-n> pager_move  down=1
+       <c-j> pager_move  down=1
+           h pager_move  left=4
+           l pager_move  right=4
+           g pager_move  to=0
+           G pager_move  to=-1
+           d pager_move  down=0.5  pages=True
+           u pager_move  up=0.5    pages=True
+           n pager_move  down=1.0  pages=True
+           f pager_move  down=1.0  pages=True
+       <c-f> pager_move  down=1.0  pages=True
+     <space> pager_move  down=1.0  pages=True
+           p pager_move  up=1.0    pages=True
+           b pager_move  up=1.0    pages=True
+       <c-b> pager_move  up=1.0    pages=True
+       <c-l> redraw_window
+    <escape> pager_close
+           q pager_close
+           Q pager_close
+           i pager_close
+        <f3> pager_close
+           E edit_file

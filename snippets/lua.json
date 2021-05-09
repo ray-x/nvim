@@ -1,0 +1,14 @@
+{
+	".source.lua": {
+		"require": {
+			"prefix": "re",
+			"body": "require \"${1:package}\"",
+			"description": "Snippet for require statement"
+		},
+		"func define": {
+			"prefix": "fun",
+			"body": "function (${1:args})\n end",
+			"description": "Snippet for a func"
+		}
+	}
+}

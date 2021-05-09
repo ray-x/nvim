@@ -1,0 +1,159 @@
+set encoding=utf-8
+
+if &compatible
+  set nocompatible
+endif
+
+if has('nvim')
+  let s:config_home = stdpath('config')
+  finish  " Note: use init.lua for neovim
+else
+  let s:config_home = '~/.config/nvim'
+endif
+
+if has('mac')
+  let s:brew_prefix = '/usr/local'
+elseif executable('brew')
+  let s:brew_prefix = systemlist('brew --prefix')[0]
+endif
+
+
+autocmd StdinReadPre * let s:std_in=1
+
+
+""""""""""""""""""""""
+"      Settings      "
+""""""""""""""""""""""
+"" see options.lua
+set nocompatible  " nvim is always nocompatible, vim only
+set termguicolors
+set noshowmode                  " We show the mode with airline or lightline
+
+" lua vim.wo options
+set foldmethod=indent
+set signcolumn=yes
+set list
+set concealcursor=niv
+
+set nocursorcolumn              " (turn off to speeds up highlighting)
+set nocursorline                " (turn off speeds up highlighting)
+set lazyredraw                  " Wait to redraw
+au FocusGained,BufEnter * :checktime  " autoload
+
+set synmaxcol=128
+set re=1
+
+set ttyscroll=3                 " Speedup scrolling
+set ttymouse=xterm2
+
+" configure tabwidth and insert spaces instead of tabs
+set tabstop=4        " tab width is 4 spaces
+set shiftwidth=4     " indent also with 4 spaces
+
+set cpoptions+=n                " use the number column for the text of wrapped lines
+
+" list of files use two space as tab
+autocmd FileType javascript,vim,yml,markdown setlocal ts=2 sts=2 sw=2
+
+
+" intelligent comments
+set comments=sl:/*,mb:\ *,elx:\ */
+
+" yank
+augroup highlight_yank
+    autocmd!
+    autocmd TextYankPost * silent! lua vim.highlight.on_yank {higroup="IncSearch", timeout=1500, on_visual=false}
+augroup END
+
+
+""""""""""""""""""""""
+"      Mappings      "
+""""""""""""""""""""""
+
+" Jump to next error with Ctrl-n and previous error with Ctrl-m. Close the
+" quickfix window with <leader>a
+map <C-n> :cnext<CR>
+map <C-m> :cprevious<CR>
+nnoremap <leader>a :cclose<CR>
+
+" Visual linewise up and down by default (and use gj gk to go quicker)
+noremap <Up> gk
+noremap <Down> gj
+noremap j gj
+noremap k gk
+if  exists('g:gonvim_running')
+    set guifont=Victor\ Mono\ SemiBold:h18
+endif
+" Search mappings: These will make it so that going to the next one in a
+" search will center on the line it's found in.
+nnoremap n nzzzv
+nnoremap N Nzzzv
+nnoremap <leader><leader>d "_d    "" \\dw to delete without put it to register
+"
+
+" paste and copy
+"
+" " Copy to clipboard
+vnoremap  <leader>y  "+y
+nnoremap  <leader>Y  "+yg_
+
+" Paste with middle mouse click
+vmap <LeftRelease> "*ygv
+
+" Paste with <Shift> + <Insert>
+imap <C-V> <C-R>*
+imap <M-V> <C-R>+   " for mac
+
+" " Paste from clipboard
+nnoremap <leader>p "+p
+nnoremap <leader>P "+P
+
+" markdown disable conceal when edit current line
+set concealcursor="i"
+
+" file hidden
+set wildmenu
+set wildignore+=**/node_modules/**,/node_modules/*,*/tmp/*,*.so,*.swp,*.zip
+
+set wildmode=longest,list,full
+
+if has('nvim')
+  set wildoptions+=pum
+  set wildmode-=list
+end
+
+cnoremap <C-N> <Up>
+cnoremap <C-P> <Down>
+
+"""""""""""""""""""""
+"      Plugins      "
+"""""""""""""""""""""
+
+if &diff
+  set foldmethod=diff
+  set diffopt+=context:0
+  set cursorline
+  set foldlevel=0
+  set noreadonly
+  finish  " skip all following
+endif
+
+let g:python3_host_prog = '/usr/bin/python3'
+
+
+" Add the dein installation directory into runtimepath
+set runtimepath+=~/.cache/dein/repos/github.com/Shougo/dein.vim
+
+
+call dein#add(~/.cache/dein/repos/github.com/Shougo/dein.vim)
+if !has('nvim')
+  call dein#add('fatih/vim-go')
+endif
+" Required:
+call dein#end()
+
+" Required:
+filetype plugin indent on
+syntax enable
+
+syntax sync minlines=256

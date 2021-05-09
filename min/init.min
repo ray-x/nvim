@@ -1,0 +1,240 @@
+
+set encoding=utf-8
+if has('nvim')
+  let s:config_home = stdpath('config')
+else
+  let s:config_home = '~/.config/nvim'
+endif
+if &compatible
+  set nocompatible
+endif
+
+
+if has('mac')
+  let s:brew_prefix = '/usr/local'
+elseif executable('brew')
+  let s:brew_prefix = systemlist('brew --prefix')[0]
+endif
+
+
+if &compatible
+  set nocompatible
+endif
+" Add the dein installation directory into runtimepath
+set runtimepath+=~/.cache/dein/repos/github.com/Shougo/dein.vim
+
+if dein#load_state('~/.cache/dein')
+  call dein#begin('~/.cache/dein')
+
+  call dein#add('~/.cache/dein/repos/github.com/Shougo/dein.vim')
+
+if has('nvim')
+  " LSP releated
+  call dein#add('neovim/nvim-lspconfig',{'name':'lsp'}) 
+
+  ", {'name':'lsp', 'lazy': 1, " 'on_map':['<Plug>','<c-k>','<c-]>'], 'on_ft': ['go', 'bash', 'go', 'c_sharp', " 'cpp', 'css', 'dart', 'html', 'java', 'javascript', 'jsdoc', 'json', 'lua', " 'python', 'rust', 'ruby', 'toml', 'typescript']})"
+  " call dein#add('liuchengxu/vim-clap' , { 'hook_post_update': 'call clap#installer#force_download()','on_map': '<Plug>' } )
+  
+  " call dein#add('nvim-lua/diagnostic-nvim', {'depends':'lsp'})  "builtin
+  call dein#add('nvim-lua/completion-nvim', {'name':'completion'})
+  call dein#add('aca/completion-tabnine', {'do': './install.sh' , 'on_event': 'InsertEnter'})
+  call dein#add('nvim-lua/lsp-status.nvim', {'depends':'lsp'})
+
+  call dein#add('RishabhRD/popfix')
+  call dein#add('RishabhRD/nvim-lsputils', {'depends':'lsp'})
+  " call dein#add('nvim-lua/plenary.nvim')
+  " call dein#add('tjdevries/express_line.nvim', {'depends': 'plenary'})
+
+  " call dein#add('nvim-treesitter/nvim-treesitter', {'merged': 0, " 'name':'treesitter', 'on_event': 'InsertEnter', 'on_ft': ['bash', " 'c_sharp','c', 'cpp', 'css', 'dart', 'go', 'html', 'java', 'javascript', " 'jsdoc', 'json', 'lua', 'python', 'rust', 'ruby', 'toml', 'typescript']})
+  " call dein#add('nvim-treesitter/completion-treesitter', {'depends': ['treesitter', 'completion'], 'on_event': 'InsertEnter', 'on_ft': ['go', 'bash', 'go', 'c_sharp', 'cpp', 'css', 'dart', 'html', 'java', 'javascript', 'jsdoc', 'json', 'lua', 'python', 'rust', 'ruby', 'toml', 'typescript']})
+    " call dein#add('akinsho/nvim-bufferline.lua')
+  " call dein#add('norcalli/nvim-colorizer.lua')
+endif
+
+
+
+  call dein#add('ray-x/paleaurora')
+  call dein#end()
+  call dein#save_state()
+endif
+
+
+
+
+set nocompatible                " Enables us Vim specific features
+" filetype off                    " Reset filetype detection first ...
+filetype plugin indent on       " ... and enable filetype detection
+set ttyfast                     " Indicate fast terminal conn for faster redraw
+set laststatus=2                " Show status line always
+set encoding=utf-8              " Set default encoding to UTF-8
+set autoindent                  " Enabile Autoindent
+set backspace=indent,eol,start  " Makes backspace key more powerful.
+set incsearch                   " Shows the match while typing
+set hlsearch                    " Highlight found searches
+set noerrorbells                " No beeps
+set number                      " Show line numbers
+set showcmd                     " Show me what I'm typing
+set noswapfile                  " Don't use swapfile
+set nobackup                    " Don't create annoying backup files
+set splitright                  " Vertical windows should be split to right
+set splitbelow                  " Horizontal windows should split to bottom
+set autowrite                   " Automatically save before :next, :make etc.
+set hidden                      " Buffer should still exist if window is closed
+set fileformats=unix,dos,mac    " Prefer Unix over Windows over OS 9 formats
+set noshowmatch                 " Do not show matching brackets by flickering
+set noshowmode                  " We show the mode with airline or lightline
+set ignorecase                  " Search case insensitive...
+set smartcase                   " ... but not it begins with upper case
+set completeopt=menu,menuone    " Show popup menu, even if there is one entry
+set pumheight=12                " Completion window max size
+set lazyredraw                  " Wait to redraw
+set autoread                    " Automatically read changed files
+set mouse=a
+set termguicolors
+
+
+" file hidden
+set wildmenu
+set wildmode=longest:full,full
+set wildignore+=**/node_modules/**,/node_modules/*,*/tmp/*,*.so,*.swp,*.zip
+if has('nvim')
+  set wildoptions=pum
+endif
+
+" set UTF-8 encoding
+set enc=utf-8
+set fenc=utf-8
+set termencoding=utf-8
+" disable vi compatibility (emulation of old bugs)
+set nocompatible
+" use indentation of previous line
+set autoindent
+" use intelligent indentation for C
+set smartindent
+" configure tabwidth and insert spaces instead of tabs
+set tabstop=4        " tab width is 4 spaces
+set shiftwidth=4     " indent also with 4 spaces
+set expandtab        " expand tabs to spaces
+
+set numberwidth=3
+set cpoptions+=n                " use the number column for the text of wrapped lines
+
+" list of files use two space as tab
+autocmd FileType javascript,vim,yml,markdown setlocal ts=2 sts=2 sw=2
+
+setlocal foldmethod=syntax         
+setlocal foldlevelstart=99
+set foldlevel=99
+
+set fdm=syntax  "manual" "syntax"
+" setlocal foldlevelstart=99
+" turn line numbers on
+set number
+" highlight matching braces
+set showmatch
+" intelligent comments
+" set comments=sl:/*,mb:\ *,elx:\ */
+
+augroup highlight_yank
+    autocmd!
+    autocmd TextYankPost * silent! lua require'vim.highlight'.on_yank("IncSearch", 1000)
+augroup END
+
+" This enables us to undo files even if you exit Vim.
+if has('persistent_undo')
+  set undofile
+  set undodir=~/.config/vim/tmp/undo/
+endif
+
+
+""""""""""""""""""""""
+"      Mappings      "
+""""""""""""""""""""""
+" if setup up <S-fn> for terminal, please refer to kitty.conf
+" use terminfo-x / cat to show the special key combinations
+" Extensions to the xterm protocol: https://sw.kovidgoyal.net/kitty/protocol-extensions.html 
+" vim or nvim
+if !has("gui_running")
+  if !has('nvim')
+    set <S-F1>=^[[1;2P
+    map <Esc>[1;2P <S-F1>
+    set <S-F2>=^[[1;2Q
+    map <Esc>[1;2Q <S-F2>
+    set <S-F3>=^[[1;2R
+    map <Esc>[1;2R <S-F3>
+  else
+    map <F13> <S-F1>
+    map <F14> <S-F4>
+    map <F15> <S-F5>
+    map <F16> <S-F6>
+  endif
+endif
+
+" Jump to next error with Ctrl-n and previous error with Ctrl-m. Close the
+" quickfix window with <leader>a
+map <C-n> :cnext<CR>
+map <C-m> :cprevious<CR>
+nnoremap <leader>a :cclose<CR>
+
+
+" Search mappings: These will make it so that going to the next one in a
+" search will center on the line it's found in.
+nnoremap n nzzzv
+nnoremap N Nzzzv
+
+" Act like D and C
+nnoremap Y y$
+
+
+" " Copy to clipboard
+vnoremap  <leader>y  "+y
+nnoremap  <leader>Y  "+yg_
+
+" Paste with middle mouse click
+vmap <LeftRelease> "*ygv
+
+" Paste with <Shift> + <Insert>
+imap <C-V> <C-R>*
+imap <M-V> <C-R>+   " for mac
+
+" " Paste from clipboard
+nnoremap <leader>p "+p
+nnoremap <leader>P "+P
+
+" 
+
+" let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+" let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+" set background=dark
+colorscheme paleaurora
+execute 'source' fnameescape(s:config_home . '/pluginrc.d/pluginrc.vim')
+execute 'source' fnameescape(s:config_home . '/pluginrc.d/clap.vim')
+execute 'source' fnameescape(s:config_home . '/pluginrc.d/lsp.nvim')
+execute 'source' fnameescape(s:config_home . '/pluginrc.d/lua.nvim')
+" execute 'source' fnameescape(s:config_home . '/pluginrc.d/nvim-tree.nvim')
+" execute 'source' fnameescape(s:config_home . '/pluginrc.d/vista.vim')
+" execute 'source' fnameescape(s:config_home . '/pluginrc.d/nvim-tree.vim')
+
+
+" let g:scrollbar_max_size = 6
+" let g:scrollbar_min_size = 2
+" let g:scrollbar_right_offset = 0
+" let g:scrollbar_excluded_filetypes = ['defx', 'vista', 'vista_kind', 'vim-startify', 'LuaTree']
+" 
+
+let g:min_load=1
+
+command! Dg :lua require'lspsaga.diagnostic'.show_buf_diagnostics()
+command! Dc :call dein#recache_runtimepath()
+command! Du :call dein#update()
+
+
+let g:completion_chain_complete_list = {
+    \ 'default': [
+    \    {'complete_items': ['lsp', 'tabnine' ]},
+    \    {'mode': '<c-p>'},
+    \    {'mode': '<c-n>'}
+    \]
+\}
+let g:completion_enable_auto_popup = 1
+autocmd BufEnter * lua require'completion'.on_attach()
