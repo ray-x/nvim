@@ -18,7 +18,6 @@ function lazyload()
   plugins = "plenary.nvim gitsigns.nvim nvim-lspconfig guihua.lua navigator.lua indent-blankline.nvim "
 
   loader(plugins)
-  require("modules.tools.config").gitsigns()
   require("vscripts.cursorhold")
   require("vscripts.tools")
 

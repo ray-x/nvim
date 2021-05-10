@@ -8,7 +8,7 @@ lang["nvim-treesitter/nvim-treesitter"] = {
 
 lang["nvim-treesitter/nvim-treesitter-textobjects"] = {
   after = "nvim-treesitter",
-  --config = conf.nvim_treesitter,
+  config = conf.nvim_treesitter,
   opt = true
 }
 lang["nvim-treesitter/nvim-treesitter-refactor"] = {

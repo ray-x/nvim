@@ -1,5 +1,5 @@
 local treesitter = function()
-  print("loading ts")
+
   -- if not packer_plugins['nvim-treesitter-textobjects'].loaded then
   --   print("check: textobj not loaded")
   --   require'packer'.loader("nvim-treesitter-textobjects nvim-treesitter-refactor")
@@ -9,8 +9,17 @@ local treesitter = function()
   --   -- packer_plugins['nvim-treesitter-refactor'].loaded = true
   -- end
   local enable = true
+  if vim.fn.line('$') > 30000 then  -- skip some settings for large file
+    vim.cmd[[syntax on]]
+    print('skip treesitter')
+    enable = false
+  end
+  if fsize == nil or fsize < 0 then
+    fsize = 1
+  end
   if fsize > 512 * 1024 then
     enable = false
+    print("disable ts txtobj")
   end
   -- if vim.fn.line('$') > 20000 then  -- skip for large file
   --   vim.cmd[[syntax on]]
@@ -24,7 +33,7 @@ local treesitter = function()
       enable = true, -- false will disable the whole extension
       disable = {"elm"}, -- list of language that will be disabled
       custom_captures = {},
-      use_languagetree = enable
+      use_languagetree = true
     },
     incremental_selection = {
       enable = enable,
@@ -124,10 +133,10 @@ local treesitter = function()
     ensure_installed = "maintained"
     --{ "go", "css", "html", "javascript", "typescript", "jsdoc", "json", "c", "java", "toml", "tsx", "lua", "cpp", "python", "rust", "jsonc", "dart", "css", "yaml", "vue"}
   }
+  -- print("loading ts")
 end
 
 local treesitter_ref = function()
-  print("loading ts")
   -- if not packer_plugins['nvim-treesitter-textobjects'].loaded then
   --   print("check: textobj not loaded")
   --   require'packer'.loader("nvim-treesitter-textobjects nvim-treesitter-refactor")
@@ -137,12 +146,12 @@ local treesitter_ref = function()
   --   -- packer_plugins['nvim-treesitter-refactor'].loaded = true
   -- end
   local enable = true
-  -- if vim.fn.line('$') > 20000 then  -- skip for large file
-  --   vim.cmd[[syntax on]]
-  --   print('skip treesitter')
-  --   enable = false
-  -- end
-  -- print('load treesitter', vim.fn.line('$'))
+  if vim.fn.line('$') > 20000 then  -- skip for large file
+    vim.cmd[[syntax on]]
+    print('skip treesitter')
+    enable = false
+  end
+  print('load treesitter', vim.fn.line('$'))
 
   require "nvim-treesitter.configs".setup {
     refactor = {
@@ -170,6 +179,7 @@ local treesitter_ref = function()
       }
     }
   }
+  print("loading ts txt obj")
 end
 -- treesitter()
 return {treesitter = treesitter, treesitter_ref = treesitter_ref}
