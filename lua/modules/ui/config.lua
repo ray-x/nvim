@@ -210,23 +210,6 @@ function config.interestingwords()
   )
 end
 
-local function theme()
-  -- remove background
-  vim.api.nvim_exec(
-    [[
-  hi Normal guibg=NONE ctermbg=NONE
-  hi EndOfBuffer guibg=NONE ctermbg=NONE
-  set cursorcolumn
-  augroup vimrc_todo
-  au!
-  au Syntax * syn match MyTodo /\v<(FIXME|Fixme|NOTE|Note|TODO|ToDo|OPTIMIZE|XXX):/ containedin=.*Comment,vimCommentTitle
-  augroup END
-  hi def link MyTodo Todo
-  ]],
-    true
-  )
-end
-
 function config.default()
   vim.cmd("set cursorcolumn")
   vim.cmd("augroup vimrc_todo")
@@ -247,7 +230,7 @@ function config.aurora()
 end
 
 function config.material()
-  local opt = {"oceanic", "darker", "palenight", "deep ocean"}
+  local opt = {"oceanic", "darker", "palenight", "deep ocean", "moonlight"}
   local v = math.random(1, #opt)
   vim.g.material_style = opt[v]
   vim.g.material_italic_comments = true
@@ -257,27 +240,9 @@ function config.material()
   vim.g.material_contrast = true
   vim.g.material_borders = false
   vim.g.material_disable_background = true
-  require("material").set()
-
-  vim.cmd [[colorscheme material]]
-  config.default()
+  -- config.default()
 end
 
-function config.moonlight()
-  local opt = {"oceanic", "darker", "moonlight", "palenight", "deep ocean", "moonlight"}
-  local v = math.random(1, #opt)
-  vim.g.material_style = opt[v]
-  vim.g.material_italic_comments = true
-  vim.g.material_italic_keywords = false
-  vim.g.material_italic_functions = true
-  vim.g.material_italic_variables = false
-  vim.g.material_contrast = true
-  vim.g.material_borders = false
-  vim.g.material_disable_background = false
-  require("material").set()
-
-  vim.cmd [[colorscheme material]]
-end
 
 function config.tokyonight()
   local opt = {"storm", "night"}
@@ -288,18 +253,36 @@ function config.tokyonight()
 
   -- Change the "hint" color to the "orange" color, and make the "error" color bright red
   vim.g.tokyonight_colors = {hint = "orange", error = "#ae1960"}
-
-  -- Load the colorscheme
-  vim.cmd [[colorscheme tokyonight]]
-  vim.cmd("set cursorcolumn")
-  vim.cmd("augroup vimrc_todo")
-  vim.cmd("au!")
-  vim.cmd(
-    [[au Syntax * syn match MyTodo /\v<(FIXME|Fixme|NOTE|Note|TODO|ToDo|OPTIMIZE|XXX):/ containedin=.*Comment,vimCommentTitle]]
-  )
-  vim.cmd("augroup END")
-  vim.cmd("hi def link MyTodo Todo")
 end
+
+
+function config.nightfly()
+  vim.g.nightflyCursorColor = 1
+  vim.g.nightflyTerminalColors = 0
+  vim.g.nightflyUndercurls = 1
+  vim.g.nightflyItalics = 1
+  vim.g.nightflyTransparent = 1
+  -- body
+end
+
+function config.nvcode()
+  local opt = {"nvcode", "onedark", "gruvbox"}
+  local v = "colorscheme " .. opt[math.random(1, #opt)]
+
+  vim.cmd(v)
+  -- body
+end
+function config.zephyr()
+  require("zephyr")
+end
+function config.sonokai()
+  local opt = {"andromeda", "default", "andromeda", "shusia", "maia", "atlantis"}
+  local v = opt[math.random(1, #opt)]
+  vim.g.sonokai_style = v
+  vim.g.sonokai_enable_italic = 1
+  vim.g.sonokai_disable_italic_comment = 1
+end
+
 
 function config.blankline()
   vim.g.indent_blankline_buftype_exclude = {"terminal"}
@@ -366,37 +349,6 @@ function config.minimap()
   end
 end
 
-function config.nightfly()
-  vim.g.nightflyCursorColor = 1
-  vim.g.nightflyTerminalColors = 0
-  vim.g.nightflyUndercurls = 1
-  vim.g.nightflyItalics = 1
-  vim.g.nightflyTransparent = 1
-  vim.cmd([[colorscheme nightfly]])
-  -- body
-end
-
-function config.nvcode()
-  local opt = {"nvcode", "onedark", "gruvbox"}
-  local v = "colorscheme " .. opt[math.random(1, #opt)]
-
-  vim.cmd(v)
-  -- body
-end
-function config.zephyr()
-  require("zephyr")
-  -- body
-end
-function config.sonokai()
-  local opt = {"andromeda", "default", "andromeda", "shusia", "maia", "atlantis"}
-  local v = opt[math.random(1, #opt)]
-  vim.g.sonokai_style = v
-  vim.g.sonokai_enable_italic = 1
-  vim.g.sonokai_disable_italic_comment = 1
-  vim.cmd([[colorscheme sonokai]])
-
-  -- body
-end
 
 vim.api.nvim_exec(
   [[
@@ -414,9 +366,8 @@ math.randomseed(os.time())
 local themes = {
   "aurora",
   "tokyonight.nvim",
-  "moonlight.nvim",
   "aurora",
-  "moonlight.nvim",
+  "material.nvim",
   "aurora",
   "sonokai",
   "zephyr-nvim",

@@ -16,12 +16,13 @@ function config.autopairs()
   print("autopairs")
   local has_autopairs, autopairs = pcall(require, "nvim-autopairs")
   if not has_autopairs then
-    vim.cmd([[packadd nvim-autopairs]])
-    has_autopairs, autopairs = pcall(require, "nvim-autopairs")
-    if not has_autopairs then
-      print("pear not installed")
-      return
-    end
+    print("autopairs not loaded")
+    -- vim.cmd([[packadd nvim-autopairs]])
+    -- has_autopairs, autopairs = pcall(require, "nvim-autopairs")
+    -- if not has_autopairs then
+    --   print("pear not installed")
+    --   return
+    -- end
   end
   local npairs = require("nvim-autopairs")
   local Rule = require("nvim-autopairs.rule")

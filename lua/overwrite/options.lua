@@ -74,7 +74,7 @@ function options:load_options()
   local bw_local = {
     synmaxcol = 500,
     textwidth = 120,
-    colorcolumn = "110",
+    colorcolumn = "110", -- will reformat lines more than 120, but show ruler at 110
     wrap = true
   }
   bind_option(bw_local)

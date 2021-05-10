@@ -57,11 +57,37 @@ ui["ray-x/vim-interestingwords"] = {keys = {"<Leader>u"}, config = conf.interest
 ui["dstein64/nvim-scrollview"] = {config = conf.scrollview}
 
 ui["ray-x/aurora"] = {opt = true, config = conf.aurora}
-ui["folke/tokyonight.nvim"] = {opt = true, config = conf.tokyonight}
+ui["folke/tokyonight.nvim"] = {
+  opt = true,
+  setup = conf.tokyonight,
+  config = function()
+    vim.cmd [[colorscheme tokyonight]]
+  end
+}
 ui["shaunsingh/moonlight.nvim"] = {opt = true, config = conf.moonlight}
-ui["bluz71/vim-nightfly-guicolors"] = {opt = true, config = conf.nightfly}
+ui["bluz71/vim-nightfly-guicolors"] = {
+  opt = true,
+  setup = conf.nightfly,
+  config = function()
+    vim.cmd([[colorscheme nightfly]])
+  end
+}
 ui["ChristianChiarulli/nvcode-color-schemes.vim"] = {opt = true, config = conf.nvcode}
-ui["sainnhe/sonokai"] = {opt = true, config = conf.sonokai}
-ui["glepnir/zephyr-nvim"] = {opt = true, config = conf.zephyr}
 
+ui["sainnhe/sonokai"] = {
+  opt = true,
+  setup = conf.sonokai,
+  config = function()
+    vim.cmd([[colorscheme sonokai]])
+  end
+}
+
+ui["glepnir/zephyr-nvim"] = {opt = true, config = conf.zephyr}
+ui["~/github/material.nvim"] = {
+  opt = true, 
+  setup = conf.material,
+  config = function()
+    require("material").set()
+  end
+}
 return ui

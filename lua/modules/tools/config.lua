@@ -207,6 +207,7 @@ function config.floaterm()
   vim.cmd("command! NNN FloatermNew --height=0.96 --width=0.96 nnn")
   vim.cmd("command! FN FloatermNew --height=0.96 --width=0.96")
   vim.cmd("command! LG FloatermNew --height=0.96 --width=0.96 lazygit")
+  vim.cmd("command! Sad FloatermNew --height=0.96 --width=0.96 find ./ *")
   vim.cmd("command! Ranger FloatermNew --height=0.96 --width=0.96 ranger")
 
   vim.g.floaterm_gitcommit = "split"
@@ -214,6 +215,8 @@ function config.floaterm()
   vim.g.floaterm_keymap_prev = "<F20>"
   vim.g.floaterm_keymap_next = "<F21>"
   vim.g.floaterm_keymap_toggle = "<F24>"
+  vim.cmd([[ command! FR let old = expand("<cword>") | let rep = input("Replace " . old . " with: ", old) | execute ":FloatermNew --height=0.95 --width=0.95  git ls-files  | sad " . old . " " . rep ]])
+
 end
 
 function config.spelunker()

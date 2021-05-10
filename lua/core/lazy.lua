@@ -15,7 +15,7 @@ function lazyload()
   local plugins = "nvim-treesitter" -- nvim-treesitter-textobjects should be autoloaded
   loader(plugins)
 
-  plugins = "plenary.nvim gitsigns.nvim nvim-lspconfig guihua.lua navigator.lua indent-blankline.nvim "
+  plugins = "plenary.nvim gitsigns.nvim nvim-lspconfig guihua.lua navigator.lua indent-blankline.nvim " --navigator.lua 
 
   loader(plugins)
   require("vscripts.cursorhold")
