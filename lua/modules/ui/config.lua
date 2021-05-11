@@ -196,18 +196,20 @@ function config.scrollview()
 end
 
 function config.interestingwords()
+  -- vim.cmd("nnoremap <leader>k :call InterestingWords('n')<cr>")
   vim.g.interestingWordsDefaultMappingsK = 0
-  vim.g.interestingWordsDefaultMappingsN = 0
   vim.g.interestingWordsRandomiseColors = 1
-  vim.cmd("nnoremap <silent> <leader>u :call InterestingWords('n')<cr>")
-  vim.cmd("vnoremap <silent> <leader>u :call InterestingWords('v')<cr>")
-  vim.cmd("nnoremap <silent> <leader>U :call UncolorAllWords()<cr>")
-  vim.cmd("nnoremap <silent> m :call WordNavigation('forward')<cr>")
-  vim.cmd("nnoremap <silent> M :call WordNavigation('backward')<cr>")
+  -- vim.cmd("nnoremap <silent> <leader>u :]<cr>")
+  vim.g.interestingWordsGUIColors = {'#aeee00', '#ff0000', '#0000ff', '#b88823', '#ffa724', '#ff2c4b', '#F92772', '#A6E22D', '#66d9ef','#E6DB74', '#FD9720', '#ae81ff', '#e73c50', '#ff0000', '#5f0000'}
   vim.g.interestingWordsCycleColors = 1
-  vim.cmd(
-    [[let s:interestingWordsGUIColors = ['#aeee00', '#ff0000', '#0000ff', '#b88823', '#ffa724', '#ff2c4b', '#F92772', '#A6E22D', '#66d9ef','#E6DB74', '#FD9720', '#ae81ff', '#e73c50', '#ff0000', '#5f0000']]
-  )
+  vim.cmd("nnoremap <silent> <leader>k :call InterestingWords('n')<cr>")
+  vim.cmd("vnoremap <silent> <leader>k :call InterestingWords('v')<cr>")
+  vim.cmd("nnoremap <silent> <leader>K :call UncolorAllWords()<cr>")
+  vim.cmd("nnoremap <silent> <leader>m :call WordNavigation('forward')<cr>")
+  vim.cmd("nnoremap <silent> <leader>M :call WordNavigation('backward')<cr>")
+end
+
+function config.interestingwords_after()
 end
 
 function config.default()

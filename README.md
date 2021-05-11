@@ -98,7 +98,7 @@ I used following plugin a lots
 ## Shell
 
 - OhMyZshell is good, iterm2 is popular, but I turned to zim(Zsh IMproved FrameWork
-  ) + powerlevel10 + kitty. It is cooool and faster.
+  ) + spaceship + kitty. It is cooool and faster.
   nvim+kitty split view:
 
   ![vim_ide with nvim+kitty](https://github.com/ray-x/dotfiles/blob/master/img/kitty.jpg)
@@ -116,5 +116,3 @@ These tools are good, but due to confliction, less use, or, not suite to my work
 - zpreztor
 - rainbow
 - defx
--
--

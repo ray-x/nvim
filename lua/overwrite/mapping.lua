@@ -85,6 +85,9 @@ local keys = {
   ),
   ["n|<leader>dv"] = map_cr('<cmd>lua require"telescope".extensions.dap.variables{}'):with_noremap():with_silent(),
   ["n|<leader>df"] = map_cr('<cmd>lua require"telescope".extensions.dap.frames{}'):with_noremap():with_silent(),
+  ["n|w"]          = map_cmd('v:lua.word_motion_move("w")'):with_silent():with_expr(),
+  ["n|<Leader>k"]  = map_cmd('v:lua.interestingwords("<leader>k")'):with_silent():with_expr(),
+  ["n|b"]          = map_cmd('v:lua.word_motion_move("b")'):with_silent():with_expr(),
   --
   -- Plugin QuickRun
   -- ["n|<Leader>r"]     = map_cr("<cmd> lua require'selfunc'.run_command()"):with_noremap():with_silent(),

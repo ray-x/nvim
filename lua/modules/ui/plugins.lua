@@ -51,8 +51,8 @@ ui["kyazdani42/nvim-tree.lua"] = {
 
 ui["lukas-reineke/indent-blankline.nvim"] = {setup = conf.blankline, branch = "lua", opt = true} --after="nvim-treesitter",
 
--- replaced by nl
-ui["ray-x/vim-interestingwords"] = {keys = {"<Leader>u"}, config = conf.interestingwords, opt = true}
+-- replaced by nl fn = "InterestingWords", keys = {"<Leader>k"}
+ui["ray-x/vim-interestingwords"] = {opt = true, setup=conf.interestingwords}
 
 ui["dstein64/nvim-scrollview"] = {config = conf.scrollview}
 

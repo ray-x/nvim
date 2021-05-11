@@ -36,13 +36,24 @@ _G.s_tab_complete = function()
 end
 
 _G.word_motion_move = function(key)
-  if packer_plugins['vim-wordmotion'] and not packer_plugins['vim-wordmotion'].loaded then
+  if not packer_plugins['vim-wordmotion'] or not packer_plugins['vim-wordmotion'].loaded then
     require'packer'.loader("vim-wordmotion")
     -- vim.cmd [[packadd vim-wordmotion]]
   end
   local map = key == 'w' and '<Plug>(WordMotion_w)' or '<Plug>(WordMotion_b)'
   return t(map)
 end
+
+
+_G.interestingwords = function(key)
+  print("iw")
+  if not packer_plugins['vim-interestingwords'] or not packer_plugins['vim-interestingwords'].loaded then
+    require'packer'.loader("vim-interestingwords")
+    -- vim.cmd [[packadd vim-wordmotion]]
+  end
+  vim.cmd(":call InterestingWords('n')")
+end
+
 
 -- _G.enhance_jk_move = function(key)
 --   if packer_plugins['accelerated-jk'] and not packer_plugins['accelerated-jk'].loaded then
