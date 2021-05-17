@@ -28,6 +28,7 @@ completion["hrsh7th/vim-vsnip"] = {
 completion["nvim-telescope/telescope.nvim"] = {
   cmd = "Telescope",
   config = conf.telescope,
+  setup = conf.telescope_preload,
   requires = {
     {"nvim-lua/popup.nvim", opt = true},
     {"nvim-lua/plenary.nvim", opt = true},

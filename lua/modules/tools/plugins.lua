@@ -135,17 +135,17 @@ tools["prettier/vim-prettier"] = {
 --
 tools["brooth/far.vim"] = {cmd = {"Farr", "Farf"}, config = conf.far, opt = true} --brooth/far.vim
 -- tools["windwp/nvim-spectre"] = {opt = true, config=conf.spectre, keys = {'<Leader>S', '<Leader>s'},requires = {{'nvim-lua/plenary.nvim'} , {'nvim-lua/popup.nvim'}}}
-tools["vim-test/vim-test"] = {
-  cmd = {"TestNearest", "TestFile", "TestSuite", "Ultest", "UltestNearest", "UltestSummary", "UltestDebugNearest"},
-  setup = conf.vim_test,
-  opt = true
-}
+-- tools["vim-test/vim-test"] = {
+--   cmd = {"TestNearest", "TestFile", "TestSuite"}, --, "Ultest", "UltestNearest"
+--   setup = conf.vim_test,
+--   opt = true
+-- }
 
 tools["rcarriga/vim-ultest"] = {
   run = ":UpdateRemotePlugins",
-  -- requires = {"vim-test/vim-test"},
-  cmd = {"Ultest", "UltestNearest", "UltestSummary", "UltestDebugNearest"},
-  opt = true
-} --, requires = {"janko/vim-test"},
+  requires = {"vim-test/vim-test", setup = conf.vim_test, opt = true},
+  cmd = {"Ultest", "UltestNearest"},
+  opt = true,
+}
 
 return tools

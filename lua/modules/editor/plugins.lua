@@ -50,6 +50,16 @@ editor["rrethy/vim-hexokinase"] = {
   cmd = {"HexokinaseTurnOn", "HexokinaseToggle"}
 }
 
+editor['nacro90/numb.nvim'] = {
+  event = "CmdlineEnter",
+  config = function ()
+    require('numb').setup{
+       show_numbers = true, -- Enable 'number' for the window while peeking
+       show_cursorline = true -- Enable 'cursorline' for the window while peeking
+    }
+  end,
+}
+
 editor["matze/vim-move"] = {
   opt = true,
   event = "InsertEnter"
@@ -100,7 +110,6 @@ editor["mg979/vim-visual-multi"] = {
 -- EasyMotion in lua. -- maybe replace sneak
 editor["phaazon/hop.nvim"] = {
   as = "hop",
-  keys = {"$"},
   cmd = {"HopWord", "HopLine", "HopChar1", "HopChar2", "HopPattern"},
   config = function()
     -- you can configure Hop the way you like here; see :h hop-config
@@ -126,6 +135,11 @@ editor["bfredl/nvim-miniyank"] = {
     vim.api.nvim_command("map P <Plug>(miniyank-autoPut)")
   end
 }
+
+editor['dhruvasagar/vim-table-mode'] = {
+  cmd = {'TableModeToggle'}
+}
+
 
 -- fix terminal color
 editor["norcalli/nvim-terminal.lua"] = {

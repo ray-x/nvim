@@ -232,16 +232,16 @@ function config.aurora()
 end
 
 function config.material()
-  local opt = {"oceanic", "darker", "palenight", "deep ocean", "moonlight"}
-  local v = math.random(1, #opt)
-  vim.g.material_style = opt[v]
+  -- local opt = {"oceanic", "darker", "palenight", "deep ocean", "moonlight"}
+  -- local v = math.random(1, #opt)
+  -- vim.g.material_style = opt[v]
   vim.g.material_italic_comments = true
   vim.g.material_italic_keywords = false
   vim.g.material_italic_functions = true
   vim.g.material_italic_variables = false
   vim.g.material_contrast = true
   vim.g.material_borders = false
-  vim.g.material_disable_background = true
+  vim.g.material_disable_background = false
   -- config.default()
 end
 
@@ -357,7 +357,7 @@ vim.api.nvim_exec(
   set cursorcolumn
   augroup vimrc_todo
   au!
-  au Syntax * syn match MyTodo /\v<(FIXME|Fixme|NOTE|Note|TODO|ToDo|OPTIMIZE|XXX):/ containedin=.*Comment,vimCommentTitle
+  au Syntax *.go,*.c,*.rs,*.js,*.tsx,*.cpp,*.html syn match MyTodo /\v<(FIXME|Fixme|NOTE|Note|TODO|ToDo|OPTIMIZE|XXX):/ containedin=.*Comment,vimCommentTitle
   augroup END
   hi def link MyTodo Todo
 ]],
@@ -369,7 +369,8 @@ local themes = {
   "aurora",
   "tokyonight.nvim",
   "aurora",
-  "material.nvim",
+  "material_plus.nvim",
+  "material_plus.nvim",
   "aurora",
   "sonokai",
   "zephyr-nvim",

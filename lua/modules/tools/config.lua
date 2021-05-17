@@ -128,6 +128,9 @@ function config.clap()
   vim.g.clap_current_selection_sign = {text = "", texthl = "ClapCurrentSelectionSign", linehl = "ClapCurrentSelection"}
   vim.g.clap_always_open_preview = true
   vim.g.clap_preview_direction = "UD"
+  --if vim.g.colors_name == 'zephyr' then
+    vim.g.clap_theme = 'material_design_dark'
+  --end
   vim.api.nvim_command("autocmd FileType clap_input call compe#setup({ 'enabled': v:false }, 0)")
 end
 

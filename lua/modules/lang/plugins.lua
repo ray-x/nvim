@@ -56,6 +56,15 @@ lang["/Users/ray.xu/github/navigator.lua"] = {
   config = conf.navigator,
   opt = true
 }
+
+
+-- lang["gcmt/wildfire.vim"] = {
+--   setup = function()
+--     vim.cmd([[nmap <leader>s <Plug>(wildfire-quick-select)]])
+--   end,
+--   fn = {'<Plug>(wildfire-fuel)', '<Plug>(wildfire-water)', '<Plug>(wildfire-quick-select)'}
+-- }
+
 -- lang['ray-x/navigator.lua'] = {
 --   requires = {'ray-x/guihua.lua', run = 'cd lua/fzy && make'},
 --   setup = conf.navigator
@@ -116,15 +125,15 @@ lang["windwp/nvim-ts-autotag"] = {
   end
 }
 
-lang["p00f/nvim-ts-rainbow"] = {
-  opt = true,
-  -- after = "nvim-treesitter",
-  -- Highlight also non-parentheses delimiters, boolean or table: lang -> boolean
-  config = function()
-    require "nvim-treesitter.configs".setup {rainbow = {enable = true, extended_mode = true}}
-  end,
-  opt = true
-}
+-- lang["p00f/nvim-ts-rainbow"] = {
+--   opt = true,
+--   -- after = "nvim-treesitter",
+--   -- Highlight also non-parentheses delimiters, boolean or table: lang -> boolean
+--   config = function()
+--     require "nvim-treesitter.configs".setup {rainbow = {enable = true, extended_mode = true}}
+--   end,
+--   opt = true
+-- }
 lang["mhartington/formatter.nvim"] = {
   opt = true,
   event = {"BufWriteCmd", "FileWriteCmd"},

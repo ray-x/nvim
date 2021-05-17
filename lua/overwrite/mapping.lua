@@ -99,8 +99,8 @@ local keys = {
   ["n|<F13>"] = map_cr("NvimTreeToggle"),
   ["n|hw"] = map_cr("HopWord"),
   ["n|hl"] = map_cr("HopLine"),
-  ["n|h1"] = map_cr("HopChar1"),
-  ["n|h2"] = map_cr("HopChar2"),
+  ["n|<Space><F3>"] = map_cr("HopChar1"),
+  ["n|<Space>"] = map_cr("HopChar2"),
   ["n|<Leader>F"] = map_cr("HopPattern")
 
   -- ["n|;"] = map_cmd("<Plug>Sneak_;"):with_silent()

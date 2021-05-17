@@ -31,7 +31,7 @@ function autocmd.load_autocmds()
       {"BufWritePost", "plugins.lua", "PackerCompile"},
       {"UIEnter", "*", ":silent! :lua require('modules.lang.treesitter')"},
       {"BufWritePre", "*.js,*.rs,*.lua", ":FormatWrite"},
-      {"BufWritePre", "*.go", ":silent! :lua require('go.format').gofmt()"}
+      -- {"BufWritePre", "*.go", ":silent! :lua require('go.format').gofmt()"}
       -- {"InsertEnter", "*", ":silent! :lua require('modules.editor.config').pears_setup()"}
     }
   }

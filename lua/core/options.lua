@@ -52,7 +52,7 @@ local function load_options()
     incsearch      = true;
     wrapscan       = true;
     complete       = ".,w,b,k";
-    inccommand     = "nosplit";
+    inccommand     = "nosplit";  --split
     grepformat     = "%f:%l:%c:%m";
     grepprg        = 'rg --hidden --vimgrep --smart-case --';
     breakat        = [[\ \	;:,!?]];

@@ -179,7 +179,6 @@ local treesitter_ref = function()
       }
     }
   }
-  print("loading ts txt obj")
 end
 -- treesitter()
 return {treesitter = treesitter, treesitter_ref = treesitter_ref}

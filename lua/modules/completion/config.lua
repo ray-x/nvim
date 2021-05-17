@@ -29,7 +29,7 @@ function config.nvim_compe()
     autocomplete = true,
     debug = true,
     min_length = 1,
-    preselect = "enable",
+    preselect = "always",
     throttle_time = 80,
     source_timeout = 200,
     incomplete_delay = 400,
@@ -127,13 +127,23 @@ function config.vim_vsnip()
   vim.g.vsnip_snippet_dir = os.getenv("HOME") .. "/.config/nvim/snippets"
 end
 
-function config.telescope()
+function config.telescope_preload()
   if not packer_plugins["plenary.nvim"].loaded then
-    require "packer".loader("plenary.nvim popup.nvim telescope-fzy-native.nvim")
+    require "packer".loader("plenary.nvim")
   -- vim.cmd [[packadd plenary.nvim]]
   -- vim.cmd [[packadd popup.nvim]]
   -- vim.cmd [[packadd telescope-fzy-native.nvim]]
   end
+  if not packer_plugins["popup.nvim"].loaded then
+    require "packer".loader("popup.nvim ")
+  end 
+  if not packer_plugins["telescope-fzy-native.nvim"].loaded then
+    require "packer".loader("telescope-fzy-native.nvim")
+  end
+end
+
+function config.telescope()
+
   require("telescope").setup {
     defaults = {
       prompt_prefix = "🍔 ",

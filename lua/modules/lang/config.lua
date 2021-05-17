@@ -144,8 +144,9 @@ function config.formatter()
           -- luafmt
           function()
             return {
-              exe = "luafmt",
-              args = {"--indent-count", 2, "--stdin"},
+              exe = "lua-format",
+              args = {"--indent-width", 2, "--tab-width", 2, "--no-use-tab", "--column-limit", 120, "--column-table-limit", 100},
+              -- lua-fmt args = {"--indent-count", 2, "--stdin"},
               stdin = true
             }
           end

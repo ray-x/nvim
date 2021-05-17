@@ -64,7 +64,8 @@ ui["folke/tokyonight.nvim"] = {
     vim.cmd [[colorscheme tokyonight]]
   end
 }
-ui["shaunsingh/moonlight.nvim"] = {opt = true, config = conf.moonlight}
+
+
 ui["bluz71/vim-nightfly-guicolors"] = {
   opt = true,
   setup = conf.nightfly,
@@ -83,7 +84,7 @@ ui["sainnhe/sonokai"] = {
 }
 
 ui["glepnir/zephyr-nvim"] = {opt = true, config = conf.zephyr}
-ui["~/github/material.nvim"] = {
+ui["~/github/material_plus.nvim"] = {
   opt = true, 
   setup = conf.material,
   config = function()
