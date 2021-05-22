@@ -73,6 +73,19 @@ ui["bluz71/vim-nightfly-guicolors"] = {
     vim.cmd([[colorscheme nightfly]])
   end
 }
+
+ui['bluz71/vim-moonfly-colors'] = {
+  opt = true,
+  setup = function() 
+    vim.g.moonflyCursorColor = 1
+    vim.g.moonflyUnderlineMatchParen = 1
+    vim.g.moonflyTransparent = 1
+    vim.g.moonflyNormalFloat = 1
+  end,
+  config = function()
+    vim.cmd([[colorscheme nightfly]])
+  end
+}
 ui["ChristianChiarulli/nvcode-color-schemes.vim"] = {opt = true, config = conf.nvcode}
 
 ui["sainnhe/sonokai"] = {
@@ -82,6 +95,10 @@ ui["sainnhe/sonokai"] = {
     vim.cmd([[colorscheme sonokai]])
   end
 }
+
+
+ui["rafamadriz/neon"] = {opt = true,  config = neon}
+
 
 ui["glepnir/zephyr-nvim"] = {opt = true, config = conf.zephyr}
 ui["~/github/material_plus.nvim"] = {

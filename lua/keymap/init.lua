@@ -12,7 +12,6 @@ local plug_map = {
     -- person keymap
     ["n|mf"]             = map_cr("<cmd>lua require('internal.fsevent').file_event()<CR>"):with_silent():with_nowait():with_noremap();
     -- Lsp mapp work when insertenter and lsp start
-    ["n|gb"]             = map_cr("BufferLinePick"):with_noremap():with_silent(),
     ["n|<leader>li"]     = map_cr("LspInfo"):with_noremap():with_silent():with_nowait(),
     ["n|<leader>ll"]     = map_cr("LspLog"):with_noremap():with_silent():with_nowait(),
     ["n|<leader>lr"]     = map_cr("LspRestart"):with_noremap():with_silent():with_nowait(),
@@ -78,6 +77,7 @@ local plug_map = {
     ["n|sa"]             = map_cmd("<Plug>(operator-surround-append)"):with_silent(),
     ["n|sd"]             = map_cmd("<Plug>(operator-surround-delete)"):with_silent(),
     ["n|sr"]             = map_cmd("<Plug>(operator-surround-replace)"):with_silent(),
+
     -- Plugin hrsh7th/vim-eft
     -- ["n|;"]              = map_cmd("v:lua.enhance_ft_move(';')"):with_expr(),
     -- ["x|;"]              = map_cmd("v:lua.enhance_ft_move(';')"):with_expr(),

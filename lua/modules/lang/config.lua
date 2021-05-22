@@ -59,7 +59,18 @@ function config.sqls()
 end
 
 function config.navigator()
-  require "navigator".setup()
+  -- print("navigator setup")
+  require "navigator".setup({
+  lsp = {
+    format_on_save = true, -- set to false to disasble lsp code format on save (if you are using prettier/efm/formater etc)
+    gopls = {
+      settings = {
+        gopls = {gofumpt = false} -- disable gofumpt etc,
+      }
+      -- set to {} to disable the lspclient for all filetype
+    }
+  }
+  })
 end
 
 function config.playground()
@@ -145,8 +156,7 @@ function config.formatter()
           function()
             return {
               exe = "lua-format",
-              args = {"--indent-width", 2, "--tab-width", 2, "--no-use-tab", "--column-limit", 120, "--column-table-limit", 100},
-              -- lua-fmt args = {"--indent-count", 2, "--stdin"},
+              args = {"--indent-width 2", "--tab-width 2", "--no-use-tab", "--column-limit", 110, "--column-table-limit", 100, "--no-keep-simple-function-one-line", "--no-chop-down-table", "--chop-down-kv-table", "--no-keep-simple-control-block-one-line", "--no-keep-simple-function-one-line", "--no-break-after-functioncall-lp"},
               stdin = true
             }
           end

@@ -274,6 +274,16 @@ function config.nvcode()
   vim.cmd(v)
   -- body
 end
+
+function config.neon()
+  local opt = {"default", "dark"}
+  vim.g.neon_style = opt[math.random(1, #opt)]
+  vim.g.neon_italic_keyword = true
+  vim.g.neon_italic_function = true
+  vim.g.neon_italic_boolean = true
+  vim.cmd[[colorscheme neon]]
+end
+
 function config.zephyr()
   require("zephyr")
 end
@@ -370,13 +380,15 @@ local themes = {
   "tokyonight.nvim",
   "aurora",
   "material_plus.nvim",
-  "material_plus.nvim",
   "aurora",
   "sonokai",
   "zephyr-nvim",
   "aurora",
+  "material_plus.nvim",
   "nvcode-color-schemes.vim",
-  "vim-nightfly-guicolors"
+  "vim-nightfly-guicolors",
+  "vim-moonfly-colors",
+  "neon",
 } --"material.nvim",
 local v = math.random(1, #themes)
 local loading_theme = themes[v]

@@ -19,11 +19,7 @@ tools["editorconfig/editorconfig-vim"] = {
 --   opt = true
 -- }
 
-tools["liuchengxu/vista.vim"] = {
-  cmd = "Vista",
-  setup = conf.vim_vista,
-  opt = true
-}
+tools["liuchengxu/vista.vim"] = {cmd = "Vista", setup = conf.vim_vista, opt = true}
 
 tools["kamykn/spelunker.vim"] = {opt = true, setup = conf.spelunker}
 tools["rhysd/vim-grammarous"] = {
@@ -58,9 +54,7 @@ tools["voldikss/vim-floaterm"] = {
 --
 tools["liuchengxu/vim-clap"] = {
   cmd = {"Clap"},
-  run = function()
-    vim.fn["clap#installer#download_binary"]()
-  end,
+  run = function() vim.fn["clap#installer#download_binary"]() end,
   setup = conf.clap,
   config = conf.clap_after
 }
@@ -74,10 +68,7 @@ tools["rhysd/git-messenger.vim"] = {
   opt = true
 }
 
-tools["sindrets/diffview.nvim"] = {
-  cmd = "DiffviewOpen",
-  config = conf.diffview
-}
+tools["sindrets/diffview.nvim"] = {cmd = "DiffviewOpen", config = conf.diffview}
 
 tools["lewis6991/gitsigns.nvim"] = {
   config = conf.gitsigns,
@@ -86,13 +77,22 @@ tools["lewis6991/gitsigns.nvim"] = {
 }
 
 tools["f-person/git-blame.nvim"] = {
-  setup = function()
-    vim.g.gitblame_enabled = 0
-  end,
+  setup = function() vim.g.gitblame_enabled = 0 end,
   opt = true,
   cmd = "GitBlameToggle"
 }
-tools["tpope/vim-fugitive"] = {cmd = {"Gvsplit", "Git", "Gedit", "Gstatus", "Gdiffsplit", "Gvdiffsplit"}, opt = true}
+
+-- early stage...
+-- tools['tanvirtin/vgit.nvim'] = {
+--   setup = function() vim.o.updatetime = 1000 end,
+--   opt = true,
+--   config = conf.vigit,
+--   cmd = "VGit"
+-- }
+tools["tpope/vim-fugitive"] = {
+  cmd = {"Gvsplit", "Git", "Gedit", "Gstatus", "Gdiffsplit", "Gvdiffsplit"},
+  opt = true
+}
 
 -- tools["tpope/vim-obsession"] ={} -- for prosession
 tools["dhruvasagar/vim-prosession"] = {
@@ -132,8 +132,14 @@ tools["prettier/vim-prettier"] = {
   opt = true
 }
 
+tools['kevinhwang91/nvim-bqf'] = {
+  opt = true,
+  event = "CmdlineEnter",
+  config = conf.bqf
+}
+
 --
-tools["brooth/far.vim"] = {cmd = {"Farr", "Farf"}, config = conf.far, opt = true} --brooth/far.vim
+tools["brooth/far.vim"] = {cmd = {"Farr", "Farf"}, config = conf.far, opt = true} -- brooth/far.vim
 -- tools["windwp/nvim-spectre"] = {opt = true, config=conf.spectre, keys = {'<Leader>S', '<Leader>s'},requires = {{'nvim-lua/plenary.nvim'} , {'nvim-lua/popup.nvim'}}}
 -- tools["vim-test/vim-test"] = {
 --   cmd = {"TestNearest", "TestFile", "TestSuite"}, --, "Ultest", "UltestNearest"
@@ -145,7 +151,7 @@ tools["rcarriga/vim-ultest"] = {
   run = ":UpdateRemotePlugins",
   requires = {"vim-test/vim-test", setup = conf.vim_test, opt = true},
   cmd = {"Ultest", "UltestNearest"},
-  opt = true,
+  opt = true
 }
 
 return tools

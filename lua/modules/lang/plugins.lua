@@ -2,20 +2,18 @@ local lang = {}
 local conf = require("modules.lang.config")
 
 lang["nvim-treesitter/nvim-treesitter"] = {
-  --event = "LoadLazyPlugin",
+  -- event = "LoadLazyPlugin",
   opt = true
 }
 
-lang["nvim-treesitter/nvim-treesitter-textobjects"] = {
-  after = "nvim-treesitter",
-  config = conf.nvim_treesitter,
-  opt = true
-}
-lang["nvim-treesitter/nvim-treesitter-refactor"] = {
-  -- after = "nvim-treesitter-textobjects", -- manual loading
-  config = conf.nvim_treesitter_ref, -- let the last loaded config treesitter
-  opt = true
-}
+lang["nvim-treesitter/nvim-treesitter-textobjects"] =
+    {after = "nvim-treesitter", config = conf.nvim_treesitter, opt = true}
+lang["nvim-treesitter/nvim-treesitter-refactor"] =
+    {
+      -- after = "nvim-treesitter-textobjects", -- manual loading
+      config = conf.nvim_treesitter_ref, -- let the last loaded config treesitter
+      opt = true
+    }
 
 lang["w0rp/ale"] = {
   -- event = "BufEnter", --BufWritePre
@@ -26,15 +24,9 @@ lang["w0rp/ale"] = {
   opt = true
 }
 
-lang["shmup/vim-sql-syntax"] = {
-  ft = {"sql", "pgsql"}
-}
+lang["shmup/vim-sql-syntax"] = {ft = {"sql", "pgsql"}}
 
-lang["nanotee/sqls.nvim"] = {
-  ft = {"sql", "pgsql"},
-  setup = conf.sqls,
-  opt = true
-}
+lang["nanotee/sqls.nvim"] = {ft = {"sql", "pgsql"}, setup = conf.sqls, opt = true}
 
 -- lang["fatih/vim-go"] = {
 --     -- ft = 'go',
@@ -45,18 +37,13 @@ lang["nanotee/sqls.nvim"] = {
 --     opt = true
 -- }
 
-lang["/Users/ray.xu/github/go.nvim"] = {
-  ft = "go",
-  opt = false,
-  config = conf.go
-}
+lang["/Users/ray.xu/github/go.nvim"] = {ft = "go", opt = false, config = conf.go}
 
 lang["/Users/ray.xu/github/navigator.lua"] = {
   requires = {"/Users/ray.xu/github/guihua.lua"},
   config = conf.navigator,
   opt = true
 }
-
 
 -- lang["gcmt/wildfire.vim"] = {
 --   setup = function()
@@ -70,27 +57,24 @@ lang["/Users/ray.xu/github/navigator.lua"] = {
 --   setup = conf.navigator
 -- }
 
--- lang["nvim-treesitter/playground"] = {
---     after = "nvim-treesitter",
---     opt = true;
---     cmd = "TSPlaygroundToggle",
---     config = conf.playground
--- }
-
-lang["bfredl/nvim-luadev"] = {
-  opt = true,
-  cmd = "Luadev",
-  setup = conf.luadev
+lang["nvim-treesitter/playground"] = {
+    after = "nvim-treesitter",
+    opt = true;
+    cmd = "TSPlaygroundToggle",
+    config = conf.playground
 }
-lang["mfussenegger/nvim-dap"] = {
-  config = conf.dap,
+
+lang["bfredl/nvim-luadev"] = {opt = true, cmd = "Luadev", setup = conf.luadev}
+lang["mfussenegger/nvim-dap"] = {config = conf.dap, cmd = "Luadev", opt = true}
+
+lang["rcarriga/nvim-dap-ui"] = {
+  -- requires = {"mfussenegger/nvim-dap"},
+  config = conf.dapui,
   cmd = "Luadev",
   opt = true
 }
-lang["jbyuki/one-small-step-for-vimkind"] = {
-  opt = true,
-  ft = {"lua"}
-}
+
+lang["jbyuki/one-small-step-for-vimkind"] = {opt = true, ft = {"lua"}}
 
 lang["nvim-telescope/telescope-dap.nvim"] = {
   config = conf.dap,
@@ -112,7 +96,7 @@ lang["michaelb/sniprun"] = {
   --   inline_messages = 1             --" inline_message (0/1) is a one-line way to display messages
   --                                   --" to workaround sniprun not being able to display anything
   -- })
-  --end
+  -- end
 }
 -- JqxList and JqxQuery json browsering
 lang["gennaro-tedesco/nvim-jqx"] = {opt = true, cmd = {"JqxList", "JqxQuery"}}
@@ -120,9 +104,7 @@ lang["gennaro-tedesco/nvim-jqx"] = {opt = true, cmd = {"JqxList", "JqxQuery"}}
 lang["windwp/nvim-ts-autotag"] = {
   opt = true,
   -- after = "nvim-treesitter",
-  config = function()
-    require "nvim-treesitter.configs".setup {autotag = {enable = true}}
-  end
+  config = function() require"nvim-treesitter.configs".setup {autotag = {enable = true}} end
 }
 
 -- lang["p00f/nvim-ts-rainbow"] = {

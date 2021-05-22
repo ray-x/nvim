@@ -1,6 +1,12 @@
+
+
 function lazyload()
   print("I am lazy")
-  vim.cmd([[syntax manual]])
+  local disable_ft = {"NvimTree", "guihua", "clap_input", "clap_spinner", "TelescopePrompt", "csv", "txt", "defx"}
+  local syn_on = not vim.tbl_contains(disable_ft, vim.bo.filetype)
+  if syn_on then
+    vim.cmd([[syntax manual]])
+  end
   local loader = require "packer".loader
   local fname = vim.fn.expand("%:p:f")
   local fsize = vim.fn.getfsize(fname)
@@ -21,20 +27,21 @@ function lazyload()
   plugins = "plenary.nvim gitsigns.nvim indent-blankline.nvim nvim-lspconfig guihua.lua navigator.lua" --nvim-lspconfig navigator.lua   guihua.lua navigator.lua 
   vim.g.vimsyn_embed = 'lPr'
   loader(plugins)
+
   require("vscripts.cursorhold")
   require("vscripts.tools")
   local bytes = vim.fn.wordcount()['bytes']
-  print(bytes)
+  -- print(bytes)
   if load_ts_plugins then
     plugins = "nvim-treesitter-refactor"  --  nvim-ts-rainbow nvim-ts-autotag
     loader(plugins)
     -- enable syntax if is small  
-    if bytes < 500 * 1024 then
+    if bytes < 512 * 1024 and syn_on then
       vim.cmd([[setlocal syntax=on]])
     end
     return -- do not enable syntax
   end
-  if bytes < 1024 * 1024 then
+  if bytes < 1024 * 1024 and syn_on then
     vim.cmd([[setlocal syntax=on]])
   end
 end

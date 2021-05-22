@@ -28,8 +28,8 @@ local function load_dbs()
 end
 
 function config.diffview()
-  local cb = require "diffview.config".diffview_callback
-  require "diffview".setup {
+  local cb = require"diffview.config".diffview_callback
+  require"diffview".setup {
     diff_binaries = false, -- Show diffs for binaries
     file_panel = {
       width = 35,
@@ -63,7 +63,7 @@ end
 
 function config.vim_dadbod_ui()
   if packer_plugins["vim-dadbod"] and not packer_plugins["vim-dadbod"].loaded then
-    require "packer".loader("vim-dadbod")
+    require"packer".loader("vim-dadbod")
   end
   vim.g.db_ui_show_help = 0
   vim.g.db_ui_win_position = "left"
@@ -122,22 +122,24 @@ end
 function config.clap()
   vim.g.clap_preview_size = 10
   vim.g.airline_powerline_fonts = 1
-  vim.g.clap_layout = {relative = "editor", width = "83%", row = "20%", col = "10%"} --height = "40%", row = "17%",
+  vim.g.clap_layout = {relative = "editor", width = "83%", row = "20%", col = "10%"} -- height = "40%", row = "17%",
   vim.g.clap_popup_border = "rounded"
   vim.g.clap_selected_sign = {text = "", texthl = "ClapSelectedSign", linehl = "ClapSelected"}
-  vim.g.clap_current_selection_sign = {text = "", texthl = "ClapCurrentSelectionSign", linehl = "ClapCurrentSelection"}
+  vim.g.clap_current_selection_sign = {
+    text = "",
+    texthl = "ClapCurrentSelectionSign",
+    linehl = "ClapCurrentSelection"
+  }
   vim.g.clap_always_open_preview = true
   vim.g.clap_preview_direction = "UD"
-  --if vim.g.colors_name == 'zephyr' then
-    vim.g.clap_theme = 'material_design_dark'
-  --end
+  -- if vim.g.colors_name == 'zephyr' then
+  vim.g.clap_theme = 'material_design_dark'
+  -- end
   vim.api.nvim_command("autocmd FileType clap_input call compe#setup({ 'enabled': v:false }, 0)")
 end
 
 function config.clap_after()
-  if not packer_plugins["nvim-compe"].loaded then
-    require "packer".loader("nvim-compe")
-  end
+  if not packer_plugins["nvim-compe"].loaded then require"packer".loader("nvim-compe") end
 end
 
 function config.gitsigns()
@@ -168,13 +170,166 @@ function config.gitsigns()
       ["o ih"] = ':<C-U>lua require"gitsigns".text_object()<CR>',
       ["x ih"] = ':<C-U>lua require"gitsigns".text_object()<CR>'
     },
-    watch_index = {
-      interval = 1000
-    },
+    watch_index = {interval = 1000},
     sign_priority = 6,
     status_formatter = nil, -- Use default
     debug_mode = true
   }
+end
+
+local function round(x) return x >= 0 and math.floor(x + 0.5) or math.ceil(x - 0.5) end
+
+function config.bqf( )
+  require('bqf').setup({
+    auto_enable = true,
+    preview = {
+        win_height = 12,
+        win_vheight = 12,
+        delay_syntax = 80,
+        border_chars = {'┃', '┃', '━', '━', '┏', '┓', '┗', '┛', '█'}
+    },
+    func_map = {
+        vsplit = '',
+        ptogglemode = 'z,',
+        stoggleup = ''
+    },
+    filter = {
+        fzf = {
+            action_for = {['ctrl-s'] = 'split'},
+            extra_opts = {'--bind', 'ctrl-o:toggle-all', '--prompt', '> '}
+        }
+    }
+  })
+end
+
+function config.vgit()
+  require('vgit').setup({
+    hunks_enabled = true,
+    blames_enabled = true,
+    blame = {
+      hl_group = 'VGitBlame',
+      format = function(blame, git_config)
+        local config_author = git_config['ray.xu']
+        local author = blame.author
+        if config_author == author then author = 'ray.xu' end
+        local time = os.difftime(os.time(), blame.author_time) / (24 * 60 * 60)
+        local time_format = string.format('%s days ago', round(time))
+        local time_divisions = {{24, 'hours'}, {60, 'minutes'}, {60, 'seconds'}}
+        local division_counter = 1
+
+        while time < 1 and division_counter ~= #time_divisions do
+          local division = time_divisions[division_counter]
+          time = time * division[1]
+          time_format = string.format('%s %s ago', round(time), division[2])
+          division_counter = division_counter + 1
+        end
+
+        local commit_message = blame.commit_message
+
+        if not blame.committed then
+          author = 'ray.xu'
+          commit_message = 'Uncommitted changes'
+          local info = string.format('%s • %s', author, commit_message)
+          return string.format(' %s', info)
+        end
+
+        local max_commit_message_length = 255
+
+        if #commit_message > max_commit_message_length then
+          commit_message = commit_message:sub(1, max_commit_message_length) .. '...'
+        end
+
+        local info = string.format('%s, %s • %s', author, time_format, commit_message)
+        return string.format(' %s', info)
+      end
+    },
+    diff = {
+      window = {
+        hl_group = 'VGitDiffWindow',
+        border = {
+          {'╭', 'VGitDiffBorder'}, {'─', 'VGitDiffBorder'}, {'╮', 'VGitDiffBorder'},
+          {'│', 'VGitDiffBorder'}, {'╯', 'VGitDiffBorder'}, {'─', 'VGitDiffBorder'},
+          {'╰', 'VGitDiffBorder'}, {'│', 'VGitDiffBorder'}
+        }
+      },
+      types = {
+        add = {
+          name = 'VGitDiffAddSign',
+          sign_hl_group = 'VGitDiffAddSign',
+          text_hl_group = 'VGitDiffAddText',
+          text = '+'
+        },
+        remove = {
+          name = 'VGitDiffRemoveSign',
+          sign_hl_group = 'VGitDiffRemoveSign',
+          text_hl_group = 'VGitDiffRemoveText',
+          text = '-'
+        }
+      }
+    },
+    hunk = {
+      types = {
+        add = {
+          name = 'VGitHunkAddSign',
+          sign_hl_group = 'VGitHunkAddSign',
+          text_hl_group = 'VGitHunkAddText',
+          text = '+'
+        },
+        remove = {
+          name = 'VGitHunkRemoveSign',
+          sign_hl_group = 'VGitHunkRemoveSign',
+          text_hl_group = 'VGitHunkRemoveText',
+          text = '-'
+        }
+      },
+      window = {
+        hl_group = 'VGitHunkWindow',
+        border = {
+          {'', 'VGitHunkBorder'}, {'─', 'VGitHunkBorder'}, {'', 'VGitHunkBorder'},
+          {'', 'VGitHunkBorder'}, {'', 'VGitHunkBorder'}, {'─', 'VGitHunkBorder'},
+          {'', 'VGitHunkBorder'}, {'', 'VGitHunkBorder'}
+        }
+      }
+    },
+    hunk_sign = {
+      priority = 10,
+      types = {
+        add = {name = 'VGitSignAdd', hl_group = 'VGitSignAdd', text = '│'},
+        remove = {name = 'VGitSignRemove', hl_group = 'VGitSignRemove', text = '│'},
+        change = {name = 'VGitSignChange', hl_group = 'VGitSignChange', text = '│'}
+      }
+    }
+  })
+end
+
+function config.dapui()
+  require("dapui").setup({
+    icons = {expanded = "⯆", collapsed = "⯈", circular = "↺"},
+    mappings = {
+      -- Use a table to apply multiple mappings
+      expand = {"<CR>", "<2-LeftMouse>"},
+      open = "o",
+      remove = "d",
+      edit = "e"
+    },
+    sidebar = {
+      elements = {
+        -- You can change the order of elements in the sidebar
+        "scopes", "stacks", "watches"
+      },
+      width = 40,
+      position = "left" -- Can be "left" or "right"
+    },
+    tray = {
+      elements = {"repl"},
+      height = 10,
+      position = "bottom" -- Can be "bottom" or "top"
+    },
+    floating = {
+      max_height = nil, -- These can be integers or a float between 0 and 1.
+      max_width = nil -- Floats will be treated as percentage of your screen.
+    }
+  })
 end
 
 function config.markdown()
@@ -190,11 +345,7 @@ function config.markdown()
   vim.g.vim_markdown_edit_url_in = "vsplit"
   vim.g.vim_markdown_strikethrough = 1
   vim.g.vim_markdown_fenced_languages = {
-    "c++=javascript",
-    "js=javascript",
-    "json=javascript",
-    "jsx=javascript",
-    "tsx=javascript"
+    "c++=javascript", "js=javascript", "json=javascript", "jsx=javascript", "tsx=javascript"
   }
 end
 
@@ -214,11 +365,12 @@ function config.floaterm()
   vim.cmd("command! Ranger FloatermNew --height=0.96 --width=0.96 ranger")
 
   vim.g.floaterm_gitcommit = "split"
-  vim.g.floaterm_keymap_new = "<F19>" --S-f7
+  vim.g.floaterm_keymap_new = "<F19>" -- S-f7
   vim.g.floaterm_keymap_prev = "<F20>"
   vim.g.floaterm_keymap_next = "<F21>"
   vim.g.floaterm_keymap_toggle = "<F24>"
-  vim.cmd([[ command! FR let old = expand("<cword>") | let rep = input("Replace " . old . " with: ", old) | execute ":FloatermNew --height=0.95 --width=0.95  git ls-files  | sad " . old . " " . rep ]])
+  vim.cmd(
+      [[ command! FR let old = expand("<cword>") | let rep = input("Replace " . old . " with: ", old) | execute ":FloatermNew --height=0.95 --width=0.95  git ls-files  | sad " . old . " " . rep ]])
 
 end
 
@@ -230,13 +382,14 @@ function config.spelunker()
   vim.g.spelunker_disable_account_name_checking = 1
   vim.g.spelunker_disable_email_checking = 1
   vim.cmd("highlight SpelunkerSpellBad cterm=underline ctermfg=247 gui=underline guifg=#53206e")
-  vim.cmd("highlight SpelunkerComplexOrCompoundWord cterm=underline ctermfg=NONE gui=underline guifg=NONE")
+  vim.cmd(
+      "highlight SpelunkerComplexOrCompoundWord cterm=underline ctermfg=NONE gui=underline guifg=NONE")
 end
 
 function config.spellcheck()
   if not packer_plugins["kamykn/spelunker.vim"] or not packer_plugins["kamykn/spelunker.vim"].loaded then
     config.spelunker()
-    require "packer".loader("spelunker.vim")
+    require"packer".loader("spelunker.vim")
   end
   vim.fn["spelunker#check"]()
 end
@@ -248,23 +401,18 @@ function config.prettier()
   vim.g["prettier#exec_cmd_async"] = 1
   vim.g["prettier#quickfix_enabled"] = 0
   vim.api.nvim_command(
-    "autocmd InsertLeave,BufWritePost *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync"
-  )
+      "autocmd InsertLeave,BufWritePost *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync")
 end
 
 function config.grammcheck()
   -- body
   if not packer_plugins["rhysd/vim-grammarous"] or not packer_plugins["rhysd/vim-grammarous"].loaded then
-    require "packer".loader("vim-grammarous")
+    require"packer".loader("vim-grammarous")
   end
   vim.cmd [[GrammarousCheck]]
 end
 function config.vim_test()
-  vim.g["test#strategy"] = {
-    nearest = "neovim",
-    file = "neovim",
-    suite = "neovim"
-  }
+  vim.g["test#strategy"] = {nearest = "neovim", file = "neovim", suite = "neovim"}
   vim.g["test#neovim#term_position"] = "vert botright 60"
   vim.g["test#go#runner"] = "ginkgo"
   -- nmap <silent> t<C-n> :TestNearest<CR>
@@ -278,13 +426,11 @@ function config.mkdp()
   -- print("mkdp")
   vim.g.mkdp_command_for_global = 1
   vim.cmd(
-    [[let g:mkdp_preview_options = { 'mkit': {}, 'katex': {}, 'uml': {}, 'maid': {}, 'disable_sync_scroll': 0, 'sync_scroll_type': 'middle', 'hide_yaml_meta': 1, 'sequence_diagrams': {}, 'flowchart_diagrams': {}, 'content_editable': v:true, 'disable_filename': 0 }]]
-  )
+      [[let g:mkdp_preview_options = { 'mkit': {}, 'katex': {}, 'uml': {}, 'maid': {}, 'disable_sync_scroll': 0, 'sync_scroll_type': 'middle', 'hide_yaml_meta': 1, 'sequence_diagrams': {}, 'flowchart_diagrams': {}, 'content_editable': v:true, 'disable_filename': 0 }]])
 end
 
 vim.cmd(
-  [["autocmd TextChanged,InsertLeave *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync"]]
-)
+    [["autocmd TextChanged,InsertLeave *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync"]])
 
 vim.cmd("command! Gram lua require'modules.tools.config'.grammcheck()")
 vim.cmd("command! Spell lua require'modules.tools.config'.spellcheck()")
