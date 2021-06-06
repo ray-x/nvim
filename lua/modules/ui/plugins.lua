@@ -19,6 +19,8 @@ ui["glepnir/galaxyline.nvim"] = {
   opt = true
 }
 
+ui["lambdalisue/glyph-palette.vim"] = {}
+
 ui["Akin909/nvim-bufferline.lua"] = {
   config = conf.nvim_bufferline,
   event = "UIEnter",
@@ -61,7 +63,11 @@ ui["folke/tokyonight.nvim"] = {
   opt = true,
   setup = conf.tokyonight,
   config = function()
+    
+    -- vim.cmd [[hi CursorLine guibg=#353644]]
+
     vim.cmd [[colorscheme tokyonight]]
+    vim.cmd [[hi TSCurrentScope guibg=#282338]]
   end
 }
 
@@ -83,18 +89,26 @@ ui['bluz71/vim-moonfly-colors'] = {
     vim.g.moonflyNormalFloat = 1
   end,
   config = function()
-    vim.cmd([[colorscheme nightfly]])
+    vim.cmd([[colorscheme moonfly]])
   end
 }
 ui["ChristianChiarulli/nvcode-color-schemes.vim"] = {opt = true, config = conf.nvcode}
 
-ui["sainnhe/sonokai"] = {
+ui["morhetz/gruvbox"] = {
   opt = true,
-  setup = conf.sonokai,
+  -- setup = conf.gruvbox,
   config = function()
-    vim.cmd([[colorscheme sonokai]])
+    vim.cmd([[colorscheme gruvbox]])
   end
 }
+
+-- ui['dracula/vim'] = {
+--   opt = true,
+--   config = function()
+--     vim.cmd([[colorscheme darcula]])
+--   end
+-- }
+
 
 
 ui["rafamadriz/neon"] = {opt = true,  config = neon}

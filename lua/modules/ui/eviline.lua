@@ -1,7 +1,7 @@
 local gl = require("galaxyline")
 local gls = gl.section
-gl.short_line_list = {"NVIMTREE", "vista", "dbui", "packer"}
-
+gl.short_line_list = {"NimTree", "vista", "dbui", "packer", "vista_kind", "floatterm", "defx", "clap_input"}
+local lsp_client_names={}
 local colors = {
   bg = "#202328",
   fg = "#bbc2cf",
@@ -15,6 +15,7 @@ local colors = {
   blue = "#51afef",
   red = "#ec5f67"
 }
+colors.bg = vim.fn.synIDattr(vim.fn.synIDtrans(vim.fn.hlID("StatusLine")), "bg#")
 
 local split = function(str, pat)
   local t = {} -- NOTE: use {n = 0} in Lua-5.0
@@ -114,7 +115,7 @@ local current_function = function()
   if string.len(ts) < 3 then
     return " "
   end
-  return string.sub(" " .. ts, 1, winwidth() / 2)
+  return string.sub(" " .. ts, 1, winwidth() / 3)
 end
 
 local current_function_buf = function(_, buffer)
@@ -143,12 +144,10 @@ end
 
 local should_show = function()
   -- body
-  local exclude = Set {"LuaTree", "vista", "vista_kind", "floatterm", "defx"}
   local ft = vim.api.nvim_buf_get_option(0, "filetype")
-  if exclude[ft] or winwidth() < 80 then
+  if vim.tbl_contains(gl.short_line_list, ft) or winwidth() < 80 then
     return false
   end
-
   return true
 end
 
@@ -256,8 +255,9 @@ gls.left[2] = {
       end
       return " "
     end,
-    highlight = {colors.red, colors.bg, "bold"}
-  }
+    highlight = {colors.red, colors.bg, "bold"},
+    condition = should_show,
+  },
 }
 
 gls.left[3] = {
@@ -274,7 +274,7 @@ gls.left[4] = {
       return TrimmedDirectory(vim.api.nvim_call_function("getcwd", {}) .. "/" .. vim.fn.expand("%p"))
     end,
     --provider = function() return TrimmedDirectory(vim.fn.expand('#2:p'))  end,
-    condition = buffer_not_empty,
+    condition = should_show, -- function() buffer_not_empty() and should_show() end,
     highlight = {"#F38A98", colors.bg, "bold"}
   }
 }
@@ -304,42 +304,35 @@ gls.left[7] = {
   }
 }
 
-gls.left[8] = {
-  CurFunc = {
-    provider = current_function,
-    separator = " ",
-    separator_highlight = {"NONE", colors.purple},
-    highlight = {colors.magenta, colors.bg}
-  }
-}
 
-gls.left[9] = {
+gls.left[8] = {
   GitIcon = {
     provider = function()
       return "  "
     end,
-    condition = require("galaxyline.provider_vcs").check_git_workspace,
+    condition = function() return require("galaxyline.provider_vcs").check_git_workspace and should_show() end,
     separator = " ",
     separator_highlight = {"NONE", colors.bg},
     highlight = {colors.blue, colors.bg, "bold"}
   }
 }
 
-gls.left[10] = {
+gls.left[9] = {
   GitBranch = {
+    condition = function() return require("galaxyline.provider_vcs").check_git_workspace and should_show() end,
     provider = "GitBranch",
-    condition = require("galaxyline.provider_vcs").check_git_workspace,
+    condition = should_show,
     highlight = {colors.blue, colors.bg, "bold"}
   }
 }
-gls.left[11] = {
+gls.left[10] = {
   DiagnosticError = {
     provider = "DiagnosticError",
     icon = "  ",
     highlight = {colors.red, colors.bg}
   }
 }
-gls.left[12] = {
+gls.left[11] = {
   DiagnosticWarn = {
     provider = "DiagnosticWarn",
     icon = "  ",
@@ -347,7 +340,7 @@ gls.left[12] = {
   }
 }
 
-gls.left[13] = {
+gls.left[12] = {
   DiagnosticHint = {
     provider = "DiagnosticHint",
     icon = "  ",
@@ -355,7 +348,7 @@ gls.left[13] = {
   }
 }
 
-gls.left[14] = {
+gls.left[13] = {
   DiagnosticInfo = {
     provider = "DiagnosticInfo",
     icon = " 💡 ",
@@ -365,17 +358,42 @@ gls.left[14] = {
 
 gls.mid[1] = {
   ShowLspClient = {
-    provider = "GetLspClient",
-    condition = function()
-      local tbl = {["dashboard"] = true, [""] = true}
-      if tbl[vim.bo.filetype] then
-        return false
+    provider =   function()
+      local msg = ''
+      local buf_ft = vim.api.nvim_buf_get_option(0, 'filetype')
+      local clients = vim.lsp.get_active_clients()
+      if next(clients) == nil then return msg end
+      for _, client in ipairs(clients) do
+        local filetypes = client.config.filetypes
+        if filetypes and vim.fn.index(filetypes, buf_ft) ~= -1 then
+          lsp_client_names[client.name] = true
+        end
       end
-      return true
+      if lsp_client_names ~= {} then
+        for k, _ in pairs(lsp_client_names) do
+          msg = msg .. " " .. k
+        end
+      end
+      -- print(msg)
+      if #msg > 4 then
+        return msg
+      end
+      return '🤷'
     end,
+    condition = should_show,
     icon = "🐆 ",
     separator_highlight = {"NONE", colors.bg},
     highlight = {colors.yellow, colors.bg, "bold"}
+  }
+}
+
+gls.mid[2] = {
+  CurFunc = {
+    provider = current_function,
+    separator = " ",
+    condition = should_show,
+    separator_highlight = {"NONE", colors.purple},
+    highlight = {colors.magenta, colors.bg}
   }
 }
 
@@ -383,7 +401,7 @@ gls.right[1] = {
   FileEncode = {
     provider = "FileEncode",
     separator = " ",
-    condition = checkwidth,
+    condition = should_show,
     separator_highlight = {"NONE", colors.bg},
     highlight = {colors.cyan, colors.bg, "bold"}
   }
@@ -393,7 +411,7 @@ gls.right[2] = {
   FileFormat = {
     provider = "FileFormat",
     separator = " ",
-    condition = checkwidth,
+    condition = should_show,
     separator_highlight = {"NONE", colors.bg},
     highlight = {colors.cyan, colors.bg, "bold"}
   }
@@ -402,7 +420,7 @@ gls.right[3] = {
   ScrollBar = {
     provider = "ScrollBar",
     separator = " ",
-    condition = checkwidth,
+    condition = should_show,
     highlight = {colors.blue, colors.purple}
   }
 }
@@ -419,7 +437,7 @@ gls.right[4] = {
 gls.right[5] = {
   DiffAdd = {
     provider = "DiffAdd",
-    condition = checkwidth,
+    condition = should_show,
     icon = "  ",
     highlight = {colors.green, colors.bg}
   }
@@ -427,7 +445,7 @@ gls.right[5] = {
 gls.right[6] = {
   DiffModified = {
     provider = "DiffModified",
-    condition = checkwidth,
+    condition = should_show,
     icon = "  ", -- 柳
     highlight = {colors.orange, colors.bg}
   }
@@ -435,7 +453,7 @@ gls.right[6] = {
 gls.right[7] = {
   DiffRemove = {
     provider = "DiffRemove",
-    condition = checkwidth,
+    condition = should_show,
     icon = "  ",
     highlight = {colors.red, colors.bg}
   }
@@ -446,6 +464,7 @@ gls.right[8] = {
     provider = function()
       return " ▊"
     end,
+    condition = should_show,
     highlight = {colors.blue, colors.bg}
   }
 }
@@ -464,10 +483,8 @@ gls.short_line_left[2] = {
     provider = function()
       local fileinfo = require("galaxyline.provider_fileinfo")
       local fname = fileinfo.get_current_file_name()
-      for _, v in ipairs(gl.short_line_list) do
-        if v == vim.bo.filetype then
-          return ""
-        end
+      if vim.tbl_contains(gl.short_line_list, vim.bo.filetype) then
+        return ""
       end
       return fname
     end,
@@ -479,6 +496,7 @@ gls.short_line_left[2] = {
 gls.short_line_right[1] = {
   BufferIcon = {
     provider = "BufferIcon",
+    condition = should_show,
     highlight = {colors.fg, colors.bg}
   }
 }

@@ -9,7 +9,7 @@ function M.run_command()
   local file_type = vim.fn.expand("%:e")
   local file_name = vim.fn.expand("%:p")
   if vim.bo.filetype == 'dashboard' then return end
-  if vim.bo.filetype == 'LuaTree' then return end
+  if vim.bo.filetype == 'NvimTree' then return end
   if file_type == 'go' then
     if file_name:match("_test") then
       cmd = M[file_type][2]

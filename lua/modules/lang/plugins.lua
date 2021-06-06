@@ -18,10 +18,24 @@ lang["nvim-treesitter/nvim-treesitter-refactor"] =
 lang["w0rp/ale"] = {
   -- event = "BufEnter", --BufWritePre
   cmd = {"ALEEnable", "ALEFix"},
-  ft = {"sql", "pgsql", "markdown"},
+  -- ft = {"sql", "pgsql", "markdown"},
   -- after = 'telescope.nvim',
   setup = conf.ale,
   opt = true
+}
+
+-- lang["neomake/neomake"] = {
+--   -- event = "BufSave", --BufWritePre
+--   -- cmd = {"make",},
+--   ft = {"go", "pgsql", "markdown"},
+--   -- after = 'telescope.nvim',
+--   setup = conf.neomake,
+--   opt = true
+-- }
+
+lang["mfussenegger/nvim-lint"] ={
+  ft = {"go", "markdown"},
+  config = conf.lint,
 }
 
 lang["shmup/vim-sql-syntax"] = {ft = {"sql", "pgsql"}}
@@ -37,7 +51,7 @@ lang["nanotee/sqls.nvim"] = {ft = {"sql", "pgsql"}, setup = conf.sqls, opt = tru
 --     opt = true
 -- }
 
-lang["/Users/ray.xu/github/go.nvim"] = {ft = "go", opt = false, config = conf.go}
+lang["/Users/ray.xu/github/go.nvim"] = {ft = "go", opt = true, config = conf.go}
 
 lang["/Users/ray.xu/github/navigator.lua"] = {
   requires = {"/Users/ray.xu/github/guihua.lua"},
@@ -63,6 +77,24 @@ lang["nvim-treesitter/playground"] = {
     cmd = "TSPlaygroundToggle",
     config = conf.playground
 }
+
+-- lang["romgrk/nvim-treesitter-context"] = {
+--     after = "nvim-treesitter",
+--     opt = true;
+--     cmd = {"TSContextEnable","TSContextToggle"},
+--     config = function ()
+--       require'treesitter-context.config'.setup{
+--         enable = true, -- Enable this plugin (Can be enabled/disabled later via commands)
+--       }
+--     end
+-- }
+
+lang["ElPiloto/sidekick.nvim"] ={
+  opt = true,
+  fn = {'SideKickNoReload'},
+  setup = conf.sidekick
+}
+
 
 lang["bfredl/nvim-luadev"] = {opt = true, cmd = "Luadev", setup = conf.luadev}
 lang["mfussenegger/nvim-dap"] = {config = conf.dap, cmd = "Luadev", opt = true}
@@ -98,8 +130,8 @@ lang["michaelb/sniprun"] = {
   -- })
   -- end
 }
--- JqxList and JqxQuery json browsering
-lang["gennaro-tedesco/nvim-jqx"] = {opt = true, cmd = {"JqxList", "JqxQuery"}}
+-- JqxList and JqxQuery json browsing, format
+-- lang["gennaro-tedesco/nvim-jqx"] = {opt = true, cmd = {"JqxList", "JqxQuery"}}
 
 lang["windwp/nvim-ts-autotag"] = {
   opt = true,

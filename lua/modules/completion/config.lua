@@ -1,7 +1,7 @@
 local config = {}
 
 function config.nvim_lsp()
-  require("lsp.config")
+  require("lsp.config").setup()
 end
 
 function config.nvim_compe()
@@ -166,10 +166,10 @@ function config.telescope()
 end
 
 function config.emmet()
-  vim.g.user_emmet_complete_tag = 0
-  vim.g.user_emmet_install_global = 0
+  vim.g.user_emmet_complete_tag = 1
+  -- vim.g.user_emmet_install_global = 1
   vim.g.user_emmet_install_command = 0
-  vim.g.user_emmet_mode = "i"
+  vim.g.user_emmet_mode = "a"
 end
 
 return config

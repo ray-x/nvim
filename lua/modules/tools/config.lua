@@ -15,6 +15,19 @@ local function load_env_file()
   return env_contents
 end
 
+function config.session()
+  local opts = {
+    log_level = 'info',
+    auto_session_enable_last_session = false,
+    auto_session_root_dir = vim.fn.stdpath('data').."/sessions/",
+    auto_session_enabled = true,
+    auto_save_enabled = nil,
+    auto_restore_enabled = nil,
+    auto_session_suppress_dirs = nil
+  }
+  require('auto-session').setup(opts)
+end
+
 local function load_dbs()
   local env_contents = load_env_file()
   local dbs = {}
@@ -104,13 +117,16 @@ function config.vim_vista()
     pandoc = "markdown",
     markdown = "toc",
     typescript = "nvim_lsp",
-    typescriptreact = "nvim_lsp"
+    typescriptreact = "nvim_lsp",
+    go = "nvim_lsp",
+    lua = "nvim_lsp",
   }
 
-  -- vim.g['vista#renderer#icons']= {
-  --   function = "",
-  --   variable = "כֿ",
-  -- }
+  vim.g['vista#renderer#icons']= {
+    ['function'] = "",
+    ['method'] = "ℱ",
+    variable = "כֿ",
+  }
 end
 
 function config.far()
@@ -375,22 +391,24 @@ function config.floaterm()
 end
 
 function config.spelunker()
+  -- vim.cmd("command! Spell call spelunker#check()")
   vim.g.enable_spelunker_vim_on_readonly = 0
-  vim.g.spelunker_check_type = 0
+  vim.g.spelunker_check_type = 2
   vim.g.spelunker_highlight_type = 2
   vim.g.spelunker_disable_uri_checking = 1
   vim.g.spelunker_disable_account_name_checking = 1
   vim.g.spelunker_disable_email_checking = 1
-  vim.cmd("highlight SpelunkerSpellBad cterm=underline ctermfg=247 gui=underline guifg=#53206e")
-  vim.cmd(
-      "highlight SpelunkerComplexOrCompoundWord cterm=underline ctermfg=NONE gui=underline guifg=NONE")
+  -- vim.cmd("highlight SpelunkerSpellBad cterm=underline ctermfg=247 gui=undercurl guifg=#F3206e guisp=#EF3050")
+  -- vim.cmd("highlight SpelunkerComplexOrCompoundWord cterm=underline gui=undercurl guisp=#EF3050")
+  vim.cmd("highlight def link SpelunkerSpellBad SpellBad")
+  vim.cmd("highlight def link SpelunkerComplexOrCompoundWord Rare")
 end
 
 function config.spellcheck()
-  if not packer_plugins["kamykn/spelunker.vim"] or not packer_plugins["kamykn/spelunker.vim"].loaded then
-    config.spelunker()
-    require"packer".loader("spelunker.vim")
-  end
+
+  vim.cmd("highlight def link SpelunkerSpellBad SpellBad")
+  vim.cmd("highlight def link SpelunkerComplexOrCompoundWord Rare")
+
   vim.fn["spelunker#check"]()
 end
 
@@ -402,6 +420,20 @@ function config.prettier()
   vim.g["prettier#quickfix_enabled"] = 0
   vim.api.nvim_command(
       "autocmd InsertLeave,BufWritePost *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync")
+end
+
+function config.isas()
+  local isas = require("isas")
+    isas.setup({
+    load_natural_dictionaries_at_startup = true,
+    load_programming_dictionaries_at_startup = true,
+    natural_dictionaries = {
+      ["nt_en"] = {}
+    },
+    programming_dictionaries = {
+      ["pr_py"] = {}
+    }
+  })
 end
 
 function config.grammcheck()
@@ -429,10 +461,5 @@ function config.mkdp()
       [[let g:mkdp_preview_options = { 'mkit': {}, 'katex': {}, 'uml': {}, 'maid': {}, 'disable_sync_scroll': 0, 'sync_scroll_type': 'middle', 'hide_yaml_meta': 1, 'sequence_diagrams': {}, 'flowchart_diagrams': {}, 'content_editable': v:true, 'disable_filename': 0 }]])
 end
 
-vim.cmd(
-    [["autocmd TextChanged,InsertLeave *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync"]])
-
-vim.cmd("command! Gram lua require'modules.tools.config'.grammcheck()")
-vim.cmd("command! Spell lua require'modules.tools.config'.spellcheck()")
 
 return config

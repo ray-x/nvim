@@ -1,8 +1,13 @@
 
 
 function lazyload()
+  if vim.wo.diff then
+    local plugins = "nvim-treesitter" -- nvim-treesitter-textobjects should be autoloaded
+    loader(plugins)
+    return
+  end
   print("I am lazy")
-  local disable_ft = {"NvimTree", "guihua", "clap_input", "clap_spinner", "TelescopePrompt", "csv", "txt", "defx"}
+  local disable_ft = {"NvimTree", "guihua", "clap_input", "clap_spinner", "TelescopePrompt", "csv", "txt", "defx", "sidekick"}
   local syn_on = not vim.tbl_contains(disable_ft, vim.bo.filetype)
   if syn_on then
     vim.cmd([[syntax manual]])
@@ -21,12 +26,14 @@ function lazyload()
     -- vim.cmd([[syntax off]])
     return
   end
+
   local plugins = "nvim-treesitter" -- nvim-treesitter-textobjects should be autoloaded
   loader(plugins)
 
   plugins = "plenary.nvim gitsigns.nvim indent-blankline.nvim nvim-lspconfig guihua.lua navigator.lua" --nvim-lspconfig navigator.lua   guihua.lua navigator.lua 
   vim.g.vimsyn_embed = 'lPr'
   loader(plugins)
+  --require'lsp.config'.setup()
 
   require("vscripts.cursorhold")
   require("vscripts.tools")
@@ -51,6 +58,12 @@ vim.cmd([[autocmd User LoadLazyPlugin lua lazyload()]])
 vim.cmd([[autocmd FileType vista setlocal syntax=on]])
 vim.cmd([[autocmd FileType guihua setlocal syntax=on]])
 vim.cmd([[autocmd FileType * silent! lua if vim.fn.wordcount()['bytes'] < 2048000 then vim.cmd("setlocal syntax=on") end]])
+vim.cmd(
+    [["autocmd TextChanged,InsertLeave *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync"]])
+
+vim.cmd("command! Gram lua require'modules.tools.config'.grammcheck()")
+vim.cmd("command! Spell call spelunker#check()")
+
 vim.defer_fn(
   function()
     vim.cmd([[doautocmd User LoadLazyPlugin]])

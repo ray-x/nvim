@@ -109,7 +109,22 @@ end
 --   }
 -- end
 
+function  config.setup()
+
+
+end
+
 function config.nvim_tree()
+  -- vim.cmd(
+  --   [[
+  --   fun! s:disable_statusline(bn)
+  --     if a:bn == bufname('%')
+  --       set laststatus=0
+  --     else
+  --       set laststatus=2
+  --     endif
+  --   endfunction]])
+  -- vim.cmd([[au BufEnter,BufWinEnter,WinEnter,CmdwinEnter * call s:disable_statusline('NvimTree')]])
   vim.g.nvim_tree_follow = 1
   vim.g.nvim_tree_hide_dotfiles = 1
   vim.g.nvim_tree_indent_markers = 1
@@ -152,7 +167,7 @@ function config.nvim_tree()
       error = "" -- 🈲
     }
   }
-  -- vim.cmd([[autocmd Filetype NvimTree set cursorline]])
+  vim.cmd([[autocmd Filetype NvimTree set cursorline]])
 end
 
 -- function config.vim_signify()
@@ -232,16 +247,19 @@ function config.aurora()
 end
 
 function config.material()
-  -- local opt = {"oceanic", "darker", "palenight", "deep ocean", "moonlight"}
+  -- local opt = {"oceanic", "darker", "palenight", "deep ocean", "moonlight", "dracula", "dracula_blood", "monokai", "mariana"}
   -- local v = math.random(1, #opt)
   -- vim.g.material_style = opt[v]
   vim.g.material_italic_comments = true
   vim.g.material_italic_keywords = false
-  vim.g.material_italic_functions = true
+  vim.g.material_italic_functions = false
   vim.g.material_italic_variables = false
+  vim.g.material_italic_string = false
   vim.g.material_contrast = true
-  vim.g.material_borders = false
+  vim.g.material_borders = true
   vim.g.material_disable_background = false
+  vim.g.material_style = 'mariana'
+  vim.g.material_style_fix = true
   -- config.default()
 end
 
@@ -276,7 +294,7 @@ function config.nvcode()
 end
 
 function config.neon()
-  local opt = {"default", "dark"}
+  local opt = {"default", "dark", "doom"}
   vim.g.neon_style = opt[math.random(1, #opt)]
   vim.g.neon_italic_keyword = true
   vim.g.neon_italic_function = true
@@ -298,7 +316,7 @@ end
 
 function config.blankline()
   vim.g.indent_blankline_buftype_exclude = {"terminal"}
-  vim.g.indent_blankline_filetype_exclude = {"help", "startify", "dashboard", "packer", "guihua", "NvimTree"}
+  vim.g.indent_blankline_filetype_exclude = {"help", "startify", "dashboard", "packer", "guihua", "NvimTree", "sidekick"}
   vim.g.indent_blankline_buftype_exclude = {"terminal"}
   vim.g.indent_blankline_char = "| "
   vim.g.indent_blankline_char_list = {"", "┊", "┆", "¦", "|", "¦", "┆", "┊", ""}
@@ -364,31 +382,33 @@ end
 
 vim.api.nvim_exec(
   [[
-  set cursorcolumn
-  augroup vimrc_todo
-  au!
-  au Syntax *.go,*.c,*.rs,*.js,*.tsx,*.cpp,*.html syn match MyTodo /\v<(FIXME|Fixme|NOTE|Note|TODO|ToDo|OPTIMIZE|XXX):/ containedin=.*Comment,vimCommentTitle
-  augroup END
-  hi def link MyTodo Todo
-]],
+    set cursorcolumn
+    augroup vimrc_todo
+    au!
+    au Syntax *.go,*.c,*.rs,*.js,*.tsx,*.cpp,*.html syn match MyTodo /\v<(FIXME|Fixme|NOTE|Note|TODO|ToDo|OPTIMIZE|XXX):/ containedin=.*Comment,vimCommentTitle
+    augroup END
+    hi def link MyTodo Todo
+  ]],
   true
 )
 
+
+
 math.randomseed(os.time())
 local themes = {
-  "aurora",
-  "tokyonight.nvim",
-  "aurora",
+  -- "aurora",
+  -- "tokyonight.nvim",
+  -- "aurora",
   "material_plus.nvim",
-  "aurora",
-  "sonokai",
-  "zephyr-nvim",
-  "aurora",
-  "material_plus.nvim",
-  "nvcode-color-schemes.vim",
-  "vim-nightfly-guicolors",
-  "vim-moonfly-colors",
-  "neon",
+  -- "aurora",
+  -- "zephyr-nvim",
+  -- "aurora",
+  -- "material_plus.nvim",
+  -- "gruvbox"
+  -- "nvcode-color-schemes.vim",
+  -- "vim-nightfly-guicolors",
+  -- "vim-moonfly-colors",
+  -- "neon",
 } --"material.nvim",
 local v = math.random(1, #themes)
 local loading_theme = themes[v]

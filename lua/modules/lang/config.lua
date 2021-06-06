@@ -10,6 +10,65 @@ function config.nvim_treesitter_ref()
   require("modules.lang.treesitter").treesitter_ref()
 end
 
+function config.lint()
+  require('lint').linters_by_ft = {
+    markdown = {'vale',},
+    go = {'golangcilint'},
+  }
+  -- vim.cmd([[au BufWritePost <buffer> lua require('lint').try_lint()]])
+end
+
+function config.neomake()
+  vim.g.neomake_error_sign   = {text = '✖', texthl = 'NeomakeErrorSign'}
+  vim.g.neomake_warning_sign = {text = '∆', texthl = 'NeomakeWarningSign'}
+  vim.g.neomake_message_sign = {text = '➤', texthl = 'NeomakeMessageSign'}
+  vim.g.neomake_info_sign    = {text = 'ℹ', texthl = 'NeomakeInfoSign'}
+  vim.g.neomake_go_enabled_makers = { 'go', 'golangci_lint', 'golint' }
+end
+
+function config.sidekick()
+  -- body
+  vim.g.sidekick_printable_def_types = {'function', 'class', 'type', 'module', 'parameter', 'method', 'field'}
+  -- vim.g.sidekick_def_type_icons = {
+  --    class = "\\uf0e8",
+  --    type = "\\uf0e8",
+  --    ['function'] = "\\uf794",
+  --    module = "\\uf7fe",
+  --    arc_component = "\\uf6fe",
+  --    sweep = "\\uf7fd",
+  --    parameter = "•",
+  --    var = "v",
+  --    method = "\\uf794",
+  --    field = "\\uf6de",
+  -- }
+  -- vim.g.sidekick_ignore_by_def_type = {
+  --   ['var'] = {"_": 1, "self": 1},
+  --   parameters = {"self": 1},
+  -- }
+
+-- Indicates which definition types should have their line number displayed in the outline window.
+  vim.g.sidekick_line_num_def_types = {
+    class = 1,
+    type = 1,
+    ['function'] = 1,
+    module = 1,
+    method = 1,
+  }
+
+  -- What to display between definition and line number
+  vim.g.sidekick_line_num_separator = " "
+  -- What to display to the left and right of the line number
+  -- vim.g.sidekick_line_num_left = "\\ue0b2"
+  -- vim.g.sidekick_line_num_right = "\\ue0b0"
+  -- -- What to display before outer vs inner vs folded outer definitions
+  -- vim.g.sidekick_outer_node_folded_icon = "\\u2570\\u2500\\u25C9"
+  -- vim.g.sidekick_outer_node_icon = "\\u2570\\u2500\\u25CB"
+  -- vim.g.sidekick_inner_node_icon = "\\u251c\\u2500\\u25CB"
+  -- -- What to display to left and right of def_type_icon
+  -- vim.g.sidekick_left_bracket = "\\u27ea"
+  -- vim.g.sidekick_right_bracket = "\\u27eb"
+end
+
 function config.ale()
   vim.g.ale_sign_error = "ﴫ"
   vim.g.ale_sign_warning = ""
@@ -59,17 +118,25 @@ function config.sqls()
 end
 
 function config.navigator()
-  -- print("navigator setup")
+  local capabilities = vim.lsp.protocol.make_client_capabilities()
+  print("navigator setup")
   require "navigator".setup({
-  lsp = {
-    format_on_save = true, -- set to false to disasble lsp code format on save (if you are using prettier/efm/formater etc)
-    gopls = {
-      settings = {
-        gopls = {gofumpt = false} -- disable gofumpt etc,
+    debug = true,
+    width = 0.7,
+    lsp = {
+      format_on_save = true, -- set to false to disasble lsp code format on save (if you are using prettier/efm/formater etc)
+      gopls = {
+        on_attach = function(client)
+          -- print("i am a hook")
+          client.resolved_capabilities.document_formatting = false
+        end,
+        settings = {
+          gopls = {gofumpt = true}, -- enableww gofumpt etc,
+
+        },
+        -- set to {} to disable the lspclient for all filetype
       }
-      -- set to {} to disable the lspclient for all filetype
     }
-  }
   })
 end
 
@@ -156,7 +223,9 @@ function config.formatter()
           function()
             return {
               exe = "lua-format",
-              args = {"--indent-width 2", "--tab-width 2", "--no-use-tab", "--column-limit", 110, "--column-table-limit", 100, "--no-keep-simple-function-one-line", "--no-chop-down-table", "--chop-down-kv-table", "--no-keep-simple-control-block-one-line", "--no-keep-simple-function-one-line", "--no-break-after-functioncall-lp"},
+              args = {"--indent-width 2", "--tab-width 2", "--no-use-tab", "--column-limit", 110, "--column-table-limit", 100, 
+              "--no-keep-simple-function-one-line", "--no-chop-down-table", "--chop-down-kv-table", "--no-keep-simple-control-block-one-line", 
+            "--no-keep-simple-function-one-line", "--no-break-after-functioncall-lp", "--no-break-after-operator"},
               stdin = true
             }
           end

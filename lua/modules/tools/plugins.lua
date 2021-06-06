@@ -21,13 +21,25 @@ tools["editorconfig/editorconfig-vim"] = {
 
 tools["liuchengxu/vista.vim"] = {cmd = "Vista", setup = conf.vim_vista, opt = true}
 
-tools["kamykn/spelunker.vim"] = {opt = true, setup = conf.spelunker}
+tools["kamykn/spelunker.vim"] = {
+  opt = true, fn = {"spelunker#check"}, 
+  setup = conf.spelunker,
+  config = conf.spellcheck,
+}
 tools["rhysd/vim-grammarous"] = {
   opt = true,
   cmd = {"GrammarousCheck"},
   ft = {"markdown", "txt"},
   setup = conf.grammarous
 }
+
+tools["Pocco81/ISuckAtSpelling.nvim"] = {
+  -- opt = true,
+  cmd = {"ISASLoad"},
+  --ft = {"markdown", "txt"},
+  config = conf.isas
+}
+
 
 tools["plasticboy/vim-markdown"] = {
   ft = "markdown",
@@ -95,17 +107,30 @@ tools["tpope/vim-fugitive"] = {
 }
 
 -- tools["tpope/vim-obsession"] ={} -- for prosession
-tools["dhruvasagar/vim-prosession"] = {
-  -- event = "BufReadPre",
-  requires = {"tpope/vim-obsession", opt = false},
-  -- after = 'vim-obsession',
-  config = function()
-    vim.g.prosession_on_startup = 1
-    vim.g.prosession_dir = "~/.vim/session/"
-  end,
-  opt = false
+-- tools["dhruvasagar/vim-prosession"] = {
+--   -- event = "BufReadPre",
+--   requires = {"tpope/vim-obsession", opt = false},
+--   -- after = 'vim-obsession',
+--   config = function()
+--     vim.g.prosession_on_startup = 1
+--     vim.g.prosession_dir = "~/.vim/session/"
+--   end,
+--   opt = false
+-- }
+
+tools["rmagatti/auto-session"] = {
+  config = conf.session
 }
 
+tools["rmagatti/session-lens"] = {
+  cmd = "SearchSession",
+  config = function()
+    require('session-lens').setup {
+    shorten_path=true,
+    previewer = true
+  }
+  end
+}
 tools["prettier/vim-prettier"] = {
   run = "yarn install",
   -- ft = {

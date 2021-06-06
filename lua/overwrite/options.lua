@@ -22,7 +22,7 @@ function options:load_options()
       mouse = "a"
     }
     self.window_local = {
-      foldmethod = "expr",
+      -- foldmethod = "expr",
       cursorline = true
       -- noreadonly = false;
       -- signcolumn = "yes";   -- auto

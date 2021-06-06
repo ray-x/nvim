@@ -77,6 +77,7 @@ local plug_map = {
     ["n|sa"]             = map_cmd("<Plug>(operator-surround-append)"):with_silent(),
     ["n|sd"]             = map_cmd("<Plug>(operator-surround-delete)"):with_silent(),
     ["n|sr"]             = map_cmd("<Plug>(operator-surround-replace)"):with_silent(),
+    ["n|<F8>"]             = map_cmd("call SideKickNoReload()"):with_silent(),
 
     -- Plugin hrsh7th/vim-eft
     -- ["n|;"]              = map_cmd("v:lua.enhance_ft_move(';')"):with_expr(),
