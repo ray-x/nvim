@@ -20,11 +20,12 @@ completion["hrsh7th/nvim-compe"] = {
 }
 
 completion["hrsh7th/vim-vsnip"] = {
-  event = "InsertCharPre",
+  event = "InsertEnter",
+  requires = {"rafamadriz/friendly-snippets", opt = true, event = "InsertEnter"},
   setup = conf.vim_vsnip
   -- after = "hrsh7th/nvim-compe",
 }
-
+-- completion["pierreglaser/folding-nvim"] = {}
 completion["nvim-telescope/telescope.nvim"] = {
   cmd = "Telescope",
   config = conf.telescope,
@@ -62,14 +63,24 @@ completion["mattn/emmet-vim"] = {
 --   opt=true,
 -- }
 
+-- note: part of the code is used in navigator
 completion["/Users/ray.xu/github/lsp_signature.nvim"] = {
+  opt = true,
   config = function()
+    print("signature load")
     require "lsp_signature".on_attach(
       {
+        floating_window = true,
+        log_path = "/Users/ray.xu/tmp/sig.log",
+        debug = true,
+        fix_pos = true,
         bind = true, -- This is mandatory, otherwise border config won't get registered.
         handler_opts = {
-          border = "single"
-        }
+          -- border = "shadow"
+          -- border = {""},
+          -- border = {"w", "═" ,"╗", "║", "╝", "═", "╚", "║" },
+          border = {"╭", "─" ,"╮", "│", "╯", "─", "╰", "│" },
+        },
       }
     )
   end

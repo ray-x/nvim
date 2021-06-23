@@ -2,8 +2,16 @@
 
 function lazyload()
   if vim.wo.diff then
-    local plugins = "nvim-treesitter" -- nvim-treesitter-textobjects should be autoloaded
-    loader(plugins)
+    -- local plugins = "nvim-treesitter" -- nvim-treesitter-textobjects should be autoloaded
+    -- loader(plugins)
+    vim.cmd([[packadd nvim-treesitter]])
+    require "nvim-treesitter.configs".setup { 
+      highlight = { 
+      enable = true,
+      use_languagetree = true,
+      }
+    }
+    -- vim.cmd([[syntax on]])
     return
   end
   print("I am lazy")
@@ -27,12 +35,17 @@ function lazyload()
     return
   end
 
-  local plugins = "nvim-treesitter" -- nvim-treesitter-textobjects should be autoloaded
+  -- if vim.bo.filetype == 'lua' then
+  --   loader("lua-dev.nvim")
+  -- end
+
+  local plugins = "nvim-treesitter nvim-lspconfig" -- nvim-treesitter-textobjects should be autoloaded
   loader(plugins)
 
-  plugins = "plenary.nvim gitsigns.nvim indent-blankline.nvim nvim-lspconfig guihua.lua navigator.lua" --nvim-lspconfig navigator.lua   guihua.lua navigator.lua 
+  plugins = "plenary.nvim gitsigns.nvim indent-blankline.nvim guihua.lua lsp_signature.nvim navigator.lua" --nvim-lspconfig navigator.lua   guihua.lua navigator.lua 
   vim.g.vimsyn_embed = 'lPr'
   loader(plugins)
+
   --require'lsp.config'.setup()
 
   require("vscripts.cursorhold")

@@ -90,6 +90,7 @@ local function load_options()
     pumblend       = 10;
     winblend       = 10;
     syntax         = "off";
+    background     = "dark";
   }
 
   local bw_local  = {
@@ -107,7 +108,7 @@ local function load_options()
     number         = true;
     colorcolumn    = "80";
     foldenable     = true;
-    signcolumn     = "number";  --auto auto:2
+    signcolumn     = "auto:1";  --auto auto:2  "number"
     conceallevel   = 2;
     concealcursor  = "niv";
   }

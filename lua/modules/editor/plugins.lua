@@ -21,6 +21,8 @@ editor["windwp/nvim-autopairs"] = {
   opt = true
 }
 
+
+-- editor["ggandor/lightspeed.nvim"] ={}
 editor["tpope/vim-surround"] = {
   opt = true
   --event = 'InsertEnter',
@@ -51,20 +53,26 @@ editor["rrethy/vim-hexokinase"] = {
 }
 
 editor['nacro90/numb.nvim'] = {
-  event = "CmdlineEnter",
-  config = function ()
+  event = {"CmdlineEnter"},
+  config = function () 
     require('numb').setup{
-       show_numbers = true, -- Enable 'number' for the window while peeking
-       show_cursorline = true -- Enable 'cursorline' for the window while peeking
+      show_numbers = true, -- Enable 'number' for the window while peeking
+      show_cursorline = true -- Enable 'cursorline' for the window while peeking
     }
-  end,
+  end
 }
 
+
+-- <A-k>   Move current line/selection up
+-- <A-j>   Move current line/selection down
+-- <A-h>   Move current character/selection left
+-- <A-l>   Move current character/selection right
 editor["matze/vim-move"] = {
   opt = true,
   event = "InsertEnter"
   -- fn = {'<Plug>MoveBlockDown', '<Plug>MoveBlockUp', '<Plug>MoveLineDown', '<Plug>MoveLineUp'}
 }
+
 -- editor['hrsh7th/vim-eft'] = {
 --   opt = true,
 --   config = function()
@@ -81,7 +89,7 @@ editor["matze/vim-move"] = {
 -- }
 
 editor["kevinhwang91/nvim-hlslens"] = {
-  keys = {"/", "?"}, --'n', 'N', '*', '#', 'g'
+  keys = {"/", "?", '*', '#'}, --'n', 'N', '*', '#', 'g'
   opt = true,
   config = conf.hlslens
 }
@@ -110,7 +118,7 @@ editor["mg979/vim-visual-multi"] = {
 -- EasyMotion in lua. -- maybe replace sneak
 editor["phaazon/hop.nvim"] = {
   as = "hop",
-  cmd = {"HopWord", "HopLine", "HopChar1", "HopChar2", "HopPattern"},
+  cmd = {"HopWord", "HopLine", "HopChar1", "HopChar1AC", "HopChar1BC", "HopChar2AC","HopChar2BC", "HopPatternAC", "HopPatternBC"},
   config = function()
     -- you can configure Hop the way you like here; see :h hop-config
     require "hop".setup {keys = "etovxqpdygfblzhckisuran"}

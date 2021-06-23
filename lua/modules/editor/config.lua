@@ -13,7 +13,7 @@ function config.autopairs()
   -- print("autopair")
   -- lua require'modules.editor.config'.autopairs()
   -- vim.cmd([[packadd nvim-autopairs]]) -- trying reload
-  print("autopairs")
+  -- print("autopairs")
   local has_autopairs, autopairs = pcall(require, "nvim-autopairs")
   if not has_autopairs then
     print("autopairs not loaded")
@@ -33,7 +33,7 @@ function config.autopairs()
       check_ts = false
     }
   )
-  print("autopairs setup")
+  -- print("autopairs setup")
   -- npairs.setup()
   -- skip it, if you use another global object
   _G.MUtils = {}
@@ -256,19 +256,38 @@ function config.hlslens()
   vim.cmd([[aug END]])
 end
 
+-- Exit                  <Esc>       quit VM
+-- Find Under            <C-n>       select the word under cursor
+-- Find Subword Under    <C-n>       from visual mode, without word boundaries
+-- Add Cursor Down       <M-Down>    create cursors vertically
+-- Add Cursor Up         <M-Up>      ,,       ,,      ,,
+-- Select All            \\A         select all occurrences of a word
+-- Start Regex Search    \\/         create a selection with regex search
+-- Add Cursor At Pos     \\\         add a single cursor at current position
+-- Reselect Last         \\gS        reselect set of regions of last VM session
+
+-- Mouse Cursor    <C-LeftMouse>     create a cursor where clicked
+-- Mouse Word      <C-RightMouse>    select a word where clicked
+-- Mouse Column    <M-C-RightMouse>  create a column, from current cursor to
+--                                   clicked position
 function config.vmulti()
   vim.g.VM_mouse_mappings = 1
   -- mission control takes <C-up/down> so remap <M-up/down> to <C-Up/Down>
   vim.api.nvim_set_keymap("n", "<M-n>", "<C-n>", {silent = true})
-  vim.api.nvim_set_keymap("n", "<M-Down>", "<C-Down>", {silent = true})
-  vim.api.nvim_set_keymap("n", "<M-Up>", "<C-Up>", {silent = true})
+  -- vim.api.nvim_set_keymap("n", "<M-Down>", "<C-Down>", {silent = true})
+  -- vim.api.nvim_set_keymap("n", "<M-Up>", "<C-Up>", {silent = true})
   -- for mac C-L/R was mapped to mission control
-  -- print('vmulti')
-  -- vim.g.VM_maps = {}
-  -- vim.g.VM_maps['Find Under']         = '<M-d>'
-  -- vim.g.VM_maps['Find Subword Under'] = '<M-d>'
-  -- vim.g.VM_maps["Select Cursor Down"] = '<M-Down>'
-  -- vim.g.VM_maps["Select Cursor Up"]   = '<M-Up>'
+  print('vmulti')
+
+  vim.g.VM_maps = {
+    ["Add Cursor Down"] = "<M-Down>",
+    ["Add Cursor Up"] = "<M-Up>",
+    ["Mouse Cursor"] = "<m-leftmouse>",
+    ["Mouse Word"] = "<m-rightmouse>",
+    ["Add Cursor At Pos"]  = '<M-i>'
+  }
+  vim.g.VM_mouse_mappings = true
+
 end
 
 return config

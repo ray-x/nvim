@@ -33,10 +33,10 @@ lang["w0rp/ale"] = {
 --   opt = true
 -- }
 
-lang["mfussenegger/nvim-lint"] ={
-  ft = {"go", "markdown"},
-  config = conf.lint,
-}
+-- lang["mfussenegger/nvim-lint"] ={
+--   ft = {"go", "markdown"},
+--   config = conf.lint,
+-- }
 
 lang["shmup/vim-sql-syntax"] = {ft = {"sql", "pgsql"}}
 
@@ -139,6 +139,11 @@ lang["windwp/nvim-ts-autotag"] = {
   config = function() require"nvim-treesitter.configs".setup {autotag = {enable = true}} end
 }
 
+lang['folke/lua-dev.nvim'] = {
+  opt = true,
+  -- ft = {'lua'},
+  config = conf.lua_dev
+}
 -- lang["p00f/nvim-ts-rainbow"] = {
 --   opt = true,
 --   -- after = "nvim-treesitter",
@@ -148,11 +153,11 @@ lang["windwp/nvim-ts-autotag"] = {
 --   end,
 --   opt = true
 -- }
-lang["mhartington/formatter.nvim"] = {
-  opt = true,
-  event = {"BufWriteCmd", "FileWriteCmd"},
-  -- Highlight also non-parentheses delimiters, boolean or table: lang -> boolean
-  config = conf.formatter
-}
+-- lang["mhartington/formatter.nvim"] = {
+--   opt = true,
+--   event = {"BufWriteCmd", "FileWriteCmd"},
+--   -- Highlight also non-parentheses delimiters, boolean or table: lang -> boolean
+--   config = conf.formatter
+-- }
 
 return lang

@@ -1,42 +1,66 @@
 " Note: run PlugUpdate/Install first
-
+set termguicolors
 call plug#begin('~/.vim/plugged')
 
 Plug 'neovim/nvim-lspconfig'
-Plug 'glepnir/lspsaga.nvim'
-Plug '/Users/ray.xu/github/lsp_signature.nvim'
-
+" Plug 'liuchengxu/vista.vim'
+Plug 'ray-x/aurora'
+Plug 'ray-x/lsp_signature.nvim'
 " Plug 'ray-x/guihua.lua', {'do': 'cd lua/fzy && make' }
 " Plug 'ray-x/navigator.lua'
-Plug '/Users/ray.xu/github/guihua.lua', {'do': 'cd lua/fzy && make' }
-Plug '/Users/ray.xu/github/navigator.lua'
+" Plug '/Users/ray.xu/github/navigator.lua'
+" Plug '/Users/ray.xu/github/material_plus.nvim'
+" Plug '/Users/ray.xu/tmp/lsp_signature.nvim'
+" Plug 'fdioguardi/lsp_signature.nvim'
 " Plug 'hrsh7th/nvim-compe' " and other plugins you commenly use...
 
 " optional, if you need treesitter symbol support
 " Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-Plug 'steelsojka/pears.nvim'
+" Plug 'steelsojka/pears.nvim'
 " Plug 'windwp/nvim-autopairs'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 call plug#end()
 
 " No need for rquire('lspconfig'), navigator will configure it for you
 lua <<EOF
-require'navigator'.setup({  lsp = {
-    format_on_save = true, -- set to false to disasble lsp code format on save (if you are using prettier/efm/formater etc)
-    tsserver = {
-      filetypes = {'typescript'} -- disable javascript etc, 
-      -- set to {} to disable the lspclient for all filetype
-    }
-  }})
+-- require'navigator'.setup({debug=true})
+-- require'lspconfig'.gopls.setup({})
+-- local util = require'lspconfig.util'
+-- require'lspconfig'.gopls.setup{
+-- 	on_attach = function(client, bufnr)
+-- 		  print(debug.traceback())
+--           --print(vim.inspect(client))
+-- 	end,
+-- 	root_dir = function(fname)
+--       print(fname)
+--       return util.root_pattern("go.mod", ".git")(fname) or util.path.dirname(fname)
+--     end
+-- }
+-- require'lspconfig'.pyright.setup {}
+
+-- require'navigator'.setup({  lsp = {
+--     format_on_save = true, -- set to false to disasble lsp code mat on save (if you -- are using prettier/efm/formater etc)
+--     tsserver = {
+--       filetypes = {'typescript'} -- disable javascript etc, 
+--       -- set to {} to disable the lspclient for all filetype
+--            }
+--    }})
 -- require "pears".setup()
 -- require('nvim-autopairs').setup()
 
 
-require'lsp_signature'.on_attach({bind = false, use_lspsaga=true})
+-- require'lsp_signature'.on_attach({bind = false, use_lspsaga=false, floating_window=false, hint_enable = true})
+
+-- vim.g.vista_echo_cursor_strategy = "floating_win"
+
 EOF
 
-
-
-
+set mouse=a
+colorscheme aurora
+" colorscheme dracula
+" let material_style = 'mariana'
+" let material_style_fix = v:true
+" colorscheme material
 " call plug#begin('~/.vim/plugged')
 " 
 " set noswapfile
@@ -170,17 +194,17 @@ EOF
 " set completeopt=menuone,noinsert,noselect
 
 
-" nnoremap <silent> gd    <cmd>lua vim.lsp.buf.declaration()<CR>
-" nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<CR>
-" nnoremap <silent> K     <cmd>lua vim.lsp.buf.hover()<CR>
-" nnoremap <silent> gD    <cmd>lua vim.lsp.buf.implementation()<CR>
-" nnoremap <silent> <c-k> <cmd>lua vim.lsp.buf.signature_help()<CR>
-" nnoremap <silent> 1gD   <cmd>lua vim.lsp.buf.type_definition()<CR>
-" nnoremap <silent> gr    <cmd>lua vim.lsp.buf.references()<CR>
-" nnoremap <silent> g0    <cmd>lua vim.lsp.buf.document_symbol()<CR>
-" nnoremap <silent> gW    <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
-" nnoremap <buffer> <silent> <C-LeftMouse> <LeftMouse> <cmd>lua vim.lsp.buf.definition()<CR>
-" nnoremap <buffer> <silent> g<LeftMouse> <LeftMouse> <cmd>lua vim.lsp.buf.implementation()<CR>
+nnoremap <silent> gd    <cmd>lua vim.lsp.buf.declaration()<CR>
+nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<CR>
+nnoremap <silent> K     <cmd>lua vim.lsp.buf.hover()<CR>
+nnoremap <silent> gD    <cmd>lua vim.lsp.buf.implementation()<CR>
+nnoremap <silent> <c-k> <cmd>lua vim.lsp.buf.signature_help()<CR>
+nnoremap <silent> 1gD   <cmd>lua vim.lsp.buf.type_definition()<CR>
+nnoremap <silent> gr    <cmd>lua vim.lsp.buf.references()<CR>
+nnoremap <silent> g0    <cmd>lua vim.lsp.buf.document_symbol()<CR>
+nnoremap <silent> gW    <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
+nnoremap <buffer> <silent> <C-LeftMouse> <LeftMouse> <cmd>lua vim.lsp.buf.definition()<CR>
+nnoremap <buffer> <silent> g<LeftMouse> <LeftMouse> <cmd>lua vim.lsp.buf.implementation()<CR>
 
 
 " let g:vsnip_filetypes = {}

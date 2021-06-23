@@ -1,189 +1,330 @@
 local lspconfig = require "lspconfig"
+local configs = require 'lspconfig/configs'
 local lsp = require("vim.lsp")
---
--- vim.cmd [[packadd lspsaga.nvim]]
--- local saga = require "lspsaga"
--- saga.init_lsp_saga()
 
--- vim.cmd [[packadd navigator.lua]]
--- local navigator = require "navigator"
--- navigator.setup()
--- M={}
+M = {}
 --
 --
--- local capabilities = vim.lsp.protocol.make_client_capabilities()
--- capabilities.textDocument.completion.completionItem.snippetSupport = true
---
--- function M.reload_lsp()
---   vim.lsp.stop_client(vim.lsp.get_active_clients())
---   vim.cmd [[edit]]
--- end
---
--- function M.open_lsp_log()
---   local path = vim.lsp.get_log_path()
---   vim.cmd("edit " .. path)
--- end
---
--- vim.cmd("command! -nargs=0 LspLog call v:lua.open_lsp_log()")
--- vim.cmd("command! -nargs=0 LspRestart call v:lua.reload_lsp()")
---
--- print("loading lsp client")
--- local cfg = {}
--- require('lsp.clients').setup(cfg)
--- require('lsp.mappings').setup(cfg)
--- return M
 
-local stylelint = {
-  lintCommand = "stylelint --stdin --stdin-filename ${INPUT} --formatter compact",
-  lintIgnoreExitCode = true,
-  lintStdin = true,
-  lintFormats = {
-    "%f: line %l, col %c, %tarning - %m",
-    "%f: line %l, col %c, %trror - %m"
-  },
-  formatCommand = "stylelint --fix --stdin --stdin-filename ${INPUT}",
-  formatStdin = true
-}
-local prettier = {
-  formatCommand = "./node_modules/.bin/prettier --stdin-filepath ${INPUT}",
-  formatStdin = true
-}
+--  lua print(vim.inspect(vim.lsp.buf_get_clients(0)))
+M.setup = function()
+ -- print("lspconfig setup")
+  local capabilities = vim.lsp.protocol.make_client_capabilities()
+  capabilities.textDocument.completion.completionItem.snippetSupport = true
 
-local eslint_d = {
-  lintCommand = "eslint_d -f unix --stdin --stdin-filename ${INPUT}",
-  lintStdin = true,
-  lintFormats = {"%f:%l:%c: %m"},
-  lintIgnoreExitCode = true,
-  formatCommand = "eslint_d --fix-to-stdout --stdin --stdin-filename=${INPUT}",
-  formatStdin = true
-}
-local rustfmt = {
-  formatCommand = "rustfmt",
-  formatStdin = true
-}
----  , '-c', '/Users/ray.xu/.config/efm-langserver/config.yaml'
--- require'lspconfig'.efm.setup {
---   cmd = { 'efm-langserver'},
---   init_options = {
---     documentFormatting = true,
---     rename = false,
---     hover = true,
---     codeAction = true,
---     completion = false,
---   },
---   on_attach = function(client)
---     client.resolved_capabilities.document_formatting = true
---     client.resolved_capabilities.goto_definition = false
---     -- set_lsp_config(client)
---   end,
---   filetypes = { "javascript", "javascriptreact", 'typescript', 'typescriptreact', 'lua', 'go' },
---   settings = {
---     rootMarkers = { '.git', 'package.json' },
---     languages = {
---       typescript = { {stylelint} , prettier },
---       typescriptreact = { stylelint, prettier },
---       lua = { {formatCommand = "lua-format --tab-width=2 -i", formatStdin = true}},
---       go = { {formatCommand = "golines --max-len=120  --base-formatter=gofumpt", formatStdin = true} },
---       javascript = {eslint_d},
---       javascriptreact = {eslint_d},
---      -- python = { python-flake8 },
---     },
---   },
--- }
+  if not lspconfig.emmet_ls then
+    configs.emmet_ls = {
+      default_config = {
+        cmd = {'emmet-ls', '--stdio'},
+        filetypes = {'html', 'css'},
+        root_dir = function(fname)
+          return vim.loop.cwd()
+        end,
+        settings = {}
+      }
+    }
+  end
 
--- require "lspconfig".efm.setup {
---   cmd = { 'efm-langserver', '-loglevel', '10'},
---   init_options = {documentFormatting = true},
---   settings = {
---     rootMarkers = {".git/", 'package.json', 'Makefile'},
---     languages = {
---       typescript = { stylelint , prettier },
---       typescriptreact = { stylelint, prettier },
---       javascript = {eslint_d},
---       javascriptreact = {eslint_d},
---       go = { {formatCommand = "golines --max-len=120  --base-formatter=gofumpt", formatStdin = true} },
---       lua = {
---         {formatCommand = "luafmt --indent-count 2 --stdin", formatStdin = true,
---          lintCommand = "luacheck --formatter plain --codes --filename %s -", formatStdin = true,
---          lintStdin = true,
---          lintFormats = {"%f:%l:%c: %m"},
---          lintIgnoreExitCode = true,
---         }
---       },
---     }
---   }
--- }
--- require'lspconfig'.stylelint_lsp.setup{stylelint
---   settings = {
---     stylelintplus = {
---       -- see available options in stylelint-lsp documentation
---     }
---   }
--- }
+  lspconfig.emmet_ls.setup {capabilities = capabilities}
+  -- print(vim.inspect(lspconfig.emmet_ls))
+  -- print(vim.inspect(capabilities.textDocument.completion))
+  --
+  --
+  --
 
-if not lspconfig.golangcilsp then
-  lspconfig.golangcilsp = {
-    default_config = {
-      cmd = {"golangci-lint-langserver"},
-      root_dir = lspconfig.util.root_pattern(".git", "go.mod"),
-      init_options = {
-        command = {"golangci-lint", "run", "--enable-all", "--disable", "lll", "--out-format", "json"}
+  local stylelint = {
+    lintCommand = "stylelint --stdin --stdin-filename ${INPUT} --formatter compact",
+    lintIgnoreExitCode = true,
+    lintStdin = true,
+    lintFormats = {"%f: line %l, col %c, %tarning - %m", "%f: line %l, col %c, %trror - %m"},
+    formatCommand = "stylelint --fix --stdin --stdin-filename ${INPUT}",
+    formatStdin = true
+  }
+  local prettier = {
+    formatCommand = "./node_modules/.bin/prettier --stdin-filepath ${INPUT}",
+    formatStdin = true
+  }
+
+  local eslint_d = {
+    lintCommand = "eslint_d -f unix --stdin --stdin-filename ${INPUT}",
+    lintStdin = true,
+    lintFormats = {"%f:%l:%c: %m"},
+    lintIgnoreExitCode = true,
+    formatCommand = "eslint_d --fix-to-stdout --stdin --stdin-filename=${INPUT}",
+    formatStdin = true
+  }
+  local rustfmt = {formatCommand = "rustfmt", formatStdin = true}
+
+
+  -- lspconfig.diagnosticls.setup{
+  --   filetypes = { "go", "javascript", "javascript.jsx" },
+  --   init_options = {
+  --     args = {"--log-level", "10"},
+  --     filetypes = {
+  --       javascript = "eslint",
+  --       ["javascript.jsx"] = "eslint",
+  --       javascriptreact = "eslint",
+  --       typescriptreact = "eslint",
+  --     },
+  --     linters = {
+  --       eslint = {
+  --         sourceName = "eslint",
+  --         command = "./node_modules/.bin/eslint",
+  --         rootPatterns = { ".git" },
+  --         debounce = 100,
+  --         args = {
+  --           "--stdin",
+  --           "--stdin-filename",
+  --           "%filepath",
+  --           "--format",
+  --           "json",
+  --         },
+  --         parseJson = {
+  --           errorsRoot = "[0].messages",
+  --           line = "line",
+  --           column = "column",
+  --           endLine = "endLine",
+  --           endColumn = "endColumn",
+  --           message = "${message} [${ruleId}]",
+  --           security = "severity",
+  --         };
+  --         securities = {
+  --           [2] = "error",
+  --           [1] = "warning"
+  --         }
+  --       },
+  --       golangci = {
+  --         sourceName = "golangci-lint",
+  --         command = "golangci-lint",
+  --         rootPatterns = { ".git", ".go.mod" },
+  --         debounce = 420,
+  --         args = {
+  --           "run",
+  --           "%filepath",
+  --           "--out-format",
+  --           "json",
+  --         },
+  --         parseJson = {
+  --           errorsRoot = "[0].Issues",
+  --           line = "Pos.Line",
+  --           column = "Pos.Column",
+  --           message = "${Text} [${Pos.Filename} ${FromLinter}]",
+  --           security = "Severity",
+  --         };
+  --       }
+  --     }
+  --   }
+  -- }
+  lspconfig.efm.setup {
+    flags = {debounce_text_changes = 1000},
+    cmd = {'efm-langserver', '-loglevel', '2', '-logfile', '/Users/ray.xu/tmp/efm.log'}, -- 1~10
+    init_options = {documentFormatting = true},
+    on_attach = function(client)
+      client.resolved_capabilities.document_formatting = true
+      client.resolved_capabilities.goto_definition = false
+      client.resolved_capabilities.code_action = nil
+      local log = require("guihua.log").new({level = "info"}, true)
+      vim.cmd([[autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting()]])
+      print ("efm attached")
+      -- set_lsp_config(client)
+    end,
+    filetypes = {
+      -- "javascript", "javascriptreact", 'typescript', 'typescriptreact', 
+      'html', 'css', 'go', 'lua'
+    },
+    -- settings = {
+    --   rootMarkers = {'.git/', 'package.json', 'Makefile', 'go.mod'},
+    --   languages = {
+    --       lua = {
+    --           {formatCommand = "lua-format -i", formatStdin = true}
+    --       }
+    --   }
+    -- }
+    settings = {
+      rootMarkers = {".git/", 'package.json', 'Makefile', 'go.mod'},
+      lintDebounce =   "1s",
+      formatDebounce = "1000ms",
+      languages = {
+        typescript = {stylelint, prettier},
+        typescriptreact = {stylelint, prettier},
+        javascript = {eslint_d},
+        javascriptreact = {eslint_d},
+        -- python = { python-flake8 },
+        go = {
+          {
+            formatCommand = "golines --max-len=120  --base-formatter=gofumpt",
+            formatStdin = true,
+            -- "staticcheck" ?
+            lintCommand = "golangci-lint run",
+            LintSeverity = 3,
+            --out-format github-actions",
+            -- ::warning file=cmd/root.go,line=22,col=2::`hostname` is unused (deadcode)
+            -- lintFormats = {"::%tarning file=%f,line=%l,col=%c::%m"}
+            -- {"%f:%l:%c: %m"}
+            -- {"::%tarning %f,line=%l,col=%c::%m"},
+              --       - '%f:%l:%c: %tarning: %m' ::warning file=cmd/root.go,line=18,col=2::`envFile` is unused (deadcode)
+            --lintCategoryMap = "w: W",
+          }
+        },
+
+        lua = {
+          -- --indent-width 2 --tab-width 2 --no-use-tab --column-limit 110 --column-table-limit 100 --no-keep-simple-function-one-line --no-chop-down-table --chop-down-kv-table --no-keep-simple-control-block-one-line --no-keep-simple-function-one-line --no-break-after-functioncall-lp --no-break-after-operator
+          { formatCommand = "lua-format --indent-width 2 --tab-width 2 --no-use-tab --column-limit 120 --column-table-limit 100 --no-keep-simple-function-one-line --no-chop-down-table --chop-down-kv-table --no-keep-simple-control-block-one-line --no-keep-simple-function-one-line --no-break-after-functioncall-lp --no-break-after-operator",
+           formatStdin = true,
+           -- lintCommand = "luacheck -d --formatter plain --codes --filename %s -", formatStdin = true,
+           -- LintSeverity = 3,
+           -- lintStdin = true,
+           -- lintFormats = {"%f:%l:%c: %m"},
+           -- lintIgnoreExitCode = true,
+          }
+        },
       }
     }
   }
+  -- lspconfig.stylelint_lsp.setup {
+  --   stylelint = {
+  --     settings = {
+  --       stylelintplus = {
+  --         -- see available options in stylelint-lsp documentation
+  --       }
+  --     }
+  --   }
+  -- }
+
+
+  -- if not lspconfig.golangcilsp then
+  --   configs.golangcilsp = {
+  --     default_config = {
+  --       cmd = {'golangci-lint-langserver'},
+  --       root_dir = lspconfig.util.root_pattern('.git', 'go.mod'),
+  --       init_options = {
+  --           command = { "golangci-lint", "run", "--enable-all", "--disable", "lll", "--out-format", "json" };
+  --       }
+  --     };
+  --   }
+  -- end
+  -- lspconfig.golangcilsp.setup {
+  --   filetypes = {'go'}
+  -- }
+
+
+  -- lspconfig.dartls.setup{init_options = {
+  --     closingLabels = false,
+  --     flutterOutline = false,
+  --     onlyAnalyzeProjectsWithOpenFiles = false,
+  --     outline = false,
+  --     suggestFromUnimportedLibraries = true,
+  --     triggerSignatureHelpAutomatically = true,
+  --   }}
+
+  vim.lsp.handlers["textDocument/publishDiagnostics"] =
+    vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
+      virtual_text = true,
+      signs = true,
+      underline = true,
+      update_in_insert = false
+    })
+
+
+  -- vim.g.diagnostics_active = true
+  -- function _G.toggle_diagnostics()
+  --   if vim.g.diagnostics_active then
+  --     vim.g.diagnostics_active = false
+  --     vim.lsp.diagnostic.clear(0)
+  --     vim.lsp.handlers["textDocument/publishDiagnostics"] = function()
+  --     end
+  --   else
+  --     vim.g.diagnostics_active = true
+  --     vim.lsp.handlers["textDocument/publishDiagnostics"] =
+  --         vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
+  --           virtual_text = true,
+  --           signs = true,
+  --           underline = true,
+  --           update_in_insert = false
+  --         })
+  --   end
+  -- end
+  -- _G.toggle_diagnostics()
+
+  vim.api.nvim_set_keymap('n', '<leader>tt', ':call v:lua.toggle_diagnostics()<CR>',
+                          {noremap = true, silent = true})
+
+  -- local lspconfig = require 'lspconfig'
+  -- local configs = require 'lspconfig/configs'
+
+  -- local rust_cfg = {
+  --   filetypes = {"rust"},
+  --   root_dir = lspconfig.util.root_pattern("Cargo.toml", "rust-project.json", ".git"),
+  --   settings = {
+  --     ["rust-analyzer"] = {
+  --       assist = {importMergeBehavior = "last", importPrefix = "by_self"},
+  --       cargo = {loadOutDirsFromCheck = true},
+  --       procMacro = {enable = true}
+  --     }
+  --   }
+  -- }
+  -- lspconfig.rust_analyzer.setup(rust_cfg)
 end
-
-vim.g.diagnostics_active = true
-function _G.toggle_diagnostics()
-  if vim.g.diagnostics_active then
-    vim.g.diagnostics_active = false
-    vim.lsp.diagnostic.clear(0)
-    vim.lsp.handlers["textDocument/publishDiagnostics"] = function() end
-  else
-    vim.g.diagnostics_active = true
-    vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-      vim.lsp.diagnostic.on_publish_diagnostics, {
-        virtual_text = true,
-        signs = true,
-        underline = true,
-        update_in_insert = false,
-      }
-    )
-  end
-end
-_G.toggle_diagnostics()
-
-vim.api.nvim_set_keymap('n', '<leader>tt', ':call v:lua.toggle_diagnostics()<CR>',  {noremap = true, silent = true})
-
--- local lspconfig = require 'lspconfig'
--- local configs = require 'lspconfig/configs'
-
--- if not lspconfig.golangcilsp then
---   configs.golangcilsp = {
---     default_config = {
---       cmd = {'golangci-lint-langserver'},
---       root_dir = lspconfig.util.root_pattern('.git', 'go.mod'),
---       init_options = {
---           command = { "golangci-lint", "run", "--enable-all", "--disable", "lll", "--out-format", "json" };
---       }
---     };
---   }
--- end
--- lspconfig.golangcilsp.setup {
---   filetypes = {'go'}
--- }
-
--- local rust_cfg = {
---   filetypes = {"rust"},
---   root_dir = lspconfig.util.root_pattern("Cargo.toml", "rust-project.json", ".git"),
---   settings = {
---     ["rust-analyzer"] = {
---       assist = {importMergeBehavior = "last", importPrefix = "by_self"},
---       cargo = {loadOutDirsFromCheck = true},
---       procMacro = {enable = true}
---     }
---   }
--- }
--- lspconfig.rust_analyzer.setup(rust_cfg)
-
 return M
+
+
+    -- lspconfig.efm.setup {
+    --     cmd = { 'efm-langserver', '-c', efm_config, '-logfile', efm_log },
+    --     on_attach = on_attach,
+    --     flags = { debounce_text_changes = 150 },
+    --     filetypes = {
+    --         'python',
+    --         'lua',
+    --         'yaml',
+    --         'json',
+    --         'markdown',
+    --         'rst',
+    --         'html',
+    --         'css',
+    --         'javascript',
+    --         'typescript',
+    --         'javascriptreact',
+    --         'typescriptreact',
+    --         'bash',
+    --         'sh',
+    --     },
+    --     -- Fallback to .bashrc as a project root to enable LSP on loose files
+    --     root_dir = function(fname)
+    --         return lspconfig.util.root_pattern(
+    --             'tsconfig.json',
+    --             'pyproject.toml'
+    --         )(fname) or lspconfig.util.root_pattern(
+    --             '.eslintrc.js',
+    --             '.git'
+    --         )(fname) or lspconfig.util.root_pattern(
+    --             'package.json',
+    --             '.git/',
+    --             '.zshrc'
+    --         )(fname)
+    --     end,
+    --     init_options = {
+    --         documentFormatting = true,
+    --         documentSymbol = false,
+    --         completion = false,
+    --         codeAction = false,
+    --         hover = false,
+    --     },
+    --     settings = {
+    --         rootMarkers = { 'package.json', 'go.mod', '.git/', '.zshrc' },
+    --         languages = {
+    --             python = { isortd, blackd },
+    --             lua = { stylua },
+    --             yaml = { prettierd },
+    --             json = { dprint },
+    --             markdown = { dprint },
+    --             html = { prettier_d },
+    --             css = { prettier_d },
+    --             javascript = { eslint_d, prettierd },
+    --             typescript = { eslint_d, prettierd },
+    --             javascriptreact = { eslint_d, prettierd },
+    --             typescriptreact = { eslint_d, prettierd },
+    --             bash = { shellcheck, shfmt },
+    --             sh = { shellcheck, shfmt },
+    --         },
+    --     },
+    -- }

@@ -53,8 +53,8 @@ local treesitter = function()
       lsp_interop = {
         enable = enable,
         peek_definition_code = {
-          ["df"] = "@function.outer",
-          ["dF"] = "@class.outer"
+          ["DF"] = "@function.outer",
+          ["DF"] = "@class.outer"
         }
       },
       keymaps = {

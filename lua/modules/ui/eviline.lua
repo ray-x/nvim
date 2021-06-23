@@ -15,7 +15,12 @@ local colors = {
   blue = "#51afef",
   red = "#ec5f67"
 }
-colors.bg = vim.fn.synIDattr(vim.fn.synIDtrans(vim.fn.hlID("StatusLine")), "bg#")
+
+
+local bg = vim.fn.synIDattr(vim.fn.synIDtrans(vim.fn.hlID("StatusLine")), "bg#")
+if bg and #bg > 0 then
+  colors.bg = bg
+end
 
 local split = function(str, pat)
   local t = {} -- NOTE: use {n = 0} in Lua-5.0

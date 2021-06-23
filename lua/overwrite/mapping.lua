@@ -41,9 +41,9 @@ local keys = {
   --
   -- Lsp mapp work when insertenter and lsp start
   --
-  ["n|<Leader>tc"] = map_cu("Clap colors"):with_noremap():with_silent(),
-  ["n|<Leader>bb"] = map_cu("Clap buffers"):with_noremap():with_silent(),
-  ["n|<Leader>fa"] = map_cu("Clap grep"):with_noremap():with_silent(),
+  -- ["n|<Leader>tc"] = map_cu("Clap colors"):with_noremap():with_silent(),
+  -- ["n|<Leader>bb"] = map_cu("Clap buffers"):with_noremap():with_silent(),
+  ["n|<Leader>ff"] = map_cu("Clap grep"):with_noremap():with_silent(),
   ["n|<Leader>fb"] = map_cu("Clap marks"):with_noremap():with_silent(),
   ["n|<C-x><C-f>"] = map_cu("Clap filer"):with_noremap():with_silent(),
   ["n|<Leader>ff"] = map_cu("Clap files ++finder=rg --ignore --hidden --files"):with_noremap():with_silent(),
@@ -98,10 +98,21 @@ local keys = {
   ["n|jo"] = map_cr("SplitjoinJoin"),
   ["n|<F13>"] = map_cr("NvimTreeToggle"),
   ["n|hw"] = map_cr("HopWord"),
-  ["n|hl"] = map_cr("HopLine"),
-  ["n|<Space>h"] = map_cr("HopChar1"),
-  ["n|<Space><Space>"] = map_cr("HopChar2"),
-  ["n|<Leader>F"] = map_cr("HopPattern")
+  ["n|hW"] = map_cr("HopWordBC"),
+  ["n|hA"] = map_cr("HopWordAC"),
+  ["n|hl"] = map_cr("HopLineAC"),
+  ["n|hL"] = map_cr("HopLineBC"),
+  ["n|h1"] = map_cr("HopChar1"),
+  ["n|s"] = map_cr("HopChar1AC"),
+  ["n|S"] = map_cr("HopChar1BC"),
+  ["v|s"] = map_cr("HopChar1AC"),
+  ["v|S"] = map_cr("HopChar1BC"),
+  ["n|<Space>*"] = map_cr("HopChar2"),
+  ["n|<Space>("] = map_cr("HopChar2AC"),
+  ["n|<Space>)"] = map_cr("HopChar2BC"),
+  ["n|<Space>F"] = map_cr("HopPattern"),
+  ["n|<Space>]"] = map_cr("HopPatternAC"),
+  ["n|<Space>["] = map_cr("HopPatternBC"),
 
   -- ["n|;"] = map_cmd("<Plug>Sneak_;"):with_silent()
 }

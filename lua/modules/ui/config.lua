@@ -135,6 +135,8 @@ function config.nvim_tree()
   vim.g.nvim_tree_lsp_diagnostics = 1
   vim.g.nvim_tree_width_allow_resize = 1
   vim.g.nvim_tree_tab_open = 1
+  vim.g.nvim_tree_highlight_opened_files = 0
+  vim.g.nvim_tree_hijack_cursor = 1
   vim.g.nvim_tree_bindings = {
     ["l"] = ":lua require'nvim-tree'.on_keypress('edit')<CR>",
     ["s"] = ":lua require'nvim-tree'.on_keypress('vsplit')<CR>",
@@ -258,8 +260,8 @@ function config.material()
   vim.g.material_contrast = true
   vim.g.material_borders = true
   vim.g.material_disable_background = false
-  vim.g.material_style = 'mariana'
-  vim.g.material_style_fix = true
+  -- vim.g.material_style = "dracula_blood" -- 'moonlight'
+  -- vim.g.material_style_fix = true
   -- config.default()
 end
 
@@ -278,15 +280,29 @@ end
 
 function config.nightfly()
   vim.g.nightflyCursorColor = 1
-  vim.g.nightflyTerminalColors = 0
+  vim.g.nightflyUnderlineMatchParen = 1
   vim.g.nightflyUndercurls = 1
   vim.g.nightflyItalics = 1
+  vim.g.nightflyNormalFloat = 1
   vim.g.nightflyTransparent = 1
+
   -- body
 end
 
+function config.moonfly()
+  vim.g.moonflyCursorColor = 1
+  vim.g.moonflyUnderlineMatchParen = 1
+  vim.g.moonflyUndercurls = 1
+  vim.g.moonflyTransparent = 1
+  vim.g.moonflyNormalFloat = 1
+  vim.g.moonflyItalics = 1
+  -- body
+end
+
+
 function config.nvcode()
-  local opt = {"nvcode", "onedark", "gruvbox"}
+  vim.g.nvcode_termcolors=256
+  local opt = {"nvcode", "nord", "aurora", "onedark", "gruvbox", "palenight", "snazzy"}
   local v = "colorscheme " .. opt[math.random(1, #opt)]
 
   vim.cmd(v)
@@ -304,6 +320,7 @@ end
 
 function config.zephyr()
   require("zephyr")
+  vim.cmd([[hi PmenuSel guibg=#315f7f]])
 end
 function config.sonokai()
   local opt = {"andromeda", "default", "andromeda", "shusia", "maia", "atlantis"}
@@ -384,6 +401,7 @@ vim.api.nvim_exec(
   [[
     set cursorcolumn
     augroup vimrc_todo
+    set background=dark
     au!
     au Syntax *.go,*.c,*.rs,*.js,*.tsx,*.cpp,*.html syn match MyTodo /\v<(FIXME|Fixme|NOTE|Note|TODO|ToDo|OPTIMIZE|XXX):/ containedin=.*Comment,vimCommentTitle
     augroup END
@@ -396,22 +414,27 @@ vim.api.nvim_exec(
 
 math.randomseed(os.time())
 local themes = {
-  -- "aurora",
-  -- "tokyonight.nvim",
-  -- "aurora",
+  "aurora",
+  "tokyonight.nvim",
+  "aurora",
   "material_plus.nvim",
-  -- "aurora",
-  -- "zephyr-nvim",
-  -- "aurora",
-  -- "material_plus.nvim",
-  -- "gruvbox"
-  -- "nvcode-color-schemes.vim",
-  -- "vim-nightfly-guicolors",
-  -- "vim-moonfly-colors",
-  -- "neon",
+  "aurora",
+  "zephyr-nvim",
+  "aurora",
+  "material_plus.nvim",
+  -- "gruvbox.nvim",
+  "nvcode-color-schemes.vim",
+  "vim-nightfly-guicolors",
+  "vim-moonfly-colors",
+  "neon",
 } --"material.nvim",
 local v = math.random(1, #themes)
 local loading_theme = themes[v]
+if loading_theme == "gruvbox.nvim" then
+  -- require "packer".loader("lush.nvim")
+  vim.cmd([[packadd lush.nvim]])
+end
+  
 local cmd =
   [[au VimEnter * ++once lua require("packer.load")({']] ..
   loading_theme .. [['}, { event = "VimEnter *" }, _G.packer_plugins)]]

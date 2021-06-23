@@ -139,14 +139,14 @@ function config.clap()
   vim.g.clap_preview_size = 10
   vim.g.airline_powerline_fonts = 1
   vim.g.clap_layout = {relative = "editor", width = "83%", row = "20%", col = "10%"} -- height = "40%", row = "17%",
-  vim.g.clap_popup_border = "rounded"
+  -- vim.g.clap_popup_border = "rounded"
   vim.g.clap_selected_sign = {text = "", texthl = "ClapSelectedSign", linehl = "ClapSelected"}
   vim.g.clap_current_selection_sign = {
     text = "",
     texthl = "ClapCurrentSelectionSign",
     linehl = "ClapCurrentSelection"
   }
-  vim.g.clap_always_open_preview = true
+  -- vim.g.clap_always_open_preview = true
   vim.g.clap_preview_direction = "UD"
   -- if vim.g.colors_name == 'zephyr' then
   vim.g.clap_theme = 'material_design_dark'

@@ -82,25 +82,26 @@ ui["bluz71/vim-nightfly-guicolors"] = {
 
 ui['bluz71/vim-moonfly-colors'] = {
   opt = true,
-  setup = function() 
-    vim.g.moonflyCursorColor = 1
-    vim.g.moonflyUnderlineMatchParen = 1
-    vim.g.moonflyTransparent = 1
-    vim.g.moonflyNormalFloat = 1
-  end,
+  setup = moonfly,
   config = function()
     vim.cmd([[colorscheme moonfly]])
   end
 }
+
+
 ui["ChristianChiarulli/nvcode-color-schemes.vim"] = {opt = true, config = conf.nvcode}
 
-ui["morhetz/gruvbox"] = {
-  opt = true,
-  -- setup = conf.gruvbox,
-  config = function()
-    vim.cmd([[colorscheme gruvbox]])
-  end
-}
+-- ui["npxbr/gruvbox.nvim"] = {
+--   opt = true,
+--   requires = {'rktjmp/lush.nvim', opt = true},
+--   setup = function()
+--     vim.cmd([[set background=dark]])
+--   end,
+--   config = function()
+--     vim.cmd([[set background=dark]])
+--     vim.cmd([[colorscheme gruvbox]])
+--   end
+-- }
 
 -- ui['dracula/vim'] = {
 --   opt = true,

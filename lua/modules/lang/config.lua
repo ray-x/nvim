@@ -119,23 +119,70 @@ end
 
 function config.navigator()
   local capabilities = vim.lsp.protocol.make_client_capabilities()
+  local sumneko_root_path = vim.fn.expand("$HOME") .. "/github/sumneko/lua-language-server"
+  local sumneko_binary = vim.fn.expand("$HOME") .. "/github/sumneko/lua-language-server/bin/macOS/lua-language-server"
   print("navigator setup")
+
+  -- local cfg = {
+  --   library = {
+  --     vimruntime = true, -- runtime path
+  --     types = true, -- full signature, docs and completion of vim.api, vim.treesitter, vim.lsp and others
+  --     plugins = true, -- installed opt or start plugins in packpath
+  --     -- you can also specify the list of plugins to make available as a workspace library
+  --     -- plugins = { "nvim-treesitter", "plenary.nvim", "navigator" },
+  --   },
+  --   -- pass any additional options that will be merged in the final lsp config
+  --   lspconfig = {
+  --     -- cmd = {sumneko_binary},
+  --     -- on_attach = ...
+  --   },
+  -- }
+
+  -- local luadev = require("lua-dev").setup(cfg)
+  local single = {"╭", "─", "╮", "│", "╯", "─", "╰", "│"}
+
   require "navigator".setup({
     debug = true,
     width = 0.7,
+    border = single, --"single",
     lsp = {
       format_on_save = true, -- set to false to disasble lsp code format on save (if you are using prettier/efm/formater etc)
+      -- denols = {
+      --   filetypes ={},
+      -- },
+      flow = {
+        filetypes ={},
+      },
       gopls = {
         on_attach = function(client)
           -- print("i am a hook")
           client.resolved_capabilities.document_formatting = false
+          require "lsp_signature".on_attach(
+            {
+              floating_window = true,
+              log_path = "/Users/ray.xu/tmp/sig.log",
+              debug = true,
+              fix_pos = true,
+              bind = true, -- This is mandatory, otherwise border config won't get registered.
+              handler_opts = {
+                -- border = "shadow"
+                -- border = {""},
+                -- border = {"w", "═" ,"╗", "║", "╝", "═", "╚", "║" },
+                border = {"╭", "─" ,"╮", "│", "╯", "─", "╰", "│" },
+              },
+            }
+          )
         end,
         settings = {
           gopls = {gofumpt = true}, -- enableww gofumpt etc,
-
         },
         -- set to {} to disable the lspclient for all filetype
-      }
+      },
+      sumneko_lua = {
+        sumneko_root_path = sumneko_root_path,
+        sumneko_binary = sumneko_binary,
+        -- settings = luadev.settings
+      },
     }
   })
 end
@@ -150,9 +197,34 @@ function config.playground()
     }
   }
 end
-
 function config.luadev()
   -- vim.cmd([[vmap <leader><leader>r <Plug>(Luadev-Run)]])
+end
+function config.lua_dev()
+  local cfg = {
+    library = {
+      vimruntime = true, -- runtime path
+      types = true, -- full signature, docs and completion of vim.api, vim.treesitter, vim.lsp and others
+      plugins = true, -- installed opt or start plugins in packpath
+      -- you can also specify the list of plugins to make available as a workspace library
+      -- plugins = { "nvim-treesitter", "plenary.nvim", "navigator" },
+    },
+    -- pass any additional options that will be merged in the final lsp config
+    lspconfig = {
+      -- cmd = {sumneko_binary},
+      -- on_attach = ...
+    },
+  }
+
+  local luadev = require("lua-dev").setup(cfg)
+  -- {
+  --   -- add any options here, or leave empty to use the default settings
+  --   -- lspconfig = {
+  --   --   cmd = {"lua-language-server"}
+  --   -- },
+  -- })
+  -- print(vim.inspect(luadev))
+  -- require('lspconfig').sumneko_lua.setup(luadev)
 end
 
 function config.go()
@@ -191,54 +263,53 @@ function config.dap()
   require("modules.lang.dap.dap")
 end
 
-function config.formatter()
-  -- body
-
-  require("formatter").setup(
-    {
-      logging = false,
-      filetype = {
-        javascript = {
-          -- prettier
-          function()
-            return {
-              exe = "prettier",
-              args = {"--stdin-filepath", vim.api.nvim_buf_get_name(0), "--single-quote"},
-              stdin = true
-            }
-          end
-        },
-        rust = {
-          -- Rustfmt
-          function()
-            return {
-              exe = "rustfmt",
-              args = {"--emit=stdout"},
-              stdin = true
-            }
-          end
-        },
-        lua = {
-          -- luafmt
-          function()
-            return {
-              exe = "lua-format",
-              args = {"--indent-width 2", "--tab-width 2", "--no-use-tab", "--column-limit", 110, "--column-table-limit", 100, 
-              "--no-keep-simple-function-one-line", "--no-chop-down-table", "--chop-down-kv-table", "--no-keep-simple-control-block-one-line", 
-            "--no-keep-simple-function-one-line", "--no-break-after-functioncall-lp", "--no-break-after-operator"},
-              stdin = true
-            }
-          end
-        }
-      }
-    }
-  )
-  -- vim.api.nvim_exec([[
-  -- augroup FormatAutogroup
-  --   autocmd!
-  --   autocmd BufWritePre *.js,*.rs,*.lua FormatWrite
-  -- augroup END
-  -- ]], true)
-end
+-- using efm
+-- function config.formatter()
+--   require("formatter").setup(
+--     {
+--       logging = false,
+--       filetype = {
+--         javascript = {
+--           -- prettier
+--           function()
+--             return {
+--               exe = "prettier",
+--               args = {"--stdin-filepath", vim.api.nvim_buf_get_name(0), "--single-quote"},
+--               stdin = true
+--             }
+--           end
+--         },
+--         rust = {
+--           -- Rustfmt
+--           function()
+--             return {
+--               exe = "rustfmt",
+--               args = {"--emit=stdout"},
+--               stdin = true
+--             }
+--           end
+--         },
+--         lua = {
+--           -- luafmt
+--           function()
+--             return {
+--               exe = "lua-format",
+--               args = {"--indent-width 2", "--tab-width 2", "--no-use-tab", "--column-limit", 110, "--column-table-limit", 100, 
+--               "--no-keep-simple-function-one-line", "--no-chop-down-table", "--chop-down-kv-table", "--no-keep-simple-control-block-one-line", 
+--             "--no-keep-simple-function-one-line", "--no-break-after-functioncall-lp", "--no-break-after-operator"},
+--               stdin = true
+--             }
+--           end
+--         }
+--       }
+--     }
+--   )
+--   -- vim.api.nvim_exec([[
+--   -- augroup FormatAutogroup
+--   --   autocmd!
+--   --   autocmd BufWritePre *.js,*.rs,*.lua FormatWrite
+--   -- augroup END
+--   -- ]], true)
+-- end
 
 return config
