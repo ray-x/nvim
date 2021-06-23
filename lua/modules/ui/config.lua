@@ -5,12 +5,24 @@ function config.galaxyline()
     packer_plugins["nvim-web-devicons"].loaded = true
     require "packer".loader("nvim-web-devicons")
   end
+  local opt = {"soft", "medium", "hard"}
+  local v = opt[math.random(1, #opt)]
+  vim.g.gruvbox_invert_selection = 0
+  vim.g.gruvbox_italic = 1
+  vim.g.gruvbox_italicize_strings = 1
+  vim.g.gruvbox_invert_signs = 1
+  vim.g.gruvbox_improved_strings = 1
+  vim.g.gruvbox_improved_warnings = 1
+  vim.g.gruvbox_contrast_dark=v
+
   require("modules.ui.eviline")
 end
 
 local winwidth = function()
   return vim.api.nvim_call_function("winwidth", {0})
 end
+
+
 
 -- function config.barbar()
 --   vim.api.nvim_exec([[
@@ -304,7 +316,6 @@ function config.nvcode()
   vim.g.nvcode_termcolors=256
   local opt = {"nvcode", "nord", "aurora", "onedark", "gruvbox", "palenight", "snazzy"}
   local v = "colorscheme " .. opt[math.random(1, #opt)]
-
   vim.cmd(v)
   -- body
 end
@@ -422,7 +433,7 @@ local themes = {
   "zephyr-nvim",
   "aurora",
   "material_plus.nvim",
-  -- "gruvbox.nvim",
+  "gruvbox.nvim",
   "nvcode-color-schemes.vim",
   "vim-nightfly-guicolors",
   "vim-moonfly-colors",

@@ -91,17 +91,18 @@ ui['bluz71/vim-moonfly-colors'] = {
 
 ui["ChristianChiarulli/nvcode-color-schemes.vim"] = {opt = true, config = conf.nvcode}
 
--- ui["npxbr/gruvbox.nvim"] = {
---   opt = true,
---   requires = {'rktjmp/lush.nvim', opt = true},
---   setup = function()
---     vim.cmd([[set background=dark]])
---   end,
---   config = function()
---     vim.cmd([[set background=dark]])
---     vim.cmd([[colorscheme gruvbox]])
---   end
--- }
+ui["npxbr/gruvbox.nvim"] = {
+  opt = true,
+  requires = {'rktjmp/lush.nvim', opt = true},
+  setup = function()
+    vim.cmd([[set background=dark]])
+  end,
+  config = function()
+    vim.cmd([[set background=dark]])
+    vim.cmd('highlight StatusLine gui=reverse guifg=#ebdbb2 guibg=#3c3836')
+    vim.cmd([[colorscheme gruvbox]])
+  end
+}
 
 -- ui['dracula/vim'] = {
 --   opt = true,

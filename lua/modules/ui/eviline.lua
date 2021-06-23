@@ -20,6 +20,10 @@ local colors = {
 local bg = vim.fn.synIDattr(vim.fn.synIDtrans(vim.fn.hlID("StatusLine")), "bg#")
 if bg and #bg > 0 then
   colors.bg = bg
+  -- gruvbox is revert color for status line
+  if vim.g.colors_name == 'gruvbox' then
+    colors.bg = '#4f4945'
+  end
 end
 
 local split = function(str, pat)
