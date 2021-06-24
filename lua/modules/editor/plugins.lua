@@ -121,7 +121,7 @@ editor["phaazon/hop.nvim"] = {
   cmd = {"HopWord", "HopLine", "HopChar1", "HopChar1AC", "HopChar1BC", "HopChar2AC","HopChar2BC", "HopPatternAC", "HopPatternBC"},
   config = function()
     -- you can configure Hop the way you like here; see :h hop-config
-    require "hop".setup {keys = "etovxqpdygfblzhckisuran"}
+    require "hop".setup {keys = "asdghklqwertyuiopzxcvbnmfjASDGHKLQWERTYUIOPZXCVBNMFJ1234567890[]"}
     -- vim.api.nvim_set_keymap('n', '$', "<cmd>lua require'hop'.hint_words()<cr>", {})
   end
 }
