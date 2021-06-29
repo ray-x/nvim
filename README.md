@@ -1,8 +1,8 @@
 # vim as a programming IDE
 
-This init.lua is highly optimized for loading performance. Packer lazy loading + After rendering async plugin loading. Maybe the
-only one that can render multiple files with treesitter in less than 80ms with ~80 plugins installed
-In the test, I loaded util.lua(1686 loc) and lsp.lua(1538 loc) from neovim source code in 80.6ms
+This neovim configure file is highly optimized for loading performance. Packer lazy loading + After rendering async plugin loading. Maybe the
+only nvim setup in github that can render multiple files with treesitter in less than 80ms with ~80 plugins installed
+(e.g. Open both util.lua(1686 loc) and lsp.lua(1538 loc) from neovim source code in 80.6ms)
 
 
 The `Plug` config is located in branch [Plug branch](https://github.com/ray-x/dotfiles/tree/zprezto-plug)
@@ -26,8 +26,8 @@ There are lots of amazing plugins,
 I used following plugin a lots
 
 - `Plug` -> `Dein` -> `Lua-Packer`
-  Dein is a great tool. Very fast and very well support for vim/neovim lazy loading. Change to Lua-Packer does not
-  bring as great improvements as Plug -> Dein. But still about 80ms faster (~20%) for Golang codes loading.
+  Change to Lua-Packer does not
+  bring as great improvements as Plug -> Dein. But still about 80ms faster for Golang codes loading.
   If you interested in Dein version, Please refer to [Dein](https://github.com/ray-x/dotfiles/tree/nvim-comple).
   This was the last Dein/Packer dual supports version I have (init.vim has a flag to choose).
   ATM, minium support for vim. Most plugins only works under neovim 0.5.0+.
