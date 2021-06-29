@@ -139,7 +139,7 @@ local treesitter = function()
 
   -- vim.api.nvim_command("setlocal foldmethod=expr")
   -- vim.api.nvim_command("setlocal foldexpr=nvim_treesitter#foldexpr()")
-  print("loading ts")
+  -- print("loading ts")
 end
 
 local treesitter_ref = function()
@@ -157,7 +157,7 @@ local treesitter_ref = function()
     print('skip treesitter')
     enable = false
   end
-  print('load treesitter refactor', vim.fn.line('$'))
+  -- print('load treesitter refactor', vim.fn.line('$'))
 
   require "nvim-treesitter.configs".setup {
     refactor = {

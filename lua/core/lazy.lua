@@ -14,6 +14,7 @@ function lazyload()
     -- vim.cmd([[syntax on]])
     return
   end
+  local load_lsp = true
   print("I am lazy")
   local disable_ft = {"NvimTree", "guihua", "clap_input", "clap_spinner", "TelescopePrompt", "csv", "txt", "defx", "sidekick"}
   local syn_on = not vim.tbl_contains(disable_ft, vim.bo.filetype)
@@ -45,7 +46,6 @@ function lazyload()
   loader(plugins)
 
   if load_lsp then
-    print("lsp")
     loader("nvim-lspconfig guihua.lua lsp_signature.nvim navigator.lua")
   end
 

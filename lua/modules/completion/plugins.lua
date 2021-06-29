@@ -67,7 +67,6 @@ completion["mattn/emmet-vim"] = {
 completion["/Users/ray.xu/github/lsp_signature.nvim"] = {
   opt = true,
   config = function()
-    print("signature load")
     require "lsp_signature".on_attach(
       {
         floating_window = true,
