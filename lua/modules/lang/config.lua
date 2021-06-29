@@ -1,8 +1,6 @@
 local config = {}
 
 function config.nvim_treesitter()
-  vim.api.nvim_command("set foldmethod=expr")
-  vim.api.nvim_command("set foldexpr=nvim_treesitter#foldexpr()")
   require("modules.lang.treesitter").treesitter()
 end
 
@@ -117,6 +115,19 @@ end
 function config.sqls()
 end
 
+
+function config.syntax_folding()
+  local fname = vim.fn.expand("%:p:f")
+  local fsize = vim.fn.getfsize(fname)
+  if fsize > 1024 * 1024 then
+    print("disable syntax_folding")
+    vim.api.nvim_command("setlocal foldmethod=none")
+    return
+  end
+  vim.api.nvim_command("setlocal foldmethod=expr")
+  vim.api.nvim_command("setlocal foldexpr=nvim_treesitter#foldexpr()")
+end
+
 function config.navigator()
   local capabilities = vim.lsp.protocol.make_client_capabilities()
   local sumneko_root_path = vim.fn.expand("$HOME") .. "/github/sumneko/lua-language-server"
@@ -147,36 +158,27 @@ function config.navigator()
     border = single, --"single",
     lsp = {
       format_on_save = true, -- set to false to disasble lsp code format on save (if you are using prettier/efm/formater etc)
-      -- denols = {
+      denols = {
+        filetypes ={},
+      },
+      -- flow = {
       --   filetypes ={},
       -- },
-      flow = {
-        filetypes ={},
+      tsserver = {
+        filetypes ={ "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx" },
       },
       gopls = {
         on_attach = function(client)
           -- print("i am a hook")
           client.resolved_capabilities.document_formatting = false
-          require "lsp_signature".on_attach(
-            {
-              floating_window = true,
-              log_path = "/Users/ray.xu/tmp/sig.log",
-              debug = true,
-              fix_pos = true,
-              bind = true, -- This is mandatory, otherwise border config won't get registered.
-              handler_opts = {
-                -- border = "shadow"
-                -- border = {""},
-                -- border = {"w", "═" ,"╗", "║", "╝", "═", "╚", "║" },
-                border = {"╭", "─" ,"╮", "│", "╯", "─", "╰", "│" },
-              },
-            }
-          )
         end,
         settings = {
           gopls = {gofumpt = true}, -- enableww gofumpt etc,
         },
         -- set to {} to disable the lspclient for all filetype
+      },
+      clangd = {
+        filetypes = {}
       },
       sumneko_lua = {
         sumneko_root_path = sumneko_root_path,

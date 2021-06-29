@@ -29,7 +29,8 @@ function autocmd.load_autocmds()
       },
       {"BufReadPre", "*", 'if getfsize(expand("%")) > 1000000 | syntax off | endif'},
       {"BufWritePost", "plugins.lua", "PackerCompile"},
-      {"UIEnter", "*", ":silent! :lua require('modules.lang.treesitter')"},
+      {"UIEnter", "*", ":silent! :lua require('modules.lang.config').syntax_folding()"},
+      {"BufReadPre", "*", ":silent! :lua require('modules.lang.config').nvim_treesitter()"},
       -- {"BufWritePre", "*.js,*.rs,*.lua", ":FormatWrite"},
       -- {"BufWritePre", "*.go", ":silent! :lua require('go.format').gofmt()"}
       -- {"InsertEnter", "*", ":silent! :lua require('modules.editor.config').pears_setup()"}

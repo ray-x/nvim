@@ -29,6 +29,7 @@ function lazyload()
   local load_ts_plugins = true
   if fsize > 1024 * 1024 then
     load_ts_plugins = false
+    load_lsp = false
   end
   if fsize > 6 * 1024 * 1024 then
     -- vim.cmd([[syntax off]])
@@ -39,12 +40,14 @@ function lazyload()
   --   loader("lua-dev.nvim")
   -- end
 
-  local plugins = "nvim-treesitter nvim-lspconfig" -- nvim-treesitter-textobjects should be autoloaded
-  loader(plugins)
-
-  plugins = "plenary.nvim gitsigns.nvim indent-blankline.nvim guihua.lua lsp_signature.nvim navigator.lua" --nvim-lspconfig navigator.lua   guihua.lua navigator.lua 
+  plugins = "plenary.nvim gitsigns.nvim" --nvim-lspconfig navigator.lua   guihua.lua navigator.lua 
   vim.g.vimsyn_embed = 'lPr'
   loader(plugins)
+
+  if load_lsp then
+    print("lsp")
+    loader("nvim-lspconfig guihua.lua lsp_signature.nvim navigator.lua")
+  end
 
   --require'lsp.config'.setup()
 
@@ -53,13 +56,23 @@ function lazyload()
   local bytes = vim.fn.wordcount()['bytes']
   -- print(bytes)
   if load_ts_plugins then
-    plugins = "nvim-treesitter-refactor"  --  nvim-ts-rainbow nvim-ts-autotag
+    print("treesitter")
+    plugins = "nvim-treesitter nvim-treesitter-refactor indent-blankline.nvim"  --  nvim-ts-rainbow nvim-ts-autotag
+    -- nvim-treesitter-textobjects should be autoloaded
     loader(plugins)
     -- enable syntax if is small  
     if bytes < 512 * 1024 and syn_on then
       vim.cmd([[setlocal syntax=on]])
     end
     return -- do not enable syntax
+  else
+    vim.cmd([[setlocal syntax=on]])
+    -- require "nvim-treesitter.configs".setup { 
+    --   highlight = { 
+    --   enable = true,
+    --   use_languagetree = false,
+    --   }
+    -- }
   end
   if bytes < 1024 * 1024 and syn_on then
     vim.cmd([[setlocal syntax=on]])

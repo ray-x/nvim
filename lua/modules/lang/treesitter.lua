@@ -9,18 +9,21 @@ local treesitter = function()
   --   -- packer_plugins['nvim-treesitter-refactor'].loaded = true
   -- end
   local enable = true
-  if vim.fn.line('$') > 30000 then  -- skip some settings for large file
-    vim.cmd[[syntax on]]
+  local langtree = true
+  local lines = vim.fn.line('$')
+  if lines > 30000 then  -- skip some settings for large file
+    -- vim.cmd[[syntax on]]
     print('skip treesitter')
-    enable = false
+    require "nvim-treesitter.configs".setup {highlight = {enable = enable}}
+    return
   end
-  if fsize == nil or fsize < 0 then
-    fsize = 1
-  end
-  if fsize > 512 * 1024 then
+
+  if lines > 7000 then
     enable = false
+    langtree = false
     print("disable ts txtobj")
   end
+
   -- if vim.fn.line('$') > 20000 then  -- skip for large file
   --   vim.cmd[[syntax on]]
   --   print('skip treesitter')
@@ -33,7 +36,7 @@ local treesitter = function()
       enable = true, -- false will disable the whole extension
       disable = {"elm"}, -- list of language that will be disabled
       custom_captures = {},
-      use_languagetree = true
+      use_languagetree = langtree
     },
     incremental_selection = {
       enable = enable,
@@ -133,7 +136,10 @@ local treesitter = function()
     ensure_installed = "maintained"
     --{ "go", "css", "html", "javascript", "typescript", "jsdoc", "json", "c", "java", "toml", "tsx", "lua", "cpp", "python", "rust", "jsonc", "dart", "css", "yaml", "vue"}
   }
-  -- print("loading ts")
+
+  -- vim.api.nvim_command("setlocal foldmethod=expr")
+  -- vim.api.nvim_command("setlocal foldexpr=nvim_treesitter#foldexpr()")
+  print("loading ts")
 end
 
 local treesitter_ref = function()
@@ -146,12 +152,12 @@ local treesitter_ref = function()
   --   -- packer_plugins['nvim-treesitter-refactor'].loaded = true
   -- end
   local enable = true
-  if vim.fn.line('$') > 20000 then  -- skip for large file
-    vim.cmd[[syntax on]]
+  if vim.fn.line('$') > 10000 then  -- skip for large file
+    -- vim.cmd[[syntax on]]
     print('skip treesitter')
     enable = false
   end
-  print('load treesitter', vim.fn.line('$'))
+  print('load treesitter refactor', vim.fn.line('$'))
 
   require "nvim-treesitter.configs".setup {
     refactor = {

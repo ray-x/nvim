@@ -74,6 +74,7 @@ completion["/Users/ray.xu/github/lsp_signature.nvim"] = {
         log_path = "/Users/ray.xu/tmp/sig.log",
         debug = true,
         fix_pos = true,
+        hi_parameter = 'Constant',
         bind = true, -- This is mandatory, otherwise border config won't get registered.
         handler_opts = {
           -- border = "shadow"

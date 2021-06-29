@@ -8,6 +8,7 @@ lang["nvim-treesitter/nvim-treesitter"] = {
 
 lang["nvim-treesitter/nvim-treesitter-textobjects"] =
     {after = "nvim-treesitter", config = conf.nvim_treesitter, opt = true}
+
 lang["nvim-treesitter/nvim-treesitter-refactor"] =
     {
       -- after = "nvim-treesitter-textobjects", -- manual loading
@@ -158,6 +159,10 @@ lang['folke/lua-dev.nvim'] = {
 --   event = {"BufWriteCmd", "FileWriteCmd"},
 --   -- Highlight also non-parentheses delimiters, boolean or table: lang -> boolean
 --   config = conf.formatter
+-- }
+
+-- lang['m-pilia/vim-ccls'] = {
+--   ft = {"c", "cpp"}
 -- }
 
 return lang
