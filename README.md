@@ -95,6 +95,33 @@ I used following plugin a lots
 
   easymotion -> hop, hlslens + vim-multi-cursor , vim-anyfold (better folding), Far for complex find and replace
 
+## Install
+
+Clone the repo
+
+Link nvim to $HOME/.config/
+
+e.g.
+
+```
+ls ~/.config/nvim
+
+~/.config/nvim -> /Users/rayx/github/dotfiles/nvim
+
+```
+Startup nvim
+
+If you saw error message "Error in packer_compiled: ..." Please press `Enter`, that will allow install the plugins.
+After all plugins install restart the nvim. 
+
+Note:
+The packages and data will be install to 
+`~/.local/share/nvim`
+
+Please backup this folder if necessary
+
+
+
 ## Shell
 
 - OhMyZshell is good, iterm2 is popular, but I turned to zim(Zsh IMproved FrameWork

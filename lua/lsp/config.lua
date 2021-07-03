@@ -181,6 +181,51 @@ M.setup = function()
       }
     }
   }
+
+
+
+
+
+-- Check if vhdl_ls server already defined.
+if not lspconfig.vhdl_ls then configs['vhdl_ls'] = {default_config = {}} end
+
+lspconfig.vhdl_ls.setup {
+    cmd = {"/Users/ray.xu/lsp_test/vhdl/rust_hdl/target/release/vhdl_ls"},
+    filetypes = { "vhdl"},
+    root_dir = require('lspconfig/util').root_pattern("vhdl_ls.toml"),
+    
+    -- handlers = {
+    --     ["tailwindcss/getConfiguration"] = function(_, _, params, _, bufnr, _)
+    --         -- tailwindcss lang server waits for this repsonse before providing hover
+    --         vim.lsp.buf_notify(bufnr, "tailwindcss/getConfigurationResponse", {_id = params._id})
+    --     end
+    -- },
+--     handlers = {
+--         ["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
+--             virtual_text = O.clang.diagnostics.virtual_text,
+--             signs = O.clang.diagnostics.signs,
+--             underline = O.clang.diagnostics.underline,
+--             update_in_insert = true
+-- 
+--         })
+--     },
+    
+    -- on_attach = require'lsp'.common_on_attach
+    on_attach = function(client, bufnr)
+        -- This makes sure tsserver is not used for formatting (I prefer prettier)
+        -- client.resolved_capabilities.call_hierarchy   = false
+        client.resolved_capabilities.document_symbol  = false
+        -- client.resolved_capabilities.goto_definition  = false
+        -- client.resolved_capabilities.find_references  = false
+        -- client.resolved_capabilities.hover            = false
+        -- client.resolved_capabilities.signature_help   = false
+        client.resolved_capabilities.workspace_symbol = false
+
+        -- ts_utils_attach(client)
+        -- on_attach(client, bufnr)
+    end,
+}
+
   -- lspconfig.stylelint_lsp.setup {
   --   stylelint = {
   --     settings = {

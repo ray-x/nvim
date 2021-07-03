@@ -64,7 +64,7 @@ function options:load_options()
     }
 
     self.window_local = {
-      foldmethod = "expr", -- indent?
+      foldmethod = "indent", -- indent? expr?  expr is slow for large files
       -- signcolumn     = "yes";   -- auto
       number = true,
       relativenumber = true,

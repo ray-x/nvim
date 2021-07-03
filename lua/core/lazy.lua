@@ -22,8 +22,8 @@ function lazyload()
     vim.cmd([[syntax manual]])
   end
   local loader = require "packer".loader
-  local fname = vim.fn.expand("%:p:f")
-  local fsize = vim.fn.getfsize(fname)
+  -- local fname = vim.fn.expand("%:p:f")
+  local fsize = vim.fn.getfsize(vim.fn.expand("%:p:f"))
   if fsize == nil or fsize < 0 then
     fsize = 1
   end
@@ -56,12 +56,12 @@ function lazyload()
   local bytes = vim.fn.wordcount()['bytes']
   -- print(bytes)
   if load_ts_plugins then
-    print("treesitter")
+    print("lazy treesitter loading")
     plugins = "nvim-treesitter nvim-treesitter-refactor indent-blankline.nvim"  --  nvim-ts-rainbow nvim-ts-autotag
     -- nvim-treesitter-textobjects should be autoloaded
     loader(plugins)
     -- enable syntax if is small  
-    if bytes < 512 * 1024 and syn_on then
+    if fsize < 512 * 1024 and syn_on then
       vim.cmd([[setlocal syntax=on]])
     end
     return -- do not enable syntax

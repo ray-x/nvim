@@ -9,24 +9,23 @@ function config.nvim_treesitter_ref()
 end
 
 function config.lint()
-  require('lint').linters_by_ft = {
-    markdown = {'vale',},
-    go = {'golangcilint'},
-  }
+  require('lint').linters_by_ft = {markdown = {'vale'}, go = {'golangcilint'}}
   -- vim.cmd([[au BufWritePost <buffer> lua require('lint').try_lint()]])
 end
 
 function config.neomake()
-  vim.g.neomake_error_sign   = {text = '✖', texthl = 'NeomakeErrorSign'}
+  vim.g.neomake_error_sign = {text = '✖', texthl = 'NeomakeErrorSign'}
   vim.g.neomake_warning_sign = {text = '∆', texthl = 'NeomakeWarningSign'}
   vim.g.neomake_message_sign = {text = '➤', texthl = 'NeomakeMessageSign'}
-  vim.g.neomake_info_sign    = {text = 'ℹ', texthl = 'NeomakeInfoSign'}
-  vim.g.neomake_go_enabled_makers = { 'go', 'golangci_lint', 'golint' }
+  vim.g.neomake_info_sign = {text = 'ℹ', texthl = 'NeomakeInfoSign'}
+  vim.g.neomake_go_enabled_makers = {'go', 'golangci_lint', 'golint'}
 end
 
 function config.sidekick()
   -- body
-  vim.g.sidekick_printable_def_types = {'function', 'class', 'type', 'module', 'parameter', 'method', 'field'}
+  vim.g.sidekick_printable_def_types = {
+    'function', 'class', 'type', 'module', 'parameter', 'method', 'field'
+  }
   -- vim.g.sidekick_def_type_icons = {
   --    class = "\\uf0e8",
   --    type = "\\uf0e8",
@@ -44,13 +43,13 @@ function config.sidekick()
   --   parameters = {"self": 1},
   -- }
 
--- Indicates which definition types should have their line number displayed in the outline window.
+  -- Indicates which definition types should have their line number displayed in the outline window.
   vim.g.sidekick_line_num_def_types = {
     class = 1,
     type = 1,
     ['function'] = 1,
     module = 1,
-    method = 1,
+    method = 1
   }
 
   -- What to display between definition and line number
@@ -77,7 +76,7 @@ function config.ale()
   --   "--enable-all --disable dogsled --disable gocognit --disable godot --disable godox --disable lll --disable nestif --disable wsl --disable gocyclo --disable asciicheck --disable gochecknoglobals"
   vim.g.ale_lint_delay = 1000 -- " begin lint after 1s
   vim.g.ale_lint_on_save = 1
-  --" vim.g.ale_lint_on_text_changed = 'never'   --" do not lint when I am typing  'normal (def)'   'never'
+  -- " vim.g.ale_lint_on_text_changed = 'never'   --" do not lint when I am typing  'normal (def)'   'never'
   vim.g.ale_sign_column_always = 1
   vim.g.ale_go_golangci_lint_package = 1
   -- vim.g.ale_lua_luafmt_executable = "luafmt"
@@ -85,10 +84,10 @@ function config.ale()
   vim.g.ale_python_flake8_args = "--ignore=E501"
   vim.g.ale_python_flake8_executable = "flake8"
   vim.g.ale_python_flake8_options = "--ignore=E501"
-  --" 'go vet' not working
+  -- " 'go vet' not working
   vim.g.ale_linters = {
     javascript = {"eslint", "flow-language-server"},
-    --javascript['jsx']  = {'eslint', 'flow-language-server'},
+    -- javascript['jsx']  = {'eslint', 'flow-language-server'},
     -- go = {"govet", "golangci-lint", "revive"},
     markdown = {"mdl", "write-good"},
     sql = {"sqlint"}
@@ -99,7 +98,7 @@ function config.ale()
   vim.g.ale_fixers = {
     -- go = {"gofumports"},
     -- javascript = {"prettier", "eslint"},
-    --javascript['jsx'] = {'prettier', 'eslint'},
+    -- javascript['jsx'] = {'prettier', 'eslint'},
     -- typescript = {"eslint", "tslint"},
     -- markdown = {"prettier"},
     -- json = {"prettier"},
@@ -114,7 +113,6 @@ end
 
 function config.sqls()
 end
-
 
 function config.syntax_folding()
   local fname = vim.fn.expand("%:p:f")
@@ -131,7 +129,8 @@ end
 function config.navigator()
   local capabilities = vim.lsp.protocol.make_client_capabilities()
   local sumneko_root_path = vim.fn.expand("$HOME") .. "/github/sumneko/lua-language-server"
-  local sumneko_binary = vim.fn.expand("$HOME") .. "/github/sumneko/lua-language-server/bin/macOS/lua-language-server"
+  local sumneko_binary = vim.fn.expand("$HOME")
+                             .. "/github/sumneko/lua-language-server/bin/macOS/lua-language-server"
   print("navigator setup")
 
   -- local cfg = {
@@ -152,20 +151,21 @@ function config.navigator()
   -- local luadev = require("lua-dev").setup(cfg)
   local single = {"╭", "─", "╮", "│", "╯", "─", "╰", "│"}
 
-  require "navigator".setup({
+  require"navigator".setup({
     debug = true,
     width = 0.7,
-    border = single, --"single",
+    border = single, -- "single",
     lsp = {
       format_on_save = true, -- set to false to disasble lsp code format on save (if you are using prettier/efm/formater etc)
-      denols = {
-        filetypes ={},
-      },
+      denols = {filetypes = {}},
       -- flow = {
       --   filetypes ={},
       -- },
       tsserver = {
-        filetypes ={ "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx" },
+        filetypes = {
+          "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact",
+          "typescript.tsx"
+        }
       },
       gopls = {
         on_attach = function(client)
@@ -173,24 +173,22 @@ function config.navigator()
           client.resolved_capabilities.document_formatting = false
         end,
         settings = {
-          gopls = {gofumpt = true}, -- enableww gofumpt etc,
-        },
+          gopls = {gofumpt = true} -- enableww gofumpt etc,
+        }
         -- set to {} to disable the lspclient for all filetype
       },
-      clangd = {
-        filetypes = {}
-      },
+      clangd = {filetypes = {}},
       sumneko_lua = {
         sumneko_root_path = sumneko_root_path,
-        sumneko_binary = sumneko_binary,
+        sumneko_binary = sumneko_binary
         -- settings = luadev.settings
-      },
+      }
     }
   })
 end
 
 function config.playground()
-  require "nvim-treesitter.configs".setup {
+  require"nvim-treesitter.configs".setup {
     playground = {
       enable = true,
       disable = {},
@@ -207,7 +205,7 @@ function config.lua_dev()
     library = {
       vimruntime = true, -- runtime path
       types = true, -- full signature, docs and completion of vim.api, vim.treesitter, vim.lsp and others
-      plugins = true, -- installed opt or start plugins in packpath
+      plugins = true -- installed opt or start plugins in packpath
       -- you can also specify the list of plugins to make available as a workspace library
       -- plugins = { "nvim-treesitter", "plenary.nvim", "navigator" },
     },
@@ -215,7 +213,7 @@ function config.lua_dev()
     lspconfig = {
       -- cmd = {sumneko_binary},
       -- on_attach = ...
-    },
+    }
   }
 
   local luadev = require("lua-dev").setup(cfg)
@@ -239,7 +237,7 @@ function config.go()
   --  Show by default 4 spaces for a tab')
   vim.cmd("autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4")
   --  :GoBuild and :GoTestCompile')
-  --vim.cmd('autocmd FileType go nmap <leader><leader>gb :<C-u>call <SID>build_go_files()<CR>')
+  -- vim.cmd('autocmd FileType go nmap <leader><leader>gb :<C-u>call <SID>build_go_files()<CR>')
   --  :GoTest')
   vim.cmd("autocmd FileType go nmap <leader>gt  GoTest")
   --  :GoRun
@@ -296,8 +294,8 @@ end
 --           function()
 --             return {
 --               exe = "lua-format",
---               args = {"--indent-width 2", "--tab-width 2", "--no-use-tab", "--column-limit", 110, "--column-table-limit", 100, 
---               "--no-keep-simple-function-one-line", "--no-chop-down-table", "--chop-down-kv-table", "--no-keep-simple-control-block-one-line", 
+--               args = {"--indent-width 2", "--tab-width 2", "--no-use-tab", "--column-limit", 110, "--column-table-limit", 100,
+--               "--no-keep-simple-function-one-line", "--no-chop-down-table", "--chop-down-kv-table", "--no-keep-simple-control-block-one-line",
 --             "--no-keep-simple-function-one-line", "--no-break-after-functioncall-lp", "--no-break-after-operator"},
 --               stdin = true
 --             }

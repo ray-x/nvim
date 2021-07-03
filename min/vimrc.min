@@ -1,28 +1,176 @@
 " Note: run PlugUpdate/Install first
 set termguicolors
 call plug#begin('~/.vim/plugged')
-
 Plug 'neovim/nvim-lspconfig'
-" Plug 'liuchengxu/vista.vim'
+Plug '/Users/ray.xu/github/lsp_signature.nvim'
+Plug '/Users/ray.xu/github/guihua.lua'
+Plug '/Users/ray.xu/github/navigator.lua'
 Plug 'ray-x/aurora'
-Plug 'ray-x/lsp_signature.nvim'
+
+call plug#end()
+
+lua <<EOF
+-- require'lspconfig'.rust_analyzer.setup{}
+require'lsp_signature'.on_attach({log_path = "/Users/ray.xu/tmp/sig.log", debug = true})
+
+local protocol = require'vim.lsp.protocol'
+
+local capabilities = protocol.make_client_capabilities()
+capabilities.textDocument.completion.completionItem.snippetSupport = true
+require'navigator'.setup({debug=true})
+-- LSP SERVER CONFIGURATION
+-- ===================================================================
+local configs = require 'lspconfig/configs'
+if not require'lspconfig'.vhdl_ls then configs['vhdl_ls'] = {default_config = {}} end
+require'lspconfig'.vhdl_ls.setup ({
+    cmd = {"/Users/ray.xu/lsp_test/vhdl/rust_hdl/target/release/vhdl_ls"},
+    filetypes = {"vhdl"},
+    root_dir = require('lspconfig/util').root_pattern("vhdl_ls.toml"),
+    on_attach = function(client, bufnr)
+        client.resolved_capabilities.document_symbol  = false
+        client.resolved_capabilities.workspace_symbol = false
+    end,
+})
+
+-- require'navigator'.setup({debug=true})
+
+require'lspconfig'.intelephense.setup({
+    settings = {
+        intelephense = {
+            stubs = { 
+                "bcmath",
+                "bz2",
+                "calendar",
+                "Core",
+                "curl",
+                "date",
+                "dba",
+                "dom",
+                "enchant",
+                "fileinfo",
+                "filter",
+                "ftp",
+                "gd",
+                "gettext",
+                "hash",
+                "iconv",
+                "imap",
+                "intl",
+                "json",
+                "ldap",
+                "libxml",
+                "mbstring",
+                "mcrypt",
+                "mysql",
+                "mysqli",
+                "password",
+                "pcntl",
+                "pcre",
+                "PDO",
+                "pdo_mysql",
+                "Phar",
+                "readline",
+                "recode",
+                "Reflection",
+                "regex",
+                "session",
+                "SimpleXML",
+                "soap",
+                "sockets",
+                "sodium",
+                "SPL",
+                "standard",
+                "superglobals",
+                "sysvsem",
+                "sysvshm",
+                "tokenizer",
+                "xml",
+                "xdebug",
+                "xmlreader",
+                "xmlwriter",
+                "yaml",
+                "zip",
+                "zlib",
+                "wordpress",
+                "woocommerce"
+            },
+            files = {
+                maxSize = 5000000;
+            };
+        };
+    },
+    on_attach = function()
+     require'lsp_signature'.on_attach({log_path = "/Users/ray.xu/tmp/sig.log", debug = true})
+    end
+    });
+EOF
+
+set mouse=a
+colorscheme aurora
+
+
+
+" Plug 'simrat39/rust-tools.nvim'
+
+" Plug 'ray-x/lsp_signature.nvim'
+" Plug '/Users/ray.xu/github/guihua.lua'
+" Plug '/Users/ray.xu/github/navigator.lua'
+" Plug '/Users/ray.xu/github/lsp_signature.nvim'
+
+" colorscheme dracula
+" let material_style = 'mariana'
+" let material_style_fix = v:true
+" colorscheme material
+" call plug#begin('~/.vim/plugged')
+" 
+" set noswapfile
+" 
+" Plug 'neovim/nvim-lspconfig'
+" 
+" " Plug 'lewis6991/gitsigns.nvim'
+" " Plug 'ray-x/guihua.lua', {'do': 'cd lua/fzy && make' }
+" 
+" Plug '//Users/ray.xu/githubguihua.lua', {'do': 'cd lua/fzy && " make' }
+" Plug '/Users/ray.xu/github/navigator.lua'
+" 
+" " Plug 'ray-x/lsp_signature.nvim'
+" Plug 'liuchengxu/vim-clap', { 'do': { -> " clap#installer#force_download() } }
+" Plug 'nvim-lua/popup.nvim'
+" Plug 'nvim-lua/plenary.nvim'
+" Plug 'nvim-telescope/telescope.nvim'
+" 
+" call plug#end()
+" lua print(vim.inspect(vim.lsp.buf_get_clients(0)))"
+
 " Plug 'ray-x/guihua.lua', {'do': 'cd lua/fzy && make' }
 " Plug 'ray-x/navigator.lua'
 " Plug '/Users/ray.xu/github/navigator.lua'
-" Plug '/Users/ray.xu/github/material_plus.nvim'
 " Plug '/Users/ray.xu/tmp/lsp_signature.nvim'
-" Plug 'fdioguardi/lsp_signature.nvim'
-" Plug 'hrsh7th/nvim-compe' " and other plugins you commenly use...
 
-" optional, if you need treesitter symbol support
-" Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-" Plug 'steelsojka/pears.nvim'
-" Plug 'windwp/nvim-autopairs'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-call plug#end()
-
-" No need for rquire('lspconfig'), navigator will configure it for you
 lua <<EOF
+
+
+
+
+-- require'lspconfig'.elixirls.setup{
+--   capabilities = capabilities,
+--   on_attach = function(client, bufnr)
+--     print("attach", client)
+--     require('lsp_signature').on_attach({log_path = "/Users/ray.xu/tmp/sig.log", debug = true})
+--   end,
+--   cmd = {
+--     -- vim.loop.os_homedir() .. "/lsp_test/elixir/elixir-ls/rel/language_server.sh"
+--     "/Users/ray.xu/lsp_test/elixir/elixir-ls/rel/language_server.sh"
+--   },
+--   settings = {
+--     elixirLS = {
+--       dialyzerEnabled = true;
+--     }
+--   }
+-- }
+
+
+
 -- require'navigator'.setup({debug=true})
 -- require'lspconfig'.gopls.setup({})
 -- local util = require'lspconfig.util'
@@ -49,39 +197,22 @@ lua <<EOF
 -- require('nvim-autopairs').setup()
 
 
+-- require('rust-tools').setup(opts)
+-- require'navigator'.setup({
+--   width = 0.8,
+--   height = 0.4,
+--   debug = true,
+--   lsp = {
+--     format_on_save = true, -- set to false to disasble lsp code mat on save (if you -- are using prettier/efm/formater etc)
+--     tsserver = {
+--       filetypes = {'typescript'} -- disable javascript etc, 
+--       -- set to {} to disable the lspclient for all filetype
+--            }
+--    }})
+-- 
+-- local util = require'lspconfig.util'
+
 -- require'lsp_signature'.on_attach({bind = false, use_lspsaga=false, floating_window=false, hint_enable = true})
-
--- vim.g.vista_echo_cursor_strategy = "floating_win"
-
-EOF
-
-set mouse=a
-colorscheme aurora
-" colorscheme dracula
-" let material_style = 'mariana'
-" let material_style_fix = v:true
-" colorscheme material
-" call plug#begin('~/.vim/plugged')
-" 
-" set noswapfile
-" 
-" Plug 'neovim/nvim-lspconfig'
-" 
-" " Plug 'lewis6991/gitsigns.nvim'
-" " Plug 'ray-x/guihua.lua', {'do': 'cd lua/fzy && make' }
-" 
-" Plug '/Users/ray.xu/github/guihua.lua', {'do': 'cd lua/fzy && " make' }
-" Plug '/Users/ray.xu/github/navigator.lua'
-" 
-" " Plug 'ray-x/lsp_signature.nvim'
-" Plug 'liuchengxu/vim-clap', { 'do': { -> " clap#installer#force_download() } }
-" Plug 'nvim-lua/popup.nvim'
-" Plug 'nvim-lua/plenary.nvim'
-" Plug 'nvim-telescope/telescope.nvim'
-" 
-" call plug#end()
-
-lua <<EOF
 
 
 -- require('navigator').setup()

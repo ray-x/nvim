@@ -35,12 +35,12 @@ ui["Akin909/nvim-bufferline.lua"] = {
 -- }
 --
 
-ui["wfxr/minimap.vim"] = {
-  run = ":!cargo install --locked code-minimap",
-  keys = {"<F14>"},
-  cmd = {"Minimap", "MinimapToggle"},
-  setup = conf.minimap
-}
+-- ui["wfxr/minimap.vim"] = {
+--   run = ":!cargo install --locked code-minimap",
+--   keys = {"<F14>"},
+--   cmd = {"Minimap", "MinimapToggle"},
+--   setup = conf.minimap
+-- }
 -- ui['glepnir/dashboard-nvim'] = {
 --   config = conf.dashboard
 -- }
@@ -51,10 +51,10 @@ ui["kyazdani42/nvim-tree.lua"] = {
   setup = conf.nvim_tree
 }
 
-ui["lukas-reineke/indent-blankline.nvim"] = {setup = conf.blankline, branch = "lua", opt = true} --after="nvim-treesitter",
+ui["lukas-reineke/indent-blankline.nvim"] = {setup = conf.blankline, branch = "lua", opt = true} -- after="nvim-treesitter",
 
 -- replaced by nl fn = "InterestingWords", keys = {"<Leader>k"}
-ui["ray-x/vim-interestingwords"] = {opt = true, setup=conf.interestingwords}
+ui["ray-x/vim-interestingwords"] = {opt = true, setup = conf.interestingwords}
 
 ui["dstein64/nvim-scrollview"] = {config = conf.scrollview}
 
@@ -63,7 +63,7 @@ ui["folke/tokyonight.nvim"] = {
   opt = true,
   setup = conf.tokyonight,
   config = function()
-    
+
     -- vim.cmd [[hi CursorLine guibg=#353644]]
 
     vim.cmd [[colorscheme tokyonight]]
@@ -71,38 +71,39 @@ ui["folke/tokyonight.nvim"] = {
   end
 }
 
+-- ui["bluz71/vim-nightfly-guicolors"] = {
+--   opt = true,
+--   setup = conf.nightfly,
+--   config = function()
+--     vim.cmd([[colorscheme nightfly]])
+--   end
+-- }
 
-ui["bluz71/vim-nightfly-guicolors"] = {
-  opt = true,
-  setup = conf.nightfly,
-  config = function()
-    vim.cmd([[colorscheme nightfly]])
-  end
-}
+-- ui['bluz71/vim-moonfly-colors'] = {
+--   opt = true,
+--   setup = moonfly,
+--   config = function()
+--     vim.cmd([[colorscheme moonfly]])
+--   end
+-- }
 
-ui['bluz71/vim-moonfly-colors'] = {
-  opt = true,
-  setup = moonfly,
-  config = function()
-    vim.cmd([[colorscheme moonfly]])
-  end
-}
+-- ui["ChristianChiarulli/nvcode-color-schemes.vim"] = {opt = true, config = conf.nvcode}
 
-
-ui["ChristianChiarulli/nvcode-color-schemes.vim"] = {opt = true, config = conf.nvcode}
-
-ui["npxbr/gruvbox.nvim"] = {
-  opt = true,
-  requires = {'rktjmp/lush.nvim', opt = true},
-  setup = function()
-    vim.cmd([[set background=dark]])
-  end,
-  config = function()
-    vim.cmd([[set background=dark]])
-    vim.cmd('highlight StatusLine gui=reverse guifg=#ebdbb2 guibg=#3c3836')
-    vim.cmd([[colorscheme gruvbox]])
-  end
-}
+ui["sainnhe/sonokai"] = {opt = true, config = conf.sonokai}
+ui["sainnhe/gruvbox-material"] = {opt = true, config = conf.gruvbox}
+-- eddyekofo94/gruvbox-flat.nvim, sainnhe/gruvbox-material
+-- ui["npxbr/gruvbox.nvim"] = {
+--   opt = true,
+--   requires = {'rktjmp/lush.nvim', opt = true},
+--   setup = function()
+--     vim.cmd([[set background=dark]])
+--   end,
+--   config = function()
+--     vim.cmd([[set background=dark]])
+--     vim.cmd('highlight StatusLine gui=reverse guifg=#ebdbb2 guibg=#3c3836')
+--     vim.cmd([[colorscheme gruvbox]])
+--   end
+-- }
 
 -- ui['dracula/vim'] = {
 --   opt = true,
@@ -111,14 +112,11 @@ ui["npxbr/gruvbox.nvim"] = {
 --   end
 -- }
 
+ui["rafamadriz/neon"] = {opt = true, config = conf.neon}
 
-
-ui["rafamadriz/neon"] = {opt = true,  config = neon}
-
-
-ui["glepnir/zephyr-nvim"] = {opt = true, config = conf.zephyr}
+ui["/Users/ray.xu/github/zephyr-nvim"] = {opt = true, config = conf.zephyr}
 ui["~/github/material_plus.nvim"] = {
-  opt = true, 
+  opt = true,
   setup = conf.material,
   config = function()
     require("material").set()

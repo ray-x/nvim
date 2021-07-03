@@ -3,17 +3,8 @@ local config = {}
 function config.galaxyline()
   if not packer_plugins["nvim-web-devicons"].loaded then
     packer_plugins["nvim-web-devicons"].loaded = true
-    require "packer".loader("nvim-web-devicons")
+    require"packer".loader("nvim-web-devicons")
   end
-  local opt = {"soft", "medium", "hard"}
-  local v = opt[math.random(1, #opt)]
-  vim.g.gruvbox_invert_selection = 0
-  vim.g.gruvbox_italic = 1
-  vim.g.gruvbox_italicize_strings = 1
-  vim.g.gruvbox_invert_signs = 1
-  vim.g.gruvbox_improved_strings = 1
-  vim.g.gruvbox_improved_warnings = 1
-  vim.g.gruvbox_contrast_dark=v
 
   require("modules.ui.eviline")
 end
@@ -21,8 +12,6 @@ end
 local winwidth = function()
   return vim.api.nvim_call_function("winwidth", {0})
 end
-
-
 
 -- function config.barbar()
 --   vim.api.nvim_exec([[
@@ -66,7 +55,7 @@ function config.nvim_bufferline()
   require("bufferline").setup {
     options = {
       view = "multiwindow",
-      numbers = "none", --"none" | "ordinal" | "buffer_id",
+      numbers = "none", -- "none" | "ordinal" | "buffer_id",
       number_style = "superscript",
       mappings = true,
       max_name_length = 14,
@@ -121,8 +110,7 @@ end
 --   }
 -- end
 
-function  config.setup()
-
+function config.setup()
 
 end
 
@@ -147,6 +135,7 @@ function config.nvim_tree()
   vim.g.nvim_tree_lsp_diagnostics = 1
   vim.g.nvim_tree_width_allow_resize = 1
   vim.g.nvim_tree_tab_open = 1
+  vim.g.nvim_tree_auto_resize = 0
   vim.g.nvim_tree_highlight_opened_files = 0
   vim.g.nvim_tree_hijack_cursor = 1
   vim.g.nvim_tree_bindings = {
@@ -229,7 +218,10 @@ function config.interestingwords()
   vim.g.interestingWordsDefaultMappingsK = 0
   vim.g.interestingWordsRandomiseColors = 1
   -- vim.cmd("nnoremap <silent> <leader>u :]<cr>")
-  vim.g.interestingWordsGUIColors = {'#aeee00', '#ff0000', '#0000ff', '#b88823', '#ffa724', '#ff2c4b', '#F92772', '#A6E22D', '#66d9ef','#E6DB74', '#FD9720', '#ae81ff', '#e73c50', '#ff0000', '#5f0000'}
+  vim.g.interestingWordsGUIColors = {
+    '#aeee00', '#ff0000', '#0000ff', '#b88823', '#ffa724', '#ff2c4b', '#F92772', '#A6E22D',
+    '#66d9ef', '#E6DB74', '#FD9720', '#ae81ff', '#e73c50', '#ff0000', '#5f0000'
+  }
   vim.g.interestingWordsCycleColors = 1
   vim.cmd("nnoremap <silent> <leader>k :call InterestingWords('n')<cr>")
   vim.cmd("vnoremap <silent> <leader>k :call InterestingWords('v')<cr>")
@@ -246,8 +238,7 @@ function config.default()
   vim.cmd("augroup vimrc_todo")
   vim.cmd("au!")
   vim.cmd(
-    [[au Syntax * syn match MyTodo /\v<(FIXME|Fixme|NOTE|Note|TODO|ToDo|OPTIMIZE|XXX):/ containedin=.*Comment,vimCommentTitle]]
-  )
+      [[au Syntax * syn match MyTodo /\v<(FIXME|Fixme|NOTE|Note|TODO|ToDo|OPTIMIZE|XXX):/ containedin=.*Comment,vimCommentTitle]])
   vim.cmd("augroup END")
   vim.cmd("hi def link MyTodo Todo")
   -- theme()
@@ -277,7 +268,6 @@ function config.material()
   -- config.default()
 end
 
-
 function config.tokyonight()
   local opt = {"storm", "night"}
   local v = math.random(1, #opt)
@@ -288,7 +278,6 @@ function config.tokyonight()
   -- Change the "hint" color to the "orange" color, and make the "error" color bright red
   vim.g.tokyonight_colors = {hint = "orange", error = "#ae1960"}
 end
-
 
 function config.nightfly()
   vim.g.nightflyCursorColor = 1
@@ -311,24 +300,25 @@ function config.moonfly()
   -- body
 end
 
-
 function config.nvcode()
-  vim.g.nvcode_termcolors=256
+  vim.g.nvcode_termcolors = 256
   local opt = {"nvcode", "nord", "aurora", "onedark", "gruvbox", "palenight", "snazzy"}
   local v = "colorscheme " .. opt[math.random(1, #opt)]
   vim.cmd(v)
   -- body
 end
 
-function config.neon()
-  local opt = {"default", "dark", "doom"}
-  vim.g.neon_style = opt[math.random(1, #opt)]
-  vim.g.neon_italic_keyword = true
-  vim.g.neon_italic_function = true
-  vim.g.neon_italic_boolean = true
-  vim.cmd[[colorscheme neon]]
-end
-
+-- function config.neon()
+--   local opt = {"default", "dark", "doom"}
+--   vim.g.neon_style = opt[math.random(1, #opt)]
+--   vim.g.neon_italic_keyword = true
+--   vim.g.neon_italic_function = true
+--   vim.g.neon_italic_boolean = true
+--   vim.g.neon_bold = true
+--   vim.cmd([[colorscheme neon]])
+--   vim.cmd([[hi CursorColumn guibg=#433343]])
+-- end
+--
 function config.zephyr()
   require("zephyr")
   vim.cmd([[hi PmenuSel guibg=#315f7f]])
@@ -339,12 +329,14 @@ function config.sonokai()
   vim.g.sonokai_style = v
   vim.g.sonokai_enable_italic = 1
   vim.g.sonokai_disable_italic_comment = 1
+  vim.cmd([[colorscheme sonokai]])
 end
-
 
 function config.blankline()
   vim.g.indent_blankline_buftype_exclude = {"terminal"}
-  vim.g.indent_blankline_filetype_exclude = {"help", "startify", "dashboard", "packer", "guihua", "NvimTree", "sidekick"}
+  vim.g.indent_blankline_filetype_exclude = {
+    "help", "startify", "dashboard", "packer", "guihua", "NvimTree", "sidekick"
+  }
   vim.g.indent_blankline_buftype_exclude = {"terminal"}
   vim.g.indent_blankline_char = "| "
   vim.g.indent_blankline_char_list = {"", "┊", "┆", "¦", "|", "¦", "┆", "┊", ""}
@@ -356,27 +348,9 @@ function config.blankline()
   vim.g.indent_blankline_bufname_exclude = {"README.md"}
   -- vim.g.indentLine_faster = 1
   vim.g.indent_blankline_context_patterns = {
-    "class",
-    "return",
-    "function",
-    "method",
-    "^if",
-    "if",
-    "^while",
-    "jsx_element",
-    "^for",
-    "for",
-    "^object",
-    "^table",
-    "block",
-    "arguments",
-    "if_statement",
-    "else_clause",
-    "jsx_element",
-    "jsx_self_closing_element",
-    "try_statement",
-    "catch_clause",
-    "import_statement",
+    "class", "return", "function", "method", "^if", "if", "^while", "jsx_element", "^for", "for",
+    "^object", "^table", "block", "arguments", "if_statement", "else_clause", "jsx_element",
+    "jsx_self_closing_element", "try_statement", "catch_clause", "import_statement",
     "operation_type"
   }
   vim.g.indent_blankline_use_treesitter = true
@@ -385,12 +359,30 @@ function config.blankline()
 end
 
 function config.indentguides()
-  require("indent_guides").setup(
-    {
-      -- put your options in here
-      indent_soft_pattern = "\\s"
-    }
-  )
+  require("indent_guides").setup({
+    -- put your options in here
+    indent_soft_pattern = "\\s"
+  })
+end
+
+function config.gruvbox()
+
+  local opt = {"soft", "medium", "hard"}
+  local palettes = {"material", "mix", "original"}
+  local v = opt[math.random(1, #opt)]
+  local palette = palettes[math.random(1, #palettes)]
+  vim.cmd("set background=dark")
+  vim.g.gruvbox_material_invert_selection = 0
+  vim.g.gruvbox_material_enable_italic = 1
+  -- vim.g.gruvbox_material_italicize_strings = 1
+  -- vim.g.gruvbox_material_invert_signs = 1
+  -- vim.g.gruvbox_material_improved_strings = 1
+  -- vim.g.gruvbox_material_improved_warnings = 1
+  -- vim.g.gruvbox_material_contrast_dark=v
+  vim.g.gruvbox_material_background = v
+  vim.g.gruvbox_material_enable_bold = 1
+  vim.g.gruvbox_material_palette = palette
+  vim.cmd("colorscheme gruvbox-material")
 end
 
 function config.minimap()
@@ -407,9 +399,7 @@ function config.minimap()
   end
 end
 
-
-vim.api.nvim_exec(
-  [[
+vim.api.nvim_exec([[
     set cursorcolumn
     augroup vimrc_todo
     set background=dark
@@ -417,37 +407,25 @@ vim.api.nvim_exec(
     au Syntax *.go,*.c,*.rs,*.js,*.tsx,*.cpp,*.html syn match MyTodo /\v<(FIXME|Fixme|NOTE|Note|TODO|ToDo|OPTIMIZE|XXX):/ containedin=.*Comment,vimCommentTitle
     augroup END
     hi def link MyTodo Todo
-  ]],
-  true
-)
-
-
+  ]], true)
 
 math.randomseed(os.time())
 local themes = {
-  "aurora",
-  "tokyonight.nvim",
-  "aurora",
-  "material_plus.nvim",
-  "aurora",
-  "zephyr-nvim",
-  "aurora",
-  "material_plus.nvim",
-  "gruvbox.nvim",
-  "nvcode-color-schemes.vim",
-  "vim-nightfly-guicolors",
-  "vim-moonfly-colors",
-  "neon",
-} --"material.nvim",
+  -- "aurora", "tokyonight.nvim", "aurora",
+  -- "material_plus.nvim", "aurora", "zephyr-nvim", "aurora",
+  "material_plus.nvim" -- "gruvbox.nvim",
+  -- "nvcode-color-schemes.vim",
+  -- "gruvbox-material", "sonokai"
+} -- "material.nvim",
 local v = math.random(1, #themes)
 local loading_theme = themes[v]
-if loading_theme == "gruvbox.nvim" then
-  -- require "packer".loader("lush.nvim")
-  vim.cmd([[packadd lush.nvim]])
-end
-  
-local cmd =
-  [[au VimEnter * ++once lua require("packer.load")({']] ..
-  loading_theme .. [['}, { event = "VimEnter *" }, _G.packer_plugins)]]
+-- if loading_theme == "gruvbox.nvim" then
+--   -- require "packer".loader("lush.nvim")
+--   vim.cmd([[packadd lush.nvim]])
+-- end
+
+local cmd = [[au VimEnter * ++once lua require("packer.load")({']] .. loading_theme
+                .. [['}, { event = "VimEnter *" }, _G.packer_plugins)]]
 vim.cmd(cmd)
+print(loading_theme)
 return config
