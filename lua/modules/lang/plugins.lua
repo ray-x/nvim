@@ -16,14 +16,16 @@ lang["nvim-treesitter/nvim-treesitter-refactor"] =
       opt = true
     }
 
-lang["w0rp/ale"] = {
-  -- event = "BufEnter", --BufWritePre
-  cmd = {"ALEEnable", "ALEFix"},
-  -- ft = {"sql", "pgsql", "markdown"},
-  -- after = 'telescope.nvim',
-  setup = conf.ale,
-  opt = true
-}
+
+-- use efm etc instead
+-- lang["w0rp/ale"] = {
+--   -- event = "BufEnter", --BufWritePre
+--   cmd = {"ALEEnable", "ALEFix"},
+--   -- ft = {"sql", "pgsql", "markdown"},
+--   -- after = 'telescope.nvim',
+--   setup = conf.ale,
+--   opt = true
+-- }
 
 -- lang["neomake/neomake"] = {
 --   -- event = "BufSave", --BufWritePre

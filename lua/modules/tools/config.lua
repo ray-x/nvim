@@ -412,15 +412,15 @@ function config.spellcheck()
   vim.fn["spelunker#check"]()
 end
 
-function config.prettier()
-  vim.g["prettier#autoformat"] = 1
-  vim.g["prettier#autoformat_require_pragma"] = 1
-  vim.g["prettier#autoformat_config_present"] = 1
-  vim.g["prettier#exec_cmd_async"] = 1
-  vim.g["prettier#quickfix_enabled"] = 0
-  vim.api.nvim_command(
-      "autocmd InsertLeave,BufWritePost *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync")
-end
+-- function config.prettier()
+--   vim.g["prettier#autoformat"] = 1
+--   vim.g["prettier#autoformat_require_pragma"] = 1
+--   vim.g["prettier#autoformat_config_present"] = 1
+--   vim.g["prettier#exec_cmd_async"] = 1
+--   vim.g["prettier#quickfix_enabled"] = 0
+--   vim.api.nvim_command(
+--       "autocmd InsertLeave,BufWritePost *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync")
+-- end
 
 function config.isas()
   local isas = require("isas")

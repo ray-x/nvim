@@ -411,11 +411,9 @@ vim.api.nvim_exec([[
 
 math.randomseed(os.time())
 local themes = {
-  -- "aurora", "tokyonight.nvim", "aurora",
-  -- "material_plus.nvim", "aurora", "zephyr-nvim", "aurora",
-  "material_plus.nvim" -- "gruvbox.nvim",
-  -- "nvcode-color-schemes.vim",
-  -- "gruvbox-material", "sonokai"
+  "aurora", "tokyonight.nvim",
+  "material_plus.nvim", "aurora", "zephyr-nvim",
+  "gruvbox-material", "sonokai"
 } -- "material.nvim",
 local v = math.random(1, #themes)
 local loading_theme = themes[v]

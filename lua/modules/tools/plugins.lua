@@ -19,6 +19,8 @@ tools["editorconfig/editorconfig-vim"] = {
 --   opt = true
 -- }
 
+-- tools["wellle/targets.vim"] = {}
+
 tools["liuchengxu/vista.vim"] = {cmd = "Vista", setup = conf.vim_vista, opt = true}
 
 tools["kamykn/spelunker.vim"] = {
@@ -131,31 +133,31 @@ tools["rmagatti/session-lens"] = {
   }
   end
 }
-tools["prettier/vim-prettier"] = {
-  run = "yarn install",
-  -- ft = {
-  --   "html",
-  --   "css",
-  --   "js",
-  --   "ts",
-  --   "tsx",
-  --   "md",
-  --   "javascript",
-  --   "typescript",
-  --   "css",
-  --   "less",
-  --   "scss",
-  --   "json",
-  --   "graphql",
-  --   "markdown",
-  --   "vue",
-  --   "yaml",
-  --   "html"
-  -- },
-  cmd = {"Prettier", "PrettierAsync", "PrettierPartial"},
-  config = conf.prettier,
-  opt = true
-}
+-- tools["prettier/vim-prettier"] = {
+--   run = "yarn install",
+--   -- ft = {
+--   --   "html",
+--   --   "css",
+--   --   "js",
+--   --   "ts",
+--   --   "tsx",
+--   --   "md",
+--   --   "javascript",
+--   --   "typescript",
+--   --   "css",
+--   --   "less",
+--   --   "scss",
+--   --   "json",
+--   --   "graphql",
+--   --   "markdown",
+--   --   "vue",
+--   --   "yaml",
+--   --   "html"
+--   -- },
+--   cmd = {"Prettier", "PrettierAsync", "PrettierPartial"},
+--   config = conf.prettier,
+--   opt = true
+-- }
 
 tools['kevinhwang91/nvim-bqf'] = {
   opt = true,

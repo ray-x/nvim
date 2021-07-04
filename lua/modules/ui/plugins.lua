@@ -34,13 +34,15 @@ ui["Akin909/nvim-bufferline.lua"] = {
 --   requires = {'kyazdani42/nvim-web-devicons'}
 -- }
 --
-
+-- not so useful...
 -- ui["wfxr/minimap.vim"] = {
 --   run = ":!cargo install --locked code-minimap",
 --   keys = {"<F14>"},
 --   cmd = {"Minimap", "MinimapToggle"},
 --   setup = conf.minimap
 -- }
+
+-- session is better
 -- ui['glepnir/dashboard-nvim'] = {
 --   config = conf.dashboard
 -- }
@@ -71,48 +73,13 @@ ui["folke/tokyonight.nvim"] = {
   end
 }
 
--- ui["bluz71/vim-nightfly-guicolors"] = {
---   opt = true,
---   setup = conf.nightfly,
---   config = function()
---     vim.cmd([[colorscheme nightfly]])
---   end
--- }
-
--- ui['bluz71/vim-moonfly-colors'] = {
---   opt = true,
---   setup = moonfly,
---   config = function()
---     vim.cmd([[colorscheme moonfly]])
---   end
--- }
-
 -- ui["ChristianChiarulli/nvcode-color-schemes.vim"] = {opt = true, config = conf.nvcode}
 
 ui["sainnhe/sonokai"] = {opt = true, config = conf.sonokai}
 ui["sainnhe/gruvbox-material"] = {opt = true, config = conf.gruvbox}
--- eddyekofo94/gruvbox-flat.nvim, sainnhe/gruvbox-material
--- ui["npxbr/gruvbox.nvim"] = {
---   opt = true,
---   requires = {'rktjmp/lush.nvim', opt = true},
---   setup = function()
---     vim.cmd([[set background=dark]])
---   end,
---   config = function()
---     vim.cmd([[set background=dark]])
---     vim.cmd('highlight StatusLine gui=reverse guifg=#ebdbb2 guibg=#3c3836')
---     vim.cmd([[colorscheme gruvbox]])
---   end
--- }
 
--- ui['dracula/vim'] = {
---   opt = true,
---   config = function()
---     vim.cmd([[colorscheme darcula]])
---   end
--- }
-
-ui["rafamadriz/neon"] = {opt = true, config = conf.neon}
+-- cant config cursor line
+-- ui["rafamadriz/neon"] = {opt = true, config = conf.neon}
 
 ui["/Users/ray.xu/github/zephyr-nvim"] = {opt = true, config = conf.zephyr}
 ui["~/github/material_plus.nvim"] = {
