@@ -53,7 +53,7 @@ ui["kyazdani42/nvim-tree.lua"] = {
   setup = conf.nvim_tree
 }
 
-ui["lukas-reineke/indent-blankline.nvim"] = {setup = conf.blankline, branch = "lua", opt = true} -- after="nvim-treesitter",
+ui["lukas-reineke/indent-blankline.nvim"] = {setup = conf.blankline,  opt = true} -- after="nvim-treesitter",
 
 -- replaced by nl fn = "InterestingWords", keys = {"<Leader>k"}
 ui["ray-x/vim-interestingwords"] = {opt = true, setup = conf.interestingwords}

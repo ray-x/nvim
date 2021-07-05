@@ -155,6 +155,21 @@ function config.navigator()
     debug = true,
     width = 0.7,
     border = single, -- "single",
+    on_attach = function() 
+      require "lsp_signature".on_attach(
+        {
+          floating_window = true,
+          log_path = "/Users/ray.xu/tmp/sig.log",
+          debug = true,
+          fix_pos = true,
+          hi_parameter = 'Constant',
+          bind = true, -- This is mandatory, otherwise border config won't get registered.
+          handler_opts = {
+            border = {"╭", "─" ,"╮", "│", "╯", "─", "╰", "│" },
+          },
+        }
+      )
+    end,
     lsp = {
       format_on_save = true, -- set to false to disasble lsp code format on save (if you are using prettier/efm/formater etc)
       denols = {filetypes = {}},
