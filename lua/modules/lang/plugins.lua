@@ -57,21 +57,21 @@ lang["nanotee/sqls.nvim"] = {ft = {"sql", "pgsql"}, setup = conf.sqls, opt = tru
 lang["/Users/ray.xu/github/go.nvim"] = {ft = "go", opt = true, config = conf.go}
 
 lang["/Users/ray.xu/github/navigator.lua"] = {
-  requires = {"/Users/ray.xu/github/guihua.lua"},
+  requires = {"/Users/ray.xu/github/guihua.lua", run = 'cd lua/fzy && make'},
   config = conf.navigator,
   opt = true
 }
+
+-- lang['ray-x/navigator.lua'] = {
+--   requires = {'ray-x/guihua.lua', run = 'cd lua/fzy && make'},
+--   setup = conf.navigator
+-- }
 
 -- lang["gcmt/wildfire.vim"] = {
 --   setup = function()
 --     vim.cmd([[nmap <leader>s <Plug>(wildfire-quick-select)]])
 --   end,
 --   fn = {'<Plug>(wildfire-fuel)', '<Plug>(wildfire-water)', '<Plug>(wildfire-quick-select)'}
--- }
-
--- lang['ray-x/navigator.lua'] = {
---   requires = {'ray-x/guihua.lua', run = 'cd lua/fzy && make'},
---   setup = conf.navigator
 -- }
 
 lang["nvim-treesitter/playground"] = {
@@ -119,6 +119,9 @@ lang["nvim-telescope/telescope-dap.nvim"] = {
 lang["mfussenegger/nvim-dap-python"] = {ft = {"python"}}
 
 lang["mtdl9/vim-log-highlighting"] = {ft = {"text", "log"}}
+
+lang["RRethy/vim-illuminate"] = {opt=true, ft = {"go"}}
+
 lang["michaelb/sniprun"] = {
   run = "bash install.sh",
   opt = true,

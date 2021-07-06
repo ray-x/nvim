@@ -13,40 +13,6 @@ local winwidth = function()
   return vim.api.nvim_call_function("winwidth", {0})
 end
 
--- function config.barbar()
---   vim.api.nvim_exec([[
---     " Move to previous/next
---     nnoremap <silent>    <A-,> :BufferPrevious<CR>
---     nnoremap <silent>    <A-.> :BufferNext<CR>
---     " Re-order to previous/next
---     nnoremap <silent>    <A-<> :BufferMovePrevious<CR>
---     nnoremap <silent>    <A->> :BufferMoveNext<CR>
---     " Goto buffer in position...
---     nnoremap <silent>    <A-1> :BufferGoto 1<CR>
---     nnoremap <silent>    <A-2> :BufferGoto 2<CR>
---     nnoremap <silent>    <A-3> :BufferGoto 3<CR>
---     nnoremap <silent>    <A-4> :BufferGoto 4<CR>
---     nnoremap <silent>    <A-5> :BufferGoto 5<CR>
---     nnoremap <silent>    <A-6> :BufferGoto 6<CR>
---     nnoremap <silent>    <A-7> :BufferGoto 7<CR>
---     nnoremap <silent>    <A-8> :BufferGoto 8<CR>
---     nnoremap <silent>    <A-9> :BufferLast<CR>
---     " Close buffer
---     nnoremap <silent>    <A-c> :BufferClose<CR>
---     " Wipeout buffer
---     "                          :BufferWipeout<CR>
---     " Close commands
---     "                          :BufferCloseAllButCurrent<CR>
---     "                          :BufferCloseBuffersLeft<CR>
---     "                          :BufferCloseBuffersRight<CR>
---     " Magic buffer-picking mode
---     nnoremap <silent> <C-s>    :BufferPick<CR>
---     " Sort automatically by...
---     nnoremap <silent> <Space>bd :BufferOrderByDirectory<CR>
---     nnoremap <silent> <Space>bl :BufferOrderByLanguage<CR>
--- ]], true)
--- end
-
 function config.nvim_bufferline()
   if not packer_plugins["nvim-web-devicons"].loaded then
     packer_plugins["nvim-web-devicons"].loaded = true
@@ -77,38 +43,6 @@ function config.nvim_bufferline()
     }
   }
 end
--- function config.dashboard()
---   local home = os.getenv('HOME')
---   vim.g.dashboard_preview_command = 'cat'
---   vim.g.dashboard_preview_pipeline = 'lolcat'
---   vim.g.dashboard_preview_file = home .. '/.config/nvim/static/pokemon.txt'
---   vim.g.dashboard_preview_file_height = 14
---   vim.g.dashboard_preview_file_width = 80
---   vim.g.dashboard_default_executive = 'telescope'
---   vim.g.dashboard_custom_section = {
---     last_session = {
---       description = {'  Recently laset session                  SPC s l'},
---       command =  'SessionLoad'},
---     find_history = {
---       description = {'  Recently opened files                   SPC f h'},
---       command =  'DashboardFindHistory'},
---     find_file  = {
---       description = {'  Find  File                              SPC f f'},
---       command = 'DashboardFindFile'},
---     new_file = {
---      description = {'  New   File                              SPC t f'},
---      command =  'DashboardNewFile'},
---     find_word = {
---      description = {'  Find  word                              SPC f w'},
---      command = 'DashboardFindWord'},
---     find_dotfiles = {
---      description = {'  Open Personal dotfiles                  SPC f d'},
---      command = 'Telescope dotfiles path=' .. home ..'/.dotfiles'},
---     go_source = {
---      description = {'  Find Go Source Code                     SPC f s'},
---      command = 'Telescope gosource'},
---   }
--- end
 
 function config.setup()
 
@@ -138,11 +72,6 @@ function config.nvim_tree()
   vim.g.nvim_tree_auto_resize = 0
   vim.g.nvim_tree_highlight_opened_files = 0
   vim.g.nvim_tree_hijack_cursor = 1
-  vim.g.nvim_tree_bindings = {
-    ["l"] = ":lua require'nvim-tree'.on_keypress('edit')<CR>",
-    ["s"] = ":lua require'nvim-tree'.on_keypress('vsplit')<CR>",
-    ["i"] = ":lua require'nvim-tree'.on_keypress('split')<CR>"
-  }
   vim.g.nvim_tree_icons = {
     default = "",
     symlink = "",
@@ -156,11 +85,14 @@ function config.nvim_tree()
       ignored = "◌"
     },
     folder = {
+      arrow_open = "",
+      arrow_closed = "",
       default = "",
       open = "",
       symlink = "",
       empty = "",
       empty_open = "",
+      symlink = "",
       symlink_open = ""
     },
     lsp = {
@@ -173,13 +105,9 @@ function config.nvim_tree()
   vim.cmd([[autocmd Filetype NvimTree set cursorline]])
 end
 
--- function config.vim_signify()
---   vim.g.signify_sign_add = '▋'
---   vim.g.signify_sign_change = '▋'
---   vim.g.signify_sign_delete = '▋'
---   vim.g.signify_sign_delete_first_line = '▘'
---   vim.g.signify_sign_show_count = 0
--- end
+-- '▋''▘'
+
+
 function config.scrollbar()
   if vim.wo.diff then
     return
@@ -213,26 +141,6 @@ function config.scrollview()
   vim.g.scrollview_column = 1
 end
 
-function config.interestingwords()
-  -- vim.cmd("nnoremap <leader>k :call InterestingWords('n')<cr>")
-  vim.g.interestingWordsDefaultMappingsK = 0
-  vim.g.interestingWordsRandomiseColors = 1
-  -- vim.cmd("nnoremap <silent> <leader>u :]<cr>")
-  vim.g.interestingWordsGUIColors = {
-    '#aeee00', '#ff0000', '#0000ff', '#b88823', '#ffa724', '#ff2c4b', '#F92772', '#A6E22D',
-    '#66d9ef', '#E6DB74', '#FD9720', '#ae81ff', '#e73c50', '#ff0000', '#5f0000'
-  }
-  vim.g.interestingWordsCycleColors = 1
-  vim.cmd("nnoremap <silent> <leader>k :call InterestingWords('n')<cr>")
-  vim.cmd("vnoremap <silent> <leader>k :call InterestingWords('v')<cr>")
-  vim.cmd("nnoremap <silent> <leader>K :call UncolorAllWords()<cr>")
-  vim.cmd("nnoremap <silent> <leader>m :call WordNavigation('forward')<cr>")
-  vim.cmd("nnoremap <silent> <leader>M :call WordNavigation('backward')<cr>")
-end
-
-function config.interestingwords_after()
-end
-
 function config.default()
   vim.cmd("set cursorcolumn")
   vim.cmd("augroup vimrc_todo")
@@ -252,7 +160,7 @@ function config.aurora()
 end
 
 function config.material()
-  -- local opt = {"oceanic", "darker", "palenight", "deep ocean", "moonlight", "dracula", "dracula_blood", "monokai", "mariana"}
+  -- local opt = {"oceanic", "darker", "palenight", "deep ocean", "moonlight", "dracula", "dracula_blood", "monokai", "mariana", "ceramic"}
   -- local v = math.random(1, #opt)
   -- vim.g.material_style = opt[v]
   vim.g.material_italic_comments = true
@@ -263,7 +171,7 @@ function config.material()
   vim.g.material_contrast = true
   vim.g.material_borders = true
   vim.g.material_disable_background = false
-  -- vim.g.material_style = "dracula_blood" -- 'moonlight'
+  -- vim.g.material_style = "emerald" -- 'moonlight'
   -- vim.g.material_style_fix = true
   -- config.default()
 end
@@ -411,6 +319,7 @@ vim.api.nvim_exec([[
 
 math.randomseed(os.time())
 local themes = {
+  "material_plus.nvim", 
   "aurora", "tokyonight.nvim",
   "material_plus.nvim", "aurora", "zephyr-nvim",
   "gruvbox-material", "sonokai"

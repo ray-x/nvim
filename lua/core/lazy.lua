@@ -41,7 +41,7 @@ function lazyload()
   --   loader("lua-dev.nvim")
   -- end
 
-  plugins = "plenary.nvim gitsigns.nvim" --nvim-lspconfig navigator.lua   guihua.lua navigator.lua 
+  plugins = "plenary.nvim gitsigns.nvim" --nvim-lspconfig navigator.lua   guihua.lua navigator.lua  -- gitsigns.nvim
   vim.g.vimsyn_embed = 'lPr'
   loader(plugins)
 

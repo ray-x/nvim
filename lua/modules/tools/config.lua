@@ -86,25 +86,6 @@ function config.vim_dadbod_ui()
   vim.g.dbs = load_dbs()
 end
 
--- function config.spectre()
---   -- lua require 'modules.tools.config'.spectre()
---   if not packer_plugins['spectre'] then
---     vim.cmd [[packadd plenary.nvim]]
---     vim.cmd [[packadd popup.nvim]]
---     vim.cmd [[packadd nvim-spectre]]
---   end
-
---   -- body
---   vim.cmd([[nnoremap <leader>S :lua require('spectre').open()<CR>]])
-
---   -- "search current word
---   vim.cmd([[nnoremap <leader>sw viw:lua require('spectre').open_visual()<CR>]])
---   vim.cmd([[vnoremap <leader>s :lua require('spectre').open_visual()<CR>]])
---    -- "  search in current file
---   vim.cmd([[nnoremap <leader>sp viw:lua require('spectre').open_file_search()<cr>]])
---   require'spectre'.setup()
--- end
-
 function config.vim_vista()
   vim.g["vista#renderer#enable_icon"] = 1
   vim.g.vista_disable_statusline = 1
@@ -186,10 +167,16 @@ function config.gitsigns()
       ["o ih"] = ':<C-U>lua require"gitsigns".text_object()<CR>',
       ["x ih"] = ':<C-U>lua require"gitsigns".text_object()<CR>'
     },
-    watch_index = {interval = 1000},
+    watch_index = {interval = 1000, follow_files = true},
     sign_priority = 6,
     status_formatter = nil, -- Use default
-    debug_mode = true
+    debug_mode = false,
+    current_line_blame = true,
+    current_line_blame_delay = 1500,
+    update_debounce = 300,
+    word_diff = true,
+    use_decoration_api = true,
+    use_internal_diff = true,
   }
 end
 
@@ -218,105 +205,6 @@ function config.bqf( )
   })
 end
 
-function config.vgit()
-  require('vgit').setup({
-    hunks_enabled = true,
-    blames_enabled = true,
-    blame = {
-      hl_group = 'VGitBlame',
-      format = function(blame, git_config)
-        local config_author = git_config['ray.xu']
-        local author = blame.author
-        if config_author == author then author = 'ray.xu' end
-        local time = os.difftime(os.time(), blame.author_time) / (24 * 60 * 60)
-        local time_format = string.format('%s days ago', round(time))
-        local time_divisions = {{24, 'hours'}, {60, 'minutes'}, {60, 'seconds'}}
-        local division_counter = 1
-
-        while time < 1 and division_counter ~= #time_divisions do
-          local division = time_divisions[division_counter]
-          time = time * division[1]
-          time_format = string.format('%s %s ago', round(time), division[2])
-          division_counter = division_counter + 1
-        end
-
-        local commit_message = blame.commit_message
-
-        if not blame.committed then
-          author = 'ray.xu'
-          commit_message = 'Uncommitted changes'
-          local info = string.format('%s • %s', author, commit_message)
-          return string.format(' %s', info)
-        end
-
-        local max_commit_message_length = 255
-
-        if #commit_message > max_commit_message_length then
-          commit_message = commit_message:sub(1, max_commit_message_length) .. '...'
-        end
-
-        local info = string.format('%s, %s • %s', author, time_format, commit_message)
-        return string.format(' %s', info)
-      end
-    },
-    diff = {
-      window = {
-        hl_group = 'VGitDiffWindow',
-        border = {
-          {'╭', 'VGitDiffBorder'}, {'─', 'VGitDiffBorder'}, {'╮', 'VGitDiffBorder'},
-          {'│', 'VGitDiffBorder'}, {'╯', 'VGitDiffBorder'}, {'─', 'VGitDiffBorder'},
-          {'╰', 'VGitDiffBorder'}, {'│', 'VGitDiffBorder'}
-        }
-      },
-      types = {
-        add = {
-          name = 'VGitDiffAddSign',
-          sign_hl_group = 'VGitDiffAddSign',
-          text_hl_group = 'VGitDiffAddText',
-          text = '+'
-        },
-        remove = {
-          name = 'VGitDiffRemoveSign',
-          sign_hl_group = 'VGitDiffRemoveSign',
-          text_hl_group = 'VGitDiffRemoveText',
-          text = '-'
-        }
-      }
-    },
-    hunk = {
-      types = {
-        add = {
-          name = 'VGitHunkAddSign',
-          sign_hl_group = 'VGitHunkAddSign',
-          text_hl_group = 'VGitHunkAddText',
-          text = '+'
-        },
-        remove = {
-          name = 'VGitHunkRemoveSign',
-          sign_hl_group = 'VGitHunkRemoveSign',
-          text_hl_group = 'VGitHunkRemoveText',
-          text = '-'
-        }
-      },
-      window = {
-        hl_group = 'VGitHunkWindow',
-        border = {
-          {'', 'VGitHunkBorder'}, {'─', 'VGitHunkBorder'}, {'', 'VGitHunkBorder'},
-          {'', 'VGitHunkBorder'}, {'', 'VGitHunkBorder'}, {'─', 'VGitHunkBorder'},
-          {'', 'VGitHunkBorder'}, {'', 'VGitHunkBorder'}
-        }
-      }
-    },
-    hunk_sign = {
-      priority = 10,
-      types = {
-        add = {name = 'VGitSignAdd', hl_group = 'VGitSignAdd', text = '│'},
-        remove = {name = 'VGitSignRemove', hl_group = 'VGitSignRemove', text = '│'},
-        change = {name = 'VGitSignChange', hl_group = 'VGitSignChange', text = '│'}
-      }
-    }
-  })
-end
 
 function config.dapui()
   require("dapui").setup({
@@ -411,16 +299,6 @@ function config.spellcheck()
 
   vim.fn["spelunker#check"]()
 end
-
--- function config.prettier()
---   vim.g["prettier#autoformat"] = 1
---   vim.g["prettier#autoformat_require_pragma"] = 1
---   vim.g["prettier#autoformat_config_present"] = 1
---   vim.g["prettier#exec_cmd_async"] = 1
---   vim.g["prettier#quickfix_enabled"] = 0
---   vim.api.nvim_command(
---       "autocmd InsertLeave,BufWritePost *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync")
--- end
 
 function config.isas()
   local isas = require("isas")

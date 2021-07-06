@@ -2,6 +2,7 @@
 set termguicolors
 call plug#begin('~/.vim/plugged')
 Plug 'neovim/nvim-lspconfig'
+Plug 'RRethy/vim-illuminate'
 Plug '/Users/ray.xu/github/lsp_signature.nvim'
 Plug '/Users/ray.xu/github/guihua.lua'
 Plug '/Users/ray.xu/github/navigator.lua'
@@ -11,98 +12,81 @@ call plug#end()
 
 lua <<EOF
 -- require'lspconfig'.rust_analyzer.setup{}
+
 require'lsp_signature'.on_attach({log_path = "/Users/ray.xu/tmp/sig.log", debug = true})
 
 local protocol = require'vim.lsp.protocol'
-
+vim.lsp.set_log_level("debug")
 local capabilities = protocol.make_client_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
-require'navigator'.setup({debug=true})
+
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+local sumneko_root_path = vim.fn.expand("$HOME") .. "/github/sumneko/lua-language-server"
+local sumneko_binary = vim.fn.expand("$HOME")
+                           .. "/github/sumneko/lua-language-server/bin/macOS/lua-language-server"
+
+-- require'lspconfig'.gopls.setup({
+--     on_attach = function()
+--     require'lsp_signature'.on_attach({bind = false, floating_window=false, hint_enable = true})
+--     end
+-- })
+
+-- local luadev = require("lua-dev").setup(cfg)
+local single = {"╭", "─", "╮", "│", "╯", "─", "╰", "│"}
+print("navigator setup")
+require"navigator".setup({
+  debug = true,
+  width = 0.7,
+  border = single, -- "single",
+  lsp = {
+    format_on_save = true, -- set to false to disasble lsp code format on save (if you are using prettier/efm/formater etc)
+    denols = {filetypes = {}},
+    -- flow = {
+    --   filetypes ={},
+    -- },
+    tsserver = {
+      filetypes = {
+        "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact",
+        "typescript.tsx"
+      }
+    },
+    gopls = {
+      on_attach = function(client)
+        -- print("i am a hook")
+        client.resolved_capabilities.document_formatting = false
+        require 'illuminate'.on_attach(client)
+      end,
+      settings = {
+        gopls = {gofumpt = true} -- enableww gofumpt etc,
+      }
+      -- set to {} to disable the lspclient for all filetype
+    },
+    clangd = {filetypes = {}},
+    sumneko_lua = {
+      sumneko_root_path = sumneko_root_path,
+      sumneko_binary = sumneko_binary
+      -- settings = luadev.settings
+    }
+  }
+})
+
+
+
 -- LSP SERVER CONFIGURATION
 -- ===================================================================
 local configs = require 'lspconfig/configs'
-if not require'lspconfig'.vhdl_ls then configs['vhdl_ls'] = {default_config = {}} end
-require'lspconfig'.vhdl_ls.setup ({
-    cmd = {"/Users/ray.xu/lsp_test/vhdl/rust_hdl/target/release/vhdl_ls"},
-    filetypes = {"vhdl"},
-    root_dir = require('lspconfig/util').root_pattern("vhdl_ls.toml"),
-    on_attach = function(client, bufnr)
-        client.resolved_capabilities.document_symbol  = false
-        client.resolved_capabilities.workspace_symbol = false
-    end,
-})
+-- if not require'lspconfig'.vhdl_ls then configs['vhdl_ls'] = {default_config = {}} end
+-- require'lspconfig'.vhdl_ls.setup ({
+--     cmd = {"/Users/ray.xu/lsp_test/vhdl/rust_hdl/target/release/vhdl_ls"},
+--     filetypes = {"vhdl"},
+--     root_dir = require('lspconfig/util').root_pattern("vhdl_ls.toml"),
+--     on_attach = function(client, bufnr)
+--         client.resolved_capabilities.document_symbol  = false
+--         client.resolved_capabilities.workspace_symbol = false
+--     end,
+-- })
 
--- require'navigator'.setup({debug=true})
 
-require'lspconfig'.intelephense.setup({
-    settings = {
-        intelephense = {
-            stubs = { 
-                "bcmath",
-                "bz2",
-                "calendar",
-                "Core",
-                "curl",
-                "date",
-                "dba",
-                "dom",
-                "enchant",
-                "fileinfo",
-                "filter",
-                "ftp",
-                "gd",
-                "gettext",
-                "hash",
-                "iconv",
-                "imap",
-                "intl",
-                "json",
-                "ldap",
-                "libxml",
-                "mbstring",
-                "mcrypt",
-                "mysql",
-                "mysqli",
-                "password",
-                "pcntl",
-                "pcre",
-                "PDO",
-                "pdo_mysql",
-                "Phar",
-                "readline",
-                "recode",
-                "Reflection",
-                "regex",
-                "session",
-                "SimpleXML",
-                "soap",
-                "sockets",
-                "sodium",
-                "SPL",
-                "standard",
-                "superglobals",
-                "sysvsem",
-                "sysvshm",
-                "tokenizer",
-                "xml",
-                "xdebug",
-                "xmlreader",
-                "xmlwriter",
-                "yaml",
-                "zip",
-                "zlib",
-                "wordpress",
-                "woocommerce"
-            },
-            files = {
-                maxSize = 5000000;
-            };
-        };
-    },
-    on_attach = function()
-     require'lsp_signature'.on_attach({log_path = "/Users/ray.xu/tmp/sig.log", debug = true})
-    end
-    });
 EOF
 
 set mouse=a

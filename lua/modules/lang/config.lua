@@ -155,7 +155,7 @@ function config.navigator()
     debug = true,
     width = 0.7,
     border = single, -- "single",
-    on_attach = function() 
+    on_attach = function(client, bufnr)
       require "lsp_signature".on_attach(
         {
           floating_window = true,
