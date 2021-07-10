@@ -62,38 +62,11 @@ local keys = {
   ["n|<Leader>fh"] = map_cu("Clap command_history"):with_noremap():with_silent(),
   ["n|<Leader><Leader>r"] = map_cmd("v:lua.run_or_test()"):with_expr(),
   ["v|<Leader><Leader>r"] = map_cmd("v:lua.run_or_test()"):with_expr(),
-  -- DAP
-  ["n|<leader><F5>"] = map_cr('<cmd>lua require"osv".launch()'):with_noremap():with_silent(),
-  ["n|<leader>dc"] = map_cr('<cmd>lua require"dap".continue()'):with_noremap():with_silent(),
-  ["n|<leader><F10>"] = map_cr('<cmd>lua require"dap".step_over()'):with_noremap():with_silent(),
-  ["n|<leader><F11>"] = map_cr('<cmd>lua require"dap".step_into()'):with_noremap():with_silent(),
-  ["n|<leader>dso"] = map_cr('<cmd>lua require"dap".step_out()'):with_noremap():with_silent(),
-  ["n|<leader><F9>"] = map_cr('<cmd>lua require"dap".toggle_breakpoint()'):with_noremap()
-      :with_silent(),
-  ["n|<leader>dsbr"] = map_cr(
-      '<cmd>lua require"dap".set_breakpoint(vim.fn.input("Breakpoint condition: "))'):with_noremap()
-      :with_silent(),
-  ["n|<leader>dsbm"] = map_cr(
-      '<cmd>lua require"dap".set_breakpoint(nil, nil, vim.fn.input("Log point message: "))'):with_noremap()
-      :with_silent(),
-  ["n|<leader>dro"] = map_cr('<cmd>lua require"dap".repl.open()'):with_noremap():with_silent(),
-  ["n|<leader>drl"] = map_cr('<cmd>lua require"dap".repl.run_last()'):with_noremap():with_silent(),
-  -- ["n|[t"] = map_cr("lua require'nvim-treesitter-refactor.navigation'.goto_previous_usage(0)"):with_noremap():with_silent(),
-  -- ["n|]t"] = map_cr("lua require'nvim-treesitter-refactor.navigation'.goto_next_usage(0)"):with_noremap():with_silent(),
-  ["n|<leader>dcc"] = map_cr('<cmd>lua require"telescope".extensions.dap.commands{}'):with_noremap()
-      :with_silent(),
-  ["n|<leader>dco"] = map_cr('<cmd>lua require"telescope".extensions.dap.configurations{}'):with_noremap()
-      :with_silent(),
-  ["n|<leader>dlb"] = map_cr('<cmd>lua require"telescope".extensions.dap.list_breakpoints{}'):with_noremap()
-      :with_silent(),
-  ["n|<leader>dv"] = map_cr('<cmd>lua require"telescope".extensions.dap.variables{}'):with_noremap()
-      :with_silent(),
-  ["n|<leader>df"] = map_cr('<cmd>lua require"telescope".extensions.dap.frames{}'):with_noremap()
-      :with_silent(),
-  ["n|w"] = map_cmd('v:lua.word_motion_move("w")'):with_silent():with_expr(),
-  ["n|<Leader>k"] = map_cmd('v:lua.interestingwords("<leader>k")'):with_silent():with_expr(),
-  ["n|b"] = map_cmd('v:lua.word_motion_move("b")'):with_silent():with_expr(),
-  --
+  ["n|<Leader>di"] = map_cr("<cmd>lua require'dap.ui.variables'.hover()"):with_expr(),
+  ["n|<Leader>di"] = map_cr("<cmd>lua require'dap.ui.widgets'.hover()"):with_expr(),  -- TODO: another key?
+
+  ["v|<Leader>di"] = map_cr("<cmd>lua require'dap.ui.variables'.visual_hover()"):with_expr(),
+
   -- Plugin QuickRun
   -- ["n|<Leader>r"]     = map_cr("<cmd> lua require'selfunc'.run_command()"):with_noremap():with_silent(),
   -- Plugin Vista
@@ -166,5 +139,7 @@ _G.run_or_test = function(...)
     return t("<Plug>PlenaryTestFile")
   end
 end
+
+vim.cmd([[command! -nargs=*  DebugOpen lua require"modules.lang.dap".prepare()]])
 --
 return K

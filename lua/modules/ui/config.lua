@@ -236,8 +236,12 @@ function config.sonokai()
   local v = opt[math.random(1, #opt)]
   vim.g.sonokai_style = v
   vim.g.sonokai_enable_italic = 1
+  vim.g.sonokai_diagnostic_virtual_text = 'colored'
   vim.g.sonokai_disable_italic_comment = 1
+  vim.g.sonokai_current_word = 'underline'
   vim.cmd([[colorscheme sonokai]])
+  vim.cmd([[hi CurrentWord guifg=#E3F467 guibg=#332248 gui=Bold,undercurl]])
+  vim.cmd([[hi TSKeyword gui=Bold]])
 end
 
 function config.blankline()

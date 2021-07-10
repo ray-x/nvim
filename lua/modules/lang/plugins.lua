@@ -45,16 +45,11 @@ lang["shmup/vim-sql-syntax"] = {ft = {"sql", "pgsql"}}
 
 lang["nanotee/sqls.nvim"] = {ft = {"sql", "pgsql"}, setup = conf.sqls, opt = true}
 
--- lang["fatih/vim-go"] = {
---     -- ft = 'go',
---     event = "InsertEnter",
---     cmd = {"GoImport", "GoImports", "GoTest", "GoBuild", "GoFmt", "G"},
---     run = ":GoInstallBinaries",
---     config = conf.go,
---     opt = true
--- }
 
-lang["/Users/ray.xu/github/go.nvim"] = {ft = "go", opt = true, config = conf.go}
+lang["/Users/ray.xu/github/go.nvim"] = {
+  ft = {"go"},
+  config = conf.go
+}
 
 lang["/Users/ray.xu/github/navigator.lua"] = {
   requires = {"/Users/ray.xu/github/guihua.lua", run = 'cd lua/fzy && make'},
@@ -109,6 +104,11 @@ lang["rcarriga/nvim-dap-ui"] = {
   opt = true
 }
 
+lang["theHamsta/nvim-dap-virtual-text"] = {
+    opt = true
+}
+
+
 lang["jbyuki/one-small-step-for-vimkind"] = {opt = true, ft = {"lua"}}
 
 lang["nvim-telescope/telescope-dap.nvim"] = {
@@ -116,11 +116,12 @@ lang["nvim-telescope/telescope-dap.nvim"] = {
   -- cmd = "Telescope",
   opt = true
 }
+
 lang["mfussenegger/nvim-dap-python"] = {ft = {"python"}}
 
 lang["mtdl9/vim-log-highlighting"] = {ft = {"text", "log"}}
 
-lang["RRethy/vim-illuminate"] = {opt=true, ft = {"go"}}
+-- lang["RRethy/vim-illuminate"] = {opt=true, ft = {"go"}}
 
 lang["michaelb/sniprun"] = {
   run = "bash install.sh",

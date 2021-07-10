@@ -32,28 +32,6 @@ M.setup = function()
   --
   --
 
-  local stylelint = {
-    lintCommand = "stylelint --stdin --stdin-filename ${INPUT} --formatter compact",
-    lintIgnoreExitCode = true,
-    lintStdin = true,
-    lintFormats = {"%f: line %l, col %c, %tarning - %m", "%f: line %l, col %c, %trror - %m"},
-    formatCommand = "stylelint --fix --stdin --stdin-filename ${INPUT}",
-    formatStdin = true
-  }
-  local prettier = {
-    formatCommand = "./node_modules/.bin/prettier --stdin-filepath ${INPUT}",
-    formatStdin = true
-  }
-
-  local eslint_d = {
-    lintCommand = "eslint_d -f unix --stdin --stdin-filename ${INPUT}",
-    lintStdin = true,
-    lintFormats = {"%f:%l:%c: %m"},
-    lintIgnoreExitCode = true,
-    formatCommand = "eslint_d --fix-to-stdout --stdin --stdin-filename=${INPUT}",
-    formatStdin = true
-  }
-  local rustfmt = {formatCommand = "rustfmt", formatStdin = true}
 
 
   -- lspconfig.diagnosticls.setup{
@@ -115,72 +93,75 @@ M.setup = function()
   --     }
   --   }
   -- }
-  lspconfig.efm.setup {
-    flags = {debounce_text_changes = 1000},
-    cmd = {'efm-langserver', '-loglevel', '2', '-logfile', '/Users/ray.xu/tmp/efm.log'}, -- 1~10
-    init_options = {documentFormatting = true},
-    on_attach = function(client)
-      client.resolved_capabilities.document_formatting = true
-      client.resolved_capabilities.goto_definition = false
-      client.resolved_capabilities.code_action = nil
-      local log = require("guihua.log").new({level = "info"}, true)
-      vim.cmd([[autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting()]])
-      -- print ("efm attached")
-      -- set_lsp_config(client)
-    end,
-    filetypes = {
-      -- "javascript", "javascriptreact", 'typescript', 'typescriptreact', 
-      'html', 'css', 'go', 'lua'
-    },
-    -- settings = {
-    --   rootMarkers = {'.git/', 'package.json', 'Makefile', 'go.mod'},
-    --   languages = {
-    --       lua = {
-    --           {formatCommand = "lua-format -i", formatStdin = true}
-    --       }
-    --   }
-    -- }
-    settings = {
-      rootMarkers = {".git/", 'package.json', 'Makefile', 'go.mod'},
-      lintDebounce =   "1s",
-      formatDebounce = "1000ms",
-      languages = {
-        typescript = {stylelint, prettier},
-        typescriptreact = {stylelint, prettier},
-        javascript = {eslint_d},
-        javascriptreact = {eslint_d},
-        -- python = { python-flake8 },
-        go = {
-          {
-            formatCommand = "golines --max-len=120  --base-formatter=gofumpt",
-            formatStdin = true,
-            -- "staticcheck" ?
-            lintCommand = "golangci-lint run",
-            LintSeverity = 3,
-            --out-format github-actions",
-            -- ::warning file=cmd/root.go,line=22,col=2::`hostname` is unused (deadcode)
-            -- lintFormats = {"::%tarning file=%f,line=%l,col=%c::%m"}
-            -- {"%f:%l:%c: %m"}
-            -- {"::%tarning %f,line=%l,col=%c::%m"},
-              --       - '%f:%l:%c: %tarning: %m' ::warning file=cmd/root.go,line=18,col=2::`envFile` is unused (deadcode)
-            --lintCategoryMap = "w: W",
-          }
-        },
 
-        lua = {
-          -- --indent-width 2 --tab-width 2 --no-use-tab --column-limit 110 --column-table-limit 100 --no-keep-simple-function-one-line --no-chop-down-table --chop-down-kv-table --no-keep-simple-control-block-one-line --no-keep-simple-function-one-line --no-break-after-functioncall-lp --no-break-after-operator
-          { formatCommand = "lua-format --indent-width 2 --tab-width 2 --no-use-tab --column-limit 120 --column-table-limit 100 --no-keep-simple-function-one-line --no-chop-down-table --chop-down-kv-table --no-keep-simple-control-block-one-line --no-keep-simple-function-one-line --no-break-after-functioncall-lp --no-break-after-operator",
-           formatStdin = true,
-           -- lintCommand = "luacheck -d --formatter plain --codes --filename %s -", formatStdin = true,
-           -- LintSeverity = 3,
-           -- lintStdin = true,
-           -- lintFormats = {"%f:%l:%c: %m"},
-           -- lintIgnoreExitCode = true,
-          }
-        },
-      }
-    }
-  }
+  -- local stylelint = {
+  --   lintCommand = "stylelint --stdin --stdin-filename ${INPUT} --formatter compact",
+  --   lintIgnoreExitCode = true,
+  --   lintStdin = true,
+  --   lintFormats = {"%f: line %l, col %c, %tarning - %m", "%f: line %l, col %c, %trror - %m"},
+  --   formatCommand = "stylelint --fix --stdin --stdin-filename ${INPUT}",
+  --   formatStdin = true
+  -- }
+  -- local prettier = {
+  --   formatCommand = "./node_modules/.bin/prettier --stdin-filepath ${INPUT}",
+  --   formatStdin = true
+  -- }
+
+  -- local eslint_d = {
+  --   lintCommand = "eslint_d -f unix --stdin --stdin-filename ${INPUT}",
+  --   lintStdin = true,
+  --   lintFormats = {"%f:%l:%c: %m"},
+  --   lintIgnoreExitCode = true,
+  --   formatCommand = "eslint_d --fix-to-stdout --stdin --stdin-filename=${INPUT}",
+  --   formatStdin = true
+  -- }
+  -- local rustfmt = {formatCommand = "rustfmt", formatStdin = true}
+
+  -- lspconfig.efm.setup {
+  --   flags = {debounce_text_changes = 1000},
+  --   cmd = {'efm-langserver', '-loglevel', '5', '-logfile', '/Users/ray.xu/tmp/efm.log'}, -- 1~10
+  --   init_options = {documentFormatting = true},
+  --   on_attach = function(client)
+  --     client.resolved_capabilities.document_formatting = true
+  --     client.resolved_capabilities.goto_definition = false
+  --     client.resolved_capabilities.code_action = nil
+  --     local log = require("guihua.log").new({level = "info"}, true)
+  --     vim.cmd([[autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting()]])
+  --     -- print ("efm attached")
+  --     -- set_lsp_config(client)
+  --   end,
+  --   filetypes = {
+  --     "javascript", "javascriptreact", 'typescript', 'typescriptreact', 
+  --     'html', 'css', 'go', 'lua'
+  --   },
+  --   settings = {
+  --     rootMarkers = {".git/", 'package.json', 'Makefile', 'go.mod'},
+  --     lintDebounce =   "1s",
+  --     -- formatDebounce = "1000ms",
+  --     languages = {
+  --       typescript = {stylelint, prettier},
+  --       typescriptreact = {stylelint, prettier},
+  --       javascript = {eslint_d},
+  --       javascriptreact = {eslint_d},
+  --       -- python = { python-flake8 },
+  --       go = {
+  --         {
+  --           formatCommand = "golines --max-len=120  --base-formatter=gofumpt",
+  --           formatStdin = true,
+  --           lintCommand = "golangci-lint run",
+  --           LintSeverity = 3,
+  --         }
+  --       },
+
+  --       lua = {
+  --         -- --indent-width 2 --tab-width 2 --no-use-tab --column-limit 110 --column-table-limit 100 --no-keep-simple-function-one-line --no-chop-down-table --chop-down-kv-table --no-keep-simple-control-block-one-line --no-keep-simple-function-one-line --no-break-after-functioncall-lp --no-break-after-operator
+  --         { formatCommand = "lua-format --indent-width 2 --tab-width 2 --no-use-tab --column-limit 120 --column-table-limit 100 --no-keep-simple-function-one-line --no-chop-down-table --chop-down-kv-table --no-keep-simple-control-block-one-line --no-keep-simple-function-one-line --no-break-after-functioncall-lp --no-break-after-operator",
+  --          formatStdin = true,
+  --         }
+  --       },
+  --     }
+  --   }
+  -- }
 
 
 

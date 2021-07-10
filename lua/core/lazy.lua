@@ -1,5 +1,3 @@
-
-
 function lazyload()
   if vim.wo.diff then
     -- local plugins = "nvim-treesitter" -- nvim-treesitter-textobjects should be autoloaded
@@ -67,6 +65,7 @@ function lazyload()
     return -- do not enable syntax
   else
     vim.cmd([[setlocal syntax=on]])
+    -- require "nvim-treesitter.configs".setup { highlight = { enable = true,}}
     -- require "nvim-treesitter.configs".setup { 
     --   highlight = { 
     --   enable = true,

@@ -65,24 +65,18 @@ completion["mattn/emmet-vim"] = {
 
 -- note: part of the code is used in navigator
 completion["/Users/ray.xu/github/lsp_signature.nvim"] = {
-  opt = true,
+  opt = false,
   config = function()
-    require "lsp_signature".on_attach(
-      {
+    require "lsp_signature".setup({
         floating_window = true,
         log_path = "/Users/ray.xu/tmp/sig.log",
         debug = true,
-        fix_pos = true,
-        hi_parameter = 'Constant',
-        bind = true, -- This is mandatory, otherwise border config won't get registered.
+        hi_parameter = 'Search',
+        bind = true,
         handler_opts = {
-          -- border = "shadow"
-          -- border = {""},
-          -- border = {"w", "═" ,"╗", "║", "╝", "═", "╚", "║" },
           border = {"╭", "─" ,"╮", "│", "╯", "─", "╰", "│" },
         },
-      }
-    )
+      })
   end
 }
 -- completion['ray-x/lsp_signature.nvim'] = {

@@ -1,4 +1,8 @@
 local config = {}
+local bind = require('keymap.bind')
+local map_cr = bind.map_cr
+local map_cu = bind.map_cu
+local map_cmd = bind.map_cmd
 
 function config.nvim_treesitter()
   require("modules.lang.treesitter").treesitter()
@@ -126,6 +130,31 @@ function config.syntax_folding()
   vim.api.nvim_command("setlocal foldexpr=nvim_treesitter#foldexpr()")
 end
 
+
+  local stylelint = {
+    lintCommand = "stylelint --stdin --stdin-filename ${INPUT} --formatter compact",
+    lintIgnoreExitCode = true,
+    lintStdin = true,
+    lintFormats = {"%f: line %l, col %c, %tarning - %m", "%f: line %l, col %c, %trror - %m"},
+    formatCommand = "stylelint --fix --stdin --stdin-filename ${INPUT}",
+    formatStdin = true
+  }
+  local prettier = {
+    formatCommand = "./node_modules/.bin/prettier --stdin-filepath ${INPUT}",
+    formatStdin = true
+  }
+
+  local eslint_d = {
+    lintCommand = "eslint_d -f unix --stdin --stdin-filename ${INPUT}",
+    lintStdin = true,
+    lintFormats = {"%f:%l:%c: %m"},
+    lintIgnoreExitCode = true,
+    formatCommand = "eslint_d --fix-to-stdout --stdin --stdin-filename=${INPUT}",
+    formatStdin = true
+  }
+  local rustfmt = {formatCommand = "rustfmt", formatStdin = true}
+
+
 function config.navigator()
   local capabilities = vim.lsp.protocol.make_client_capabilities()
   local sumneko_root_path = vim.fn.expand("$HOME") .. "/github/sumneko/lua-language-server"
@@ -155,21 +184,22 @@ function config.navigator()
     debug = true,
     width = 0.7,
     border = single, -- "single",
-    on_attach = function(client, bufnr)
-      require "lsp_signature".on_attach(
-        {
-          floating_window = true,
-          log_path = "/Users/ray.xu/tmp/sig.log",
-          debug = true,
-          fix_pos = true,
-          hi_parameter = 'Constant',
-          bind = true, -- This is mandatory, otherwise border config won't get registered.
-          handler_opts = {
-            border = {"╭", "─" ,"╮", "│", "╯", "─", "╰", "│" },
-          },
-        }
-      )
-    end,
+    -- keymaps = {{key = "GR", func = "references()"}}, 
+    -- on_attach = function(client, bufnr)
+    --   require "lsp_signature".on_attach(
+    --     {
+    --       floating_window = true,
+    --       log_path = "/Users/ray.xu/tmp/sig.log",
+    --       debug = true,
+    --       fix_pos = true,
+    --       hi_parameter = 'Constant',
+    --       bind = true, -- This is mandatory, otherwise border config won't get registered.
+    --       handler_opts = {
+    --         border = {"╭", "─" ,"╮", "│", "╯", "─", "╰", "│" },
+    --       },
+    --     }
+    --   )
+    -- end,
     lsp = {
       format_on_save = true, -- set to false to disasble lsp code format on save (if you are using prettier/efm/formater etc)
       denols = {filetypes = {}},
@@ -197,7 +227,52 @@ function config.navigator()
         sumneko_root_path = sumneko_root_path,
         sumneko_binary = sumneko_binary
         -- settings = luadev.settings
-      }
+      },
+      efm = {
+        flags = {debounce_text_changes = 2000},
+        cmd = {'efm-langserver', '-loglevel', '5', '-logfile', '/Users/ray.xu/tmp/efm.log'}, -- 1~10
+        init_options = {documentFormatting = true},
+        on_attach = function(client)
+          client.resolved_capabilities.document_formatting = true
+          client.resolved_capabilities.goto_definition = false
+          client.resolved_capabilities.code_action = nil
+          local log = require("guihua.log").new({level = "info"}, true)
+          vim.cmd([[autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting()]])
+          -- print ("efm attached")
+          -- set_lsp_config(client)
+        end,
+        filetypes = {
+          "javascript", "javascriptreact", 'typescript', 'typescriptreact', 
+          'html', 'css', 'go', 'lua'
+        },
+        settings = {
+          rootMarkers = {".git/", 'package.json', 'Makefile', 'go.mod'},
+          lintDebounce =   "1s",
+          formatDebounce = "1000ms",
+          languages = {
+            typescript = {stylelint, prettier},
+            typescriptreact = {stylelint, prettier},
+            javascript = {eslint_d},
+            javascriptreact = {eslint_d},
+            -- python = { python-flake8 },
+            go = {
+              {
+                formatCommand = "golines --max-len=120  --base-formatter=gofumpt",
+                formatStdin = true,
+                lintCommand = "golangci-lint run",
+                LintSeverity = 3,
+              }
+            },
+
+            lua = {
+              -- --indent-width 2 --tab-width 2 --no-use-tab --column-limit 110 --column-table-limit 100 --no-keep-simple-function-one-line --no-chop-down-table --chop-down-kv-table --no-keep-simple-control-block-one-line --no-keep-simple-function-one-line --no-break-after-functioncall-lp --no-break-after-operator
+              { formatCommand = "lua-format --indent-width 2 --tab-width 2 --no-use-tab --column-limit 120 --column-table-limit 100 --no-keep-simple-function-one-line --no-chop-down-table --chop-down-kv-table --no-keep-simple-control-block-one-line --no-keep-simple-function-one-line --no-break-after-functioncall-lp --no-break-after-operator",
+               formatStdin = true,
+              }
+            },
+          }
+        }
+      },
     }
   })
 end
@@ -243,7 +318,12 @@ function config.lua_dev()
 end
 
 function config.go()
-  require("go").setup()
+  require("go").setup({
+    verbose=true,
+    log_path = vim.fn.expand("$HOME") .. "/tmp/gonvim.log",
+    dap_debug=true,
+    dap_debug_gui=true,
+  })
 
   vim.cmd("augroup go")
   vim.cmd("autocmd!")
@@ -264,18 +344,18 @@ function config.go()
   vim.cmd("au FileType go command! Gts :TestSuite -v -tags=integration")
   vim.cmd("augroup END")
 
-  -- function! s:build_go_files()
-  --   let l:file = expand('%')
-  --   if l:file =~# '^\f\+_test\.go$'
-  --     call go#test#Test(0, 1)
-  --   elseif l:file =~# '^\f\+\.go$'
-  --     call go#cmd#Build(0)
-  --   endif
-  -- endfunction
 end
 
 function config.dap()
-  require("modules.lang.dap.dap")
+  -- dap.adapters.node2 = {
+  --   type = 'executable',
+  --   command = 'node',
+  --   args = {os.getenv('HOME') .. '/apps/vscode-node-debug2/out/src/nodeDebug.js'},
+  -- }
+  -- vim.fn.sign_define('DapBreakpoint', {text='🟥', texthl='', linehl='', numhl=''})
+  -- vim.fn.sign_define('DapStopped', {text='⭐️', texthl='', linehl='', numhl=''})
+  -- require('telescope').load_extension('dap')
+  -- vim.g.dap_virtual_text = true
 end
 
 -- using efm

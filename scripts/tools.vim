@@ -36,7 +36,7 @@ function! Golines()
 endfunction
 
 
-command GoLines call Golines()
+command GoLinesViml call Golines()
 
 
 command Jsonformat %!python -m json.tool
