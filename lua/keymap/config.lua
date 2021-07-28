@@ -45,15 +45,6 @@ _G.word_motion_move = function(key)
 end
 
 
-_G.interestingwords = function(key)
-  print("iw")
-  if not packer_plugins['vim-interestingwords'] or not packer_plugins['vim-interestingwords'].loaded then
-    require'packer'.loader("vim-interestingwords")
-    -- vim.cmd [[packadd vim-wordmotion]]
-  end
-  vim.cmd(":call InterestingWords('n')")
-end
-
 
 -- _G.enhance_jk_move = function(key)
 --   if packer_plugins['accelerated-jk'] and not packer_plugins['accelerated-jk'].loaded then

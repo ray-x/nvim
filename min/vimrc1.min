@@ -1,0 +1,19 @@
+set termguicolors
+call plug#begin('~/.vim/plugged')
+Plug 'neovim/nvim-lspconfig'
+Plug 'nvim-treesitter/nvim-treesitter'
+
+Plug 'ray-x/guihua.lua'
+Plug 'ray-x/navigator.lua'
+
+call plug#end()
+
+lua <<EOF
+local single = {"╭", "─", "╮", "│", "╯", "─", "╰", "│"}
+require"navigator".setup({
+  debug = true,
+  width = 0.7,
+  border = single, -- "single"
+})
+EOF
+set mouse=a

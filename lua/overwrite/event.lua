@@ -27,7 +27,7 @@ function autocmd.load_autocmds()
         "markdown",
         "let b:prettier_exec_cmd = 'prettier' | let g:prettier#exec_cmd_path = '/usr/local/bin/prettier' | let g:spelunker_check_type = 1"
       },
-      {"BufReadPre", "*", 'if getfsize(expand("%")) > 1000000 | syntax off | endif'},
+      {"BufReadPre", "*", 'if getfsize(expand("%")) > 1000000 | echo syn off | ownsyntax off | endif'},
       {"BufWritePost", "plugins.lua", "PackerCompile"},
       {"UIEnter", "*", ":silent! :lua require('modules.lang.config').syntax_folding()"},
       {"BufReadPre", "*", ":silent! :lua require('modules.lang.config').nvim_treesitter()"},

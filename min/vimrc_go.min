@@ -1,0 +1,28 @@
+" Note: run PlugUpdate/Install first
+set termguicolors
+call plug#begin('~/.vim/plugged')
+Plug 'neovim/nvim-lspconfig'
+Plug 'nvim-treesitter/nvim-treesitter'
+
+Plug 'ray-x/go.nvim'
+Plug 'liuchengxu/vim-clap', { 'do': { -> clap#installer#force_download() } }
+
+call plug#end()
+
+lua <<EOF
+require 'go'.setup({
+  goimport = 'gopls', -- if set to 'gopls' will use golsp format
+  gofmt = 'gopls', -- if set to gopls will use golsp format
+  max_line_line = 120,
+  tag_transform = false,
+  test_dir = '',
+  comment_placeholder = '   ',
+  lsp_cfg = true, -- true: lsp in the plugin and apply non-default setup
+  lsp_gofumpt = true, -- true: set default gofmt in gopls format to gofumpt
+  lsp_on_attach = true, -- use on_attach from go.nvim
+  dap_debug = true,
+})
+
+local protocol = require'vim.lsp.protocol'
+
+EOF

@@ -2,79 +2,65 @@
 set termguicolors
 call plug#begin('~/.vim/plugged')
 Plug 'neovim/nvim-lspconfig'
-Plug 'RRethy/vim-illuminate'
-Plug '/Users/ray.xu/github/lsp_signature.nvim'
+Plug 'nvim-treesitter/nvim-treesitter'
+Plug 'liuchengxu/vim-clap' ", { 'do': { -> clap#installer#force_download() } }
+
+Plug 'nvim-lua/popup.nvim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
+
+" Plug '/Users/ray.xu/github/lsp_signature.nvim'
 Plug '/Users/ray.xu/github/guihua.lua'
 Plug '/Users/ray.xu/github/navigator.lua'
+" Plug '/Users/ray.xu/github/go.nvim'
+
+" Plug 'ray-x/guihua.lua'
+" Plug 'ray-x/navigator.lua'
 Plug 'ray-x/aurora'
 
 call plug#end()
 
 lua <<EOF
+
+require'nvim-treesitter.configs'.setup {
+  highlight = {
+  enable = true,              
+  additional_vim_regex_highlighting = false,
+  },
+}
+require"navigator".setup()
+-- vim.treesitter.highlighter.hl_map.error = nil
+-- require "nvim-treesitter.highlight"
+-- 
+-- local protocol = require'vim.lsp.protocol'
+-- vim.lsp.set_log_level("debug")
+-- local capabilities = protocol.make_client_capabilities()
+-- capabilities.textDocument.completion.completionItem.snippetSupport = true
+-- 
+-- local capabilities = vim.lsp.protocol.make_client_capabilities()
+-- local sumneko_root_path = vim.fn.expand("$HOME") .. "/github/sumneko/lua-language-server"
+-- local sumneko_binary = vim.fn.expand("$HOME")
+--                            .. "/github/sumneko/lua-language-server/bin/macOS/lua-language-server"
+
 -- require'lspconfig'.rust_analyzer.setup{}
+-- require 'go'.setup({dap_debug =true, verbose=true})
+-- require'lsp_signature'.setup({log_path = "/Users/ray.xu/tmp/sig.log", debug = true})
 
-require'lsp_signature'.on_attach({log_path = "/Users/ray.xu/tmp/sig.log", debug = true})
-
-local protocol = require'vim.lsp.protocol'
-vim.lsp.set_log_level("debug")
-local capabilities = protocol.make_client_capabilities()
-capabilities.textDocument.completion.completionItem.snippetSupport = true
-
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-local sumneko_root_path = vim.fn.expand("$HOME") .. "/github/sumneko/lua-language-server"
-local sumneko_binary = vim.fn.expand("$HOME")
-                           .. "/github/sumneko/lua-language-server/bin/macOS/lua-language-server"
-
+-- require'lsp_signature'.setup()
 -- require'lspconfig'.gopls.setup({
---     on_attach = function()
---     require'lsp_signature'.on_attach({bind = false, floating_window=false, hint_enable = true})
---     end
+--    on_attach = function()
+--    require'lsp_signature'.on_attach({bind = false, floating_window=false, hint_enable = true})
+--    end
 -- })
 
 -- local luadev = require("lua-dev").setup(cfg)
-local single = {"╭", "─", "╮", "│", "╯", "─", "╰", "│"}
-print("navigator setup")
-require"navigator".setup({
-  debug = true,
-  width = 0.7,
-  border = single, -- "single",
-  lsp = {
-    format_on_save = true, -- set to false to disasble lsp code format on save (if you are using prettier/efm/formater etc)
-    denols = {filetypes = {}},
-    -- flow = {
-    --   filetypes ={},
-    -- },
-    tsserver = {
-      filetypes = {
-        "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact",
-        "typescript.tsx"
-      }
-    },
-    gopls = {
-      on_attach = function(client)
-        -- print("i am a hook")
-        client.resolved_capabilities.document_formatting = false
-        require 'illuminate'.on_attach(client)
-      end,
-      settings = {
-        gopls = {gofumpt = true} -- enableww gofumpt etc,
-      }
-      -- set to {} to disable the lspclient for all filetype
-    },
-    clangd = {filetypes = {}},
-    sumneko_lua = {
-      sumneko_root_path = sumneko_root_path,
-      sumneko_binary = sumneko_binary
-      -- settings = luadev.settings
-    }
-  }
-})
+
 
 
 
 -- LSP SERVER CONFIGURATION
 -- ===================================================================
-local configs = require 'lspconfig/configs'
+-- local configs = require 'lspconfig/configs'
 -- if not require'lspconfig'.vhdl_ls then configs['vhdl_ls'] = {default_config = {}} end
 -- require'lspconfig'.vhdl_ls.setup ({
 --     cmd = {"/Users/ray.xu/lsp_test/vhdl/rust_hdl/target/release/vhdl_ls"},
@@ -87,9 +73,64 @@ local configs = require 'lspconfig/configs'
 -- })
 
 
+
+-- local single = {"╭", "─", "╮", "│", "╯", "─", "╰", "│"}
+-- print("navigator setup")
+-- require"navigator".setup({
+--   debug = true,
+--   width = 0.7,
+--   border = single, -- "single",
+--   lsp = {
+--     format_on_save = true, -- set to false to disasble lsp code format on save (if you are using prettier/efm/formater etc)
+--     denols = {filetypes = {}},
+--     -- flow = {
+--     --   filetypes ={},
+--     -- },
+--     tsserver = {
+--       filetypes = {
+--         "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact",
+--         "typescript.tsx"
+--       }
+--     },
+--     gopls = {
+--       on_attach = function(client)
+--         -- print("i am a hook")
+--         client.resolved_capabilities.document_formatting = false
+--         -- require 'illuminate'.on_attach(client)
+--       end,
+--       settings = {
+--         gopls = {gofumpt = true} -- enableww gofumpt etc,
+--       }
+--       -- set to {} to disable the lspclient for all filetype
+--     },
+--     clangd = {filetypes = {}},
+--     sumneko_lua = {
+--       sumneko_root_path = sumneko_root_path,
+--       sumneko_binary = sumneko_binary
+--       -- settings = luadev.settings
+--     }
+--   }
+-- })
+
 EOF
 
 set mouse=a
+
+" nnoremap <silent> gd    <cmd>lua vim.lsp.buf.declaration()<CR>
+" nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<CR>
+" nnoremap <silent> K     <cmd>lua vim.lsp.buf.hover()<CR>
+" nnoremap <silent> gD    <cmd>lua vim.lsp.buf.implementation()<CR>
+" nnoremap <silent> <c-k> <cmd>lua vim.lsp.buf.signature_help()<CR>
+" nnoremap <silent> 1gD   <cmd>lua vim.lsp.buf.type_definition()<CR>
+" nnoremap <silent> gr    <cmd>lua vim.lsp.buf.references()<CR>
+" nnoremap <silent> g0    <cmd>lua vim.lsp.buf.document_symbol()<CR>
+" nnoremap <silent> gW    <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
+" nnoremap <buffer> <silent> <C-LeftMouse> <LeftMouse> <cmd>lua vim.lsp.buf.definition()<CR>
+" nnoremap <buffer> <silent> g<LeftMouse> <LeftMouse> <cmd>lua vim.lsp.buf.implementation()<CR>
+
+
+
+
 colorscheme aurora
 
 
@@ -309,17 +350,7 @@ EOF
 " set completeopt=menuone,noinsert,noselect
 
 
-nnoremap <silent> gd    <cmd>lua vim.lsp.buf.declaration()<CR>
-nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<CR>
-nnoremap <silent> K     <cmd>lua vim.lsp.buf.hover()<CR>
-nnoremap <silent> gD    <cmd>lua vim.lsp.buf.implementation()<CR>
-nnoremap <silent> <c-k> <cmd>lua vim.lsp.buf.signature_help()<CR>
-nnoremap <silent> 1gD   <cmd>lua vim.lsp.buf.type_definition()<CR>
-nnoremap <silent> gr    <cmd>lua vim.lsp.buf.references()<CR>
-nnoremap <silent> g0    <cmd>lua vim.lsp.buf.document_symbol()<CR>
-nnoremap <silent> gW    <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
-nnoremap <buffer> <silent> <C-LeftMouse> <LeftMouse> <cmd>lua vim.lsp.buf.definition()<CR>
-nnoremap <buffer> <silent> g<LeftMouse> <LeftMouse> <cmd>lua vim.lsp.buf.implementation()<CR>
+
 
 
 " let g:vsnip_filetypes = {}

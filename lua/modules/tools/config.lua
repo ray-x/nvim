@@ -119,7 +119,7 @@ end
 function config.clap()
   vim.g.clap_preview_size = 10
   vim.g.airline_powerline_fonts = 1
-  vim.g.clap_layout = {relative = "editor", width = "83%", row = "20%", col = "10%"} -- height = "40%", row = "17%",
+  vim.g.clap_layout = {width = "80%", row = "9%", col = "10%", height = "38%"} -- height = "40%", row = "17%", relative = "editor", 
   -- vim.g.clap_popup_border = "rounded"
   vim.g.clap_selected_sign = {text = "", texthl = "ClapSelectedSign", linehl = "ClapSelected"}
   vim.g.clap_current_selection_sign = {

@@ -69,6 +69,8 @@ local plug_map = {
     -- Plugin acceleratedjk
     -- ["n|j"]              = map_cmd('v:lua.enhance_jk_move("j")'):with_silent():with_expr(),
     -- ["n|k"]              = map_cmd('v:lua.enhance_jk_move("k")'):with_silent():with_expr(),
+    ["n|w"]              = map_cmd('v:lua.word_motion_move("w")'):with_silent():with_expr(),
+
     -- Plugin QuickRun
     ["n|<Leader>r"]     = map_cr("<cmd> lua require'internal.quickrun'.run_command()"):with_noremap():with_silent(),
     -- Plugin Vista

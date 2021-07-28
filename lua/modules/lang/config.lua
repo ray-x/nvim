@@ -131,36 +131,29 @@ function config.syntax_folding()
 end
 
 
-  local stylelint = {
-    lintCommand = "stylelint --stdin --stdin-filename ${INPUT} --formatter compact",
-    lintIgnoreExitCode = true,
-    lintStdin = true,
-    lintFormats = {"%f: line %l, col %c, %tarning - %m", "%f: line %l, col %c, %trror - %m"},
-    formatCommand = "stylelint --fix --stdin --stdin-filename ${INPUT}",
-    formatStdin = true
-  }
-  local prettier = {
-    formatCommand = "./node_modules/.bin/prettier --stdin-filepath ${INPUT}",
-    formatStdin = true
-  }
+local stylelint = {
+  lintCommand = "stylelint --stdin --stdin-filename ${INPUT} --formatter compact",
+  lintIgnoreExitCode = true,
+  lintStdin = true,
+  lintFormats = {"%f: line %l, col %c, %tarning - %m", "%f: line %l, col %c, %trror - %m"},
+  formatCommand = "stylelint --fix --stdin --stdin-filename ${INPUT}",
+  formatStdin = true
+}
+local prettier = {
+  formatCommand = "./node_modules/.bin/prettier --stdin-filepath ${INPUT}",
+  formatStdin = true
+}
 
-  local eslint_d = {
-    lintCommand = "eslint_d -f unix --stdin --stdin-filename ${INPUT}",
-    lintStdin = true,
-    lintFormats = {"%f:%l:%c: %m"},
-    lintIgnoreExitCode = true,
-    formatCommand = "eslint_d --fix-to-stdout --stdin --stdin-filename=${INPUT}",
-    formatStdin = true
-  }
-  local rustfmt = {formatCommand = "rustfmt", formatStdin = true}
+local eslint_d = {
+  lintCommand = "eslint_d -f unix --stdin --stdin-filename ${INPUT}",
+  lintStdin = true,
+  lintFormats = {"%f:%l:%c: %m"},
+  lintIgnoreExitCode = true,
+  formatCommand = "eslint_d --fix-to-stdout --stdin --stdin-filename=${INPUT}",
+  formatStdin = true
+}
+local rustfmt = {formatCommand = "rustfmt", formatStdin = true}
 
-
-function config.navigator()
-  local capabilities = vim.lsp.protocol.make_client_capabilities()
-  local sumneko_root_path = vim.fn.expand("$HOME") .. "/github/sumneko/lua-language-server"
-  local sumneko_binary = vim.fn.expand("$HOME")
-                             .. "/github/sumneko/lua-language-server/bin/macOS/lua-language-server"
-  print("navigator setup")
 
   -- local cfg = {
   --   library = {
@@ -178,59 +171,17 @@ function config.navigator()
   -- }
 
   -- local luadev = require("lua-dev").setup(cfg)
-  local single = {"╭", "─", "╮", "│", "╯", "─", "╰", "│"}
 
-  require"navigator".setup({
-    debug = true,
-    width = 0.7,
-    border = single, -- "single",
-    -- keymaps = {{key = "GR", func = "references()"}}, 
-    -- on_attach = function(client, bufnr)
-    --   require "lsp_signature".on_attach(
-    --     {
-    --       floating_window = true,
-    --       log_path = "/Users/ray.xu/tmp/sig.log",
-    --       debug = true,
-    --       fix_pos = true,
-    --       hi_parameter = 'Constant',
-    --       bind = true, -- This is mandatory, otherwise border config won't get registered.
-    --       handler_opts = {
-    --         border = {"╭", "─" ,"╮", "│", "╯", "─", "╰", "│" },
-    --       },
-    --     }
-    --   )
-    -- end,
-    lsp = {
-      format_on_save = true, -- set to false to disasble lsp code format on save (if you are using prettier/efm/formater etc)
-      denols = {filetypes = {}},
-      -- flow = {
-      --   filetypes ={},
-      -- },
-      tsserver = {
-        filetypes = {
-          "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact",
-          "typescript.tsx"
-        }
-      },
-      gopls = {
-        on_attach = function(client)
-          -- print("i am a hook")
-          client.resolved_capabilities.document_formatting = false
-        end,
-        settings = {
-          gopls = {gofumpt = true} -- enableww gofumpt etc,
-        }
-        -- set to {} to disable the lspclient for all filetype
-      },
-      clangd = {filetypes = {}},
-      sumneko_lua = {
-        sumneko_root_path = sumneko_root_path,
-        sumneko_binary = sumneko_binary
-        -- settings = luadev.settings
-      },
-      efm = {
+function config.navigator()
+  local capabilities = vim.lsp.protocol.make_client_capabilities()
+  local sumneko_root_path = vim.fn.expand("$HOME") .. "/github/sumneko/lua-language-server"
+  local sumneko_binary = vim.fn.expand("$HOME")
+                             .. "/github/sumneko/lua-language-server/bin/macOS/lua-language-server"
+
+  local single = {"╭", "─", "╮", "│", "╯", "─", "╰", "│"}
+  local efm_cfg = {
         flags = {debounce_text_changes = 2000},
-        cmd = {'efm-langserver', '-loglevel', '5', '-logfile', '/Users/ray.xu/tmp/efm.log'}, -- 1~10
+        cmd = {'efm-langserver', '-loglevel', '1', '-logfile', '/Users/ray.xu/tmp/efm.log'}, -- 1~10
         init_options = {documentFormatting = true},
         on_attach = function(client)
           client.resolved_capabilities.document_formatting = true
@@ -265,16 +216,102 @@ function config.navigator()
             },
 
             lua = {
-              -- --indent-width 2 --tab-width 2 --no-use-tab --column-limit 110 --column-table-limit 100 --no-keep-simple-function-one-line --no-chop-down-table --chop-down-kv-table --no-keep-simple-control-block-one-line --no-keep-simple-function-one-line --no-break-after-functioncall-lp --no-break-after-operator
               { formatCommand = "lua-format --indent-width 2 --tab-width 2 --no-use-tab --column-limit 120 --column-table-limit 100 --no-keep-simple-function-one-line --no-chop-down-table --chop-down-kv-table --no-keep-simple-control-block-one-line --no-keep-simple-function-one-line --no-break-after-functioncall-lp --no-break-after-operator",
                formatStdin = true,
               }
             },
           }
         }
+      }
+
+    local nav_cfg = {
+      debug = true,
+      width = 0.7,
+      border = single, -- "single",
+      -- keymaps = {{key = "GR", func = "references()"}}, 
+      -- on_attach = function(client, bufnr)
+      --   require "lsp_signature".on_attach(
+      --     {
+      --       floating_window = true,
+      --       log_path = "/Users/ray.xu/tmp/sig.log",
+      --       debug = true,
+      --       fix_pos = true,
+      --       hi_parameter = 'Constant',
+      --       bind = true, -- This is mandatory, otherwise border config won't get registered.
+      --       handler_opts = {
+      --         border = {"╭", "─" ,"╮", "│", "╯", "─", "╰", "│" },
+      --       },
+      --     }
+      --   )
+      -- end,
+      lsp = {
+        format_on_save = true, -- set to false to disasble lsp code format on save (if you are using prettier/efm/formater etc)
+        denols = {filetypes = {}},
+        -- flow = {
+        --   filetypes ={},
+        -- },
+        tsserver = {
+          filetypes = {
+            "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact",
+            "typescript.tsx"
+          },
+          on_attach = function(client)
+            client.resolved_capabilities.document_formatting = false -- allow efm to format
+          end
+        },
+        gopls = {
+          on_attach = function(client)
+            -- print("i am a hook")
+            client.resolved_capabilities.document_formatting = false  --efm
+          end,
+          settings = {
+            gopls = {gofumpt = true} -- enableww gofumpt etc,
+          }
+          -- set to {} to disable the lspclient for all filetype
+        },
+        clangd = {filetypes = {}},  -- using ccls
+        sumneko_lua = {
+          sumneko_root_path = sumneko_root_path,
+          sumneko_binary = sumneko_binary
+          -- settings = luadev.settings
+        },
+        efm = efm_cfg,
       },
     }
-  })
+    require"navigator".setup({
+      debug = true, 
+      width = 0.7,
+      border = single, -- "single",
+      lsp = {
+        format_on_save = true, -- set to false to disasble lsp code format on save (if you are using prettier/efm/formater etc)
+        denols = {filetypes = {}},
+        tsserver = {
+          filetypes = {
+            "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact",
+            "typescript.tsx"
+          },
+          on_attach = function(client)
+            client.resolved_capabilities.document_formatting = false -- allow efm to format
+          end
+        },
+        gopls = {
+          on_attach = function(client)
+            -- print("i am a hook")
+            client.resolved_capabilities.document_formatting = false  --efm
+          end,
+          settings = {
+            gopls = {gofumpt = true} -- enableww gofumpt etc,
+          }
+          -- set to {} to disable the lspclient for all filetype
+        },
+        clangd = {filetypes = {}},  -- using ccls
+        sumneko_lua = {
+          sumneko_root_path = sumneko_root_path,
+          sumneko_binary = sumneko_binary
+          -- settings = luadev.settings
+        },
+        efm = efm_cfg,
+    }})
 end
 
 function config.playground()
@@ -357,54 +394,5 @@ function config.dap()
   -- require('telescope').load_extension('dap')
   -- vim.g.dap_virtual_text = true
 end
-
--- using efm
--- function config.formatter()
---   require("formatter").setup(
---     {
---       logging = false,
---       filetype = {
---         javascript = {
---           -- prettier
---           function()
---             return {
---               exe = "prettier",
---               args = {"--stdin-filepath", vim.api.nvim_buf_get_name(0), "--single-quote"},
---               stdin = true
---             }
---           end
---         },
---         rust = {
---           -- Rustfmt
---           function()
---             return {
---               exe = "rustfmt",
---               args = {"--emit=stdout"},
---               stdin = true
---             }
---           end
---         },
---         lua = {
---           -- luafmt
---           function()
---             return {
---               exe = "lua-format",
---               args = {"--indent-width 2", "--tab-width 2", "--no-use-tab", "--column-limit", 110, "--column-table-limit", 100,
---               "--no-keep-simple-function-one-line", "--no-chop-down-table", "--chop-down-kv-table", "--no-keep-simple-control-block-one-line",
---             "--no-keep-simple-function-one-line", "--no-break-after-functioncall-lp", "--no-break-after-operator"},
---               stdin = true
---             }
---           end
---         }
---       }
---     }
---   )
---   -- vim.api.nvim_exec([[
---   -- augroup FormatAutogroup
---   --   autocmd!
---   --   autocmd BufWritePre *.js,*.rs,*.lua FormatWrite
---   -- augroup END
---   -- ]], true)
--- end
 
 return config

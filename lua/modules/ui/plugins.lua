@@ -70,6 +70,25 @@ ui["folke/tokyonight.nvim"] = {
   end
 }
 
+ui["projekt0n/github-nvim-theme"] = {
+  opt = true,
+  config = function()
+    -- vim.cmd [[hi CursorLine guibg=#353644]]
+    local styles = {'dark', 'dimmed'}
+    local v = math.random(1, 2)
+    local st = styles[v]
+    require('github-theme').setup(
+      {
+        functionStyle = "bold",
+        themeStyle =  st,
+        sidebars = {"qf", "vista_kind", "terminal", "packer"},
+        colors = {bg_statusline = '#332344'}
+      }
+    )
+  end
+}
+
+
 -- ui["ChristianChiarulli/nvcode-color-schemes.vim"] = {opt = true, config = conf.nvcode}
 
 ui["sainnhe/sonokai"] = {opt = true, config = conf.sonokai}

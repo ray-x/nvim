@@ -2,8 +2,9 @@ local lang = {}
 local conf = require("modules.lang.config")
 
 lang["nvim-treesitter/nvim-treesitter"] = {
-  -- event = "LoadLazyPlugin",
-  opt = true
+  event = "UIEnter",
+  opt = true,
+  config=conf.nvim_treesitter
 }
 
 lang["nvim-treesitter/nvim-treesitter-textobjects"] =
@@ -11,7 +12,7 @@ lang["nvim-treesitter/nvim-treesitter-textobjects"] =
 
 lang["nvim-treesitter/nvim-treesitter-refactor"] =
     {
-      -- after = "nvim-treesitter-textobjects", -- manual loading
+      after = "nvim-treesitter-textobjects", -- manual loading
       config = conf.nvim_treesitter_ref, -- let the last loaded config treesitter
       opt = true
     }

@@ -182,5 +182,4 @@ editor["chaoren/vim-wordmotion"] = {
   -- keys = {'w','W', 'gE', 'aW'}
 }
 
--- chaoren/vim-wordmotion
 return editor

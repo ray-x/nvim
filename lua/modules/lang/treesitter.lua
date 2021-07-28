@@ -34,8 +34,9 @@ local treesitter = function()
   require "nvim-treesitter.configs".setup {
     highlight = {
       enable = true, -- false will disable the whole extension
+      additional_vim_regex_highlighting = false,
       disable = {"elm"}, -- list of language that will be disabled
-      custom_captures = {},
+      -- custom_captures = {},
       use_languagetree = langtree
     },
     incremental_selection = {
@@ -48,6 +49,9 @@ local treesitter = function()
         scope_incremental = "grc", -- increment to the upper scope (as defined in locals.scm)
         node_decremental = "grm" -- decrement to the previous node
       }
+    },
+    indent = {
+      enable = true
     },
     textobjects = {
       -- syntax-aware textobjects
