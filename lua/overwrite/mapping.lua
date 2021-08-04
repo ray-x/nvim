@@ -57,8 +57,6 @@ local keys = {
   ["n|<Leader>fv"] = map_cu("Clap grep ++query=@visual"):with_noremap():with_silent(),
   ["n|<Leader>fd"] = map_cu("Clap dotfiles"):with_noremap():with_silent(),
   ["n|<Leader>bp"] = map_cu("BufferLinePick"):with_noremap():with_silent(),
-  -- ["n|Rn"] = map_cr("Lspsaga rename"):with_noremap():with_silent(),
-  -- ["n|gr"] = map_cr("Lspsaga lsp_finder"):with_noremap():with_silent(),
   ["n|<Leader>fh"] = map_cu("Clap command_history"):with_noremap():with_silent(),
   ["n|<Leader><Leader>r"] = map_cmd("v:lua.run_or_test()"):with_expr(),
   ["v|<Leader><Leader>r"] = map_cmd("v:lua.run_or_test()"):with_expr(),

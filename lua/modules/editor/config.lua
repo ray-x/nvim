@@ -1,13 +1,5 @@
 local config = {}
 
-function config.delimimate()
-  vim.g.delimitMate_expand_cr = 0
-  vim.g.delimitMate_expand_space = 1
-  vim.g.delimitMate_smart_quotes = 1
-  vim.g.delimitMate_expand_inside_quotes = 0
-  vim.api.nvim_command('au FileType markdown let b:delimitMate_nesting_quotes = ["`"]')
-end
-
 function config.autopairs()
   -- body
   -- print("autopair")
@@ -68,108 +60,7 @@ end
 local esc = function(cmd)
   return vim.api.nvim_replace_termcodes(cmd, true, false, true)
 end
-function config.pears()
-  -- print("pear")
-  -- vim.cmd([[augroup pears | exe "au! InsertEnter * ++once lua require('modules.editor.config').pears_setup()" | augroup END]])
-  -- body
-end
 
--- still not working with compe ATM
-function config.pears_setup()
-  -- body
-  local has_pears, pears = pcall(require, "pears")
-  if not has_pears then
-    -- require'packer'.loader("pears.nvim")
-    vim.cmd([[packadd pears.nvim]])
-  end
-  local R = require "pears.rule"
-  require("pears").setup(
-    function(conf)
-      local fts = {"NvimTree", "clap_input", "guihua"}
-      vim.g.completion_confirm_key = ""
-      conf.disabled_filetypes(fts)
-      conf.on_enter(
-        function(pears_handle)
-          -- for i = 1, #fts do
-          --   print(vim.bo.filetype, fts[i])
-          --   if vim.bo.filetype == fts[i] then
-          --     return esc("<CR>")
-          --   end
-          -- end
-
-          -- if vim.fn.pumvisible() ~= 0 then
-          --   if vim.fn.complete_info().selected ~= -1 then
-          --     return vim.fn["compe#confirm"](esc("<CR>"))
-          --   else
-          --     return esc("<CR>")
-          --   end
-          -- else
-          --   pears_handle()
-          -- end
-          conf.on_enter(
-            function(pears_handle)
-              if vim.fn.pumvisible() == 1 and vim.fn.complete_info().selected ~= -1 then
-                print("compe#confirm")
-                return vim.fn["compe#confirm"]("<CR>")
-              else
-                pears_handle()
-              end
-            end
-          )
-          conf.pair(
-            "'",
-            {
-              close = "'",
-              should_expand = R.not_(R.start_of_context "[a-zA-Z0-9]") -- Don't expand a quote if it comes after an alpha character
-            }
-          )
-          conf.pair(
-            '"',
-            {
-              close = '"',
-              should_expand = R.not_(R.start_of_context "[a-zA-Z0-9]")
-            }
-          )
-          conf.pair(
-            "(",
-            {
-              close = ")",
-              should_expand = R.not_(R.start_of_context "[a-zA-Z0-9]")
-            }
-          )
-          conf.pair(
-            "{",
-            {
-              close = "}",
-              should_expand = R.not_(R.start_of_context "[a-zA-Z0-9]")
-            }
-          )
-        end
-      ) -- on-enter
-    end
-  )
-  -- local R = require "pears.rule"
-  -- pears.setup(function(conf)
-  --   conf.pair("'", {
-  --     close = "'",
-  --     should_expand = R.not_(R.start_of_context "[a-zA-Z0-9]")       -- Don't expand a quote if it comes after an alpha character
-  --   })
-  --   conf.pair("\"", {
-  --     close = "\"",
-  --     should_expand = R.not_(R.start_of_context "[a-zA-Z0-9]")
-  --   })
-  --   conf.pair("(", {
-  --     close = ")",
-  --     should_expand = R.not_(R.start_of_context "[a-zA-Z0-9]")
-  --   })
-  --   conf.pair("{", {
-  --     close = "}",
-  --     should_expand = R.not_(R.start_of_context "[a-zA-Z0-9]")
-  --   })
-  -- end)
-  print("pear setup")
-  -- require "pears".setup(function(conf) conf.pair("'", {close = "'",should_expand = require "pears.rule".not_(require "pears.rule".start_of_context "[a-zA-Z0-9]")})end)
-end
 
 function config.hexokinase()
   vim.g.Hexokinase_optInPatterns = {
@@ -189,20 +80,6 @@ function config.hexokinase()
     -- 'foreground',
     -- 'foregroundfull'
   }
-end
-
-function config.vim_cursorwod()
-  vim.api.nvim_command("augroup user_plugin_cursorword")
-  vim.api.nvim_command("autocmd!")
-  vim.api.nvim_command("autocmd FileType defx,denite,fern,clap,vista let b:cursorword = 0")
-  vim.api.nvim_command("autocmd WinEnter * if &diff || &pvw | let b:cursorword = 0 | endif")
-  vim.api.nvim_command("autocmd InsertEnter * let b:cursorword = 0")
-  vim.api.nvim_command("autocmd InsertLeave * let b:cursorword = 1")
-  vim.api.nvim_command("augroup END")
-end
-
-function config.vim_smartchar()
-  vim.api.nvim_command("autocmd FileType go inoremap <buffer><expr> ; smartchr#loop(':=',';')")
 end
 
 function config.nerdcommenter()

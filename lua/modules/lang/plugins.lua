@@ -18,16 +18,6 @@ lang["nvim-treesitter/nvim-treesitter-refactor"] =
     }
 
 
--- use efm etc instead
--- lang["w0rp/ale"] = {
---   -- event = "BufEnter", --BufWritePre
---   cmd = {"ALEEnable", "ALEFix"},
---   -- ft = {"sql", "pgsql", "markdown"},
---   -- after = 'telescope.nvim',
---   setup = conf.ale,
---   opt = true
--- }
-
 -- lang["neomake/neomake"] = {
 --   -- event = "BufSave", --BufWritePre
 --   -- cmd = {"make",},
@@ -37,10 +27,6 @@ lang["nvim-treesitter/nvim-treesitter-refactor"] =
 --   opt = true
 -- }
 
--- lang["mfussenegger/nvim-lint"] ={
---   ft = {"go", "markdown"},
---   config = conf.lint,
--- }
 
 lang["shmup/vim-sql-syntax"] = {ft = {"sql", "pgsql"}}
 
@@ -160,16 +146,6 @@ lang['folke/lua-dev.nvim'] = {
 --     require "nvim-treesitter.configs".setup {rainbow = {enable = true, extended_mode = true}}
 --   end,
 --   opt = true
--- }
--- lang["mhartington/formatter.nvim"] = {
---   opt = true,
---   event = {"BufWriteCmd", "FileWriteCmd"},
---   -- Highlight also non-parentheses delimiters, boolean or table: lang -> boolean
---   config = conf.formatter
--- }
-
--- lang['m-pilia/vim-ccls'] = {
---   ft = {"c", "cpp"}
 -- }
 
 return lang

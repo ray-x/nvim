@@ -12,11 +12,6 @@ function config.nvim_treesitter_ref()
   require("modules.lang.treesitter").treesitter_ref()
 end
 
-function config.lint()
-  require('lint').linters_by_ft = {markdown = {'vale'}, go = {'golangcilint'}}
-  -- vim.cmd([[au BufWritePost <buffer> lua require('lint').try_lint()]])
-end
-
 function config.neomake()
   vim.g.neomake_error_sign = {text = '✖', texthl = 'NeomakeErrorSign'}
   vim.g.neomake_warning_sign = {text = '∆', texthl = 'NeomakeWarningSign'}
@@ -70,50 +65,6 @@ function config.sidekick()
   -- vim.g.sidekick_right_bracket = "\\u27eb"
 end
 
-function config.ale()
-  vim.g.ale_sign_error = "ﴫ"
-  vim.g.ale_sign_warning = ""
-  -- vim.g.ale_go_gopls_executable = "gopls"
-  -- vim.g.ale_go_revive_executable = "revive"
-  -- vim.g.ale_go_gopls_options = "-remote=auto"
-  -- vim.g.ale_go_golangci_lint_options =
-  --   "--enable-all --disable dogsled --disable gocognit --disable godot --disable godox --disable lll --disable nestif --disable wsl --disable gocyclo --disable asciicheck --disable gochecknoglobals"
-  vim.g.ale_lint_delay = 1000 -- " begin lint after 1s
-  vim.g.ale_lint_on_save = 1
-  -- " vim.g.ale_lint_on_text_changed = 'never'   --" do not lint when I am typing  'normal (def)'   'never'
-  vim.g.ale_sign_column_always = 1
-  vim.g.ale_go_golangci_lint_package = 1
-  -- vim.g.ale_lua_luafmt_executable = "luafmt"
-  -- vim.g.ale_lua_luafmt_options = "--indent-count 2"
-  vim.g.ale_python_flake8_args = "--ignore=E501"
-  vim.g.ale_python_flake8_executable = "flake8"
-  vim.g.ale_python_flake8_options = "--ignore=E501"
-  -- " 'go vet' not working
-  vim.g.ale_linters = {
-    javascript = {"eslint", "flow-language-server"},
-    -- javascript['jsx']  = {'eslint', 'flow-language-server'},
-    -- go = {"govet", "golangci-lint", "revive"},
-    markdown = {"mdl", "write-good"},
-    sql = {"sqlint"}
-    -- lua = {"luacheck"},
-    -- python = {"flake8", "pylint"}
-  }
-
-  vim.g.ale_fixers = {
-    -- go = {"gofumports"},
-    -- javascript = {"prettier", "eslint"},
-    -- javascript['jsx'] = {'prettier', 'eslint'},
-    -- typescript = {"eslint", "tslint"},
-    -- markdown = {"prettier"},
-    -- json = {"prettier"},
-    sql = {"pgformatter"},
-    -- css = {"prettier"},
-    -- php = {"php-cs-fixer"},
-    ale_fixers = {"prettier", "remark"}
-    -- lua = {"luafmt"},
-    -- python = {"autopep8", "yapf"}
-  }
-end
 
 function config.sqls()
 end

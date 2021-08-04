@@ -10,10 +10,6 @@ completion["neovim/nvim-lspconfig"] = {
   opt = true
 }
 
-completion["glepnir/lspsaga.nvim"] = {
-  cmd = "Lspsaga"
-}
-
 completion["hrsh7th/nvim-compe"] = {
   event = "InsertEnter",
   config = conf.nvim_compe

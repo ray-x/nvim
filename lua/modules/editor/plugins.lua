@@ -2,10 +2,6 @@ local editor = {}
 
 local conf = require("modules.editor.config")
 
--- editor['Raimondi/delimitMate'] = {
---   event = 'InsertEnter',
---   config = conf.delimimate,
--- }
 
 -- alternatives: steelsojka/pears.nvim
 -- windwp/nvim-ts-autotag  'html', 'javascript', 'javascriptreact', 'typescriptreact', 'svelte', 'vue'
@@ -28,20 +24,6 @@ editor["tpope/vim-surround"] = {
   --event = 'InsertEnter',
   --keys={'c', 'd'}
 }
-
--- editor['steelsojka/pears.nvim'] = {
---   -- keys = {{'(','[', '<', '{'}},
---   event = 'InsertEnter',
---   config =  conf.pears_setup(),
---   opt = true
--- }
-
--- editor['/Users/ray.xu/github/pears.nvim'] = {
---   -- keys = {{'(','[', '<', '{'}},
---   -- event = 'InsertEnter',
---   config =  conf.pears_setup(),
---   -- opt=true
--- }
 
 -- nvim-colorizer replacement
 editor["rrethy/vim-hexokinase"] = {
@@ -73,20 +55,6 @@ editor["matze/vim-move"] = {
   -- fn = {'<Plug>MoveBlockDown', '<Plug>MoveBlockUp', '<Plug>MoveLineDown', '<Plug>MoveLineUp'}
 }
 
--- editor['hrsh7th/vim-eft'] = {
---   opt = true,
---   config = function()
---     vim.g.eft_ignorecase = true
---   end
--- }
-
--- editor['kana/vim-operator-replace'] = {
---   keys = {{'x','p'}},
---   config = function()
---     vim.api.nvim_set_keymap("x", "p", "<Plug>(operator-replace)",{silent =true})
---   end,
---   requires = 'kana/vim-operator-user'
--- }
 
 editor["kevinhwang91/nvim-hlslens"] = {
   keys = {"/", "?", '*', '#'}, --'n', 'N', '*', '#', 'g'

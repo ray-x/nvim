@@ -4,14 +4,15 @@ call plug#begin('~/.vim/plugged')
 Plug 'neovim/nvim-lspconfig'
 Plug 'nvim-treesitter/nvim-treesitter'
 Plug 'liuchengxu/vim-clap' ", { 'do': { -> clap#installer#force_download() } }
+Plug 'phpactor/phpactor', {'for': 'php', 'tag': '*', 'do': 'composer install --no-dev -o'}
 
-Plug 'nvim-lua/popup.nvim'
-Plug 'nvim-lua/plenary.nvim'
-Plug 'nvim-telescope/telescope.nvim'
+" Plug 'nvim-lua/popup.nvim'
+" Plug 'nvim-lua/plenary.nvim'
+" Plug 'nvim-telescope/telescope.nvim'
 
-" Plug '/Users/ray.xu/github/lsp_signature.nvim'
-Plug '/Users/ray.xu/github/guihua.lua'
-Plug '/Users/ray.xu/github/navigator.lua'
+Plug '/Users/ray.xu/github/lsp_signature.nvim'
+" Plug '/Users/ray.xu/github/guihua.lua'
+" Plug '/Users/ray.xu/github/navigator.lua'
 " Plug '/Users/ray.xu/github/go.nvim'
 
 " Plug 'ray-x/guihua.lua'
@@ -28,7 +29,7 @@ require'nvim-treesitter.configs'.setup {
   additional_vim_regex_highlighting = false,
   },
 }
-require"navigator".setup()
+-- require"navigator".setup()
 -- vim.treesitter.highlighter.hl_map.error = nil
 -- require "nvim-treesitter.highlight"
 -- 
@@ -46,7 +47,9 @@ require"navigator".setup()
 -- require 'go'.setup({dap_debug =true, verbose=true})
 -- require'lsp_signature'.setup({log_path = "/Users/ray.xu/tmp/sig.log", debug = true})
 
--- require'lsp_signature'.setup()
+require'lsp_signature'.setup({debug=true})
+require'lspconfig'.phpactor.setup{}
+
 -- require'lspconfig'.gopls.setup({
 --    on_attach = function()
 --    require'lsp_signature'.on_attach({bind = false, floating_window=false, hint_enable = true})
