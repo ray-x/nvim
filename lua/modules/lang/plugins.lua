@@ -33,13 +33,13 @@ lang["shmup/vim-sql-syntax"] = {ft = {"sql", "pgsql"}}
 lang["nanotee/sqls.nvim"] = {ft = {"sql", "pgsql"}, setup = conf.sqls, opt = true}
 
 
-lang["/Users/ray.xu/github/go.nvim"] = {
+lang[vim.fn.expand("$HOME")  .. "/github/go.nvim"] = {
   ft = {"go"},
   config = conf.go
 }
 
-lang["/Users/ray.xu/github/navigator.lua"] = {
-  requires = {"/Users/ray.xu/github/guihua.lua", run = 'cd lua/fzy && make'},
+lang[vim.fn.expand("$HOME")  .. "/github/navigator.lua"] = {
+  requires = {vim.fn.expand("$HOME")  .. "/github/guihua.lua", run = 'cd lua/fzy && make'},
   config = conf.navigator,
   opt = true
 }

@@ -1,5 +1,5 @@
 " let s:config_home = stdpath('config')
-" source /Users/ray.xu/.config/nvim/pluginrc.d/lsp.vim
+" source expand("$HOME") + /.config/nvim/pluginrc.d/lsp.vim
 " 
 " let g:deoplete#enable_at_startup = 1
 " set cmdheight=2
@@ -78,11 +78,11 @@ end)
 
 
 -- "hrsh7th/nvim-compe",
--- "/Users/ray.xu/github/lsp_signature.nvim",
+-- expand("$HOME")  + "/github/lsp_signature.nvim",
 -- "nvim-lua/completion-nvim",
 -- "ray-x/lsp_signature.nvim",
 --  'ray-x/navigator.lua', requires = {'ray-x/guihua.lua', run = 'cd lua/fzy && make'}
--- "/Users/ray.xu/github/navigator.lua",requires = {'ray-x/guihua.lua', run = 'cd lua/fzy && make'},
+-- expand("$HOME")  + "/github/navigator.lua",requires = {'ray-x/guihua.lua', run = 'cd lua/fzy && make'},
 
 local lspconfig = require('lspconfig')
 require('navigator').setup()

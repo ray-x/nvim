@@ -5,8 +5,8 @@ call plug#begin('~/.vim/plugged')
 Plug 'neovim/nvim-lspconfig'
 " Plug 'ray-x/guihua.lua', {'do': 'cd lua/fzy && make' }
 " Plug 'ray-x/navigator.lua'
-" Plug '/Users/ray.xu/github/guihua.lua', {'do': 'cd lua/fzy && make' }
-" Plug '/Users/ray.xu/github/navigator.lua'
+" Plug expand("$HOME") + '/github/guihua.lua', {'do': 'cd lua/fzy && make' }
+" Plug expand("$HOME") + '/github/navigator.lua'
 " Plug 'hrsh7th/nvim-compe' and other plugins you commenly use...
 Plug 'nvim-treesitter/nvim-treesitter'
 Plug 'nvim-treesitter/nvim-treesitter-textobjects'
@@ -164,8 +164,8 @@ EOF
 " " Plug 'lewis6991/gitsigns.nvim'
 " " Plug 'ray-x/guihua.lua', {'do': 'cd lua/fzy && make' }
 " 
-" Plug '/Users/ray.xu/github/guihua.lua', {'do': 'cd lua/fzy && " make' }
-" Plug '/Users/ray.xu/github/navigator.lua'
+" Plug expand("$HOME") + '/github/guihua.lua', {'do': 'cd lua/fzy && " make' }
+" Plug expand("$HOME") + '/github/navigator.lua'
 " 
 " " Plug 'ray-x/lsp_signature.nvim'
 " Plug 'liuchengxu/vim-clap', { 'do': { -> " clap#installer#force_download() } }
@@ -305,6 +305,6 @@ EOF
 " let g:vsnip_filetypes.javascriptreact = ['javascript']
 " let g:vsnip_filetypes.typescriptreact = ['typescript']
 " let g:completion_trigger_character = ['.']
-" let g:vsnip_snippet_dir = '/Users/ray.xu/github/dotfiles/snips'
+" let g:vsnip_snippet_dir = expand("$HOME") + '/github/dotfiles/snips'
 " 
 " let g:min_load = 1" 

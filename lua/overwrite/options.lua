@@ -43,6 +43,7 @@ function options:load_options()
       hlsearch = true, -- Highlight found searches
       grepformat = "%f:%l:%m,%m\\ %f\\ match%ts,%f", --"%f:%l:%c:%m";
       grepprg = "rg --hidden --vimgrep --smart-case --",
+      shortmess = "aoTIc",
       -- showcmd        = false;
       cmdheight = 1,
       splitbelow = true, -- Horizontal windows should split to bottom

@@ -4,22 +4,41 @@ call plug#begin('~/.vim/plugged')
 Plug 'neovim/nvim-lspconfig'
 Plug 'nvim-treesitter/nvim-treesitter'
 Plug 'liuchengxu/vim-clap' ", { 'do': { -> clap#installer#force_download() } }
-Plug 'phpactor/phpactor', {'for': 'php', 'tag': '*', 'do': 'composer install --no-dev -o'}
-
+Plug 'hrsh7th/vim-vsnip'
+Plug 'rafamadriz/friendly-snippets'
+Plug 'hrsh7th/nvim-compe'
+Plug 'kevinhwang91/nvim-hlslens'
 " Plug 'nvim-lua/popup.nvim'
 " Plug 'nvim-lua/plenary.nvim'
 " Plug 'nvim-telescope/telescope.nvim'
 
-Plug '/Users/ray.xu/github/lsp_signature.nvim'
-" Plug '/Users/ray.xu/github/guihua.lua'
-" Plug '/Users/ray.xu/github/navigator.lua'
-" Plug '/Users/ray.xu/github/go.nvim'
+Plug expand("$HOME") + '/github/lsp_signature.nvim'
+Plug expand("$HOME") + '/github/guihua.lua'
+
+Plug expand("$HOME") + '/github/navigator.lua'
+" Plug expand("$HOME") + '/github/go.nvim'
 
 " Plug 'ray-x/guihua.lua'
 " Plug 'ray-x/navigator.lua'
 Plug 'ray-x/aurora'
 
 call plug#end()
+
+
+
+lua require('hlslens').setup()
+noremap <silent> n <Cmd>execute('normal! ' . v:count1 . 'n')<CR>
+            \<Cmd>lua require('hlslens').start()<CR>
+noremap <silent> N <Cmd>execute('normal! ' . v:count1 . 'N')<CR>
+            \<Cmd>lua require('hlslens').start()<CR>
+noremap * *<Cmd>lua require('hlslens').start()<CR>
+noremap # #<Cmd>lua require('hlslens').start()<CR>
+noremap g* g*<Cmd>lua require('hlslens').start()<CR>
+noremap g# g#<Cmd>lua require('hlslens').start()<CR>
+
+" use : instead of <Cmd>
+nnoremap <silent> <leader>l :nohlsearch<CR>
+
 
 lua <<EOF
 
@@ -29,7 +48,42 @@ require'nvim-treesitter.configs'.setup {
   additional_vim_regex_highlighting = false,
   },
 }
--- require"navigator".setup()
+
+require'compe'.setup {
+  enabled = true;
+  autocomplete = true;
+  debug = false;
+  min_length = 1;
+  preselect = 'enable';
+  throttle_time = 80;
+  source_timeout = 200;
+  resolve_timeout = 800;
+  incomplete_delay = 400;
+  max_abbr_width = 100;
+  max_kind_width = 100;
+  max_menu_width = 100;
+  documentation = {
+    border = { '', '' ,'', ' ', '', '', '', ' ' }, -- the border option is the same as `|help nvim_open_win|`
+    winhighlight = "NormalFloat:CompeDocumentation,FloatBorder:CompeDocumentationBorder",
+    max_width = 120,
+    min_width = 60,
+    max_height = math.floor(vim.o.lines * 0.3),
+    min_height = 1,
+  };
+
+  source = {
+    path = true;
+    buffer = true;
+    calc = true;
+    nvim_lsp = true;
+    nvim_lua = true;
+    vsnip = true;
+    ultisnips = true;
+    luasnip = true;
+  };
+}
+
+require"navigator".setup()
 -- vim.treesitter.highlighter.hl_map.error = nil
 -- require "nvim-treesitter.highlight"
 -- 
@@ -45,9 +99,11 @@ require'nvim-treesitter.configs'.setup {
 
 -- require'lspconfig'.rust_analyzer.setup{}
 -- require 'go'.setup({dap_debug =true, verbose=true})
--- require'lsp_signature'.setup({log_path = "/Users/ray.xu/tmp/sig.log", debug = true})
+require'lspconfig'.jedi_language_server.setup{}
+require'lsp_signature'.setup({log_path = expand("$HOME")  + "/tmp/sig.log", 
+doc_lines=0,
+debug = true})
 
-require'lsp_signature'.setup({debug=true})
 require'lspconfig'.phpactor.setup{}
 
 -- require'lspconfig'.gopls.setup({
@@ -66,7 +122,7 @@ require'lspconfig'.phpactor.setup{}
 -- local configs = require 'lspconfig/configs'
 -- if not require'lspconfig'.vhdl_ls then configs['vhdl_ls'] = {default_config = {}} end
 -- require'lspconfig'.vhdl_ls.setup ({
---     cmd = {"/Users/ray.xu/lsp_test/vhdl/rust_hdl/target/release/vhdl_ls"},
+--     cmd = {vim.fn.expand("$HOME")  + "/lsp_test/vhdl/rust_hdl/target/release/vhdl_ls"},
 --     filetypes = {"vhdl"},
 --     root_dir = require('lspconfig/util').root_pattern("vhdl_ls.toml"),
 --     on_attach = function(client, bufnr)
@@ -141,9 +197,9 @@ colorscheme aurora
 " Plug 'simrat39/rust-tools.nvim'
 
 " Plug 'ray-x/lsp_signature.nvim'
-" Plug '/Users/ray.xu/github/guihua.lua'
-" Plug '/Users/ray.xu/github/navigator.lua'
-" Plug '/Users/ray.xu/github/lsp_signature.nvim'
+" Plug expand("$HOME") + '/github/guihua.lua'
+" Plug expand("$HOME") + '/github/navigator.lua'
+" Plug expand("$HOME") + '/github/lsp_signature.nvim'
 
 " colorscheme dracula
 " let material_style = 'mariana'
@@ -158,8 +214,8 @@ colorscheme aurora
 " " Plug 'lewis6991/gitsigns.nvim'
 " " Plug 'ray-x/guihua.lua', {'do': 'cd lua/fzy && make' }
 " 
-" Plug '//Users/ray.xu/githubguihua.lua', {'do': 'cd lua/fzy && " make' }
-" Plug '/Users/ray.xu/github/navigator.lua'
+" Plug expand("$HOME") + '/github/guihua.lua', {'do': 'cd lua/fzy && " make' }
+" Plug expand("$HOME") + '/github/navigator.lua'
 " 
 " " Plug 'ray-x/lsp_signature.nvim'
 " Plug 'liuchengxu/vim-clap', { 'do': { -> " clap#installer#force_download() } }
@@ -172,8 +228,8 @@ colorscheme aurora
 
 " Plug 'ray-x/guihua.lua', {'do': 'cd lua/fzy && make' }
 " Plug 'ray-x/navigator.lua'
-" Plug '/Users/ray.xu/github/navigator.lua'
-" Plug '/Users/ray.xu/tmp/lsp_signature.nvim'
+" Plug expand("$HOME") + '/github/navigator.lua'
+" Plug expand("$HOME") + '/tmp/lsp_signature.nvim'
 
 lua <<EOF
 
@@ -184,11 +240,11 @@ lua <<EOF
 --   capabilities = capabilities,
 --   on_attach = function(client, bufnr)
 --     print("attach", client)
---     require('lsp_signature').on_attach({log_path = "/Users/ray.xu/tmp/sig.log", debug = true})
+--     require('lsp_signature').on_attach({log_path = expand("$HOME")  + "/tmp/sig.log", debug = true})
 --   end,
 --   cmd = {
 --     -- vim.loop.os_homedir() .. "/lsp_test/elixir/elixir-ls/rel/language_server.sh"
---     "/Users/ray.xu/lsp_test/elixir/elixir-ls/rel/language_server.sh"
+--     vim.fn.expand("$HOME")  + "/lsp_test/elixir/elixir-ls/rel/language_server.sh"
 --   },
 --   settings = {
 --     elixirLS = {
@@ -336,7 +392,7 @@ EOF
 " }
 " 
 " let s:config_home = stdpath('config')
-" source /Users/ray.xu/.config/nvim/pluginrc.d/lsp.vim
+" source  expand("$HOME") + '/.config/nvim/pluginrc.d/lsp.vim
 " 
 " let g:deoplete#enable_at_startup = 1
 " set cmdheight=2
@@ -360,6 +416,6 @@ EOF
 " let g:vsnip_filetypes.javascriptreact = ['javascript']
 " let g:vsnip_filetypes.typescriptreact = ['typescript']
 " let g:completion_trigger_character = ['.']
-" let g:vsnip_snippet_dir = '/Users/ray.xu/github/dotfiles/snips'
+" let g:vsnip_snippet_dir = expand("$HOME") + '/github/dotfiles/snips'
 " 
 " let g:min_load = 1" 

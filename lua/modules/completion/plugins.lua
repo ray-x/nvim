@@ -41,17 +41,17 @@ completion["mattn/emmet-vim"] = {
 }
 
 -- note: part of the code is used in navigator
-completion["/Users/ray.xu/github/lsp_signature.nvim"] = {
+completion[vim.fn.expand("$HOME") .. "/github/lsp_signature.nvim"] = {
   opt = false,
   config = function()
     require "lsp_signature".setup({
         floating_window = true,
-        log_path = "/Users/ray.xu/tmp/sig.log",
+        log_path = vim.fn.expand("$HOME")  .. "/tmp/sig.log",
         debug = true,
         hi_parameter = 'Search',
         bind = true,
         handler_opts = {
-          border = {"╭", "─" ,"╮", "│", "╯", "─", "╰", "│" },
+          border = "shadow", --{"╭", "─" ,"╮", "│", "╯", "─", "╰", "│" },
         },
       })
   end

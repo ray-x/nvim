@@ -2,7 +2,7 @@ set termguicolors
 call plug#begin('~/.vim/plugged')
 Plug 'neovim/nvim-lspconfig'
 
-Plug 'ray-x/lsp_signature.nvim'
+Plug expand("$HOME") + '/github/github/lsp_signature.nvim'
 
 call plug#end()
 
@@ -20,34 +20,84 @@ capabilities.textDocument.completion.completionItem.resolveSupport = {
 local nvim_lsp = require'lspconfig'
 
 local signature_config = {
-  log_path = "/Users/ray.xu/tmp/sig.log",
+  log_path = expand("$HOME")  + "/tmp/sig.log",
   debug = true,
-  bind = true, -- This is mandatory, otherwise border config won't get registered.
-  hint_prefix = "",
-  hi_parameter = "Search",
-  fix_pos = true,
-  extra_trigger_chars = {"(", ","},
+  -- bind = true,
+  -- hint_prefix = "",
+  -- hi_parameter = "Search",
+  -- fix_pos = true,
+  -- extra_trigger_chars = {"(", ","},
+  -- handler_opts = {
+  --   border = "none",
+  -- }
+  hint_enable = false,
   handler_opts = {
-    border = "none",
+    border = "single",
+  },
+  max_width = 80,
+}
+
+
+-- nvim_lsp.gopls.setup{
+--   on_attach = function(client, bufnr)
+--     require "lsp_signature".on_attach(signature_config)
+--     -- require'aerial'.on_attach(client)
+--   end,
+--   capabilities = capabilities,
+--   cmd = {"gopls", "serve"},
+--   settings = {
+--     gopls = {
+--       analyses = {
+--         unusedparams = true,
+--       },
+--       staticcheck = true,
+--     },
+--   },
+-- }
+
+local sumneko_root_path = vim.fn.expand("$HOME")..'/github/sumneko/lua-language-server'
+local sumneko_binary = vim.fn.expand("$HOME")..'/github/sumneko/lua-language-server/bin/macOS/lua-language-server'
+
+local lua_cfg = {
+  cmd = {sumneko_binary, "-E", sumneko_root_path .. "/main.lua"},
+  settings = {
+    Lua = {
+      runtime = {
+        -- Tell the language server which version of Lua you're -- using (most ely LuaJIT in the case of Neovim)
+        version = "LuaJIT",
+        -- Setup your lua path
+        path = vim.split(package.path, ";")
+      },
+      diagnostics = {
+        enable = true,
+        -- Get the language server to recognize the `vim` global
+        globals = {
+          "vim",
+          "describe",
+          "it",
+          "before_each",
+          "after_each",
+          "teardown",
+          "pending"
+        }
+      },
+      workspace = {
+        -- Make the server aware of Neovim runtime files
+        library = {
+          [vim.fn.expand("$VIMRUNTIME/lua")] = true,
+          [vim.fn.expand("$VIMRUNTIME/lua/vim")] = true,
+          [vim.fn.expand("$VIMRUNTIME/lua/vim/lsp")] = true
+          -- [vim.fn.expand("~/repos/nvim/lua")] = true
+        }
+      }
+    }
   }
 }
 
-nvim_lsp.gopls.setup{
-  on_attach = function(client, bufnr)
-    require "lsp_signature".on_attach(signature_config)
-    -- require'aerial'.on_attach(client)
-  end,
-  capabilities = capabilities,
-  cmd = {"gopls", "serve"},
-  settings = {
-    gopls = {
-      analyses = {
-        unusedparams = true,
-      },
-      staticcheck = true,
-    },
-  },
-}
+require'lspconfig'.svelte.setup{}
+require'lspconfig'.sumneko_lua.setup (lua_cfg)
+require "lsp_signature".setup(signature_config)
+
 EOF
 set mouse=a
 colorscheme evening

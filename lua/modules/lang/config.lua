@@ -132,7 +132,7 @@ function config.navigator()
   local single = {"╭", "─", "╮", "│", "╯", "─", "╰", "│"}
   local efm_cfg = {
         flags = {debounce_text_changes = 2000},
-        cmd = {'efm-langserver', '-loglevel', '1', '-logfile', '/Users/ray.xu/tmp/efm.log'}, -- 1~10
+        cmd = {'efm-langserver', '-loglevel', '1', '-logfile', vim.fn.expand("$HOME")  .. '/tmp/efm.log'}, -- 1~10
         init_options = {documentFormatting = true},
         on_attach = function(client)
           client.resolved_capabilities.document_formatting = true
@@ -176,93 +176,43 @@ function config.navigator()
       }
 
     local nav_cfg = {
-      debug = true,
-      width = 0.7,
-      border = single, -- "single",
-      -- keymaps = {{key = "GR", func = "references()"}}, 
-      -- on_attach = function(client, bufnr)
-      --   require "lsp_signature".on_attach(
-      --     {
-      --       floating_window = true,
-      --       log_path = "/Users/ray.xu/tmp/sig.log",
-      --       debug = true,
-      --       fix_pos = true,
-      --       hi_parameter = 'Constant',
-      --       bind = true, -- This is mandatory, otherwise border config won't get registered.
-      --       handler_opts = {
-      --         border = {"╭", "─" ,"╮", "│", "╯", "─", "╰", "│" },
-      --       },
-      --     }
-      --   )
-      -- end,
-      lsp = {
-        format_on_save = true, -- set to false to disasble lsp code format on save (if you are using prettier/efm/formater etc)
-        denols = {filetypes = {}},
-        -- flow = {
-        --   filetypes ={},
-        -- },
-        tsserver = {
-          filetypes = {
-            "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact",
-            "typescript.tsx"
+        debug = true, 
+        width = 0.7,
+        lspinstall = false,
+        border = single, -- "single",
+        diag_scroll_bar_sign = {'╍', 'ﮆ'}, -- to enable diagnostic status in scroll bar area
+
+        lsp = {
+          format_on_save = true, -- set to false to disasble lsp code format on save (if you are using prettier/efm/formater etc)
+          denols = {filetypes = {}},
+          tsserver = {
+            filetypes = {
+              "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact",
+              "typescript.tsx"
+            },
+            on_attach = function(client)
+              client.resolved_capabilities.document_formatting = false -- allow efm to format
+            end
           },
-          on_attach = function(client)
-            client.resolved_capabilities.document_formatting = false -- allow efm to format
-          end
-        },
-        gopls = {
-          on_attach = function(client)
-            -- print("i am a hook")
-            client.resolved_capabilities.document_formatting = false  --efm
-          end,
-          settings = {
-            gopls = {gofumpt = true} -- enableww gofumpt etc,
-          }
-          -- set to {} to disable the lspclient for all filetype
-        },
-        clangd = {filetypes = {}},  -- using ccls
-        sumneko_lua = {
-          sumneko_root_path = sumneko_root_path,
-          sumneko_binary = sumneko_binary
-          -- settings = luadev.settings
-        },
-        efm = efm_cfg,
-      },
-    }
-    require"navigator".setup({
-      debug = true, 
-      width = 0.7,
-      border = single, -- "single",
-      lsp = {
-        format_on_save = true, -- set to false to disasble lsp code format on save (if you are using prettier/efm/formater etc)
-        denols = {filetypes = {}},
-        tsserver = {
-          filetypes = {
-            "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact",
-            "typescript.tsx"
+          gopls = {
+            on_attach = function(client)
+              -- print("i am a hook")
+              client.resolved_capabilities.document_formatting = false  --efm
+            end,
+            settings = {
+              gopls = {gofumpt = true} -- enableww gofumpt etc,
+            }
+            -- set to {} to disable the lspclient for all filetype
           },
-          on_attach = function(client)
-            client.resolved_capabilities.document_formatting = false -- allow efm to format
-          end
-        },
-        gopls = {
-          on_attach = function(client)
-            -- print("i am a hook")
-            client.resolved_capabilities.document_formatting = false  --efm
-          end,
-          settings = {
-            gopls = {gofumpt = true} -- enableww gofumpt etc,
-          }
-          -- set to {} to disable the lspclient for all filetype
-        },
-        clangd = {filetypes = {}},  -- using ccls
-        sumneko_lua = {
-          sumneko_root_path = sumneko_root_path,
-          sumneko_binary = sumneko_binary
-          -- settings = luadev.settings
-        },
-        efm = efm_cfg,
-    }})
+          clangd = {filetypes = {}},  -- using ccls
+          sumneko_lua = {
+            sumneko_root_path = sumneko_root_path,
+            sumneko_binary = sumneko_binary
+            -- settings = luadev.settings
+          },
+          efm = efm_cfg,
+      }}
+    require"navigator".setup(nav_cfg)
 end
 
 function config.playground()

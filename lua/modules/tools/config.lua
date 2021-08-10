@@ -112,6 +112,7 @@ end
 
 function config.far()
   -- body
+  vim.cmd [[UpdateRemotePlugins]]
   vim.g["far#source"] = "rgnvim"
   vim.g["far#cmdparse_mode"] = "shell"
 end
@@ -175,7 +176,6 @@ function config.gitsigns()
     current_line_blame_delay = 1500,
     update_debounce = 300,
     word_diff = true,
-    use_decoration_api = true,
     use_internal_diff = true,
   }
 end
@@ -300,19 +300,6 @@ function config.spellcheck()
   vim.fn["spelunker#check"]()
 end
 
-function config.isas()
-  local isas = require("isas")
-    isas.setup({
-    load_natural_dictionaries_at_startup = true,
-    load_programming_dictionaries_at_startup = true,
-    natural_dictionaries = {
-      ["nt_en"] = {}
-    },
-    programming_dictionaries = {
-      ["pr_py"] = {}
-    }
-  })
-end
 
 function config.grammcheck()
   -- body

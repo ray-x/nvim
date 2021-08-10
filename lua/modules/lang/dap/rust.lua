@@ -16,7 +16,7 @@ dap.configurations.rust = {
         type = "rust",
         name = "Debug",
         request = "launch",
-        program= "/Users/ray.xu/workspace/development/rust-app/target/debug/myapp1"
+        program= vim.fn.expand("$HOME")  .. "/workspace/development/rust-app/target/debug/myapp1"
     }
 }
 

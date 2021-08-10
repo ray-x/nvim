@@ -56,11 +56,11 @@ editor["matze/vim-move"] = {
 }
 
 
-editor["kevinhwang91/nvim-hlslens"] = {
-  keys = {"/", "?", '*', '#'}, --'n', 'N', '*', '#', 'g'
-  opt = true,
-  config = conf.hlslens
-}
+-- editor["kevinhwang91/nvim-hlslens"] = {
+--   -- keys = {"/", "?", '*', '#'}, --'n', 'N', '*', '#', 'g'
+--   -- opt = true,
+--   -- config = conf.hlslens
+-- }
 
 editor["mg979/vim-visual-multi"] = {
   keys = {

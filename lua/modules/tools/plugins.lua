@@ -15,7 +15,7 @@ tools["editorconfig/editorconfig-vim"] = {
 }
 
 -- tools["wellle/targets.vim"] = {}
-
+tools["kabouzeid/nvim-lspinstall"] = {}
 tools["liuchengxu/vista.vim"] = {cmd = "Vista", setup = conf.vim_vista, opt = true}
 
 tools["kamykn/spelunker.vim"] = {
@@ -28,13 +28,6 @@ tools["rhysd/vim-grammarous"] = {
   cmd = {"GrammarousCheck"},
   ft = {"markdown", "txt"},
   setup = conf.grammarous
-}
-
-tools["Pocco81/ISuckAtSpelling.nvim"] = {
-  -- opt = true,
-  cmd = {"ISASLoad"},
-  --ft = {"markdown", "txt"},
-  config = conf.isas
 }
 
 
@@ -117,6 +110,7 @@ tools["rcarriga/vim-ultest"] = {
   run = ":UpdateRemotePlugins",
   requires = {"vim-test/vim-test", setup = conf.vim_test, opt = true},
   cmd = {"Ultest", "UltestNearest"},
+  config = 'vim.cmd [[UpdateRemotePlugins]]',
   opt = true
 }
 

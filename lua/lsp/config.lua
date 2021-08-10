@@ -119,7 +119,7 @@ M.setup = function()
 
   -- lspconfig.efm.setup {
   --   flags = {debounce_text_changes = 1000},
-  --   cmd = {'efm-langserver', '-loglevel', '5', '-logfile', '/Users/ray.xu/tmp/efm.log'}, -- 1~10
+  --   cmd = {'efm-langserver', '-loglevel', '5', '-logfile', vim.fn.expand("$HOME") .. '/tmp/efm.log'}, -- 1~10
   --   init_options = {documentFormatting = true},
   --   on_attach = function(client)
   --     client.resolved_capabilities.document_formatting = true
@@ -171,7 +171,7 @@ M.setup = function()
 if not lspconfig.vhdl_ls then configs['vhdl_ls'] = {default_config = {}} end
 
 lspconfig.vhdl_ls.setup {
-    cmd = {"/Users/ray.xu/lsp_test/vhdl/rust_hdl/target/release/vhdl_ls"},
+    cmd = {vim.fn.expand("$HOME")  .. "/lsp_test/vhdl/rust_hdl/target/release/vhdl_ls"},
     filetypes = { "vhdl"},
     root_dir = require('lspconfig/util').root_pattern("vhdl_ls.toml"),
     
