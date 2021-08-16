@@ -22,9 +22,52 @@ function config.autopairs()
     {
       disable_filetype = {"TelescopePrompt", "guihua", "clap_input"},
       autopairs = {enable = true},
-      check_ts = false
+      ignored_next_char = string.gsub([[ [%w%%%'%[%"%.] ]], "%s+", ""), --"[%w%.+-"']",
+      enable_check_bracket_line = false,
+      html_break_line_filetype = {
+        'html' , 'vue' , 'typescriptreact' , 'svelte' , 'javascriptreact'
+      },
+      check_ts = true,
+      ts_config = {
+          lua = {'string'},-- it will not add pair on that treesitter node
+          -- go = {'string'},
+          javascript = {'template_string'},
+          java = false,-- don't check treesitter on java
+      }
     }
   )
+
+  require('nvim-treesitter.configs').setup {
+    autopairs = {enable = true}
+  }
+  local ts_conds = require('nvim-autopairs.ts-conds')
+
+  require("nvim-autopairs.completion.compe").setup({
+    map_cr = true, --  map <CR> on insert mode
+    map_complete = true, -- it will auto insert `(` after select function or method item
+    auto_select = false,  -- auto select first item
+  })
+  npairs.add_rules {
+    Rule(" ", " "):with_pair(function(opts)
+      local pair = opts.line:sub(opts.col - 1, opts.col)
+      return vim.tbl_contains({ "()", "[]", "{}" }, pair)
+    end),
+    Rule("(", ")")
+      :with_pair(function(opts)
+        return opts.prev_char:match ".%)" ~= nil
+      end)
+      :use_key ")",
+    Rule("{", "}")
+      :with_pair(function(opts)
+        return opts.prev_char:match ".%}" ~= nil
+      end)
+      :use_key "}",
+    Rule("[", "]")
+      :with_pair(function(opts)
+        return opts.prev_char:match ".%]" ~= nil
+      end)
+      :use_key "]",
+  }
   -- print("autopairs setup")
   -- npairs.setup()
   -- skip it, if you use another global object
@@ -46,15 +89,14 @@ function config.autopairs()
   local remap = vim.api.nvim_set_keymap
   remap("i", "<CR>", "v:lua.MUtils.completion_confirm()", {expr = true, noremap = true})
 
-  -- npairs.setup({
-  --     check_ts = true,
-  --     ts_config = {
-  --         lua = {'string'},-- it will not add pair on that treesitter node
-  --         -- go = {'string'},
-  --         javascript = {'template_string'},
-  --         java = false,-- don't check treesitter on java
-  --     }
-  -- })
+
+  -- press % => %% is only inside comment or string
+  npairs.add_rules({
+    Rule("%", "%", "lua")
+      :with_pair(ts_conds.is_ts_node({'string','comment'})),
+    Rule("$", "$", "lua")
+      :with_pair(ts_conds.is_not_ts_node({'function'}))
+  })
 end
 
 local esc = function(cmd)
