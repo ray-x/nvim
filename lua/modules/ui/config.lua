@@ -6,6 +6,15 @@ function config.galaxyline()
     require"packer".loader("nvim-web-devicons")
   end
 
+  require("modules.ui.eviline_gl")
+end
+
+function config.windline()
+  if not packer_plugins["nvim-web-devicons"].loaded then
+    packer_plugins["nvim-web-devicons"].loaded = true
+    require"packer".loader("nvim-web-devicons")
+  end
+
   require("modules.ui.eviline")
 end
 
@@ -106,7 +115,6 @@ function config.nvim_tree()
 end
 
 -- '▋''▘'
-
 
 function config.scrollbar()
   if vim.wo.diff then
@@ -323,11 +331,11 @@ vim.api.nvim_exec([[
 
 math.randomseed(os.time())
 local themes = {
-  "material_plus.nvim", 
+  "material_plus.nvim"
   -- "aurora",
   -- "aurora", "tokyonight.nvim",
   -- "material_plus.nvim", "aurora", "zephyr-nvim",
-  -- "gruvbox-material", "sonokai", 
+  -- "gruvbox-material", "sonokai",
   -- "github-nvim-theme"
 } -- "material.nvim",
 local v = math.random(1, #themes)

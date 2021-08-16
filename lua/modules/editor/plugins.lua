@@ -11,14 +11,39 @@ editor["windwp/nvim-autopairs"] = {
   -- keys = {{'i', '('}},
   -- keys = {{'i'}},
   -- after = "nvim-treesitter",
-  event = "InsertEnter",
+  event = "InsertCharPre",
+  -- after = "hrsh7th/nvim-compe",
   -- event = 'InsertEnter',  -- not working!
   config = conf.autopairs,
   opt = true
 }
 
 
--- editor["ggandor/lightspeed.nvim"] ={}
+-- editor["ggandor/lightspeed.nvim"] ={
+--   as = "lightspeed",
+--   keys={'f', 'F', 'S', 's', 't', 'T'},
+--   config = function()
+--     -- you can configure Hop the way you like here; see :h hop-config
+--     require "lightspeed".setup {
+--       jump_to_first_match = true,
+--       jump_on_partial_input_safety_timeout = 400,
+--       -- This can get _really_ slow if the window has a lot of content,
+--       -- turn it on only if your machine can always cope with it.
+--       highlight_unique_chars = false,
+--       grey_out_search_area = true,
+--       match_only_the_start_of_same_char_seqs = true,
+--       limit_ft_matches = 5,
+--       full_inclusive_prefix_key = '<c-x>',
+--       -- By default, the values of these will be decided at runtime,
+--       -- based on `jump_to_first_match`.
+--       labels = nil,
+--       cycle_group_fwd_key = nil,
+--       cycle_group_bwd_key = nil,
+--     }
+--     -- vim.api.nvim_set_keymap('n', '$', "<cmd>lua require'hop'.hint_words()<cr>", {})
+--   end
+-- }
+
 editor["tpope/vim-surround"] = {
   opt = true
   --event = 'InsertEnter',
@@ -34,15 +59,15 @@ editor["rrethy/vim-hexokinase"] = {
   cmd = {"HexokinaseTurnOn", "HexokinaseToggle"}
 }
 
-editor['nacro90/numb.nvim'] = {
-  event = {"CmdlineEnter"},
-  config = function () 
-    require('numb').setup{
-      show_numbers = true, -- Enable 'number' for the window while peeking
-      show_cursorline = true -- Enable 'cursorline' for the window while peeking
-    }
-  end
-}
+-- editor['nacro90/numb.nvim'] = {
+--   event = {"CmdlineEnter"},
+--   config = function () 
+--     require('numb').setup{
+--       show_numbers = true, -- Enable 'number' for the window while peeking
+--       show_cursorline = true -- Enable 'cursorline' for the window while peeking
+--     }
+--   end
+-- }
 
 
 -- <A-k>   Move current line/selection up
@@ -86,10 +111,10 @@ editor["mg979/vim-visual-multi"] = {
 -- EasyMotion in lua. -- maybe replace sneak
 editor["phaazon/hop.nvim"] = {
   as = "hop",
-  cmd = {"HopWord", "HopLine", "HopChar1", "HopChar1AC", "HopChar1BC", "HopChar2AC","HopChar2BC", "HopPatternAC", "HopPatternBC"},
+  cmd = {"HopWord", "HopWordAC", "HopWordBC", "HopLine", "HopChar1", "HopChar1AC", "HopChar1BC", "HopChar2AC","HopChar2BC", "HopPatternAC", "HopPatternBC"},
   config = function()
     -- you can configure Hop the way you like here; see :h hop-config
-    require "hop".setup {keys = "asdghklqwertyuiopzxcvbnmfjASDGHKLQWERTYUIOPZXCVBNMFJ1234567890[]"}
+    require "hop".setup {keys = "adghklqwertyuiopzxcvbnmfjADGHKLQWERTYUIOPZXCVBNMFJ1234567890[]"}
     -- vim.api.nvim_set_keymap('n', '$', "<cmd>lua require'hop'.hint_words()<cr>", {})
   end
 }

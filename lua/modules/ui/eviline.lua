@@ -1,30 +1,32 @@
-local gl = require("galaxyline")
-local gls = gl.section
-gl.short_line_list = {"NimTree", "vista", "dbui", "packer", "vista_kind", "floatterm", "defx", "clap_input"}
-local lsp_client_names={}
-local colors = {
-  bg = "#202328",
-  fg = "#bbc2cf",
-  yellow = "#fabd2f",
-  cyan = "#008080",
-  darkblue = "#081633",
-  green = "#98be65",
-  orange = "#FF8800",
-  violet = "#a9a1e1",
-  magenta = "#c678dd",
-  blue = "#51afef",
-  red = "#ec5f67"
+local windline = require('windline')
+local helper = require('windline.helpers')
+local b_components = require('windline.components.basic')
+local state = _G.WindLine.state
+
+local lsp_comps = require('windline.components.lsp')
+local git_comps = require('windline.components.git')
+local sep = helper.separators
+local luffy_text = ""
+
+local hl_list = {
+    Black = { 'white', 'black' },
+    White = { 'black', 'white' },
+    Inactive = { 'InactiveFg', 'InactiveBg' },
+    Active = { 'ActiveFg', 'ActiveBg' },
 }
+local basic = {}
 
+local breakpoint_width = 100
+basic.divider = { b_components.divider, '' }
+basic.bg = { ' ', 'StatusLine' }
 
-local bg = vim.fn.synIDattr(vim.fn.synIDtrans(vim.fn.hlID("StatusLine")), "bg#")
-if bg and #bg > 0 then
-  colors.bg = bg
-  -- gruvbox is revert color for status line
-  if vim.g.colors_name == 'gruvbox' then
-    colors.bg = '#4f4945'
-  end
-end
+local colors_mode = {
+    Normal = { 'red', 'black' },
+    Insert = { 'green', 'black' },
+    Visual = { 'yellow', 'black' },
+    Replace = { 'blue_light', 'black' },
+    Command = { 'magenta', 'black' },
+}
 
 local split = function(str, pat)
   local t = {} -- NOTE: use {n = 0} in Lua-5.0
@@ -54,28 +56,6 @@ local winwidth = function()
   return vim.api.nvim_call_function("winwidth", {0})
 end
 
-local current_lsp_function = function()
-  local status, lspstatus = pcall(require, "lsp-status")
-  if (status) then
-    local current_func = lspstatus.status()
-    --print(current_func)
-    local s, _ = string.find(current_func, "%(")
-    if s == nil then
-      return " "
-    end
-    local e, _ = string.find(current_func, "%)[^%)]*$")
-    if e == nil then
-      return " "
-    end
-    local fun_name = string.sub(current_func, s + 1, e - 1)
-    if fun_name == nil or fun_name == "" then
-      return ""
-    end
-    return string.format(" %s()", fun_name)
-  end
-  return " "
-end
-
 local current_treesitter_function = function()
   if
     not packer_plugins["nvim-treesitter"] or packer_plugins["nvim-treesitter"].loaded == false or
@@ -97,25 +77,8 @@ local current_treesitter_function = function()
   return " " .. fun_name
 end
 
--- local current_function = function()
---   if winwidth() < 40 then
---     return ''
---   end
-
---   local ts = current_treesitter_function()
-
---   if winwidth() < 120 and string.len(lsp) > 4 then
---     local lsp = current_lsp_function()
---     return lsp
---   end
---   if string.len(ts) < 3 then
---     return lsp .. ' '
---   end
---   return string.sub(string.sub(lsp, 1, 3) .. ' ' .. ts, 1, winwidth()/2)
--- end
-
 local current_function = function()
-  if winwidth() < 40 then
+  if winwidth() < 60 then
     return ""
   end
 
@@ -143,18 +106,10 @@ local current_function_buf = function(_, buffer)
   return ""
 end
 
-local Set = function(list)
-  local set = {}
-  for _, l in ipairs(list) do
-    set[l] = true
-  end
-  return set
-end
-
 local should_show = function()
   -- body
   local ft = vim.api.nvim_buf_get_option(0, "filetype")
-  if vim.tbl_contains(gl.short_line_list, ft) or winwidth() < 80 then
+  if vim.tbl_contains({}, ft) or winwidth() < 100 then
     return false
   end
   return true
@@ -215,298 +170,320 @@ local checkwidth = function()
   return squeeze_width > 40
 end
 
-gls.left[1] = {
-  RainbowRed = {
-    provider = function()
-      return "▊ "
+basic.vi_mode = {
+    name = 'vi_mode',
+    hl_colors = colors_mode,
+    text = function()
+        return { { '  ', state.mode[2] } }
     end,
-    highlight = {colors.blue, colors.bg}
-  }
 }
-gls.left[2] = {
-  ViMode = {
-    provider = function()
-      -- auto change color according the vim mode
-      local mode_color = {
-        n = colors.magenta,
-        i = colors.green,
-        v = colors.blue,
-        [""] = colors.blue,
-        V = colors.blue,
-        c = colors.red,
-        no = colors.magenta,
-        s = colors.orange,
-        S = colors.orange,
-        [""] = colors.orange,
-        ic = colors.yellow,
-        R = colors.violet,
-        Rv = colors.violet,
-        cv = colors.red,
-        ce = colors.red,
-        r = colors.cyan,
-        rm = colors.cyan,
-        ["r?"] = colors.cyan,
-        ["!"] = colors.red,
-        t = colors.red
-      }
-      local mod = vim.fn.mode()
-      vim.api.nvim_command("hi GalaxyViMode guifg=" .. mode_color[mod])
-      if mod == "n" then
-        return " "
-      elseif mod == "i" or mod == "ic" then
-        return " "
-      elseif mod == "V" or mod == "cv" then
-        return " "
-      elseif mod == "c" or mod == "ce" then
-        return "ﴣ "
-      elseif mod == "r" or mod == "rm" or mod == "r?" or mod == "R" or mod == "Rv" then
-        return " "
-      end
-      return " "
+
+basic.square_mode = {
+    hl_colors = colors_mode,
+    text = function()
+        return { { '▊', state.mode[2] } }
     end,
-    highlight = {colors.red, colors.bg, "bold"},
-    condition = should_show,
-  },
 }
 
-gls.left[3] = {
-  FileSize = {
-    provider = "FileSize",
-    condition = buffer_not_empty,
-    highlight = {colors.fg, colors.bg}
-  }
-}
-
-gls.left[4] = {
-  FolderName = {
-    provider = function()
-      return TrimmedDirectory(vim.api.nvim_call_function("getcwd", {}) .. "/" .. vim.fn.expand("%p"))
-    end,
-    --provider = function() return TrimmedDirectory(vim.fn.expand('#2:p'))  end,
-    condition = should_show, -- function() buffer_not_empty() and should_show() end,
-    highlight = {"#F38A98", colors.bg, "bold"}
-  }
-}
-
-gls.left[5] = {
-  FileIcon = {
-    provider = "FileIcon",
-    condition = buffer_not_empty,
-    highlight = {require("galaxyline.provider_fileinfo").get_file_icon_color, colors.bg}
-  }
-}
-
-gls.left[6] = {
-  FileName = {
-    provider = {"FileName"},
-    condition = buffer_not_empty,
-    highlight = {"#F3EA98", colors.bg, "bold"}
-  }
-}
-
-gls.left[7] = {
-  LineInfo = {
-    provider = "LineColumn",
-    separator = " ",
-    separator_highlight = {"NONE", colors.bg},
-    highlight = {colors.fg, colors.bg}
-  }
-}
-
-
-gls.left[8] = {
-  GitIcon = {
-    provider = function()
-      return "  "
-    end,
-    condition = function() return require("galaxyline.provider_vcs").check_git_workspace and should_show() end,
-    separator = " ",
-    separator_highlight = {"NONE", colors.bg},
-    highlight = {colors.blue, colors.bg, "bold"}
-  }
-}
-
-gls.left[9] = {
-  GitBranch = {
-    condition = function() return require("galaxyline.provider_vcs").check_git_workspace and should_show() end,
-    provider = "GitBranch",
-    condition = should_show,
-    highlight = {colors.blue, colors.bg, "bold"}
-  }
-}
-gls.left[10] = {
-  DiagnosticError = {
-    provider = "DiagnosticError",
-    icon = "  ",
-    highlight = {colors.red, colors.bg}
-  }
-}
-gls.left[11] = {
-  DiagnosticWarn = {
-    provider = "DiagnosticWarn",
-    icon = "  ",
-    highlight = {colors.yellow, colors.bg}
-  }
-}
-
-gls.left[12] = {
-  DiagnosticHint = {
-    provider = "DiagnosticHint",
-    icon = "  ",
-    highlight = {colors.cyan, colors.bg}
-  }
-}
-
-gls.left[13] = {
-  DiagnosticInfo = {
-    provider = "DiagnosticInfo",
-    icon = " 💡 ",
-    highlight = {colors.blue, colors.bg}
-  }
-}
-
-gls.mid[1] = {
-  ShowLspClient = {
-    provider =   function()
-      local msg = ''
-      local buf_ft = vim.api.nvim_buf_get_option(0, 'filetype')
-      local clients = vim.lsp.get_active_clients()
-      if next(clients) == nil then return msg end
-      for _, client in ipairs(clients) do
-        local filetypes = client.config.filetypes
-        if filetypes and vim.fn.index(filetypes, buf_ft) ~= -1 then
-          lsp_client_names[client.name] = true
+basic.lsp_diagnos = {
+    name = 'diagnostic',
+    hl_colors = {
+        red = { 'red', 'black' },
+        yellow = { 'yellow', 'black' },
+        blue = { 'blue', 'black' },
+    },
+    width = breakpoint_width,
+    text = function()
+        if lsp_comps.check_lsp() then
+            return {
+                { ' ', 'red' },
+                { lsp_comps.lsp_error({ format = ' %s', show_zero = true }), 'red' },
+                { lsp_comps.lsp_warning({ format = '  %s', show_zero = true }), 'yellow' },
+                { lsp_comps.lsp_hint({ format = '  %s', show_zero = true }), 'blue' },
+            }
         end
-      end
-      if lsp_client_names ~= {} then
-        for k, _ in pairs(lsp_client_names) do
-          msg = msg .. " " .. k
+        return ''
+    end,
+}
+
+
+function scrollbar_instance(scrollbar_chars)
+  local current_line = vim.fn.line('.')
+  local total_lines = vim.fn.line('$')
+  local default_chars = {'__', '▁▁', '▂▂', '▃▃', '▄▄', '▅▅', '▆▆', '▇▇', '██'}
+  local chars = scrollbar_chars or default_chars
+  local index = 1
+
+  if  current_line == 1 then
+    index = 1
+  elseif current_line == total_lines then
+    index = #chars
+  else
+    local line_no_fraction = vim.fn.floor(current_line) / vim.fn.floor(total_lines)
+    index = vim.fn.float2nr(line_no_fraction * #chars)
+    if index == 0 then
+      index = 1
+    end
+  end
+  return chars[index]
+end
+
+
+
+basic.file = {
+    name = 'file',
+    hl_colors = {
+        default = hl_list.Black,
+        white = { 'white', 'black' },
+        magenta = { 'magenta', 'black' },
+    },
+    text = function(_, winnr)
+        if vim.api.nvim_win_get_width(winnr) > breakpoint_width then
+            return {
+                { b_components.cache_file_size(), 'default' },
+                { ' ', '' },
+                {b_components.cache_file_icon({ default = '' }), 'default'},
+                { ' ', '' },
+                { b_components.cache_file_name('[No Name]', ''), 'magenta' },
+                { b_components.line_col, 'white' },
+                -- { b_components.progress, '' },
+                -- { ' ', '' },
+                { b_components.file_modified(' '), 'magenta' },
+            }
+        else
+            return {
+                { b_components.cache_file_size(), 'default' },
+                { ' ', '' },
+                { b_components.cache_file_name('[No Name]', ''), 'magenta' },
+                { ' ', '' },
+                { b_components.file_modified(' '), 'magenta' },
+            }
         end
-      end
-      -- print(msg)
-      if #msg > 4 then
-        return msg
-      end
-      return '🤷'
     end,
-    condition = should_show,
-    icon = "🐆 ",
-    separator_highlight = {"NONE", colors.bg},
-    highlight = {colors.yellow, colors.bg, "bold"}
-  }
 }
 
-gls.mid[2] = {
-  CurFunc = {
-    provider = current_function,
-    separator = " ",
-    condition = should_show,
-    separator_highlight = {"NONE", colors.purple},
-    highlight = {colors.magenta, colors.bg}
-  }
-}
 
-gls.right[1] = {
-  FileEncode = {
-    provider = "FileEncode",
-    separator = " ",
-    condition = should_show,
-    separator_highlight = {"NONE", colors.bg},
-    highlight = {colors.cyan, colors.bg, "bold"}
-  }
-}
+-- basic.ani = {
+--     name = 'ani',
+--     hl_colors = colors_mode_rev,
+--     text = function()
+--         return { { luffy_text } }
+--     end,
+-- }
 
-gls.right[2] = {
-  FileFormat = {
-    provider = "FileFormat",
-    separator = " ",
-    condition = should_show,
-    separator_highlight = {"NONE", colors.bg},
-    highlight = {colors.cyan, colors.bg, "bold"}
-  }
-}
-gls.right[3] = {
-  ScrollBar = {
-    provider = "ScrollBar",
-    separator = " ",
-    condition = should_show,
-    highlight = {colors.blue, colors.purple}
-  }
-}
-gls.right[4] = {
-  PerCent = {
-    provider = "LinePercent",
-    separator = " ",
-    condition = checkwidth,
-    separator_highlight = {"NONE", colors.bg},
-    highlight = {colors.fg, colors.bg, "bold"}
-  }
-}
-
-gls.right[5] = {
-  DiffAdd = {
-    provider = "DiffAdd",
-    condition = should_show,
-    icon = "  ",
-    highlight = {colors.green, colors.bg}
-  }
-}
-gls.right[6] = {
-  DiffModified = {
-    provider = "DiffModified",
-    condition = should_show,
-    icon = "  ", -- 柳
-    highlight = {colors.orange, colors.bg}
-  }
-}
-gls.right[7] = {
-  DiffRemove = {
-    provider = "DiffRemove",
-    condition = should_show,
-    icon = "  ",
-    highlight = {colors.red, colors.bg}
-  }
-}
-
-gls.right[8] = {
-  RainbowBlue = {
-    provider = function()
-      return " ▊"
+basic.folder = {
+    name = 'folder',
+    hl_colors = {
+        default = hl_list.Black,
+        white = { 'white', 'black' },
+        blue = { 'blue', 'black' },
+    },
+    text = function(_, winnr)
+        if should_show() then
+    	   return {{' ','default'},{TrimmedDirectory(vim.api.nvim_call_function("getcwd", {}) .. "/" .. vim.fn.expand("%p")), 'blue'}, {' ','default'},}
+        end
     end,
-    condition = should_show,
-    highlight = {colors.blue, colors.bg}
-  }
 }
 
-gls.short_line_left[1] = {
-  BufferType = {
-    provider = "FileTypeName",
-    separator = " ",
-    separator_highlight = {"NONE", colors.bg},
-    highlight = {colors.blue, colors.bg, "bold"}
-  }
-}
-
-gls.short_line_left[2] = {
-  SFileName = {
-    provider = function()
-      local fileinfo = require("galaxyline.provider_fileinfo")
-      local fname = fileinfo.get_current_file_name()
-      if vim.tbl_contains(gl.short_line_list, vim.bo.filetype) then
-        return ""
-      end
-      return fname
+basic.funcname = {
+    name = 'funcname',
+    hl_colors = {
+        default = hl_list.Black,
+        white = { 'white', 'black' },
+        green_light = { 'green_light', 'black' },
+    },
+    text = function(_, winnr)
+        return {{' ','default'}, {current_function(), 'green_light'}, {' ','default'}}
     end,
-    condition = buffer_not_empty,
-    highlight = {colors.fg, colors.bg, "bold"}
-  }
 }
 
-gls.short_line_right[1] = {
-  BufferIcon = {
-    provider = "BufferIcon",
-    condition = should_show,
-    highlight = {colors.fg, colors.bg}
-  }
+basic.file_right = {
+    hl_colors = {
+        default = hl_list.Black,
+        white = { 'white', 'black' },
+        magenta = { 'magenta', 'black' },
+    },
+    text = function(_, winnr)
+        if vim.api.nvim_win_get_width(winnr) < breakpoint_width then
+            return {
+                { b_components.line_col, 'white' },
+                { b_components.progress, '' },
+                { ' ', '' },
+            }
+        end
+    end,
 }
--- vim.cmd([[colorscheme aurora]])
+
+basic.scrollbar_right = {
+    hl_colors = {
+        default = hl_list.Black,
+        white = { 'white', 'black' },
+        blue = { 'blue', 'black' },
+    },
+    text = function(_, winnr)
+        if vim.api.nvim_win_get_width(winnr) > breakpoint_width then
+        return {
+            { b_components.progress, '' },
+            { ' ', '' },
+            { scrollbar_instance(), 'blue' },
+        }
+        end
+    end,
+}
+
+basic.git = {
+    name = 'git',
+    hl_colors = {
+        green = { 'green', 'black' },
+        red = { 'red', 'black' },
+        blue = { 'blue', 'black' },
+    },
+    width = breakpoint_width,
+    text = function()
+        if git_comps.is_git() then
+            return {
+                { ' ', '' },
+                { git_comps.diff_added({ format = ' %s', show_zero = true }), 'green' },
+                { git_comps.diff_removed({ format = '  %s', show_zero = true }), 'red' },
+                { git_comps.diff_changed({ format = ' 柳%s', show_zero = true }), 'blue' },
+            }
+        end
+        return ''
+    end,
+}
+
+local quickfix = {
+    filetypes = { 'qf', 'Trouble' },
+    active = {
+        { '🚦 Quickfix ', { 'white', 'black' } },
+        { helper.separators.slant_right, { 'black', 'black_light' } },
+        {
+            function()
+                return vim.fn.getqflist({ title = 0 }).title
+            end,
+            { 'cyan', 'black_light' },
+        },
+        { ' Total : %L ', { 'cyan', 'black_light' } },
+        { helper.separators.slant_right, { 'black_light', 'InactiveBg' } },
+        { ' ', { 'InactiveFg', 'InactiveBg' } },
+        basic.divider,
+        { helper.separators.slant_right, { 'InactiveBg', 'black' } },
+        { '🧛 ', { 'white', 'black' } },
+    },
+
+    show_in_active = true,
+}
+
+local explorer = {
+    filetypes = { 'fern', 'NvimTree', 'lir' },
+    active = {
+        { '  ', { 'white', 'black' } },
+        { helper.separators.slant_right, { 'black', 'black_light' } },
+        { b_components.divider, '' },
+        { b_components.file_name(''), { 'white', 'black_light' } },
+    },
+    show_in_active = true,
+    show_last_status = true,
+}
+local default = {
+    filetypes = { 'default' },
+    active = {
+        basic.square_mode,
+        basic.ani,
+        basic.vi_mode,
+        { git_comps.git_branch(), { 'magenta', 'black' }, breakpoint_width },
+        basic.file,
+        basic.lsp_diagnos,
+        basic.funcname,
+        basic.divider,
+        -- {sep.slant_right,{'black_light', 'green_light'}},
+        -- {sep.slant_right,{'green_light', 'blue_light'}},
+        -- {sep.slant_right,{'blue_light', 'red_light'}},
+        -- {sep.slant_right,{'red_light', 'cyan_light'}},
+        -- {sep.slant_right,{'cyan_light', 'black'}},
+        basic.file_right,
+        basic.scrollbar_right,
+        { lsp_comps.lsp_name(), { 'magenta', 'black' }, breakpoint_width },
+        basic.git,
+        basic.folder,
+        { ' ', hl_list.Black },
+        basic.square_mode,
+    },
+    in_active = {
+        { b_components.full_file_name, hl_list.Inactive },
+        basic.file_name_inactive,
+        basic.divider,
+        basic.divider,
+        { b_components.line_col, hl_list.Inactive },
+        { b_components.progress, hl_list.Inactive },
+    },
+}
+-- ⚡
+
+local animation = require('wlanimation')
+local efffects = require('wlanimation.effects')
+
+animation.stop_all()
+
+
+spinner = {'⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏'}
+spinner2 = { '', '', '', '', '', '', ''}
+local luffy = spinner
+animation.stop_all()
+animation.basic_animation({
+    timeout = nil,
+    delay = 200,
+    interval = 150,
+    effect = efffects.list_text(luffy),
+    on_tick = function(value)
+        luffy_text = value
+    end
+})
+
+windline.setup({
+    colors_name = function(colors)
+          --- add more color
+          colors.FilenameFg = colors.white_light
+          colors.FilenameBg = colors.black
+
+          -- this color will not update if you change a colorscheme
+          colors.gray = "#fefefe"
+          return colors
+      end,
+    statuslines = {
+        default,
+        quickfix,
+        explorer,
+    },
+})
+
+
+windline.add_component({
+    name = 'test',
+    hl_colors = {
+        red = { 'red', 'black' },
+    },
+    text = function()
+        return {
+            { '🧛 ', 'red' },
+            { b_components.progress, 'red' },
+            { ' ', 'red' },
+        }
+    end,
+}, {
+    filetype = 'default',
+    position = 'git',
+})
+-- animation.animation({
+--    data = {
+--         {'red_light', efffects.rainbow()},
+--         -- {'green_light', efffects.rainbow()},
+--         {'cyan_light', efffects.blackwhite()}
+--         -- {'cyan_light',efffects.blackwhite()},
+--         -- {'FilenameBg',efffects.rainbow()}, --- animation for filename only
+--         -- {'FilenameFg',efffects.blackwhite()}
+--     },
+--     timeout = nil,
+--     delay = 200,
+--     interval = 100,
+-- })

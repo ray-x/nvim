@@ -18,9 +18,9 @@ function lazyload()
   local loader = require "packer".loader
   local disable_ft = {"NvimTree", "guihua", "clap_input", "clap_spinner", "TelescopePrompt", "csv", "txt", "defx", "sidekick"}
   local syn_on = not vim.tbl_contains(disable_ft, vim.bo.filetype)
-  -- if syn_on then
-  --   vim.cmd([[syntax manual]])
-  -- end
+  if syn_on then
+    vim.cmd([[syntax manual]])
+  end
 
   -- local fname = vim.fn.expand("%:p:f")
   local fsize = vim.fn.getfsize(vim.fn.expand("%:p:f"))

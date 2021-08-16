@@ -12,9 +12,16 @@ end
 ui["kyazdani42/nvim-web-devicons"] = {}
 ui["glepnir/galaxyline.nvim"] = {
   branch = "main",
-  event = "UIEnter",
+  -- event = "UIEnter",
   -- after = {"aurora"},
-  config = conf.galaxyline,
+  -- config = conf.galaxyline,
+  -- requires = {'kyazdani42/nvim-web-devicons'},
+  opt = true
+}
+
+ui["windwp/windline.nvim"] = {
+  event = "UIEnter",
+  config = conf.windline,
   -- requires = {'kyazdani42/nvim-web-devicons'},
   opt = true
 }

@@ -180,10 +180,13 @@ function config.navigator()
         width = 0.7,
         lspinstall = false,
         border = single, -- "single",
-        diag_scroll_bar_sign = {'╍', 'ﮆ'}, -- to enable diagnostic status in scroll bar area
+
 
         lsp = {
+
           format_on_save = true, -- set to false to disasble lsp code format on save (if you are using prettier/efm/formater etc)
+          diag_scroll_bar_sign = {'▃', '█'}, -- to enable diagnostic status in scroll bar area
+          disply_diagnostic_qf = false,
           denols = {filetypes = {}},
           tsserver = {
             filetypes = {
@@ -210,6 +213,8 @@ function config.navigator()
             sumneko_binary = sumneko_binary
             -- settings = luadev.settings
           },
+          jedi_language_server = {filetypes = {}},
+          pyls = {filetypes = {}},
           efm = efm_cfg,
       }}
     require"navigator".setup(nav_cfg)
