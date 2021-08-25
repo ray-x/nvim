@@ -2,7 +2,6 @@ local editor = {}
 
 local conf = require("modules.editor.config")
 
-
 -- alternatives: steelsojka/pears.nvim
 -- windwp/nvim-ts-autotag  'html', 'javascript', 'javascriptreact', 'typescriptreact', 'svelte', 'vue'
 -- windwp/nvim-autopairs
@@ -18,13 +17,24 @@ editor["windwp/nvim-autopairs"] = {
   opt = true
 }
 
+editor["andymass/vim-matchup"] = {
+  event = {"CursorMoved", "CursorMovedI"},
+  config = function()
+    vim.g.matchup_enabled = 1
+    vim.g.matchup_surround_enabled = 1
+    -- vim.g.matchup_transmute_enabled = 1
+    vim.g.matchup_matchparen_deferred = 1
+    vim.g.matchup_matchparen_offscreen = {method = 'popup'}
 
--- editor["ggandor/lightspeed.nvim"] ={
+  end
+}
+
+-- editor["ggandor/lightspeed.nvim"] = {
 --   as = "lightspeed",
---   keys={'f', 'F', 'S', 's', 't', 'T'},
+--   keys = {'f', 'F', 'S', 's', 't', 'T'},
 --   config = function()
 --     -- you can configure Hop the way you like here; see :h hop-config
---     require "lightspeed".setup {
+--     require"lightspeed".setup {
 --       jump_to_first_match = true,
 --       jump_on_partial_input_safety_timeout = 400,
 --       -- This can get _really_ slow if the window has a lot of content,
@@ -38,7 +48,7 @@ editor["windwp/nvim-autopairs"] = {
 --       -- based on `jump_to_first_match`.
 --       labels = nil,
 --       cycle_group_fwd_key = nil,
---       cycle_group_bwd_key = nil,
+--       cycle_group_bwd_key = nil
 --     }
 --     -- vim.api.nvim_set_keymap('n', '$', "<cmd>lua require'hop'.hint_words()<cr>", {})
 --   end
@@ -46,8 +56,8 @@ editor["windwp/nvim-autopairs"] = {
 
 editor["tpope/vim-surround"] = {
   opt = true
-  --event = 'InsertEnter',
-  --keys={'c', 'd'}
+  -- event = 'InsertEnter',
+  -- keys={'c', 'd'}
 }
 
 -- nvim-colorizer replacement
@@ -59,17 +69,6 @@ editor["rrethy/vim-hexokinase"] = {
   cmd = {"HexokinaseTurnOn", "HexokinaseToggle"}
 }
 
--- editor['nacro90/numb.nvim'] = {
---   event = {"CmdlineEnter"},
---   config = function () 
---     require('numb').setup{
---       show_numbers = true, -- Enable 'number' for the window while peeking
---       show_cursorline = true -- Enable 'cursorline' for the window while peeking
---     }
---   end
--- }
-
-
 -- <A-k>   Move current line/selection up
 -- <A-j>   Move current line/selection down
 -- <A-h>   Move current character/selection left
@@ -80,7 +79,6 @@ editor["matze/vim-move"] = {
   -- fn = {'<Plug>MoveBlockDown', '<Plug>MoveBlockUp', '<Plug>MoveLineDown', '<Plug>MoveLineUp'}
 }
 
-
 -- editor["kevinhwang91/nvim-hlslens"] = {
 --   -- keys = {"/", "?", '*', '#'}, --'n', 'N', '*', '#', 'g'
 --   -- opt = true,
@@ -89,21 +87,8 @@ editor["matze/vim-move"] = {
 
 editor["mg979/vim-visual-multi"] = {
   keys = {
-    "<C-n>",
-    "<C-n>",
-    "<M-n>",
-    "<S-Down>",
-    "<S-Up>",
-    "<M-Left>",
-    "<M-Right>",
-    "<M-D>",
-    "<M-Down>",
-    "<C-d>",
-    "<C-Down>",
-    "<S-Right>",
-    "<C-LeftMouse>",
-    "<M-C-RightMouse>",
-    "<Leader>"
+    "<C-n>", "<C-n>", "<M-n>", "<S-Down>", "<S-Up>", "<M-Left>", "<M-Right>", "<M-D>", "<M-Down>",
+    "<C-d>", "<C-Down>", "<S-Right>", "<C-LeftMouse>", "<M-C-RightMouse>", "<Leader>"
   },
   opt = true,
   setup = conf.vmulti
@@ -111,10 +96,13 @@ editor["mg979/vim-visual-multi"] = {
 -- EasyMotion in lua. -- maybe replace sneak
 editor["phaazon/hop.nvim"] = {
   as = "hop",
-  cmd = {"HopWord", "HopWordAC", "HopWordBC", "HopLine", "HopChar1", "HopChar1AC", "HopChar1BC", "HopChar2AC","HopChar2BC", "HopPatternAC", "HopPatternBC"},
+  cmd = {
+    "HopWord", "HopWordAC", "HopWordBC", "HopLine", "HopChar1", "HopChar1AC", "HopChar1BC",
+    "HopChar2", "HopChar2AC", "HopChar2BC", "HopPattern", "HopPatternAC", "HopPatternBC"
+  },
   config = function()
     -- you can configure Hop the way you like here; see :h hop-config
-    require "hop".setup {keys = "adghklqwertyuiopzxcvbnmfjADGHKLQWERTYUIOPZXCVBNMFJ1234567890[]"}
+    require"hop".setup {keys = "adghklqwertyuiopzxcvbnmfjADHKLWERTYUIOPZXCVBNMFJ1234567890"}
     -- vim.api.nvim_set_keymap('n', '$', "<cmd>lua require'hop'.hint_words()<cr>", {})
   end
 }
@@ -137,17 +125,14 @@ editor["bfredl/nvim-miniyank"] = {
   end
 }
 
-editor['dhruvasagar/vim-table-mode'] = {
-  cmd = {'TableModeToggle'}
-}
-
+editor['dhruvasagar/vim-table-mode'] = {cmd = {'TableModeToggle'}}
 
 -- fix terminal color
 editor["norcalli/nvim-terminal.lua"] = {
   opt = true,
   ft = {"log", "terminal"},
   config = function()
-    require "terminal".setup()
+    require"terminal".setup()
   end
 }
 

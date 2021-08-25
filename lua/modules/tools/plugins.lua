@@ -19,9 +19,10 @@ tools["kabouzeid/nvim-lspinstall"] = {}
 tools["liuchengxu/vista.vim"] = {cmd = "Vista", setup = conf.vim_vista, opt = true}
 
 tools["kamykn/spelunker.vim"] = {
-  opt = true, fn = {"spelunker#check"}, 
+  opt = true,
+  fn = {"spelunker#check"},
   setup = conf.spelunker,
-  config = conf.spellcheck,
+  config = conf.spellcheck
 }
 tools["rhysd/vim-grammarous"] = {
   opt = true,
@@ -29,7 +30,6 @@ tools["rhysd/vim-grammarous"] = {
   ft = {"markdown", "txt"},
   setup = conf.grammarous
 }
-
 
 tools["plasticboy/vim-markdown"] = {
   ft = "markdown",
@@ -56,11 +56,12 @@ tools["voldikss/vim-floaterm"] = {
 --
 tools["liuchengxu/vim-clap"] = {
   cmd = {"Clap"},
-  run = function() vim.fn["clap#installer#download_binary"]() end,
+  run = function()
+    vim.fn["clap#installer#download_binary"]()
+  end,
   setup = conf.clap,
   config = conf.clap_after
 }
-
 
 tools["sindrets/diffview.nvim"] = {cmd = "DiffviewOpen", config = conf.diffview}
 
@@ -82,35 +83,32 @@ tools["tpope/vim-fugitive"] = {
   opt = true
 }
 
-
-tools["rmagatti/auto-session"] = {
-  config = conf.session
-}
+tools["rmagatti/auto-session"] = {config = conf.session}
 
 tools["rmagatti/session-lens"] = {
   cmd = "SearchSession",
   config = function()
-    require('session-lens').setup {
-    shorten_path=true,
-    previewer = true
-  }
+    require('session-lens').setup {shorten_path = true, previewer = true}
   end
 }
 
-tools['kevinhwang91/nvim-bqf'] = {
-  opt = true,
-  event = "CmdlineEnter",
-  config = conf.bqf
-}
+tools['kevinhwang91/nvim-bqf'] = {opt = true, event = "CmdlineEnter", config = conf.bqf}
 
 --
-tools["brooth/far.vim"] = {cmd = {"Farr", "Farf"}, config = conf.far, opt = true} -- brooth/far.vim
+tools["brooth/far.vim"] = {
+  cmd = {"Farr", "Farf"},
+  run = ":UpdateRemotePlugins",
+  config = conf.far,
+  opt = true
+} -- brooth/far.vim
 
 tools["rcarriga/vim-ultest"] = {
   run = ":UpdateRemotePlugins",
   requires = {"vim-test/vim-test", setup = conf.vim_test, opt = true},
   cmd = {"Ultest", "UltestNearest"},
-  config = 'vim.cmd [[UpdateRemotePlugins]]',
+  config = function()
+    vim.cmd [[UpdateRemotePlugins]]
+  end,
   opt = true
 }
 

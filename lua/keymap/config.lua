@@ -1,10 +1,10 @@
 local function check_back_space()
-    local col = vim.fn.col('.') - 1
-    if col == 0 or vim.fn.getline('.'):sub(col, col):match('%s') then
-        return true
-    else
-        return false
-    end
+  local col = vim.fn.col('.') - 1
+  if col == 0 or vim.fn.getline('.'):sub(col, col):match('%s') then
+    return true
+  else
+    return false
+  end
 end
 
 local t = function(str)
@@ -21,7 +21,7 @@ _G.tab_complete = function()
   elseif check_back_space() then
     return t "<Tab>"
   else
-    return vim.fn['compe#complete']()
+    return require('cmp').mapping.select_next_item()
   end
 end
 
@@ -43,8 +43,6 @@ _G.word_motion_move = function(key)
   local map = key == 'w' and '<Plug>(WordMotion_w)' or '<Plug>(WordMotion_b)'
   return t(map)
 end
-
-
 
 -- _G.enhance_jk_move = function(key)
 --   if packer_plugins['accelerated-jk'] and not packer_plugins['accelerated-jk'].loaded then

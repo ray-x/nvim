@@ -15,7 +15,7 @@ The `Plug` config is located in branch [Plug branch](https://github.com/ray-x/do
 
   ![vim_ide with nvim+kitty](https://github.com/ray-x/dotfiles/blob/master/img/clap.jpg?raw=true)
 
-- nvim+kitty + compe :
+- nvim+kitty + compe (cmp) :
 
   ![vim_ide with
 nvim+kitty](https://user-images.githubusercontent.com/1681295/109258178-db2e6d80-784d-11eb-9cef-8b1cc6435e01.png?raw=true)
@@ -35,7 +35,7 @@ I used following plugin a lots
   I followed Raphael(a.k.a glepnir) https://github.com/glepnir/nvim dotfiles. He provides a good wrapper for
   Packer. I have an `overwrite` folder which will override the settings. Also, lots of changes in modules/plugins.
   luarock setup
-  A.T.M. nvim-compe as a completion engine with LSP, LSP saga. vim-multi-cursor, clap/telescope. treesitter,
+  A.T.M. nvim-compe/cmp as a completion engine with LSP, LSP saga. vim-multi-cursor, clap/telescope. treesitter,
   lazy load vim-go. So, other than module folder, I could copy/paste everything else from glepnir's configure file,
   which make my life easier.
 

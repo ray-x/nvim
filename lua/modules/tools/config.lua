@@ -19,7 +19,7 @@ function config.session()
   local opts = {
     log_level = 'info',
     auto_session_enable_last_session = false,
-    auto_session_root_dir = vim.fn.stdpath('data').."/sessions/",
+    auto_session_root_dir = vim.fn.stdpath('data') .. "/sessions/",
     auto_session_enabled = true,
     auto_save_enabled = nil,
     auto_restore_enabled = nil,
@@ -100,14 +100,10 @@ function config.vim_vista()
     typescript = "nvim_lsp",
     typescriptreact = "nvim_lsp",
     go = "nvim_lsp",
-    lua = "nvim_lsp",
+    lua = "nvim_lsp"
   }
 
-  vim.g['vista#renderer#icons']= {
-    ['function'] = "",
-    ['method'] = "ℱ",
-    variable = "כֿ",
-  }
+  vim.g['vista#renderer#icons'] = {['function'] = "", ['method'] = "ℱ", variable = "כֿ"}
 end
 
 function config.far()
@@ -120,7 +116,7 @@ end
 function config.clap()
   vim.g.clap_preview_size = 10
   vim.g.airline_powerline_fonts = 1
-  vim.g.clap_layout = {width = "80%", row = "5%", col = "10%", height = "28%"} -- height = "40%", row = "17%", relative = "editor", 
+  vim.g.clap_layout = {width = "80%", row = "8%", col = "10%", height = "34%"} -- height = "40%", row = "17%", relative = "editor",
   -- vim.g.clap_popup_border = "rounded"
   vim.g.clap_selected_sign = {text = "", texthl = "ClapSelectedSign", linehl = "ClapSelected"}
   vim.g.clap_current_selection_sign = {
@@ -133,11 +129,13 @@ function config.clap()
   -- if vim.g.colors_name == 'zephyr' then
   vim.g.clap_theme = 'material_design_dark'
   -- end
-  vim.api.nvim_command("autocmd FileType clap_input call compe#setup({ 'enabled': v:false }, 0)")
+  -- vim.api.nvim_command("autocmd FileType clap_input call compe#setup({ 'enabled': v:false }, 0)")
 end
 
 function config.clap_after()
-  if not packer_plugins["nvim-compe"].loaded then require"packer".loader("nvim-compe") end
+  if not packer_plugins["nvim-cmp"].loaded then
+    require"packer".loader("nvim-cmp")
+  end
 end
 
 function config.gitsigns()
@@ -173,38 +171,35 @@ function config.gitsigns()
     status_formatter = nil, -- Use default
     debug_mode = false,
     current_line_blame = true,
-    current_line_blame_delay = 1500,
+    current_line_blame_opts = {delay = 1500},
     update_debounce = 300,
     word_diff = true,
-    use_internal_diff = true,
+    use_internal_diff = true
   }
 end
 
-local function round(x) return x >= 0 and math.floor(x + 0.5) or math.ceil(x - 0.5) end
+local function round(x)
+  return x >= 0 and math.floor(x + 0.5) or math.ceil(x - 0.5)
+end
 
-function config.bqf( )
+function config.bqf()
   require('bqf').setup({
     auto_enable = true,
     preview = {
-        win_height = 12,
-        win_vheight = 12,
-        delay_syntax = 80,
-        border_chars = {'┃', '┃', '━', '━', '┏', '┓', '┗', '┛', '█'}
+      win_height = 12,
+      win_vheight = 12,
+      delay_syntax = 80,
+      border_chars = {'┃', '┃', '━', '━', '┏', '┓', '┗', '┛', '█'}
     },
-    func_map = {
-        vsplit = '',
-        ptogglemode = 'z,',
-        stoggleup = ''
-    },
+    func_map = {vsplit = '', ptogglemode = 'z,', stoggleup = ''},
     filter = {
-        fzf = {
-            action_for = {['ctrl-s'] = 'split'},
-            extra_opts = {'--bind', 'ctrl-o:toggle-all', '--prompt', '> '}
-        }
+      fzf = {
+        action_for = {['ctrl-s'] = 'split'},
+        extra_opts = {'--bind', 'ctrl-o:toggle-all', '--prompt', '> '}
+      }
     }
   })
 end
-
 
 function config.dapui()
   require("dapui").setup({
@@ -273,6 +268,7 @@ function config.floaterm()
   vim.g.floaterm_keymap_prev = "<F20>"
   vim.g.floaterm_keymap_next = "<F21>"
   vim.g.floaterm_keymap_toggle = "<F24>"
+  -- Use `git ls-files` for git files, use `find ./ *` for all files under work directory.
   vim.cmd(
       [[ command! FR let old = expand("<cword>") | let rep = input("Replace " . old . " with: ", old) | execute ":FloatermNew --height=0.95 --width=0.95  git ls-files  | sad " . old . " " . rep ]])
 
@@ -300,7 +296,6 @@ function config.spellcheck()
   vim.fn["spelunker#check"]()
 end
 
-
 function config.grammcheck()
   -- body
   if not packer_plugins["rhysd/vim-grammarous"] or not packer_plugins["rhysd/vim-grammarous"].loaded then
@@ -325,6 +320,5 @@ function config.mkdp()
   vim.cmd(
       [[let g:mkdp_preview_options = { 'mkit': {}, 'katex': {}, 'uml': {}, 'maid': {}, 'disable_sync_scroll': 0, 'sync_scroll_type': 'middle', 'hide_yaml_meta': 1, 'sequence_diagrams': {}, 'flowchart_diagrams': {}, 'content_editable': v:true, 'disable_filename': 0 }]])
 end
-
 
 return config

@@ -81,9 +81,7 @@ local current_function = function()
   if winwidth() < 60 then
     return ""
   end
-
   local ts = current_treesitter_function()
-
   if string.len(ts) < 3 then
     return " "
   end

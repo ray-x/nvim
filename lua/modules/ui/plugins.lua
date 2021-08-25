@@ -28,9 +28,11 @@ ui["windwp/windline.nvim"] = {
 
 ui["lambdalisue/glyph-palette.vim"] = {}
 
-ui["Akin909/nvim-bufferline.lua"] = {
+-- ui["Akin909/nvim-bufferline.lua"] = {
+ui[vim.fn.expand("$HOME")  .. "/github/nvim-bufferline.lua"] = {
   config = conf.nvim_bufferline,
   event = "UIEnter",
+  diagnostics_update_in_insert = false,
   -- after = {"aurora"}
   -- requires = {'kyazdani42/nvim-web-devicons'}
   opt = true

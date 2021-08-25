@@ -188,7 +188,13 @@ local treesitter_ref = function()
           -- goto_previous_usage = "<c-<>",
         }
       }
-    }
+    },
+    matchup = {
+      enable = true,              -- mandatory, false will disable the whole extension
+      disable = { "c", "ruby" },  -- optional, list of language that will be disabled
+    },
+    autopairs = {enable = true},
+    autotag = {enable = true},
   }
 end
 -- treesitter()

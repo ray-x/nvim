@@ -61,7 +61,7 @@ local keys = {
   ["n|<Leader><Leader>r"] = map_cmd("v:lua.run_or_test()"):with_expr(),
   ["v|<Leader><Leader>r"] = map_cmd("v:lua.run_or_test()"):with_expr(),
   ["n|<Leader>di"] = map_cr("<cmd>lua require'dap.ui.variables'.hover()"):with_expr(),
-  ["n|<Leader>di"] = map_cr("<cmd>lua require'dap.ui.widgets'.hover()"):with_expr(),  -- TODO: another key?
+  ["n|<Leader>di"] = map_cr("<cmd>lua require'dap.ui.widgets'.hover()"):with_expr(), -- TODO: another key?
 
   ["v|<Leader>di"] = map_cr("<cmd>lua require'dap.ui.variables'.visual_hover()"):with_expr(),
 
@@ -73,12 +73,10 @@ local keys = {
   ["n|sp"] = map_cr("SplitjoinSplit"),
   ["n|jo"] = map_cr("SplitjoinJoin"),
   ["n|<F13>"] = map_cr("NvimTreeToggle"),
-  ["n|hw"] = map_cr("HopWord"),
   ["n|hW"] = map_cr("HopWordBC"),
-  ["n|hA"] = map_cr("HopWordAC"),
+  ["n|hw"] = map_cr("HopWordAC"),
   ["n|hl"] = map_cr("HopLineStartAC"),
   ["n|hL"] = map_cr("HopLineStartBC"),
-  ["n|h1"] = map_cr("HopChar1"),
   ["n|s"] = map_cr("HopChar1AC"),
   ["n|S"] = map_cr("HopChar1BC"),
   ["v|s"] = map_cr("HopChar1AC"),
@@ -139,5 +137,9 @@ _G.run_or_test = function(...)
 end
 
 vim.cmd([[command! -nargs=*  DebugOpen lua require"modules.lang.dap".prepare()]])
+-- Use `git ls-files` for git files, use `find ./ *` for all files under work directory.
+vim.cmd(
+    [[command! FR let old = expand("<cword>") | let rep = input("Replace " . old . " with: ", old) | execute ":FloatermNew --height=0.95 --width=0.95  git ls-files  | sad " . old . " " . rep ]])
+
 --
 return K

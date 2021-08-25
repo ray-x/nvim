@@ -74,7 +74,7 @@ function config.syntax_folding()
   local fsize = vim.fn.getfsize(fname)
   if fsize > 1024 * 1024 then
     print("disable syntax_folding")
-    vim.api.nvim_command("setlocal foldmethod=none")
+    vim.api.nvim_command("setlocal foldmethod=indent")
     return
   end
   vim.api.nvim_command("setlocal foldmethod=expr")
@@ -103,6 +103,12 @@ local eslint_d = {
   formatCommand = "eslint_d --fix-to-stdout --stdin --stdin-filename=${INPUT}",
   formatStdin = true
 }
+
+local sql_formatter = {
+  formatCommand = "sql-formatter -l postgresql -i 2 -u",
+  formatStdin = true
+}
+
 local rustfmt = {formatCommand = "rustfmt", formatStdin = true}
 
 
@@ -145,7 +151,7 @@ function config.navigator()
         end,
         filetypes = {
           "javascript", "javascriptreact", 'typescript', 'typescriptreact', 
-          'html', 'css', 'go', 'lua'
+          'html', 'css', 'go', 'lua', 'sql'
         },
         settings = {
           rootMarkers = {".git/", 'package.json', 'Makefile', 'go.mod'},
@@ -165,11 +171,15 @@ function config.navigator()
                 LintSeverity = 3,
               }
             },
-
             lua = {
               { formatCommand = "lua-format --indent-width 2 --tab-width 2 --no-use-tab --column-limit 120 --column-table-limit 100 --no-keep-simple-function-one-line --no-chop-down-table --chop-down-kv-table --no-keep-simple-control-block-one-line --no-keep-simple-function-one-line --no-break-after-functioncall-lp --no-break-after-operator",
-               formatStdin = true,
+                formatStdin = true,
               }
+            },
+            sql = {
+              { formatCommand = "sql-formatter -l postgresql -i 2 -u",
+                formatStdin = true
+              },
             },
           }
         }
@@ -180,11 +190,13 @@ function config.navigator()
         width = 0.7,
         lspinstall = false,
         border = single, -- "single",
-
+        ts_fold = true,
 
         lsp = {
-
           format_on_save = true, -- set to false to disasble lsp code format on save (if you are using prettier/efm/formater etc)
+          disable_format_ft = {"sqls", "gopls"},  -- a list of lsp not enable auto-format (e.g. if you using efm or vim-codeformat etc)
+          disable_lsp = {"sqls",'denols'},
+          code_lens = true,
           diag_scroll_bar_sign = {'▃', '█'}, -- to enable diagnostic status in scroll bar area
           disply_diagnostic_qf = false,
           denols = {filetypes = {}},
@@ -206,6 +218,11 @@ function config.navigator()
               gopls = {gofumpt = true} -- enableww gofumpt etc,
             }
             -- set to {} to disable the lspclient for all filetype
+          },
+          sqls = {
+            on_attach = function(client)
+              client.resolved_capabilities.document_formatting = false  --efm
+            end,
           },
           clangd = {filetypes = {}},  -- using ccls
           sumneko_lua = {
@@ -263,7 +280,10 @@ end
 function config.go()
   require("go").setup({
     verbose=true,
+    goimport = 'gopls',
     log_path = vim.fn.expand("$HOME") .. "/tmp/gonvim.log",
+    lsp_codelens = false, -- use navigator
+    
     dap_debug=true,
     dap_debug_gui=true,
   })

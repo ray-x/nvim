@@ -34,7 +34,7 @@ lang["nanotee/sqls.nvim"] = {ft = {"sql", "pgsql"}, setup = conf.sqls, opt = tru
 
 
 lang[vim.fn.expand("$HOME")  .. "/github/go.nvim"] = {
-  ft = {"go"},
+  ft = {"go","gomod"},
   config = conf.go
 }
 
@@ -130,7 +130,7 @@ lang["michaelb/sniprun"] = {
 lang["windwp/nvim-ts-autotag"] = {
   opt = true,
   -- after = "nvim-treesitter",
-  config = function() require"nvim-treesitter.configs".setup {autotag = {enable = true}} end
+  -- config = function() require"nvim-treesitter.configs".setup {autotag = {enable = true}} end
 }
 
 lang['folke/lua-dev.nvim'] = {
