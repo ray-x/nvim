@@ -1,12 +1,7 @@
 " let s:config_home = stdpath('config')
 " source expand("$HOME") + /.config/nvim/pluginrc.d/lsp.vim
 " 
-" let g:deoplete#enable_at_startup = 1
-" set cmdheight=2
-" let g:echodoc#enable_at_startup = 1
-" let g:echodoc#type = 'floating'
 " set ttymouse=xterm2
-" set mouse=a
 " --local nvim_lsp = require('lspconfig')
 " --require('lsp_signature').on_attach()
 " 
@@ -23,49 +18,17 @@
 " -- on_attach = on_attach,
 " -- }
 " -- 
-" -- require'compe'.setup {
-" --   enabled = true;
-" --   autocomplete = true;
-" --   debug = false;
-" --   min_length = 1;
-" --   preselect = 'enable';
-" --   throttle_time = 80;
-" --   source_timeout = 200;
-" --   incomplete_delay = 400;
-" --   max_abbr_width = 100;
-" --   max_kind_width = 100;
-" --   max_menu_width = 100;
-" --   documentation = true;
-" -- 
-" --   source = {
-" --     nvim_lsp = true;
-" --     vsnip = true;
-" --   };
-" -- }
-" -- 
-" -- "glepnir/lspsaga.nvim",
-" -- local saga = require 'lspsaga'
+
 " 
 " -- Only if your version of Neovim doesn't have https://github.com/neovim/neovim/pull/12632 merged
 " -- vim._update_package_paths()
 "  --"hrsh7th/nvim-compe",
 
-"  -- Document highlight
-"  if client.resolved_capabilities.document_highlight then
-"    vim.api.nvim_exec(
-"      [[
-"        hi LspReferenceRead cterm=bold ctermbg=239 guibg=#504945
-"        hi LspReferenceText cterm=bold ctermbg=239 guibg=#504945
-"        hi LspReferenceWrite cterm=bold ctermbg=243 guibg=#7c6f64
-"        augroup lsp_document_highlight
-"          autocmd! * <buffer>
-"          autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
-"          autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
-"        augroup END
-"      ]],
-"      false
-"    )
-"  end
+" -- expand("$HOME")  + "/github/lsp_signature.nvim",
+" -- "ray-x/lsp_signature.nvim",
+" --  'ray-x/navigator.lua', requires = {'ray-x/guihua.lua', run = 'cd lua/fzy && make'}
+" -- expand("$HOME")  + "/github/navigator.lua",requires = {'ray-x/guihua.lua', run = 'cd lua/fzy && make'},
+
 set mouse=a
 
 lua <<EOF
@@ -74,79 +37,52 @@ require('packer').startup(function()
 use "wbthomason/packer.nvim"
 use "neovim/nvim-lspconfig"
 use {"ray-x/navigator.lua", requires = {'ray-x/guihua.lua', run = 'cd lua/fzy && make'}}
-end)
 
-
--- "hrsh7th/nvim-compe",
--- expand("$HOME")  + "/github/lsp_signature.nvim",
--- "nvim-lua/completion-nvim",
--- "ray-x/lsp_signature.nvim",
---  'ray-x/navigator.lua', requires = {'ray-x/guihua.lua', run = 'cd lua/fzy && make'}
--- expand("$HOME")  + "/github/navigator.lua",requires = {'ray-x/guihua.lua', run = 'cd lua/fzy && make'},
-
+use {"hrsh7th/nvim-cmp",   
+  requires = {
+      {"hrsh7th/cmp-buffer", after = "nvim-cmp" },
+      {"hrsh7th/cmp-nvim-lua", after = "nvim-cmp" },
+      {"hrsh7th/cmp-vsnip", after = "nvim-cmp" },
+      {"hrsh7th/cmp-calc", after = "nvim-cmp" },
+      {"hrsh7th/cmp-path", after = "nvim-cmp" },
+      {"hrsh7th/cmp-nvim-lsp", after = "nvim-cmp" },
+      {"tzachar/cmp-tabnine", opt=true},
+  },
+  -- event = "InsertEnter",  -- THIS IS NOT WORKING
+  config = function()
+    local cmp = require'cmp'
+    cmp.setup ({
+      snippet = {
+        expand = function(args)
+          vim.fn['vsnip#anonymous'](args.body)
+        end
+      },
+      completion = {
+        autocomplete = { require("cmp.types").cmp.TriggerEvent.TextChanged },
+        completeopt = "menu,menuone,noselect",
+      },
+      formatting = {
+        format = function(entry, vim_item)
+          print(vim.inspect(vim_item))
+          if comp_kind == nil then comp_kind = require"navigator.lspclient.lspkind".comp_kind end
+          vim_item.kind = comp_kind(vim_item.kind)
+          return vim_item
+        end
+      },
+      mapping = {
+        ['<C-p>'] = cmp.mapping.select_prev_item(),
+        ['<C-n>'] = cmp.mapping.select_next_item(),
+        ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+        ['<C-f>'] = cmp.mapping.scroll_docs(4),
+        ['<C-Space>'] = cmp.mapping.complete(),
+        ['<C-e>'] = cmp.mapping.close(),
+        ['<CR>'] = cmp.mapping.confirm({behavior = cmp.ConfirmBehavior.Insert, select = true}),
+      },
+      sources = {{name = 'nvim_lsp'}, {name = 'buffer'}, {name = 'path'}, {name = 'calc'}, {name = 'vsnip'}, {name = 'nvim_lua'}}
+  })
+  end
+ }
 local lspconfig = require('lspconfig')
 require('navigator').setup()
--- require'compe'.setup {
---   enabled = true;
---   autocomplete = true;
---   debug = false;
---   min_length = 1;
---   preselect = 'enable';
---   throttle_time = 80;
---   source_timeout = 200;
---   incomplete_delay = 400;
---   max_abbr_width = 100;
---   max_kind_width = 100;
---   max_menu_width = 100;
---   documentation = true;
--- 
---   source = {
---     nvim_lsp = true;
---     vsnip = true;
---   };
--- }
---   require "completion".on_attach(client)
-
--- require "lsp_signature".on_attach(client)
--- 
--- local on_attach = function(client, bufnr)
---   print(vim.inspect(client.resolved_capabilities))
---   -- vim.lsp.utils.opt("omnifunc", "v:lua.vim.lsp.omnifunc")
--- 
---   local lsp_keymappings = {
---     {"n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>"},
---     {"n", "gD", "<Cmd>lua vim.lsp.buf.declaration()<CR>"},
---     {"n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>"},
---     {"n", "<leader>f", "<cmd>lua vim.lsp.buf.formatting()<CR>"},
---     {"n", "<leader>td", "<cmd>lua vim.lsp.buf.type_definition()<CR>"},
---     {"n", "<leader>rf", "<cmd>lua vim.lsp.buf.references()<CR>"},
---     {"n", "<leader>ll", "<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>"},
---     -- Use <Tab> and <S-Tab> to navigate through popup menu
---     {"i", "<Tab>", 'pumvisible() ? "\\<C-n>" : "\\<Tab>"', {expr = true}},
---     {"i", "<S-Tab>", 'pumvisible() ? "\\<C-p>" : "\\<Tab>"', {expr = true}}
---   }
--- 
---   for _, map in ipairs(lsp_keymappings) do
---     local mode, lhs, rhs, opts = unpack(map)
---     -- utils.map(mode, lhs, rhs, opts)
---   end
--- 
---   -- Format on save
---   if client.resolved_capabilities.document_formatting then
---     vim.cmd [[autocmd BufWritePre * lua vim.lsp.buf.formatting()]]
---   end
--- 
--- 
--- end
--- 
--- lspconfig.pyls.setup {
---   on_attach = on_attach
--- }
-
--- require('lspconfig').intelephense.setup{
--- 	--on_attach = on_attach
--- }
-
+end)
 EOF
-
-let g:min_load = 1

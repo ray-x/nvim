@@ -64,7 +64,7 @@ function lazyload()
 
   if load_ts_plugins then
     print("ts load")
-    plugins = "nvim-treesitter nvim-treesitter-refactor indent-blankline.nvim"  --  nvim-ts-rainbow nvim-ts-autotag nvim-treesitter nvim-treesitter-refactor 
+    plugins = "nvim-treesitter nvim-treesitter-refactor indent-blankline.nvim nvim-ts-autotag"  --  nvim-ts-rainbow  nvim-treesitter nvim-treesitter-refactor 
     -- nvim-treesitter-textobjects should be autoloaded
     loader(plugins)
     -- enable syntax if is small  

@@ -4,12 +4,50 @@ function config.nvim_lsp()
   require("lsp.config").setup()
 end
 
-function config.nvim_compe()
-  vim.cmd("inoremap <silent><expr> <C-Space> compe#complete()")
-  --vim.cmd("inoremap <silent><expr> <CR>      compe#confirm({ 'keys': '<Plug>delimitMateCR', 'mode': '' })")
-  vim.cmd("inoremap <silent><expr> <C-e>     compe#close('<C-e>')")
-  vim.cmd("inoremap <silent><expr> <C-f>     compe#scroll({ 'delta': +4 })")
-  vim.cmd("inoremap <silent><expr> <C-d>     compe#scroll({ 'delta': -4 })")
+function config.nvim_cmp()
+  local cmp = require('cmp')
+  local comp_kind = nil
+  cmp.setup {
+    snippet = {
+      expand = function(args)
+        -- You must install `vim-vsnip` if you use the following as-is.
+        vim.fn['vsnip#anonymous'](args.body)
+      end
+    },
+    completion = {
+      autocomplete = { require("cmp.types").cmp.TriggerEvent.TextChanged },
+      completeopt = "menu,menuone,noselect",
+    },
+    formatting = {
+      format = function(entry, vim_item)
+        print(vim.inspect(vim_item))
+        if comp_kind == nil then comp_kind = require"navigator.lspclient.lspkind".comp_kind end
+        vim_item.kind = comp_kind(vim_item.kind)
+        return vim_item
+      end
+    },
+    -- documentation = {
+    --   border = "rounded",
+    -- },
+    -- You must set mapping if you want.
+    mapping = {
+      ['<C-p>'] = cmp.mapping.select_prev_item(),
+      ['<C-n>'] = cmp.mapping.select_next_item(),
+      ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+      ['<C-f>'] = cmp.mapping.scroll_docs(4),
+      ['<C-Space>'] = cmp.mapping.complete(),
+      ['<C-e>'] = cmp.mapping.close(),
+      ['<CR>'] = cmp.mapping.confirm({behavior = cmp.ConfirmBehavior.Insert, select = true}),
+    },
+
+    -- You should specify your *installed* sources.
+    sources = {{name = 'nvim_lsp'}, {name = 'buffer'}, {name = 'path'}, {name = 'calc'}, {name = 'vsnip'}, {name = 'nvim_lua'}}
+  }
+  -- vim.cmd("inoremap <silent><expr> <C-Space> compe#complete()")
+  -- --vim.cmd("inoremap <silent><expr> <CR>      compe#confirm({ 'keys': '<Plug>delimitMateCR', 'mode': '' })")
+  -- vim.cmd("inoremap <silent><expr> <C-e>     compe#close('<C-e>')")
+  -- vim.cmd("inoremap <silent><expr> <C-f>     compe#scroll({ 'delta': +4 })")
+  -- vim.cmd("inoremap <silent><expr> <C-d>     compe#scroll({ 'delta': -4 })")
   vim.cmd([[imap <expr> <C-j>   vsnip#expandable()  ? '<Plug>(vsnip-expand)'         : '<C-j>']])
   vim.cmd([[smap <expr> <C-j>   vsnip#expandable()  ? '<Plug>(vsnip-expand)'         : '<C-j>']])
   vim.cmd([[imap <expr> <C-l>   vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>']])
@@ -19,68 +57,68 @@ function config.nvim_compe()
   vim.cmd([[imap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>']])
   vim.cmd([[smap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>']])
 
-  vim.cmd([[inoremap <silent><expr> <CR>      compe#confirm('<CR>')]])
+  -- vim.cmd([[inoremap <silent><expr> <CR>      compe#confirm('<CR>')]])
   -- vim.cmd([[nmap        s   <Plug>(vsnip-select-text)]])
   -- vim.cmd([[xmap        s   <Plug>(vsnip-select-text)]])
   -- vim.cmd([[nmap        S   <Plug>(vsnip-cut-text)]])
   -- vim.cmd([[xmap        S   <Plug>(vsnip-cut-text)]])
-  require "compe".setup {
-    enabled = true,
-    autocomplete = true,
-    debug = true,
-    min_length = 1,
-    preselect = "always",
-    throttle_time = 80,
-    source_timeout = 200,
-    incomplete_delay = 400,
-    max_abbr_width = 30,
-    max_kind_width = 4,
-    max_menu_width = 4,
-    documentation = true,
-    source = {
-      path = {
-        menu = "率"
-      },
-      buffer = {
-        menu = "﬘"
-      },
-      calc = {
-        menu = ""
-      },
-      vsnip = {
-        menu = ""
-      },
-      nvim_lsp = {
-        -- menu = "";
-        menu = ""
-      },
-      nvim_lua = true,
-      tabnine = false,
-      -- tabnine = {
-      --   max_line = 100;
-      --   max_num_results = 10;
-      --   priority = 20;
-      --   menu = "";
-      -- };
-      spell = {menu = "暈"},
-      tags = {menu = ""},
-      snippets_nvim = false,
-      treesitter = {menu = ""}
-    }
-  }
-  vim.g.completion_confirm_key = ""
-  local t = function(str)
-    return vim.api.nvim_replace_termcodes(str, true, true, true)
-  end
+  -- require "compe".setup {
+  --   enabled = true,
+  --   autocomplete = true,
+  --   debug = true,
+  --   min_length = 1,
+  --   preselect = "always",
+  --   throttle_time = 80,
+  --   source_timeout = 200,
+  --   incomplete_delay = 400,
+  --   max_abbr_width = 30,
+  --   max_kind_width = 4,
+  --   max_menu_width = 4,
+  --   documentation = true,
+  --   source = {
+  --     path = {
+  --       menu = "率"
+  --     },
+  --     buffer = {
+  --       menu = "﬘"
+  --     },
+  --     calc = {
+  --       menu = ""
+  --     },
+  --     vsnip = {
+  --       menu = ""
+  --     },
+  --     nvim_lsp = {
+  --       -- menu = "";
+  --       menu = ""
+  --     },
+  --     nvim_lua = true,
+  --     tabnine = false,
+  --     -- tabnine = {
+  --     --   max_line = 100;
+  --     --   max_num_results = 10;
+  --     --   priority = 20;
+  --     --   menu = "";
+  --     -- };
+  --     spell = {menu = "暈"},
+  --     tags = {menu = ""},
+  --     snippets_nvim = false,
+  --     treesitter = {menu = ""}
+  --   }
+  -- }
+  -- vim.g.completion_confirm_key = ""
+  -- local t = function(str)
+  --   return vim.api.nvim_replace_termcodes(str, true, true, true)
+  -- end
 
-  local check_back_space = function()
-    local col = vim.fn.col(".") - 1
-    if col == 0 or vim.fn.getline("."):sub(col, col):match("%s") then
-      return true
-    else
-      return false
-    end
-  end
+  -- local check_back_space = function()
+  --   local col = vim.fn.col(".") - 1
+  --   if col == 0 or vim.fn.getline("."):sub(col, col):match("%s") then
+  --     return true
+  --   else
+  --     return false
+  --   end
+  -- end
 
   -- Use (s-)tab to:
   --- move to prev/next item in completion menuone
@@ -129,16 +167,16 @@ end
 
 function config.telescope_preload()
   if not packer_plugins["plenary.nvim"].loaded then
-    require "packer".loader("plenary.nvim")
-  -- vim.cmd [[packadd plenary.nvim]]
-  -- vim.cmd [[packadd popup.nvim]]
-  -- vim.cmd [[packadd telescope-fzy-native.nvim]]
+    require"packer".loader("plenary.nvim")
+    -- vim.cmd [[packadd plenary.nvim]]
+    -- vim.cmd [[packadd popup.nvim]]
+    -- vim.cmd [[packadd telescope-fzy-native.nvim]]
   end
   if not packer_plugins["popup.nvim"].loaded then
-    require "packer".loader("popup.nvim ")
-  end 
+    require"packer".loader("popup.nvim ")
+  end
   if not packer_plugins["telescope-fzy-native.nvim"].loaded then
-    require "packer".loader("telescope-fzy-native.nvim")
+    require"packer".loader("telescope-fzy-native.nvim")
   end
 end
 
@@ -149,20 +187,15 @@ function config.telescope()
       prompt_prefix = "🍔 ",
       prompt_position = "top",
       sorting_strategy = "ascending",
-      file_previewer = require "telescope.previewers".vim_buffer_cat.new,
-      grep_previewer = require "telescope.previewers".vim_buffer_vimgrep.new,
-      qflist_previewer = require "telescope.previewers".vim_buffer_qflist.new
+      file_previewer = require"telescope.previewers".vim_buffer_cat.new,
+      grep_previewer = require"telescope.previewers".vim_buffer_vimgrep.new,
+      qflist_previewer = require"telescope.previewers".vim_buffer_qflist.new
     },
-    extensions = {
-      fzy_native = {
-        override_generic_sorter = false,
-        override_file_sorter = true
-      }
-    }
+    extensions = {fzy_native = {override_generic_sorter = false, override_file_sorter = true}}
   }
   require("telescope").load_extension("fzy_native")
-  require "telescope".load_extension("dotfiles")
-  require "telescope".load_extension("gosource")
+  require"telescope".load_extension("dotfiles")
+  require"telescope".load_extension("gosource")
 end
 
 function config.emmet()

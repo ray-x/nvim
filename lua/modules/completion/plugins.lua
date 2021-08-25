@@ -10,9 +10,25 @@ completion["neovim/nvim-lspconfig"] = {
   opt = true
 }
 
-completion["hrsh7th/nvim-compe"] = {
-  event = "InsertEnter",
-  config = conf.nvim_compe
+-- completion["hrsh7th/nvim-compe"] = {
+--   event = "InsertEnter",
+--   config = conf.nvim_compe
+-- }
+
+
+completion["hrsh7th/nvim-cmp"] = {
+  -- opt=true,
+  -- event = "InsertEnter",   --InsertCharPre
+  requires = {
+    {"hrsh7th/cmp-buffer", after = "nvim-cmp" },
+    {"hrsh7th/cmp-nvim-lua", after = "nvim-cmp" },
+    {"hrsh7th/cmp-vsnip", after = "nvim-cmp" },
+    {"hrsh7th/cmp-calc", after = "nvim-cmp" },
+    {"hrsh7th/cmp-path", after = "nvim-cmp" },
+    {"hrsh7th/cmp-nvim-lsp", after = "nvim-cmp" },
+    {"tzachar/cmp-tabnine", opt=true},
+  },
+  config = conf.nvim_cmp
 }
 
 completion["hrsh7th/vim-vsnip"] = {
@@ -45,13 +61,14 @@ completion[vim.fn.expand("$HOME") .. "/github/lsp_signature.nvim"] = {
   opt = false,
   config = function()
     require "lsp_signature".setup({
+        toggle_key = [[<M-x>]],
         floating_window = true,
         log_path = vim.fn.expand("$HOME")  .. "/tmp/sig.log",
         debug = true,
         hi_parameter = 'Search',
         bind = true,
         handler_opts = {
-          border = "shadow", --{"╭", "─" ,"╮", "│", "╯", "─", "╰", "│" },
+          border = 'single', --"shadow", --{"╭", "─" ,"╮", "│", "╯", "─", "╰", "│" },
         },
       })
   end

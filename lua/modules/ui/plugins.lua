@@ -106,7 +106,7 @@ ui["sainnhe/gruvbox-material"] = {opt = true, config = conf.gruvbox}
 -- cant config cursor line
 -- ui["rafamadriz/neon"] = {opt = true, config = conf.neon}
 
-ui[vim.fn.expand("$HOME")  .. "/github/zephyr-nvim"] = {opt = true, config = conf.zephyr}
+ui["~/github/zephyr-nvim"] = {opt = true, config = conf.zephyr}
 ui["~/github/material_plus.nvim"] = {
   opt = true,
   setup = conf.material,
