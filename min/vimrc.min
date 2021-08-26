@@ -5,14 +5,14 @@ call plug#begin('~/.vim/plugged')
 Plug 'neovim/nvim-lspconfig'
 Plug 'nvim-treesitter/nvim-treesitter'
 Plug 'liuchengxu/vim-clap' ", { 'do': { -> clap#installer#force_download() } }
-Plug 'hrsh7th/vim-vsnip'
-Plug 'rafamadriz/friendly-snippets'
+" Plug 'hrsh7th/vim-vsnip'
+" Plug 'rafamadriz/friendly-snippets'
 " Plug 'hrsh7th/nvim-compe'
-Plug 'kevinhwang91/nvim-hlslens'
-Plug 'hrsh7th/nvim-cmp'
-Plug 'hrsh7th/cmp-buffer'
-Plug 'hrsh7th/cmp-nvim-lua'
-Plug 'hrsh7th/cmp-nvim-lsp'
+" Plug 'kevinhwang91/nvim-hlslens'
+" Plug 'hrsh7th/nvim-cmp'
+" Plug 'hrsh7th/cmp-buffer'
+" Plug 'hrsh7th/cmp-nvim-lua'
+" Plug 'hrsh7th/cmp-nvim-lsp'
 " Plug 'nvim-lua/popup.nvim'
 " Plug 'nvim-lua/plenary.nvim'
 " Plug 'nvim-telescope/telescope.nvim'
@@ -31,15 +31,15 @@ call plug#end()
 
 
 
-lua require('hlslens').setup()
-noremap <silent> n <Cmd>execute('normal! ' . v:count1 . 'n')<CR>
-            \<Cmd>lua require('hlslens').start()<CR>
-noremap <silent> N <Cmd>execute('normal! ' . v:count1 . 'N')<CR>
-            \<Cmd>lua require('hlslens').start()<CR>
-noremap * *<Cmd>lua require('hlslens').start()<CR>
-noremap # #<Cmd>lua require('hlslens').start()<CR>
-noremap g* g*<Cmd>lua require('hlslens').start()<CR>
-noremap g# g#<Cmd>lua require('hlslens').start()<CR>
+" lua require('hlslens').setup()
+" noremap <silent> n <Cmd>execute('normal! ' . v:count1 . 'n')<CR>
+"             \<Cmd>lua require('hlslens').start()<CR>
+" noremap <silent> N <Cmd>execute('normal! ' . v:count1 . 'N')<CR>
+"             \<Cmd>lua require('hlslens').start()<CR>
+" noremap * *<Cmd>lua require('hlslens').start()<CR>
+" noremap # #<Cmd>lua require('hlslens').start()<CR>
+" noremap g* g*<Cmd>lua require('hlslens').start()<CR>
+" noremap g# g#<Cmd>lua require('hlslens').start()<CR>
 
 " use : instead of <Cmd>
 nnoremap <silent> <leader>l :nohlsearch<CR>
@@ -53,33 +53,33 @@ require'nvim-treesitter.configs'.setup {
   additional_vim_regex_highlighting = false,
   },
 }
-local cmp = require('cmp')
-cmp.setup {
-  snippet = {
-    expand = function(args)
-      -- You must install `vim-vsnip` if you use the following as-is.
-      vim.fn['vsnip#anonymous'](args.body)
-    end
-  },
-
-  -- You must set mapping if you want.
-  mapping = {
-    ['<C-p>'] = cmp.mapping.select_prev_item(),
-    ['<C-n>'] = cmp.mapping.select_next_item(),
-    ['<C-d>'] = cmp.mapping.scroll_docs(-4),
-    ['<C-f>'] = cmp.mapping.scroll_docs(4),
-    ['<C-Space>'] = cmp.mapping.complete(),
-    ['<C-e>'] = cmp.mapping.close(),
-    ['<CR>'] = cmp.mapping.confirm({
-      behavior = cmp.ConfirmBehavior.Insert,
-      select = true,
-    })
-  },
-
-  -- You should specify your *installed* sources.
-
-  sources = {{name = 'nvim_lsp'}, {name = 'buffer'}, {name = 'path'}, {name = 'calc'}, {name = 'vsnip'}, {name = 'nvim_lua'}}
-}
+-- local cmp = require('cmp')
+-- cmp.setup {
+--   snippet = {
+--     expand = function(args)
+--       -- You must install `vim-vsnip` if you use the following as-is.
+--       vim.fn['vsnip#anonymous'](args.body)
+--     end
+--   },
+-- 
+--   -- You must set mapping if you want.
+--   mapping = {
+--     ['<C-p>'] = cmp.mapping.select_prev_item(),
+--     ['<C-n>'] = cmp.mapping.select_next_item(),
+--     ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+--     ['<C-f>'] = cmp.mapping.scroll_docs(4),
+--     ['<C-Space>'] = cmp.mapping.complete(),
+--     ['<C-e>'] = cmp.mapping.close(),
+--     ['<CR>'] = cmp.mapping.confirm({
+--       behavior = cmp.ConfirmBehavior.Insert,
+--       select = true,
+--     })
+--   },
+-- 
+--   -- You should specify your *installed* sources.
+-- 
+--   sources = {{name = 'nvim_lsp'}, {name = 'buffer'}, {name = 'path'}, {name = 'calc'}, {name = 'vsnip'}, {name = 'nvim_lua'}}
+-- }
 
 -- require'compe'.setup {
 --   enabled = true;
@@ -115,7 +115,7 @@ cmp.setup {
 --   };
 -- }
 
-require"navigator".setup()
+-- require"navigator".setup()
 -- vim.treesitter.highlighter.hl_map.error = nil
 -- require "nvim-treesitter.highlight"
 -- 
@@ -164,44 +164,45 @@ require"navigator".setup()
 -- })
 
 
-
--- local single = {"╭", "─", "╮", "│", "╯", "─", "╰", "│"}
--- print("navigator setup")
--- require"navigator".setup({
---   debug = true,
---   width = 0.7,
---   border = single, -- "single",
---   lsp = {
---     format_on_save = true, -- set to false to disasble lsp code format on save (if you are using prettier/efm/formater etc)
---     denols = {filetypes = {}},
---     -- flow = {
---     --   filetypes ={},
---     -- },
---     tsserver = {
---       filetypes = {
---         "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact",
---         "typescript.tsx"
---       }
---     },
---     gopls = {
---       on_attach = function(client)
---         -- print("i am a hook")
---         client.resolved_capabilities.document_formatting = false
---         -- require 'illuminate'.on_attach(client)
---       end,
---       settings = {
---         gopls = {gofumpt = true} -- enableww gofumpt etc,
---       }
---       -- set to {} to disable the lspclient for all filetype
---     },
---     clangd = {filetypes = {}},
---     sumneko_lua = {
---       sumneko_root_path = sumneko_root_path,
---       sumneko_binary = sumneko_binary
---       -- settings = luadev.settings
---     }
---   }
--- })
+local sumneko_root_path = vim.fn.expand("$HOME")..'/github/sumneko/lua-language-server'
+local sumneko_binary = vim.fn.expand("$HOME")..'/github/sumneko/lua-language-server/bin/macOS/lua-language-server'
+local single = {"╭", "─", "╮", "│", "╯", "─", "╰", "│"}
+print("navigator setup")
+require"navigator".setup({
+  debug = true,
+  width = 0.7,
+  border = single, -- "single",
+  lsp = {
+    format_on_save = true, -- set to false to disasble lsp code format on save (if you are using prettier/efm/formater etc)
+    denols = {filetypes = {}},
+    -- flow = {
+    --   filetypes ={},
+    -- },
+    tsserver = {
+      filetypes = {
+        "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact",
+        "typescript.tsx"
+      }
+    },
+    gopls = {
+      on_attach = function(client)
+        -- print("i am a hook")
+        client.resolved_capabilities.document_formatting = false
+        -- require 'illuminate'.on_attach(client)
+      end,
+      settings = {
+        gopls = {gofumpt = true} -- enableww gofumpt etc,
+      }
+      -- set to {} to disable the lspclient for all filetype
+    },
+    clangd = {filetypes = {}},
+    sumneko_lua = {
+      sumneko_root_path = sumneko_root_path,
+      sumneko_binary = sumneko_binary
+      -- settings = luadev.settings
+    }
+  }
+})
 
 EOF
 
@@ -344,8 +345,6 @@ lua <<EOF
 --         }
 --     }
 -- }
--- local sumneko_root_path = vim.fn.expand("$HOME")..'/github/sumneko/-- lua-language-server'
--- local sumneko_binary = vim.fn.expand("$HOME")..'/github/sumneko/-- lua-language-server/bin/macOS/lua-language-server'
 
 
 -- local lua_cfg = {

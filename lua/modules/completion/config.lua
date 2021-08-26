@@ -4,25 +4,41 @@ function config.nvim_lsp()
   require("lsp.config").setup()
 end
 
+local function t(str)
+  return vim.api.nvim_replace_termcodes(str, true, true, true)
+end
+
+local function is_prior_char_whitespace()
+  local col = vim.fn.col('.') - 1
+  if col == 0 or vim.fn.getline('.'):sub(col, col):match('%s') then
+    return true
+  else
+    return false
+  end
+end
+
 function config.nvim_cmp()
   local cmp = require('cmp')
+  print("cmp install")
   local comp_kind = nil
   cmp.setup {
     snippet = {
       expand = function(args)
-        -- You must install `vim-vsnip` if you use the following as-is.
-        vim.fn['vsnip#anonymous'](args.body)
+        -- require'luasnip'.lsp_expand(args.body)
+        vim.fn["UltiSnips#Anon"](args.body)
       end
     },
     completion = {
-      autocomplete = { require("cmp.types").cmp.TriggerEvent.TextChanged },
-      completeopt = "menu,menuone,noselect",
+      autocomplete = {require("cmp.types").cmp.TriggerEvent.TextChanged},
+      completeopt = "menu,menuone,noselect"
     },
     formatting = {
       format = function(entry, vim_item)
-        print(vim.inspect(vim_item))
-        if comp_kind == nil then comp_kind = require"navigator.lspclient.lspkind".comp_kind end
-        vim_item.kind = comp_kind(vim_item.kind)
+        print(vim.inspect(vim_item.kind))
+        if cmp_kind == nil then
+          cmp_kind = require"navigator.lspclient.lspkind".cmp_kind
+        end
+        vim_item.kind = cmp_kind(vim_item.kind)
         return vim_item
       end
     },
@@ -38,115 +54,31 @@ function config.nvim_cmp()
       ['<C-Space>'] = cmp.mapping.complete(),
       ['<C-e>'] = cmp.mapping.close(),
       ['<CR>'] = cmp.mapping.confirm({behavior = cmp.ConfirmBehavior.Insert, select = true}),
+      ['<Tab>'] = cmp.mapping(function(fallback)
+        if vim.fn.pumvisible() == 1 then
+          if vim.fn["UltiSnips#CanExpandSnippet"]() == 1 or vim.fn["UltiSnips#CanJumpForwards"]()
+              == 1 then
+            return vim.fn.feedkeys(t("<C-R>=UltiSnips#ExpandSnippetOrJump()<CR>"))
+          end
+          vim.fn.feedkeys(t("<C-n>"), "n")
+        elseif is_prior_char_whitespace() then
+          vim.fn.feedkeys(t("<tab>"), "n")
+        else
+          if fallback ~= nil then 
+            fallback() 
+          else
+            vim.fn.feedkeys(t("<tab>"), "n")
+          end
+        end
+      end, {'i', 's'})
     },
 
     -- You should specify your *installed* sources.
-    sources = {{name = 'nvim_lsp'}, {name = 'buffer'}, {name = 'path'}, {name = 'calc'}, {name = 'vsnip'}, {name = 'nvim_lua'}}
+    sources = {
+      {name = 'nvim_lsp'}, {name = 'buffer'}, {name = 'spell'}, {name = 'path'}, {name = 'calc'},
+      {name = 'luasnip'}, {name = 'nvim_lua'}, {name = 'ultisnips'}
+    }
   }
-  -- vim.cmd("inoremap <silent><expr> <C-Space> compe#complete()")
-  -- --vim.cmd("inoremap <silent><expr> <CR>      compe#confirm({ 'keys': '<Plug>delimitMateCR', 'mode': '' })")
-  -- vim.cmd("inoremap <silent><expr> <C-e>     compe#close('<C-e>')")
-  -- vim.cmd("inoremap <silent><expr> <C-f>     compe#scroll({ 'delta': +4 })")
-  -- vim.cmd("inoremap <silent><expr> <C-d>     compe#scroll({ 'delta': -4 })")
-  vim.cmd([[imap <expr> <C-j>   vsnip#expandable()  ? '<Plug>(vsnip-expand)'         : '<C-j>']])
-  vim.cmd([[smap <expr> <C-j>   vsnip#expandable()  ? '<Plug>(vsnip-expand)'         : '<C-j>']])
-  vim.cmd([[imap <expr> <C-l>   vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>']])
-  vim.cmd([[smap <expr> <C-l>   vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>']])
-  vim.cmd([[imap <expr> <Tab>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>']])
-  vim.cmd([[smap <expr> <Tab>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>']])
-  vim.cmd([[imap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>']])
-  vim.cmd([[smap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>']])
-
-  -- vim.cmd([[inoremap <silent><expr> <CR>      compe#confirm('<CR>')]])
-  -- vim.cmd([[nmap        s   <Plug>(vsnip-select-text)]])
-  -- vim.cmd([[xmap        s   <Plug>(vsnip-select-text)]])
-  -- vim.cmd([[nmap        S   <Plug>(vsnip-cut-text)]])
-  -- vim.cmd([[xmap        S   <Plug>(vsnip-cut-text)]])
-  -- require "compe".setup {
-  --   enabled = true,
-  --   autocomplete = true,
-  --   debug = true,
-  --   min_length = 1,
-  --   preselect = "always",
-  --   throttle_time = 80,
-  --   source_timeout = 200,
-  --   incomplete_delay = 400,
-  --   max_abbr_width = 30,
-  --   max_kind_width = 4,
-  --   max_menu_width = 4,
-  --   documentation = true,
-  --   source = {
-  --     path = {
-  --       menu = "率"
-  --     },
-  --     buffer = {
-  --       menu = "﬘"
-  --     },
-  --     calc = {
-  --       menu = ""
-  --     },
-  --     vsnip = {
-  --       menu = ""
-  --     },
-  --     nvim_lsp = {
-  --       -- menu = "";
-  --       menu = ""
-  --     },
-  --     nvim_lua = true,
-  --     tabnine = false,
-  --     -- tabnine = {
-  --     --   max_line = 100;
-  --     --   max_num_results = 10;
-  --     --   priority = 20;
-  --     --   menu = "";
-  --     -- };
-  --     spell = {menu = "暈"},
-  --     tags = {menu = ""},
-  --     snippets_nvim = false,
-  --     treesitter = {menu = ""}
-  --   }
-  -- }
-  -- vim.g.completion_confirm_key = ""
-  -- local t = function(str)
-  --   return vim.api.nvim_replace_termcodes(str, true, true, true)
-  -- end
-
-  -- local check_back_space = function()
-  --   local col = vim.fn.col(".") - 1
-  --   if col == 0 or vim.fn.getline("."):sub(col, col):match("%s") then
-  --     return true
-  --   else
-  --     return false
-  --   end
-  -- end
-
-  -- Use (s-)tab to:
-  --- move to prev/next item in completion menuone
-  --- jump to prev/next snippet's placeholder
-  -- _G.tab_complete = function()
-  --   if vim.fn.pumvisible() == 1 then
-  --     return t "<C-n>"
-  --   elseif vim.fn.call("vsnip#available", {1}) == 1 then
-  --     return t "<Plug>(vsnip-expand-or-jump)"
-  --   elseif check_back_space() then
-  --     return t "<Tab>"
-  --   else
-  --     return vim.fn['compe#complete']()
-  --   end
-  -- end
-  -- _G.s_tab_complete = function()
-  --   if vim.fn.pumvisible() == 1 then
-  --     return t "<C-p>"
-  --   elseif vim.fn.call("vsnip#jumpable", {-1}) == 1 then
-  --     return t "<Plug>(vsnip-jump-prev)"
-  --   else
-  --     return t "<S-Tab>"
-  --   end
-  -- end
-  -- vim.api.nvim_set_keymap("i", "<Tab>", "v:lua.tab_complete()", {expr = true})
-  -- vim.api.nvim_set_keymap("s", "<Tab>", "v:lua.tab_complete()", {expr = true})
-  -- vim.api.nvim_set_keymap("i", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
-  -- vim.api.nvim_set_keymap("s", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
 end
 -- ?
 -- function! s:check_back_space() abort

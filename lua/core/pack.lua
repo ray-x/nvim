@@ -103,8 +103,8 @@ function plugins.convert_compile_file()
   if vim.fn.filereadable(compile_to_lua) == 1 then
     os.remove(compile_to_lua)
   end
-  -- ~/.config/nvim/plugin/_compiled.lua  -- conflict
-  local cmp_lua = vim.fn.expand("$HOME") .. '/.config/nvim/plugin/_compiled.lua'
+  -- ~/.config/nvim/plugin/packer_compiled.lua  -- conflict
+  local cmp_lua = vim.fn.expand("$HOME") .. '/.config/nvim/plugin/packer_compiled.lua'
   if vim.fn.filereadable(cmp_lua) == 1 then
     os.remove(cmp_lua)
   end

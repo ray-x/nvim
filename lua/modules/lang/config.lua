@@ -176,8 +176,8 @@ function config.navigator()
                 formatStdin = true,
               }
             },
-            sql = {
-              { formatCommand = "sql-formatter -l postgresql -i 2 -u",
+            sql = {               -- length 100, FUNCTION upcase, keep newline, parameter & insert each parameter a new line '-B -t'
+              { formatCommand = "pg_format -w 100 -f 2 -k",
                 formatStdin = true
               },
             },
@@ -195,7 +195,7 @@ function config.navigator()
         lsp = {
           format_on_save = true, -- set to false to disasble lsp code format on save (if you are using prettier/efm/formater etc)
           disable_format_ft = {"sqls", "gopls"},  -- a list of lsp not enable auto-format (e.g. if you using efm or vim-codeformat etc)
-          disable_lsp = {"sqls",'denols'},
+          disable_lsp = {'denols'},
           code_lens = true,
           diag_scroll_bar_sign = {'▃', '█'}, -- to enable diagnostic status in scroll bar area
           disply_diagnostic_qf = false,

@@ -15,7 +15,7 @@ tools["editorconfig/editorconfig-vim"] = {
 }
 
 -- tools["wellle/targets.vim"] = {}
-tools["kabouzeid/nvim-lspinstall"] = {}
+tools["kabouzeid/nvim-lspinstall"] = {cmd = "LspInstall"}
 tools["liuchengxu/vista.vim"] = {cmd = "Vista", setup = conf.vim_vista, opt = true}
 
 tools["kamykn/spelunker.vim"] = {
