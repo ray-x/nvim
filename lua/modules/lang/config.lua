@@ -82,6 +82,29 @@ function config.syntax_folding()
 end
 
 
+-- https://gist.github.com/folke/fe5d28423ea5380929c3f7ce674c41d8
+
+local library = {}
+
+local path = vim.split(package.path, ";")
+
+table.insert(path, "lua/?.lua")
+table.insert(path, "lua/?/init.lua")
+
+local function add(lib)
+  for _, p in pairs(vim.fn.expand(lib, false, true)) do
+    p = vim.loop.fs_realpath(p)
+    library[p] = true
+  end
+end
+
+-- add runtime
+add("$VIMRUNTIME")
+
+-- add your config
+add("~/.config/nvim")
+
+
 local stylelint = {
   lintCommand = "stylelint --stdin --stdin-filename ${INPUT} --formatter compact",
   lintIgnoreExitCode = true,
@@ -136,6 +159,30 @@ function config.navigator()
                              .. "/github/sumneko/lua-language-server/bin/macOS/lua-language-server"
 
   local single = {"╭", "─", "╮", "│", "╯", "─", "╰", "│"}
+
+  local cfg = {
+    library = {
+      vimruntime = true, -- runtime path
+      types = true, -- full signature, docs and completion of vim.api, vim.treesitter, vim.lsp and others
+      -- plugins = false -- installed opt or start plugins in packpath
+      -- you can also specify the list of plugins to make available as a workspace library
+      plugins = { "nvim-treesitter", "plenary.nvim", "navigator.lua", "guihua.lua" },
+    },
+    -- pass any additional options that will be merged in the final lsp config
+    lspconfig = {
+      -- cmd = {sumneko_binary},
+      -- on_attach = ...
+    }
+  }
+  local ok, l = pcall(require, "lua-dev")
+
+  local luadev = {}
+  if ok and l then 
+    luadev = l.setup(cfg)
+  end
+  luadev.sumneko_root_path = sumneko_root_path
+  luadev.sumneko_binary = sumneko_binary
+  
   local efm_cfg = {
         flags = {debounce_text_changes = 2000},
         cmd = {'efm-langserver', '-loglevel', '1', '-logfile', vim.fn.expand("$HOME")  .. '/tmp/efm.log'}, -- 1~10
@@ -225,11 +272,9 @@ function config.navigator()
             end,
           },
           clangd = {filetypes = {}},  -- using ccls
-          sumneko_lua = {
-            sumneko_root_path = sumneko_root_path,
-            sumneko_binary = sumneko_binary
-            -- settings = luadev.settings
-          },
+
+          sumneko_lua = luadev or {},
+
           jedi_language_server = {filetypes = {}},
           pyls = {filetypes = {}},
           efm = efm_cfg,

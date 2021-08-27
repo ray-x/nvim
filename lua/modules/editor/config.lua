@@ -37,11 +37,11 @@ function config.autopairs()
     }
   })
   local ts_conds = require('nvim-autopairs.ts-conds')
-
-  -- require("nvim-autopairs.completion.cmp").setup({
-  --   map_cr = true, --  map <CR> on insert mode
-  --   map_complete = true -- it will auto insert `(` after select function or method item
-  -- })
+  -- you need setup cmp first put this after cmp.setup()
+  require("nvim-autopairs.completion.cmp").setup({
+    map_cr = true, --  map <CR> on insert mode
+    map_complete = true -- it will auto insert `(` after select function or method item
+  })
   npairs.add_rules {
     Rule(" ", " "):with_pair(function(opts)
       local pair = opts.line:sub(opts.col - 1, opts.col)
