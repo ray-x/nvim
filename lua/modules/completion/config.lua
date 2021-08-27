@@ -19,7 +19,7 @@ end
 
 function config.nvim_cmp()
   local cmp = require('cmp')
-  print("cmp setup")
+  -- print("cmp setup")
   local comp_kind = nil
   local t = function(str)
     return vim.api.nvim_replace_termcodes(str, true, true, true)
@@ -42,7 +42,7 @@ function config.nvim_cmp()
     },
     formatting = {
       format = function(entry, vim_item)
-        --print(vim.inspect(vim_item.kind))
+        -- print(vim.inspect(vim_item.kind))
         if cmp_kind == nil then
           cmp_kind = require"navigator.lspclient.lspkind".cmp_kind
         end
@@ -72,10 +72,7 @@ function config.nvim_cmp()
         else
           fallback()
         end
-      end, {
-        "i",
-        "s",
-      }),
+      end, {"i", "s"}),
       ["<S-tab>"] = cmp.mapping(function(fallback)
         if vim.fn.pumvisible() == 1 then
           vim.fn.feedkeys(t("<C-p>"), "n")
@@ -84,36 +81,29 @@ function config.nvim_cmp()
         else
           fallback()
         end
-      end, {
-        "i",
-        "s",
-      }),
+      end, {"i", "s"})
     },
 
     -- You should specify your *installed* sources.
     sources = {
       {name = 'nvim_lsp'}, {name = 'buffer'}, {name = 'spell'}, {name = 'path'}, {name = 'calc'},
-      {name = 'luasnip'}, {name = 'nvim_lua'}, -- {name = 'ultisnips'}
+      {name = 'luasnip'}, {name = 'nvim_lua'} -- {name = 'ultisnips'}
     }
   }
 end
-
 
 function config.vim_vsnip()
   vim.g.vsnip_snippet_dir = os.getenv("HOME") .. "/.config/nvim/snippets"
 end
 
 function config.luasnip()
-    print("luasnip")
-    local ls = require "luasnip"
-    ls.config.set_config {
-      history = true,
-      updateevents = "TextChanged,TextChangedI",
-    }
-    require("luasnip.loaders.from_vscode").lazy_load{}
+  -- print("luasnip")
+  local ls = require "luasnip"
+  ls.config.set_config {history = true, updateevents = "TextChanged,TextChangedI"}
+  require("luasnip.loaders.from_vscode").lazy_load {}
 
-    vim.api.nvim_set_keymap("i", "<C-E>", "<Plug>luasnip-next-choice", {})
-    vim.api.nvim_set_keymap("s", "<C-E>", "<Plug>luasnip-next-choice", {})
+  vim.api.nvim_set_keymap("i", "<C-E>", "<Plug>luasnip-next-choice", {})
+  vim.api.nvim_set_keymap("s", "<C-E>", "<Plug>luasnip-next-choice", {})
 
 end
 
