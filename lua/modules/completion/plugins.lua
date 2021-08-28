@@ -27,16 +27,13 @@ completion["ms-jpq/coq.artifacts"] = {
 }
 
 
--- completion["hrsh7th/nvim-compe"] = {
---   event = "InsertEnter",
---   config = conf.nvim_compe
--- }
+
 -- loading sequence LuaSnip -> nvim-cmp -> cmp_luasnip -> cmp-nvim-lua -> cmp-nvim-lsp ->cmp-buffer -> friendly-snippets
 -- too many bugs saddly not as good as compe
 completion["hrsh7th/nvim-cmp"] = {
   -- opt=true,
   event = "InsertCharPre",   --InsertCharPre
-  after = "LuaSnip",
+  after = "nvim-snippy", --"LuaSnip", 
   requires = {
     {"hrsh7th/cmp-buffer", after = "nvim-cmp" , opt=true},
     {"hrsh7th/cmp-nvim-lua", after = "nvim-cmp", opt=true },
@@ -45,6 +42,7 @@ completion["hrsh7th/nvim-cmp"] = {
     {"hrsh7th/cmp-path", after = "nvim-cmp", opt=true },
     {"hrsh7th/cmp-nvim-lsp", after = "nvim-cmp", opt=true },
     {"f3fora/cmp-spell", after = "nvim-cmp", opt=true },
+    -- {"dcampos/cmp-snippy",after = "nvim-snippy"},
     -- {"quangnguyen30192/cmp-nvim-ultisnips", event = "InsertCharPre", after = "nvim-cmp", opt=true },
     {"saadparwaiz1/cmp_luasnip", after = {"nvim-cmp", "LuaSnip"}},
     {"tzachar/cmp-tabnine", opt=true},
@@ -62,12 +60,12 @@ completion["L3MON4D3/LuaSnip"] = { -- need to be the first to load
 
 
 
--- completion["SirVer/ultisnips"] = {
---   opt = true,
---   -- event = "InsertEnter",
---   requires = {"honza/vim-snippets",opt = true, }, --event = "InsertEnter"
---   -- after = "vim-snippets",
--- }
+completion["dcampos/nvim-snippy"] = {
+  opt = true,
+  -- event = "InsertEnter",
+  requires = {"honza/vim-snippets", event = "InsertEnter"}, --event = "InsertEnter"
+  -- after = "vim-snippets"
+}
 
 
 completion["nvim-telescope/telescope.nvim"] = {

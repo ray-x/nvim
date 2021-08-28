@@ -9,8 +9,8 @@ local conf = require("modules.editor.config")
 editor["windwp/nvim-autopairs"] = {
   -- keys = {{'i', '('}},
   -- keys = {{'i'}},
-  -- after = "nvim-treesitter", "nvim-cmp",
-  event = "InsertCharPre",
+  after = {"nvim-cmp"}, --"nvim-treesitter", 
+  -- event = "InsertEnter",  --InsertCharPre
   -- after = "hrsh7th/nvim-compe",
   -- event = 'InsertEnter',  -- not working!
   config = conf.autopairs,
@@ -29,30 +29,12 @@ editor["andymass/vim-matchup"] = {
   end
 }
 
--- editor["ggandor/lightspeed.nvim"] = {
---   as = "lightspeed",
---   keys = {'f', 'F', 'S', 's', 't', 'T'},
---   config = function()
---     -- you can configure Hop the way you like here; see :h hop-config
---     require"lightspeed".setup {
---       jump_to_first_match = true,
---       jump_on_partial_input_safety_timeout = 400,
---       -- This can get _really_ slow if the window has a lot of content,
---       -- turn it on only if your machine can always cope with it.
---       highlight_unique_chars = false,
---       grey_out_search_area = true,
---       match_only_the_start_of_same_char_seqs = true,
---       limit_ft_matches = 5,
---       full_inclusive_prefix_key = '<c-x>',
---       -- By default, the values of these will be decided at runtime,
---       -- based on `jump_to_first_match`.
---       labels = nil,
---       cycle_group_fwd_key = nil,
---       cycle_group_bwd_key = nil
---     }
---     -- vim.api.nvim_set_keymap('n', '$', "<cmd>lua require'hop'.hint_words()<cr>", {})
---   end
--- }
+editor["ggandor/lightspeed.nvim"] = {
+  as = "lightspeed",
+  opt = true,
+  keys = {'f', 'F', 'S', 's', 't', 'T'},
+  config = conf.lightspeed
+}
 
 editor["tpope/vim-surround"] = {
   opt = true

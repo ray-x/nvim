@@ -70,25 +70,23 @@ local keys = {
   -- Plugin Vista
   ["n|<Leader>v"] = map_cu("Vista!!"):with_noremap():with_silent(),
   -- Plugin SplitJoin
-  ["n|sp"] = map_cr("SplitjoinSplit"),
-  ["n|jo"] = map_cr("SplitjoinJoin"),
+  ["n|<Leader><Leader>s"] = map_cr("SplitjoinSplit"),
+  ["n|<Leader><Leader>j"] = map_cr("SplitjoinJoin"),
   ["n|<F13>"] = map_cr("NvimTreeToggle"),
   ["n|hW"] = map_cr("HopWordBC"),
   ["n|hw"] = map_cr("HopWordAC"),
   ["n|hl"] = map_cr("HopLineStartAC"),
   ["n|hL"] = map_cr("HopLineStartBC"),
-  ["n|s"] = map_cr("HopChar1AC"),
-  ["n|S"] = map_cr("HopChar1BC"),
-  ["v|s"] = map_cr("HopChar1AC"),
-  ["v|S"] = map_cr("HopChar1BC"),
-  ["n|<Space>*"] = map_cr("HopChar2"),
-  ["n|<Space>)"] = map_cr("HopChar2AC"),
-  ["n|<Space>("] = map_cr("HopChar2BC"),
+  ["n|<Leader>s"] = map_cr("HopChar1AC"),
+  ["n|<Leader>S"] = map_cr("HopChar1BC"),
+  -- ["v|s"] = map_cr("HopChar1AC"),
+  -- ["v|S"] = map_cr("HopChar1BC"),
+  -- ["n|<Space>s"] = map_cr("HopChar2"),
+  ["n|<Space>s"] = map_cr("HopChar2AC"),
+  ["n|<Space>S"] = map_cr("HopChar2BC"),
   ["n|<Space>F"] = map_cr("HopPattern"),
   ["n|<Space>]"] = map_cr("HopPatternAC"),
   ["n|<Space>["] = map_cr("HopPatternBC")
-
-  -- ["n|;"] = map_cmd("<Plug>Sneak_;"):with_silent()
 }
 --
 -- undo leader mapping

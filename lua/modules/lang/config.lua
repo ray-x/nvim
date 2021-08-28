@@ -65,7 +65,6 @@ function config.sidekick()
   -- vim.g.sidekick_right_bracket = "\\u27eb"
 end
 
-
 function config.sqls()
 end
 
@@ -80,7 +79,6 @@ function config.syntax_folding()
   vim.api.nvim_command("setlocal foldmethod=expr")
   vim.api.nvim_command("setlocal foldexpr=nvim_treesitter#foldexpr()")
 end
-
 
 -- https://gist.github.com/folke/fe5d28423ea5380929c3f7ce674c41d8
 
@@ -104,53 +102,22 @@ add("$VIMRUNTIME")
 -- add your config
 add("~/.config/nvim")
 
+-- local cfg = {
+--   library = {
+--     vimruntime = true, -- runtime path
+--     types = true, -- full signature, docs and completion of vim.api, vim.treesitter, vim.lsp and others
+--     plugins = true, -- installed opt or start plugins in packpath
+--     -- you can also specify the list of plugins to make available as a workspace library
+--     -- plugins = { "nvim-treesitter", "plenary.nvim", "navigator" },
+--   },
+--   -- pass any additional options that will be merged in the final lsp config
+--   lspconfig = {
+--     -- cmd = {sumneko_binary},
+--     -- on_attach = ...
+--   },
+-- }
 
-local stylelint = {
-  lintCommand = "stylelint --stdin --stdin-filename ${INPUT} --formatter compact",
-  lintIgnoreExitCode = true,
-  lintStdin = true,
-  lintFormats = {"%f: line %l, col %c, %tarning - %m", "%f: line %l, col %c, %trror - %m"},
-  formatCommand = "stylelint --fix --stdin --stdin-filename ${INPUT}",
-  formatStdin = true
-}
-local prettier = {
-  formatCommand = "./node_modules/.bin/prettier --stdin-filepath ${INPUT}",
-  formatStdin = true
-}
-
-local eslint_d = {
-  lintCommand = "eslint_d -f unix --stdin --stdin-filename ${INPUT}",
-  lintStdin = true,
-  lintFormats = {"%f:%l:%c: %m"},
-  lintIgnoreExitCode = true,
-  formatCommand = "eslint_d --fix-to-stdout --stdin --stdin-filename=${INPUT}",
-  formatStdin = true
-}
-
-local sql_formatter = {
-  formatCommand = "sql-formatter -l postgresql -i 2 -u",
-  formatStdin = true
-}
-
-local rustfmt = {formatCommand = "rustfmt", formatStdin = true}
-
-
-  -- local cfg = {
-  --   library = {
-  --     vimruntime = true, -- runtime path
-  --     types = true, -- full signature, docs and completion of vim.api, vim.treesitter, vim.lsp and others
-  --     plugins = true, -- installed opt or start plugins in packpath
-  --     -- you can also specify the list of plugins to make available as a workspace library
-  --     -- plugins = { "nvim-treesitter", "plenary.nvim", "navigator" },
-  --   },
-  --   -- pass any additional options that will be merged in the final lsp config
-  --   lspconfig = {
-  --     -- cmd = {sumneko_binary},
-  --     -- on_attach = ...
-  --   },
-  -- }
-
-  -- local luadev = require("lua-dev").setup(cfg)
+-- local luadev = require("lua-dev").setup(cfg)
 
 function config.navigator()
   local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -166,7 +133,7 @@ function config.navigator()
       types = true, -- full signature, docs and completion of vim.api, vim.treesitter, vim.lsp and others
       -- plugins = false -- installed opt or start plugins in packpath
       -- you can also specify the list of plugins to make available as a workspace library
-      plugins = { "nvim-treesitter", "plenary.nvim", "navigator.lua", "guihua.lua" },
+      plugins = {"nvim-treesitter", "plenary.nvim", "navigator.lua", "guihua.lua"}
     },
     -- pass any additional options that will be merged in the final lsp config
     lspconfig = {
@@ -177,109 +144,162 @@ function config.navigator()
   local ok, l = pcall(require, "lua-dev")
 
   local luadev = {}
-  if ok and l then 
+  if ok and l then
     luadev = l.setup(cfg)
   end
   luadev.sumneko_root_path = sumneko_root_path
   luadev.sumneko_binary = sumneko_binary
-  
+
+  local stylelint = {
+    lintCommand = "stylelint --stdin --stdin-filename ${INPUT} --formatter compact",
+    lintIgnoreExitCode = true,
+    lintStdin = true,
+    lintFormats = {"%f: line %l, col %c, %tarning - %m", "%f: line %l, col %c, %trror - %m"},
+    formatCommand = "stylelint --fix --stdin --stdin-filename ${INPUT}",
+    formatStdin = true
+  }
+
+  -- local prettier = {
+  --   -- formatCommand = 'prettier --stdin-filepath ${INPUT}',
+  --   formatCommand = './node_modules/.bin/prettier --find-config-path --stdin-filepath ${INPUT}',
+  --   formatStdin = true
+  -- }
+  local prettier = {formatCommand = 'prettier --stdin-filepath ${INPUT}', formatStdin = true}
+
+  local eslint_d = {
+    lintCommand = "eslint_d -f unix --stdin --stdin-filename ${INPUT} -f visualstudio",
+    lintStdin = true,
+    lintFormats = {"%f(%l,%c): %tarning %m", "%f(%l,%c): %rror %m"}, -- {"%f:%l:%c: %m"},
+    lintIgnoreExitCode = true,
+    formatCommand = "eslint_d --fix-to-stdout --stdin --stdin-filename=${INPUT}",
+    formatStdin = true
+  }
+
+  local sql_formatter = {formatCommand = "sql-formatter -l postgresql -i 2 -u", formatStdin = true}
+
+  local rustfmt = {formatCommand = "rustfmt", formatStdin = true}
+
   local efm_cfg = {
-        flags = {debounce_text_changes = 2000},
-        cmd = {'efm-langserver', '-loglevel', '1', '-logfile', vim.fn.expand("$HOME")  .. '/tmp/efm.log'}, -- 1~10
-        init_options = {documentFormatting = true},
-        on_attach = function(client)
-          client.resolved_capabilities.document_formatting = true
-          client.resolved_capabilities.goto_definition = false
-          client.resolved_capabilities.code_action = nil
-          local log = require("guihua.log").new({level = "info"}, true)
-          vim.cmd([[autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting()]])
-          -- print ("efm attached")
-          -- set_lsp_config(client)
-        end,
-        filetypes = {
-          "javascript", "javascriptreact", 'typescript', 'typescriptreact', 
-          'html', 'css', 'go', 'lua', 'sql'
-        },
-        settings = {
-          rootMarkers = {".git/", 'package.json', 'Makefile', 'go.mod'},
-          lintDebounce =   "1s",
-          formatDebounce = "1000ms",
-          languages = {
-            typescript = {stylelint, prettier},
-            typescriptreact = {stylelint, prettier},
-            javascript = {eslint_d},
-            javascriptreact = {eslint_d},
-            -- python = { python-flake8 },
-            go = {
-              {
-                formatCommand = "golines --max-len=120  --base-formatter=gofumpt",
-                formatStdin = true,
-                lintCommand = "golangci-lint run",
-                LintSeverity = 3,
-              }
-            },
-            lua = {
-              { formatCommand = "lua-format --indent-width 2 --tab-width 2 --no-use-tab --column-limit 120 --column-table-limit 100 --no-keep-simple-function-one-line --no-chop-down-table --chop-down-kv-table --no-keep-simple-control-block-one-line --no-keep-simple-function-one-line --no-break-after-functioncall-lp --no-break-after-operator",
-                formatStdin = true,
-              }
-            },
-            sql = {               -- length 100, FUNCTION upcase, keep newline, parameter & insert each parameter a new line '-B -t'
-              { formatCommand = "pg_format -w 100 -f 2 -k",
-                formatStdin = true
-              },
-            },
+    flags = {debounce_text_changes = 2000},
+    cmd = {
+      'efm-langserver', '-loglevel', '10', '-logfile', vim.fn.expand("$HOME") .. '/tmp/efm.log'
+    }, -- 1~10
+    init_options = {documentFormatting = true, codeAction = true, document_formatting = true},
+    root_dir = require'lspconfig'.util.root_pattern({'.git/', 'package.json', '.'}),
+    on_attach = function(client)
+      client.resolved_capabilities.document_formatting = true
+      client.resolved_capabilities.goto_definition = false
+      -- client.resolved_capabilities.code_action = nil
+      local log = require("guihua.log").new({level = "info"}, true)
+      vim.cmd([[autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting()]])
+      -- print ("efm attached")
+      -- set_lsp_config(client)
+    end,
+    filetypes = {
+      "javascript", "javascriptreact", 'typescript', 'typescriptreact', 'html', 'css', 'go', 'lua',
+      'sql', 'json', 'markdown', 'scss', 'yaml', 'javascript.jsx', 'less', 'graphql', 'vue',
+      'svelte'
+    },
+
+    settings = {
+      rootMarkers = {".git/", 'package.json', 'Makefile', 'go.mod'},
+      lintDebounce = "1s",
+      formatDebounce = "1000ms",
+      languages = {
+        css = {prettier},
+        html = {prettier},
+        json = {prettier},
+        scss = {prettier},
+        yaml = {prettier},
+        markdown = {prettier},
+        typescript = {stylelint, prettier, eslint_d},
+        typescriptreact = {stylelint, prettier, eslint_d},
+        javascript = {eslint_d, prettier},
+        javascriptreact = {eslint_d, prettier},
+        sass = {prettier},
+        less = {prettier},
+        graphql = {prettier},
+        vue = {prettier},
+        html = {prettier},
+        svelte = {eslint_d, prettier},
+
+        ["javascript.jsx"] = {eslint_d, prettier},
+        -- python = { python-flake8 },
+        go = {
+          {
+            formatCommand = "golines --max-len=120  --base-formatter=gofumpt",
+            formatStdin = true,
+            lintCommand = "golangci-lint run",
+            LintSeverity = 3
           }
-        }
+        },
+        lua = {
+          {
+            formatCommand = "lua-format --indent-width 2 --tab-width 2 --no-use-tab --column-limit 120 --column-table-limit 100 --no-keep-simple-function-one-line --no-chop-down-table --chop-down-kv-table --no-keep-simple-control-block-one-line --no-keep-simple-function-one-line --no-break-after-functioncall-lp --no-break-after-operator",
+            formatStdin = true
+          }
+        },
+        sql = { -- length 100, FUNCTION upcase, keep newline, parameter & insert each parameter a new line '-B -t'
+          {
+            -- formatCommand = "pg_format -w 100 -f 2 -k",
+            formatCommand = "sql-formatter -l postgresql",
+            formatStdin = true
+          }
+        },
+        rust = {rustfmt}
       }
+    }
+  }
 
-    local nav_cfg = {
-        debug = true, 
-        width = 0.7,
-        lspinstall = false,
-        border = single, -- "single",
-        ts_fold = true,
+  local nav_cfg = {
+    debug = true,
+    width = 0.7,
+    lspinstall = false,
+    border = single, -- "single",
+    ts_fold = true,
 
-        lsp = {
-          format_on_save = true, -- set to false to disasble lsp code format on save (if you are using prettier/efm/formater etc)
-          disable_format_ft = {"sqls", "gopls"},  -- a list of lsp not enable auto-format (e.g. if you using efm or vim-codeformat etc)
-          disable_lsp = {'denols'},
-          code_lens = true,
-          diag_scroll_bar_sign = {'▃', '█'}, -- to enable diagnostic status in scroll bar area
-          disply_diagnostic_qf = false,
-          denols = {filetypes = {}},
-          tsserver = {
-            filetypes = {
-              "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact",
-              "typescript.tsx"
-            },
-            on_attach = function(client)
-              client.resolved_capabilities.document_formatting = false -- allow efm to format
-            end
-          },
-          gopls = {
-            on_attach = function(client)
-              -- print("i am a hook")
-              client.resolved_capabilities.document_formatting = false  --efm
-            end,
-            settings = {
-              gopls = {gofumpt = true} -- enableww gofumpt etc,
-            }
-            -- set to {} to disable the lspclient for all filetype
-          },
-          sqls = {
-            on_attach = function(client)
-              client.resolved_capabilities.document_formatting = false  --efm
-            end,
-          },
-          clangd = {filetypes = {}},  -- using ccls
+    lsp = {
+      format_on_save = true, -- set to false to disasble lsp code format on save (if you are using prettier/efm/formater etc)
+      disable_format_ft = {"sqls", "gopls"}, -- a list of lsp not enable auto-format (e.g. if you using efm or vim-codeformat etc)
+      disable_lsp = {'denols'},
+      code_lens = true,
+      diag_scroll_bar_sign = {'▃', '█'}, -- to enable diagnostic status in scroll bar area
+      disply_diagnostic_qf = false,
+      denols = {filetypes = {}},
+      tsserver = {
+        filetypes = {
+          "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact",
+          "typescript.tsx"
+        },
+        on_attach = function(client)
+          client.resolved_capabilities.document_formatting = false -- allow efm to format
+        end
+      },
+      gopls = {
+        on_attach = function(client)
+          -- print("i am a hook")
+          client.resolved_capabilities.document_formatting = false -- efm
+        end,
+        settings = {
+          gopls = {gofumpt = true} -- enableww gofumpt etc,
+        }
+        -- set to {} to disable the lspclient for all filetype
+      },
+      sqls = {
+        on_attach = function(client)
+          client.resolved_capabilities.document_formatting = false -- efm
+        end
+      },
+      clangd = {filetypes = {}}, -- using ccls
 
-          sumneko_lua = luadev or {},
+      sumneko_lua = luadev or {},
 
-          jedi_language_server = {filetypes = {}},
-          pyls = {filetypes = {}},
-          efm = efm_cfg,
-      }}
-    require"navigator".setup(nav_cfg)
+      jedi_language_server = {filetypes = {}},
+      pyls = {filetypes = {}},
+      efm = efm_cfg
+    }
+  }
+  require"navigator".setup(nav_cfg)
 end
 
 function config.playground()
@@ -324,13 +344,13 @@ end
 
 function config.go()
   require("go").setup({
-    verbose=true,
+    verbose = true,
     goimport = 'gopls',
     log_path = vim.fn.expand("$HOME") .. "/tmp/gonvim.log",
     lsp_codelens = false, -- use navigator
-    
-    dap_debug=true,
-    dap_debug_gui=true,
+
+    dap_debug = true,
+    dap_debug_gui = true
   })
 
   vim.cmd("augroup go")

@@ -78,6 +78,44 @@ function config.hexokinase()
   }
 end
 
+function config.lightspeed()
+    -- you can configure Hop the way you like here; see :h hop-config
+    require"lightspeed".setup {
+      jump_to_first_match = true,
+      jump_on_partial_input_safety_timeout = 400,
+      -- This can get _really_ slow if the window has a lot of content,
+      -- turn it on only if your machine can always cope with it.
+      highlight_unique_chars = false,
+      grey_out_search_area = true,
+      match_only_the_start_of_same_char_seqs = true,
+      limit_ft_matches = 5,
+      full_inclusive_prefix_key = '<c-x>',
+      -- For instant-repeat, pressing the trigger key again (f/F/t/T)
+      -- always works, but here you can specify additional keys too.
+      instant_repeat_fwd_key = ';',
+      instant_repeat_bwd_key = ':',
+      -- By default, the values of these will be decided at runtime,
+      -- based on `jump_to_first_match`.
+      labels = nil,
+      cycle_group_fwd_key = ']',
+      cycle_group_bwd_key = '[',
+    }
+    function repeat_ft(reverse)
+      local ls = require'lightspeed'
+      ls.ft['instant-repeat?'] = true
+      ls.ft:to(reverse, ls.ft['prev-t-like?'])
+    end
+    vim.api.nvim_set_keymap('n', ';', '<cmd>lua repeat_ft(false)<cr>',
+                            {noremap = true, silent = true})
+    vim.api.nvim_set_keymap('x', ';', '<cmd>lua repeat_ft(false)<cr>',
+                            {noremap = true, silent = true})
+    vim.api.nvim_set_keymap('n', ',', '<cmd>lua repeat_ft(true)<cr>',
+                            {noremap = true, silent = true})
+    vim.api.nvim_set_keymap('x', ',', '<cmd>lua repeat_ft(true)<cr>',
+                            {noremap = true, silent = true})
+
+end
+
 function config.nerdcommenter()
   vim.g.NERDCreateDefaultMappings = 1
   -- Add spaces after comment delimiters by default

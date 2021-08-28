@@ -133,12 +133,12 @@ function config.clap()
 end
 
 function config.clap_after()
-  if not packer_plugins["nvim-compe"].loaded
-    then require"packer".loader("nvim-compe")
+  if not packer_plugins["nvim-cmp"].loaded
+    then require"packer".loader("nvim-cmp")
   end
 end
-function config.neogit()
 
+function config.neogit()
   require("neogit").setup({
     disable_signs = false,
     disable_context_highlighting = false,

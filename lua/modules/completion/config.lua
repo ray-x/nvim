@@ -32,6 +32,7 @@ function config.nvim_cmp()
   cmp.setup {
     snippet = {
       expand = function(args)
+        -- require 'snippy'.expand_snippet(args.body)
         require'luasnip'.lsp_expand(args.body)
         -- vim.fn["UltiSnips#Anon"](args.body)
       end
@@ -87,7 +88,7 @@ function config.nvim_cmp()
     -- You should specify your *installed* sources.
     sources = {
       {name = 'nvim_lsp'}, {name = 'buffer'}, {name = 'spell'}, {name = 'path'}, {name = 'calc'},
-      {name = 'luasnip'}, {name = 'nvim_lua'} -- {name = 'ultisnips'}
+      { name = 'luasnip' }, {name = 'nvim_lua'} -- {name = 'ultisnips'} { name = 'snippy' } {name = 'luasnip'}
     }
   }
 end
