@@ -188,7 +188,7 @@ function config.vmulti()
   -- vim.api.nvim_set_keymap("n", "<M-Down>", "<C-Down>", {silent = true})
   -- vim.api.nvim_set_keymap("n", "<M-Up>", "<C-Up>", {silent = true})
   -- for mac C-L/R was mapped to mission control
-  print('vmulti')
+  -- print('vmulti')
 
   vim.g.VM_maps = {
     ["Add Cursor Down"] = "<M-Down>",

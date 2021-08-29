@@ -2,10 +2,17 @@ local tools = {}
 local conf = require("modules.tools.config")
 
 tools["kristijanhusak/vim-dadbod-ui"] = {
-  cmd = {"DBUIToggle", "DBUIAddConnection", "DBUI", "DBUIFindBuffer", "DBUIRenameBuffer"},
+  cmd = {"DBUIToggle", "DBUIAddConnection", "DBUI", "DBUIFindBuffer", "DBUIRenameBuffer", "DB"},
   config = conf.vim_dadbod_ui,
-  requires = {{"tpope/vim-dadbod", opt = true}},
-  opt = true
+  requires = {"tpope/vim-dadbod", ft = {'sql'}},
+  opt = true,
+  setup = function ()
+    vim.g.dbs = {
+      eraser = 'postgres://postgres:password@localhost:5432/eraser_local',
+      staging = 'postgres://postgres:password@localhost:5432/my-staging-db',
+      wp = 'mysql://root@localhost/wp_awesome' 
+    }
+  end,
 }
 
 tools["editorconfig/editorconfig-vim"] = {

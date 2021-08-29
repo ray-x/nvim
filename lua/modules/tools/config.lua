@@ -242,8 +242,13 @@ function config.bqf()
 end
 
 function config.dapui()
+  vim.cmd([[let g:dbs = {
+  \ 'eraser': 'postgres://postgres:password@localhost:5432/eraser_local',
+  \ 'staging': 'postgres://postgres:password@localhost:5432/my-staging-db',
+  \ 'wp': 'mysql://root@localhost/wp_awesome' }]])
   require("dapui").setup({
     icons = {expanded = "⯆", collapsed = "⯈", circular = "↺"},
+
     mappings = {
       -- Use a table to apply multiple mappings
       expand = {"<CR>", "<2-LeftMouse>"},

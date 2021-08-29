@@ -28,12 +28,18 @@ function config.nvim_cmp()
     local col = vim.fn.col '.' - 1
     return col == 0 or vim.fn.getline('.'):sub(col, col):match '%s' ~= nil
   end
-
+  local sources = {
+      {name = 'nvim_lsp'}, {name = 'buffer'}, {name = 'spell'}, {name = 'path'}, {name = 'calc'},
+      { name = 'luasnip' }, {name = 'nvim_lua'}, {name = 'look'} , { name = 'vim-dadbod-completion' } -- {name = 'ultisnips'} { name = 'snippy' } {name = 'luasnip'}
+    }
+  if vim.o.ft == 'sql' then
+    table.insert(sources, { name = 'vim-dadbod-completion' } )
+  end
   cmp.setup {
     snippet = {
       expand = function(args)
-        -- require 'snippy'.expand_snippet(args.body)
         require'luasnip'.lsp_expand(args.body)
+        -- require 'snippy'.expand_snippet(args.body)
         -- vim.fn["UltiSnips#Anon"](args.body)
       end
     },
@@ -66,6 +72,8 @@ function config.nvim_cmp()
       ["<tab>"] = cmp.mapping(function(fallback)
         if vim.fn.pumvisible() == 1 then
           vim.fn.feedkeys(t("<C-n>"), "n")
+        -- elseif require'snippy'.can_expand_or_advance()  then
+        --   vim.fn.feedkeys(t("<Plug>(snippy-expand-or-next)"), "")
         elseif require'luasnip'.expand_or_jumpable() then
           vim.fn.feedkeys(t("<Plug>luasnip-expand-or-jump"), "")
         elseif check_back_space() then
@@ -77,6 +85,8 @@ function config.nvim_cmp()
       ["<S-tab>"] = cmp.mapping(function(fallback)
         if vim.fn.pumvisible() == 1 then
           vim.fn.feedkeys(t("<C-p>"), "n")
+        -- elseif require'snippy'.can_jump(-1) then
+        --   vim.fn.feedkeys(t("<Plug>(snippy-previous)"), "")
         elseif require'luasnip'.jumpable(-1) then
           vim.fn.feedkeys(t("<Plug>luasnip-jump-prev"), "")
         else
@@ -86,10 +96,7 @@ function config.nvim_cmp()
     },
 
     -- You should specify your *installed* sources.
-    sources = {
-      {name = 'nvim_lsp'}, {name = 'buffer'}, {name = 'spell'}, {name = 'path'}, {name = 'calc'},
-      { name = 'luasnip' }, {name = 'nvim_lua'} -- {name = 'ultisnips'} { name = 'snippy' } {name = 'luasnip'}
-    }
+    sources = sources,
   }
 end
 

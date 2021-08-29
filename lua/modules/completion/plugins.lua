@@ -33,7 +33,7 @@ completion["ms-jpq/coq.artifacts"] = {
 completion["hrsh7th/nvim-cmp"] = {
   -- opt=true,
   event = "InsertCharPre",   --InsertCharPre
-  after = "nvim-snippy", --"LuaSnip", 
+  after = { "LuaSnip" }, --"nvim-snippy",
   requires = {
     {"hrsh7th/cmp-buffer", after = "nvim-cmp" , opt=true},
     {"hrsh7th/cmp-nvim-lua", after = "nvim-cmp", opt=true },
@@ -42,7 +42,8 @@ completion["hrsh7th/nvim-cmp"] = {
     {"hrsh7th/cmp-path", after = "nvim-cmp", opt=true },
     {"hrsh7th/cmp-nvim-lsp", after = "nvim-cmp", opt=true },
     {"f3fora/cmp-spell", after = "nvim-cmp", opt=true },
-    -- {"dcampos/cmp-snippy",after = "nvim-snippy"},
+    {"octaltree/cmp-look", after = "nvim-cmp", opt=true },
+    -- {"dcampos/cmp-snippy",after = {"nvim-snippy", "nvim-cmp"}},
     -- {"quangnguyen30192/cmp-nvim-ultisnips", event = "InsertCharPre", after = "nvim-cmp", opt=true },
     {"saadparwaiz1/cmp_luasnip", after = {"nvim-cmp", "LuaSnip"}},
     {"tzachar/cmp-tabnine", opt=true},
@@ -57,13 +58,29 @@ completion["L3MON4D3/LuaSnip"] = { -- need to be the first to load
   requires = {"rafamadriz/friendly-snippets", event = "InsertEnter"}, --, event = "InsertEnter"
   config = conf.luasnip
 }
-
+completion["kristijanhusak/vim-dadbod-completion"] = {
+  event = "InsertEnter",
+  ft = {'sql'},
+  setup = function()
+    vim.cmd([[autocmd FileType sql setlocal omnifunc=vim_dadbod_completion#omni]])
+    -- vim.cmd([[autocmd FileType sql,mysql,plsql lua require('cmp').setup.buffer({ sources = {{ name = 'vim-dadbod-completion' }} })]])
+    -- body
+  end
+}
 
 
 completion["dcampos/nvim-snippy"] = {
   opt = true,
   -- event = "InsertEnter",
-  requires = {"honza/vim-snippets", event = "InsertEnter"}, --event = "InsertEnter"
+  -- requires = {"honza/vim-snippets", event = "InsertEnter"}, --event = "InsertEnter"
+  config = function ()
+    require'snippy'.setup{}
+    -- body
+    -- vim.cmd([[imap <expr> <Tab> snippy#can_expand_or_advance() ? '<Plug>(snippy-expand-or-next)' : '<Tab>']])
+    -- vim.cmd([[imap <expr> <S-Tab> snippy#can_jump(-1) ? '<Plug>(snippy-previous)' : '<Tab>']])
+    -- vim.cmd([[smap <expr> <Tab> snippy#can_jump(1) ? '<Plug>(snippy-next)' : '<Tab>']])
+    -- vim.cmd([[smap <expr> <S-Tab> snippy#can_jump(-1) ? '<Plug>(snippy-previous)' : '<Tab>']])
+  end
   -- after = "vim-snippets"
 }
 

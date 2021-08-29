@@ -159,12 +159,12 @@ function config.navigator()
     formatStdin = true
   }
 
-  -- local prettier = {
-  --   -- formatCommand = 'prettier --stdin-filepath ${INPUT}',
-  --   formatCommand = './node_modules/.bin/prettier --find-config-path --stdin-filepath ${INPUT}',
-  --   formatStdin = true
-  -- }
-  local prettier = {formatCommand = 'prettier --stdin-filepath ${INPUT}', formatStdin = true}
+  local prettier = {
+    -- formatCommand = 'prettier --stdin-filepath ${INPUT}',
+    formatCommand = './node_modules/.bin/prettier --find-config-path --stdin-filepath ${INPUT}',
+    formatStdin = true
+  }
+  -- local prettier = {formatCommand = 'prettier --stdin-filepath ${INPUT}', formatStdin = true}
 
   local eslint_d = {
     lintCommand = "eslint_d -f unix --stdin --stdin-filename ${INPUT} -f visualstudio",
@@ -175,7 +175,7 @@ function config.navigator()
     formatStdin = true
   }
 
-  local sql_formatter = {formatCommand = "sql-formatter -l postgresql -i 2 -u", formatStdin = true}
+  local sql_formatter = {formatCommand = [[sql-formatter -l plsql -i 4 -u | sed -e 's/\$ {/\${/g' | sed -e 's/: :/::/g']], formatStdin = true}
 
   local rustfmt = {formatCommand = "rustfmt", formatStdin = true}
 
@@ -240,11 +240,7 @@ function config.navigator()
           }
         },
         sql = { -- length 100, FUNCTION upcase, keep newline, parameter & insert each parameter a new line '-B -t'
-          {
-            -- formatCommand = "pg_format -w 100 -f 2 -k",
-            formatCommand = "sql-formatter -l postgresql",
-            formatStdin = true
-          }
+          sql_formatter,
         },
         rust = {rustfmt}
       }
