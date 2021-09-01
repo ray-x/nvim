@@ -111,17 +111,23 @@ tools['kevinhwang91/nvim-bqf'] = {opt = true, event = "CmdlineEnter", config = c
 --
 tools["brooth/far.vim"] = {
   cmd = {"Farr", "Farf"},
-  run = ":UpdateRemotePlugins",
+  run = function() 
+    vim.cmd[[packadd far.vim]]
+    vim.cmd[[UpdateRemotePlugins]]
+  end,
   config = conf.far,
   opt = true
 } -- brooth/far.vim
 
 tools["rcarriga/vim-ultest"] = {
-  run = ":UpdateRemotePlugins",
   requires = {"vim-test/vim-test", setup = conf.vim_test, opt = true},
   cmd = {"Ultest", "UltestNearest"},
+  run = function() 
+    vim.cmd[[packadd vim-ultest]]
+    vim.cmd[[UpdateRemotePlugins]]
+  end,
   config = function()
-    vim.cmd [[UpdateRemotePlugins]]
+    vim.cmd[[UpdateRemotePlugins]]
   end,
   opt = true
 }

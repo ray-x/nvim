@@ -12,9 +12,15 @@ completion["neovim/nvim-lspconfig"] = {
 
 completion["ms-jpq/coq_nvim"] = {
   opt = true,
+  -- ft = {'html','css', 'javascript', 'java', 'typescript', 'typescriptreact','go', 'python', 'cpp', 'c', 'rust'},
   -- event = "InsertEnter",
+  after = {"coq.artifacts"},
   branch = 'coq',
+  -- setup = function()
+  --   vim.g.coq_settings = { 'display.icons.mode': 'short' }
+  -- end
   config = function()
+    vim.cmd([[let g:coq_settings = { 'display.icons.mode': 'short' }]])
     vim.cmd([[COQnow -s]])
   end
 }
@@ -23,39 +29,37 @@ completion["ms-jpq/coq.artifacts"] = {
   opt = true,
   -- event = "InsertEnter",
   -- event = "InsertEnter",
-  branch = 'artifacts',
+  branch = 'artifacts'
 }
-
-
 
 -- loading sequence LuaSnip -> nvim-cmp -> cmp_luasnip -> cmp-nvim-lua -> cmp-nvim-lsp ->cmp-buffer -> friendly-snippets
 -- too many bugs saddly not as good as compe
 completion["hrsh7th/nvim-cmp"] = {
   -- opt=true,
-  event = "InsertCharPre",   --InsertCharPre
-  after = { "LuaSnip" }, --"nvim-snippy",
+  event = "InsertCharPre", -- InsertCharPre
+  -- ft = {'lua', 'markdown',  'yaml', 'json', 'sql', 'vim', 'sh', 'sql', 'vim', 'sh'},
+  after = {"LuaSnip"}, -- "nvim-snippy",
   requires = {
-    {"hrsh7th/cmp-buffer", after = "nvim-cmp" , opt=true},
-    {"hrsh7th/cmp-nvim-lua", after = "nvim-cmp", opt=true },
-    {"hrsh7th/cmp-vsnip", after = "nvim-cmp", opt=true },
-    {"hrsh7th/cmp-calc", after = "nvim-cmp", opt=true },
-    {"hrsh7th/cmp-path", after = "nvim-cmp", opt=true },
-    {"hrsh7th/cmp-nvim-lsp", after = "nvim-cmp", opt=true },
-    {"f3fora/cmp-spell", after = "nvim-cmp", opt=true },
-    {"octaltree/cmp-look", after = "nvim-cmp", opt=true },
+    {"hrsh7th/cmp-buffer", after = "nvim-cmp", opt = true},
+    {"hrsh7th/cmp-nvim-lua", after = "nvim-cmp", opt = true},
+    {"hrsh7th/cmp-vsnip", after = "nvim-cmp", opt = true},
+    {"hrsh7th/cmp-calc", after = "nvim-cmp", opt = true},
+    {"hrsh7th/cmp-path", after = "nvim-cmp", opt = true},
+    {"hrsh7th/cmp-nvim-lsp", after = "nvim-cmp", opt = true},
+    {"f3fora/cmp-spell", after = "nvim-cmp", opt = true},
+    {"octaltree/cmp-look", after = "nvim-cmp", opt = true},
     -- {"dcampos/cmp-snippy",after = {"nvim-snippy", "nvim-cmp"}},
     -- {"quangnguyen30192/cmp-nvim-ultisnips", event = "InsertCharPre", after = "nvim-cmp", opt=true },
     {"saadparwaiz1/cmp_luasnip", after = {"nvim-cmp", "LuaSnip"}},
-    {"tzachar/cmp-tabnine", opt=true},
+    {"tzachar/cmp-tabnine", opt = true}
   },
   config = conf.nvim_cmp
 }
 
-
 -- can not lazyload, it is also slow...
 completion["L3MON4D3/LuaSnip"] = { -- need to be the first to load
   event = "InsertEnter",
-  requires = {"rafamadriz/friendly-snippets", event = "InsertEnter"}, --, event = "InsertEnter"
+  requires = {"rafamadriz/friendly-snippets", event = "InsertEnter"}, -- , event = "InsertEnter"
   config = conf.luasnip
 }
 completion["kristijanhusak/vim-dadbod-completion"] = {
@@ -68,13 +72,12 @@ completion["kristijanhusak/vim-dadbod-completion"] = {
   end
 }
 
-
 completion["dcampos/nvim-snippy"] = {
   opt = true,
   -- event = "InsertEnter",
   -- requires = {"honza/vim-snippets", event = "InsertEnter"}, --event = "InsertEnter"
-  config = function ()
-    require'snippy'.setup{}
+  config = function()
+    require'snippy'.setup {}
     -- body
     -- vim.cmd([[imap <expr> <Tab> snippy#can_expand_or_advance() ? '<Plug>(snippy-expand-or-next)' : '<Tab>']])
     -- vim.cmd([[imap <expr> <S-Tab> snippy#can_jump(-1) ? '<Plug>(snippy-previous)' : '<Tab>']])
@@ -84,14 +87,12 @@ completion["dcampos/nvim-snippy"] = {
   -- after = "vim-snippets"
 }
 
-
 completion["nvim-telescope/telescope.nvim"] = {
   cmd = "Telescope",
   config = conf.telescope,
   setup = conf.telescope_preload,
   requires = {
-    {"nvim-lua/popup.nvim", opt = true},
-    {"nvim-lua/plenary.nvim", opt = true},
+    {"nvim-lua/popup.nvim", opt = true}, {"nvim-lua/plenary.nvim", opt = true},
     {"nvim-telescope/telescope-fzy-native.nvim", opt = true}
   },
   opt = true
@@ -107,17 +108,18 @@ completion["mattn/emmet-vim"] = {
 completion[vim.fn.expand("$HOME") .. "/github/lsp_signature.nvim"] = {
   opt = false,
   config = function()
-    require "lsp_signature".setup({
-        toggle_key = [[<M-x>]],
-        floating_window = true,
-        log_path = vim.fn.expand("$HOME")  .. "/tmp/sig.log",
-        debug = true,
-        hi_parameter = 'Search',
-        bind = true,
-        handler_opts = {
-          border = 'single', --"shadow", --{"╭", "─" ,"╮", "│", "╯", "─", "╰", "│" },
-        },
-      })
+    require"lsp_signature".setup({
+      toggle_key = [[<M-x>]],
+      floating_window = true,
+      -- floating_window_above_first = false,
+      log_path = vim.fn.expand("$HOME") .. "/tmp/sig.log",
+      debug = true,
+      hi_parameter = 'Search',
+      bind = true,
+      handler_opts = {
+        border = 'single' -- "shadow", --{"╭", "─" ,"╮", "│", "╯", "─", "╰", "│" },
+      }
+    })
   end
 }
 -- completion['ray-x/lsp_signature.nvim'] = {

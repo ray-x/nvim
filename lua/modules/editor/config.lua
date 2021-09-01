@@ -38,10 +38,7 @@ function config.autopairs()
   })
   local ts_conds = require('nvim-autopairs.ts-conds')
   -- you need setup cmp first put this after cmp.setup()
-  require("nvim-autopairs.completion.cmp").setup({
-    map_cr = true, --  map <CR> on insert mode
-    map_complete = true -- it will auto insert `(` after select function or method item
-  })
+
   npairs.add_rules {
     Rule(" ", " "):with_pair(function(opts)
       local pair = opts.line:sub(opts.col - 1, opts.col)
@@ -56,6 +53,11 @@ function config.autopairs()
     :with_pair(ts_conds.is_ts_node({'string', 'comment'})),
     Rule("$", "$", "lua"):with_pair(ts_conds.is_not_ts_node({'function'}))
   }
+
+  require("nvim-autopairs.completion.cmp").setup({
+    map_cr = true, --  map <CR> on insert mode
+    map_complete = true -- it will auto insert `(` after select function or method item
+  })
 
   -- print("autopairs setup")
   -- skip it, if you use another global object
@@ -113,7 +115,14 @@ function config.lightspeed()
                             {noremap = true, silent = true})
     vim.api.nvim_set_keymap('x', ',', '<cmd>lua repeat_ft(true)<cr>',
                             {noremap = true, silent = true})
-
+    -- vim.cmd([[nunmap s]])
+    -- vim.cmd([[vunmap s]])
+    -- local bind = require("keymap.bind")
+    -- local keys = {
+    --   ["n|s"] = map_cr("HopChar1AC"),
+    --   ["n|S"] = map_cr("HopChar1BC"),
+    -- }
+    -- bind.nvim_load_mapping(keys)
 end
 
 function config.nerdcommenter()

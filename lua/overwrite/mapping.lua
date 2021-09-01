@@ -77,10 +77,10 @@ local keys = {
   ["n|hw"] = map_cr("HopWordAC"),
   ["n|hl"] = map_cr("HopLineStartAC"),
   ["n|hL"] = map_cr("HopLineStartBC"),
-  ["n|<Leader>s"] = map_cr("HopChar1AC"),
-  ["n|<Leader>S"] = map_cr("HopChar1BC"),
-  -- ["v|s"] = map_cr("HopChar1AC"),
-  -- ["v|S"] = map_cr("HopChar1BC"),
+  ["n|s"] = map_cr("HopChar1AC"),
+  ["n|S"] = map_cr("HopChar1BC"),
+  ["v|s"] = map_cr("HopChar1AC"),
+  ["v|S"] = map_cr("HopChar1BC"),
   -- ["n|<Space>s"] = map_cr("HopChar2"),
   ["n|<Space>s"] = map_cr("HopChar2AC"),
   ["n|<Space>S"] = map_cr("HopChar2BC"),
@@ -95,9 +95,7 @@ vim.cmd([[vnoremap  <leader>y  "+y]])
 vim.cmd([[nnoremap  <leader>Y  "+yg_]])
 vim.cmd([[vnoremap  <M-c>  "+y]])
 vim.cmd([[nnoremap  <M-c>  "+yg_]])
-vim.cmd([[nunmap sa]])
-vim.cmd([[nunmap sd]])
-vim.cmd([[nunmap sr]])
+
 -- vim.cmd([[nunmap j]])
 -- vim.cmd([[nunmap k]])
 -- vim.cmd([[unmap <Leader>ss]])

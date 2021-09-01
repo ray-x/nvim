@@ -9,10 +9,9 @@ local conf = require("modules.editor.config")
 editor["windwp/nvim-autopairs"] = {
   -- keys = {{'i', '('}},
   -- keys = {{'i'}},
-  after = {"nvim-cmp"}, --"nvim-treesitter", 
+  after = {"nvim-cmp"}, --"nvim-treesitter", nvim-cmp "nvim-treesitter",
   -- event = "InsertEnter",  --InsertCharPre
   -- after = "hrsh7th/nvim-compe",
-  -- event = 'InsertEnter',  -- not working!
   config = conf.autopairs,
   opt = true
 }
@@ -32,7 +31,7 @@ editor["andymass/vim-matchup"] = {
 editor["ggandor/lightspeed.nvim"] = {
   as = "lightspeed",
   opt = true,
-  keys = {'f', 'F', 'S', 's', 't', 'T'},
+  keys = {'f', 'F', 't', 'T'},  --'S', 's', 
   config = conf.lightspeed
 }
 

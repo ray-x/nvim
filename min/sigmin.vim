@@ -1,8 +1,9 @@
 set termguicolors
 call plug#begin('~/.vim/plugged')
-Plug 'neovim/nvim-lspconfig'
 
-Plug expand("$HOME") + '/github/github/lsp_signature.nvim'
+Plug 'neovim/nvim-lspconfig'
+Plug '~/github/lsp_signature.nvim'
+Plug '~/github/go.nvim'
 
 call plug#end()
 
@@ -20,7 +21,7 @@ capabilities.textDocument.completion.completionItem.resolveSupport = {
 local nvim_lsp = require'lspconfig'
 
 local signature_config = {
-  log_path = expand("$HOME")  + "/tmp/sig.log",
+  log_path = vim.fn.expand("$HOME") .. "/tmp/sig.log",
   debug = true,
   -- bind = true,
   -- hint_prefix = "",
@@ -94,9 +95,16 @@ local lua_cfg = {
   }
 }
 
-require'lspconfig'.svelte.setup{}
-require'lspconfig'.sumneko_lua.setup (lua_cfg)
+-- require'lspconfig'.svelte.setup{}
+-- require'lspconfig'.sumneko_lua.setup (lua_cfg)
 require "lsp_signature".setup(signature_config)
+require 'go'.setup({
+  verbose = true,
+  goimport = 'goimports',
+  lsp_cfg = 
+   {settings={gopls={matcher='CaseInsensitive', ['local'] = "~/github/go", gofumpt = true }}}
+  
+})
 
 EOF
 set mouse=a

@@ -18,16 +18,6 @@ lang["nvim-treesitter/nvim-treesitter-refactor"] =
     }
 
 
--- lang["neomake/neomake"] = {
---   -- event = "BufSave", --BufWritePre
---   -- cmd = {"make",},
---   ft = {"go", "pgsql", "markdown"},
---   -- after = 'telescope.nvim',
---   setup = conf.neomake,
---   opt = true
--- }
-
-
 lang["shmup/vim-sql-syntax"] = {ft = {"sql", "pgsql"}}
 
 lang["nanotee/sqls.nvim"] = {ft = {"sql", "pgsql"}, setup = conf.sqls, opt = true}

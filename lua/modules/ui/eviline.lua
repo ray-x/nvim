@@ -163,6 +163,25 @@ local buffer_not_empty = function()
   return false
 end
 
+local mode = function ()
+  local mod = vim.fn.mode()
+  -- print(state.mode[2])
+  if mod == "n" or mod == 'no' or mod == 'nov' then
+    return {"  ",  state.mode[2]}
+  elseif mod == "i" or mod == "ic" or mod == "ix" then
+    return {"  ",  state.mode[2]}
+  elseif mod == "V" or mod == "v" or mod == "vs" or mod == "Vs" or mod == "cv" then
+    return {"  ",  state.mode[2]}
+  elseif mod == "c" or mod == "ce" then
+    return {" ﴣ ",  state.mode[2]}
+  elseif mod == "r" or mod == "rm" or mod == "r?" then
+    return {"  ",  state.mode[2]} --
+  elseif mod == "R" or mod == "Rc" or mod == "Rv" or mod == "Rv" then
+    return {'  ',  state.mode[2]}
+  end
+  return {"  ",  state.mode[2]}
+end
+
 local checkwidth = function()
   local squeeze_width = vim.fn.winwidth(0) / 2
   return squeeze_width > 40
@@ -172,7 +191,7 @@ basic.vi_mode = {
     name = 'vi_mode',
     hl_colors = colors_mode,
     text = function()
-        return { { '  ', state.mode[2] } }
+        return {  mode()  }
     end,
 }
 

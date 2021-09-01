@@ -12,13 +12,6 @@ function config.nvim_treesitter_ref()
   require("modules.lang.treesitter").treesitter_ref()
 end
 
-function config.neomake()
-  vim.g.neomake_error_sign = {text = '✖', texthl = 'NeomakeErrorSign'}
-  vim.g.neomake_warning_sign = {text = '∆', texthl = 'NeomakeWarningSign'}
-  vim.g.neomake_message_sign = {text = '➤', texthl = 'NeomakeMessageSign'}
-  vim.g.neomake_info_sign = {text = 'ℹ', texthl = 'NeomakeInfoSign'}
-  vim.g.neomake_go_enabled_makers = {'go', 'golangci_lint', 'golint'}
-end
 
 function config.sidekick()
   -- body
@@ -146,6 +139,8 @@ function config.navigator()
   local luadev = {}
   if ok and l then
     luadev = l.setup(cfg)
+  else
+    print("lua-dev not loaded")
   end
   luadev.sumneko_root_path = sumneko_root_path
   luadev.sumneko_binary = sumneko_binary
@@ -182,7 +177,7 @@ function config.navigator()
   local efm_cfg = {
     flags = {debounce_text_changes = 2000},
     cmd = {
-      'efm-langserver', '-loglevel', '10', '-logfile', vim.fn.expand("$HOME") .. '/tmp/efm.log'
+      'efm-langserver', '-loglevel', '1', '-logfile', vim.fn.expand("$HOME") .. '/tmp/efm.log'
     }, -- 1~10
     init_options = {documentFormatting = true, codeAction = true, document_formatting = true},
     root_dir = require'lspconfig'.util.root_pattern({'.git/', 'package.json', '.'}),
@@ -288,7 +283,7 @@ function config.navigator()
       },
       clangd = {filetypes = {}}, -- using ccls
 
-      sumneko_lua = luadev or {},
+      sumneko_lua = luadev,
 
       jedi_language_server = {filetypes = {}},
       pyls = {filetypes = {}},
