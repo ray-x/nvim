@@ -39,22 +39,22 @@ local signature_config = {
 }
 
 
--- nvim_lsp.gopls.setup{
---   on_attach = function(client, bufnr)
---     require "lsp_signature".on_attach(signature_config)
---     -- require'aerial'.on_attach(client)
---   end,
---   capabilities = capabilities,
---   cmd = {"gopls", "serve"},
---   settings = {
---     gopls = {
---       analyses = {
---         unusedparams = true,
---       },
---       staticcheck = true,
---     },
---   },
--- }
+nvim_lsp.gopls.setup{
+  on_attach = function(client, bufnr)
+    require "lsp_signature".on_attach(signature_config)
+    -- require'aerial'.on_attach(client)
+  end,
+  capabilities = capabilities,
+  cmd = {"gopls", "serve"},
+  settings = {
+    gopls = {
+      analyses = {
+        unusedparams = true,
+      },
+      staticcheck = true,
+    },
+  },
+}
 
 local sumneko_root_path = vim.fn.expand("$HOME")..'/github/sumneko/lua-language-server'
 local sumneko_binary = vim.fn.expand("$HOME")..'/github/sumneko/lua-language-server/bin/macOS/lua-language-server'

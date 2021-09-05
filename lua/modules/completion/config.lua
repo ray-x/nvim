@@ -29,8 +29,8 @@ function config.nvim_cmp()
     return col == 0 or vim.fn.getline('.'):sub(col, col):match '%s' ~= nil
   end
   local sources = {
-      {name = 'nvim_lsp'}, {name = 'buffer'}, {name = 'spell'}, {name = 'path'}, {name = 'calc'},
-      { name = 'luasnip' }, {name = 'nvim_lua'}, {name = 'look'} , { name = 'vim-dadbod-completion' } -- {name = 'ultisnips'} { name = 'snippy' } {name = 'luasnip'}
+      {name = 'nvim_lsp'}, {name = 'buffer'}, {name = 'spell'}, {name = 'path'},
+      {name = 'luasnip'}, {name = 'nvim_lua'}, {name = 'vim-dadbod-completion'} -- {name = 'look'} ,{name = 'calc'}, {name = 'ultisnips'} { name = 'snippy' } {name = 'luasnip'}
     }
   if vim.o.ft == 'sql' then
     table.insert(sources, { name = 'vim-dadbod-completion' } )
@@ -98,6 +98,9 @@ function config.nvim_cmp()
     -- You should specify your *installed* sources.
     sources = sources,
   }
+  -- if vim.o.ft ~= 'sql' then
+  --   require'cmp'.setup.buffer { completion = {autocomplete = false} }
+  -- end
 end
 
 function config.vim_vsnip()

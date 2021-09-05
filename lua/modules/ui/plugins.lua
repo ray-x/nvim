@@ -28,8 +28,7 @@ ui["windwp/windline.nvim"] = {
 
 ui["lambdalisue/glyph-palette.vim"] = {}
 
--- ui["Akin909/nvim-bufferline.lua"] = {
-ui[vim.fn.expand("$HOME")  .. "/github/nvim-bufferline.lua"] = {
+ui["akinsho/bufferline.nvim"] = {
   config = conf.nvim_bufferline,
   event = "UIEnter",
   diagnostics_update_in_insert = false,

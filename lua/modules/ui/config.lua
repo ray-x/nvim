@@ -30,14 +30,18 @@ function config.nvim_bufferline()
   require("bufferline").setup {
     options = {
       view = "multiwindow",
-      numbers = "none", -- "none" | "ordinal" | "buffer_id",
-      number_style = "superscript",
-      mappings = true,
+      numbers = "none", -- function(opts) return string.format('%s·%s', opts.raise(opts.id), opts.lower(opts.ordinal)) end,
+      close_command = "bdelete! %d",
+      right_mouse_command = "bdelete! %d",
+      left_mouse_command = "buffer %d",
+      -- mappings = true,
       max_name_length = 14,
       max_prefix_length = 10,
       tab_size = 16,
       diagnostics = "nvim_lsp",
+      show_buffer_icons = true,
       show_buffer_close_icons = false,
+      show_tab_indicators = true,
       diagnostics_update_in_insert = false,
       diagnostics_indicator = function(count, level)
         local icon = level:match("error") and "" or "" -- "" or ""

@@ -9,23 +9,23 @@ local sep = helper.separators
 local luffy_text = ""
 
 local hl_list = {
-    Black = { 'white', 'black' },
-    White = { 'black', 'white' },
-    Inactive = { 'InactiveFg', 'InactiveBg' },
-    Active = { 'ActiveFg', 'ActiveBg' },
+  Black = {'white', 'black'},
+  White = {'black', 'white'},
+  Inactive = {'InactiveFg', 'InactiveBg'},
+  Active = {'ActiveFg', 'ActiveBg'}
 }
 local basic = {}
 
 local breakpoint_width = 100
-basic.divider = { b_components.divider, '' }
-basic.bg = { ' ', 'StatusLine' }
+basic.divider = {b_components.divider, ''}
+basic.bg = {' ', 'StatusLine'}
 
 local colors_mode = {
-    Normal = { 'red', 'black' },
-    Insert = { 'green', 'black' },
-    Visual = { 'yellow', 'black' },
-    Replace = { 'blue_light', 'black' },
-    Command = { 'magenta', 'black' },
+  Normal = {'red', 'black'},
+  Insert = {'green', 'black'},
+  Visual = {'yellow', 'black'},
+  Replace = {'blue_light', 'black'},
+  Command = {'magenta', 'black'}
 }
 
 local split = function(str, pat)
@@ -57,14 +57,13 @@ local winwidth = function()
 end
 
 local current_treesitter_function = function()
-  if
-    not packer_plugins["nvim-treesitter"] or packer_plugins["nvim-treesitter"].loaded == false or
-      vim.fn["nvim_treesitter#statusline"] == nil
-   then
+  if not packer_plugins["nvim-treesitter"] or packer_plugins["nvim-treesitter"].loaded == false then
     return " "
   end
-
-  local f = vim.fn["nvim_treesitter#statusline"](200)
+  local f = require'nvim-treesitter'.statusline({
+    indicator_size = 140,
+    type_patterns = {"class", "function", "method", "interface", "type_spec"}
+  })
   local fun_name = string.format("%s", f) -- convert to string, it may be a empty ts node
 
   -- print(string.find(fun_name, "vim.NIL"))
@@ -86,22 +85,6 @@ local current_function = function()
     return " "
   end
   return string.sub(" " .. ts, 1, winwidth() / 3)
-end
-
-local current_function_buf = function(_, buffer)
-  if not buffer.lsp then
-    return ""
-  end
-
-  local current_func = require("lsp-status").status()
-  if not current_func then
-    return ""
-  end
-  local ok, current_func_name = pcall(get_current_function, _, buffer)
-  if ok and current_func_name and #current_func > 0 then
-    return string.format("[ %s ]", current_func)
-  end
-  return ""
 end
 
 local should_show = function()
@@ -163,23 +146,23 @@ local buffer_not_empty = function()
   return false
 end
 
-local mode = function ()
+local mode = function()
   local mod = vim.fn.mode()
   -- print(state.mode[2])
   if mod == "n" or mod == 'no' or mod == 'nov' then
-    return {"  ",  state.mode[2]}
+    return {"  ", state.mode[2]}
   elseif mod == "i" or mod == "ic" or mod == "ix" then
-    return {"  ",  state.mode[2]}
+    return {"  ", state.mode[2]}
   elseif mod == "V" or mod == "v" or mod == "vs" or mod == "Vs" or mod == "cv" then
-    return {"  ",  state.mode[2]}
+    return {"  ", state.mode[2]}
   elseif mod == "c" or mod == "ce" then
-    return {" ﴣ ",  state.mode[2]}
+    return {" ﴣ ", state.mode[2]}
   elseif mod == "r" or mod == "rm" or mod == "r?" then
-    return {"  ",  state.mode[2]} --
+    return {"  ", state.mode[2]} -- 
   elseif mod == "R" or mod == "Rc" or mod == "Rv" or mod == "Rv" then
-    return {'  ',  state.mode[2]}
+    return {'  ', state.mode[2]}
   end
-  return {"  ",  state.mode[2]}
+  return {"  ", state.mode[2]}
 end
 
 local checkwidth = function()
@@ -188,50 +171,46 @@ local checkwidth = function()
 end
 
 basic.vi_mode = {
-    name = 'vi_mode',
-    hl_colors = colors_mode,
-    text = function()
-        return {  mode()  }
-    end,
+  name = 'vi_mode',
+  hl_colors = colors_mode,
+  text = function()
+    return {mode()}
+  end
 }
 
 basic.square_mode = {
-    hl_colors = colors_mode,
-    text = function()
-        return { { '▊', state.mode[2] } }
-    end,
+  hl_colors = colors_mode,
+  text = function()
+    return {{'▊', state.mode[2]}}
+  end
 }
 
 basic.lsp_diagnos = {
-    name = 'diagnostic',
-    hl_colors = {
-        red = { 'red', 'black' },
-        yellow = { 'yellow', 'black' },
-        blue = { 'blue', 'black' },
-    },
-    width = breakpoint_width,
-    text = function()
-        if lsp_comps.check_lsp() then
-            return {
-                { ' ', 'red' },
-                { lsp_comps.lsp_error({ format = ' %s', show_zero = true }), 'red' },
-                { lsp_comps.lsp_warning({ format = '  %s', show_zero = true }), 'yellow' },
-                { lsp_comps.lsp_hint({ format = '  %s', show_zero = true }), 'blue' },
-            }
-        end
-        return ''
-    end,
+  name = 'diagnostic',
+  hl_colors = {red = {'red', 'black'}, yellow = {'yellow', 'black'}, blue = {'blue', 'black'}},
+  width = breakpoint_width,
+  text = function()
+    if lsp_comps.check_lsp() then
+      return {
+        {' ', 'red'}, {lsp_comps.lsp_error({format = ' %s', show_zero = true}), 'red'},
+        {lsp_comps.lsp_warning({format = '  %s', show_zero = true}), 'yellow'},
+        {lsp_comps.lsp_hint({format = '  %s', show_zero = true}), 'blue'}
+      }
+    end
+    return ''
+  end
 }
-
 
 function scrollbar_instance(scrollbar_chars)
   local current_line = vim.fn.line('.')
   local total_lines = vim.fn.line('$')
-  local default_chars = {'__', '▁▁', '▂▂', '▃▃', '▄▄', '▅▅', '▆▆', '▇▇', '██'}
+  local default_chars = {
+    '__', '▁▁', '▂▂', '▃▃', '▄▄', '▅▅', '▆▆', '▇▇', '██'
+  }
   local chars = scrollbar_chars or default_chars
   local index = 1
 
-  if  current_line == 1 then
+  if current_line == 1 then
     index = 1
   elseif current_line == total_lines then
     index = #chars
@@ -245,40 +224,28 @@ function scrollbar_instance(scrollbar_chars)
   return chars[index]
 end
 
-
-
 basic.file = {
-    name = 'file',
-    hl_colors = {
-        default = hl_list.Black,
-        white = { 'white', 'black' },
-        magenta = { 'magenta', 'black' },
-    },
-    text = function(_, winnr)
-        if vim.api.nvim_win_get_width(winnr) > breakpoint_width then
-            return {
-                { b_components.cache_file_size(), 'default' },
-                { ' ', '' },
-                {b_components.cache_file_icon({ default = '' }), 'default'},
-                { ' ', '' },
-                { b_components.cache_file_name('[No Name]', ''), 'magenta' },
-                { b_components.line_col, 'white' },
-                -- { b_components.progress, '' },
-                -- { ' ', '' },
-                { b_components.file_modified(' '), 'magenta' },
-            }
-        else
-            return {
-                { b_components.cache_file_size(), 'default' },
-                { ' ', '' },
-                { b_components.cache_file_name('[No Name]', ''), 'magenta' },
-                { ' ', '' },
-                { b_components.file_modified(' '), 'magenta' },
-            }
-        end
-    end,
+  name = 'file',
+  hl_colors = {default = hl_list.Black, white = {'white', 'black'}, magenta = {'magenta', 'black'}},
+  text = function(_, winnr)
+    if vim.api.nvim_win_get_width(winnr) > breakpoint_width then
+      return {
+        {b_components.cache_file_size(), 'default'}, {' ', ''},
+        {b_components.cache_file_icon({default = ''}), 'default'}, {' ', ''},
+        {b_components.cache_file_name('[No Name]', ''), 'magenta'},
+        {b_components.line_col, 'white'}, -- { b_components.progress, '' },
+        -- { ' ', '' },
+        {b_components.file_modified(' '), 'magenta'}
+      }
+    else
+      return {
+        {b_components.cache_file_size(), 'default'}, {' ', ''},
+        {b_components.cache_file_name('[No Name]', ''), 'magenta'}, {' ', ''},
+        {b_components.file_modified(' '), 'magenta'}
+      }
+    end
+  end
 }
-
 
 -- basic.ani = {
 --     name = 'ani',
@@ -289,151 +256,112 @@ basic.file = {
 -- }
 
 basic.folder = {
-    name = 'folder',
-    hl_colors = {
-        default = hl_list.Black,
-        white = { 'white', 'black' },
-        blue = { 'blue', 'black' },
-    },
-    text = function(_, winnr)
-        if should_show() then
-    	   return {{' ','default'},{TrimmedDirectory(vim.api.nvim_call_function("getcwd", {}) .. "/" .. vim.fn.expand("%p")), 'blue'}, {' ','default'},}
-        end
-    end,
+  name = 'folder',
+  hl_colors = {default = hl_list.Black, white = {'white', 'black'}, blue = {'blue', 'black'}},
+  text = function(_, winnr)
+    if should_show() then
+      return {
+        {' ', 'default'},
+        {
+          TrimmedDirectory(vim.api.nvim_call_function("getcwd", {}) .. "/" .. vim.fn.expand("%p")),
+          'blue'
+        }, {' ', 'default'}
+      }
+    end
+  end
 }
 
 basic.funcname = {
-    name = 'funcname',
-    hl_colors = {
-        default = hl_list.Black,
-        white = { 'white', 'black' },
-        green_light = { 'green_light', 'black' },
-    },
-    text = function(_, winnr)
-        return {{' ','default'}, {current_function(), 'green_light'}, {' ','default'}}
-    end,
+  name = 'funcname',
+  hl_colors = {
+    default = hl_list.Black,
+    white = {'white', 'black'},
+    green_light = {'green_light', 'black'}
+  },
+  text = function(_, winnr)
+    return {{' ', 'default'}, {current_function(), 'green_light'}, {' ', 'default'}}
+  end
 }
 
 basic.file_right = {
-    hl_colors = {
-        default = hl_list.Black,
-        white = { 'white', 'black' },
-        magenta = { 'magenta', 'black' },
-    },
-    text = function(_, winnr)
-        if vim.api.nvim_win_get_width(winnr) < breakpoint_width then
-            return {
-                { b_components.line_col, 'white' },
-                { b_components.progress, '' },
-                { ' ', '' },
-            }
-        end
-    end,
+  hl_colors = {default = hl_list.Black, white = {'white', 'black'}, magenta = {'magenta', 'black'}},
+  text = function(_, winnr)
+    if vim.api.nvim_win_get_width(winnr) < breakpoint_width then
+      return {{b_components.line_col, 'white'}, {b_components.progress, ''}, {' ', ''}}
+    end
+  end
 }
 
 basic.scrollbar_right = {
-    hl_colors = {
-        default = hl_list.Black,
-        white = { 'white', 'black' },
-        blue = { 'blue', 'black' },
-    },
-    text = function(_, winnr)
-        if vim.api.nvim_win_get_width(winnr) > breakpoint_width then
-        return {
-            { b_components.progress, '' },
-            { ' ', '' },
-            { scrollbar_instance(), 'blue' },
-        }
-        end
-    end,
+  hl_colors = {default = hl_list.Black, white = {'white', 'black'}, blue = {'blue', 'black'}},
+  text = function(_, winnr)
+    if vim.api.nvim_win_get_width(winnr) > breakpoint_width then
+      return {{b_components.progress, ''}, {' ', ''}, {scrollbar_instance(), 'blue'}}
+    end
+  end
 }
 
 basic.git = {
-    name = 'git',
-    hl_colors = {
-        green = { 'green', 'black' },
-        red = { 'red', 'black' },
-        blue = { 'blue', 'black' },
-    },
-    width = breakpoint_width,
-    text = function()
-        if git_comps.is_git() then
-            return {
-                { ' ', '' },
-                { git_comps.diff_added({ format = ' %s', show_zero = true }), 'green' },
-                { git_comps.diff_removed({ format = '  %s', show_zero = true }), 'red' },
-                { git_comps.diff_changed({ format = ' 柳%s', show_zero = true }), 'blue' },
-            }
-        end
-        return ''
-    end,
+  name = 'git',
+  hl_colors = {green = {'green', 'black'}, red = {'red', 'black'}, blue = {'blue', 'black'}},
+  width = breakpoint_width,
+  text = function()
+    if git_comps.is_git() then
+      return {
+        {' ', ''}, {git_comps.diff_added({format = ' %s', show_zero = true}), 'green'},
+        {git_comps.diff_removed({format = '  %s', show_zero = true}), 'red'},
+        {git_comps.diff_changed({format = ' 柳%s', show_zero = true}), 'blue'}
+      }
+    end
+    return ''
+  end
 }
 
 local quickfix = {
-    filetypes = { 'qf', 'Trouble' },
-    active = {
-        { '🚦 Quickfix ', { 'white', 'black' } },
-        { helper.separators.slant_right, { 'black', 'black_light' } },
-        {
-            function()
-                return vim.fn.getqflist({ title = 0 }).title
-            end,
-            { 'cyan', 'black_light' },
-        },
-        { ' Total : %L ', { 'cyan', 'black_light' } },
-        { helper.separators.slant_right, { 'black_light', 'InactiveBg' } },
-        { ' ', { 'InactiveFg', 'InactiveBg' } },
-        basic.divider,
-        { helper.separators.slant_right, { 'InactiveBg', 'black' } },
-        { '🧛 ', { 'white', 'black' } },
-    },
+  filetypes = {'qf', 'Trouble'},
+  active = {
+    {'🚦 Quickfix ', {'white', 'black'}},
+    {helper.separators.slant_right, {'black', 'black_light'}}, {
+      function()
+        return vim.fn.getqflist({title = 0}).title
+      end, {'cyan', 'black_light'}
+    }, {' Total : %L ', {'cyan', 'black_light'}},
+    {helper.separators.slant_right, {'black_light', 'InactiveBg'}},
+    {' ', {'InactiveFg', 'InactiveBg'}}, basic.divider,
+    {helper.separators.slant_right, {'InactiveBg', 'black'}}, {'🧛 ', {'white', 'black'}}
+  },
 
-    show_in_active = true,
+  show_in_active = true
 }
 
 local explorer = {
-    filetypes = { 'fern', 'NvimTree', 'lir' },
-    active = {
-        { '  ', { 'white', 'black' } },
-        { helper.separators.slant_right, { 'black', 'black_light' } },
-        { b_components.divider, '' },
-        { b_components.file_name(''), { 'white', 'black_light' } },
-    },
-    show_in_active = true,
-    show_last_status = true,
+  filetypes = {'fern', 'NvimTree', 'lir'},
+  active = {
+    {'  ', {'white', 'black'}}, {helper.separators.slant_right, {'black', 'black_light'}},
+    {b_components.divider, ''}, {b_components.file_name(''), {'white', 'black_light'}}
+  },
+  show_in_active = true,
+  show_last_status = true
 }
 local default = {
-    filetypes = { 'default' },
-    active = {
-        basic.square_mode,
-        basic.ani,
-        basic.vi_mode,
-        { git_comps.git_branch(), { 'magenta', 'black' }, breakpoint_width },
-        basic.file,
-        basic.lsp_diagnos,
-        basic.funcname,
-        basic.divider,
-        -- {sep.slant_right,{'black_light', 'green_light'}},
-        -- {sep.slant_right,{'green_light', 'blue_light'}},
-        -- {sep.slant_right,{'blue_light', 'red_light'}},
-        -- {sep.slant_right,{'red_light', 'cyan_light'}},
-        -- {sep.slant_right,{'cyan_light', 'black'}},
-        basic.file_right,
-        basic.scrollbar_right,
-        { lsp_comps.lsp_name(), { 'magenta', 'black' }, breakpoint_width },
-        basic.git,
-        basic.folder,
-        { ' ', hl_list.Black },
-        basic.square_mode,
-    },
-    in_active = {
-        { b_components.full_file_name, hl_list.Inactive },
-        basic.file_name_inactive,
-        basic.divider,
-        basic.divider,
-        { b_components.line_col, hl_list.Inactive },
-        { b_components.progress, hl_list.Inactive },
-    },
+  filetypes = {'default'},
+  active = {
+    basic.square_mode, basic.ani, basic.vi_mode,
+    {git_comps.git_branch(), {'magenta', 'black'}, breakpoint_width}, basic.file, basic.lsp_diagnos,
+    basic.funcname, basic.divider, -- {sep.slant_right,{'black_light', 'green_light'}},
+    -- {sep.slant_right,{'green_light', 'blue_light'}},
+    -- {sep.slant_right,{'blue_light', 'red_light'}},
+    -- {sep.slant_right,{'red_light', 'cyan_light'}},
+    -- {sep.slant_right,{'cyan_light', 'black'}},
+    basic.file_right, basic.scrollbar_right,
+    {lsp_comps.lsp_name(), {'magenta', 'black'}, breakpoint_width}, basic.git, basic.folder,
+    {' ', hl_list.Black}, basic.square_mode
+  },
+  in_active = {
+    {b_components.full_file_name, hl_list.Inactive}, basic.file_name_inactive, basic.divider,
+    basic.divider, {b_components.line_col, hl_list.Inactive},
+    {b_components.progress, hl_list.Inactive}
+  }
 }
 -- ⚡
 
@@ -442,55 +370,40 @@ local efffects = require('wlanimation.effects')
 
 animation.stop_all()
 
-
 spinner = {'⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏'}
-spinner2 = { '', '', '', '', '', '', ''}
+spinner2 = {'', '', '', '', '', '', ''}
 local luffy = spinner
 animation.stop_all()
 animation.basic_animation({
-    timeout = nil,
-    delay = 200,
-    interval = 150,
-    effect = efffects.list_text(luffy),
-    on_tick = function(value)
-        luffy_text = value
-    end
+  timeout = nil,
+  delay = 200,
+  interval = 150,
+  effect = efffects.list_text(luffy),
+  on_tick = function(value)
+    luffy_text = value
+  end
 })
 
 windline.setup({
-    colors_name = function(colors)
-          --- add more color
-          colors.FilenameFg = colors.white_light
-          colors.FilenameBg = colors.black
+  colors_name = function(colors)
+    --- add more color
+    colors.FilenameFg = colors.white_light
+    colors.FilenameBg = colors.black
 
-          -- this color will not update if you change a colorscheme
-          colors.gray = "#fefefe"
-          return colors
-      end,
-    statuslines = {
-        default,
-        quickfix,
-        explorer,
-    },
+    -- this color will not update if you change a colorscheme
+    colors.gray = "#fefefe"
+    return colors
+  end,
+  statuslines = {default, quickfix, explorer}
 })
-
 
 windline.add_component({
-    name = 'test',
-    hl_colors = {
-        red = { 'red', 'black' },
-    },
-    text = function()
-        return {
-            { '🧛 ', 'red' },
-            { b_components.progress, 'red' },
-            { ' ', 'red' },
-        }
-    end,
-}, {
-    filetype = 'default',
-    position = 'git',
-})
+  name = 'test',
+  hl_colors = {red = {'red', 'black'}},
+  text = function()
+    return {{'🧛 ', 'red'}, {b_components.progress, 'red'}, {' ', 'red'}}
+  end
+}, {filetype = 'default', position = 'git'})
 -- animation.animation({
 --    data = {
 --         {'red_light', efffects.rainbow()},

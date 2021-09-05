@@ -82,7 +82,8 @@ lang["rcarriga/nvim-dap-ui"] = {
 }
 
 lang["theHamsta/nvim-dap-virtual-text"] = {
-    opt = true
+    opt = true,
+    cmd = "Luadev",
 }
 
 

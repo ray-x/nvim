@@ -222,8 +222,8 @@ function config.navigator()
         -- python = { python-flake8 },
         go = {
           {
-            formatCommand = "golines --max-len=120  --base-formatter=gofumpt",
-            formatStdin = true,
+            -- formatCommand = "golines --max-len=120  --base-formatter=gofumpt",
+            -- formatStdin = true,
             lintCommand = "golangci-lint run",
             LintSeverity = 3
           }
@@ -336,7 +336,7 @@ end
 function config.go()
   require("go").setup({
     verbose = true,
-    goimport = 'gopls',
+    goimport = 'goimports', -- 'gopls'
     log_path = vim.fn.expand("$HOME") .. "/tmp/gonvim.log",
     lsp_codelens = false, -- use navigator
 

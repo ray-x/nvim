@@ -3,8 +3,9 @@ set termguicolors
 call plug#begin('~/.vim/plugged')
 Plug 'neovim/nvim-lspconfig'
 Plug 'nvim-treesitter/nvim-treesitter'
+" 'ray-x/go.nvim'"
+Plug '~/github/go.nvim'
 
-Plug 'ray-x/go.nvim'
 Plug 'liuchengxu/vim-clap', { 'do': { -> clap#installer#force_download() } }
 
 call plug#end()
@@ -18,7 +19,8 @@ require 'go'.setup({
   test_dir = '',
   comment_placeholder = '   ',
   lsp_cfg = true, -- true: lsp in the plugin and apply non-default setup
-  lsp_gofumpt = true, -- true: set default gofmt in gopls format to gofumpt
+  lsp_gofumpt = true, -- true: set default gofmt in gopls format to   gofumpt
+  lsp_codelens = true,
   lsp_on_attach = true, -- use on_attach from go.nvim
   dap_debug = true,
 })
@@ -26,3 +28,5 @@ require 'go'.setup({
 local protocol = require'vim.lsp.protocol'
 
 EOF
+
+set mouse=a

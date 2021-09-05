@@ -15,6 +15,11 @@ tools["kristijanhusak/vim-dadbod-ui"] = {
   end,
 }
 
+tools['vim-test/vim-test']={
+ cmd = {'TestNearest', 'TestFile', 'TestSuite'} 
+}
+
+
 tools["editorconfig/editorconfig-vim"] = {
   opt = true,
   cmd = {"EditorConfigReload"}
@@ -68,6 +73,8 @@ tools["voldikss/vim-floaterm"] = {
   opt = true
 }
 --
+tools["nanotee/zoxide.vim"] = {cmd = {"Z", "Lz", "Zi"}}
+
 tools["liuchengxu/vim-clap"] = {
   cmd = {"Clap"},
   run = function()
