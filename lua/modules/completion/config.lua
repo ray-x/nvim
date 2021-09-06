@@ -29,8 +29,8 @@ function config.nvim_cmp()
     return col == 0 or vim.fn.getline('.'):sub(col, col):match '%s' ~= nil
   end
   local sources = {
-      {name = 'nvim_lsp'}, {name = 'buffer'}, {name = 'spell'}, {name = 'path'},
-      {name = 'luasnip'}, {name = 'nvim_lua'}, {name = 'vim-dadbod-completion'} -- {name = 'look'} ,{name = 'calc'}, {name = 'ultisnips'} { name = 'snippy' } {name = 'luasnip'}
+      {name = 'nvim_lsp'}, {name = 'buffer', keyword_length = 4},  {name = 'look', keyword_length = 4},
+      {name = 'luasnip'}, {name = 'nvim_lua'}, {name = 'vim-dadbod-completion'} -- {name = 'path'}, {name = 'look'} ,{name = 'calc'}, {name = 'spell'}, {name = 'ultisnips'} { name = 'snippy' } {name = 'luasnip'}
     }
   if vim.o.ft == 'sql' then
     table.insert(sources, { name = 'vim-dadbod-completion' } )

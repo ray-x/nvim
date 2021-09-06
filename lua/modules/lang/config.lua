@@ -323,12 +323,6 @@ function config.lua_dev()
   }
 
   local luadev = require("lua-dev").setup(cfg)
-  -- {
-  --   -- add any options here, or leave empty to use the default settings
-  --   -- lspconfig = {
-  --   --   cmd = {"lua-language-server"}
-  --   -- },
-  -- })
   -- print(vim.inspect(luadev))
   -- require('lspconfig').sumneko_lua.setup(luadev)
 end

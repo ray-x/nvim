@@ -129,14 +129,16 @@ lang['folke/lua-dev.nvim'] = {
   -- ft = {'lua'},
   config = conf.lua_dev
 }
--- lang["p00f/nvim-ts-rainbow"] = {
---   opt = true,
---   -- after = "nvim-treesitter",
---   -- Highlight also non-parentheses delimiters, boolean or table: lang -> boolean
---   config = function()
---     require "nvim-treesitter.configs".setup {rainbow = {enable = true, extended_mode = true}}
---   end,
---   opt = true
--- }
+
+lang["p00f/nvim-ts-rainbow"] = {
+  opt = true,
+  -- after = "nvim-treesitter",
+  -- Highlight also non-parentheses delimiters, boolean or table: lang -> boolean
+  cmd = 'Rainbow',
+  config = function()
+    require "nvim-treesitter.configs".setup {rainbow = {enable = true, extended_mode = true}}
+  end,
+  opt = true
+}
 
 return lang

@@ -24,7 +24,7 @@ editor["andymass/vim-matchup"] = {
     -- vim.g.matchup_transmute_enabled = 1
     vim.g.matchup_matchparen_deferred = 1
     vim.g.matchup_matchparen_offscreen = {method = 'popup'}
-
+    vim.cmd([[nnoremap <c-s-k> :<c-u>MatchupWhereAmI?<cr>]])
   end
 }
 
@@ -118,12 +118,16 @@ editor["norcalli/nvim-terminal.lua"] = {
 }
 
 -- python3 support is flaky
--- editor['simnalamburt/vim-mundo']  = { opt = true, cmd ={'MundoToggle', 'MundoShow', 'MundoHide'},
--- setup = function ()
---   -- body
---   vim.g.mundo_prefer_python3=1
--- end
--- }
+editor['simnalamburt/vim-mundo']  = { opt = true, cmd ={'MundoToggle', 'MundoShow', 'MundoHide'},
+run = function() 
+  vim.cmd[[packadd far.vim]]
+  vim.cmd[[UpdateRemotePlugins]]
+end,
+setup = function ()
+  -- body
+  vim.g.mundo_prefer_python3=1
+end
+}
 editor["mbbill/undotree"] = {opt = true, cmd = {"UndotreeToggle"}}
 editor["AndrewRadev/splitjoin.vim"] = {
   opt = true,

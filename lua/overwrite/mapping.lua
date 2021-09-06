@@ -64,6 +64,7 @@ local keys = {
   ["n|<Leader>di"] = map_cr("<cmd>lua require'dap.ui.widgets'.hover()"):with_expr(), -- TODO: another key?
 
   ["v|<Leader>di"] = map_cr("<cmd>lua require'dap.ui.variables'.visual_hover()"):with_expr(),
+  ["n|<C-k>"] = map_cmd('v:lua.ctrl_k()'):with_silent():with_expr(),
 
   -- Plugin QuickRun
   -- ["n|<Leader>r"]     = map_cr("<cmd> lua require'selfunc'.run_command()"):with_noremap():with_silent(),
