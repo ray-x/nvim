@@ -11,29 +11,26 @@ completion["neovim/nvim-lspconfig"] = {
 }
 
 completion["ms-jpq/coq_nvim"] = {
-  opt = true,
+  -- opt = true,
   -- ft = {'html','css', 'javascript', 'java', 'typescript', 'typescriptreact','go', 'python', 'cpp', 'c', 'rust'},
   -- event = "InsertCharPre",
-  -- after = {"coq.artifacts"},
+  after = {"coq.artifacts"},
   branch = 'coq',
   setup = function()
-    vim.cmd([[let g:coq_settings = {'auto_start': v:true}]])
-    -- vim.g.coq_settings = { 'display.icons.mode': 'short' }
+    vim.g.coq_settings = { auto_start = false }
   end,
   config = function()
-    vim.cmd([[let g:coq_settings = {'display.icons.mode': 'short', 'display.pum.kind_context':  ['',''], 'display.pum.source_context':  ['',''] }]])
-    -- vim.g.coq_settings.display.pum.kind_context = {'',''}
-    -- vim.g.coq_settings.display.pum.source_context = {'',''}
-    if vim.o.ft ~= 'lua' then
-      vim.cmd([[COQnow -s]])
+    if not load_coq() then return end
+    vim.g.coq_settings = {['display.icons.mode'] = 'short', ['display.pum.kind_context'] = {'',''}, ['display.pum.source_context'] = {'',''} }
+    if vim.o.ft ~= 'lua' and vim.o.ft ~= 'sql' and vim.o.ft ~= 'vim'then
+      vim.cmd([[COQnow]])
     end
   end
 }
 
 completion["ms-jpq/coq.artifacts"] = {
-  opt = true,
-  -- event = "InsertEnter",
-  -- event = "InsertEnter",
+  -- opt = true,
+  event = "InsertEnter",
   branch = 'artifacts'
 }
 
@@ -47,10 +44,11 @@ completion["hrsh7th/nvim-cmp"] = {
     {"hrsh7th/cmp-buffer", after = "nvim-cmp", opt = true},
     {"hrsh7th/cmp-nvim-lua", after = "nvim-cmp", opt = true},
     -- {"hrsh7th/cmp-vsnip", after = "nvim-cmp", opt = true},
-    -- {"hrsh7th/cmp-calc", after = "nvim-cmp", opt = true},
+    {"hrsh7th/cmp-calc", after = "nvim-cmp", opt = true},
     {"hrsh7th/cmp-path", after = "nvim-cmp", opt = true},
+    {vim.fn.expand('$HOME') .. "/github/cmp-treesitter", after = "nvim-cmp", opt = true},
     {"hrsh7th/cmp-nvim-lsp", after = "nvim-cmp", opt = true},
-    -- {"f3fora/cmp-spell", after = "nvim-cmp", opt = true},
+    {"f3fora/cmp-spell", after = "nvim-cmp", opt = true},
     {"octaltree/cmp-look", after = "nvim-cmp", opt = true},
     -- {"dcampos/cmp-snippy",after = {"nvim-snippy", "nvim-cmp"}},
     -- {"quangnguyen30192/cmp-nvim-ultisnips", event = "InsertCharPre", after = "nvim-cmp", opt=true },
@@ -113,12 +111,12 @@ completion[vim.fn.expand("$HOME") .. "/github/lsp_signature.nvim"] = {
   config = function()
     require"lsp_signature".setup({
       toggle_key = [[<M-x>]],
-      doc_lines = 1,
+      doc_lines = 4,
       floating_window = true,
       floating_window_above_first = true,
-      -- log_path = vim.fn.expand("$HOME") .. "/tmp/sig.log",
+      log_path = vim.fn.expand("$HOME") .. "/tmp/sig.log",
       debug = true,
-      verbose = false,
+      verbose = true,
       hi_parameter = 'Search',
       bind = true,
       handler_opts = {

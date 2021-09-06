@@ -19,6 +19,11 @@ end
 
 function config.nvim_cmp()
   local cmp = require('cmp')
+  if load_coq() then 
+    local sources = {}
+    cmp.setup.buffer { completion = {autocomplete = false} }
+    return
+  end
   -- print("cmp setup")
   local comp_kind = nil
   local t = function(str)
@@ -28,12 +33,25 @@ function config.nvim_cmp()
     local col = vim.fn.col '.' - 1
     return col == 0 or vim.fn.getline('.'):sub(col, col):match '%s' ~= nil
   end
+
   local sources = {
-      {name = 'nvim_lsp'}, {name = 'buffer', keyword_length = 4},  {name = 'look', keyword_length = 4},
-      {name = 'luasnip'}, {name = 'nvim_lua'}, {name = 'vim-dadbod-completion'} -- {name = 'path'}, {name = 'look'} ,{name = 'calc'}, {name = 'spell'}, {name = 'ultisnips'} { name = 'snippy' } {name = 'luasnip'}
+      {name = 'nvim_lsp'},
+      {name = 'luasnip'} , {name = 'treesitter', keyword_length = 2 } , 
+      {name = 'look', keyword_length = 4}, {name = 'buffer', keyword_length = 4}
+      -- {name = 'buffer', keyword_length = 4} {name = 'path'}, {name = 'look'},
+      -- {name = 'calc'}, {name = 'ultisnips'} { name = 'snippy' }
     }
   if vim.o.ft == 'sql' then
     table.insert(sources, { name = 'vim-dadbod-completion' } )
+  end
+  if vim.o.ft == 'markdown' then
+    table.insert(sources, { name = 'spell' }, {name = 'look'} )
+  end
+  if vim.o.ft == 'lua' then
+    table.insert(sources, { name = 'nvim_lua' } )
+  end
+  if vim.o.ft == 'zsh' or vim.o.ft == 'fish' then
+    table.insert(sources, { name = 'path' } , {name = 'buffer', keyword_length = 4}, {name = 'calc'})
   end
   cmp.setup {
     snippet = {
