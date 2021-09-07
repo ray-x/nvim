@@ -12,7 +12,6 @@ function config.nvim_treesitter_ref()
   require("modules.lang.treesitter").treesitter_ref()
 end
 
-
 function config.sidekick()
   -- body
   vim.g.sidekick_printable_def_types = {
@@ -170,15 +169,16 @@ function config.navigator()
     formatStdin = true
   }
 
-  local sql_formatter = {formatCommand = [[sql-formatter -l plsql -i 4 -u | sed -e 's/\$ {/\${/g' | sed -e 's/: :/::/g']], formatStdin = true}
+  local sql_formatter = {
+    formatCommand = [[sql-formatter -l plsql -i 4 -u | sed -e 's/\$ {/\${/g' | sed -e 's/: :/::/g']],
+    formatStdin = true
+  }
 
   local rustfmt = {formatCommand = "rustfmt", formatStdin = true}
 
   local efm_cfg = {
     flags = {debounce_text_changes = 2000},
-    cmd = {
-      'efm-langserver', '-loglevel', '1', '-logfile', vim.fn.expand("$HOME") .. '/tmp/efm.log'
-    }, -- 1~10
+    cmd = {'efm-langserver', '-loglevel', '1', '-logfile', vim.fn.expand("$HOME") .. '/tmp/efm.log'}, -- 1~10
     init_options = {documentFormatting = true, codeAction = true, document_formatting = true},
     root_dir = require'lspconfig'.util.root_pattern({'.git/', 'package.json', '.'}),
     on_attach = function(client)
@@ -222,8 +222,8 @@ function config.navigator()
         -- python = { python-flake8 },
         go = {
           {
-            -- formatCommand = "golines --max-len=120  --base-formatter=gofumpt",
-            -- formatStdin = true,
+            formatCommand = "golines --max-len=120  --base-formatter=gofumpt",
+            formatStdin = true,
             lintCommand = "golangci-lint run",
             LintSeverity = 3
           }
@@ -235,7 +235,7 @@ function config.navigator()
           }
         },
         sql = { -- length 100, FUNCTION upcase, keep newline, parameter & insert each parameter a new line '-B -t'
-          sql_formatter,
+          sql_formatter
         },
         rust = {rustfmt}
       }
@@ -248,7 +248,7 @@ function config.navigator()
     lspinstall = false,
     border = single, -- "single",
     ts_fold = true,
-
+    -- keymaps = {{key = "<space>kk", func = "formatting()"}},
     lsp = {
       format_on_save = true, -- set to false to disasble lsp code format on save (if you are using prettier/efm/formater etc)
       disable_format_ft = {"sqls", "gopls"}, -- a list of lsp not enable auto-format (e.g. if you using efm or vim-codeformat etc)
@@ -269,10 +269,10 @@ function config.navigator()
       gopls = {
         on_attach = function(client)
           -- print("i am a hook")
-          client.resolved_capabilities.document_formatting = false -- efm
+          -- client.resolved_capabilities.document_formatting = false -- efm
         end,
         settings = {
-          gopls = {gofumpt = true} -- enableww gofumpt etc,
+          gopls = {gofumpt = true} -- enable gofumpt etc,
         }
         -- set to {} to disable the lspclient for all filetype
       },

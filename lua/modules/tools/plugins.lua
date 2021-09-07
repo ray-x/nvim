@@ -6,25 +6,30 @@ tools["kristijanhusak/vim-dadbod-ui"] = {
   config = conf.vim_dadbod_ui,
   requires = {"tpope/vim-dadbod", ft = {'sql'}},
   opt = true,
-  setup = function ()
+  setup = function()
     vim.g.dbs = {
       eraser = 'postgres://postgres:password@localhost:5432/eraser_local',
       staging = 'postgres://postgres:password@localhost:5432/my-staging-db',
-      wp = 'mysql://root@localhost/wp_awesome' 
+      wp = 'mysql://root@localhost/wp_awesome'
     }
-  end,
+  end
 }
 
-tools['vim-test/vim-test']={
- cmd = {'TestNearest', 'TestFile', 'TestSuite'} 
-}
-
+tools['vim-test/vim-test'] = {cmd = {'TestNearest', 'TestFile', 'TestSuite'}}
 
 tools["editorconfig/editorconfig-vim"] = {
   opt = true,
   cmd = {"EditorConfigReload"}
   -- ft = { 'go','typescript','javascript','vim','rust','zig','c','cpp' }
 }
+
+-- github GH ui
+-- tools['pwntester/octo.nvim'] ={
+--   cmd = {'Octo', 'Octo pr list'},
+--   config=function()
+--     require"octo".setup()
+--   end
+-- }
 
 -- tools["wellle/targets.vim"] = {}
 tools["kabouzeid/nvim-lspinstall"] = {cmd = "LspInstall"}
@@ -93,12 +98,32 @@ tools["lewis6991/gitsigns.nvim"] = {
 }
 
 -- early stage...
--- tools['tanvirtin/vgit.nvim'] = {  -- gitsign has similar features
---   setup = function() vim.o.updatetime = 1000 end,
---   opt = true,
---   config = conf.vgit,
---   cmd = "VGit"
--- }
+tools['tanvirtin/vgit.nvim'] = { -- gitsign has similar features
+  setup = function()
+    vim.o.updatetime = 2000
+    vim.wo.signcolumn = 'yes'
+  end,
+  opt = true,
+  config = function()
+    require('vgit').setup({
+      controller = {
+        hunks_enabled = true,
+        blames_enabled = true,
+        diff_strategy = 'index',
+        diff_preference = 'vertical',
+        predict_hunk_signs = true,
+        predict_hunk_throttle_ms = 300,
+        predict_hunk_max_lines = 50000,
+        blame_line_throttle_ms = 150,
+        show_untracked_file_signs = true,
+        action_delay_ms = 300
+      }
+    })
+    -- body
+  end,
+  cmd = "VGit"
+}
+
 tools["tpope/vim-fugitive"] = {
   cmd = {"Gvsplit", "Git", "Gedit", "Gstatus", "Gdiffsplit", "Gvdiffsplit"},
   opt = true
@@ -118,9 +143,9 @@ tools['kevinhwang91/nvim-bqf'] = {opt = true, event = "CmdlineEnter", config = c
 --
 tools["brooth/far.vim"] = {
   cmd = {"Farr", "Farf"},
-  run = function() 
-    vim.cmd[[packadd far.vim]]
-    vim.cmd[[UpdateRemotePlugins]]
+  run = function()
+    vim.cmd [[packadd far.vim]]
+    vim.cmd [[UpdateRemotePlugins]]
   end,
   config = conf.far,
   opt = true
@@ -129,12 +154,12 @@ tools["brooth/far.vim"] = {
 tools["rcarriga/vim-ultest"] = {
   requires = {"vim-test/vim-test", setup = conf.vim_test, opt = true},
   cmd = {"Ultest", "UltestNearest"},
-  run = function() 
-    vim.cmd[[packadd vim-ultest]]
-    vim.cmd[[UpdateRemotePlugins]]
+  run = function()
+    vim.cmd [[packadd vim-ultest]]
+    vim.cmd [[UpdateRemotePlugins]]
   end,
   config = function()
-    vim.cmd[[UpdateRemotePlugins]]
+    vim.cmd [[UpdateRemotePlugins]]
   end,
   opt = true
 }

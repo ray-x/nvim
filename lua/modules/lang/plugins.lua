@@ -64,6 +64,19 @@ lang["nvim-treesitter/playground"] = {
 --     end
 -- }
 
+lang["wellle/context.vim"] = {
+    after = "nvim-treesitter",
+    opt = true,
+    cmd = {"ContextEnable", "ContextActivate", "ContextToggle", "ContextToggleWindow", "ContextPeek"},
+    setup = function() 
+      -- vim.g.context_enabled = 1
+      vim.g.context_max_height = 10
+    end,
+    config = function()
+      vim.cmd([["ContextEnable"]])
+    end
+}
+
 lang["ElPiloto/sidekick.nvim"] ={
   opt = true,
   fn = {'SideKickNoReload'},

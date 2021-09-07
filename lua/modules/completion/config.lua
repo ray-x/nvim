@@ -19,9 +19,9 @@ end
 
 function config.nvim_cmp()
   local cmp = require('cmp')
-  if load_coq() then 
+  if load_coq() then
     local sources = {}
-    cmp.setup.buffer { completion = {autocomplete = false} }
+    cmp.setup.buffer {completion = {autocomplete = false}}
     return
   end
   -- print("cmp setup")
@@ -35,23 +35,25 @@ function config.nvim_cmp()
   end
 
   local sources = {
-      {name = 'nvim_lsp'},
-      {name = 'luasnip'} , {name = 'treesitter', keyword_length = 2 } , 
-      {name = 'look', keyword_length = 4}, {name = 'buffer', keyword_length = 4}
-      -- {name = 'buffer', keyword_length = 4} {name = 'path'}, {name = 'look'},
-      -- {name = 'calc'}, {name = 'ultisnips'} { name = 'snippy' }
-    }
+    {name = 'nvim_lsp'}, {name = 'luasnip'}, {name = 'treesitter', keyword_length = 2},
+    {name = 'look', keyword_length = 4}
+    -- {name = 'buffer', keyword_length = 4} {name = 'path'}, {name = 'look'},
+    -- {name = 'calc'}, {name = 'ultisnips'} { name = 'snippy' }
+  }
   if vim.o.ft == 'sql' then
-    table.insert(sources, { name = 'vim-dadbod-completion' } )
+    table.insert(sources, {name = 'vim-dadbod-completion'})
   end
   if vim.o.ft == 'markdown' then
-    table.insert(sources, { name = 'spell' }, {name = 'look'} )
+    table.insert(sources, {name = 'spell'})
+    table.insert(sources, {name = 'look'})
   end
   if vim.o.ft == 'lua' then
-    table.insert(sources, { name = 'nvim_lua' } )
+    table.insert(sources, {name = 'nvim_lua'})
   end
-  if vim.o.ft == 'zsh' or vim.o.ft == 'fish' then
-    table.insert(sources, { name = 'path' } , {name = 'buffer', keyword_length = 4}, {name = 'calc'})
+  if vim.o.ft == 'zsh' or vim.o.ft == 'sh' or vim.o.ft == 'fish' then
+    table.insert(sources, {name = 'path'})
+    table.insert(sources, {name = 'buffer', keyword_length = 3})
+    table.insert(sources, {name = 'calc'})
   end
   cmp.setup {
     snippet = {
@@ -90,8 +92,8 @@ function config.nvim_cmp()
       ["<tab>"] = cmp.mapping(function(fallback)
         if vim.fn.pumvisible() == 1 then
           vim.fn.feedkeys(t("<C-n>"), "n")
-        -- elseif require'snippy'.can_expand_or_advance()  then
-        --   vim.fn.feedkeys(t("<Plug>(snippy-expand-or-next)"), "")
+          -- elseif require'snippy'.can_expand_or_advance()  then
+          --   vim.fn.feedkeys(t("<Plug>(snippy-expand-or-next)"), "")
         elseif require'luasnip'.expand_or_jumpable() then
           vim.fn.feedkeys(t("<Plug>luasnip-expand-or-jump"), "")
         elseif check_back_space() then
@@ -103,8 +105,8 @@ function config.nvim_cmp()
       ["<S-tab>"] = cmp.mapping(function(fallback)
         if vim.fn.pumvisible() == 1 then
           vim.fn.feedkeys(t("<C-p>"), "n")
-        -- elseif require'snippy'.can_jump(-1) then
-        --   vim.fn.feedkeys(t("<Plug>(snippy-previous)"), "")
+          -- elseif require'snippy'.can_jump(-1) then
+          --   vim.fn.feedkeys(t("<Plug>(snippy-previous)"), "")
         elseif require'luasnip'.jumpable(-1) then
           vim.fn.feedkeys(t("<Plug>luasnip-jump-prev"), "")
         else
@@ -114,7 +116,7 @@ function config.nvim_cmp()
     },
 
     -- You should specify your *installed* sources.
-    sources = sources,
+    sources = sources
   }
   -- if vim.o.ft ~= 'sql' then
   --   require'cmp'.setup.buffer { completion = {autocomplete = false} }

@@ -128,15 +128,20 @@ function config.clap()
   vim.g.clap_preview_direction = "UD"
   -- if vim.g.colors_name == 'zephyr' then
   vim.g.clap_theme = 'material_design_dark'
-  vim.api.nvim_command("autocmd FileType clap_input lua require'cmp'.setup.buffer { completion = {autocomplete = false} }")
+  vim.api.nvim_command(
+      "autocmd FileType clap_input lua require'cmp'.setup.buffer { completion = {autocomplete = false} }")
   -- end
   -- vim.api.nvim_command("autocmd FileType clap_input call compe#setup({ 'enabled': v:false }, 0)")
 end
 
 function config.clap_after()
-  if not packer_plugins["nvim-cmp"].loaded
-    then require"packer".loader("nvim-cmp")
+  if not packer_plugins["nvim-cmp"].loaded then
+    require"packer".loader("nvim-cmp")
   end
+end
+
+function config.neogit()
+  require('vgit').setup()
 end
 
 function config.neogit()
@@ -147,9 +152,9 @@ function config.neogit()
     -- customize displayed signs
     signs = {
       -- { CLOSED, OPENED }
-      section = { ">", "v" },
-      item = { ">", "v" },
-      hunk = { "", "" },
+      section = {">", "v"},
+      item = {">", "v"},
+      hunk = {"", ""}
     },
     integrations = {
       -- Neogit only provides inline diffs. If you want a more traditional way to look at diffs, you can use `sindrets/diffview.nvim`.
@@ -164,7 +169,7 @@ function config.neogit()
       --   }
       -- }
       --
-      diffview = true,
+      diffview = true
     },
     -- override/add mappings
     mappings = {
@@ -173,9 +178,9 @@ function config.neogit()
         -- Adds a mapping with "B" as key that does the "BranchPopup" command
         ["B"] = "BranchPopup",
         -- Removes the default mapping of "s"
-        ["s"] = "",
-      },
-    },
+        ["s"] = ""
+      }
+    }
   })
 end
 
