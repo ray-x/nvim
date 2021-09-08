@@ -119,9 +119,10 @@ tools['tanvirtin/vgit.nvim'] = { -- gitsign has similar features
         action_delay_ms = 300
       }
     })
+    require("vgit")._buf_attach()
     -- body
-  end,
-  cmd = "VGit"
+  end
+  -- cmd = "VGit"
 }
 
 tools["tpope/vim-fugitive"] = {

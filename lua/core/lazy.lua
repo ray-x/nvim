@@ -43,7 +43,7 @@ function lazyload()
   vim.g.vimsyn_embed = 'lPr'
   loader(plugins)
 
-  local gitrepo = vim.fn.isdirectory('.git')
+  local gitrepo = vim.fn.isdirectory('.git/index')
   if gitrepo then
     loader("vgit.nvim gitsigns.nvim neogit")
   end

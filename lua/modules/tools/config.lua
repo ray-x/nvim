@@ -141,11 +141,6 @@ function config.clap_after()
 end
 
 function config.neogit()
-  require('vgit').setup()
-  require("vgit")._buf_attach()
-end
-
-function config.neogit()
   require("neogit").setup({
     disable_signs = false,
     disable_context_highlighting = false,
