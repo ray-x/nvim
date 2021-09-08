@@ -4,32 +4,29 @@ local conf = require("modules.lang.config")
 lang["nvim-treesitter/nvim-treesitter"] = {
   event = "UIEnter",
   opt = true,
-  config=conf.nvim_treesitter
+  config = conf.nvim_treesitter
 }
 
-lang["nvim-treesitter/nvim-treesitter-textobjects"] =
-    {after = "nvim-treesitter", config = conf.nvim_treesitter, opt = true}
+lang["nvim-treesitter/nvim-treesitter-textobjects"] = {
+  after = "nvim-treesitter",
+  config = conf.nvim_treesitter,
+  opt = true
+}
 
-lang["nvim-treesitter/nvim-treesitter-refactor"] =
-    {
-      after = "nvim-treesitter-textobjects", -- manual loading
-      config = conf.nvim_treesitter_ref, -- let the last loaded config treesitter
-      opt = true
-    }
-
+lang["nvim-treesitter/nvim-treesitter-refactor"] = {
+  after = "nvim-treesitter-textobjects", -- manual loading
+  config = conf.nvim_treesitter_ref, -- let the last loaded config treesitter
+  opt = true
+}
 
 lang["shmup/vim-sql-syntax"] = {ft = {"sql", "pgsql"}}
 
 lang["nanotee/sqls.nvim"] = {ft = {"sql", "pgsql"}, setup = conf.sqls, opt = true}
 
+lang[vim.fn.expand("$HOME") .. "/github/go.nvim"] = {ft = {"go", "gomod"}, config = conf.go}
 
-lang[vim.fn.expand("$HOME")  .. "/github/go.nvim"] = {
-  ft = {"go","gomod"},
-  config = conf.go
-}
-
-lang[vim.fn.expand("$HOME")  .. "/github/navigator.lua"] = {
-  requires = {vim.fn.expand("$HOME")  .. "/github/guihua.lua", run = 'cd lua/fzy && make'},
+lang[vim.fn.expand("$HOME") .. "/github/navigator.lua"] = {
+  requires = {vim.fn.expand("$HOME") .. "/github/guihua.lua", run = 'cd lua/fzy && make'},
   config = conf.navigator,
   opt = true
 }
@@ -47,10 +44,10 @@ lang[vim.fn.expand("$HOME")  .. "/github/navigator.lua"] = {
 -- }
 
 lang["nvim-treesitter/playground"] = {
-    after = "nvim-treesitter",
-    opt = true;
-    cmd = "TSPlaygroundToggle",
-    config = conf.playground
+  after = "nvim-treesitter",
+  opt = true,
+  cmd = "TSPlaygroundToggle",
+  config = conf.playground
 }
 
 -- lang["romgrk/nvim-treesitter-context"] = {
@@ -65,24 +62,21 @@ lang["nvim-treesitter/playground"] = {
 -- }
 
 lang["wellle/context.vim"] = {
-    after = "nvim-treesitter",
-    opt = true,
-    cmd = {"ContextEnable", "ContextActivate", "ContextToggle", "ContextToggleWindow", "ContextPeek"},
-    setup = function() 
-      -- vim.g.context_enabled = 1
-      vim.g.context_max_height = 10
-    end,
-    config = function()
-      vim.cmd([["ContextEnable"]])
-    end
-}
-
-lang["ElPiloto/sidekick.nvim"] ={
+  after = "nvim-treesitter",
   opt = true,
-  fn = {'SideKickNoReload'},
-  setup = conf.sidekick
+  -- cmd = {"ContextEnable", "ContextActivate", "ContextToggle", "ContextToggleWindow", "ContextPeek"},
+  setup = function()
+    vim.g.context_enabled = 1
+    vim.g.context_max_height = 6
+    vim.g.context_filetype_blacklist = {'clap_input', ''}
+  end,
+  config = function()
+    vim.cmd([[ContextActivate]])
+    -- vim.cmd([[ContextEnable]])  -- enable on command as it has performance issue
+  end
 }
 
+lang["ElPiloto/sidekick.nvim"] = {opt = true, fn = {'SideKickNoReload'}, setup = conf.sidekick}
 
 lang["bfredl/nvim-luadev"] = {opt = true, cmd = "Luadev", setup = conf.luadev}
 lang["mfussenegger/nvim-dap"] = {config = conf.dap, cmd = "Luadev", opt = true}
@@ -94,11 +88,7 @@ lang["rcarriga/nvim-dap-ui"] = {
   opt = true
 }
 
-lang["theHamsta/nvim-dap-virtual-text"] = {
-    opt = true,
-    cmd = "Luadev",
-}
-
+lang["theHamsta/nvim-dap-virtual-text"] = {opt = true, cmd = "Luadev"}
 
 lang["jbyuki/one-small-step-for-vimkind"] = {opt = true, ft = {"lua"}}
 
@@ -132,7 +122,7 @@ lang["michaelb/sniprun"] = {
 -- lang["gennaro-tedesco/nvim-jqx"] = {opt = true, cmd = {"JqxList", "JqxQuery"}}
 
 lang["windwp/nvim-ts-autotag"] = {
-  opt = true,
+  opt = true
   -- after = "nvim-treesitter",
   -- config = function() require"nvim-treesitter.configs".setup {autotag = {enable = true}} end
 }
@@ -149,7 +139,7 @@ lang["p00f/nvim-ts-rainbow"] = {
   -- Highlight also non-parentheses delimiters, boolean or table: lang -> boolean
   cmd = 'Rainbow',
   config = function()
-    require "nvim-treesitter.configs".setup {rainbow = {enable = true, extended_mode = true}}
+    require"nvim-treesitter.configs".setup {rainbow = {enable = true, extended_mode = true}}
   end,
   opt = true
 }

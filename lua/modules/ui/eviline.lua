@@ -56,35 +56,45 @@ local winwidth = function()
   return vim.api.nvim_call_function("winwidth", {0})
 end
 
-local current_treesitter_function = function()
+local current_treesitter_context = function()
   if not packer_plugins["nvim-treesitter"] or packer_plugins["nvim-treesitter"].loaded == false then
     return " "
   end
   local f = require'nvim-treesitter'.statusline({
-    indicator_size = 140,
-    type_patterns = {"class", "function", "method", "interface", "type_spec"}
+    indicator_size = 300,
+    type_patterns = {
+      "class", "function", "method", "interface", "type_spec", "table", "if_statement",
+      "for_statement", "for_in_statement"
+    }
   })
-  local fun_name = string.format("%s", f) -- convert to string, it may be a empty ts node
+  local context = string.format("%s", f) -- convert to string, it may be a empty ts node
 
-  -- print(string.find(fun_name, "vim.NIL"))
-  if fun_name == "vim.NIL" then
+  if context == "vim.NIL" then
     return " "
   end
-  if #fun_name > 70 then
-    fun_name = string.format("%-70s", fun_name)
-  end
-  return " " .. fun_name
+  -- if #context > 200 then
+  --   context = string.format("%-20s", context)
+  --   context = string.format("%.200s", context)
+  -- end
+
+  return " " .. context
 end
 
 local current_function = function()
-  if winwidth() < 60 then
+  local wwidth = winwidth()
+  if wwidth < 50 then
     return ""
   end
-  local ts = current_treesitter_function()
-  if string.len(ts) < 3 then
+  local ts = current_treesitter_context()
+  if string.len(ts) < 4 then
     return " "
   end
-  return string.sub(" " .. ts, 1, winwidth() / 3)
+  if wwidth > 200 then
+    wwidth = wwidth * 2 / 3
+  else
+    wwidth = wwidth * 1 / 2
+  end
+  return string.sub(" " .. ts, 1, wwidth)
 end
 
 local should_show = function()

@@ -142,6 +142,7 @@ end
 
 function config.neogit()
   require('vgit').setup()
+  require("vgit")._buf_attach()
 end
 
 function config.neogit()
