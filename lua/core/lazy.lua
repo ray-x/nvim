@@ -44,12 +44,12 @@ function lazyload()
   loader(plugins)
 
   local gitrepo = vim.fn.isdirectory('.git/index')
-  if gitrepo then
-    loader("vgit.nvim gitsigns.nvim neogit")
+  if gitrepo then 
+    loader("gitsigns.nvim neogit vgit.nvim")  -- vgit.nvim 
   end
 
   if load_lsp then
-    loader("nvim-lspconfig lsp_signature.nvim")
+    loader("nvim-lspconfig lsp_signature.nvim") -- null-ls.nvim
   end
 
   -- require'lsp.config'.setup()

@@ -120,7 +120,7 @@ editor["norcalli/nvim-terminal.lua"] = {
 -- python3 support is flaky
 editor['simnalamburt/vim-mundo']  = { opt = true, cmd ={'MundoToggle', 'MundoShow', 'MundoHide'},
 run = function() 
-  vim.cmd[[packadd far.vim]]
+  vim.cmd[[packadd vim-mundo]]
   vim.cmd[[UpdateRemotePlugins]]
 end,
 setup = function ()

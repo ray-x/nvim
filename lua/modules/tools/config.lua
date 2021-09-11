@@ -44,9 +44,16 @@ function config.diffview()
   local cb = require"diffview.config".diffview_callback
   require"diffview".setup {
     diff_binaries = false, -- Show diffs for binaries
+    use_icons = true, -- Requires nvim-web-devicons
+    enhanced_diff_hl = false, -- See ':h diffview-config-enhanced_diff_hl'
+    signs = {
+      fold_closed = "",
+      fold_open = "",
+    },
     file_panel = {
-      width = 35,
-      use_icons = true -- Requires nvim-web-devicons
+      position = "left",      -- One of 'left', 'right', 'top', 'bottom'
+      width = 35,             -- Only applies when position is 'left' or 'right'
+      height = 10,            -- Only applies when position is 'top' or 'bottom'
     },
     key_bindings = {
       -- The `view` bindings are active in the diff buffers, only when the current
@@ -108,7 +115,7 @@ end
 
 function config.far()
   -- body
-  vim.cmd [[UpdateRemotePlugins]]
+  -- vim.cmd [[UpdateRemotePlugins]]
   vim.g["far#source"] = "rgnvim"
   vim.g["far#cmdparse_mode"] = "shell"
 end
@@ -139,6 +146,36 @@ function config.clap_after()
     require"packer".loader("nvim-cmp")
   end
 end
+
+function config.vgit()
+  -- use this as a diff tool (faster than Diffview)
+  -- there are overlaps with gitgutter. following are nice features
+  require('vgit').setup({
+    keymaps = {
+      ['n <leader>ba'] = 'buffer_gutter_blame_preview', -- show all blames
+      ['n <leader>bp'] = 'buffer_preview', -- buffer diff
+      ['n <leader>bh'] = 'buffer_history', -- buffer commit history DiffviewFileHistory
+      ['n <leader>sp'] = 'buffer_staged_diff_preview', -- diff for staged changes
+      ['n <leader>pd'] = 'project_diff_preview',  -- diffview is slow
+    },
+    controller = {
+      hunks_enabled = false,  --gitsigns
+      blames_enabled = false,
+      diff_strategy = 'index',
+      diff_preference = 'vertical',
+      predict_hunk_signs = true,
+      predict_hunk_throttle_ms = 500,
+      predict_hunk_max_lines = 50000,
+      blame_line_throttle_ms = 250,
+      show_untracked_file_signs = true,
+      action_delay_ms = 500
+    }
+  })
+  print('vgit')
+  require("vgit")._buf_attach()
+  -- body
+end
+
 
 function config.neogit()
   require("neogit").setup({
@@ -200,11 +237,14 @@ function config.gitsigns()
       ["n ]c"] = {expr = true, '&diff ? \']c\' : \'<cmd>lua require"gitsigns".next_hunk()<CR>\''},
       ["n [c"] = {expr = true, '&diff ? \'[c\' : \'<cmd>lua require"gitsigns".prev_hunk()<CR>\''},
       ["n <leader>hs"] = '<cmd>lua require"gitsigns".stage_hunk()<CR>',
+      ['v <leader>hs'] = '<cmd>lua require"gitsigns".stage_hunk({vim.fn.line("."), vim.fn.line("v")})<CR>',
       ["n <leader>hu"] = '<cmd>lua require"gitsigns".undo_stage_hunk()<CR>',
       ["n <leader>hr"] = '<cmd>lua require"gitsigns".reset_hunk()<CR>',
+      ['v <leader>hr'] = '<cmd>lua require"gitsigns".reset_hunk({vim.fn.line("."), vim.fn.line("v")})<CR>',
       ["n <leader>hp"] = '<cmd>lua require"gitsigns".preview_hunk()<CR>',
-      ["n <leader>hb"] = '<cmd>lua require"gitsigns".blame_line()<CR>',
-      -- Text objects
+      -- ["n <leader>hb"] = '<cmd>lua require"gitsigns".blame_line()<CR>',
+      ["n <leader>bs"] = '<cmd>lua require"gitsigns".stage_buffer()<CR>',
+      ["n <leader>hq"] = '<cmd>lua do vim.cmd("copen") require"gitsigns".setqflist("all") end <CR>',  -- hunk qflist with vgit
       ["o ih"] = ':<C-U>lua require"gitsigns".text_object()<CR>',
       ["x ih"] = ':<C-U>lua require"gitsigns".text_object()<CR>'
     },
@@ -216,7 +256,7 @@ function config.gitsigns()
     current_line_blame_opts = {delay = 1500},
     update_debounce = 300,
     word_diff = true,
-    use_internal_diff = true
+    diff_opts={internal=true}
   }
 end
 

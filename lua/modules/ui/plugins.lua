@@ -61,6 +61,14 @@ ui["kyazdani42/nvim-tree.lua"] = {
   setup = conf.nvim_tree
 }
 
+-- ui['ms-jpq/chadtree'] = {
+--   run = 'python3 -m chadtree deps',
+--   branch = 'chad',
+--   setup = function()
+--     vim.g.chadtree_settings = {['theme.text_colour_set'] = 'nerdtree_syntax_dark'}
+--   end
+-- }
+
 ui["lukas-reineke/indent-blankline.nvim"] = {setup = conf.blankline,  opt = true} -- after="nvim-treesitter",
 
 ui["dstein64/nvim-scrollview"] = {config = conf.scrollview}

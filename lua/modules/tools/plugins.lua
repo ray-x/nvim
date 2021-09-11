@@ -89,7 +89,10 @@ tools["liuchengxu/vim-clap"] = {
   config = conf.clap_after
 }
 
-tools["sindrets/diffview.nvim"] = {cmd = "DiffviewOpen", config = conf.diffview}
+tools["sindrets/diffview.nvim"] = {
+  cmd = {"DiffviewOpen", "DiffviewFileHistory", "DiffviewFocusFiles", "DiffviewToggleFiles", "DiffviewRefresh"},
+   config = conf.diffview
+}
 
 tools["lewis6991/gitsigns.nvim"] = {
   config = conf.gitsigns,
@@ -104,25 +107,7 @@ tools['tanvirtin/vgit.nvim'] = { -- gitsign has similar features
     vim.wo.signcolumn = 'yes'
   end,
   opt = true,
-  config = function()
-    require('vgit').setup({
-      controller = {
-        hunks_enabled = true,
-        blames_enabled = true,
-        diff_strategy = 'index',
-        diff_preference = 'vertical',
-        predict_hunk_signs = true,
-        predict_hunk_throttle_ms = 300,
-        predict_hunk_max_lines = 50000,
-        blame_line_throttle_ms = 150,
-        show_untracked_file_signs = true,
-        action_delay_ms = 300
-      }
-    })
-    require("vgit")._buf_attach()
-    -- body
-  end
-  -- cmd = "VGit"
+  config = conf.vgit
 }
 
 tools["tpope/vim-fugitive"] = {
@@ -145,7 +130,7 @@ tools['kevinhwang91/nvim-bqf'] = {opt = true, event = "CmdlineEnter", config = c
 tools["brooth/far.vim"] = {
   cmd = {"Farr", "Farf"},
   run = function()
-    vim.cmd [[packadd far.vim]]
+    require"packer".loader('far.vim')
     vim.cmd [[UpdateRemotePlugins]]
   end,
   config = conf.far,

@@ -5,22 +5,23 @@ call plug#begin('~/.vim/plugged')
 Plug 'neovim/nvim-lspconfig'
 Plug 'nvim-treesitter/nvim-treesitter'
 Plug 'liuchengxu/vim-clap' ", { 'do': { -> clap#installer#force_download() } }
-" Plug 'hrsh7th/vim-vsnip'
-" Plug 'rafamadriz/friendly-snippets'
-" Plug 'hrsh7th/nvim-compe'
-" Plug 'kevinhwang91/nvim-hlslens'
-" Plug 'hrsh7th/nvim-cmp'
-" Plug 'hrsh7th/cmp-buffer'
-" Plug 'hrsh7th/cmp-nvim-lua'
-" Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'jose-elias-alvarez/null-ls.nvim'
+Plug 'hrsh7th/nvim-cmp'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-nvim-lsp'
+
+Plug 'rafamadriz/friendly-snippets'
+Plug 'hrsh7th/cmp-nvim-lua'
+Plug 'L3MON4D3/LuaSnip'
+Plug 'saadparwaiz1/cmp_luasnip'
 " Plug 'nvim-lua/popup.nvim'
 " Plug 'nvim-lua/plenary.nvim'
 " Plug 'nvim-telescope/telescope.nvim'
 
 Plug '~/github/lsp_signature.nvim'
-" Plug '~/github/guihua.lua'
+Plug '~/github/guihua.lua'
 
-" Plug '~/github/navigator.lua'
+Plug '~/github/navigator.lua'
 " Plug '~/github/go.nvim'
 
 " Plug 'ray-x/guihua.lua'
@@ -29,20 +30,6 @@ Plug 'ray-x/aurora'
 
 call plug#end()
 
-
-
-" lua require('hlslens').setup()
-" noremap <silent> n <Cmd>execute('normal! ' . v:count1 . 'n')<CR>
-"             \<Cmd>lua require('hlslens').start()<CR>
-" noremap <silent> N <Cmd>execute('normal! ' . v:count1 . 'N')<CR>
-"             \<Cmd>lua require('hlslens').start()<CR>
-" noremap * *<Cmd>lua require('hlslens').start()<CR>
-" noremap # #<Cmd>lua require('hlslens').start()<CR>
-" noremap g* g*<Cmd>lua require('hlslens').start()<CR>
-" noremap g# g#<Cmd>lua require('hlslens').start()<CR>
-
-" use : instead of <Cmd>
-nnoremap <silent> <leader>l :nohlsearch<CR>
 
 
 lua <<EOF
@@ -57,200 +44,115 @@ local nvim_lsp = require('lspconfig')
 
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
-local on_attach = function(client, bufnr)
-  local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
-  local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
 
-  -- Enable completion triggered by <c-x><c-o>
-  buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
-
-  -- Mappings.
-  local opts = { noremap=true, silent=true }
-
-  -- See `:help vim.lsp.*` for documentation on any of the below functions
-  buf_set_keymap('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-  buf_set_keymap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
-  buf_set_keymap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
-  buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-  buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-  buf_set_keymap('n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
-  buf_set_keymap('n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
-  buf_set_keymap('n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
-  buf_set_keymap('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-  buf_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-  buf_set_keymap('n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
-  buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-  buf_set_keymap('n', '<space>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
-  buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
-  buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
-  buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
-  buf_set_keymap('n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
-
-end
 
 require'lspconfig'.gopls.setup({
-  on_attach = on_attach,
   flags = {
       debounce_text_changes = 150,
     }
+})
+
+require'lspconfig'.pyright.setup({})
+
+
+local ls = require "luasnip"
+ls.config.set_config {history = true, updateevents = "TextChanged,TextChangedI"}
+require("luasnip.loaders.from_vscode").lazy_load {}
+
+vim.api.nvim_set_keymap("i", "<C-E>", "<Plug>luasnip-next-choice", {})
+vim.api.nvim_set_keymap("s", "<C-E>", "<Plug>luasnip-next-choice", {})
+
+local cmp = require('cmp')
+cmp.setup {
+    snippet = {
+      expand = function(args)
+        require'luasnip'.lsp_expand(args.body)
+        -- require 'snippy'.expand_snippet(args.body)
+        -- vim.fn["UltiSnips#Anon"](args.body)
+      end
+    },
+    completion = {
+      autocomplete = {require("cmp.types").cmp.TriggerEvent.TextChanged},
+      completeopt = "menu,menuone,noselect"
+    },
+    sources = {{name = 'nvim_lsp'}, {name = 'buffer'}, {name = 'nvim_lua'}, {name='luasnip'}}
 }
-)
 
 
--- local cmp = require('cmp')
--- cmp.setup {
---   snippet = {
---     expand = function(args)
---       -- You must install `vim-vsnip` if you use the following as-is.
---       vim.fn['vsnip#anonymous'](args.body)
---     end
---   },
--- 
---   -- You must set mapping if you want.
---   mapping = {
---     ['<C-p>'] = cmp.mapping.select_prev_item(),
---     ['<C-n>'] = cmp.mapping.select_next_item(),
---     ['<C-d>'] = cmp.mapping.scroll_docs(-4),
---     ['<C-f>'] = cmp.mapping.scroll_docs(4),
---     ['<C-Space>'] = cmp.mapping.complete(),
---     ['<C-e>'] = cmp.mapping.close(),
---     ['<CR>'] = cmp.mapping.confirm({
---       behavior = cmp.ConfirmBehavior.Insert,
---       select = true,
---     })
---   },
--- 
---   -- You should specify your *installed* sources.
--- 
---   sources = {{name = 'nvim_lsp'}, {name = 'buffer'}, {name = 'path'}, {name = 'calc'}, {name = 'vsnip'}, {name = 'nvim_lua'}}
--- }
+require'lsp_signature'.setup({toggle_key = nil,
+    floating_window = true,
+    -- floating_window_above_first = false,
+    log_path = vim.fn.expand("$HOME") .. "/tmp/sig.log",
+    debug = true,
+    hi_parameter = "Search",
+    bind = true,
+    extra_trigger_chars = { "(", "," },
+    handler_opts = {
+    border = "single", -- "shadow", --{"╭", "─" ,"╮", "│", "╯", "─", "╰", "│" },
+}})
 
--- require'compe'.setup {
---   enabled = true;
---   autocomplete = true;
---   debug = false;
---   min_length = 1;
---   preselect = 'enable';
---   throttle_time = 80;
---   source_timeout = 200;
---   resolve_timeout = 800;
---   incomplete_delay = 400;
---   max_abbr_width = 100;
---   max_kind_width = 100;
---   max_menu_width = 100;
---   documentation = {
---     border = { '', '' ,'', ' ', '', '', '', ' ' }, -- the border option is the same as `|help nvim_open_win|`
---     winhighlight = "NormalFloat:CompeDocumentation,FloatBorder:CompeDocumentationBorder",
---     max_width = 120,
---     min_width = 60,
---     max_height = math.floor(vim.o.lines * 0.3),
---     min_height = 1,
---   };
--- 
---   source = {
---     path = true;
---     buffer = true;
---     calc = true;
---     nvim_lsp = true;
---     nvim_lua = true;
---     vsnip = true;
---     ultisnips = true;
---     luasnip = true;
---   };
--- }
-
--- require"navigator".setup()
--- vim.treesitter.highlighter.hl_map.error = nil
--- require "nvim-treesitter.highlight"
--- 
--- local protocol = require'vim.lsp.protocol'
--- vim.lsp.set_log_level("debug")
--- local capabilities = protocol.make_client_capabilities()
--- capabilities.textDocument.completion.completionItem.snippetSupport = true
--- 
--- local capabilities = vim.lsp.protocol.make_client_capabilities()
--- local sumneko_root_path = vim.fn.expand("$HOME") .. "/github/sumneko/lua-language-server"
--- local sumneko_binary = vim.fn.expand("$HOME")
---                            .. "/github/sumneko/lua-language-server/bin/macOS/lua-language-server"
-
--- require'lspconfig'.rust_analyzer.setup{}
--- require 'go'.setup({dap_debug =true, verbose=true})
--- require'lspconfig'.jedi_language_server.setup{}
--- require'lsp_signature'.setup({log_path = vim.fn.expand("$HOME")  + "/tmp/sig.log", 
--- doc_lines=0,
--- debug = true})
-
--- require'lspconfig'.phpactor.setup{}
-
--- require'lspconfig'.gopls.setup({
---    on_attach = function()
---    require'lsp_signature'.on_attach({bind = false, floating_window=false, hint_enable = true})
---    end
--- })
-
--- local luadev = require("lua-dev").setup(cfg)
-
-
-
-
--- LSP SERVER CONFIGURATION
--- ===================================================================
--- local configs = require 'lspconfig/configs'
--- if not require'lspconfig'.vhdl_ls then configs['vhdl_ls'] = {default_config = {}} end
--- require'lspconfig'.vhdl_ls.setup ({
---     cmd = {vim.fn.expand("$HOME")  + "/lsp_test/vhdl/rust_hdl/target/release/vhdl_ls"},
---     filetypes = {"vhdl"},
---     root_dir = require('lspconfig/util').root_pattern("vhdl_ls.toml"),
---     on_attach = function(client, bufnr)
---         client.resolved_capabilities.document_symbol  = false
---         client.resolved_capabilities.workspace_symbol = false
---     end,
--- })
-
-
-local sumneko_root_path = vim.fn.expand("$HOME")..'/github/sumneko/lua-language-server'
-local sumneko_binary = vim.fn.expand("$HOME")..'/github/sumneko/lua-language-server/bin/macOS/lua-language-server'
-local single = {"╭", "─", "╮", "│", "╯", "─", "╰", "│"}
-print("navigator setup")
--- require"navigator".setup({
---   debug = true,
---   width = 0.7,
---   border = single, -- "single",
---   lsp = {
---     format_on_save = true, -- set to false to disasble lsp code format on save (if you are using prettier/efm/formater etc)
---     denols = {filetypes = {}},
---     -- flow = {
---     --   filetypes ={},
---     -- },
---     tsserver = {
---       filetypes = {
---         "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact",
---         "typescript.tsx"
---       }
---     },
---     gopls = {
---       on_attach = function(client)
---         -- print("i am a hook")
---         client.resolved_capabilities.document_formatting = false
---         -- require 'illuminate'.on_attach(client)
---       end,
---       settings = {
---         gopls = {gofumpt = true} -- enableww gofumpt etc,
---       }
---       -- set to {} to disable the lspclient for all filetype
---     },
---     clangd = {filetypes = {}},
---     sumneko_lua = {
---       sumneko_root_path = sumneko_root_path,
---       sumneko_binary = sumneko_binary
---       -- settings = luadev.settings
---     }
---   }
--- })
--- 
 EOF
 
 set mouse=a
+
+colorscheme aurora
+
+""---------------------------Unused----------------------------------""
+
+
+" local on_attach = function(client, bufnr)
+"   local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
+"   local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
+" 
+"   -- Enable completion triggered by <c-x><c-o>
+"   buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
+" 
+"   -- Mappings.
+"   local opts = { noremap=true, silent=true }
+"   -- See `:help vim.lsp.*` for documentation on any of the below functions
+"   buf_set_keymap('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+"   buf_set_keymap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
+"   buf_set_keymap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
+"   buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+"   buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+"   buf_set_keymap('n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', " opts)
+"   buf_set_keymap('n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', " opts)
+"   buf_set_keymap('n', '<space>wl', '<cmd>lua print(vim.inspect(" vim.lsp.buf.list_workspace_folders()))<CR>', opts)
+"   buf_set_keymap('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+"   buf_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+"   buf_set_keymap('n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+"   buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+"   buf_set_keymap('n', '<space>e', '<cmd>lua " vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
+"   buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
+"   buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
+"   buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
+"   buf_set_keymap('n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+" 
+" end
+
+" -- require 'go'.setup({dap_debug =true, verbose=true})
+" -- require'lspconfig'.jedi_language_server.setup{}
+" -- require'lsp_signature'.setup({log_path = vim.fn.expand("$HOME")  + "/tmp/sig.log", 
+" -- doc_lines=0,
+" -- debug = true})
+" 
+" -- require'lspconfig'.gopls.setup({
+" --    on_attach = function()
+" --    require'lsp_signature'.on_attach({bind = false, floating_window=false, hint_enable " = true})
+" --    end
+" -- })
+" 
+" 
+" -- local sumneko_root_path = vim.fn.expand("$HOME")..'/github/sumneko/lua-language-server'
+" -- local sumneko_binary = vim.fn.expand("$HOME")..'/github/sumneko/lua-language-server/" bin/-- macOS/lua-language-server'
+" -- local single = {"╭", "─", "╮", "│", "╯", "─", "╰", "│"}
+" -- print("navigator setup")
+" -- require"navigator".setup({
+" --   debug = true,
+" --   width = 0.7,
+" --   border = single, -- "single",
+" -- })
+" -- 
 
 " nnoremap <silent> gd    <cmd>lua vim.lsp.buf.declaration()<CR>
 " nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<CR>
@@ -267,14 +169,6 @@ set mouse=a
 
 
 
-colorscheme aurora
-
-
-
-" Plug 'simrat39/rust-tools.nvim'
-
-" Plug 'ray-x/lsp_signature.nvim'
-
 
 " colorscheme dracula
 " let material_style = 'mariana'
@@ -286,45 +180,11 @@ colorscheme aurora
 " 
 " Plug 'neovim/nvim-lspconfig'
 " 
-" " Plug 'lewis6991/gitsigns.nvim'
-" " Plug 'ray-x/guihua.lua', {'do': 'cd lua/fzy && make' }
-" 
 
-" 
-" " Plug 'ray-x/lsp_signature.nvim'
-" Plug 'liuchengxu/vim-clap', { 'do': { -> " clap#installer#force_download() } }
-" Plug 'nvim-lua/popup.nvim'
-" Plug 'nvim-lua/plenary.nvim'
-" Plug 'nvim-telescope/telescope.nvim'
-" 
-" call plug#end()
-" lua print(vim.inspect(vim.lsp.buf_get_clients(0)))"
-
-" Plug 'ray-x/guihua.lua', {'do': 'cd lua/fzy && make' }
-" Plug 'ray-x/navigator.lua'
 
 
 lua <<EOF
 
-
-
-
--- require'lspconfig'.elixirls.setup{
---   capabilities = capabilities,
---   on_attach = function(client, bufnr)
---     print("attach", client)
---     require('lsp_signature').on_attach({log_path = vim.fn.expand("$HOME")  + "/tmp/sig.log", debug = true})
---   end,
---   cmd = {
---     -- vim.loop.os_homedir() .. "/lsp_test/elixir/elixir-ls/rel/language_server.sh"
---     vim.fn.expand("$HOME")  + "/lsp_test/elixir/elixir-ls/rel/language_server.sh"
---   },
---   settings = {
---     elixirLS = {
---       dialyzerEnabled = true;
---     }
---   }
--- }
 
 
 
@@ -374,21 +234,6 @@ lua <<EOF
 
 -- require('navigator').setup()
 
--- require'lspconfig'.pyright.setup {}
--- require "lspconfig".efm.setup {
---     init_options = {documentFormatting = true},
---     settings = {
---         rootMarkers = {".git/"},
---         languages = {
---             lua = {
---                 {formatCommand = "lua-format -i", formatStdin = -- true}
---             },
---             python = {
---                 {formatCommand = "python-flake8 -i", formatStdin = -- true}
---             }
---         }
---     }
--- }
 
 
 -- local lua_cfg = {
@@ -431,10 +276,6 @@ lua <<EOF
 EOF
 
 
-" 
-" 
-" -- require'lsp_signature'.on_attach()
-" 
 
 " Plug 'ray-x/guihua.lua', {'do': 'cd lua/fzy && make' }
 " Plug 'ray-x/navigator.lua'
@@ -465,11 +306,6 @@ EOF
 " let s:config_home = stdpath('config')
 " source  expand("$HOME") + '/.config/nvim/pluginrc.d/lsp.vim
 " 
-" let g:deoplete#enable_at_startup = 1
-" set cmdheight=2
-" let g:echodoc#enable_at_startup = 1
-" let g:echodoc#type = 'floating'
-
 
 " lua require('treesitter')
 
@@ -479,14 +315,5 @@ EOF
 " Set completeopt to have a better completion experience
 " set completeopt=menuone,noinsert,noselect
 
-
-
-
-
-" let g:vsnip_filetypes = {}
-" let g:vsnip_filetypes.javascriptreact = ['javascript']
-" let g:vsnip_filetypes.typescriptreact = ['typescript']
-" let g:completion_trigger_character = ['.']
-" let g:vsnip_snippet_dir = expand("$HOME") + '/github/dotfiles/snips'
 " 
 " let g:min_load = 1" 

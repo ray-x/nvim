@@ -17,18 +17,12 @@ completion["ms-jpq/coq_nvim"] = {
   after = {"coq.artifacts"},
   branch = 'coq',
   setup = function()
-    vim.g.coq_settings = {auto_start = false}
+    vim.g.coq_settings = { auto_start = false }
   end,
   config = function()
-    if not load_coq() then
-      return
-    end
-    vim.g.coq_settings = {
-      ['display.icons.mode'] = 'short',
-      ['display.pum.kind_context'] = {'', ''},
-      ['display.pum.source_context'] = {'', ''}
-    }
-    if vim.o.ft ~= 'lua' and vim.o.ft ~= 'sql' and vim.o.ft ~= 'vim' then
+    if not load_coq() then return end
+    vim.g.coq_settings = {['display.icons.mode'] = 'short', ['display.pum.kind_context'] = {'',''}, ['display.pum.source_context'] = {'',''} }
+    if vim.o.ft ~= 'lua' and vim.o.ft ~= 'sql' and vim.o.ft ~= 'vim'then
       vim.cmd([[COQnow]])
     end
   end
@@ -58,7 +52,7 @@ completion["hrsh7th/nvim-cmp"] = {
     {"octaltree/cmp-look", after = "nvim-cmp", opt = true},
     -- {"dcampos/cmp-snippy",after = {"nvim-snippy", "nvim-cmp"}},
     -- {"quangnguyen30192/cmp-nvim-ultisnips", event = "InsertCharPre", after = "nvim-cmp", opt=true },
-    {"saadparwaiz1/cmp_luasnip", after = {"nvim-cmp", "LuaSnip"}}
+    {"saadparwaiz1/cmp_luasnip", after = {"nvim-cmp", "LuaSnip"}},
     -- {"tzachar/cmp-tabnine", opt = true}
   },
   config = conf.nvim_cmp
@@ -117,9 +111,9 @@ completion[vim.fn.expand("$HOME") .. "/github/lsp_signature.nvim"] = {
   config = function()
     require"lsp_signature".setup({
       toggle_key = [[<M-x>]],
-      doc_lines = 0,
+      doc_lines = 4,
       floating_window = true,
-      floating_window_above_first = true,
+      floating_window_above_cur_line = true,
       log_path = vim.fn.expand("$HOME") .. "/tmp/sig.log",
       debug = true,
       verbose = true,

@@ -341,7 +341,7 @@ local quickfix = {
     {helper.separators.slant_right, {'InactiveBg', 'black'}}, {'🧛 ', {'white', 'black'}}
   },
 
-  show_in_active = true
+  always_active = true
 }
 
 local explorer = {
@@ -350,7 +350,7 @@ local explorer = {
     {'  ', {'white', 'black'}}, {helper.separators.slant_right, {'black', 'black_light'}},
     {b_components.divider, ''}, {b_components.file_name(''), {'white', 'black_light'}}
   },
-  show_in_active = true,
+  always_active = true,
   show_last_status = true
 }
 local default = {
@@ -367,7 +367,7 @@ local default = {
     {lsp_comps.lsp_name(), {'magenta', 'black'}, breakpoint_width}, basic.git, basic.folder,
     {' ', hl_list.Black}, basic.square_mode
   },
-  in_active = {
+  inactive = {
     {b_components.full_file_name, hl_list.Inactive}, basic.file_name_inactive, basic.divider,
     basic.divider, {b_components.line_col, hl_list.Inactive},
     {b_components.progress, hl_list.Inactive}
