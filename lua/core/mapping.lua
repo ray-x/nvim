@@ -26,7 +26,7 @@ local def_map = {
   -- Insert
     ["i|<C-w>"]      = map_cmd('<C-[>diwa'):with_noremap(),
     ["i|<C-h>"]      = map_cmd('<BS>'):with_noremap(),
-    ["i|<C-d>"]      = map_cmd('<Del>'):with_noremap(),
+    -- ["i|<C-d>"]      = map_cmd('<Del>'):with_noremap(),  -- I will use <C-d> as <d-> in mac
     ["i|<C-u>"]      = map_cmd('<C-G>u<C-U>'):with_noremap(),
     ["i|<C-b>"]      = map_cmd('<Left>'):with_noremap(),
     ["i|<C-f>"]      = map_cmd('<Right>'):with_noremap(),

@@ -9,8 +9,8 @@ local conf = require("modules.editor.config")
 editor["windwp/nvim-autopairs"] = {
   -- keys = {{'i', '('}},
   -- keys = {{'i'}},
-  after = {"nvim-cmp"}, --"nvim-treesitter", nvim-cmp "nvim-treesitter", coq_nvim
-  -- event = "InsertEnter",  --InsertCharPre 
+  after = {"nvim-cmp"}, -- "nvim-treesitter", nvim-cmp "nvim-treesitter", coq_nvim
+  -- event = "InsertEnter",  --InsertCharPre
   -- after = "hrsh7th/nvim-compe",
   config = conf.autopairs,
   opt = true
@@ -31,7 +31,7 @@ editor["andymass/vim-matchup"] = {
 editor["ggandor/lightspeed.nvim"] = {
   as = "lightspeed",
   opt = true,
-  keys = {'f', 'F', 't', 'T'},  --'S', 's', 
+  keys = {'f', 'F', 't', 'T', 'S', 's'},
   config = conf.lightspeed
 }
 
@@ -56,7 +56,7 @@ editor["rrethy/vim-hexokinase"] = {
 -- <A-l>   Move current character/selection right
 editor["matze/vim-move"] = {
   opt = true,
-  event = "InsertEnter"
+  event = {"CursorMoved","CursorMovedI"},
   -- fn = {'<Plug>MoveBlockDown', '<Plug>MoveBlockUp', '<Plug>MoveLineDown', '<Plug>MoveLineUp'}
 }
 
@@ -89,11 +89,11 @@ editor["phaazon/hop.nvim"] = {
 }
 
 editor["preservim/nerdcommenter"] = {
-  --- cmd = {'NERDCommenterComment', 'NERDCommenterToggle', 'NERDCommenterNested', 'NERDCommenterInvert', 'NERDCommenterSexy'},
-  keys = {"<Leader>c<space>", "\\c ", "<C-<Space>>", "<Leader>cc", "//", "<M-/>"},
-  -- keys = {'<Leader>c<space>', '\\c ', '<Leader>cc', '//', '<M-/>'},
+  -- keys = {"<Leader>c<space>", "\\c ", "<D-/>", "<C-<Space>>", "<Leader>cc", "//", "<M-/>"},
+  keys = {'<Leader>c<space>', '\\c ', '<Leader>cc', '//', '<M-/>'},
   setup = conf.nerdcommenter,
-  fn = {"NERDComment"}
+  fn = {"NERDComment", "nerdcommenter#Comment"}
+  -- cmd = {'NERDCommenterToggle', 'NERDCommenterComment'}
   -- opt = true,
 }
 -- copy paste failed in block mode when clipboard = unnameplus"
@@ -117,16 +117,17 @@ editor["norcalli/nvim-terminal.lua"] = {
   end
 }
 
--- python3 support is flaky
-editor['simnalamburt/vim-mundo']  = { opt = true, cmd ={'MundoToggle', 'MundoShow', 'MundoHide'},
-run = function() 
-  vim.cmd[[packadd vim-mundo]]
-  vim.cmd[[UpdateRemotePlugins]]
-end,
-setup = function ()
-  -- body
-  vim.g.mundo_prefer_python3=1
-end
+editor['simnalamburt/vim-mundo'] = {
+  opt = true,
+  cmd = {'MundoToggle', 'MundoShow', 'MundoHide'},
+  run = function()
+    vim.cmd [[packadd vim-mundo]]
+    vim.cmd [[UpdateRemotePlugins]]
+  end,
+  setup = function()
+    -- body
+    vim.g.mundo_prefer_python3 = 1
+  end
 }
 editor["mbbill/undotree"] = {opt = true, cmd = {"UndotreeToggle"}}
 editor["AndrewRadev/splitjoin.vim"] = {
@@ -138,7 +139,7 @@ editor["AndrewRadev/splitjoin.vim"] = {
   end
   -- keys = {'<space>S', '<space>J'}
 }
--- editor['justinmk/vim-sneak']  = {opt = true, keys = {'s'}, config = function() vim.g['sneak#label']= 1 end}
+
 editor["chaoren/vim-wordmotion"] = {
   opt = true,
   fn = {"<Plug>WordMotion_w"}

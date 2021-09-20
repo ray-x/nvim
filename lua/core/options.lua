@@ -25,7 +25,7 @@ local function load_options()
     sessionoptions = "curdir,help,tabpages,winsize";
     clipboard      = "unnamedplus";
     wildignorecase = true;
-    wildignore     = ".git,.hg,.svn,*.pyc,*.o,*.out,*.jpg,*.jpeg,*.png,*.gif,*.zip,**/tmp/**,*.DS_Store,**/node_modules/**,**/bower_modules/**";
+    wildignore     = ".git/**,.hg,.svn,*.pyc,*.o,*.out,*.jpg,*.jpeg,*.png,*.gif,*.zip,**/tmp/**,*.DS_Store,**/node_modules/**,**/bower_modules/**";
     backup         = false;
     writebackup    = false;
     undofile       = true;
@@ -55,7 +55,7 @@ local function load_options()
     complete       = ".,w,b,k";
     inccommand     = "nosplit";  --split
     grepformat     = "%f:%l:%c:%m";
-    grepprg        = 'rg --hidden --vimgrep --smart-case --';
+    grepprg        = 'rg --hidden --vimgrep --smart-case --glob "!{.git,node_modules,*~}/*" --';
     breakat        = [[\ \	;:,!?]];
     startofline    = false;
     whichwrap      = "h,l,<,>,[,],~";
@@ -67,7 +67,7 @@ local function load_options()
     completeopt    = "menuone,noselect";
     jumpoptions    = "stack";
     showmode       = false;
-    shortmess      = "aoTIc";
+    shortmess      = "aoOtTIc";
     scrolloff      = 2;
     sidescrolloff  = 5;
     foldlevelstart = 99;
@@ -85,7 +85,7 @@ local function load_options()
     equalalways    = false;
     laststatus     = 2;
     display        = "lastline";
-    showbreak      = "↳  ";
+    showbreak      = "﬌  "; --↳
     listchars      = "tab:»·,nbsp:+,trail:·,extends:→,precedes:←";
     pumblend       = 10;
     winblend       = 10;

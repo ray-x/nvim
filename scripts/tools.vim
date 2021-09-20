@@ -31,14 +31,6 @@ endfunction
    " 搜索 .git 为项目路径
 
 
-function! Golines()
-  lua require('internal.golines').golines_format()
-endfunction
-
-
-command GoLinesViml call Golines()
-
-
 command Jsonformat %!python -m json.tool
 command Hex :%!xxd
 

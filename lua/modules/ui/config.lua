@@ -184,8 +184,8 @@ function config.material()
   vim.g.material_contrast = true
   vim.g.material_borders = true
   vim.g.material_disable_background = false
-  -- vim.g.material_style = "middlenight_blue" -- 'moonlight' emerald
-  vim.g.material_style_fix = false
+  vim.g.material_style = "earlysummer" -- 'moonlight' emerald middlenight_blue earlysummer
+  vim.g.material_style_fix = true
   -- config.default()
 end
 

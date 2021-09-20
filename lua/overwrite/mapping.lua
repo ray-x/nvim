@@ -43,7 +43,7 @@ local keys = {
   --
   -- ["n|<Leader>tc"] = map_cu("Clap colors"):with_noremap():with_silent(),
   ["n|<Leader>bb"] = map_cu("Clap buffers"):with_noremap():with_silent(),
-  ["n|<Leader>ff"] = map_cu("Clap grep"):with_noremap():with_silent(),
+  -- ["n|<Leader>ff"] = map_cu("Clap grep"):with_noremap():with_silent(),
   ["n|<Leader>fb"] = map_cu("Clap marks"):with_noremap():with_silent(),
   ["n|<C-x><C-f>"] = map_cu("Clap filer"):with_noremap():with_silent(),
   ["n|<Leader>ff"] = map_cu("Clap files ++finder=rg --ignore --hidden --files"):with_noremap()
@@ -51,6 +51,7 @@ local keys = {
   ["n|<M-g>"] = map_cu("Clap gfiles"):with_noremap():with_silent(),
   ["n|<Leader>fw"] = map_cu("Clap grep ++query=<Cword>"):with_noremap():with_silent(),
   ["n|<M-h>"] = map_cu("Clap history"):with_noremap():with_silent(),
+
   ["n|<Leader>fW"] = map_cu("Clap windows"):with_noremap():with_silent(),
   ["n|<Leader>fl"] = map_cu("Clap loclist"):with_noremap():with_silent(),
   ["n|<Leader>fu"] = map_cu("Clap git_diff_files"):with_noremap():with_silent(),
@@ -61,7 +62,7 @@ local keys = {
   ["n|<Leader><Leader>r"] = map_cmd("v:lua.run_or_test()"):with_expr(),
   ["v|<Leader><Leader>r"] = map_cmd("v:lua.run_or_test()"):with_expr(),
   ["n|<Leader>di"] = map_cr("<cmd>lua require'dap.ui.variables'.hover()"):with_expr(),
-  ["n|<Leader>di"] = map_cr("<cmd>lua require'dap.ui.widgets'.hover()"):with_expr(), -- TODO: another key?
+  ["n|<Leader>dw"] = map_cr("<cmd>lua require'dap.ui.widgets'.hover()"):with_expr(), -- TODO: another key?
 
   ["v|<Leader>di"] = map_cr("<cmd>lua require'dap.ui.variables'.visual_hover()"):with_expr(),
   ["n|<C-k>"] = map_cmd('v:lua.ctrl_k()'):with_silent():with_expr(),
@@ -78,16 +79,36 @@ local keys = {
   ["n|hw"] = map_cr("HopWordAC"),
   ["n|hl"] = map_cr("HopLineStartAC"),
   ["n|hL"] = map_cr("HopLineStartBC"),
-  ["n|s"] = map_cr("HopChar1AC"),
-  ["n|S"] = map_cr("HopChar1BC"),
-  ["v|s"] = map_cr("HopChar1AC"),
-  ["v|S"] = map_cr("HopChar1BC"),
+  ["n|<M-s>"] = map_cr("HopChar1AC"),
+  ["n|<M-S>"] = map_cr("HopChar1BC"),
   -- ["n|<Space>s"] = map_cr("HopChar2"),
   ["n|<Space>s"] = map_cr("HopChar2AC"),
   ["n|<Space>S"] = map_cr("HopChar2BC"),
   ["n|<Space>F"] = map_cr("HopPattern"),
   ["n|<Space>]"] = map_cr("HopPatternAC"),
-  ["n|<Space>["] = map_cr("HopPatternBC")
+  ["n|<Space>["] = map_cr("HopPatternBC"),
+  ["n|<d-s>"] = map_cu("w"):with_silent(),
+  ["i|<d-s>"] = map_cu('"normal :w"'):with_noremap():with_silent(),
+  ["v|<d-s>"] = map_cu('"normal :w"'):with_noremap():with_silent(),
+  ["n|<d-w>"] = map_cu("wqa!"):with_silent(),
+  ["i|<d-w>"] = map_cu('"normal :wqa!"'):with_noremap():with_silent(),
+  ["v|<d-w>"] = map_cu('"normal :wqa!"'):with_noremap():with_silent(),
+  ["n|<d-/>"] = map_cr("call nerdcommenter#Comment('nx', 'toggle')"):with_silent(),
+  ["i|<d-/>"] = map_cr("call nerdcommenter#Comment('nx', 'toggle')"):with_silent(),
+  ["v|<d-/>"] = map_cr("call nerdcommenter#Comment('nx', 'toggle')"):with_silent(),
+  -- clap --
+  ["n|<d-C>"] = map_cu("Clap | startinsert"),
+  ["i|<d-C>"] = map_cu("Clap | startinsert"):with_noremap():with_silent(),
+  ["n|<d-p>"] = map_cu("Clap files | startinsert"),
+  ["i|<d-p>"] = map_cu("Clap files | startinsert"):with_noremap():with_silent(),
+  ["n|<d-m>"] = map_cu("Clap files | startinsert"),
+  ["n|<M-m>"] = map_cu("Clap maps +mode=n | startinsert"),
+  ["i|<M-m>"] = map_cu("Clap maps +mode=i | startinsert"),
+  ["v|<M-m>"] = map_cu("Clap maps +mode=v | startinsert"),
+  ["n|<d-f>"] = map_cu("Clap grep ++query=<cword> |  startinsert"),
+  ["i|<d-f>"] = map_cu("Clap grep ++query=<cword> |  startinsert"):with_noremap():with_silent(),
+  ["n|<d-F>"] = map_cu("Clap dumb_jump ++query=<cword> | startinsert"),
+  ["i|<d-F>"] = map_cu("Clap dumb_jump ++query=<cword> | startinsert"):with_noremap():with_silent()
 }
 --
 -- undo leader mapping
@@ -96,6 +117,11 @@ vim.cmd([[vnoremap  <leader>y  "+y]])
 vim.cmd([[nnoremap  <leader>Y  "+yg_]])
 vim.cmd([[vnoremap  <M-c>  "+y]])
 vim.cmd([[nnoremap  <M-c>  "+yg_]])
+
+vim.cmd([[vnoremap  <D-c>  *+y]])
+vim.cmd([[nnoremap  <D-c>  *+yg_]])
+vim.cmd([[inoremap  <D-c>  *+yg_]])
+vim.cmd([[inoremap  <D-v>  <CTRL-r>*]])
 
 -- vim.cmd([[nunmap j]])
 -- vim.cmd([[nunmap k]])

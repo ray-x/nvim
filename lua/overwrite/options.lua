@@ -42,7 +42,6 @@ function options:load_options()
       incsearch = true, -- Shows the match while typing
       hlsearch = true, -- Highlight found searches
       grepformat = "%f:%l:%m,%m\\ %f\\ match%ts,%f", --"%f:%l:%c:%m";
-      grepprg = "rg --hidden --vimgrep --smart-case --",
       shortmess = "aoTIc",
       -- showcmd        = false;
       cmdheight = 1,

@@ -10,14 +10,14 @@ local winwidth = function()
 end
 
 ui["kyazdani42/nvim-web-devicons"] = {}
-ui["glepnir/galaxyline.nvim"] = {
-  branch = "main",
-  -- event = "UIEnter",
-  -- after = {"aurora"},
-  -- config = conf.galaxyline,
-  -- requires = {'kyazdani42/nvim-web-devicons'},
-  opt = true
-}
+-- ui["glepnir/galaxyline.nvim"] = {
+--   branch = "main",
+--   -- event = "UIEnter",
+--   -- after = {"aurora"},
+--   -- config = conf.galaxyline,
+--   -- requires = {'kyazdani42/nvim-web-devicons'},
+--   opt = true
+-- }
 
 ui["windwp/windline.nvim"] = {
   event = "UIEnter",
@@ -73,7 +73,7 @@ ui["lukas-reineke/indent-blankline.nvim"] = {setup = conf.blankline,  opt = true
 
 ui["dstein64/nvim-scrollview"] = {config = conf.scrollview}
 
-ui["ray-x/aurora"] = {opt = true, config = conf.aurora}
+ui["~/github/aurora"] = {opt = true, config = conf.aurora}
 ui["folke/tokyonight.nvim"] = {
   opt = true,
   setup = conf.tokyonight,

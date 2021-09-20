@@ -67,7 +67,14 @@ tools["iamcco/markdown-preview.nvim"] = {
   ft = {"markdown", "pandoc.markdown", "rmd"},
   cmd = {"MarkdownPreview"},
   setup = conf.mkdp,
-  run = 'sh -c "cd app && yarn install"',
+  run = [[sh -c "cd app && yarn install"]],
+  opt = true
+}
+
+tools["turbio/bracey.vim"] = {
+  ft = {"html", "javascript", "typescript"},
+  cmd = {"Bracey", "BraceyEval"},
+  run = 'sh -c "npm install --prefix server"',
   opt = true
 }
 
@@ -124,18 +131,18 @@ tools["rmagatti/session-lens"] = {
   end
 }
 
-tools['kevinhwang91/nvim-bqf'] = {opt = true, event = "CmdlineEnter", config = conf.bqf}
+tools['kevinhwang91/nvim-bqf'] = {opt = true, event = {"CmdlineEnter", "QuickfixCmdPre"}, config = conf.bqf}
 
---
-tools["brooth/far.vim"] = {
-  cmd = {"Farr", "Farf"},
-  run = function()
-    require"packer".loader('far.vim')
-    vim.cmd [[UpdateRemotePlugins]]
-  end,
-  config = conf.far,
-  opt = true
-} -- brooth/far.vim
+-- using bqf
+-- tools["brooth/far.vim"] = {
+--   cmd = {"Farr", "Farf"},
+--   run = function()
+--     require"packer".loader('far.vim')
+--     vim.cmd [[UpdateRemotePlugins]]
+--   end,
+--   config = conf.far,
+--   opt = true
+-- } -- brooth/far.vim
 
 tools["rcarriga/vim-ultest"] = {
   requires = {"vim-test/vim-test", setup = conf.vim_test, opt = true},

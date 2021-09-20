@@ -17,14 +17,22 @@ completion["ms-jpq/coq_nvim"] = {
   after = {"coq.artifacts"},
   branch = 'coq',
   setup = function()
-    vim.g.coq_settings = { auto_start = false }
+    -- vim.g.coq_settings = { auto_start = false }
+    vim.g.coq_settings = { auto_start = false, ['display.icons.mode'] = 'short', ['display.pum.kind_context'] = {'',''}, ['display.pum.source_context'] = {'',''} , ['display.pum.fast_close'] = false}
   end,
   config = function()
     if not load_coq() then return end
-    vim.g.coq_settings = {['display.icons.mode'] = 'short', ['display.pum.kind_context'] = {'',''}, ['display.pum.source_context'] = {'',''} }
-    if vim.o.ft ~= 'lua' and vim.o.ft ~= 'sql' and vim.o.ft ~= 'vim'then
-      vim.cmd([[COQnow]])
-    end
+    vim.cmd([[COQnow]])
+  end
+}
+completion['ms-jpq/coq.thirdparty'] = {
+  -- after = {"coq_nvim"},
+  event = "InsertEnter",
+  branch = '3p',
+  config = function()
+    require("coq_3p") {
+      { src = "nvimlua", short_name = "", conf_only = true},
+    }
   end
 }
 
@@ -110,23 +118,25 @@ completion["mattn/emmet-vim"] = {
 completion[vim.fn.expand("$HOME") .. "/github/lsp_signature.nvim"] = {
   config = function()
     require"lsp_signature".setup({
-      toggle_key = [[<M-x>]],
-      doc_lines = 4,
+      bind = true,
+      toggle_key = '<M-x>',
       floating_window = true,
       floating_window_above_cur_line = true,
+      hint_enable = true,
+      fix_pos = false,
+      -- floating_window_above_first = true,
       log_path = vim.fn.expand("$HOME") .. "/tmp/sig.log",
       debug = true,
       verbose = true,
-      hi_parameter = 'Search',
-      bind = true,
+      -- hi_parameter = "Search",
+      zindex = 200,
+      timer_interval = 100,
+      extra_trigger_chars = {},
       handler_opts = {
-        border = 'single' -- "shadow", --{"╭", "─" ,"╮", "│", "╯", "─", "╰", "│" },
-      }
+      border = "single", -- "shadow", --{"╭", "─" ,"╮", "│", "╯", "─", "╰", "│" },
+      },
     })
   end
 }
--- completion['ray-x/lsp_signature.nvim'] = {
---   config = function() require "lsp_signature".on_attach() end
--- }
 
 return completion

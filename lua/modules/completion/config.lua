@@ -126,6 +126,12 @@
       -- You should specify your *installed* sources.
       sources = sources
     }
+    if vim.o.ft ~= 'clap_input' then
+      require'cmp'.setup.buffer { completion = {enable = false} }
+    end
+    vim.cmd("autocmd FileType TelescopePrompt lua require('cmp').setup.buffer { enabled = false }")
+
+    vim.cmd("autocmd FileType clap_input lua require('cmp').setup.buffer { enabled = false }")
     -- if vim.o.ft ~= 'sql' then
     --   require'cmp'.setup.buffer { completion = {autocomplete = false} }
     -- end
@@ -139,7 +145,7 @@
     print("luasnip")
     local ls = require "luasnip"
     ls.config.set_config {history = true, updateevents = "TextChanged,TextChangedI"}
-    require("luasnip.loaders.from_vscode").lazy_load {}
+    require("luasnip.loaders.from_vscode").load {}
 
     vim.api.nvim_set_keymap("i", "<C-E>", "<Plug>luasnip-next-choice", {})
     vim.api.nvim_set_keymap("s", "<C-E>", "<Plug>luasnip-next-choice", {})

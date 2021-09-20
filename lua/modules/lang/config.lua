@@ -155,7 +155,8 @@ function config.navigator()
 
   local prettier = {
     -- formatCommand = 'prettier --stdin-filepath ${INPUT}',
-    formatCommand = './node_modules/.bin/prettier --find-config-path --stdin-filepath ${INPUT}',
+    -- formatCommand = './node_modules/.bin/prettier --find-config-path --stdin-filepath ${INPUT}',
+    formatCommand = 'prettier --find-config-path --stdin-filepath ${INPUT}',
     formatStdin = true
   }
   -- local prettier = {formatCommand = 'prettier --stdin-filepath ${INPUT}', formatStdin = true}
@@ -168,7 +169,10 @@ function config.navigator()
     formatCommand = "eslint_d --fix-to-stdout --stdin --stdin-filename=${INPUT}",
     formatStdin = true
   }
-
+  local   pythonBlack ={
+    formatCommand = [[black --quiet -]],
+    formatStdin = true
+  }
   local sql_formatter = {
     formatCommand = [[sql-formatter -l plsql -i 4 -u | sed -e 's/\$ {/\${/g' | sed -e 's/: :/::/g']],
     formatStdin = true
@@ -179,7 +183,7 @@ function config.navigator()
   local efm_cfg = {
     flags = {debounce_text_changes = 2000},
     cmd = {'efm-langserver', '-loglevel', '1', '-logfile', vim.fn.expand("$HOME") .. '/tmp/efm.log'}, -- 1~10
-    init_options = {documentFormatting = true, codeAction = true, document_formatting = true},
+    init_options = {documentFormatting = true, codeAction = false, document_formatting = true},
     root_dir = require'lspconfig'.util.root_pattern({'.git/', 'package.json', '.'}),
     on_attach = function(client)
       client.resolved_capabilities.document_formatting = true
@@ -192,7 +196,7 @@ function config.navigator()
     end,
     filetypes = {
       "javascript", "javascriptreact", 'typescript', 'typescriptreact', 'html', 'css', 'go', 'lua',
-      'sql', 'json', 'markdown', 'scss', 'yaml', 'javascript.jsx', 'less', 'graphql', 'vue',
+      'sql', 'json', 'markdown', 'scss', 'yaml', 'javascript.jsx', 'less', 'graphql', 'vue', "python",
       'svelte'
     },
 
@@ -219,7 +223,7 @@ function config.navigator()
         svelte = {eslint_d, prettier},
 
         ["javascript.jsx"] = {eslint_d, prettier},
-        -- python = { python-flake8 },
+        python = { pythonBlack },
         go = {
           {
             formatCommand = "golines --max-len=120  --base-formatter=gofumpt",
@@ -330,7 +334,7 @@ end
 function config.go()
   require("go").setup({
     verbose = true,
-    goimport = 'goimports', -- 'gopls'
+    -- goimport = 'goimports', -- 'gopls'
     log_path = vim.fn.expand("$HOME") .. "/tmp/gonvim.log",
     lsp_codelens = false, -- use navigator
 

@@ -100,25 +100,25 @@ function config.vim_vista()
   vim.g.vista_default_executive = "ctags"
   vim.g.vista_echo_cursor_strategy = "floating_win"
   vim.g.vista_vimwiki_executive = "markdown"
-  vim.g.vista_executive_for = {
-    vimwiki = "markdown",
-    pandoc = "markdown",
-    markdown = "toc",
-    typescript = "nvim_lsp",
-    typescriptreact = "nvim_lsp",
-    go = "nvim_lsp",
-    lua = "nvim_lsp"
-  }
+  -- vim.g.vista_executive_for = {
+  --   vimwiki = "markdown",
+  --   pandoc = "markdown",
+  --   markdown = "toc",
+  --   typescript = "nvim_lsp",
+  --   typescriptreact = "nvim_lsp",
+  --   go = "nvim_lsp",
+  --   lua = "nvim_lsp"
+  -- }
 
-  vim.g['vista#renderer#icons'] = {['function'] = "", ['method'] = "ℱ", variable = "כֿ"}
+  -- vim.g['vista#renderer#icons'] = {['function'] = "", ['method'] = "ℱ", variable = "כֿ"}
 end
 
-function config.far()
-  -- body
-  -- vim.cmd [[UpdateRemotePlugins]]
-  vim.g["far#source"] = "rgnvim"
-  vim.g["far#cmdparse_mode"] = "shell"
-end
+-- function config.far()
+--   -- body
+--   -- vim.cmd [[UpdateRemotePlugins]]
+--   vim.g["far#source"] = "rgnvim"
+--   vim.g["far#cmdparse_mode"] = "shell"
+-- end
 
 function config.clap()
   vim.g.clap_preview_size = 10
@@ -155,7 +155,7 @@ function config.vgit()
       ['n <leader>ba'] = 'buffer_gutter_blame_preview', -- show all blames
       ['n <leader>bp'] = 'buffer_preview', -- buffer diff
       ['n <leader>bh'] = 'buffer_history', -- buffer commit history DiffviewFileHistory
-      ['n <leader>sp'] = 'buffer_staged_diff_preview', -- diff for staged changes
+      ['n <leader>gp'] = 'buffer_staged_diff_preview', -- diff for staged changes
       ['n <leader>pd'] = 'project_diff_preview',  -- diffview is slow
     },
     controller = {
@@ -335,6 +335,14 @@ function config.markdown()
   }
 end
 
+--[[
+```vim
+command! FR let old = expand("<cword>") | let rep = input("Replace " . old . " with: ", old) | execute ":FloatermNew --height=0.95 --width=0.95  git ls-files  | sad " . old . " " . rep
+```
+
+Use `git ls-files` for git files, use `find ./ *` for all files under work directory.
+]]
+
 function config.floaterm()
   -- Set floaterm window's background to black
   -- Set floating window border line color to cyan, and background to orange
@@ -343,12 +351,12 @@ function config.floaterm()
   vim.g.floaterm_height = 0.9
   vim.cmd("hi Floaterm guibg=black")
   -- vim.cmd('hi FloatermBorder guibg=orange guifg=cyan')
-  vim.cmd("command! FZF FloatermNew fzf")
-  vim.cmd("command! NNN FloatermNew --height=0.96 --width=0.96 nnn")
-  vim.cmd("command! FN FloatermNew --height=0.96 --width=0.96")
-  vim.cmd("command! LG FloatermNew --height=0.96 --width=0.96 lazygit")
-  vim.cmd("command! Sad FloatermNew --height=0.96 --width=0.96 find ./ *")
-  vim.cmd("command! Ranger FloatermNew --height=0.96 --width=0.96 ranger")
+  vim.cmd("command! FZF FloatermNew fzf --autoclose=1")
+  vim.cmd("command! NNN FloatermNew --autoclose=1 --height=0.96 --width=0.96 nnn")
+  vim.cmd("command! FN FloatermNew --autoclose=1 --height=0.96 --width=0.96")
+  vim.cmd("command! LG FloatermNew --autoclose=1 --height=0.96 --width=0.96 lazygit")
+  -- vim.cmd("command! Sad FloatermNew --autoclose=1 --height=0.96 --width=0.96 find ./ *")
+  vim.cmd("command! Ranger FloatermNew --autoclose=1 --height=0.96 --width=0.96 ranger")
 
   vim.g.floaterm_gitcommit = "split"
   vim.g.floaterm_keymap_new = "<F19>" -- S-f7
@@ -356,9 +364,9 @@ function config.floaterm()
   vim.g.floaterm_keymap_next = "<F21>"
   vim.g.floaterm_keymap_toggle = "<F24>"
   -- Use `git ls-files` for git files, use `find ./ *` for all files under work directory.
-  vim.cmd(
-      [[ command! FR let old = expand("<cword>") | let rep = input("Replace " . old . " with: ", old) | execute ":FloatermNew --height=0.95 --width=0.95  git ls-files  | sad " . old . " " . rep ]])
-
+  vim.cmd([[ command! Sad let old = expand("<cword>") | let rep = input("Replace " . old . " with: ", old) | execute ":FloatermNew --height=0.95 --width=0.95  git ls-files  | sad --pager=delta " . old . " " . rep  ]])
+  -- grep -rli 'old-word' * | xargs -i@ sed -i 's/old-word/new-word/g' @
+  --  rg -l 'old-word' * | xargs -i@ sed -i 's/old-word/new-word/g' @
 end
 
 function config.spelunker()

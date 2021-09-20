@@ -50,32 +50,6 @@ lang["nvim-treesitter/playground"] = {
   config = conf.playground
 }
 
--- lang["romgrk/nvim-treesitter-context"] = {
---     after = "nvim-treesitter",
---     opt = true;
---     cmd = {"TSContextEnable","TSContextToggle"},
---     config = function ()
---       require'treesitter-context.config'.setup{
---         enable = true, -- Enable this plugin (Can be enabled/disabled later via commands)
---       }
---     end
--- }
-
-lang["wellle/context.vim"] = {
-  after = "nvim-treesitter",
-  opt = true,
-  -- cmd = {"ContextEnable", "ContextActivate", "ContextToggle", "ContextToggleWindow", "ContextPeek"},
-  setup = function()
-    vim.g.context_enabled = 1
-    vim.g.context_max_height = 6
-    vim.g.context_filetype_blacklist = {'clap_input', ''}
-  end,
-  config = function()
-    vim.cmd([[ContextActivate]])
-    -- vim.cmd([[ContextEnable]])  -- enable on command as it has performance issue
-  end
-}
-
 lang["ElPiloto/sidekick.nvim"] = {opt = true, fn = {'SideKickNoReload'}, setup = conf.sidekick}
 
 lang["bfredl/nvim-luadev"] = {opt = true, cmd = "Luadev", setup = conf.luadev}

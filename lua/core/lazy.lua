@@ -1,4 +1,5 @@
 function lazyload()
+
   -- vim.cmd([[syntax on]])
   if vim.wo.diff then
     -- local plugins = "nvim-treesitter" -- nvim-treesitter-textobjects should be autoloaded

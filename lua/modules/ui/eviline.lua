@@ -64,7 +64,7 @@ local current_treesitter_context = function()
     indicator_size = 300,
     type_patterns = {
       "class", "function", "method", "interface", "type_spec", "table", "if_statement",
-      "for_statement", "for_in_statement"
+      "for_statement", "for_in_statement", "call_expression"
     }
   })
   local context = string.format("%s", f) -- convert to string, it may be a empty ts node
