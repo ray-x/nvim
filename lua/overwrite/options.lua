@@ -42,7 +42,7 @@ function options:load_options()
       incsearch = true, -- Shows the match while typing
       hlsearch = true, -- Highlight found searches
       grepformat = "%f:%l:%m,%m\\ %f\\ match%ts,%f", --"%f:%l:%c:%m";
-      shortmess = "aoTIc",
+      shortmess = "aotTIcF",
       -- showcmd        = false;
       cmdheight = 1,
       splitbelow = true, -- Horizontal windows should split to bottom

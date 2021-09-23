@@ -171,9 +171,8 @@ function config.vgit()
       action_delay_ms = 500
     }
   })
-  print('vgit')
-  require("vgit")._buf_attach()
-  -- body
+  -- print('vgit')
+  -- require("vgit")._buf_attach()
 end
 
 

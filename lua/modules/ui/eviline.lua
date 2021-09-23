@@ -358,12 +358,15 @@ local default = {
   active = {
     basic.square_mode, basic.ani, basic.vi_mode,
     {git_comps.git_branch(), {'magenta', 'black'}, breakpoint_width}, basic.file, basic.lsp_diagnos,
-    basic.funcname, basic.divider, -- {sep.slant_right,{'black_light', 'green_light'}},
+    basic.funcname, 
+    basic.divider, 
+    -- {sep.slant_right,{'black_light', 'green_light'}},
     -- {sep.slant_right,{'green_light', 'blue_light'}},
     -- {sep.slant_right,{'blue_light', 'red_light'}},
     -- {sep.slant_right,{'red_light', 'cyan_light'}},
     -- {sep.slant_right,{'cyan_light', 'black'}},
-    basic.file_right, basic.scrollbar_right,
+    basic.file_right, 
+    basic.scrollbar_right,
     {lsp_comps.lsp_name(), {'magenta', 'black'}, breakpoint_width}, basic.git, basic.folder,
     {' ', hl_list.Black}, basic.square_mode
   },
@@ -375,24 +378,24 @@ local default = {
 }
 -- ⚡
 
-local animation = require('wlanimation')
-local efffects = require('wlanimation.effects')
+-- local animation = require('wlanimation')
+-- local efffects = require('wlanimation.effects')
 
-animation.stop_all()
+-- animation.stop_all()
 
-spinner = {'⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏'}
-spinner2 = {'', '', '', '', '', '', ''}
-local luffy = spinner
-animation.stop_all()
-animation.basic_animation({
-  timeout = nil,
-  delay = 200,
-  interval = 150,
-  effect = efffects.list_text(luffy),
-  on_tick = function(value)
-    luffy_text = value
-  end
-})
+-- spinner = {'⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏'}
+-- spinner2 = {'', '', '', '', '', '', ''}
+-- local luffy = spinner
+-- animation.stop_all()
+-- animation.basic_animation({
+--   timeout = nil,
+--   delay = 200,
+--   interval = 150,
+--   effect = efffects.list_text(luffy),
+--   on_tick = function(value)
+--     luffy_text = value
+--   end
+-- })
 
 windline.setup({
   colors_name = function(colors)
@@ -407,13 +410,13 @@ windline.setup({
   statuslines = {default, quickfix, explorer}
 })
 
-windline.add_component({
-  name = 'test',
-  hl_colors = {red = {'red', 'black'}},
-  text = function()
-    return {{'🧛 ', 'red'}, {b_components.progress, 'red'}, {' ', 'red'}}
-  end
-}, {filetype = 'default', position = 'git'})
+-- windline.add_component({
+--   name = 'test',
+--   hl_colors = {red = {'red', 'black'}},
+--   text = function()
+--     return {{'🧛 ', 'red'}, {b_components.progress, 'red'}, {' ', 'red'}}
+--   end
+-- }, {filetype = 'default', position = 'git'})
 -- animation.animation({
 --    data = {
 --         {'red_light', efffects.rainbow()},

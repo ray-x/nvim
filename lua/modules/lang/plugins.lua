@@ -13,13 +13,18 @@ lang["nvim-treesitter/nvim-treesitter-textobjects"] = {
   opt = true
 }
 
+lang["yardnsm/vim-import-cost"] = {
+  cmd = "ImportCost",
+  opt = true
+}
+
 lang["nvim-treesitter/nvim-treesitter-refactor"] = {
   after = "nvim-treesitter-textobjects", -- manual loading
   config = conf.nvim_treesitter_ref, -- let the last loaded config treesitter
   opt = true
 }
 
-lang["lifepillar/pgsql.vim"] = {ft = {"sql", "pgsql"}}
+--lang["lifepillar/pgsql.vim"] = {ft = {"sql", "pgsql"}}
 
 lang["nanotee/sqls.nvim"] = {ft = {"sql", "pgsql"}, setup = conf.sqls, opt = true}
 

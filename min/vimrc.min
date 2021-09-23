@@ -2,9 +2,10 @@
 set termguicolors
 
 call plug#begin('~/.vim/plugged')
+if has('nvim')
 Plug 'neovim/nvim-lspconfig'
 Plug 'nvim-treesitter/nvim-treesitter'
-Plug 'liuchengxu/vim-clap' ", { 'do': { -> clap#installer#force_download() } }
+
 Plug 'jose-elias-alvarez/null-ls.nvim'
 Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/cmp-buffer'
@@ -14,11 +15,12 @@ Plug 'rafamadriz/friendly-snippets'
 Plug 'hrsh7th/cmp-nvim-lua'
 Plug 'L3MON4D3/LuaSnip'
 Plug 'saadparwaiz1/cmp_luasnip'
+Plug 'mfussenegger/nvim-jdtls'
 " Plug 'nvim-lua/popup.nvim'
 " Plug 'nvim-lua/plenary.nvim'
 " Plug 'nvim-telescope/telescope.nvim'
 
-Plug '~/github/lsp_signature.nvim'
+" Plug '~/github/lsp_signature.nvim'
 Plug '~/github/guihua.lua'
 
 Plug '~/github/navigator.lua'
@@ -26,13 +28,110 @@ Plug '~/github/navigator.lua'
 
 " Plug 'ray-x/guihua.lua'
 " Plug 'ray-x/navigator.lua'
+endif
+
+Plug 'liuchengxu/vim-clap' ", { 'do': { -> clap#installer#force_download() } }
 Plug 'ray-x/aurora'
 
 call plug#end()
 
+set mouse=a
 
+colorscheme aurora
+
+if ! has('nvim')
+  finish
+endif
+
+"--"vim.fn.expand('$HOME').. {cmd = {"/Users/ray.xu/bin/jdtls.sh"}, 
+
+augroup lsp
+    au!
+    au FileType java lua require('jdtls').start_or_attach({settings = {java = {signatureHelp = { enabled = true }; contentProvider = { preferred = 'fernflower' };}}, on_init =  function(client) print('init ') if client.config.settings then client.notify('workspace/didChangeConfiguration', { settings = client.config.settings })end end})
+augroup end
 
 lua <<EOF
+vim.lsp.set_log_level("debug")
+log_path = vim.fn.expand("$HOME") .. "/tmp/neovim_debug.log"
+
+lprint = function(...)
+  local arg = {...}
+  local str = "שׁ "
+  local lineinfo = ''
+
+  local info = debug.getinfo(2, "Sl")
+  lineinfo = info.short_src .. ":" .. info.currentline
+  str = str .. lineinfo
+
+  for i, v in ipairs(arg) do
+    if type(v) == "table" then
+      str = str .. " |" .. tostring(i) .. ": " .. vim.inspect(v) .. "\n"
+    else
+      str = str .. " |" .. tostring(i) .. ": " .. tostring(v)
+    end
+  end
+  if #str > 2 then
+    if log_path ~= nil and #log_path > 3 then
+      local f = io.open(log_path, "a+")
+      io.output(f)
+      io.write(str .. "\n")
+      io.close(f)
+    else
+      print(str .. "\n")
+    end
+  end
+end
+
+
+  local efm_cfg = {
+    flags = {debounce_text_changes = 2000},
+    cmd = {'efm-langserver', '-loglevel', '1', '-logfile', vim.fn.expand("$HOME") .. '/tmp/efm.log'}, -- 1~10
+    init_options = {documentFormatting = true, codeAction = false, document_formatting = true},
+    root_dir = require'lspconfig'.util.root_pattern({'.git/', 'package.json', '.'}),
+    on_attach = function(client)
+      client.resolved_capabilities.document_formatting = true
+      client.resolved_capabilities.goto_definition = false
+      -- client.resolved_capabilities.code_action = nil
+      local log = require("guihua.log").new({level = "info"}, true)
+      vim.cmd([[autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting()]])
+      -- print ("efm attached")
+      -- set_lsp_config(client)
+    end,
+    filetypes = {
+       'go', 'lua','sql',
+    },
+
+    settings = {
+      rootMarkers = {".git/", 'package.json', 'Makefile', 'go.mod'},
+      lintDebounce = "1s",
+      formatDebounce = "1000ms",
+      languages = {
+        go = {
+          {
+            formatCommand = "golines --max-len=120  --base-formatter=gofumpt",
+            formatStdin = true,
+            lintCommand = "golangci-lint run",
+            LintSeverity = 3
+          }
+        },
+        lua = {
+          {
+            formatCommand = "lua-format --indent-width 2 --tab-width 2 --no-use-tab --column-limit 120 --column-table-limit 100 --no-keep-simple-function-one-line --no-chop-down-table --chop-down-kv-table --no-keep-simple-control-block-one-line --no-keep-simple-function-one-line --no-break-after-functioncall-lp --no-break-after-operator",
+            formatStdin = true
+          }
+        },
+      }
+    }
+  }
+
+-- require'lspconfig'.efm.setup(efm_cfg)
+
+
+
+
+
+
+local jdtlsstartup = vim.fn.expand('$HOME').."/bin/jdtls.sh"
 
 require'nvim-treesitter.configs'.setup {
   highlight = {
@@ -46,13 +145,7 @@ local nvim_lsp = require('lspconfig')
 -- after the language server attaches to the current buffer
 
 
-require'lspconfig'.gopls.setup({
-  flags = {
-      debounce_text_changes = 150,
-    }
-})
 
-require'lspconfig'.pyright.setup({})
 
 
 local ls = require "luasnip"
@@ -77,25 +170,53 @@ cmp.setup {
     },
     sources = {{name = 'nvim_lsp'}, {name = 'buffer'}, {name = 'nvim_lua'}, {name='luasnip'}}
 }
+local sumneko_dir = vim.fn.stdpath('data') .. '/lspinstall/lua/sumneko-lua/extension/server'
 
 
-require'lsp_signature'.setup({toggle_key = nil,
-    floating_window = true,
-    -- floating_window_above_first = false,
-    log_path = vim.fn.expand("$HOME") .. "/tmp/sig.log",
-    debug = true,
-    hi_parameter = "Search",
-    bind = true,
-    extra_trigger_chars = { "(", "," },
-    handler_opts = {
-    border = "single", -- "shadow", --{"╭", "─" ,"╮", "│", "╯", "─", "╰", "│" },
-}})
+local sumneko_root_path = vim.fn.expand("$HOME") .. "/github/sumneko/lua-language-server"
+local sumneko_binary = vim.fn.expand("$HOME")
+                             .. "/github/sumneko/lua-language-server/bin/macOS/lua-language-server"
+
+local single = {"╭", "─", "╮", "│", "╯", "─", "╰", "│"}
+print("navigator setup")
+
+require('navigator').setup({
+  debug = true,
+  width = 0.7,
+  border = single, -- "single",
+  lsp = { sumneko_lua = {
+    sumneko_binary = sumneko_binary,
+    sumneko_root_path = sumneko_root_path,
+    },
+    efm=efm_cfg,
+  }
+})
+
+
+
+
+-- require'lsp_signature'.setup({toggle_key = nil,
+--     floating_window = true,
+--     -- floating_window_above_first = false,
+--     log_path = vim.fn.expand("$HOME") .. "/tmp/sig.log",
+--     debug = true,
+--     hi_parameter = "Search",
+--     bind = true,
+--     extra_trigger_chars = { "(", "," },
+--     handler_opts = {
+--     border = "single", -- "shadow", --{"╭", "─" ,"╮", "│", "╯", "─", "╰", "│" },
+-- }})
+
+-- require'lspconfig'.gopls.setup({
+--   flags = {
+--       debounce_text_changes = 150,
+--     }
+-- })
+-- 
+-- require'lspconfig'.pyright.setup({})
 
 EOF
 
-set mouse=a
-
-colorscheme aurora
 
 ""---------------------------Unused----------------------------------""
 

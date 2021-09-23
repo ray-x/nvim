@@ -145,6 +145,7 @@ local treesitter = function()
   -- vim.api.nvim_command("setlocal foldmethod=expr")
   -- vim.api.nvim_command("setlocal foldexpr=nvim_treesitter#foldexpr()")
   -- print("loading ts")
+  vim.cmd([[syntax on]])
 end
 
 local treesitter_ref = function()
@@ -195,6 +196,15 @@ local treesitter_ref = function()
     },
     autopairs = {enable = true},
     autotag = {enable = true},
+  }
+  local parser_config = require "nvim-treesitter.parsers".get_parser_configs()
+  parser_config.sql = {
+    install_info = {
+      url = vim.fn.expand("$HOME") ..  "/github/nvim-treesitter/tree-sitter-sql", -- local path or git repo
+      files = {"src/parser.c"}
+    },
+    filetype = "sql", -- if filetype does not agrees with parser name
+    used_by = {"psql", "pgsql"} -- additional filetypes that use this parser
   }
 end
 -- treesitter()

@@ -138,8 +138,6 @@ function config.navigator()
   local luadev = {}
   if ok and l then
     luadev = l.setup(cfg)
-  else
-    print("lua-dev not loaded")
   end
   luadev.sumneko_root_path = sumneko_root_path
   luadev.sumneko_binary = sumneko_binary
@@ -196,7 +194,7 @@ function config.navigator()
     end,
     filetypes = {
       "javascript", "javascriptreact", 'typescript', 'typescriptreact', 'html', 'css', 'go', 'lua',
-      'sql', 'json', 'markdown', 'scss', 'yaml', 'javascript.jsx', 'less', 'graphql', 'vue', "python",
+      'sql', 'json', 'markdown', 'scss', 'yaml', 'javascript.jsx', 'less', 'graphql', 'vue',
       'svelte'
     },
 
@@ -223,7 +221,7 @@ function config.navigator()
         svelte = {eslint_d, prettier},
 
         ["javascript.jsx"] = {eslint_d, prettier},
-        python = { pythonBlack },
+        -- python = { pythonBlack },
         go = {
           {
             formatCommand = "golines --max-len=120  --base-formatter=gofumpt",
@@ -255,10 +253,10 @@ function config.navigator()
     -- keymaps = {{key = "<space>kk", func = "formatting()"}},
     lsp = {
       format_on_save = true, -- set to false to disasble lsp code format on save (if you are using prettier/efm/formater etc)
-      disable_format_ft = {"sqls", "gopls"}, -- a list of lsp not enable auto-format (e.g. if you using efm or vim-codeformat etc)
-      disable_lsp = {'denols'},
+      disable_format_cap = {"sqls", "gopls"}, -- a list of lsp not enable auto-format (e.g. if you using efm or vim-codeformat etc)
+      -- disable_lsp = {'denols'},
+      disable_lsp = {},
       code_lens = true,
-      diag_scroll_bar_sign = {'▃', '█'}, -- to enable diagnostic status in scroll bar area
       disply_diagnostic_qf = false,
       denols = {filetypes = {}},
       tsserver = {
@@ -294,6 +292,7 @@ function config.navigator()
       efm = efm_cfg
     }
   }
+  vim.lsp.set_log_level("info")
   require"navigator".setup(nav_cfg)
 end
 

@@ -30,6 +30,7 @@ completion['ms-jpq/coq.thirdparty'] = {
   event = "InsertEnter",
   branch = '3p',
   config = function()
+    if not load_coq() then return end
     require("coq_3p") {
       { src = "nvimlua", short_name = "", conf_only = true},
     }
@@ -37,8 +38,8 @@ completion['ms-jpq/coq.thirdparty'] = {
 }
 
 completion["ms-jpq/coq.artifacts"] = {
-  -- opt = true,
-  event = "InsertEnter",
+  opt = true,
+  -- event = "InsertEnter",
   branch = 'artifacts'
 }
 

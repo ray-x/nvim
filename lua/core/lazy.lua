@@ -19,6 +19,8 @@ function lazyload()
   local syn_on = not vim.tbl_contains(disable_ft, vim.bo.filetype)
   if syn_on then
     vim.cmd([[syntax manual]])
+  else
+    vim.cmd([[syntax on]])
   end
 
   -- local fname = vim.fn.expand("%:p:f")
@@ -50,15 +52,14 @@ function lazyload()
   end
 
   if load_lsp then
-    loader("nvim-lspconfig lsp_signature.nvim") -- null-ls.nvim
+    loader("nvim-lspconfig") -- null-ls.nvim
   end
-
-  -- require'lsp.config'.setup()
 
   require("vscripts.cursorhold")
   require("vscripts.tools")
 
   if load_lsp or load_ts_plugins then
+    loader("lsp_signature.nvim")
     loader("guihua.lua")
     loader("navigator.lua")
   end
@@ -67,7 +68,6 @@ function lazyload()
   -- print(bytes)
 
   if load_ts_plugins then
-    print("ts load")
     plugins = "nvim-treesitter nvim-treesitter-refactor indent-blankline.nvim nvim-ts-autotag" --  nvim-ts-rainbow  nvim-treesitter nvim-treesitter-refactor
     -- nvim-treesitter-textobjects should be autoloaded
     loader(plugins)
@@ -80,7 +80,7 @@ function lazyload()
     --   vim.cmd([[setlocal syntax=on]])
   end
 
-  if bytes < 1024 * 1024 and syn_on then
+  if bytes < 2 * 1024 * 1024 and syn_on then
     vim.cmd([[setlocal syntax=on]])
   end
 
@@ -90,8 +90,6 @@ function lazyload()
       [[autocmd FileType * silent! lua if vim.fn.wordcount()['bytes'] > 2048000 then print("syntax off") vim.cmd("setlocal syntax=off") end]])
   vim.cmd(
       [[autocmd FileType * silent! lua if vim.fn.wordcount()['bytes'] < 2048000 then print("syntax on") vim.cmd("setlocal syntax=on") end]])
-  vim.cmd(
-      [["autocmd TextChanged,InsertLeave *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync"]])
 
 end
 
