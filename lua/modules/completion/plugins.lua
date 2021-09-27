@@ -17,17 +17,18 @@ completion["ms-jpq/coq_nvim"] = {
   after = {"coq.artifacts"},
   branch = 'coq',
   setup = function()
-    -- vim.g.coq_settings = { auto_start = false }
-    vim.g.coq_settings = { auto_start = false, ['display.icons.mode'] = 'short', ['display.pum.kind_context'] = {'',''}, ['display.pum.source_context'] = {'',''} , ['display.pum.fast_close'] = false}
+    vim.g.coq_settings = { auto_start = false }
+    -- vim.g.coq_settings = { auto_start = false, ['display.icons.mode'] = 'short', ['display.pum.kind_context'] = {'',''}, ['display.pum.source_context'] = {'',''} , ['display.pum.fast_close'] = false}
   end,
   config = function()
+    vim.g.coq_settings = { auto_start = false, ['display.icons.mode'] = 'short', ['display.pum.kind_context'] = {'',''}, ['display.pum.source_context'] = {'',''} ,  ['display.icons.spacing'] = 0}  --['display.pum.fast_close'] = false,
     if not load_coq() then return end
     vim.cmd([[COQnow]])
   end
 }
 completion['ms-jpq/coq.thirdparty'] = {
-  -- after = {"coq_nvim"},
-  event = "InsertEnter",
+  after = {"coq_nvim"},
+  -- event = "InsertEnter",
   branch = '3p',
   config = function()
     if not load_coq() then return end
@@ -38,7 +39,7 @@ completion['ms-jpq/coq.thirdparty'] = {
 }
 
 completion["ms-jpq/coq.artifacts"] = {
-  opt = true,
+  --opt = true,
   -- event = "InsertEnter",
   branch = 'artifacts'
 }

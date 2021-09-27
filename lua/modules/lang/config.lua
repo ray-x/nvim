@@ -292,7 +292,7 @@ function config.navigator()
       efm = efm_cfg
     }
   }
-  vim.lsp.set_log_level("info")
+  vim.lsp.set_log_level("error")
   require"navigator".setup(nav_cfg)
 end
 

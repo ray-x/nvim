@@ -44,7 +44,7 @@ endif
 " set guifont=Victor\ Mono:h14
 if exists('g:neoray')
     "set guifont=Go_Mono:h11
-    set guifont=Victor\ Mono:h14
+    set guifont=SpaceMono:h14
     NeoraySet CursorAnimTime 0.04
     NeoraySet Transparency   0.95
     NeoraySet TargetTPS      120

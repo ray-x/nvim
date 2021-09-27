@@ -16,6 +16,7 @@ Plug 'hrsh7th/cmp-nvim-lua'
 Plug 'L3MON4D3/LuaSnip'
 Plug 'saadparwaiz1/cmp_luasnip'
 Plug 'mfussenegger/nvim-jdtls'
+Plug 'kabouzeid/nvim-lspinstall'
 " Plug 'nvim-lua/popup.nvim'
 " Plug 'nvim-lua/plenary.nvim'
 " Plug 'nvim-telescope/telescope.nvim'
@@ -170,7 +171,6 @@ cmp.setup {
     },
     sources = {{name = 'nvim_lsp'}, {name = 'buffer'}, {name = 'nvim_lua'}, {name='luasnip'}}
 }
-local sumneko_dir = vim.fn.stdpath('data') .. '/lspinstall/lua/sumneko-lua/extension/server'
 
 
 local sumneko_root_path = vim.fn.expand("$HOME") .. "/github/sumneko/lua-language-server"
@@ -183,6 +183,7 @@ print("navigator setup")
 require('navigator').setup({
   debug = true,
   width = 0.7,
+  lspinstall = false,
   border = single, -- "single",
   lsp = { sumneko_lua = {
     sumneko_binary = sumneko_binary,

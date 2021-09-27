@@ -12,23 +12,23 @@ M.setup = function()
   local capabilities = vim.lsp.protocol.make_client_capabilities()
   capabilities.textDocument.completion.completionItem.snippetSupport = true
 
-  -- if not lspconfig.emmet_ls then
-  --   configs.emmet_ls = {
-  --     default_config = {
-  --       cmd = {'emmet-ls', '--stdio'},
-  --       filetypes = {'html', 'css'},
-  --       root_dir = function(fname)
-  --         return vim.loop.cwd()
-  --       end,
-  --       settings = {}
-  --     }
-  --   }
-  -- end
+  if not lspconfig.emmet_ls then
+    configs.emmet_ls = {
+      default_config = {
+        cmd = {'emmet-ls', '--stdio'},
+        filetypes = {'html', 'css'},
+        root_dir = function(fname)
+          return vim.loop.cwd()
+        end,
+        settings = {}
+      }
+    }
+  end
 
-  -- lspconfig.emmet_ls.setup {capabilities = capabilities}
+  lspconfig.emmet_ls.setup {capabilities = capabilities}
   -- print(vim.inspect(lspconfig.emmet_ls))
   -- print(vim.inspect(capabilities.textDocument.completion))
-  --
+  
   --
   --
 
