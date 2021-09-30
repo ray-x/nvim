@@ -74,7 +74,7 @@ ui["lukas-reineke/indent-blankline.nvim"] = {setup = conf.blankline, opt = true}
 
 ui["dstein64/nvim-scrollview"] = {config = conf.scrollview}
 
-ui["~/github/aurora"] = {opt = true, config = conf.aurora}
+ui[ plugin_folder() .. "aurora"] = {opt = true, config = conf.aurora}
 ui["folke/tokyonight.nvim"] = {
   opt = true,
   setup = conf.tokyonight,
@@ -95,8 +95,8 @@ ui["projekt0n/github-nvim-theme"] = {
     local v = math.random(1, 2)
     local st = styles[v]
     require('github-theme').setup({
-      functionStyle = "bold",
-      themeStyle = st,
+      function_style = "bold",
+      theme_style = st,
       sidebars = {"qf", "vista_kind", "terminal", "packer"},
       colors = {bg_statusline = '#332344'}
     })

@@ -77,12 +77,6 @@ _G.ctrl_k = function()
   vim.cmd([[:MatchupWhereAmI?]])
 end
 
-_G.load_coq = function()
-  return false
-  -- if vim.o.ft == 'lua' or vim.o.ft == 'sql' or vim.o.ft == 'vim' then return false end
-  -- return true
-end
-
 _G.word_motion_move = function(key)
   if not packer_plugins['vim-wordmotion'] or not packer_plugins['vim-wordmotion'].loaded then
     require'packer'.loader("vim-wordmotion")

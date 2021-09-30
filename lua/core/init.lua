@@ -59,6 +59,12 @@ _G.plugin_folder = function()
   return Plugin_folder
 end
 
+_G.load_coq = function()
+  return false
+  -- if vim.o.ft == 'lua' or vim.o.ft == 'sql' or vim.o.ft == 'vim' then return false end
+  -- return true
+end
+
 local load_core = function()
   local pack = require('core.pack')
   -- print(vim.inspect(debug.traceback()))

@@ -10,6 +10,8 @@ completion["neovim/nvim-lspconfig"] = {
   opt = true
 }
 
+if load_coq() then
+
 completion["ms-jpq/coq_nvim"] = {
   -- opt = true,
   -- ft = {'html','css', 'javascript', 'java', 'typescript', 'typescriptreact','go', 'python', 'cpp', 'c', 'rust'},
@@ -47,10 +49,16 @@ completion['ms-jpq/coq.thirdparty'] = {
 }
 
 completion["ms-jpq/coq.artifacts"] = {
-  opt = true,
-  -- event = "InsertEnter",
+  -- opt = true,
+  event = "InsertEnter",
   branch = 'artifacts'
 }
+
+else
+completion["ms-jpq/coq_nvim"] = {opt = true}
+completion['ms-jpq/coq.thirdparty'] = {opt = true}
+completion["ms-jpq/coq.artifacts"] = {opt = true}
+end  
 
 -- loading sequence LuaSnip -> nvim-cmp -> cmp_luasnip -> cmp-nvim-lua -> cmp-nvim-lsp ->cmp-buffer -> friendly-snippets
 completion["hrsh7th/nvim-cmp"] = {
