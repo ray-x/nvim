@@ -56,12 +56,12 @@ local winwidth = function()
   return vim.api.nvim_call_function("winwidth", {0})
 end
 
-local current_treesitter_context = function()
+local current_treesitter_context = function(width)
   if not packer_plugins["nvim-treesitter"] or packer_plugins["nvim-treesitter"].loaded == false then
     return " "
   end
   local f = require'nvim-treesitter'.statusline({
-    indicator_size = 300,
+    indicator_size = width,
     type_patterns = {
       "class", "function", "method", "interface", "type_spec", "table", "if_statement",
       "for_statement", "for_in_statement", "call_expression"
@@ -80,21 +80,21 @@ local current_treesitter_context = function()
   return " " .. context
 end
 
-local current_function = function()
-  local wwidth = winwidth()
-  if wwidth < 50 then
+local current_function = function(width)
+  -- local wwidth = winwidth()
+  if width < 50 then
     return ""
   end
-  local ts = current_treesitter_context()
+  local ts = current_treesitter_context(width)
   if string.len(ts) < 4 then
     return " "
   end
-  if wwidth > 200 then
-    wwidth = wwidth * 2 / 3
+  if width > 200 then
+    width = width * 2 / 3
   else
-    wwidth = wwidth * 1 / 2
+    width = width * 1 / 2
   end
-  return string.sub(" " .. ts, 1, wwidth)
+  return string.sub(" " .. ts, 1, width)
 end
 
 local should_show = function()
@@ -289,16 +289,18 @@ basic.funcname = {
     white = {'white', 'black'},
     green_light = {'green_light', 'black'}
   },
-  text = function(_, winnr)
-    return {{' ', 'default'}, {current_function(), 'green_light'}, {' ', 'default'}}
+  text = function(_, winnr, width, is_float)
+    return {{' ', 'default'}, {current_function(width), 'green_light'}, {' ', 'default'}}
   end
 }
 
 basic.file_right = {
   hl_colors = {default = hl_list.Black, white = {'white', 'black'}, magenta = {'magenta', 'black'}},
   text = function(_, winnr, width, is_float)
-    if width < breakpoint_width or is_float then
+    if width < breakpoint_width then
       return {{b_components.line_col_lua, 'white'}, {b_components.progress_lua, ''}, {' ', ''}}
+    else
+      return {{b_components.line_col_lua, 'white'}}
     end
   end
 }
