@@ -59,6 +59,19 @@ _G.plugin_folder = function()
   return Plugin_folder
 end
 
+_G.plugin_debug = function()
+  if Plugin_debug ~= nil then
+    return Plugin_debug
+  end
+  local host = os.getenv("HOST_NAME")
+  if host and host:find('Ray') then
+    Plugin_debug = true
+  else
+    Plugin_debug = false
+  end
+  return Plugin_debug
+end
+
 _G.load_coq = function()
   return false
   -- if vim.o.ft == 'lua' or vim.o.ft == 'sql' or vim.o.ft == 'vim' then return false end

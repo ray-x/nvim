@@ -245,7 +245,7 @@ function config.navigator()
   }
 
   local nav_cfg = {
-    debug = true,
+    debug = plugin_debug(),
     width = 0.7,
     lspinstall = false,
     border = single, -- "single",
@@ -326,7 +326,7 @@ function config.lua_dev()
   --     -- on_attach = ...
   --   }
   -- }
--- 
+--
   -- local luadev = require("lua-dev").setup(cfg)
   -- print(vim.inspect(luadev))
   -- require('lspconfig').sumneko_lua.setup(luadev)
@@ -334,11 +334,11 @@ end
 
 function config.go()
   require("go").setup({
-    verbose = true,
+    verbose = plugin_debug(),
     -- goimport = 'goimports', -- 'gopls'
+    filstruct = 'gopls',
     log_path = vim.fn.expand("$HOME") .. "/tmp/gonvim.log",
     lsp_codelens = false, -- use navigator
-
     dap_debug = true,
     dap_debug_gui = true
   })

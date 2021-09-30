@@ -12,53 +12,53 @@ completion["neovim/nvim-lspconfig"] = {
 
 if load_coq() then
 
-completion["ms-jpq/coq_nvim"] = {
-  -- opt = true,
-  -- ft = {'html','css', 'javascript', 'java', 'typescript', 'typescriptreact','go', 'python', 'cpp', 'c', 'rust'},
-  -- event = "InsertCharPre",
-  after = {"coq.artifacts"},
-  branch = 'coq',
-  setup = function()
-    vim.g.coq_settings = {auto_start = false}
-    -- vim.g.coq_settings = { auto_start = false, ['display.icons.mode'] = 'short', ['display.pum.kind_context'] = {'',''}, ['display.pum.source_context'] = {'',''} , ['display.pum.fast_close'] = false}
-  end,
-  config = function()
-    vim.g.coq_settings = {
-      auto_start = false,
-      ['display.icons.mode'] = 'short',
-      ['display.pum.kind_context'] = {'', ''},
-      ['display.pum.source_context'] = {'', ''},
-      ['display.icons.spacing'] = 0
-    } -- ['display.pum.fast_close'] = false,
-    if not load_coq() then
-      return
+  completion["ms-jpq/coq_nvim"] = {
+    -- opt = true,
+    -- ft = {'html','css', 'javascript', 'java', 'typescript', 'typescriptreact','go', 'python', 'cpp', 'c', 'rust'},
+    -- event = "InsertCharPre",
+    after = {"coq.artifacts"},
+    branch = 'coq',
+    setup = function()
+      vim.g.coq_settings = {auto_start = false}
+      -- vim.g.coq_settings = { auto_start = false, ['display.icons.mode'] = 'short', ['display.pum.kind_context'] = {'',''}, ['display.pum.source_context'] = {'',''} , ['display.pum.fast_close'] = false}
+    end,
+    config = function()
+      vim.g.coq_settings = {
+        auto_start = false,
+        ['display.icons.mode'] = 'short',
+        ['display.pum.kind_context'] = {'', ''},
+        ['display.pum.source_context'] = {'', ''},
+        ['display.icons.spacing'] = 0
+      } -- ['display.pum.fast_close'] = false,
+      if not load_coq() then
+        return
+      end
+      vim.cmd([[COQnow]])
     end
-    vim.cmd([[COQnow]])
-  end
-}
-completion['ms-jpq/coq.thirdparty'] = {
-  after = {"coq_nvim"},
-  -- event = "InsertEnter",
-  branch = '3p',
-  config = function()
-    if not load_coq() then
-      return
+  }
+  completion['ms-jpq/coq.thirdparty'] = {
+    after = {"coq_nvim"},
+    -- event = "InsertEnter",
+    branch = '3p',
+    config = function()
+      if not load_coq() then
+        return
+      end
+      require("coq_3p") {{src = "nvimlua", short_name = "", conf_only = true}}
     end
-    require("coq_3p") {{src = "nvimlua", short_name = "", conf_only = true}}
-  end
-}
+  }
 
-completion["ms-jpq/coq.artifacts"] = {
-  -- opt = true,
-  event = "InsertEnter",
-  branch = 'artifacts'
-}
+  completion["ms-jpq/coq.artifacts"] = {
+    -- opt = true,
+    event = "InsertEnter",
+    branch = 'artifacts'
+  }
 
 else
-completion["ms-jpq/coq_nvim"] = {opt = true}
-completion['ms-jpq/coq.thirdparty'] = {opt = true}
-completion["ms-jpq/coq.artifacts"] = {opt = true}
-end  
+  completion["ms-jpq/coq_nvim"] = {opt = true}
+  completion['ms-jpq/coq.thirdparty'] = {opt = true}
+  completion["ms-jpq/coq.artifacts"] = {opt = true}
+end
 
 -- loading sequence LuaSnip -> nvim-cmp -> cmp_luasnip -> cmp-nvim-lua -> cmp-nvim-lsp ->cmp-buffer -> friendly-snippets
 completion["hrsh7th/nvim-cmp"] = {
@@ -144,8 +144,8 @@ completion[plugin_folder() .. "lsp_signature.nvim"] = {
       fix_pos = false,
       -- floating_window_above_first = true,
       log_path = vim.fn.expand("$HOME") .. "/tmp/sig.log",
-      debug = true,
-      verbose = true,
+      debug = plugin_debug(),
+      verbose = plugin_debug(),
       -- hi_parameter = "Search",
       zindex = 200,
       timer_interval = 100,

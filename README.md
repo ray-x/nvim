@@ -84,9 +84,10 @@ I used following plugin a lots
   tabular, lsp based code formating (or, sometimes prettier), auto-pair
 
 - Menu and tab:
-  * quickui(created a menu for the function/keybind I used less often. I can not remember all the commands and keybinds....)
-  But Damn, I spend lots of time configuring it, however, it was used rarely. So I end up delete the plugin.
-  * nvim-bufferline.lua: Yes, with lua and neovim only
+
+  - quickui(created a menu for the function/keybind I used less often. I can not remember all the commands and keybinds....)
+    But Damn, I spend lots of time configuring it, however, it was used rarely. So I end up delete the plugin.
+  - nvim-bufferline.lua: Yes, with lua and neovim only
 
 - Tools: floatterm, scrollview
 

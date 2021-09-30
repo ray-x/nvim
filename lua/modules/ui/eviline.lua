@@ -237,13 +237,14 @@ end
 basic.file = {
   name = 'file',
   hl_colors = {default = hl_list.Black, white = {'white', 'black'}, magenta = {'magenta', 'black'}},
-  text = function(_, winnr)
-    if vim.api.nvim_win_get_width(winnr) > breakpoint_width then
+  text = function(_, winnr, width, is_float)
+    lprint("winline", width, is_float)
+    if width < breakpoint_width then  --vim.api.nvim_win_get_width(winnr)
       return {
         {b_components.cache_file_size(), 'default'}, {' ', ''},
         {b_components.cache_file_icon({default = ''}), 'default'}, {' ', ''},
         {b_components.cache_file_name('[No Name]', ''), 'magenta'},
-        {b_components.line_col, 'white'}, -- { b_components.progress, '' },
+        -- {b_components.line_col_lua, 'white'}, -- { b_components.progress, '' },
         -- { ' ', '' },
         {b_components.file_modified(' '), 'magenta'}
       }
@@ -295,18 +296,18 @@ basic.funcname = {
 
 basic.file_right = {
   hl_colors = {default = hl_list.Black, white = {'white', 'black'}, magenta = {'magenta', 'black'}},
-  text = function(_, winnr)
-    if vim.api.nvim_win_get_width(winnr) < breakpoint_width then
-      return {{b_components.line_col, 'white'}, {b_components.progress, ''}, {' ', ''}}
+  text = function(_, winnr, width, is_float)
+    if width < breakpoint_width or is_float then
+      return {{b_components.line_col_lua, 'white'}, {b_components.progress_lua, ''}, {' ', ''}}
     end
   end
 }
 
 basic.scrollbar_right = {
   hl_colors = {default = hl_list.Black, white = {'white', 'black'}, blue = {'blue', 'black'}},
-  text = function(_, winnr)
-    if vim.api.nvim_win_get_width(winnr) > breakpoint_width then
-      return {{b_components.progress, ''}, {' ', ''}, {scrollbar_instance(), 'blue'}}
+  text = function(_, winnr, width, is_float)
+    if width > breakpoint_width or is_float then
+      return {{b_components.progress_lua, ''}, {' ', ''}, {scrollbar_instance(), 'blue'}}
     end
   end
 }
@@ -372,8 +373,8 @@ local default = {
   },
   inactive = {
     {b_components.full_file_name, hl_list.Inactive}, basic.file_name_inactive, basic.divider,
-    basic.divider, {b_components.line_col, hl_list.Inactive},
-    {b_components.progress, hl_list.Inactive}
+    basic.divider, {b_components.line_col_lua, hl_list.Inactive},
+    {b_components.progress_lua, hl_list.Inactive}
   }
 }
 -- ⚡

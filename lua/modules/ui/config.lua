@@ -394,6 +394,10 @@ local themes = {
   "material_plus.nvim", "aurora", "aurora", "tokyonight.nvim", "material_plus.nvim", "aurora",
   "zephyr-nvim", "gruvbox-material", "sonokai", "github-nvim-theme"
 }
+if plugin_folder() == [[~/github/]] then
+  -- debug the color theme
+  themes = {"material_plus.nvim"}
+end
 local v = math.random(1, #themes)
 local loading_theme = themes[v]
 -- if loading_theme == "gruvbox.nvim" then
