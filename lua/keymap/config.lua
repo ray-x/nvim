@@ -11,7 +11,6 @@ local t = function(str)
   return vim.api.nvim_replace_termcodes(str, true, true, true)
 end
 
-
 local is_prior_char_whitespace = function()
   local col = vim.fn.col('.') - 1
   if col == 0 or vim.fn.getline('.'):sub(col, col):match('%s') then
@@ -22,7 +21,7 @@ local is_prior_char_whitespace = function()
 end
 
 local function termcodes(code)
-    return vim.api.nvim_replace_termcodes(code, true, true, true)
+  return vim.api.nvim_replace_termcodes(code, true, true, true)
 end
 
 --- move to prev/next item in completion menuone
@@ -50,7 +49,7 @@ end
 --     end
 -- end
 
---_G.tab_complete = function()
+-- _G.tab_complete = function()
 --  if vim.fn.pumvisible() == 1 then
 --    return t "<C-n>"
 --  elseif vim.fn.call("vsnip#available", {1}) == 1 then
@@ -60,9 +59,9 @@ end
 --  else
 --    return require('cmp').mapping.select_next_item()
 --  end
---end
+-- end
 --
---_G.s_tab_complete = function()
+-- _G.s_tab_complete = function()
 --  local ls = require "luasnip"
 --  if vim.fn.pumvisible() == 1 then
 --    return t "<C-p>"
@@ -71,7 +70,7 @@ end
 --  else
 --    return t "<S-Tab>"
 --  end
---end
+-- end
 
 _G.ctrl_k = function()
   vim.lsp.buf.signature_help()
@@ -80,8 +79,8 @@ end
 
 _G.load_coq = function()
   return false
-  --if vim.o.ft == 'lua' or vim.o.ft == 'sql' or vim.o.ft == 'vim' then return false end
-  --return true
+  -- if vim.o.ft == 'lua' or vim.o.ft == 'sql' or vim.o.ft == 'vim' then return false end
+  -- return true
 end
 
 _G.word_motion_move = function(key)

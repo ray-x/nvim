@@ -70,7 +70,7 @@ ui["kyazdani42/nvim-tree.lua"] = {
 --   end
 -- }
 
-ui["lukas-reineke/indent-blankline.nvim"] = {setup = conf.blankline,  opt = true} -- after="nvim-treesitter",
+ui["lukas-reineke/indent-blankline.nvim"] = {setup = conf.blankline, opt = true} -- after="nvim-treesitter",
 
 ui["dstein64/nvim-scrollview"] = {config = conf.scrollview}
 
@@ -94,17 +94,14 @@ ui["projekt0n/github-nvim-theme"] = {
     local styles = {'dark', 'dimmed'}
     local v = math.random(1, 2)
     local st = styles[v]
-    require('github-theme').setup(
-      {
-        functionStyle = "bold",
-        themeStyle =  st,
-        sidebars = {"qf", "vista_kind", "terminal", "packer"},
-        colors = {bg_statusline = '#332344'}
-      }
-    )
+    require('github-theme').setup({
+      functionStyle = "bold",
+      themeStyle = st,
+      sidebars = {"qf", "vista_kind", "terminal", "packer"},
+      colors = {bg_statusline = '#332344'}
+    })
   end
 }
-
 
 -- ui["ChristianChiarulli/nvcode-color-schemes.vim"] = {opt = true, config = conf.nvcode}
 
@@ -114,8 +111,8 @@ ui["sainnhe/gruvbox-material"] = {opt = true, config = conf.gruvbox}
 -- cant config cursor line
 -- ui["rafamadriz/neon"] = {opt = true, config = conf.neon}
 
-ui["~/github/zephyr-nvim"] = {opt = true, config = conf.zephyr}
-ui["~/github/material_plus.nvim"] = {
+ui["glepnir/zephyr-nvim"] = {opt = true, config = conf.zephyr}
+ui[plugin_folder() .. "material_plus.nvim"] = {
   opt = true,
   setup = conf.material,
   config = function()

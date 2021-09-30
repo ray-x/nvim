@@ -1,6 +1,6 @@
 local lang = {}
 local conf = require("modules.lang.config")
-
+local path = plugin_folder()
 lang["nvim-treesitter/nvim-treesitter"] = {
   event = "UIEnter",
   opt = true,
@@ -13,10 +13,7 @@ lang["nvim-treesitter/nvim-treesitter-textobjects"] = {
   opt = true
 }
 
-lang["yardnsm/vim-import-cost"] = {
-  cmd = "ImportCost",
-  opt = true
-}
+lang["yardnsm/vim-import-cost"] = {cmd = "ImportCost", opt = true}
 
 lang["nvim-treesitter/nvim-treesitter-refactor"] = {
   after = "nvim-treesitter-textobjects", -- manual loading
@@ -24,14 +21,14 @@ lang["nvim-treesitter/nvim-treesitter-refactor"] = {
   opt = true
 }
 
---lang["lifepillar/pgsql.vim"] = {ft = {"sql", "pgsql"}}
+-- lang["lifepillar/pgsql.vim"] = {ft = {"sql", "pgsql"}}
 
 lang["nanotee/sqls.nvim"] = {ft = {"sql", "pgsql"}, setup = conf.sqls, opt = true}
 
-lang[vim.fn.expand("$HOME") .. "/github/go.nvim"] = {ft = {"go", "gomod"}, config = conf.go}
+lang[path .. "go.nvim"] = {ft = {"go", "gomod"}, config = conf.go}
 
-lang[vim.fn.expand("$HOME") .. "/github/navigator.lua"] = {
-  requires = {vim.fn.expand("$HOME") .. "/github/guihua.lua", run = 'cd lua/fzy && make'},
+lang[path .. "navigator.lua"] = {
+  requires = {path .. "guihua.lua", run = 'cd lua/fzy && make'},
   config = conf.navigator,
   opt = true
 }
@@ -123,7 +120,6 @@ lang["p00f/nvim-ts-rainbow"] = {
   opt = true
 }
 
-
 -- lang['jose-elias-alvarez/null-ls.nvim'] = {
 --   opt = true,
 --   config = function()
@@ -156,10 +152,10 @@ lang["p00f/nvim-ts-rainbow"] = {
 --         }),
 --     },
 --     })
--- 
---     
+--
+--
 --     local api = vim.api
--- 
+--
 --     local no_really = {
 --         method = null_ls.methods.DIAGNOSTICS,
 --         filetypes = { "markdown", "txt", "go" },
@@ -187,7 +183,7 @@ lang["p00f/nvim-ts-rainbow"] = {
 --             end,
 --         },
 --     }
--- 
+--
 --     null_ls.register(no_really)
 --   end
 -- }

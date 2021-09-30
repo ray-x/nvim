@@ -17,12 +17,20 @@ completion["ms-jpq/coq_nvim"] = {
   after = {"coq.artifacts"},
   branch = 'coq',
   setup = function()
-    vim.g.coq_settings = { auto_start = false }
+    vim.g.coq_settings = {auto_start = false}
     -- vim.g.coq_settings = { auto_start = false, ['display.icons.mode'] = 'short', ['display.pum.kind_context'] = {'',''}, ['display.pum.source_context'] = {'',''} , ['display.pum.fast_close'] = false}
   end,
   config = function()
-    vim.g.coq_settings = { auto_start = false, ['display.icons.mode'] = 'short', ['display.pum.kind_context'] = {'',''}, ['display.pum.source_context'] = {'',''} ,  ['display.icons.spacing'] = 0}  --['display.pum.fast_close'] = false,
-    if not load_coq() then return end
+    vim.g.coq_settings = {
+      auto_start = false,
+      ['display.icons.mode'] = 'short',
+      ['display.pum.kind_context'] = {'', ''},
+      ['display.pum.source_context'] = {'', ''},
+      ['display.icons.spacing'] = 0
+    } -- ['display.pum.fast_close'] = false,
+    if not load_coq() then
+      return
+    end
     vim.cmd([[COQnow]])
   end
 }
@@ -31,15 +39,15 @@ completion['ms-jpq/coq.thirdparty'] = {
   -- event = "InsertEnter",
   branch = '3p',
   config = function()
-    if not load_coq() then return end
-    require("coq_3p") {
-      { src = "nvimlua", short_name = "", conf_only = true},
-    }
+    if not load_coq() then
+      return
+    end
+    require("coq_3p") {{src = "nvimlua", short_name = "", conf_only = true}}
   end
 }
 
 completion["ms-jpq/coq.artifacts"] = {
-  --opt = true,
+  opt = true,
   -- event = "InsertEnter",
   branch = 'artifacts'
 }
@@ -56,13 +64,13 @@ completion["hrsh7th/nvim-cmp"] = {
     -- {"hrsh7th/cmp-vsnip", after = "nvim-cmp", opt = true},
     {"hrsh7th/cmp-calc", after = "nvim-cmp", opt = true},
     {"hrsh7th/cmp-path", after = "nvim-cmp", opt = true},
-    {vim.fn.expand('$HOME') .. "/github/cmp-treesitter", after = "nvim-cmp", opt = true},
+    {plugin_folder() .. "cmp-treesitter", after = "nvim-cmp", opt = true},
     {"hrsh7th/cmp-nvim-lsp", after = "nvim-cmp", opt = true},
     {"f3fora/cmp-spell", after = "nvim-cmp", opt = true},
     {"octaltree/cmp-look", after = "nvim-cmp", opt = true},
     -- {"dcampos/cmp-snippy",after = {"nvim-snippy", "nvim-cmp"}},
     -- {"quangnguyen30192/cmp-nvim-ultisnips", event = "InsertCharPre", after = "nvim-cmp", opt=true },
-    {"saadparwaiz1/cmp_luasnip", after = {"nvim-cmp", "LuaSnip"}},
+    {"saadparwaiz1/cmp_luasnip", after = {"nvim-cmp", "LuaSnip"}}
     -- {"tzachar/cmp-tabnine", opt = true}
   },
   config = conf.nvim_cmp
@@ -117,7 +125,7 @@ completion["mattn/emmet-vim"] = {
 }
 
 -- note: part of the code is used in navigator
-completion[vim.fn.expand("$HOME") .. "/github/lsp_signature.nvim"] = {
+completion[plugin_folder() .. "lsp_signature.nvim"] = {
   config = function()
     require"lsp_signature".setup({
       bind = true,
@@ -135,8 +143,8 @@ completion[vim.fn.expand("$HOME") .. "/github/lsp_signature.nvim"] = {
       timer_interval = 100,
       extra_trigger_chars = {},
       handler_opts = {
-      border = "single", -- "shadow", --{"╭", "─" ,"╮", "│", "╯", "─", "╰", "│" },
-      },
+        border = "single" -- "shadow", --{"╭", "─" ,"╮", "│", "╯", "─", "╰", "│" },
+      }
     })
   end
 }
