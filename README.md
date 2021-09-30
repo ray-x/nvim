@@ -26,7 +26,7 @@ I used following plugin a lots
 
 - `Plug` -> `Dein` -> `Lua-Packer`
   Change to Lua-Packer does not
-  bring as great improvements as Plug -> Dein. But still about 80ms faster for Golang codes loading.
+  decrease startup time as Plug -> Dein. But still about 80ms faster for Golang codes loading.
   If you interested in Dein version, Please refer to [Dein](https://github.com/ray-x/dotfiles/tree/nvim-comple).
   This was the last Dein/Packer dual supports version I have (init.vim has a flag to choose).
   ATM, minium support for vim. Most plugins only works under neovim 0.5.0+.
@@ -40,7 +40,7 @@ I used following plugin a lots
 
 - vim-clap
 
-  One of the best plugin for search anything. I used it to replace fzf, leaderF, leaderP, defx, Ag/Ack/Rg, yank(ring), project management. undolist and many more.
+  One of the best plugin for search anything. I used it to replace fzf, leaderF, leaderP, defx, Ag/Ack/Rg, yank(ring), project management. undolist and many more. Telescope is awesome, only issue is it is slower in large project.
 
 - nvim-lsp with [navigator.lua](https://github.com/ray-x/navigator.lua)
 
@@ -49,7 +49,7 @@ I used following plugin a lots
   Some useful script from TJ, and [glepnir](https://github.com/glepnir)
 
   nvim-tree: file-explorer (lightweight and fast)
-  hrsh7th/nvim-compe: auto-complete
+  hrsh7th/nvim-cmp: auto-complete
   vsnip: code snipts(Load snippet from VSCode extension). It is a full featured IDE.
 
   ![document symbol](https://github.com/ray-x/files/blob/master/img/navigator/doc_symbol.gif?raw=true)
@@ -68,7 +68,7 @@ I used following plugin a lots
 
 - Theme, look&feel:
 
-  home cooked Aurora, galaxyline (lua), devicons(lua), blankline(indent),
+  home cooked Aurora, windline (lua), devicons(lua), blankline(indent),
 
 - Color:
 
@@ -77,16 +77,16 @@ I used following plugin a lots
 
 - Git:
 
-  fugitive, gv, nvimtree, gitsigns.nvim, git-blame.nvim
+  fugitive, gv, nvimtree, gitsigns.nvim, VGit.nvim
 
 - Format:
 
   tabular, lsp based code formating (or, sometimes prettier), auto-pair
 
 - Menu and tab:
-  quickui(created a menu for the function/keybind I used less often. I can not remember all the commands and keybinds....)
-  But Damn it, I spend lots of time to configure it, however, I rarely use it. So I end up delete the plugin.
-  nvim-bufferline.lua: Yes, with lua and neovim only
+  * quickui(created a menu for the function/keybind I used less often. I can not remember all the commands and keybinds....)
+  But Damn, I spend lots of time configuring it, however, it was used rarely. So I end up delete the plugin.
+  * nvim-bufferline.lua: Yes, with lua and neovim only
 
 - Tools: floatterm, scrollview
 
