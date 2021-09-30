@@ -4,7 +4,6 @@ This neovim configure file is highly optimized for loading performance. Packer l
 only nvim setup in github that can render multiple files with treesitter in less than 80ms with ~80 plugins installed
 (e.g. Open both util.lua(1686 loc) and lsp.lua(1538 loc) from neovim source code in 80.6ms)
 
-
 The `Plug` config is located in branch [Plug branch](https://github.com/ray-x/dotfiles/tree/zprezto-plug)
 
 - nvim+kitty configured with pop menu:
@@ -97,6 +96,8 @@ I used following plugin a lots
 
 ## Install
 
+Note: I tested it on Mac and linux, not sure about window
+
 Clone the repo
 
 Link nvim to $HOME/.config/
@@ -109,28 +110,25 @@ ls ~/.config/nvim
 ~/.config/nvim -> /Users/rayx/github/dotfiles/nvim
 
 ```
+
 Startup nvim
 
-If you saw error message "Error in packer_compiled: ..." Please press `Enter`, that will allow install the plugins.
-After all plugins install restart the nvim. 
+If you saw error message "Error in packer_compiled: ..." Please press `Enter`, that will allow packer install the plugins.
+After all plugins install restart the nvim.
 
 Note:
-The packages and data will be install to 
+The packages and data will be install to
 `~/.local/share/nvim`
 
 Please backup this folder if necessary
 
-
-
 ## Shell
 
-- OhMyZshell is good, iterm2 is popular, but I turned to zim(Zsh IMproved FrameWork
-  ) + spaceship + kitty. It is cooool and faster.
+- OhMyZshell is good, iterm2 is popular, but I turned to
+  fish + spaceship + kitty. It is cooool and faster.
   nvim+kitty split view:
 
   ![vim_ide with nvim+kitty](https://github.com/ray-x/dotfiles/blob/master/img/kitty.jpg)
-
-zimfw is faster than oh-my-zh and zpreztor regarding the loading speed.
 
 ## Parking lots
 
