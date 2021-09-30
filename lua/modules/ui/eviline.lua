@@ -238,7 +238,7 @@ basic.file = {
   name = 'file',
   hl_colors = {default = hl_list.Black, white = {'white', 'black'}, magenta = {'magenta', 'black'}},
   text = function(_, winnr, width, is_float)
-    lprint("winline", width, is_float)
+    -- lprint("winline", width, is_float)
     if width < breakpoint_width then  --vim.api.nvim_win_get_width(winnr)
       return {
         {b_components.cache_file_size(), 'default'}, {' ', ''},
