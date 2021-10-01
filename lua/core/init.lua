@@ -80,6 +80,7 @@ end
 
 local load_core = function()
   local pack = require('core.pack')
+
   -- print(vim.inspect(debug.traceback()))
 
   createdir()

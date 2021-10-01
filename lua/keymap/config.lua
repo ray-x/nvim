@@ -24,30 +24,6 @@ local function termcodes(code)
   return vim.api.nvim_replace_termcodes(code, true, true, true)
 end
 
---- move to prev/next item in completion menuone
---- jump to prev/next snippet's placeholder
--- _G.tab_complete = function()
---     if vim.fn.pumvisible() == 1 then
---         return termcodes("<C-n>")
---     -- elseif vim.fn['vsnip#available'](1) == 1 then
---     --     return termcodes("<C-l>")
---     elseif vim.fn["UltiSnips#CanExpandSnippet"]() == 1 or vim.fn["UltiSnips#CanJumpForwards"]() == 1 then
---         return vim.api.nvim_replace_termcodes("<C-R>=UltiSnips#ExpandSnippetOrJump()<CR>", true, true, true)
---     elseif is_prior_char_whitespace() then
---         return vim.api.nvim_replace_termcodes("<TAB>", true, true, true)
---     end
--- end
--- _G.s_tab_complete = function()
---     if vim.fn.pumvisible() == 1 then
---         return termcodes("<C-p>")
---     -- elseif vim.fn['vsnip#jumpable'](-1) == 1 then
---     --     return termcodes("<Plug>(vsnip-jump-prev)")
---     elseif vim.fn["UltiSnips#CanJumpBackwards"]() == 1 then
---         return termcodes("<C-R>=UltiSnips#JumpBackwards()<CR>")
---     else
---         return termcodes("<S-Tab>")
---     end
--- end
 
 -- _G.tab_complete = function()
 --  if vim.fn.pumvisible() == 1 then
@@ -61,16 +37,6 @@ end
 --  end
 -- end
 --
--- _G.s_tab_complete = function()
---  local ls = require "luasnip"
---  if vim.fn.pumvisible() == 1 then
---    return t "<C-p>"
---  elseif vim.fn.call("vsnip#jumpable", {-1}) == 1 then
---    return t "<Plug>(vsnip-jump-prev)"
---  else
---    return t "<S-Tab>"
---  end
--- end
 
 _G.ctrl_k = function()
   vim.lsp.buf.signature_help()

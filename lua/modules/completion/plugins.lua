@@ -69,14 +69,12 @@ completion["hrsh7th/nvim-cmp"] = {
   requires = {
     {"hrsh7th/cmp-buffer", after = "nvim-cmp", opt = true},
     {"hrsh7th/cmp-nvim-lua", after = "nvim-cmp", opt = true},
-    -- {"hrsh7th/cmp-vsnip", after = "nvim-cmp", opt = true},
     {"hrsh7th/cmp-calc", after = "nvim-cmp", opt = true},
     {"hrsh7th/cmp-path", after = "nvim-cmp", opt = true},
     {plugin_folder() .. "cmp-treesitter", after = "nvim-cmp", opt = true},
     {"hrsh7th/cmp-nvim-lsp", after = "nvim-cmp", opt = true},
     {"f3fora/cmp-spell", after = "nvim-cmp", opt = true},
     {"octaltree/cmp-look", after = "nvim-cmp", opt = true},
-    -- {"dcampos/cmp-snippy",after = {"nvim-snippy", "nvim-cmp"}},
     -- {"quangnguyen30192/cmp-nvim-ultisnips", event = "InsertCharPre", after = "nvim-cmp", opt=true },
     {"saadparwaiz1/cmp_luasnip", after = {"nvim-cmp", "LuaSnip"}}
     -- {"tzachar/cmp-tabnine", opt = true}
@@ -100,21 +98,6 @@ completion["kristijanhusak/vim-dadbod-completion"] = {
   end
 }
 
-completion["dcampos/nvim-snippy"] = {
-  opt = true,
-  -- event = "InsertEnter",
-  -- requires = {"honza/vim-snippets", event = "InsertEnter"}, --event = "InsertEnter"
-  config = function()
-    require'snippy'.setup {}
-    -- body
-    -- vim.cmd([[imap <expr> <Tab> snippy#can_expand_or_advance() ? '<Plug>(snippy-expand-or-next)' : '<Tab>']])
-    -- vim.cmd([[imap <expr> <S-Tab> snippy#can_jump(-1) ? '<Plug>(snippy-previous)' : '<Tab>']])
-    -- vim.cmd([[smap <expr> <Tab> snippy#can_jump(1) ? '<Plug>(snippy-next)' : '<Tab>']])
-    -- vim.cmd([[smap <expr> <S-Tab> snippy#can_jump(-1) ? '<Plug>(snippy-previous)' : '<Tab>']])
-  end
-  -- after = "vim-snippets"
-}
-
 completion["nvim-telescope/telescope.nvim"] = {
   cmd = "Telescope",
   config = conf.telescope,
@@ -128,7 +111,7 @@ completion["nvim-telescope/telescope.nvim"] = {
 
 completion["mattn/emmet-vim"] = {
   event = "InsertEnter",
-  ft = {"html", "css", "javascript", "javascriptreact", "vue", "typescript", "typescriptreact"},
+  ft = {"html", "css", "javascript", "javascriptreact", "vue", "typescript", "typescriptreact", "scss", "sass", "less", "jade", "haml", "elm"},
   setup = conf.emmet
 }
 
