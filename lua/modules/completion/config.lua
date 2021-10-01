@@ -1,7 +1,8 @@
   local config = {}
 
   function config.nvim_lsp()
-    require("lsp.config").setup()
+    -- require("lsp.config").setup()
+    -- use navigator setup
   end
 
   local function t(str)
