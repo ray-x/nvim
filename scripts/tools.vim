@@ -11,8 +11,6 @@ autocmd BufWritePre * :call <SID>StripTrailingWhitespace()
 "
 "
 "
-" source /Users/rayx/.vim/vim/asc.vim
-" source /Users/rayx/.vim/vim/skywind.vim
 "
 " Search in project
 "

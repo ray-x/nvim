@@ -1,4 +1,4 @@
-
+some notes for daily vim usage
 
 copy the cmd output
 redir @* | echo &guifont | redir END
