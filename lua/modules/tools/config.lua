@@ -350,7 +350,6 @@ function config.floaterm()
   vim.cmd("command! NNN FloatermNew --autoclose=1 --height=0.96 --width=0.96 nnn")
   vim.cmd("command! FN FloatermNew --autoclose=1 --height=0.96 --width=0.96")
   vim.cmd("command! LG FloatermNew --autoclose=1 --height=0.96 --width=0.96 lazygit")
-  -- vim.cmd("command! Sad FloatermNew --autoclose=1 --height=0.96 --width=0.96 find ./ *")
   vim.cmd("command! Ranger FloatermNew --autoclose=1 --height=0.96 --width=0.96 ranger")
 
   vim.g.floaterm_gitcommit = "split"
@@ -359,7 +358,7 @@ function config.floaterm()
   vim.g.floaterm_keymap_next = "<F21>"
   vim.g.floaterm_keymap_toggle = "<F24>"
   -- Use `git ls-files` for git files, use `find ./ *` for all files under work directory.
-  vim.cmd([[ command! Sad let old = expand("<cword>") | let rep = input("Replace " . old . " with: ", old) | execute ":FloatermNew --height=0.95 --width=0.95  git ls-files  | sad --pager=delta " . old . " " . rep  ]])
+  vim.cmd([[ command! Sad lua Sad()]])
   -- grep -rli 'old-word' * | xargs -i@ sed -i 's/old-word/new-word/g' @
   --  rg -l 'old-word' * | xargs -i@ sed -i 's/old-word/new-word/g' @
 end

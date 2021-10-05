@@ -54,7 +54,7 @@ return {
       if rep == nil then
         rep = vim.fn.input("Replace " .. oldr .. " with: ", old)
       end
-      local cmd = [[FloatermNew --height=0.95 --width=0.95  git ls-files  |  sad --pager=delta ]]
+      local cmd = [[FloatermNew --height=0.95 --width=0.95 --autoclose=1 git ls-files  |  sad --pager=delta ]]
                       .. [["]] .. oldr .. [["]] .. " " .. [["]] .. rep .. [["]]
 
       vim.cmd(cmd)
