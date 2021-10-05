@@ -335,12 +335,8 @@ function config.markdown()
 end
 
 --[[
-```vim
-command! FR let old = expand("<cword>") | let rep = input("Replace " . old . " with: ", old) | execute ":FloatermNew --height=0.95 --width=0.95  git ls-files  | sad " . old . " " . rep
-```
-
 Use `git ls-files` for git files, use `find ./ *` for all files under work directory.
-]]
+]]--
 
 function config.floaterm()
   -- Set floaterm window's background to black

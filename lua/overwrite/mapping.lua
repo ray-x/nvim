@@ -56,8 +56,7 @@ local keys = {
   ["n|<Leader>fl"] = map_cu("Clap loclist"):with_noremap():with_silent(),
   ["n|<Leader>fu"] = map_cu("Clap git_diff_files"):with_noremap():with_silent(),
   ["n|<Leader>fv"] = map_cu("Clap grep ++query=@visual"):with_noremap():with_silent(),
-  ["n|<Leader>fd"] = map_cu("Clap dotfiles"):with_noremap():with_silent(),
-  ["n|<Leader>bp"] = map_cu("BufferLinePick"):with_noremap():with_silent(),
+  ["n|<Leader>Bp"] = map_cu("BufferLinePick"):with_noremap():with_silent(),
   ["n|<Leader>fh"] = map_cu("Clap command_history"):with_noremap():with_silent(),
   ["n|<Leader><Leader>r"] = map_cmd("v:lua.run_or_test()"):with_expr(),
   ["v|<Leader><Leader>r"] = map_cmd("v:lua.run_or_test()"):with_expr(),
@@ -161,8 +160,5 @@ end
 
 vim.cmd([[command! -nargs=*  DebugOpen lua require"modules.lang.dap".prepare()]])
 -- Use `git ls-files` for git files, use `find ./ *` for all files under work directory.
-vim.cmd(
-    [[command! FR let old = expand("<cword>") | let rep = input("Replace " . old . " with: ", old) | execute ":FloatermNew --height=0.95 --width=0.95  git ls-files  | sad " . old . " " . rep ]])
-
 --
 return K

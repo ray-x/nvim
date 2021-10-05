@@ -46,39 +46,9 @@ local leader_map = function()
   vim.api.nvim_set_keymap('x', ' ', '', {noremap = true})
 end
 
-_G.plugin_folder = function()
-  if Plugin_folder then
-    return Plugin_folder
-  end
-  local host = os.getenv("HOST_NAME")
-  if host and host:find('Ray') then
-    Plugin_folder = [[~/github/]] -- vim.fn.expand("$HOME") .. '/github/'
-  else
-    Plugin_folder = [[ray-x/]]
-  end
-  return Plugin_folder
-end
-
-_G.plugin_debug = function()
-  if Plugin_debug ~= nil then
-    return Plugin_debug
-  end
-  local host = os.getenv("HOST_NAME")
-  if host and host:find('Ray') then
-    Plugin_debug = true
-  else
-    Plugin_debug = false
-  end
-  return Plugin_debug
-end
-
-_G.load_coq = function()
-  return false
-  -- if vim.o.ft == 'lua' or vim.o.ft == 'sql' or vim.o.ft == 'vim' then return false end
-  -- return true
-end
-
 local load_core = function()
+  require('core.helper').init()
+
   local pack = require('core.pack')
 
   -- print(vim.inspect(debug.traceback()))
@@ -86,7 +56,6 @@ local load_core = function()
   createdir()
   disable_distribution_plugins()
   leader_map()
-
   pack.ensure_plugins()
   require('core.options')
   require('core.mapping')
