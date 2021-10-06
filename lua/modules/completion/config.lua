@@ -51,7 +51,7 @@
     if vim.o.ft == 'lua' then
       table.insert(sources, {name = 'nvim_lua'})
     end
-    if vim.o.ft == 'zsh' or vim.o.ft == 'sh' or vim.o.ft == 'fish' then
+    if vim.o.ft == 'zsh' or vim.o.ft == 'sh' or vim.o.ft == 'fish' or vim.o.ft == 'proto'then
       table.insert(sources, {name = 'path'})
       table.insert(sources, {name = 'buffer', keyword_length = 3})
       table.insert(sources, {name = 'calc'})

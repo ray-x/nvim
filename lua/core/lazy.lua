@@ -38,9 +38,9 @@ function lazyload()
     return
   end
 
-  if vim.bo.filetype == 'lua' then
-    loader("lua-dev.nvim")
-  end
+  -- if vim.bo.filetype == 'lua' then
+  --   loader("lua-dev.nvim")
+  -- end
 
   local plugins = "plenary.nvim indent-blankline.nvim" -- nvim-lspconfig navigator.lua   guihua.lua navigator.lua  -- gitsigns.nvim
   vim.g.vimsyn_embed = 'lPr'

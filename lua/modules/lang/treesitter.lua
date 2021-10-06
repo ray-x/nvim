@@ -206,6 +206,15 @@ local treesitter_ref = function()
     filetype = "sql", -- if filetype does not agrees with parser name
     used_by = {"psql", "pgsql"} -- additional filetypes that use this parser
   }
+  parser_config.proto = {
+    install_info = {
+      url = vim.fn.expand("$HOME") ..  "/github/nvim-treesitter/tree-sitter-proto", -- local path or git repo
+      files = {"src/parser.c"}
+    },
+    filetype = "proto", -- if filetype does not agrees with parser name
+    used_by = {"proto"} -- additional filetypes that use this parser
+  }
+
 end
 -- treesitter()
 return {treesitter = treesitter, treesitter_ref = treesitter_ref}

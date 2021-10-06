@@ -177,7 +177,8 @@ function config.navigator()
   }
 
   local rustfmt = {formatCommand = "rustfmt", formatStdin = true}
-
+  -- -style="{BasedOnStyle: Google, IndentWidth: 4, AlignConsecutiveDeclarations: true, AlignConsecutiveAssignments: true, ColumnLimit: 0}"
+  local clangfmtproto = {formatCommand = [[clang-format -style="{BasedOnStyle: Google, IndentWidth: 4, AlignConsecutiveDeclarations: true, AlignConsecutiveAssignments: true, ColumnLimit: 0}"]], formatStdin = true}
   local efm_cfg = {
     flags = {debounce_text_changes = 2000},
     cmd = {'efm-langserver', '-loglevel', '1', '-logfile', vim.fn.expand("$HOME") .. '/tmp/efm.log'}, -- 1~10
@@ -195,7 +196,7 @@ function config.navigator()
     filetypes = {
       "javascript", "javascriptreact", 'typescript', 'typescriptreact', 'html', 'css', 'go', 'lua',
       'sql', 'json', 'markdown', 'scss', 'yaml', 'javascript.jsx', 'less', 'graphql', 'vue',
-      'svelte'
+      'svelte', 'proto'
     },
 
     settings = {
@@ -219,9 +220,10 @@ function config.navigator()
         vue = {prettier},
         html = {prettier},
         svelte = {eslint_d, prettier},
+        proto = {clangfmtproto},
 
         ["javascript.jsx"] = {eslint_d, prettier},
-        -- python = { pythonBlack },
+        python = { pythonBlack },
         go = {
           {
             formatCommand = "golines --max-len=120  --base-formatter=gofumpt",
