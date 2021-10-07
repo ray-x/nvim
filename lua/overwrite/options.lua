@@ -36,7 +36,7 @@ function options:load_options()
       mouse = "a",
       textwidth = 120, -- wrap lines at 120 chars. 80 is somewaht antiquated with nowadays displays.
       expandtab = true, -- " expand tabs to spaces
-      updatetime = 500, -- Vim waits after you stop typing before it triggers the plugin is governed by the setting updatetime
+      updatetime = 1000, -- Vim waits after you stop typing before it triggers the plugin is governed by the setting updatetime
       ignorecase = true, -- Search case insensitive...
       smartcase = true, -- ... but not it begins with upper case
       incsearch = true, -- Shows the match while typing

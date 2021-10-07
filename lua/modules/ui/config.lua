@@ -70,18 +70,12 @@ end
 -- vim.cmd([[au BufEnter,BufWinEnter,WinEnter,CmdwinEnter * call s:disable_statusline('NvimTree')]])
 
 function config.nvim_tree_setup()
-  vim.g.nvim_tree_follow = 1
   vim.g.nvim_tree_hide_dotfiles = 1
   vim.g.nvim_tree_indent_markers = 1
   vim.g.nvim_tree_width = 28
-  vim.g.nvim_tree_auto_close = 1
   vim.g.nvim_tree_git_hl = 1
-  vim.g.nvim_tree_auto_open = 1
   vim.g.nvim_tree_width_allow_resize = 1
-  vim.g.nvim_tree_tab_open = 1
-  vim.g.nvim_tree_auto_resize = 0
   vim.g.nvim_tree_highlight_opened_files = 1
-  vim.g.nvim_tree_hijack_cursor = 1
   vim.g.nvim_tree_icons = {
     default = "",
     symlink = "",

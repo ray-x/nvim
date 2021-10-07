@@ -54,10 +54,37 @@ return {
       if rep == nil then
         rep = vim.fn.input("Replace " .. oldr .. " with: ", old)
       end
-      local cmd = [[FloatermNew --height=0.95 --width=0.95 --autoclose=1 git ls-files  |  sad --pager=delta ]]
-                      .. [["]] .. oldr .. [["]] .. " " .. [["]] .. rep .. [["]]
+      local cmd =
+          [[FloatermNew --height=0.95 --width=0.95 --autoclose=1 git ls-files  |  sad --pager=delta ]]
+              .. [["]] .. oldr .. [["]] .. " " .. [["]] .. rep .. [["]]
 
       vim.cmd(cmd)
+    end
+
+    _G.Snake = function(s)
+      if s == nil then
+        s = vim.fn.expand("<cword>")
+      end
+      lprint("replace: ", s)
+      local n = s:gsub('%f[^%l]%u', '_%1'):gsub('%f[^%a]%d', '_%1'):gsub('%f[^%d]%a', '_%1'):gsub(
+                    '(%u)(%u%l)', '%1_%2'):lower()
+      vim.fn.setreg('s', n)
+      vim.cmd([[exe "norm! ciw\<C-R>s"]])
+      lprint("newstr", n)
+    end
+
+    _G.Camel = function()
+      local s
+      if s == nil then
+        s = vim.fn.expand("<cword>")
+      end
+      local n = string.gsub(s, "_%a+", function(word)
+        local first = string.sub(word, 2, 2)
+        local rest = string.sub(word, 3)
+        return string.upper(first) .. rest
+      end)
+      vim.fn.setreg('s', n)
+      vim.cmd([[exe "norm! ciw\<C-R>s"]])
     end
   end
 

@@ -119,7 +119,7 @@ function config.navigator()
 
   local single = {"╭", "─", "╮", "│", "╯", "─", "╰", "│"}
 
-  --local cfg = {
+  -- local cfg = {
   --  library = {
   --    vimruntime = true, -- runtime path
   --    types = true, -- full signature, docs and completion of vim.api, vim.treesitter, vim.lsp and others
@@ -167,10 +167,7 @@ function config.navigator()
     formatCommand = "eslint_d --fix-to-stdout --stdin --stdin-filename=${INPUT}",
     formatStdin = true
   }
-  local   pythonBlack ={
-    formatCommand = [[black --quiet -]],
-    formatStdin = true
-  }
+  local pythonBlack = {formatCommand = [[black --quiet -]], formatStdin = true}
   local sql_formatter = {
     formatCommand = [[sql-formatter -l plsql -i 4 -u | sed -e 's/\$ {/\${/g' | sed -e 's/: :/::/g']],
     formatStdin = true
@@ -178,7 +175,10 @@ function config.navigator()
 
   local rustfmt = {formatCommand = "rustfmt", formatStdin = true}
   -- -style="{BasedOnStyle: Google, IndentWidth: 4, AlignConsecutiveDeclarations: true, AlignConsecutiveAssignments: true, ColumnLimit: 0}"
-  local clangfmtproto = {formatCommand = [[clang-format -style="{BasedOnStyle: Google, IndentWidth: 4, AlignConsecutiveDeclarations: true, AlignConsecutiveAssignments: true, ColumnLimit: 0}"]], formatStdin = true}
+  local clangfmtproto = {
+    formatCommand = [[clang-format -style="{BasedOnStyle: Google, IndentWidth: 4, AlignConsecutiveDeclarations: true, AlignConsecutiveAssignments: true, ColumnLimit: 0}"]],
+    formatStdin = true
+  }
   local efm_cfg = {
     flags = {debounce_text_changes = 2000},
     cmd = {'efm-langserver', '-loglevel', '1', '-logfile', vim.fn.expand("$HOME") .. '/tmp/efm.log'}, -- 1~10
@@ -189,7 +189,14 @@ function config.navigator()
       client.resolved_capabilities.goto_definition = false
       -- client.resolved_capabilities.code_action = nil
       local log = require("guihua.log").new({level = "info"}, true)
-      vim.cmd([[autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting()]])
+
+      vim.cmd([[
+        aug efmFormat
+          au!
+          autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting()
+        aug END
+       ]])
+
       -- print ("efm attached")
       -- set_lsp_config(client)
     end,
@@ -223,7 +230,7 @@ function config.navigator()
         proto = {clangfmtproto},
 
         ["javascript.jsx"] = {eslint_d, prettier},
-        python = { pythonBlack },
+        python = {pythonBlack},
         go = {
           {
             formatCommand = "golines --max-len=120  --base-formatter=gofumpt",
@@ -270,9 +277,7 @@ function config.navigator()
           client.resolved_capabilities.document_formatting = false -- allow efm to format
         end
       },
-      flow = {
-        autostart=false
-      },
+      flow = {autostart = false},
       gopls = {
         on_attach = function(client)
           -- print("i am a hook")
@@ -328,7 +333,7 @@ function config.lua_dev()
   --     -- on_attach = ...
   --   }
   -- }
---
+  --
   -- local luadev = require("lua-dev").setup(cfg)
   -- print(vim.inspect(luadev))
   -- require('lspconfig').sumneko_lua.setup(luadev)
