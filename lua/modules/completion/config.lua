@@ -143,7 +143,6 @@
   end
 
   function config.luasnip()
-    print("luasnip")
     local ls = require "luasnip"
     ls.config.set_config {history = true, updateevents = "TextChanged,TextChangedI"}
     require("luasnip.loaders.from_vscode").load {}

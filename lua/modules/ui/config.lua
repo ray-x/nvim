@@ -402,5 +402,4 @@ local loading_theme = themes[v]
 local cmd = [[au VimEnter * ++once lua require("packer.load")({']] .. loading_theme
                 .. [['}, { event = "VimEnter *" }, _G.packer_plugins)]]
 vim.cmd(cmd)
-print(loading_theme)
 return config
