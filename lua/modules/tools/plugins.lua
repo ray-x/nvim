@@ -133,17 +133,6 @@ tools["rmagatti/session-lens"] = {
 
 tools['kevinhwang91/nvim-bqf'] = {opt = true, event = {"CmdlineEnter", "QuickfixCmdPre"}, config = conf.bqf}
 
--- using bqf
--- tools["brooth/far.vim"] = {
---   cmd = {"Farr", "Farf"},
---   run = function()
---     require"packer".loader('far.vim')
---     vim.cmd [[UpdateRemotePlugins]]
---   end,
---   config = conf.far,
---   opt = true
--- } -- brooth/far.vim
-
 tools["rcarriga/vim-ultest"] = {
   requires = {"vim-test/vim-test", setup = conf.vim_test, opt = true},
   cmd = {"Ultest", "UltestNearest"},

@@ -46,7 +46,7 @@ local function load_options()
     timeoutlen     = 500;
     ttimeoutlen    = 10;
     updatetime     = 500;
-    redrawtime     = 1500;
+    redrawtime     = 100;
     ignorecase     = true;
     smartcase      = true;
     infercase      = true;
@@ -94,7 +94,7 @@ local function load_options()
   }
 
   local bw_local  = {
-    synmaxcol      = 2500;
+    synmaxcol      = 1000;
     formatoptions  = "1jcroql";
     textwidth      = 80;
     expandtab      = true;
@@ -126,7 +126,6 @@ local function load_options()
       },
       cache_enabled = 0
     }
-    -- vim.g.python_host_prog = '/usr/bin/python'
     vim.g.python3_host_prog = '/usr/local/bin/python3'
   end
   for name, value in pairs(global_local) do

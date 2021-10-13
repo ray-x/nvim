@@ -1,23 +1,13 @@
 local ui = {}
 local conf = require("modules.ui.config")
 
--- ui['glepnir/zephyr-nvim'] = {
---   config = [[vim.cmd('colorscheme zephyr')]]
--- }
+
 --
 local winwidth = function()
   return vim.api.nvim_call_function("winwidth", {0})
 end
 
 ui["kyazdani42/nvim-web-devicons"] = {}
--- ui["glepnir/galaxyline.nvim"] = {
---   branch = "main",
---   -- event = "UIEnter",
---   -- after = {"aurora"},
---   -- config = conf.galaxyline,
---   -- requires = {'kyazdani42/nvim-web-devicons'},
---   opt = true
--- }
 
 ui["windwp/windline.nvim"] = {
   event = "UIEnter",
@@ -50,10 +40,6 @@ ui["akinsho/bufferline.nvim"] = {
 --   setup = conf.minimap
 -- }
 
--- session is better
--- ui['glepnir/dashboard-nvim'] = {
---   config = conf.dashboard
--- }
 
 ui["kyazdani42/nvim-tree.lua"] = {
   cmd = {"NvimTreeToggle", "NvimTreeOpen"},
@@ -111,7 +97,6 @@ ui["sainnhe/gruvbox-material"] = {opt = true, config = conf.gruvbox}
 -- cant config cursor line
 -- ui["rafamadriz/neon"] = {opt = true, config = conf.neon}
 
-ui["glepnir/zephyr-nvim"] = {opt = true, config = conf.zephyr}
 ui[plugin_folder() .. "material_plus.nvim"] = {
   opt = true,
   setup = conf.material,

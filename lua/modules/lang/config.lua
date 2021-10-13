@@ -195,7 +195,7 @@ function config.navigator()
       efm = efm_cfg
     }
   }
-  vim.lsp.set_log_level("error")
+  vim.lsp.set_log_level("error")   -- error debug info
   require"navigator".setup(nav_cfg)
 end
 
@@ -204,7 +204,7 @@ function config.playground()
     playground = {
       enable = true,
       disable = {},
-      updatetime = 25, -- Debounced time for highlighting nodes in the playground from source code
+      updatetime = 50, -- Debounced time for highlighting nodes in the playground from source code
       persist_queries = true -- Whether the query persists across vim sessions
     }
   }

@@ -13,13 +13,15 @@ lang["nvim-treesitter/nvim-treesitter-textobjects"] = {
   opt = true
 }
 
-lang["yardnsm/vim-import-cost"] = {cmd = "ImportCost", opt = true}
 
 lang["nvim-treesitter/nvim-treesitter-refactor"] = {
   after = "nvim-treesitter-textobjects", -- manual loading
   config = conf.nvim_treesitter_ref, -- let the last loaded config treesitter
   opt = true
 }
+
+
+lang["yardnsm/vim-import-cost"] = {cmd = "ImportCost", opt = true}
 
 -- lang["lifepillar/pgsql.vim"] = {ft = {"sql", "pgsql"}}
 
@@ -33,10 +35,6 @@ lang[path .. "navigator.lua"] = {
   opt = true
 }
 
--- lang['ray-x/navigator.lua'] = {
---   requires = {'ray-x/guihua.lua', run = 'cd lua/fzy && make'},
---   setup = conf.navigator
--- }
 
 -- lang["gcmt/wildfire.vim"] = {
 --   setup = function()
@@ -46,7 +44,7 @@ lang[path .. "navigator.lua"] = {
 -- }
 
 lang["nvim-treesitter/playground"] = {
-  after = "nvim-treesitter",
+  -- after = "nvim-treesitter",
   opt = true,
   cmd = "TSPlaygroundToggle",
   config = conf.playground

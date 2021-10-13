@@ -99,12 +99,6 @@ function config.nvim_tree_setup()
       symlink = "",
       symlink_open = ""
     },
-    lsp = {
-      hint = "",
-      info = "",
-      warning = "", -- ☣️
-      error = "" -- 🈲
-    }
   }
   vim.cmd([[autocmd Filetype NvimTree set cursorline]])
 end
@@ -126,11 +120,15 @@ function config.nvim_tree()
     -- opens the tree when changing/opening a new tab if the tree wasn't previously opened
     open_on_tab = false,
     -- hijack the cursor in the tree to put it at the start of the filename
+    update_to_buf_dir   = {
+      -- enable the feature
+      enable = true,
+      -- allow to open the tree if it was previously closed
+      auto_open = true,
+    },
     hijack_cursor = false,
     -- updates the root directory of the tree on `DirChanged` (when your run `:cd` usually)
     update_cwd = false,
-    -- show lsp diagnostics in the signcolumn
-    lsp_diagnostics = true,
     -- update the focused file on `BufEnter`, un-collapses the folders recursively until it finds the file
     update_focused_file = {
       -- enables the feature
@@ -149,7 +147,15 @@ function config.nvim_tree()
       -- the command arguments as a list
       args = {}
     },
-
+    diagnostics = {
+      enable = true,
+      icons = {
+        hint = "",
+        info = "",
+        warning = "",
+        error = "",
+      }
+    },
     view = {
       -- width of the window, can be either a number (columns) or a string in `%`
       width = 30,
@@ -374,7 +380,8 @@ function config.minimap()
 end
 
 vim.api.nvim_exec([[
-    set cursorcolumn
+    set nocursorcolumn
+    set nocursorline
     augroup vimrc_todo
     set background=dark
     au!
@@ -386,11 +393,12 @@ vim.api.nvim_exec([[
 math.randomseed(os.time())
 local themes = {
   "material_plus.nvim", "aurora", "aurora", "tokyonight.nvim", "material_plus.nvim", "aurora",
-  "zephyr-nvim", "gruvbox-material", "sonokai", "github-nvim-theme"
+  "gruvbox-material", "sonokai", "github-nvim-theme"
 }
 if plugin_folder() == [[~/github/]] then
   -- debug the color theme
-  themes = {"material_plus.nvim"}
+  -- themes = {"material_plus.nvim"}
+  themes = {"aurora"}
 end
 local v = math.random(1, #themes)
 local loading_theme = themes[v]

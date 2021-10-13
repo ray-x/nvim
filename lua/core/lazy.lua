@@ -1,8 +1,8 @@
 function lazyload()
-
+  local loader = require"packer".loader
   -- vim.cmd([[syntax on]])
   if vim.wo.diff then
-    -- local plugins = "nvim-treesitter" -- nvim-treesitter-textobjects should be autoloaded
+    local plugins = "nvim-treesitter" -- nvim-treesitter-textobjects will be autoloaded with loader
     -- loader(plugins)
     vim.cmd([[packadd nvim-treesitter]])
     require"nvim-treesitter.configs".setup {highlight = {enable = true, use_languagetree = true}}
@@ -11,7 +11,7 @@ function lazyload()
   end
   local load_lsp = true
   print("I am lazy")
-  local loader = require"packer".loader
+
   local disable_ft = {
     "NvimTree", "guihua", "clap_input", "clap_spinner", "TelescopePrompt", "csv", "txt", "defx",
     "sidekick"
@@ -38,9 +38,9 @@ function lazyload()
     return
   end
 
-  -- if vim.bo.filetype == 'lua' then
-  --   loader("lua-dev.nvim")
-  -- end
+  if vim.bo.filetype == 'lua' then
+    loader("lua-dev.nvim")
+  end
 
   local plugins = "plenary.nvim indent-blankline.nvim" -- nvim-lspconfig navigator.lua   guihua.lua navigator.lua  -- gitsigns.nvim
   vim.g.vimsyn_embed = 'lPr'
@@ -68,7 +68,7 @@ function lazyload()
   -- print(bytes)
 
   if load_ts_plugins then
-    plugins = "nvim-treesitter nvim-treesitter-refactor indent-blankline.nvim nvim-ts-autotag" --  nvim-ts-rainbow  nvim-treesitter nvim-treesitter-refactor
+    plugins = "nvim-treesitter nvim-treesitter-refactor nvim-ts-autotag" --  nvim-ts-rainbow  nvim-treesitter nvim-treesitter-refactor
     -- nvim-treesitter-textobjects should be autoloaded
     loader(plugins)
     -- enable syntax if is small
@@ -99,7 +99,7 @@ vim.cmd("command! Spell call spelunker#check()")
 
 vim.defer_fn(function()
   vim.cmd([[doautocmd User LoadLazyPlugin]])
-end, 80)
+end, 90)
 
 vim.defer_fn(function()
   -- lazyload()

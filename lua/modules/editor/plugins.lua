@@ -67,9 +67,9 @@ editor["matze/vim-move"] = {
 -- }
 
 editor["mg979/vim-visual-multi"] = {
-  keys = {
-    "<C-n>", "<C-n>", "<M-n>", "<S-Down>", "<S-Up>", "<M-Left>", "<M-Right>", "<M-D>", "<M-Down>",
-    "<C-d>", "<C-Down>", "<S-Right>", "<C-LeftMouse>", "<M-C-RightMouse>", "<Leader>"
+  keys = {"<Ctrl>", "<M>",
+    "<C-n>", "<C-n>", "<M-n>", "<S-Down>", "<S-Up>", "<M-Left>", "<M-i>", "<M-Right>", "<M-D>", "<M-Down>",
+    "<C-d>", "<C-Down>", "<S-Right>", "<C-LeftMouse>", "<M-LeftMouse>", "<M-C-RightMouse>", "<Leader>"
   },
   opt = true,
   setup = conf.vmulti
