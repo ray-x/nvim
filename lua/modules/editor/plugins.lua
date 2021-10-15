@@ -88,14 +88,20 @@ editor["phaazon/hop.nvim"] = {
   end
 }
 
-editor["preservim/nerdcommenter"] = {
-  -- keys = {"<Leader>c<space>", "\\c ", "<D-/>", "<C-<Space>>", "<Leader>cc", "//", "<M-/>"},
-  keys = {'<Leader>c<space>', '\\c ', '<Leader>cc', '//', '<M-/>'},
-  setup = conf.nerdcommenter,
-  fn = {"NERDComment", "nerdcommenter#Comment"}
-  -- cmd = {'NERDCommenterToggle', 'NERDCommenterComment'}
-  -- opt = true,
-}
+editor["numToStr/Comment.nvim"] = {
+  keys = {'g'},
+  config = conf.comment
+ }
+
+-- editor["preservim/nerdcommenter"] = {
+--   -- keys = {"<Leader>c<space>", "\\c ", "<D-/>", "<C-<Space>>", "<Leader>cc", "//", "<M-/>"},
+--   keys = {'<Leader>c<space>', '\\c ', '<Leader>cc', '//', '<M-/>'},
+--   setup = conf.nerdcommenter,
+--   fn = {"NERDComment", "nerdcommenter#Comment"}
+--   -- cmd = {'NERDCommenterToggle', 'NERDCommenterComment'}
+--   -- opt = true,
+-- }
+
 -- copy paste failed in block mode when clipboard = unnameplus"
 editor["bfredl/nvim-miniyank"] = {
   keys = {"p", "y", "<C-v>"},

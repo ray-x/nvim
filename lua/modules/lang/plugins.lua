@@ -4,7 +4,6 @@ local path = plugin_folder()
 lang["nvim-treesitter/nvim-treesitter"] = {
   event = "UIEnter",
   opt = true,
-  config = conf.nvim_treesitter
 }
 
 lang["nvim-treesitter/nvim-treesitter-textobjects"] = {
@@ -54,6 +53,10 @@ lang["ElPiloto/sidekick.nvim"] = {opt = true, fn = {'SideKickNoReload'}, setup =
 
 lang["bfredl/nvim-luadev"] = {opt = true, cmd = "Luadev", setup = conf.luadev}
 lang["mfussenegger/nvim-dap"] = {config = conf.dap, cmd = "Luadev", opt = true}
+
+lang["JoosepAlviste/nvim-ts-context-commentstring"] = {
+  opt = true,
+}
 
 lang["rcarriga/nvim-dap-ui"] = {
   -- requires = {"mfussenegger/nvim-dap"},

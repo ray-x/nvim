@@ -196,6 +196,43 @@ function config.nerdcommenter()
   vim.g.NERDToggleCheckAllLines = 1
 end
 
+function config.comment()
+  require('Comment').setup({
+    extended = true,
+    pre_hook = function(ctx)
+        -- print("ctx", vim.inspect(ctx))
+        -- Only update commentstring for tsx filetypes
+        if vim.bo.filetype == 'typescriptreact' 
+          or vim.bo.filetype == 'javascript' 
+          or vim.bo.filetype == 'css' 
+          or vim.bo.filetype == 'html'
+        then
+            require('ts_context_commentstring.internal').update_commentstring()
+        end
+    end,
+    post_hook = function(ctx, start_row, end_row, start_col, end_col)
+        if start_col == -1 then
+            -- do something with the current line
+        else
+            print(vim.inspect(ctx), start_row, end_row, start_col, end_col)
+            if end_col > 400 then
+              end_col = 1
+            end
+            if ctx.ctype == 1 then
+              -- 322 324 0 2147483647
+              vim.fn.setpos("'<", {0, start_row, start_col})
+              vim.fn.setpos("'>", {0, end_row, end_col})
+              vim.cmd([[exe "norm! gv"]])
+
+              -- vim.fn.setpos("'<", {0, 322, 5})
+              -- vim.fn.setpos("'>", {0, 324, 8})
+              -- vim.cmd([[exe 'norm! gv']])
+            end
+        end
+    end
+  })
+end
+
 function config.hlslens()
   -- body
   -- vim.cmd([[packadd nvim-hlslens]])

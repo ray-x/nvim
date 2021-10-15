@@ -93,7 +93,7 @@ I used following plugin a lots
 
 - Move and Edit:
 
-  easymotion -> hop, hlslens + vim-multi-cursor , vim-anyfold (better folding), Far for complex find and replace
+  easymotion -> hop, vim-multi-cursor, navigator.lua (better treesitter folding), Sad for complex find and replace
 
 ## Install
 

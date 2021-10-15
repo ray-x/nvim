@@ -53,6 +53,10 @@ local treesitter = function()
     indent = {
       enable = true
     },
+    context_commentstring = {
+      enable = true,
+      enable_autocmd = false,
+    },
     textobjects = {
       -- syntax-aware textobjects
       enable = enable,
@@ -168,7 +172,7 @@ local treesitter_ref = function()
   require "nvim-treesitter.configs".setup {
     refactor = {
       highlight_definitions = {
-        enable = enable
+        enable = false
       },
       highlight_current_scope = {
         enable = enable

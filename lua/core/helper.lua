@@ -90,9 +90,8 @@ return {
 
       vim.cmd([[%s/\\n/\r/g]])
       vim.cmd([[%s/\\t/  /g]])
-      vim.cmd([[%s/\"/"/g]])
+      vim.cmd([[%s/\\"/"/g]])
       -- again
-      vim.cmd([[%s/\"/"/g]])
       vim.cmd([[nohl]])
       -- for json run
 

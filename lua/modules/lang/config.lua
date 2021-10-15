@@ -144,7 +144,7 @@ function config.navigator()
   -- }
   -- local ok, l = pcall(require, "lua-dev")
 
-  local efm_cfg = require('modules.lang.efm').efm
+  -- local efm_cfg = require('modules.lang.efm').efm
 
 
   local nav_cfg = {
@@ -192,7 +192,7 @@ function config.navigator()
       sumneko_lua = luadev,
 
       jedi_language_server = {filetypes = {}},
-      efm = efm_cfg
+      efm = require('modules.lang.efm').efm
     }
   }
   vim.lsp.set_log_level("error")   -- error debug info

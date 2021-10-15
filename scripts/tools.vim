@@ -31,6 +31,7 @@ endfunction
 
 command Jsonformat %!python -m json.tool
 command Hex :%!xxd
+" command! Jsonf :execute '%!python -c "import json,sys,collections,re; sys.stdout.write(re.sub(r\"\\\u[0-9a-f]{4}\", lambda m:m.group().decode(\"unicode_escape\").encode(\"utf-8\"),json.dumps(json.load(sys.stdin, object_pairs_hook=collections.OrderedDict), indent=2)))"'
 
 function! FindRoot()
   let s:root = system('git rev-parse --show-toplevel 2> /dev/null')[:-2]
@@ -281,5 +282,3 @@ augroup maximizer
 augroup END
 
 command! -bang -nargs=0 -range MaximizerToggle :call s:toggle(<bang>0)
-
-

@@ -122,7 +122,7 @@ function config.nvim_tree()
     -- hijack the cursor in the tree to put it at the start of the filename
     update_to_buf_dir   = {
       -- enable the feature
-      enable = true,
+      enable = false,
       -- allow to open the tree if it was previously closed
       auto_open = true,
     },
@@ -135,7 +135,7 @@ function config.nvim_tree()
       enable = true,
       -- update the root directory of the tree to the one of the folder containing the file if the file is not under the current root directory
       -- only relevant when `update_focused_file.enable` is true
-      update_cwd = true,
+      update_cwd = false,
       -- list of buffer names / filetypes that will not update the cwd if the file isn't found under the current root directory
       -- only relevant when `update_focused_file.update_cwd` is true and `update_focused_file.enable` is true
       ignore_list = {}
@@ -239,8 +239,8 @@ function config.material()
   vim.g.material_contrast = true
   vim.g.material_borders = true
   vim.g.material_disable_background = false
-  vim.g.material_style = "earlysummer" -- 'moonlight' emerald middlenight_blue earlysummer
-  vim.g.material_style_fix = true
+  -- vim.g.material_style = "earlysummer" -- 'moonlight' emerald middlenight_blue earlysummer
+  -- vim.g.material_style_fix = true
   -- config.default()
 end
 
@@ -397,8 +397,8 @@ local themes = {
 }
 if plugin_folder() == [[~/github/]] then
   -- debug the color theme
-  -- themes = {"material_plus.nvim"}
-  themes = {"aurora"}
+  themes = {"material_plus.nvim"}
+  -- themes = {"aurora"}
 end
 local v = math.random(1, #themes)
 local loading_theme = themes[v]

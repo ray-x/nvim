@@ -68,7 +68,7 @@ function lazyload()
   -- print(bytes)
 
   if load_ts_plugins then
-    plugins = "nvim-treesitter nvim-treesitter-refactor nvim-ts-autotag" --  nvim-ts-rainbow  nvim-treesitter nvim-treesitter-refactor
+    plugins = "nvim-treesitter nvim-treesitter-refactor nvim-ts-autotag nvim-ts-context-commentstring" --  nvim-ts-rainbow  nvim-treesitter nvim-treesitter-refactor
     -- nvim-treesitter-textobjects should be autoloaded
     loader(plugins)
     -- enable syntax if is small
