@@ -37,7 +37,7 @@ M = {}
 M.find_dots = function(opts)
   opts = opts or {}
 
-  opts.cwd = os.getenv("HOME")
+  opts.cwd = require 'core.global'.home
   -- By creating the entry maker after the cwd options,
   -- we ensure the maker uses the cwd options when being created.
   opts.entry_maker = opts.entry_maker or make_entry.gen_from_file(opts)
@@ -46,8 +46,8 @@ M.find_dots = function(opts)
     prompt_title = '~~ Dotfiles ~~',
     finder = finders.new_oneshot_job(
       { "git",
-      "--git-dir="..os.getenv("HOME").."/.dots/",
-      "--work-tree="..os.getenv("HOME"),
+      "--git-dir="..require 'core.global'.home.."/.dots/",
+      "--work-tree="..require 'core.global'.home,
       "ls-tree", "--full-tree", "-r", "--name-only", "HEAD" },
       opts
     ),
@@ -244,7 +244,7 @@ function M.load_dotfiles()
     local themes = require('telescope.themes')
 
     local results = {}
-    local dotfiles = os.getenv('HOME')..'/.dotfiles'
+    local dotfiles = require 'core.global'.home..'/.dotfiles'
     for file in io.popen('find "'..dotfiles..'" -type f'):lines() do
       if not file:find('fonts') then
         table.insert(results,file)

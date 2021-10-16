@@ -115,7 +115,7 @@ function getEntryFromEnd(table, entry)
 end
 
 local TrimmedDirectory = function(dir)
-  local home = os.getenv("HOME")
+  local home = require 'core.global'.home
   local _, index = string.find(dir, home, 1)
   if index ~= nil and index ~= string.len(dir) then
     -- TODO Trimmed Home Directory

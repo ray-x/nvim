@@ -112,6 +112,10 @@ ls ~/.config/nvim
 
 ```
 
+On windows the config path is
+`C:\Users\your_user_name\AppData\Local\nvim`
+You need to link or replace above folder
+
 Startup nvim
 
 If you saw error message "Error in packer_compiled: ..." Please press `Enter`, that will allow packer install the plugins.

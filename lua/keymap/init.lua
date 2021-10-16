@@ -3,6 +3,7 @@ local map_cr = bind.map_cr
 local map_cu = bind.map_cu
 local map_cmd = bind.map_cmd
 local map_args = bind.map_args
+local global = require 'core.global'
 require('keymap.config')
 
 local plug_map = {
@@ -39,7 +40,7 @@ local plug_map = {
     ["n|<Leader>fl"]     = map_cu('Telescope loclist'):with_noremap():with_silent(),
     ["n|<Leader>fc"]     = map_cu('Telescope git_commits'):with_noremap():with_silent(),
     ["n|<Leader>ft"]     = map_cu('Telescope help_tags'):with_noremap():with_silent(),
-    ["n|<Leader>fd"]     = map_cu('Telescope dotfiles path='..os.getenv("HOME")..'/.dotfiles'):with_noremap():with_silent(),
+    --["n|<Leader>fd"]     = map_cu('Telescope dotfiles path='..global..'/.dotfiles'):with_noremap():with_silent(),
     ["n|<Leader>fs"]     = map_cu('Telescope gosource'):with_noremap():with_silent(),
     ["n|w"]              = map_cmd('v:lua.word_motion_move("w")'):with_silent():with_expr(),
 

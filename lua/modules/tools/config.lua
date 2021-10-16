@@ -1,7 +1,7 @@
 local config = {}
 
 local function load_env_file()
-  local env_file = os.getenv("HOME") .. "/.env"
+  local env_file = require 'core.global'.home .. "/.env"
   local env_contents = {}
   if vim.fn.filereadable(env_file) ~= 1 then
     print(".env file does not exist")
@@ -89,7 +89,7 @@ function config.vim_dadbod_ui()
   vim.g.db_ui_win_position = "left"
   vim.g.db_ui_use_nerd_fonts = 1
   vim.g.db_ui_winwidth = 35
-  vim.g.db_ui_save_location = os.getenv("HOME") .. "/.cache/vim/db_ui_queries"
+  vim.g.db_ui_save_location = require 'core.global'.home .. "/.cache/vim/db_ui_queries"
   vim.g.dbs = load_dbs()
 end
 
