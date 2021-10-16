@@ -1,9 +1,11 @@
 local fn, uv, api = vim.fn, vim.loop, vim.api
 local vim_path = require('core.global').vim_path
+local path_sep = require('core.global').path_sep
 local data_dir = require('core.global').data_dir
-local modules_dir = vim_path .. '/lua/modules'
-local packer_compiled = data_dir .. 'packer_compiled.vim'
-local compile_to_lua = data_dir .. 'lua/_compiled.lua'
+-- local home = require('core.global').home
+local modules_dir = vim_path .. path_sep .. 'lua' .. path_sep ..'modules'
+local packer_compiled = data_dir .. path_sep .. 'packer_compiled.vim'
+local compile_to_lua = data_dir .. path_sep ..'lua' .. path_sep ..'_compiled.lua'
 local packer = nil
 
 local Packer = {}
@@ -104,7 +106,7 @@ function plugins.convert_compile_file()
     os.remove(compile_to_lua)
   end
   -- ~/.config/nvim/plugin/packer_compiled.lua  -- conflict
-  local cmp_lua = vim.fn.expand("$HOME") .. '/.config/nvim/plugin/packer_compiled.lua'
+  local cmp_lua = vim.fn.stdpath('config') .. path_sep .. 'plugin' .. path_sep .. 'packer_compiled.lua'
   if vim.fn.filereadable(cmp_lua) == 1 then
     os.remove(cmp_lua)
   end
