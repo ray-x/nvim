@@ -8,6 +8,12 @@ function global:load_variables()
   self.is_linux   = os_name == 'Linux'
   self.is_windows = os_name == 'Windows'
   self.vim_path    = vim.fn.stdpath('config')
+  if self.is_windows then
+    path_sep = '\\'
+    home = os.getenv('HOMEDRIVE') or 'C:'
+    home = home .. ( os.getenv('HOMEPATH') or '\\' )
+  end
+
   self.cache_dir   = home .. path_sep..'.cache'..path_sep..'nvim'..path_sep
   self.modules_dir = self.vim_path .. path_sep..'modules'
   self.path_sep = path_sep
