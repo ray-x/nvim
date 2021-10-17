@@ -169,33 +169,6 @@ function config.lightspeed()
     -- bind.nvim_load_mapping(keys)
 end
 
-function config.nerdcommenter()
-  vim.g.NERDCreateDefaultMappings = 1
-  -- Add spaces after comment delimiters by default
-  vim.g.NERDSpaceDelims = 1
-
-  -- Use compact syntax for prettified multi-line comments
-  vim.g.NERDCompactSexyComs = 1
-
-  -- Align line-wise comment delimiters flush left instead of following code indentation
-  vim.g.NERDDefaultAlign = "left"
-
-  -- Set a language to use its alternate delimiters by default
-  -- vim.g.NERDAltDelims_java = 1
-
-  -- Add your own custom formats or override the defaults
-  -- vim.g.NERDCustomDelimiters = { 'c': { 'left': '/**','right': '*/' } }
-
-  -- Allow commenting and inverting empty lines (useful when commenting a region)
-  vim.g.NERDCommentEmptyLines = 1
-
-  -- Enable trimming of trailing whitespace when uncommenting
-  vim.g.NERDTrimTrailingWhitespace = 1
-
-  -- Enable NERDCommenterToggle to check all selected lines is commented or not
-  vim.g.NERDToggleCheckAllLines = 1
-end
-
 function config.comment()
   require('Comment').setup({
     extended = true,
@@ -214,19 +187,15 @@ function config.comment()
         if start_col == -1 then
             -- do something with the current line
         else
-            print(vim.inspect(ctx), start_row, end_row, start_col, end_col)
+            -- print(vim.inspect(ctx), start_row, end_row, start_col, end_col)
             if end_col > 400 then
               end_col = 1
             end
-            if ctx.ctype == 1 then
+            if ctx.cmotion > 1 then
               -- 322 324 0 2147483647
               vim.fn.setpos("'<", {0, start_row, start_col})
               vim.fn.setpos("'>", {0, end_row, end_col})
               vim.cmd([[exe "norm! gv"]])
-
-              -- vim.fn.setpos("'<", {0, 322, 5})
-              -- vim.fn.setpos("'>", {0, 324, 8})
-              -- vim.cmd([[exe 'norm! gv']])
             end
         end
     end
