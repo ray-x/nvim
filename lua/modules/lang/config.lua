@@ -81,35 +81,6 @@ local path = vim.split(package.path, ";")
 table.insert(path, "lua/?.lua")
 table.insert(path, "lua/?/init.lua")
 
-local function add(lib)
-  for _, p in pairs(vim.fn.expand(lib, false, true)) do
-    p = vim.loop.fs_realpath(p)
-    library[p] = true
-  end
-end
-
--- add runtime
-add("$VIMRUNTIME")
-
--- add your config
-add("~/.config/nvim")
-
--- local cfg = {
---   library = {
---     vimruntime = true, -- runtime path
---     types = true, -- full signature, docs and completion of vim.api, vim.treesitter, vim.lsp and others
---     plugins = true, -- installed opt or start plugins in packpath
---     -- you can also specify the list of plugins to make available as a workspace library
---     -- plugins = { "nvim-treesitter", "plenary.nvim", "navigator" },
---   },
---   -- pass any additional options that will be merged in the final lsp config
---   lspconfig = {
---     -- cmd = {sumneko_binary},
---     -- on_attach = ...
---   },
--- }
-
--- local luadev = require("lua-dev").setup(cfg)
 
 function config.navigator()
 
@@ -128,24 +99,7 @@ function config.navigator()
 
   local single = {"╭", "─", "╮", "│", "╯", "─", "╰", "│"}
 
-  -- local cfg = {
-  --  library = {
-  --    vimruntime = true, -- runtime path
-  --    types = true, -- full signature, docs and completion of vim.api, vim.treesitter, vim.lsp and others
-  --    -- plugins = false -- installed opt or start plugins in packpath
-  --    -- you can also specify the list of plugins to make available as a workspace library
-  --    plugins = {"nvim-treesitter", "plenary.nvim", "navigator.lua", "guihua.lua"}
-  --  },
-  --  -- pass any additional options that will be merged in the final lsp config
-  --  lspconfig = {
-  --    -- cmd = {sumneko_binary},
-  --    -- on_attach = ...
-  --  }
-  -- }
-  -- local ok, l = pcall(require, "lua-dev")
-
   -- local efm_cfg = require('modules.lang.efm').efm
-
 
   local nav_cfg = {
     debug = plugin_debug(),
@@ -213,24 +167,6 @@ function config.luadev()
   -- vim.cmd([[vmap <leader><leader>r <Plug>(Luadev-Run)]])
 end
 function config.lua_dev()
-  -- local cfg = {
-  --   library = {
-  --     vimruntime = true, -- runtime path
-  --     types = true, -- full signature, docs and completion of vim.api, vim.treesitter, vim.lsp and others
-  --     plugins = true -- installed opt or start plugins in packpath
-  --     -- you can also specify the list of plugins to make available as a workspace library
-  --     -- plugins = { "nvim-treesitter", "plenary.nvim", "navigator" },
-  --   },
-  --   -- pass any additional options that will be merged in the final lsp config
-  --   lspconfig = {
-  --     -- cmd = {sumneko_binary},
-  --     -- on_attach = ...
-  --   }
-  -- }
-  --
-  -- local luadev = require("lua-dev").setup(cfg)
-  -- print(vim.inspect(luadev))
-  -- require('lspconfig').sumneko_lua.setup(luadev)
 end
 
 function config.go()
