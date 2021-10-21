@@ -152,9 +152,10 @@ function config.vgit()
   -- there are overlaps with gitgutter. following are nice features
   require('vgit').setup({
     keymaps = {
+      ['n <leader>ga'] = 'actions', -- show all commands in telescope
       ['n <leader>ba'] = 'buffer_gutter_blame_preview', -- show all blames
-      ['n <leader>bp'] = 'buffer_preview', -- buffer diff
-      ['n <leader>bh'] = 'buffer_history', -- buffer commit history DiffviewFileHistory
+      ['n <leader>bp'] = 'buffer_blame_preview', -- buffer diff
+      ['n <leader>bh'] = 'buffer_history_preview', -- buffer commit history DiffviewFileHistory
       ['n <leader>gp'] = 'buffer_staged_diff_preview', -- diff for staged changes
       ['n <leader>pd'] = 'project_diff_preview',  -- diffview is slow
     },
@@ -171,6 +172,7 @@ function config.vgit()
       action_delay_ms = 500
     }
   })
+  require"packer".loader("telescope.nvim")
   -- print('vgit')
   -- require("vgit")._buf_attach()
 end

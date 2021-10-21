@@ -32,7 +32,19 @@ tools["editorconfig/editorconfig-vim"] = {
 -- }
 
 -- tools["wellle/targets.vim"] = {}
-tools["kabouzeid/nvim-lspinstall"] = {cmd = "LspInstall"}
+tools["williamboman/nvim-lsp-installer"] = {
+  -- cmd = "LspInstall", 
+  -- config = function()
+  --   local lsp_installer = require("nvim-lsp-installer")
+
+  --   -- lsp_installer.on_server_ready(function (server)
+  --   --   print(vim.inspect(server))
+  --   --   local opts=require'navigator.lspclient.clients'.get_cfg(server.name)
+  --   --   opts.cmd = server:get_default_options().cmd
+  --   --   server:setup {opts}
+  --   -- end)
+  -- end
+}
 tools["TimUntersberger/neogit"] = {
   cmd = {"Neogit"},
   config = function()
@@ -113,6 +125,7 @@ tools['tanvirtin/vgit.nvim'] = { -- gitsign has similar features
     vim.o.updatetime = 2000
     vim.wo.signcolumn = 'yes'
   end,
+  after = {"telescope.nvim"},
   opt = true,
   config = conf.vgit
 }
@@ -126,8 +139,14 @@ tools["rmagatti/auto-session"] = {config = conf.session}
 
 tools["rmagatti/session-lens"] = {
   cmd = "SearchSession",
+  after = {'telescope.nvim'},
   config = function()
-    require('session-lens').setup {shorten_path = true, previewer = true}
+    require"packer".loader("telescope.nvim")
+    require("telescope").load_extension("session-lens")
+    require('session-lens').setup {path_display = {'shorten'},
+      theme_conf = { border = false },
+      previewer = true
+    }
   end
 }
 
