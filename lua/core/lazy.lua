@@ -42,9 +42,11 @@ function lazyload()
     loader("lua-dev.nvim")
   end
 
-  local plugins = "plenary.nvim indent-blankline.nvim" -- nvim-lspconfig navigator.lua   guihua.lua navigator.lua  -- gitsigns.nvim
-  vim.g.vimsyn_embed = 'lPr'
+  local plugins = "plenary.nvim" -- nvim-lspconfig navigator.lua   guihua.lua navigator.lua  -- gitsigns.nvim
   loader(plugins)
+  vim.g.vimsyn_embed = 'lPr'
+  
+  loader("indent-blankline.nvim")
 
   local gitrepo = vim.fn.isdirectory('.git/index')
   if gitrepo then 
@@ -69,6 +71,7 @@ function lazyload()
 
   if load_ts_plugins then
     plugins = "nvim-treesitter nvim-treesitter-refactor nvim-ts-autotag nvim-ts-context-commentstring" --  nvim-ts-rainbow  nvim-treesitter nvim-treesitter-refactor
+    
     -- nvim-treesitter-textobjects should be autoloaded
     loader(plugins)
     -- enable syntax if is small
@@ -97,11 +100,12 @@ vim.cmd([[autocmd User LoadLazyPlugin lua lazyload()]])
 vim.cmd("command! Gram lua require'modules.tools.config'.grammcheck()")
 vim.cmd("command! Spell call spelunker#check()")
 
+local lazy_timer = 80
 vim.defer_fn(function()
   vim.cmd([[doautocmd User LoadLazyPlugin]])
-end, 90)
+end, lazy_timer)
 
 vim.defer_fn(function()
   -- lazyload()
   vim.cmd([[doautocmd ColorScheme]])
-end, 80)
+end, lazy_timer + 20)

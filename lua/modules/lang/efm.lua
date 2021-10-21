@@ -49,7 +49,7 @@ local efm_cfg = {
     vim.cmd([[
       aug efmFormat
         au!
-        autocmd BufWritePre  lua vim.lsp.buf.formatting()
+        autocmd BufWritePre * lua vim.lsp.buf.formatting()
       aug END
      ]])
 
