@@ -37,7 +37,8 @@ function config.nvim_cmp()
   end
 
   local sources = {
-    {name = 'nvim_lsp'}, {name = 'luasnip'}, {name = 'treesitter', keyword_length = 2},
+    {name = 'nvim_lsp'},
+    {name = 'luasnip'}, {name = 'treesitter', keyword_length = 2},
     {name = 'look', keyword_length = 4}
     -- {name = 'buffer', keyword_length = 4} {name = 'path'}, {name = 'look'},
     -- {name = 'calc'}, {name = 'ultisnips'} { name = 'snippy' }

@@ -313,29 +313,30 @@ function config.sonokai()
 end
 
 function config.blankline()
-  vim.g.indent_blankline_buftype_exclude = {"terminal"}
-  vim.g.indent_blankline_filetype_exclude = {
-    "help", "startify", "dashboard", "packer", "guihua", "NvimTree", "sidekick"
-  }
-  vim.g.indent_blankline_buftype_exclude = {"terminal"}
-  vim.g.indent_blankline_char = "| "
-  vim.g.indent_blankline_char_list = {"", "┊", "┆", "¦", "|", "¦", "┆", "┊", ""}
-  vim.g.indent_blankline_show_trailing_blankline_indent = false
+  require("indent_blankline").setup {
+        enabled = true,
+        -- char = "|",
+        char_list = {"", "┊", "┆", "¦", "|", "¦", "┆", "┊", ""},
+        filetype_exclude = {
+          "help", "startify", "dashboard", "packer", "guihua", "NvimTree", "sidekick"
+        },
+        show_trailing_blankline_indent = false,
+        show_first_indent_level = false,
+        buftype_exclude = {"terminal"},
+        space_char_blankline = " ",
+        use_treesitter = true,
+        show_current_context = true,
+        context_patterns = {
+          "class", "return", "function", "method", "^if", "if", "^while", "jsx_element", "^for", "for",
+          "^object", "^table", "block", "arguments", "if_statement", "else_clause", "jsx_element",
+          "jsx_self_closing_element", "try_statement", "catch_clause", "import_statement",
+          "operation_type"
+        },
+        bufname_exclude = {"README.md"},
+    }
   -- useing treesitter instead of char highlight
   -- vim.g.indent_blankline_char_highlight_list =
   -- {"WarningMsg", "Identifier", "Delimiter", "Type", "String", "Boolean"}
-  vim.g.indent_blankline_show_first_indent_level = false
-  vim.g.indent_blankline_bufname_exclude = {"README.md"}
-  -- vim.g.indentLine_faster = 1
-  vim.g.indent_blankline_context_patterns = {
-    "class", "return", "function", "method", "^if", "if", "^while", "jsx_element", "^for", "for",
-    "^object", "^table", "block", "arguments", "if_statement", "else_clause", "jsx_element",
-    "jsx_self_closing_element", "try_statement", "catch_clause", "import_statement",
-    "operation_type"
-  }
-  vim.g.indent_blankline_use_treesitter = true
-  vim.g.indent_blankline_show_current_context = true
-  vim.g.indent_blankline_enabled = true
 end
 
 function config.indentguides()

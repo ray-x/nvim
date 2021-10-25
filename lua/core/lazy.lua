@@ -45,8 +45,6 @@ function lazyload()
   local plugins = "plenary.nvim" -- nvim-lspconfig navigator.lua   guihua.lua navigator.lua  -- gitsigns.nvim
   loader(plugins)
   vim.g.vimsyn_embed = 'lPr'
-  
-  loader("indent-blankline.nvim")
 
   local gitrepo = vim.fn.isdirectory('.git/index')
   if gitrepo then 
@@ -81,6 +79,7 @@ function lazyload()
     -- return -- do not enable syntax
     -- else
     --   vim.cmd([[setlocal syntax=on]])
+    loader("indent-blankline.nvim")
   end
 
   if bytes < 2 * 1024 * 1024 and syn_on then

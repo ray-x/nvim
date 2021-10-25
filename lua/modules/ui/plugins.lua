@@ -56,7 +56,10 @@ ui["kyazdani42/nvim-tree.lua"] = {
 --   end
 -- }
 
-ui["lukas-reineke/indent-blankline.nvim"] = {setup = conf.blankline, opt = true} -- after="nvim-treesitter",
+ui["lukas-reineke/indent-blankline.nvim"] = {
+  opt = true, 
+  config = conf.blankline,
+} -- after="nvim-treesitter",
 
 ui["dstein64/nvim-scrollview"] = {config = conf.scrollview}
 

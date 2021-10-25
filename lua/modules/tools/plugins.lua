@@ -144,7 +144,7 @@ tools["rmagatti/session-lens"] = {
     require"packer".loader("telescope.nvim")
     require("telescope").load_extension("session-lens")
     require('session-lens').setup {path_display = {'shorten'},
-      theme_conf = { border = false },
+      theme_conf = { border = true },
       previewer = true
     }
   end
