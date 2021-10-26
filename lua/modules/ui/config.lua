@@ -16,6 +16,7 @@ function config.windline()
   end
 
   require("modules.ui.eviline")
+  vim.cmd("WindLineFloatToggle")
 end
 
 local winwidth = function()
