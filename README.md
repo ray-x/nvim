@@ -54,21 +54,20 @@ I used following plugin a lots
 
   ![document symbol](https://github.com/ray-x/files/blob/master/img/navigator/doc_symbol.gif?raw=true)
 
-- ALE
+- ALE -> Efm
 
-  Well, I am still using ALE and configure lint tools with it. It is good to find something compiler missed. But more
-  and more task will move to efm-server
+Lint and format moved to efm-server
 
 - Programming support:
   Treesitter, nvim-lsp and [navigator.lua](https://github.com/ray-x/navigator.lua), for golang, use [go.nvim](https://github.com/ray-x/go.nvim)
 
 - Debug:
 
-  vimspector, dlv, nvim-dap
+  dlv, nvim-dap
 
 - Theme, look&feel:
 
-  home cooked Aurora, windline (lua), devicons(lua), blankline(indent),
+  home cooked Aurora, windline (lua), devicons(lua), blankline(indent), bufferline
 
 - Color:
 
@@ -77,7 +76,7 @@ I used following plugin a lots
 
 - Git:
 
-  fugitive, gv, nvimtree, gitsigns.nvim, VGit.nvim
+  fugitive, nvimtree, gitsigns.nvim, VGit.nvim
 
 - Format:
 
@@ -93,7 +92,7 @@ I used following plugin a lots
 
 - Move and Edit:
 
-  easymotion -> hop, vim-multi-cursor, navigator.lua (better treesitter folding), Sad for complex find and replace
+  easymotion -> hop&lightspeed, vim-multi-cursor, navigator.lua (better treesitter folding), Sad for complex find and replace
 
 ## Install
 
@@ -132,6 +131,10 @@ Please backup this folder if necessary
 The setup should work with nvim0.5.1+ or nvim0.6+. A patched nerd font is needed. Also if you start nvim from terminal,
 make sure it support nerdfont and emoji
 
+## Configure
+
+If you would like to sync to my branch. You can add you own setup in lua/overwrite folder
+
 ## Shell
 
 - OhMyZshell is good, iterm2 is popular, but I turned to
@@ -151,3 +154,4 @@ These tools are good, but due to confliction, less use, or, not suite to my work
 - zpreztor
 - rainbow
 - defx
+- ALE
