@@ -35,9 +35,6 @@ local keys = {
   -- pack?
   -- ["n|<Leader>tr"]     = map_cr("call dein#recache_runtimepath()"):with_noremap():with_silent(),
   -- ["n|<Leader>tf"]     = map_cu('DashboardNewFile'):with_noremap():with_silent(),
-  -- gitsign?
-  ["n|[g"] = map_cr('<cmd> lua require"gitsigns".prev_hunk()'):with_noremap():with_silent(),
-  ["n|]g"] = map_cr('<cmd> lua require"gitsigns".next_hunk()'):with_noremap():with_silent(),
   --
   -- Lsp mapp work when insertenter and lsp start
   --
@@ -46,8 +43,7 @@ local keys = {
   -- ["n|<Leader>ff"] = map_cu("Clap grep"):with_noremap():with_silent(),
   ["n|<Leader>fb"] = map_cu("Clap marks"):with_noremap():with_silent(),
   ["n|<C-x><C-f>"] = map_cu("Clap filer"):with_noremap():with_silent(),
-  ["n|<Leader>ff"] = map_cu("Clap files ++finder=rg --ignore --hidden --files"):with_noremap()
-      :with_silent(),
+  ["n|<Leader>ff"] = map_cu("Clap files ++finder=rg --ignore --hidden --files"):with_noremap():with_silent(),
   ["n|<M-g>"] = map_cu("Clap gfiles"):with_noremap():with_silent(),
   ["n|<Leader>fw"] = map_cu("Clap grep ++query=<Cword>"):with_noremap():with_silent(),
   ["n|<M-h>"] = map_cu("Clap history"):with_noremap():with_silent(),
@@ -56,13 +52,14 @@ local keys = {
   ["n|<Leader>fl"] = map_cu("Clap loclist"):with_noremap():with_silent(),
   ["n|<Leader>fu"] = map_cu("Clap git_diff_files"):with_noremap():with_silent(),
   ["n|<Leader>fv"] = map_cu("Clap grep ++query=@visual"):with_noremap():with_silent(),
-  ["n|<Leader>Bp"] = map_cu("BufferLinePick"):with_noremap():with_silent(),
   ["n|<Leader>fh"] = map_cu("Clap command_history"):with_noremap():with_silent(),
   ["n|<Leader><Leader>r"] = map_cmd("v:lua.run_or_test()"):with_expr(),
   ["v|<Leader><Leader>r"] = map_cmd("v:lua.run_or_test()"):with_expr(),
+
+  ["n|<Leader>Bp"] = map_cu("BufferLinePick"):with_noremap():with_silent(),
+
   ["n|<Leader>di"] = map_cr("<cmd>lua require'dap.ui.variables'.hover()"):with_expr(),
   ["n|<Leader>dw"] = map_cr("<cmd>lua require'dap.ui.widgets'.hover()"):with_expr(), -- TODO: another key?
-
   ["v|<Leader>di"] = map_cr("<cmd>lua require'dap.ui.variables'.visual_hover()"):with_expr(),
   ["n|<C-k>"] = map_cmd('v:lua.ctrl_k()'):with_silent():with_expr(),
 
@@ -80,21 +77,18 @@ local keys = {
   ["n|hL"] = map_cr("HopLineStartBC"),
   ["n|<M-s>"] = map_cr("HopChar1AC"),
   ["n|<M-S>"] = map_cr("HopChar1BC"),
+  ["x|<M-s>"] = map_cmd("<cmd>HopChar1<CR>"):with_silent(),
+  ["v|<M-s>"] = map_cmd("<cmd>HopChar1<CR>"):with_silent(),
+  -- ["v|<M-s>"] = map_cmd("<cmd>lua require'hop'.hint_char1()<cr>"):with_silent():with_expr(),
   -- ["n|<Space>s"] = map_cr("HopChar2"),
   ["n|<Space>s"] = map_cr("HopChar2AC"),
   ["n|<Space>S"] = map_cr("HopChar2BC"),
   ["n|<Space>F"] = map_cr("HopPattern"),
   ["n|<Space>]"] = map_cr("HopPatternAC"),
   ["n|<Space>["] = map_cr("HopPatternBC"),
-  ["n|<d-s>"] = map_cu("w"):with_silent(),
-  ["i|<d-s>"] = map_cu('"normal :w"'):with_noremap():with_silent(),
-  ["v|<d-s>"] = map_cu('"normal :w"'):with_noremap():with_silent(),
-  ["n|<d-w>"] = map_cu("wqa!"):with_silent(),
-  ["i|<d-w>"] = map_cu('"normal :wqa!"'):with_noremap():with_silent(),
-  ["v|<d-w>"] = map_cu('"normal :wqa!"'):with_noremap():with_silent(),
-  ["n|<d-/>"] = map_cr("call nerdcommenter#Comment('nx', 'toggle')"):with_silent(),
-  ["i|<d-/>"] = map_cr("call nerdcommenter#Comment('nx', 'toggle')"):with_silent(),
-  ["v|<d-/>"] = map_cr("call nerdcommenter#Comment('nx', 'toggle')"):with_silent(),
+  -- ["n|<d-/>"] = map_cr("call nerdcommenter#Comment('nx', 'toggle')"):with_silent(),
+  -- ["i|<d-/>"] = map_cr("call nerdcommenter#Comment('nx', 'toggle')"):with_silent(),
+  -- ["v|<d-/>"] = map_cr("call nerdcommenter#Comment('nx', 'toggle')"):with_silent(),
   -- clap --
   ["n|<d-C>"] = map_cu("Clap | startinsert"),
   ["i|<d-C>"] = map_cu("Clap | startinsert"):with_noremap():with_silent(),
@@ -108,14 +102,19 @@ local keys = {
   ["i|<d-f>"] = map_cu("Clap grep ++query=<cword> |  startinsert"):with_noremap():with_silent(),
   ["n|<d-F>"] = map_cu("Clap dumb_jump ++query=<cword> | startinsert"),
   ["i|<d-F>"] = map_cu("Clap dumb_jump ++query=<cword> | startinsert"):with_noremap():with_silent()
+
+  -- session
+  -- ["n|<Leader>ss"] = map_cu('SessionSave'):with_noremap(),
+  -- ["n|<Leader>sl"] = map_cu('SessionLoad'):with_noremap(),
 }
+
 --
 -- undo leader mapping
 vim.g.mapleader = "\\"
 vim.cmd([[vnoremap  <leader>y  "+y]])
 vim.cmd([[nnoremap  <leader>Y  "+yg_]])
-vim.cmd([[vnoremap  <M-c>  "+y]])
-vim.cmd([[nnoremap  <M-c>  "+yg_]])
+-- vim.cmd([[vnoremap  <M-c>  "+y]])
+-- vim.cmd([[nnoremap  <M-c>  "+yg_]])
 
 vim.cmd([[vnoremap  <D-c>  *+y]])
 vim.cmd([[nnoremap  <D-c>  *+yg_]])
@@ -130,14 +129,8 @@ vim.cmd([[inoremap  <D-v>  <CTRL-r>*]])
 -- vim.cmd([[xunmap gI]])
 -- vim.cmd([[xunmap A]])
 --
--- vim.cmd([[nmap ; <Plug>Sneak_;]])
---
 --
 bind.nvim_load_mapping(keys)
-
-local t = function(str)
-  return vim.api.nvim_replace_termcodes(str, true, true, true)
-end
 
 _G.run_or_test = function(...)
   -- if not packer_plugins["nvim-luadev"].loaded then
