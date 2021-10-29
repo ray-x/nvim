@@ -48,8 +48,17 @@ local plug_map = {
   -- ["n|sa"]             = map_cmd("<Plug>(operator-surround-append)"):with_silent(),
   -- ["n|sd"]             = map_cmd("<Plug>(operator-surround-delete)"):with_silent(),
   -- ["n|sr"]             = map_cmd("<Plug>(operator-surround-replace)"):with_silent(),
-  ["n|<F8>"] = map_cmd("call SideKickNoReload()"):with_silent()
+  ["n|<F8>"] = map_cmd("call SideKickNoReload()"):with_silent(),
+  -- ["x|gcc"] = map_cmd("<ESC><CMD>lua ___comment_gb(vim.fn.visualmode())<CR>"):with_silent(),
+  ["x|gcc"] = map_cmd("<ESC><CMD>lua ___comment_gc(vim.fn.visualmode())<CR>"):with_silent(),
 
+  ["n|<d-/>"] = map_cmd("<ESC><CMD>lua ___comment_gcc(vim.fn.visualmode())<CR>"):with_silent(),
+  ["i|<d-/>"] = map_cmd("<ESC><CMD>lua ___comment_gb(vim.fn.visualmode())<CR>"):with_silent(),
+  ["x|<d-/>"] = map_cmd('<ESC><CMD>lua ___comment_gb(vim.fn.visualmode())<CR>'):with_silent(),
+
+  ["i|<m-/>"] = map_cmd("<ESC><CMD>lua ___comment_gcc(vim.fn.visualmode())<CR>"):with_silent(),
+  ["i|<m-/>"] = map_cmd("<ESC><CMD>lua ___comment_gb(vim.fn.visualmode())<CR>"):with_silent(),
+  ["x|<m-/>"] = map_cmd('<ESC><CMD>lua ___comment_gb(vim.fn.visualmode())<CR>'):with_silent()
 };
 
 bind.nvim_load_mapping(plug_map)

@@ -56,7 +56,7 @@ editor["rrethy/vim-hexokinase"] = {
 -- <A-l>   Move current character/selection right
 editor["matze/vim-move"] = {
   opt = true,
-  event = {"CursorMoved","CursorMovedI"},
+  event = {"CursorMoved", "CursorMovedI"}
   -- fn = {'<Plug>MoveBlockDown', '<Plug>MoveBlockUp', '<Plug>MoveLineDown', '<Plug>MoveLineUp'}
 }
 
@@ -67,9 +67,10 @@ editor["matze/vim-move"] = {
 -- }
 
 editor["mg979/vim-visual-multi"] = {
-  keys = {"<Ctrl>", "<M>",
-    "<C-n>", "<C-n>", "<M-n>", "<S-Down>", "<S-Up>", "<M-Left>", "<M-i>", "<M-Right>", "<M-D>", "<M-Down>",
-    "<C-d>", "<C-Down>", "<S-Right>", "<C-LeftMouse>", "<M-LeftMouse>", "<M-C-RightMouse>", "<Leader>"
+  keys = {
+    "<Ctrl>", "<M>", "<C-n>", "<C-n>", "<M-n>", "<S-Down>", "<S-Up>", "<M-Left>", "<M-i>",
+    "<M-Right>", "<M-D>", "<M-Down>", "<C-d>", "<C-Down>", "<S-Right>", "<C-LeftMouse>",
+    "<M-LeftMouse>", "<M-C-RightMouse>", "<Leader>"
   },
   opt = true,
   setup = conf.vmulti
@@ -89,9 +90,10 @@ editor["phaazon/hop.nvim"] = {
 }
 
 editor["numToStr/Comment.nvim"] = {
-  keys = {'g'},
+  keys = {'g', '<ESC>'},
+  event = {'CursorMoved'},
   config = conf.comment
- }
+}
 
 -- editor["preservim/nerdcommenter"] = {
 --   -- keys = {"<Leader>c<space>", "\\c ", "<D-/>", "<C-<Space>>", "<Leader>cc", "//", "<M-/>"},

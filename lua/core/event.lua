@@ -3,7 +3,7 @@ local autocmd = {}
 
 function autocmd.nvim_create_augroups(definitions)
   for group_name, definition in pairs(definitions) do
-    vim.api.nvim_command('augroup '..group_name)
+    vim.api.nvim_command('augroup '.. group_name)
     vim.api.nvim_command('autocmd!')
     for _, def in ipairs(definition) do
       local command = table.concat(vim.tbl_flatten{'autocmd', def}, ' ')
@@ -28,7 +28,6 @@ function autocmd.load_autocmds()
       {"BufWritePre","MERGE_MSG","setlocal noundofile"};
       {"BufWritePre","*.tmp","setlocal noundofile"};
       {"BufWritePre","*.bak","setlocal noundofile"};
-      {"BufWritePre","*.tsx","lua vim.api.nvim_command('Format')"};
     };
 
     wins = {
@@ -36,7 +35,7 @@ function autocmd.load_autocmds()
       -- {"WinEnter,BufEnter,InsertLeave", "*", [[if ! &cursorline && &filetype !~# '^\(dashboard\|clap_\)' && ! &pvw | setlocal cursorline | endif]]};
       -- {"WinLeave,BufLeave,InsertEnter", "*", [[if &cursorline && &filetype !~# '^\(dashboard\|clap_\|NvimTree\)' && ! &pvw | setlocal nocursorline | endif]]};
       -- {"WinLeave,BufLeave,InsertEnter", "*", [[if &cursorline && &filetype !~# '^\(dashboard\|clap_\|NvimTree\)' && ! &pvw | setlocal nocursorcolumn | endif]]};
-      {"BufEnter", "NvimTree", [[set cursorline]]};
+      {"BufEnter", "NvimTree", [[setlocal cursorline]]};
 
       -- Equalize window dimensions when resizing vim window
       {"VimResized", "*", [[tabdo wincmd =]]};
@@ -44,6 +43,8 @@ function autocmd.load_autocmds()
       {"VimLeave", "*", [[if has('nvim') | wshada! | else | wviminfo! | endif]]};
       -- Check if file changed when its window is focus, more eager than 'autoread'
       {"FocusGained", "* checktime"};
+      -- -- {"CmdwinEnter,CmdwinLeave", "*", "lua require'wlfloatline'.toggle()"};
+      -- {"CmdlineEnter,CmdlineLeave", "*", "echom 'kkk'"};
     };
 
     ft = {
@@ -60,3 +61,4 @@ function autocmd.load_autocmds()
 end
 
 autocmd.load_autocmds()
+return autocmd

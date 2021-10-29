@@ -86,9 +86,6 @@ local keys = {
   ["n|<Space>F"] = map_cr("HopPattern"),
   ["n|<Space>]"] = map_cr("HopPatternAC"),
   ["n|<Space>["] = map_cr("HopPatternBC"),
-  -- ["n|<d-/>"] = map_cr("call nerdcommenter#Comment('nx', 'toggle')"):with_silent(),
-  -- ["i|<d-/>"] = map_cr("call nerdcommenter#Comment('nx', 'toggle')"):with_silent(),
-  -- ["v|<d-/>"] = map_cr("call nerdcommenter#Comment('nx', 'toggle')"):with_silent(),
   -- clap --
   ["n|<d-C>"] = map_cu("Clap | startinsert"),
   ["i|<d-C>"] = map_cu("Clap | startinsert"):with_noremap():with_silent(),
