@@ -20,7 +20,7 @@ return {
       end
       local host = os.getenv("HOST_NAME")
       if host and host:find('Ray') then
-        Plugin_debug = true
+        Plugin_debug = true  -- enable debug here, will be slow
       else
         Plugin_debug = false
       end
@@ -87,10 +87,10 @@ return {
     end
 
     _G.Format = function(json)
-
-      vim.cmd([[%s/\\n/\r/g]])
-      vim.cmd([[%s/\\t/  /g]])
-      vim.cmd([[%s/\\"/"/g]])
+      pcall(vim.cmd, [[%s/\\n/\r/g]])
+      pcall(vim.cmd, [[%s/\\t/  /g]])
+      pcall(vim.cmd, [[%s/\\"/"/g]])
+      
       -- again
       vim.cmd([[nohl]])
       -- for json run

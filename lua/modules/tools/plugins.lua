@@ -33,7 +33,7 @@ tools["editorconfig/editorconfig-vim"] = {
 
 -- tools["wellle/targets.vim"] = {}
 tools["williamboman/nvim-lsp-installer"] = {
-  -- cmd = "LspInstall", 
+  -- cmd = "LspInstall",
   -- config = function()
   --   local lsp_installer = require("nvim-lsp-installer")
 

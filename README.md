@@ -135,6 +135,8 @@ make sure it support nerdfont and emoji
 
 If you would like to sync to my branch. You can add you own setup in lua/overwrite folder
 
+You can put your own plugins setup in `modules/user` folder
+
 ## Shell
 
 - OhMyZshell is good, iterm2 is popular, but I turned to

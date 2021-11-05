@@ -28,12 +28,12 @@ editor["andymass/vim-matchup"] = {
   end
 }
 
-editor["ggandor/lightspeed.nvim"] = {
-  as = "lightspeed",
-  opt = true,
-  keys = {'f', 'F', 't', 'T', 'S', 's'},
-  config = conf.lightspeed
-}
+-- editor["ggandor/lightspeed.nvim"] = {
+--   as = "lightspeed",
+--   opt = true,
+--   keys = {'f', 'F', 't', 'T', 'S', 's'},
+--   config = conf.lightspeed
+-- }
 
 editor["tpope/vim-surround"] = {
   opt = true

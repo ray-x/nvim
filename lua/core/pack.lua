@@ -47,6 +47,7 @@ function Packer:load_packer()
   local use_rocks = packer.use_rocks
   self:load_plugins()
   use {"wbthomason/packer.nvim"}
+  use {'lewis6991/impatient.nvim'}
   for _, repo in ipairs(self.repos) do
     use(repo)
   end

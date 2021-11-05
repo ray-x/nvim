@@ -56,6 +56,11 @@ local load_core = function()
   createdir()
   disable_distribution_plugins()
   leader_map()
+
+  if pcall(require, 'impatient') then
+    require 'impatient'
+  end
+
   pack.ensure_plugins()
   require('core.options')
   require('core.mapping')

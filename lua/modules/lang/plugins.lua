@@ -1,10 +1,7 @@
 local lang = {}
 local conf = require("modules.lang.config")
 local path = plugin_folder()
-lang["nvim-treesitter/nvim-treesitter"] = {
-  event = "UIEnter",
-  opt = true,
-}
+lang["nvim-treesitter/nvim-treesitter"] = {event = "UIEnter", opt = true}
 
 lang["nvim-treesitter/nvim-treesitter-textobjects"] = {
   after = "nvim-treesitter",
@@ -12,13 +9,18 @@ lang["nvim-treesitter/nvim-treesitter-textobjects"] = {
   opt = true
 }
 
+-- lang['nathom/filetype.nvim'] = {
+--   event = {'WinEnter'},
+--   setup = function()
+--     vim.g.did_load_filetypes = 1
+--   end
+-- }
 
 lang["nvim-treesitter/nvim-treesitter-refactor"] = {
   after = "nvim-treesitter-textobjects", -- manual loading
   config = conf.nvim_treesitter_ref, -- let the last loaded config treesitter
   opt = true
 }
-
 
 lang["yardnsm/vim-import-cost"] = {cmd = "ImportCost", opt = true}
 
@@ -33,7 +35,6 @@ lang[path .. "navigator.lua"] = {
   config = conf.navigator,
   opt = true
 }
-
 
 -- lang["gcmt/wildfire.vim"] = {
 --   setup = function()
@@ -54,9 +55,7 @@ lang["ElPiloto/sidekick.nvim"] = {opt = true, fn = {'SideKickNoReload'}, setup =
 lang["bfredl/nvim-luadev"] = {opt = true, cmd = "Luadev", setup = conf.luadev}
 lang["mfussenegger/nvim-dap"] = {config = conf.dap, cmd = "Luadev", opt = true}
 
-lang["JoosepAlviste/nvim-ts-context-commentstring"] = {
-  opt = true,
-}
+lang["JoosepAlviste/nvim-ts-context-commentstring"] = {opt = true}
 
 lang["rcarriga/nvim-dap-ui"] = {
   -- requires = {"mfussenegger/nvim-dap"},
@@ -81,20 +80,20 @@ lang["mtdl9/vim-log-highlighting"] = {ft = {"text", "log"}}
 
 -- lang["RRethy/vim-illuminate"] = {opt=true, ft = {"go"}}
 
-lang["michaelb/sniprun"] = {
-  run = "bash install.sh",
-  opt = true,
-  cmd = {"SnipRun", "SnipReset"}
-  --   config = function() require'sniprun'.setup({
-  --   -- selected_interpreters = {},     --" use those instead of the default for the current filetype
-  --   -- repl_enable = {},               --" enable REPL-like behavior for the given interpreters
-  --   -- repl_disable = {},              --" disable REPL-like behavior for the given interpreters
+-- lang["michaelb/sniprun"] = {
+--   run = "bash install.sh",
+--   opt = true,
+--   cmd = {"SnipRun", "SnipReset"}
+--   --   config = function() require'sniprun'.setup({
+--   --   -- selected_interpreters = {},     --" use those instead of the default for the current filetype
+--   --   -- repl_enable = {},               --" enable REPL-like behavior for the given interpreters
+--   --   -- repl_disable = {},              --" disable REPL-like behavior for the given interpreters
 
-  --   inline_messages = 1             --" inline_message (0/1) is a one-line way to display messages
-  --                                   --" to workaround sniprun not being able to display anything
-  -- })
-  -- end
-}
+--   --   inline_messages = 1             --" inline_message (0/1) is a one-line way to display messages
+--   --                                   --" to workaround sniprun not being able to display anything
+--   -- })
+--   -- end
+-- }
 -- JqxList and JqxQuery json browsing, format
 -- lang["gennaro-tedesco/nvim-jqx"] = {opt = true, cmd = {"JqxList", "JqxQuery"}}
 

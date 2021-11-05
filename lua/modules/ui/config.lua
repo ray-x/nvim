@@ -17,7 +17,7 @@ function config.windline()
 
   require("modules.ui.eviline")
   require('wlfloatline').setup()
-  require('wlfloatline').toggle()
+  -- require('wlfloatline').toggle()
 end
 
 local winwidth = function()
@@ -72,7 +72,6 @@ end
 -- vim.cmd([[au BufEnter,BufWinEnter,WinEnter,CmdwinEnter * call s:disable_statusline('NvimTree')]])
 
 function config.nvim_tree_setup()
-  vim.g.nvim_tree_hide_dotfiles = 1
   vim.g.nvim_tree_indent_markers = 1
   vim.g.nvim_tree_width = 28
   vim.g.nvim_tree_git_hl = 1
@@ -100,7 +99,7 @@ function config.nvim_tree_setup()
       empty_open = "",
       symlink = "",
       symlink_open = ""
-    },
+    }
   }
   vim.cmd([[autocmd Filetype NvimTree set cursorline]])
 end
@@ -122,11 +121,11 @@ function config.nvim_tree()
     -- opens the tree when changing/opening a new tab if the tree wasn't previously opened
     open_on_tab = false,
     -- hijack the cursor in the tree to put it at the start of the filename
-    update_to_buf_dir   = {
+    update_to_buf_dir = {
       -- enable the feature
       enable = false,
       -- allow to open the tree if it was previously closed
-      auto_open = true,
+      auto_open = true
     },
     hijack_cursor = false,
     -- updates the root directory of the tree on `DirChanged` (when your run `:cd` usually)
@@ -151,13 +150,9 @@ function config.nvim_tree()
     },
     diagnostics = {
       enable = true,
-      icons = {
-        hint = "",
-        info = "",
-        warning = "",
-        error = "",
-      }
+      icons = {hint = "", info = "", warning = "", error = ""}
     },
+    filters = {dotfiles = true, custom = {}},
     view = {
       -- width of the window, can be either a number (columns) or a string in `%`
       width = 30,
@@ -316,26 +311,24 @@ end
 
 function config.blankline()
   require("indent_blankline").setup {
-        enabled = true,
-        -- char = "|",
-        char_list = {"", "┊", "┆", "¦", "|", "¦", "┆", "┊", ""},
-        filetype_exclude = {
-          "help", "startify", "dashboard", "packer", "guihua", "NvimTree", "sidekick"
-        },
-        show_trailing_blankline_indent = false,
-        show_first_indent_level = false,
-        buftype_exclude = {"terminal"},
-        space_char_blankline = " ",
-        use_treesitter = true,
-        show_current_context = true,
-        context_patterns = {
-          "class", "return", "function", "method", "^if", "if", "^while", "jsx_element", "^for", "for",
-          "^object", "^table", "block", "arguments", "if_statement", "else_clause", "jsx_element",
-          "jsx_self_closing_element", "try_statement", "catch_clause", "import_statement",
-          "operation_type"
-        },
-        bufname_exclude = {"README.md"},
-    }
+    enabled = true,
+    -- char = "|",
+    char_list = {"", "┊", "┆", "¦", "|", "¦", "┆", "┊", ""},
+    filetype_exclude = {"help", "startify", "dashboard", "packer", "guihua", "NvimTree", "sidekick"},
+    show_trailing_blankline_indent = false,
+    show_first_indent_level = false,
+    buftype_exclude = {"terminal"},
+    space_char_blankline = " ",
+    use_treesitter = true,
+    show_current_context = true,
+    context_patterns = {
+      "class", "return", "function", "method", "^if", "if", "^while", "jsx_element", "^for", "for",
+      "^object", "^table", "block", "arguments", "if_statement", "else_clause", "jsx_element",
+      "jsx_self_closing_element", "try_statement", "catch_clause", "import_statement",
+      "operation_type"
+    },
+    bufname_exclude = {"README.md"}
+  }
   -- useing treesitter instead of char highlight
   -- vim.g.indent_blankline_char_highlight_list =
   -- {"WarningMsg", "Identifier", "Delimiter", "Type", "String", "Boolean"}
