@@ -134,7 +134,7 @@ completion[plugin_folder() .. "lsp_signature.nvim"] = {
       timer_interval = 100,
       extra_trigger_chars = {},
       handler_opts = {
-        border = "single" -- "shadow", --{"╭", "─" ,"╮", "│", "╯", "─", "╰", "│" },
+        border = "rounded" -- "shadow", --{"╭", "─" ,"╮", "│", "╯", "─", "╰", "│" },
       },
       max_height = 4,
     })

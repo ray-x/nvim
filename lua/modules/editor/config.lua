@@ -14,7 +14,7 @@ function config.autopairs()
   local npairs = require("nvim-autopairs")
   local Rule = require("nvim-autopairs.rule")
   npairs.setup({
-    disable_filetype = {"TelescopePrompt", "guihua", "clap_input"},
+    disable_filetype = {"TelescopePrompt", "guihua", "guihua_rust", "clap_input"},
     autopairs = {enable = true},
     ignored_next_char = string.gsub([[ [%w%%%'%[%"%.] ]], "%s+", ""), -- "[%w%.+-"']",
     enable_check_bracket_line = false,

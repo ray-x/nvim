@@ -129,11 +129,10 @@ function config.nvim_cmp()
     -- You should specify your *installed* sources.
     sources = sources
   }
-  if vim.o.ft ~= 'clap_input' then
-    require'cmp'.setup.buffer { completion = {enable = false} }
+  if vim.o.ft == 'clap_input' or vim.o.ft == 'guihua' or vim.o.ft == 'guihua_rust' then
+    require'cmp'.setup.buffer { completion = { enable = false} }
   end
   vim.cmd("autocmd FileType TelescopePrompt lua require('cmp').setup.buffer { enabled = false }")
-
   vim.cmd("autocmd FileType clap_input lua require('cmp').setup.buffer { enabled = false }")
   -- if vim.o.ft ~= 'sql' then
   --   require'cmp'.setup.buffer { completion = {autocomplete = false} }
@@ -167,20 +166,7 @@ function config.telescope_preload()
 end
 
 function config.telescope()
-  require("telescope").setup {
-    defaults = {
-      prompt_prefix = "🍔 ",
-      layout_config = {prompt_position = "top"},
-      sorting_strategy = "ascending",
-      file_previewer = require"telescope.previewers".vim_buffer_cat.new,
-      grep_previewer = require"telescope.previewers".vim_buffer_vimgrep.new,
-      qflist_previewer = require"telescope.previewers".vim_buffer_qflist.new
-    },
-    extensions = {fzy_native = {override_generic_sorter = false, override_file_sorter = true}}
-  }
-  require("telescope").load_extension("fzy_native")
-  require"telescope".load_extension("dotfiles")
-  require"telescope".load_extension("gosource")
+  require("utils.telescope").setup()
 end
 
 function config.emmet()

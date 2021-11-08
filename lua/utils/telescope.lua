@@ -1,7 +1,5 @@
-global.path_sep = path_sep
-
 local a = vim.api
-
+local telescope = require("telescope")
 local actions = require('telescope.actions')
 local config = require('telescope.config')
 local pickers = require('telescope.pickers')
@@ -20,19 +18,11 @@ local pickers = require('telescope.pickers')
 local finders = require('telescope.finders')
 local builtin = require('telescope.builtin')
 local config = require('telescope.config')
-
-require('telescope').setup{
-  defaults = {
-    shorten_path = true,
-    mappings = {
-      i = {
-        ["<esc>"] = actions.close
-      },
-  },
-  },
-}
+local state = require('telescope.state')
+local action_set = require "telescope.actions.set"
 
 M = {}
+
 
 M.find_dots = function(opts)
   opts = opts or {}
@@ -265,46 +255,50 @@ function M.load_dotfiles()
   require('telescope.builtin').dotfiles()
 end
 
-
---- telescope
-
-
--- require('telescope').setup {
---   defaults = {
---     winblend = 0,
---     layout_strategy = "flex",
---     preview_cutoff = 120,
---     layout_options = {
---       preview_width = 0.75,
---     },
-
---     sorting_strategy = "descending",
---     prompt_position = "bottom",
-
---     -- sorting_strategy = "ascending",
---     -- prompt_position = "top",
-
---     -- border = false,
---     -- borderchars = { '─', '│', '─', '│', '╭', '╮', '╯', '╰'},
-
---     -- for the top/right/bottom/left border.  Optionally
---     -- followed by the character to use for the
---     -- topleft/topright/botright/botleft corner.
---     -- border = {},
---     --   true,
-
---     --   prompt = true,
---     -- },
-
---     borderchars = {
---       { '─', '│', '─', '│', '╭', '╮', '╯', '╰'},
-
---       preview = { '─', '│', '─', '│', '╭', '╮', '╯', '╰'},
---     },
-
---     -- borderchars = { 'b', 'e', 'g', 'i', 'n', 'b', 'o', 't'}
---   }
-
--- }
+M.setup = function()
+  telescope.setup{
+    defaults = {
+      shorten_path = true,
+      prompt_prefix = "🍔 ",
+      layout_config = {prompt_position = "top"},
+      sorting_strategy = "ascending",
+      file_previewer = require"telescope.previewers".vim_buffer_cat.new,
+      grep_previewer = require"telescope.previewers".vim_buffer_vimgrep.new,
+      qflist_previewer = require"telescope.previewers".vim_buffer_qflist.new,
+      extensions = {fzy_native = {override_generic_sorter = false, override_file_sorter = true}},
+      mappings = {
+        n = {
+          ["<C-e>"] = function(prompt_bufnr)
+            local results_win = state.get_status(prompt_bufnr).results_win
+            local height = vim.api.nvim_win_get_height(results_win)
+            action_set.shift_selection(prompt_bufnr, math.floor(height/2))
+          end,
+          ["<C-y>"] = function(prompt_bufnr)
+            local results_win = state.get_status(prompt_bufnr).results_win
+            local height = vim.api.nvim_win_get_height(results_win)
+            action_set.shift_selection(prompt_bufnr, -math.floor(height/2))
+          end,
+        },
+        i = {
+          ["<esc>"] = actions.close,
+          ["<C-e>"] = function(prompt_bufnr)
+            local results_win = state.get_status(prompt_bufnr).results_win
+            local height = vim.api.nvim_win_get_height(results_win)
+            action_set.shift_selection(prompt_bufnr, math.floor(height/2))
+          end,
+          ["<C-y>"] = function(prompt_bufnr)
+            local results_win = state.get_status(prompt_bufnr).results_win
+            local height = vim.api.nvim_win_get_height(results_win)
+            action_set.shift_selection(prompt_bufnr, -math.floor(height/2))
+          end,
+        },
+      },
+    },
+  }
+  telescope.load_extension("fzy_native")
+  telescope.load_extension("dotfiles")
+  telescope.load_extension("gosource")
+  telescope.load_extension("live_grep_raw")
+end
 
 return M
