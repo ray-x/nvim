@@ -19,8 +19,8 @@ function lazyload()
   local syn_on = not vim.tbl_contains(disable_ft, vim.bo.filetype)
   if syn_on then
     vim.cmd([[syntax manual]])
-  else
-    vim.cmd([[syntax on]])
+  -- else
+  --   vim.cmd([[syntax on]])
   end
 
   -- local fname = vim.fn.expand("%:p:f")
@@ -62,7 +62,7 @@ function lazyload()
   require("vscripts.cursorhold")
   require("vscripts.tools")
   if load_ts_plugins then
-    print("treesitter on")
+    -- print('load ts plugins')
     loader("nvim-treesitter")
   end
 
@@ -81,9 +81,9 @@ function lazyload()
     loader("indent-blankline.nvim")
   end
 
-  if bytes < 2 * 1024 * 1024 and syn_on then
-    vim.cmd([[setlocal syntax=on]])
-  end
+  -- if bytes < 2 * 1024 * 1024 and syn_on then
+  --   vim.cmd([[setlocal syntax=on]])
+  -- end
 
   vim.cmd([[autocmd FileType vista,guihua,guihua setlocal syntax=on]])
   vim.cmd(
@@ -94,12 +94,15 @@ vim.cmd([[autocmd User LoadLazyPlugin lua lazyload()]])
 vim.cmd("command! Gram lua require'modules.tools.config'.grammcheck()")
 vim.cmd("command! Spell call spelunker#check()")
 
-local lazy_timer = 50
+local lazy_timer = 60
 vim.defer_fn(function()
   vim.cmd([[doautocmd User LoadLazyPlugin]])
 end, lazy_timer)
 
 vim.defer_fn(function()
   -- lazyload()
+  local cmd = 'TSEnableAll highlight ' .. vim.o.ft
+  vim.cmd(cmd)
   vim.cmd([[doautocmd ColorScheme]])
+  vim.cmd(cmd)
 end, lazy_timer + 20)

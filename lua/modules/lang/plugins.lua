@@ -4,7 +4,7 @@ local path = plugin_folder()
 lang["nvim-treesitter/nvim-treesitter"] = {opt = true}
 
 lang["nvim-treesitter/nvim-treesitter-textobjects"] = {
-  after = "nvim-treesitter",
+  -- after = "nvim-treesitter",
   config = conf.nvim_treesitter,
   opt = true
 }
