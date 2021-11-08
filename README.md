@@ -1,6 +1,8 @@
 # vim as a programming IDE
 
-This neovim configure file is highly optimized for loading performance. Packer lazy loading + After rendering async plugin loading. Maybe the
+## Need for speed! 🏎 🏎 🏎
+
+This neovim configure file is highly optimized for the impatient. Packer lazy loading + After syntax highlight rendering. Maybe the
 only nvim setup in github that can render multiple files with treesitter in less than 80ms with ~80 plugins installed
 (e.g. Open both util.lua(1686 loc) and lsp.lua(1538 loc) from neovim source code in 80.6ms)
 
@@ -38,7 +40,7 @@ I used following plugin a lots
   lazy load vim-go. So, other than module folder, I could copy/paste everything else from glepnir's configure file,
   which make my life easier.
 
-- vim-clap
+- Telescope + Vim-Clap
 
   One of the best plugin for search anything. I used it to replace fzf, leaderF, leaderP, defx, Ag/Ack/Rg, yank(ring), project management. undolist and many more. Telescope is awesome, only issue is it is slower in large project.
 

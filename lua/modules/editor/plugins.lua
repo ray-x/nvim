@@ -17,7 +17,9 @@ editor["windwp/nvim-autopairs"] = {
 }
 
 editor["andymass/vim-matchup"] = {
+  opt = true,
   event = {"CursorMoved", "CursorMovedI"},
+  cmd = {'MatchupWhereAmI?'},
   config = function()
     vim.g.matchup_enabled = 1
     vim.g.matchup_surround_enabled = 1

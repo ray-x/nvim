@@ -1,7 +1,7 @@
 local lang = {}
 local conf = require("modules.lang.config")
 local path = plugin_folder()
-lang["nvim-treesitter/nvim-treesitter"] = {event = "UIEnter", opt = true}
+lang["nvim-treesitter/nvim-treesitter"] = {opt = true}
 
 lang["nvim-treesitter/nvim-treesitter-textobjects"] = {
   after = "nvim-treesitter",
