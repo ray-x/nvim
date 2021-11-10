@@ -20,7 +20,7 @@ return {
       end
       local host = os.getenv("HOST_NAME")
       if host and host:find('Ray') then
-        Plugin_debug = true  -- enable debug here, will be slow
+        Plugin_debug = true -- enable debug here, will be slow
       else
         Plugin_debug = false
       end
@@ -33,6 +33,7 @@ return {
       -- return true
     end
 
+    -- workspace find and replace
     _G.Sad = function(old, rep)
       -- vim.cmd([[ command! Sad let old = expand("<cword>") | let [line_start, column_start] = getpos("'<")[1:2] | let [line_end, column_end] = getpos("'>")[1:2] | let rep = input("Replace " . old . " with: ", old) | execute ":FloatermNew --height=0.95 --width=0.95  git ls-files  | sad --pager=delta " . old . " " . rep  ]])
       if old == nil then
@@ -60,6 +61,7 @@ return {
       vim.cmd(cmd)
     end
 
+    -- convert word to Snake case
     _G.Snake = function(s)
       if s == nil then
         s = vim.fn.expand("<cword>")
@@ -72,6 +74,7 @@ return {
       lprint("newstr", n)
     end
 
+    -- convert to camel case
     _G.Camel = function()
       local s
       if s == nil then
@@ -86,11 +89,12 @@ return {
       vim.cmd([[exe "norm! ciw\<C-R>s"]])
     end
 
+    -- reformat file by remove \n\t and pretty if it is json
     _G.Format = function(json)
       pcall(vim.cmd, [[%s/\\n/\r/g]])
       pcall(vim.cmd, [[%s/\\t/  /g]])
       pcall(vim.cmd, [[%s/\\"/"/g]])
-      
+
       -- again
       vim.cmd([[nohl]])
       -- for json run

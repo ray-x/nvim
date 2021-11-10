@@ -21,6 +21,10 @@ The `Plug` config is located in branch [Plug branch](https://github.com/ray-x/do
   ![vim_ide with
 nvim+kitty](https://user-images.githubusercontent.com/1681295/109258178-db2e6d80-784d-11eb-9cef-8b1cc6435e01.png?raw=true)
 
+## Battery included
+
+About 100 plugins and 1600 lines of lua and vim code.
+
 ## Neovim Plugins
 
 There are lots of amazing plugins,

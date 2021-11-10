@@ -16,7 +16,12 @@ tools["kristijanhusak/vim-dadbod-ui"] = {
 }
 
 tools['vim-test/vim-test'] = {cmd = {'TestNearest', 'TestFile', 'TestSuite'}}
-
+tools['camspiers/snap'] = {
+  event = {'CursorMoved', 'CursorMovedI'},
+  rocks = {'fzy'},
+  opt = true,
+  config = conf.snap
+}
 tools["editorconfig/editorconfig-vim"] = {
   opt = true,
   cmd = {"EditorConfigReload"}
@@ -32,19 +37,19 @@ tools["editorconfig/editorconfig-vim"] = {
 -- }
 
 -- tools["wellle/targets.vim"] = {}
-tools["williamboman/nvim-lsp-installer"] = {
-  -- cmd = "LspInstall",
-  -- config = function()
-  --   local lsp_installer = require("nvim-lsp-installer")
+-- tools["williamboman/nvim-lsp-installer"] = {
+-- cmd = "LspInstall",
+-- config = function()
+--   local lsp_installer = require("nvim-lsp-installer")
 
-  --   -- lsp_installer.on_server_ready(function (server)
-  --   --   print(vim.inspect(server))
-  --   --   local opts=require'navigator.lspclient.clients'.get_cfg(server.name)
-  --   --   opts.cmd = server:get_default_options().cmd
-  --   --   server:setup {opts}
-  --   -- end)
-  -- end
-}
+--   -- lsp_installer.on_server_ready(function (server)
+--   --   print(vim.inspect(server))
+--   --   local opts=require'navigator.lspclient.clients'.get_cfg(server.name)
+--   --   opts.cmd = server:get_default_options().cmd
+--   --   server:setup {opts}
+--   -- end)
+-- end
+-- }
 tools["TimUntersberger/neogit"] = {
   cmd = {"Neogit"},
   config = function()
@@ -109,8 +114,11 @@ tools["liuchengxu/vim-clap"] = {
 }
 
 tools["sindrets/diffview.nvim"] = {
-  cmd = {"DiffviewOpen", "DiffviewFileHistory", "DiffviewFocusFiles", "DiffviewToggleFiles", "DiffviewRefresh"},
-   config = conf.diffview
+  cmd = {
+    "DiffviewOpen", "DiffviewFileHistory", "DiffviewFocusFiles", "DiffviewToggleFiles",
+    "DiffviewRefresh"
+  },
+  config = conf.diffview
 }
 
 tools["lewis6991/gitsigns.nvim"] = {
@@ -143,14 +151,19 @@ tools["rmagatti/session-lens"] = {
   config = function()
     require"packer".loader("telescope.nvim")
     require("telescope").load_extension("session-lens")
-    require('session-lens').setup {path_display = {'shorten'},
-      theme_conf = { border = true },
+    require('session-lens').setup {
+      path_display = {'shorten'},
+      theme_conf = {border = true},
       previewer = true
     }
   end
 }
 
-tools['kevinhwang91/nvim-bqf'] = {opt = true, event = {"CmdlineEnter", "QuickfixCmdPre"}, config = conf.bqf}
+tools['kevinhwang91/nvim-bqf'] = {
+  opt = true,
+  event = {"CmdlineEnter", "QuickfixCmdPre"},
+  config = conf.bqf
+}
 
 tools["rcarriga/vim-ultest"] = {
   requires = {"vim-test/vim-test", setup = conf.vim_test, opt = true},

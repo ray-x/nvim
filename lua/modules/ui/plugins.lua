@@ -1,7 +1,6 @@
 local ui = {}
 local conf = require("modules.ui.config")
 
-
 --
 local winwidth = function()
   return vim.api.nvim_call_function("winwidth", {0})
@@ -40,7 +39,6 @@ ui["akinsho/bufferline.nvim"] = {
 --   setup = conf.minimap
 -- }
 
-
 ui["kyazdani42/nvim-tree.lua"] = {
   cmd = {"NvimTreeToggle", "NvimTreeOpen"},
   -- requires = {'kyazdani42/nvim-web-devicons'},
@@ -56,14 +54,11 @@ ui["kyazdani42/nvim-tree.lua"] = {
 --   end
 -- }
 
-ui["lukas-reineke/indent-blankline.nvim"] = {
-  opt = true, 
-  config = conf.blankline,
-} -- after="nvim-treesitter",
+ui["lukas-reineke/indent-blankline.nvim"] = {opt = true, config = conf.blankline} -- after="nvim-treesitter",
 
-ui["dstein64/nvim-scrollview"] = {config = conf.scrollview}
+ui["dstein64/nvim-scrollview"] = {event = {'CursorMoved', 'CursorMovedI'}, config = conf.scrollview}
 
-ui[ plugin_folder() .. "aurora"] = {opt = true, config = conf.aurora}
+ui[plugin_folder() .. "aurora"] = {opt = true, config = conf.aurora}
 ui["folke/tokyonight.nvim"] = {
   opt = true,
   setup = conf.tokyonight,

@@ -1,7 +1,7 @@
 local config = {}
 
 local function load_env_file()
-  local env_file = require 'core.global'.home .. "/.env"
+  local env_file = require'core.global'.home .. "/.env"
   local env_contents = {}
   if vim.fn.filereadable(env_file) ~= 1 then
     print(".env file does not exist")
@@ -46,14 +46,11 @@ function config.diffview()
     diff_binaries = false, -- Show diffs for binaries
     use_icons = true, -- Requires nvim-web-devicons
     enhanced_diff_hl = false, -- See ':h diffview-config-enhanced_diff_hl'
-    signs = {
-      fold_closed = "",
-      fold_open = "",
-    },
+    signs = {fold_closed = "", fold_open = ""},
     file_panel = {
-      position = "left",      -- One of 'left', 'right', 'top', 'bottom'
-      width = 35,             -- Only applies when position is 'left' or 'right'
-      height = 10,            -- Only applies when position is 'top' or 'bottom'
+      position = "left", -- One of 'left', 'right', 'top', 'bottom'
+      width = 35, -- Only applies when position is 'left' or 'right'
+      height = 10 -- Only applies when position is 'top' or 'bottom'
     },
     key_bindings = {
       -- The `view` bindings are active in the diff buffers, only when the current
@@ -89,7 +86,7 @@ function config.vim_dadbod_ui()
   vim.g.db_ui_win_position = "left"
   vim.g.db_ui_use_nerd_fonts = 1
   vim.g.db_ui_winwidth = 35
-  vim.g.db_ui_save_location = require 'core.global'.home .. "/.cache/vim/db_ui_queries"
+  vim.g.db_ui_save_location = require'core.global'.home .. "/.cache/vim/db_ui_queries"
   vim.g.dbs = load_dbs()
 end
 
@@ -157,10 +154,10 @@ function config.vgit()
       ['n <leader>bp'] = 'buffer_blame_preview', -- buffer diff
       ['n <leader>bh'] = 'buffer_history_preview', -- buffer commit history DiffviewFileHistory
       ['n <leader>gp'] = 'buffer_staged_diff_preview', -- diff for staged changes
-      ['n <leader>pd'] = 'project_diff_preview',  -- diffview is slow
+      ['n <leader>pd'] = 'project_diff_preview' -- diffview is slow
     },
     controller = {
-      hunks_enabled = false,  --gitsigns
+      hunks_enabled = false, -- gitsigns
       blames_enabled = false,
       diff_strategy = 'index',
       diff_preference = 'vertical',
@@ -176,7 +173,6 @@ function config.vgit()
   -- print('vgit')
   -- require("vgit")._buf_attach()
 end
-
 
 function config.neogit()
   require("neogit").setup({
@@ -245,7 +241,7 @@ function config.gitsigns()
       ["n <leader>hp"] = '<cmd>lua require"gitsigns".preview_hunk()<CR>',
       -- ["n <leader>hb"] = '<cmd>lua require"gitsigns".blame_line()<CR>',
       ["n <leader>bs"] = '<cmd>lua require"gitsigns".stage_buffer()<CR>',
-      ["n <leader>hq"] = '<cmd>lua do vim.cmd("copen") require"gitsigns".setqflist("all") end <CR>',  -- hunk qflist with vgit
+      ["n <leader>hq"] = '<cmd>lua do vim.cmd("copen") require"gitsigns".setqflist("all") end <CR>', -- hunk qflist with vgit
       ["o ih"] = ':<C-U>lua require"gitsigns".text_object()<CR>',
       ["x ih"] = ':<C-U>lua require"gitsigns".text_object()<CR>'
     },
@@ -257,7 +253,7 @@ function config.gitsigns()
     current_line_blame_opts = {delay = 1500},
     update_debounce = 300,
     word_diff = true,
-    diff_opts={internal=true}
+    diff_opts = {internal = true}
   }
 end
 
@@ -338,7 +334,7 @@ end
 
 --[[
 Use `git ls-files` for git files, use `find ./ *` for all files under work directory.
-]]--
+]] --
 
 function config.floaterm()
   -- Set floaterm window's background to black
@@ -410,6 +406,55 @@ function config.mkdp()
   vim.g.mkdp_command_for_global = 1
   vim.cmd(
       [[let g:mkdp_preview_options = { 'mkit': {}, 'katex': {}, 'uml': {}, 'maid': {}, 'disable_sync_scroll': 0, 'sync_scroll_type': 'middle', 'hide_yaml_meta': 1, 'sequence_diagrams': {}, 'flowchart_diagrams': {}, 'content_editable': v:true, 'disable_filename': 0 }]])
+end
+
+function config.snap()
+  local snap = require 'snap'
+  local limit = snap.get "consumer.limit"
+  local select_vimgrep = snap.get "select.vimgrep"
+  local preview_file = snap.get "preview.file"
+  local preview_vimgrep = snap.get "preview.vimgrep"
+  local producer_vimgrep = snap.get "producer.ripgrep.vimgrep"
+  function _G.snap_grep()
+    snap.run({
+      prompt = "  Grep  ",
+      producer = limit(10000, producer_vimgrep),
+      select = select_vimgrep.select,
+      steps = {{consumer = snap.get "consumer.fzf", config = {prompt = "FZF>"}}},
+      multiselect = select_vimgrep.multiselect,
+      views = {preview_vimgrep}
+    })
+  end
+
+  function _G.snap_grep_selected_word()
+    snap.run({
+      prompt = "  Grep  ",
+      producer = limit(10000, producer_vimgrep),
+      select = select_vimgrep.select,
+      multiselect = select_vimgrep.multiselect,
+      views = {preview_vimgrep},
+      initial_filter = vim.fn.expand("<cword>")
+    })
+  end
+
+  snap.maps {
+    {"<Leader>rg", snap.config.file {producer = "ripgrep.file"}},
+    -- {"<Leader>fb", snap.config.file {producer = "vim.buffer"}},
+    {"<Leader>fo", snap.config.file {producer = "vim.oldfile"}},
+    -- {"<Leader>ff", snap.config.vimgrep {}},
+    {
+      "<Leader>fz", function()
+        snap.run {
+          prompt = "  Grep  ",
+          producer = limit(1000, snap.get'producer.ripgrep.vimgrep'.args({'--ignore-case'})),
+          steps = {{consumer = snap.get 'consumer.fzf', config = {prompt = " Fzf  "}}},
+          select = snap.get'select.file'.select,
+          multiselect = snap.get'select.file'.multiselect,
+          views = {snap.get 'preview.vimgrep'}
+        }
+      end
+    }
+  }
 end
 
 return config
