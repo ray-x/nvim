@@ -46,7 +46,7 @@ I used following plugin a lots
 
 - Telescope + Vim-Clap
 
-  One of the best plugin for search anything. I used it to replace fzf, leaderF, leaderP, defx, Ag/Ack/Rg, yank(ring), project management. undolist and many more. Telescope is awesome, only issue is it is slower in large project.
+  One of the best plugin for search anything. I used it to replace fzf, leaderF, leaderP, defx, Ag/Ack/Rg, yank(ring), project management. undolist and many more. Telescope is awesome, only issue is performance.
 
 - nvim-lsp with [navigator.lua](https://github.com/ray-x/navigator.lua)
 
