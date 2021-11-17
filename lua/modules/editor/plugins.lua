@@ -82,8 +82,10 @@ editor["phaazon/hop.nvim"] = {
   as = "hop",
   cmd = {
     "HopWord", "HopWordAC", "HopWordBC", "HopLine", "HopChar1", "HopChar1AC", "HopChar1BC",
-    "HopChar2", "HopChar2AC", "HopChar2BC", "HopPattern", "HopPatternAC", "HopPatternBC"
+    "HopChar2", "HopChar2AC", "HopChar2BC", "HopPattern", "HopPatternAC", "HopPatternBC",
+    "HopChar1CurrentLineAC", "HopChar1CurrentLineBC", "HopChar1CurrentLine"
   },
+  keys = {'d', 'df', 'dt', 'f', 't'},
   config = function()
     -- you can configure Hop the way you like here; see :h hop-config
     require"hop".setup {keys = "adghklqwertyuiopzxcvbnmfjADHKLWERTYUIOPZXCVBNMFJ1234567890"}
@@ -154,6 +156,14 @@ editor["chaoren/vim-wordmotion"] = {
   opt = true,
   fn = {"<Plug>WordMotion_w"}
   -- keys = {'w','W', 'gE', 'aW'}
+}
+
+editor["folke/zen-mode.nvim"] = {
+  opt = true,
+  cmd = {'ZenMode'},
+  config = function()
+    require("zen-mode").setup {}
+  end
 }
 
 return editor

@@ -60,11 +60,20 @@ local current_treesitter_context = function(width)
   if not packer_plugins["nvim-treesitter"] or packer_plugins["nvim-treesitter"].loaded == false then
     return " "
   end
+  local type_patterns = {
+    "class", "function", "method", "interface", "type_spec", "table", "if_statement",
+    "for_statement", "for_in_statement", "call_expression"
+  }
+
+  if vim.o.ft == 'json' then
+    type_patterns = {'object', 'pari'}
+  end
+
   local f = require'nvim-treesitter'.statusline({
     indicator_size = width,
     type_patterns = {
       "class", "function", "method", "interface", "type_spec", "table", "if_statement",
-      "for_statement", "for_in_statement", "call_expression"
+      "for_statement", "for_in_statement", "call_expression", "object", "pair"
     }
   })
   local context = string.format("%s", f) -- convert to string, it may be a empty ts node
@@ -115,7 +124,7 @@ function getEntryFromEnd(table, entry)
 end
 
 local TrimmedDirectory = function(dir)
-  local home = require 'core.global'.home
+  local home = require'core.global'.home
   local _, index = string.find(dir, home, 1)
   if index ~= nil and index ~= string.len(dir) then
     -- TODO Trimmed Home Directory
@@ -239,7 +248,7 @@ basic.file = {
   hl_colors = {default = hl_list.Black, white = {'white', 'black'}, magenta = {'magenta', 'black'}},
   text = function(_, winnr, width, is_float)
     -- lprint("winline", width, is_float)
-    if width < breakpoint_width then  --vim.api.nvim_win_get_width(winnr)
+    if width < breakpoint_width then -- vim.api.nvim_win_get_width(winnr)
       return {
         {b_components.cache_file_size(), 'default'}, {' ', ''},
         {b_components.cache_file_icon({default = ''}), 'default'}, {' ', ''},
@@ -361,15 +370,12 @@ local default = {
   active = {
     basic.square_mode, basic.ani, basic.vi_mode,
     {git_comps.git_branch(), {'magenta', 'black'}, breakpoint_width}, basic.file, basic.lsp_diagnos,
-    basic.funcname, 
-    basic.divider, 
-    -- {sep.slant_right,{'black_light', 'green_light'}},
+    basic.funcname, basic.divider, -- {sep.slant_right,{'black_light', 'green_light'}},
     -- {sep.slant_right,{'green_light', 'blue_light'}},
     -- {sep.slant_right,{'blue_light', 'red_light'}},
     -- {sep.slant_right,{'red_light', 'cyan_light'}},
     -- {sep.slant_right,{'cyan_light', 'black'}},
-    basic.file_right, 
-    basic.scrollbar_right,
+    basic.file_right, basic.scrollbar_right,
     {lsp_comps.lsp_name(), {'magenta', 'black'}, breakpoint_width}, basic.git, basic.folder,
     {' ', hl_list.Black}, basic.square_mode
   },
