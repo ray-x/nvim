@@ -77,12 +77,26 @@ local keys = {
   ["n|hL"] = map_cr("HopLineStartBC"),
   -- ["n|t"] = map_cr("HopChar1CurrentLineAC"),
   -- ["n|f"] = map_cr("HopChar1CurrentLineAC"),
-  ["xo|t"] = map_cmd("<cmd>HopChar1CurrentLineAC<CR>"):with_silent(),
-  ["xo|T"] = map_cmd("<cmd>HopChar1CurrentLineBC<CR>"):with_silent(),
+  -- ["xon|t"] = map_cmd("<cmd>HopChar1CurrentLineAC<CR>"):with_silent(),
+  -- ["xon|T"] = map_cmd("<cmd>HopChar1CurrentLineBC<CR>"):with_silent(),
+
+  ["xon|f"] = map_cr(
+      "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.AFTER_CURSOR, current_line_only = true, inclusive_jump = true })<cr>",
+      {}):with_silent():with_expr(),
+  ["xon|F"] = map_cr(
+      "<cmd> lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.BEFORE_CURSOR, current_line_only = true, inclusive_jump = true })"):with_silent()
+      :with_expr(),
   -- ["xto|t"] = map_cmd("<cmd>HopChar1CurrentLineAC<CR>"):with_silent(),
   -- ["xto|T"] = map_cmd("<cmd>HopChar1CurrentLineBC<CR>"):with_silent(),
-  ["n|F"] = map_cr("HopChar1CurrentLineBC"),
-  ["x|F"] = map_cmd("<cmd>HopChar1CurrentLineBC<CR>"),
+  ["xon|t"] = map_cr(
+      [[lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.AFTER_CURSOR, current_line_only = true })<cr>]]):with_silent()
+      :with_expr(),
+
+  ["xon|T"] = map_cr(
+      [[lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.BEFORE_CURSOR, current_line_only = true })<cr>]]):with_silent()
+      :with_expr(),
+  -- ["n|F"] = map_cr("HopChar1CurrentLineBC"),
+  -- ["x|F"] = map_cmd("<cmd>HopChar1CurrentLineBC<CR>"),
   ["n|s"] = map_cr("HopChar1AC"),
   ["n|S"] = map_cr("HopChar1BC"),
   ["xv|s"] = map_cmd("<cmd>HopChar1AC<CR>"):with_silent(),
