@@ -147,14 +147,14 @@ function config.navigator()
 
       jedi_language_server = {filetypes = {}},
       efm = require('modules.lang.efm').efm
-    },
-    icons = {
-      diagnostic_err = "",
-      diagnostic_warn = "",
-      diagnostic_info = [[]],
-      diagnostic_hint = [[ﯦ]],
-      diagnostic_virtual_text = ""
     }
+    -- icons = {
+    --   diagnostic_err = "",
+    --   diagnostic_warn = "",
+    --   diagnostic_info = [[]],
+    --   diagnostic_hint = [[ﯦ]],
+    --   diagnostic_virtual_text = ""
+    -- }
   }
   vim.lsp.set_log_level("error") -- error debug info
   require"navigator".setup(nav_cfg)
