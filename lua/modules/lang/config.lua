@@ -105,6 +105,7 @@ function config.navigator()
     lsp_installer = false,
     border = single, -- "single",
     ts_fold = true,
+    -- external = true, -- true: enable for goneovim multigrid otherwise false
     lsp_signature_help = true,
     -- default_mapping = false,
     -- keymaps = {{key = "gs", func = "references()"}},

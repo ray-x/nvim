@@ -7,10 +7,10 @@ local global = require 'core.global'
 require('keymap.config')
 
 local plug_map = {
-  -- ["i|<TAB>"]      = map_cmd('v:lua.tab_complete()'):with_expr():with_silent(),
-  -- ["i|<S-TAB>"]    = map_cmd('v:lua.s_tab_complete()'):with_silent():with_expr(),
-  -- ["s|<TAB>"]      = map_cmd('v:lua.tab_complete()'):with_expr():with_silent(),
-  -- ["s|<S-TAB>"]    = map_cmd('v:lua.s_tab_complete()'):with_silent():with_expr(),
+  ["i|<TAB>"] = map_cmd('v:lua.tab_complete()'):with_expr():with_silent(),
+  ["i|<S-TAB>"] = map_cmd('v:lua.s_tab_complete()'):with_silent():with_expr(),
+  ["s|<TAB>"] = map_cmd('v:lua.tab_complete()'):with_expr():with_silent(),
+  ["s|<S-TAB>"] = map_cmd('v:lua.s_tab_complete()'):with_silent():with_expr(),
   -- person keymap
   -- ["n|mf"]             = map_cr("<cmd>lua require('internal.fsevent').file_event()<CR>"):with_silent():with_nowait():with_noremap();
   -- Lsp mapp work when insertenter and lsp start
@@ -19,8 +19,8 @@ local plug_map = {
   ["n|<leader>lr"] = map_cr("LspRestart"):with_noremap():with_silent():with_nowait(),
   -- ["n|gt"]             = map_cmd("<cmd>lua vim.lsp.buf.type_definition()<CR>"):with_noremap():with_silent(),
   -- ["n|<Leader>cw"]     = map_cmd("<cmd>lua vim.lsp.buf.workspace_symbol()<CR>"):with_noremap():with_silent(),
-  ["n|<Leader>ct"] = map_args("Template"),
-  ["n|<Leader>tf"] = map_cu('DashboardNewFile'):with_noremap():with_silent(),
+  -- ["n|<Leader>ct"] = map_args("Template"),
+  -- ["n|<Leader>tf"] = map_cu('DashboardNewFile'):with_noremap():with_silent(),
   -- Plugin nvim-tree
   -- ["n|<Leader>e"]      = map_cr('NvimTreeToggle'):with_noremap():with_silent(),
   ["n|<Leader>F"] = map_cr('NvimTreeFindFile'):with_noremap():with_silent(),
@@ -44,19 +44,19 @@ local plug_map = {
   ["n|<Leader>r"] = map_cr("<cmd> lua require'internal.quickrun'.run_command()"):with_noremap():with_silent(),
   -- Plugin Vista
   ["n|<Leader>v"] = map_cu('Vista'):with_noremap():with_silent(),
-  -- Plugin vim-operator-surround
-  -- ["n|sa"]             = map_cmd("<Plug>(operator-surround-append)"):with_silent(),
-  -- ["n|sd"]             = map_cmd("<Plug>(operator-surround-delete)"):with_silent(),
-  -- ["n|sr"]             = map_cmd("<Plug>(operator-surround-replace)"):with_silent(),
   ["n|<F8>"] = map_cmd("call SideKickNoReload()"):with_silent(),
   -- ["x|gcc"] = map_cmd("<ESC><CMD>lua ___comment_gb(vim.fn.visualmode())<CR>"):with_silent(),
-  ["x|gcc"] = map_cmd("<ESC><CMD>lua ___comment_gc(vim.fn.visualmode())<CR>"):with_silent(),
+  -- ["x|gcc"] = map_cmd("<ESC><CMD>lua ___comment_gc(vim.fn.visualmode())<CR>"):with_silent(),
 
+  ["x|<Leader>c<Space>"] = map_cmd("<ESC><CMD>lua ___comment_gc(vim.fn.visualmode())<CR>"):with_silent(),
+  ["n|<Leader>c<Space>"] = map_cmd(
+      [[v:count == 0 ? '<CMD>lua ___comment_call("gcc")<CR>g@$' : '<CMD>lua ___comment_count_gcc()<CR>']]):with_silent()
+      :with_expr(),
   ["n|<d-/>"] = map_cmd("<ESC><CMD>lua ___comment_gcc(vim.fn.visualmode())<CR>"):with_silent(),
   ["i|<d-/>"] = map_cmd("<ESC><CMD>lua ___comment_gb(vim.fn.visualmode())<CR>"):with_silent(),
   ["x|<d-/>"] = map_cmd('<ESC><CMD>lua ___comment_gb(vim.fn.visualmode())<CR>'):with_silent(),
 
-  ["i|<m-/>"] = map_cmd("<ESC><CMD>lua ___comment_gcc(vim.fn.visualmode())<CR>"):with_silent(),
+  ["n|<m-/>"] = map_cmd("<ESC><CMD>lua ___comment_gcc(vim.fn.visualmode())<CR>"):with_silent(),
   ["i|<m-/>"] = map_cmd("<ESC><CMD>lua ___comment_gb(vim.fn.visualmode())<CR>"):with_silent(),
   ["x|<m-/>"] = map_cmd('<ESC><CMD>lua ___comment_gb(vim.fn.visualmode())<CR>'):with_silent()
 };

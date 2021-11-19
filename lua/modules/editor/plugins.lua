@@ -77,6 +77,9 @@ editor["mg979/vim-visual-multi"] = {
   opt = true,
   setup = conf.vmulti
 }
+
+editor['indianboy42/hop-extensions'] = {after = 'hop', opt = true}
+
 -- EasyMotion in lua. -- maybe replace sneak
 editor["phaazon/hop.nvim"] = {
   as = "hop",

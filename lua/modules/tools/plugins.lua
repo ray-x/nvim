@@ -18,7 +18,7 @@ tools["kristijanhusak/vim-dadbod-ui"] = {
 tools['vim-test/vim-test'] = {cmd = {'TestNearest', 'TestFile', 'TestSuite'}}
 tools['camspiers/snap'] = {
   event = {'CursorMoved', 'CursorMovedI'},
-  rocks = {'fzy'},
+  -- rocks = {'fzy'},
   opt = true,
   config = conf.snap
 }
