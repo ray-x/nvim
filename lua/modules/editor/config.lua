@@ -196,9 +196,7 @@ end
 
 function config.neorg()
   local loader = require"packer".loader
-
-  has_ts, ts = pcall(require, "nvim-treesitter")
-  if not has_ts then
+  if not packer_plugins['nvim-treesitter'].loaded then
     loader("nvim-treesitter")
   end
   if not packer_plugins['neorg-telescope'].loaded then
