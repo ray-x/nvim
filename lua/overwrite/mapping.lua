@@ -76,19 +76,10 @@ local keys = {
   ["n|hl"] = map_cr("HopLineStartAC"),
   ["n|hL"] = map_cr("HopLineStartBC"),
 
-  ["xon|f"] = map_cr(
-      "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.AFTER_CURSOR, current_line_only = true, inclusive_jump = true })<cr>",
-      {}):with_silent():with_expr(),
-  ["xon|F"] = map_cr(
-      "<cmd> lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.BEFORE_CURSOR, current_line_only = true, inclusive_jump = true })"):with_silent()
-      :with_expr(),
-  ["xon|t"] = map_cr(
-      [[lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.AFTER_CURSOR, current_line_only = true })<cr>]]):with_silent()
-      :with_expr(),
-
-  ["xon|T"] = map_cr(
-      [[lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.BEFORE_CURSOR, current_line_only = true })<cr>]]):with_silent()
-      :with_expr(),
+  ["xon|f"] = map_cmd("<cmd>lua  Line_ft('f')<cr>"),
+  ["xon|F"] = map_cmd("<cmd>lua  Line_ft('F')<cr>"),
+  ["xon|t"] = map_cmd("<cmd>lua  Line_ft('t')<cr>"),
+  ["xon|T"] = map_cmd("<cmd>lua  Line_ft('T')<cr>"),
   ["n|s"] = map_cr("HopChar1AC"),
   ["n|S"] = map_cr("HopChar1BC"),
   ["xv|s"] = map_cmd("<cmd>HopChar1AC<CR>"):with_silent(),
@@ -152,6 +143,44 @@ _G.run_or_test = function(...)
     end
     return t("<Plug>PlenaryTestFile")
   end
+end
+
+_G.Line_ft = function(a)
+
+  -- check and load hop
+  local loaded, hop = pcall(require, 'hop')
+  if not loaded or not hop.initialized then
+    require"packer".loader('hop')
+    loaded, hop = pcall(require, 'hop')
+  end
+  if a == 'f' then
+    require'hop'.hint_char1({
+      direction = require'hop.hint'.HintDirection.AFTER_CURSOR,
+      current_line_only = true,
+      inclusive_jump = true
+    })
+  end
+  if a == 'F' then
+    require'hop'.hint_char1({
+      direction = require'hop.hint'.HintDirection.BEFORE_CURSOR,
+      current_line_only = true,
+      inclusive_jump = true
+    })
+  end
+
+  if a == 't' then
+    require'hop'.hint_char1({
+      direction = require'hop.hint'.HintDirection.AFTER_CURSOR,
+      current_line_only = true
+    })
+  end
+  if a == 'T' then
+    require'hop'.hint_char1({
+      direction = require'hop.hint'.HintDirection.BEFORE_CURSOR,
+      current_line_only = true
+    })
+  end
+
 end
 
 vim.cmd([[command! -nargs=*  DebugOpen lua require"modules.lang.dap".prepare()]])
