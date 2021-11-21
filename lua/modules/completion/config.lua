@@ -37,14 +37,17 @@ function config.nvim_cmp()
   end
 
   local sources = {
-    {name = 'nvim_lsp'},
-    {name = 'luasnip'}, {name = 'treesitter', keyword_length = 2},
+    {name = 'nvim_lsp'}, {name = 'luasnip'}, {name = 'treesitter', keyword_length = 2},
     {name = 'look', keyword_length = 4}
     -- {name = 'buffer', keyword_length = 4} {name = 'path'}, {name = 'look'},
     -- {name = 'calc'}, {name = 'ultisnips'} { name = 'snippy' }
   }
   if vim.o.ft == 'sql' then
     table.insert(sources, {name = 'vim-dadbod-completion'})
+  end
+
+  if vim.o.ft == 'norg' then
+    table.insert(sources, {name = 'neorg'})
   end
   if vim.o.ft == 'markdown' then
     table.insert(sources, {name = 'spell'})
@@ -53,7 +56,7 @@ function config.nvim_cmp()
   if vim.o.ft == 'lua' then
     table.insert(sources, {name = 'nvim_lua'})
   end
-  if vim.o.ft == 'zsh' or vim.o.ft == 'sh' or vim.o.ft == 'fish' or vim.o.ft == 'proto'then
+  if vim.o.ft == 'zsh' or vim.o.ft == 'sh' or vim.o.ft == 'fish' or vim.o.ft == 'proto' then
     table.insert(sources, {name = 'path'})
     table.insert(sources, {name = 'buffer', keyword_length = 3})
     table.insert(sources, {name = 'calc'})
@@ -77,14 +80,14 @@ function config.nvim_cmp()
           cmp_kind = require"navigator.lspclient.lspkind".cmp_kind
         end
         vim_item.kind = cmp_kind(vim_item.kind)
-            vim_item.menu = ({
-              buffer = " ﬘",
-              nvim_lsp = " ",
-              luasnip = " 🐍",
-              treesitter = ' ',
-              nvim_lua = " ",
-              spell =  ' 暈',
-            })[entry.source.name]
+        vim_item.menu = ({
+          buffer = " ﬘",
+          nvim_lsp = " ",
+          luasnip = " 🐍",
+          treesitter = ' ',
+          nvim_lua = " ",
+          spell = ' 暈'
+        })[entry.source.name]
         return vim_item
       end
     },
@@ -130,7 +133,7 @@ function config.nvim_cmp()
     sources = sources
   }
   if vim.o.ft == 'clap_input' or vim.o.ft == 'guihua' or vim.o.ft == 'guihua_rust' then
-    require'cmp'.setup.buffer { completion = { enable = false} }
+    require'cmp'.setup.buffer {completion = {enable = false}}
   end
   vim.cmd("autocmd FileType TelescopePrompt lua require('cmp').setup.buffer { enabled = false }")
   vim.cmd("autocmd FileType clap_input lua require('cmp').setup.buffer { enabled = false }")

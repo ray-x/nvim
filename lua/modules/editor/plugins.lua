@@ -88,7 +88,6 @@ editor["phaazon/hop.nvim"] = {
     "HopChar2", "HopChar2AC", "HopChar2BC", "HopPattern", "HopPatternAC", "HopPatternBC",
     "HopChar1CurrentLineAC", "HopChar1CurrentLineBC", "HopChar1CurrentLine"
   },
-  keys = {'d', 'df', 'dt', 'f', 't'},
   config = function()
     -- you can configure Hop the way you like here; see :h hop-config
     require"hop".setup {keys = "adghklqwertyuiopzxcvbnmfjADHKLWERTYUIOPZXCVBNMFJ1234567890"}
@@ -169,4 +168,5 @@ editor["folke/zen-mode.nvim"] = {
   end
 }
 
+editor["nvim-neorg/neorg"] = {opt = true, config = conf.neorg}
 return editor

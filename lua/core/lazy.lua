@@ -13,14 +13,14 @@ function lazyload()
   print("I am lazy")
 
   local disable_ft = {
-    "NvimTree", "guihua", "guihua_rust", "clap_input", "clap_spinner", "TelescopePrompt", "csv", "txt", "defx",
-    "sidekick"
+    "NvimTree", "guihua", "guihua_rust", "clap_input", "clap_spinner", "TelescopePrompt", "csv",
+    "txt", "defx", "sidekick"
   }
   local syn_on = not vim.tbl_contains(disable_ft, vim.bo.filetype)
   if syn_on then
     vim.cmd([[syntax manual]])
-  -- else
-  --   vim.cmd([[syntax on]])
+    -- else
+    --   vim.cmd([[syntax on]])
   end
 
   -- local fname = vim.fn.expand("%:p:f")
@@ -45,13 +45,17 @@ function lazyload()
     loader("lua-dev.nvim")
   end
 
+  if vim.bo.filetype == 'norg' then
+    loader("neorg")
+  end
+
   local plugins = "plenary.nvim" -- nvim-lspconfig navigator.lua   guihua.lua navigator.lua  -- gitsigns.nvim
   loader(plugins)
   vim.g.vimsyn_embed = 'lPr'
 
   local gitrepo = vim.fn.isdirectory('.git/index')
-  if gitrepo then 
-    loader("gitsigns.nvim neogit vgit.nvim")  -- vgit.nvim 
+  if gitrepo then
+    loader("gitsigns.nvim neogit vgit.nvim") -- vgit.nvim
   end
 
   if load_lsp then
