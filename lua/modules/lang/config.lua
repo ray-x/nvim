@@ -115,6 +115,7 @@ function config.navigator()
       -- disable_lsp = {'denols'},
       disable_lsp = {"rls", "flow"},
       code_lens = true,
+      diagnostic_scrollbar_sign = false,
       disply_diagnostic_qf = false,
       denols = {filetypes = {}},
       tsserver = {

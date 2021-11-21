@@ -126,6 +126,13 @@ lang['folke/trouble.nvim'] = {
   end
 }
 
+-- lang['ldelossa/calltree.nvim'] = {
+--   cmd = {'CTExpand', 'CTCollapse', 'CTSwitch', 'CTJump', 'CTFocus'},
+--   config = function()
+--     require("calltree").setup {}
+--   end
+-- }
+
 -- lang['jose-elias-alvarez/null-ls.nvim'] = {
 --   opt = true,
 --   config = function()

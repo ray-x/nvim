@@ -3,9 +3,9 @@ local vim_path = require('core.global').vim_path
 local path_sep = require('core.global').path_sep
 local data_dir = require('core.global').data_dir
 -- local home = require('core.global').home
-local modules_dir = vim_path .. path_sep .. 'lua' .. path_sep ..'modules'
-local packer_compiled = data_dir .. path_sep .. 'packer_compiled.vim'
-local compile_to_lua = data_dir .. path_sep ..'lua' .. path_sep ..'_compiled.lua'
+local modules_dir = vim_path .. path_sep .. 'lua' .. path_sep .. 'modules'
+local packer_compiled = data_dir .. 'packer_compiled.vim'
+local compile_to_lua = data_dir .. 'lua' .. path_sep .. '_compiled.lua'
 local packer = nil
 
 local Packer = {}
@@ -57,7 +57,7 @@ function Packer:load_packer()
 end
 
 function Packer:init_ensure_plugins()
-  local packer_dir = data_dir .. 'pack' .. path_sep ..  'packer' .. path_sep ..  'start' .. path_sep .. 'packer.nvim'
+  local packer_dir = data_dir .. 'pack' .. path_sep .. 'packer' .. path_sep .. 'start' .. path_sep .. 'packer.nvim'
   local state = uv.fs_stat(packer_dir)
   if not state then
     local cmd = "!git clone https://github.com/wbthomason/packer.nvim " .. packer_dir

@@ -168,5 +168,10 @@ editor["folke/zen-mode.nvim"] = {
   end
 }
 
-editor["nvim-neorg/neorg"] = {opt = true, config = conf.neorg}
+-- editor["nvim-neorg/neorg-telescope"] = {opt = true}
+editor["nvim-neorg/neorg"] = {
+  opt = true,
+  config = conf.neorg,
+  requires = {"nvim-neorg/neorg-telescope", ft = {"norg"}}
+}
 return editor
