@@ -87,7 +87,10 @@ function plugins.convert_compile_file()
   local lines = {}
   local lnum = 1
   lines[#lines + 1] = 'vim.cmd [[packadd packer.nvim]]\n'
-
+  if vim.fn.filereadable(packer_compiled) ~= 1 then
+    local file = io.open(packer_compiled, "w")
+    file:close()
+  end
   for line in io.lines(packer_compiled) do
     lnum = lnum + 1
     if lnum > 15 then

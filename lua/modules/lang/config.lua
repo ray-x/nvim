@@ -115,7 +115,7 @@ function config.navigator()
       -- disable_lsp = {'denols'},
       disable_lsp = {"rls", "flow"},
       code_lens = true,
-      diagnostic_scrollbar_sign = false,
+      -- diagnostic_scrollbar_sign = false,
       disply_diagnostic_qf = false,
       denols = {filetypes = {}},
       tsserver = {
@@ -173,7 +173,7 @@ function config.playground()
   }
 end
 function config.luadev()
-  -- vim.cmd([[vmap <leader><leader>r <Plug>(Luadev-Run)]])
+  vim.cmd([[vmap <leader><leader>r <Plug>(Luadev-Run)]])
 end
 function config.lua_dev()
 end
@@ -186,7 +186,11 @@ function config.go()
     log_path = vim.fn.expand("$HOME") .. "/tmp/gonvim.log",
     lsp_codelens = false, -- use navigator
     dap_debug = true,
-    dap_debug_gui = true
+
+    dap_debug_gui = true,
+    test_runner = 'richgo', -- richgo, go test, richgo, dlv, ginkgo
+    run_in_floaterm = true -- set to true to run in float window.
+
   })
 
   vim.cmd("augroup go")

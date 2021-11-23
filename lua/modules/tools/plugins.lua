@@ -133,7 +133,8 @@ tools['tanvirtin/vgit.nvim'] = { -- gitsign has similar features
     vim.o.updatetime = 2000
     vim.wo.signcolumn = 'yes'
   end,
-  after = {"telescope.nvim"},
+  cmd = {'VGit'},
+  -- after = {"telescope.nvim"},
   opt = true,
   config = conf.vgit
 }
@@ -178,4 +179,47 @@ tools["rcarriga/vim-ultest"] = {
   opt = true
 }
 
+tools["ahmedkhalf/project.nvim"] = {
+  opt = true,
+  after = {"telescope.nvim"},
+  keys = {'<M>', '<Leader>'},
+  config = function()
+    require("project_nvim").setup {
+      datapath = vim.fn.stdpath("data")
+      -- your configuration comes here
+      -- or leave it empty to use the default settings
+      -- refer to the configuration section below
+    }
+    require 'utils.telescope'
+    require('telescope').load_extension('projects')
+  end
+}
+
+tools["jvgrootveld/telescope-zoxide"] = {
+  opt = true,
+  keys = {'<M>', '<Leader>'},
+  after = {"telescope.nvim"},
+  config = function()
+    require 'utils.telescope'
+    require('telescope').load_extension('zoxide')
+  end
+}
+
+tools["AckslD/nvim-neoclip.lua"] = {
+  opt = true,
+  keys = {'<M>', '<Leader>'},
+  after = {"telescope.nvim"},
+  requires = {'tami5/sqlite.lua', module = 'sqlite'},
+  config = function()
+    require 'utils.telescope'
+    require('neoclip').setup({db_path = vim.fn.stdpath("data") .. "/databases/neoclip.sqlite3"})
+  end
+}
+
+tools['nvim-telescope/telescope-frecency.nvim'] = {
+  keys = {'<M>', '<Leader>'},
+  after = {"telescope.nvim"},
+  requires = {'tami5/sqlite.lua', module = 'sqlite'},
+  opt = true
+}
 return tools

@@ -2,18 +2,31 @@ set termguicolors
 call plug#begin('~/.vim/plugged')
 Plug 'neovim/nvim-lspconfig'
 Plug 'nvim-treesitter/nvim-treesitter'
+"Plug 'ray-x/guihua.lua'
+"Plug 'ray-x/navigator.lua'
 
-Plug 'ray-x/guihua.lua'
-Plug 'ray-x/navigator.lua'
-
+Plug '~/github/guihua.lua'
+Plug '~/github/navigator.lua'
 call plug#end()
 
 lua <<EOF
 local single = {"╭", "─", "╮", "│", "╯", "─", "╰", "│"}
+local sumneko_root_path = vim.fn.expand("$HOME") .. "/github/sumneko/lua-language-server"
+local sumneko_binary = vim.fn.expand("$HOME")
+                             .. "/github/sumneko/lua-language-server/bin/macOS/lua-language-server"
 require"navigator".setup({
   debug = true,
   width = 0.7,
-  border = single, -- "single"
+  border = single, -- "single",
+  lsp = {
+    format_on_save = true, -- set to false to disasble lsp code format on save (if you are using prettier/efm/formater etc)
+    denols = {filetypes = {}},
+    sumneko_lua = {
+      sumneko_root_path = sumneko_root_path,
+      sumneko_binary = sumneko_binary
+      -- settings = luadev.settings
+    }
+  }
 })
 EOF
 set mouse=a

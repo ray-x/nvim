@@ -1,15 +1,6 @@
 local config = {}
 packer_plugins = packer_plugins or {} -- supress warning
 
-function config.galaxyline()
-  if not packer_plugins["nvim-web-devicons"].loaded then
-    packer_plugins["nvim-web-devicons"].loaded = true
-    require"packer".loader("nvim-web-devicons")
-  end
-
-  require("modules.ui.eviline_gl")
-end
-
 function config.windline()
   if not packer_plugins["nvim-web-devicons"].loaded then
     packer_plugins["nvim-web-devicons"].loaded = true

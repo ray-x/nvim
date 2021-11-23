@@ -175,18 +175,19 @@ function config.comment()
         require('ts_context_commentstring.internal').update_commentstring()
       end
     end,
-    post_hook = function(ctx, start_row, end_row, start_col, end_col)
-      if start_col == -1 then
+    post_hook = function(ctx)
+      -- lprint(ctx)
+      if ctx.range.scol == -1 then
         -- do something with the current line
       else
-        -- print(vim.inspect(ctx), start_row, end_row, start_col, end_col)
-        if end_col > 400 then
-          end_col = 1
+        -- print(vim.inspect(ctx), ctx.range.srow, ctx.range.erow, ctx.range.scol, ctx.range.ecol)
+        if ctx.range.ecol > 400 then
+          ctx.range.ecol = 1
         end
         if ctx.cmotion > 1 then
           -- 322 324 0 2147483647
-          vim.fn.setpos("'<", {0, start_row, start_col})
-          vim.fn.setpos("'>", {0, end_row, end_col})
+          vim.fn.setpos("'<", {0, ctx.range.srow, ctx.range.scol})
+          vim.fn.setpos("'>", {0, ctx.range.erow, ctx.range.ecol})
           vim.cmd([[exe "norm! gv"]])
         end
       end

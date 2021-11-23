@@ -16,7 +16,7 @@ Plug 'hrsh7th/cmp-nvim-lua'
 Plug 'L3MON4D3/LuaSnip'
 Plug 'saadparwaiz1/cmp_luasnip'
 Plug 'mfussenegger/nvim-jdtls'
-Plug 'kabouzeid/nvim-lspinstall'
+Plug 'lukas-reineke/indent-blankline.nvim'
 " Plug 'nvim-lua/popup.nvim'
 " Plug 'nvim-lua/plenary.nvim'
 " Plug 'nvim-telescope/telescope.nvim'
@@ -44,7 +44,7 @@ if ! has('nvim')
   finish
 endif
 
-"--"vim.fn.expand('$HOME').. {cmd = {"/Users/ray.xu/bin/jdtls.sh"}, 
+"--"vim.fn.expand('$HOME').. {cmd = {"/Users/ray.xu/bin/jdtls.sh"},
 
 augroup lsp
     au!
@@ -54,7 +54,22 @@ augroup end
 lua <<EOF
 vim.lsp.set_log_level("debug")
 log_path = vim.fn.expand("$HOME") .. "/tmp/neovim_debug.log"
-
+require("indent_blankline").setup {
+        enabled = true,
+        char = "| ",
+        show_trailing_blankline_indent = false,
+        show_first_indent_level = false,
+        char_list = {"", "┊", "┆", "¦", "|", "¦", "┆", "┊", ""},
+        space_char_blankline = " ",
+        use_treesitter = true,
+        context_patterns = {
+          "class", "return", "function", "method", "^if", "if", "^while", "jsx_element", "^for", "for",
+          "^object", "^table", "block", "arguments", "if_statement", "else_clause", "jsx_element",
+          "jsx_self_closing_element", "try_statement", "catch_clause", "import_statement",
+          "operation_type"
+        },
+        show_current_context = true,
+    }
 lprint = function(...)
   local arg = {...}
   local str = "שׁ "
@@ -125,18 +140,14 @@ end
     }
   }
 
--- require'lspconfig'.efm.setup(efm_cfg)
+require'lspconfig'.efm.setup(efm_cfg)
 
 
-
-
-
-
-local jdtlsstartup = vim.fn.expand('$HOME').."/bin/jdtls.sh"
+-- local jdtlsstartup = vim.fn.expand('$HOME').."/bin/jdtls.sh"
 
 require'nvim-treesitter.configs'.setup {
   highlight = {
-  enable = true,              
+  enable = true,
   additional_vim_regex_highlighting = false,
   },
 }
@@ -180,6 +191,7 @@ local sumneko_binary = vim.fn.expand("$HOME")
 local single = {"╭", "─", "╮", "│", "╯", "─", "╰", "│"}
 print("navigator setup")
 
+
 require('navigator').setup({
   debug = true,
   width = 0.7,
@@ -190,9 +202,11 @@ require('navigator').setup({
     sumneko_root_path = sumneko_root_path,
     },
     efm=efm_cfg,
-  }
+  },
+  icons = {
+    code_action_icon = ""
+  },
 })
-
 
 
 
@@ -213,7 +227,7 @@ require('navigator').setup({
 --       debounce_text_changes = 150,
 --     }
 -- })
--- 
+--
 -- require'lspconfig'.pyright.setup({})
 
 EOF
@@ -225,10 +239,10 @@ EOF
 " local on_attach = function(client, bufnr)
 "   local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
 "   local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
-" 
+"
 "   -- Enable completion triggered by <c-x><c-o>
 "   buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
-" 
+"
 "   -- Mappings.
 "   local opts = { noremap=true, silent=true }
 "   -- See `:help vim.lsp.*` for documentation on any of the below functions
@@ -249,22 +263,22 @@ EOF
 "   buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
 "   buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
 "   buf_set_keymap('n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
-" 
+"
 " end
 
 " -- require 'go'.setup({dap_debug =true, verbose=true})
 " -- require'lspconfig'.jedi_language_server.setup{}
-" -- require'lsp_signature'.setup({log_path = vim.fn.expand("$HOME")  + "/tmp/sig.log", 
+" -- require'lsp_signature'.setup({log_path = vim.fn.expand("$HOME")  + "/tmp/sig.log",
 " -- doc_lines=0,
 " -- debug = true})
-" 
+"
 " -- require'lspconfig'.gopls.setup({
 " --    on_attach = function()
 " --    require'lsp_signature'.on_attach({bind = false, floating_window=false, hint_enable " = true})
 " --    end
 " -- })
-" 
-" 
+"
+"
 " -- local sumneko_root_path = vim.fn.expand("$HOME")..'/github/sumneko/lua-language-server'
 " -- local sumneko_binary = vim.fn.expand("$HOME")..'/github/sumneko/lua-language-server/" bin/-- macOS/lua-language-server'
 " -- local single = {"╭", "─", "╮", "│", "╯", "─", "╰", "│"}
@@ -274,7 +288,7 @@ EOF
 " --   width = 0.7,
 " --   border = single, -- "single",
 " -- })
-" -- 
+" --
 
 " nnoremap <silent> gd    <cmd>lua vim.lsp.buf.declaration()<CR>
 " nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<CR>
@@ -297,11 +311,11 @@ EOF
 " let material_style_fix = v:true
 " colorscheme material
 " call plug#begin('~/.vim/plugged')
-" 
+"
 " set noswapfile
-" 
+"
 " Plug 'neovim/nvim-lspconfig'
-" 
+"
 
 
 
@@ -328,7 +342,7 @@ lua <<EOF
 -- require'navigator'.setup({  lsp = {
 --     format_on_save = true, -- set to false to disasble lsp code mat on save (if you -- are using prettier/efm/formater etc)
 --     tsserver = {
---       filetypes = {'typescript'} -- disable javascript etc, 
+--       filetypes = {'typescript'} -- disable javascript etc,
 --       -- set to {} to disable the lspclient for all filetype
 --            }
 --    }})
@@ -344,11 +358,11 @@ lua <<EOF
 --   lsp = {
 --     format_on_save = true, -- set to false to disasble lsp code mat on save (if you -- are using prettier/efm/formater etc)
 --     tsserver = {
---       filetypes = {'typescript'} -- disable javascript etc, 
+--       filetypes = {'typescript'} -- disable javascript etc,
 --       -- set to {} to disable the lspclient for all filetype
 --            }
 --    }})
--- 
+--
 -- local util = require'lspconfig.util'
 
 -- require'lsp_signature'.on_attach({bind = false, use_lspsaga=false, floating_window=false, hint_enable = true})
@@ -406,17 +420,17 @@ EOF
 " -- require('lsp_config')  -- you may need my lsp_config.lua
 " require('lsp_signature').on_attach()
 
-" 
+"
 " local on_attach = function(client, bufnr)
 "   require'lsp_signature'.on_attach()
-" 
+"
 "   if client.resolved_capabilities.document_formatting then
 "     format.lsp_before_save()
 "   end
 "   vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
-" 
+"
 " end
-" 
+"
 " local sumneko_root_path = vim.fn.expand("$HOME")..'/github/sumneko/lua-language-server'
 " local sumneko_binary = vim.fn.expand("$HOME")..'/github/sumneko/lua-language-server/bin/macOS/lua-language-server'
 
@@ -424,10 +438,10 @@ EOF
 "   cmd = {sumneko_binary, "-E", sumneko_root_path .. "/main.lua"};
 "   on_attach = on_attach,
 " }
-" 
+"
 " let s:config_home = stdpath('config')
 " source  expand("$HOME") + '/.config/nvim/pluginrc.d/lsp.vim
-" 
+"
 
 " lua require('treesitter')
 
@@ -437,5 +451,5 @@ EOF
 " Set completeopt to have a better completion experience
 " set completeopt=menuone,noinsert,noselect
 
-" 
-" let g:min_load = 1" 
+"
+" let g:min_load = 1"

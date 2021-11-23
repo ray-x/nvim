@@ -215,9 +215,9 @@ function config.neogit()
 end
 
 function config.gitsigns()
-  -- if not packer_plugins["plenary.nvim"].loaded then
-  --   require'packer'.loader("plenary.nvim")
-  -- end
+  if not packer_plugins["plenary.nvim"].loaded then
+    require'packer'.loader("plenary.nvim")
+  end
   require("gitsigns").setup {
     signs = {
       add = {hl = "GitGutterAdd", text = "│", numhl = "GitSignsAddNr"},
