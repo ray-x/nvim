@@ -168,7 +168,7 @@ local treesitter_ref = function()
     },
     matchup = {
       enable = true, -- mandatory, false will disable the whole extension
-      disable = {"c", "ruby"} -- optional, list of language that will be disabled
+      disable = {'ruby'} -- optional, list of language that will be disabled
     },
     autopairs = {enable = true},
     autotag = {enable = true}

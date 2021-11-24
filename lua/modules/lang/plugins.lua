@@ -9,12 +9,14 @@ lang["nvim-treesitter/nvim-treesitter-textobjects"] = {
   opt = true
 }
 
--- lang['nathom/filetype.nvim'] = {
---   event = {'WinEnter'},
---   setup = function()
---     vim.g.did_load_filetypes = 1
---   end
--- }
+lang['nathom/filetype.nvim'] = {
+  -- event = {'BufEnter'},
+  setup = function()
+    vim.g.did_load_filetypes = 1
+  end
+}
+
+-- lang['scalameta/nvim-metals'] = {requires = {"nvim-lua/plenary.nvim"}}
 
 lang["nvim-treesitter/nvim-treesitter-refactor"] = {
   after = "nvim-treesitter-textobjects", -- manual loading

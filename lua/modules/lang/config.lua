@@ -115,9 +115,16 @@ function config.navigator()
       -- disable_lsp = {'denols'},
       disable_lsp = {"rls", "flow"},
       code_lens = true,
-      -- diagnostic_scrollbar_sign = false,
+      diagnostic_scrollbar_sign = false,
       disply_diagnostic_qf = false,
       denols = {filetypes = {}},
+      clangd = {
+        cmd = {
+          "clangd", "--background-index", "--clang-tidy",
+          "--clang-tidy-checks=-*,llvm-*,clang-analyzer-*", "--header-insertion=iwyu",
+          "--cross-file-rename"
+        }
+      },
       tsserver = {
         filetypes = {
           "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact",
@@ -196,7 +203,7 @@ function config.go()
   vim.cmd("augroup go")
   vim.cmd("autocmd!")
   vim.cmd("autocmd FileType go nmap <leader>gb  :GoBuild")
-  vim.cmd("autocmd FileType go nmap <leader><Leader>r  :GoRun")
+  -- vim.cmd("autocmd FileType go nmap <leader><Leader>r  :GoRun")
   --  Show by default 4 spaces for a tab')
   vim.cmd("autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4")
   --  :GoBuild and :GoTestCompile')

@@ -177,11 +177,14 @@ local mode = function()
   elseif mod == "c" or mod == "ce" then
     return {" ﴣ ", state.mode[2]}
   elseif mod == "r" or mod == "rm" or mod == "r?" then
-    return {"  ", state.mode[2]} -- 
+    return {mod .. "  ", state.mode[2]} -- 
+  elseif mod == "s" then
+    return {mod .. '  ', state.mode[2]}
   elseif mod == "R" or mod == "Rc" or mod == "Rv" or mod == "Rv" then
-    return {'  ', state.mode[2]}
+    return {mod .. '  ', state.mode[2]}
   end
-  return {"  ", state.mode[2]}
+
+  return {mod .. "  ", state.mode[2]}
 end
 
 local checkwidth = function()
