@@ -3,6 +3,7 @@ local bind = require('keymap.bind')
 local map_cr = bind.map_cr
 local map_cu = bind.map_cu
 local map_cmd = bind.map_cmd
+local loader = require"packer".loader
 
 function config.nvim_treesitter()
   require("modules.lang.treesitter").treesitter()
@@ -60,6 +61,22 @@ end
 function config.sqls()
 end
 
+function config.aerial()
+  local aerial = require 'aerial'
+
+  -- Aerial does not set any mappings by default, so you'll want to set some up
+  aerial.register_attach_cb(function(bufnr)
+    -- Toggle the aerial window with <leader>a
+    vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>a', '<cmd>AerialToggle!<CR>', {})
+    -- Jump forwards/backwards with '{' and '}'
+    vim.api.nvim_buf_set_keymap(bufnr, 'n', '{', '<cmd>AerialPrev<CR>', {})
+    vim.api.nvim_buf_set_keymap(bufnr, 'n', '}', '<cmd>AerialNext<CR>', {})
+    -- Jump up the tree with '[[' or ']]'
+    vim.api.nvim_buf_set_keymap(bufnr, 'n', '[[', '<cmd>AerialPrevUp<CR>', {})
+    vim.api.nvim_buf_set_keymap(bufnr, 'n', ']]', '<cmd>AerialNextUp<CR>', {})
+  end)
+end
+
 function config.syntax_folding()
   local fname = vim.fn.expand("%:p:f")
   local fsize = vim.fn.getfsize(fname)
@@ -99,10 +116,14 @@ function config.navigator()
 
   -- local efm_cfg = require('modules.lang.efm').efm
 
+  -- loader('aerial.nvim')
   local nav_cfg = {
     debug = plugin_debug(),
     width = 0.7,
     lsp_installer = false,
+    -- on_attach = function(client, bufnr)
+    --   require'aerial'.on_attach(client, bufnr)
+    -- end,
     border = single, -- "single",
     ts_fold = true,
     -- external = true, -- true: enable for goneovim multigrid otherwise false
@@ -115,16 +136,8 @@ function config.navigator()
       -- disable_lsp = {'denols'},
       disable_lsp = {"rls", "flow"},
       code_lens = true,
-      diagnostic_scrollbar_sign = false,
       disply_diagnostic_qf = false,
       denols = {filetypes = {}},
-      clangd = {
-        cmd = {
-          "clangd", "--background-index", "--clang-tidy",
-          "--clang-tidy-checks=-*,llvm-*,clang-analyzer-*", "--header-insertion=iwyu",
-          "--cross-file-rename"
-        }
-      },
       tsserver = {
         filetypes = {
           "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact",
@@ -166,6 +179,7 @@ function config.navigator()
     -- }
   }
   vim.lsp.set_log_level("error") -- error debug info
+  -- require"navigator".setup(nav_cfg)
   require"navigator".setup(nav_cfg)
 end
 
@@ -203,7 +217,6 @@ function config.go()
   vim.cmd("augroup go")
   vim.cmd("autocmd!")
   vim.cmd("autocmd FileType go nmap <leader>gb  :GoBuild")
-  -- vim.cmd("autocmd FileType go nmap <leader><Leader>r  :GoRun")
   --  Show by default 4 spaces for a tab')
   vim.cmd("autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4")
   --  :GoBuild and :GoTestCompile')

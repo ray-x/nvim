@@ -1,6 +1,17 @@
 local config = {}
 packer_plugins = packer_plugins or {} -- supress warning
 
+function daylight()
+  local h = tonumber(vim.fn.system('date +%H'))
+  if h > 6 and h < 18 then
+    vim.cmd([[set background=light]])
+    return 'light'
+  else
+    vim.cmd([[set background=dark]])
+    return 'dark'
+  end
+end
+
 function config.windline()
   if not packer_plugins["nvim-web-devicons"].loaded then
     packer_plugins["nvim-web-devicons"].loaded = true
@@ -228,6 +239,7 @@ function config.material()
   vim.g.material_contrast = true
   vim.g.material_borders = true
   vim.g.material_disable_background = false
+  vim.g.material_daylight_switch = true
   -- vim.g.material_style = "earlysummer" -- 'moonlight' emerald middlenight_blue earlysummer
   -- vim.g.material_style_fix = true
   -- config.default()
@@ -339,13 +351,18 @@ function config.gruvbox()
   local palettes = {"material", "mix", "original"}
   local v = opt[math.random(1, #opt)]
   local palette = palettes[math.random(1, #palettes)]
-  vim.cmd("set background=dark")
+
+  if daylight() == 'dark' then
+    vim.cmd("set background=dark")
+  else
+    vim.cmd("set background=light")
+  end
   vim.g.gruvbox_material_invert_selection = 0
   vim.g.gruvbox_material_enable_italic = 1
   -- vim.g.gruvbox_material_italicize_strings = 1
   -- vim.g.gruvbox_material_invert_signs = 1
-  -- vim.g.gruvbox_material_improved_strings = 1
-  -- vim.g.gruvbox_material_improved_warnings = 1
+  vim.g.gruvbox_material_improved_strings = 1
+  vim.g.gruvbox_material_improved_warnings = 1
   -- vim.g.gruvbox_material_contrast_dark=v
   vim.g.gruvbox_material_background = v
   vim.g.gruvbox_material_enable_bold = 1
@@ -371,7 +388,6 @@ vim.api.nvim_exec([[
     set nocursorcolumn
     set nocursorline
     augroup vimrc_todo
-    set background=dark
     au!
     au Syntax *.go,*.c,*.rs,*.js,*.tsx,*.cpp,*.html syn match MyTodo /\v<(FIXME|Fixme|NOTE|Note|TODO|ToDo|OPTIMIZE|XXX):/ containedin=.*Comment,vimCommentTitle
     augroup END
@@ -383,9 +399,16 @@ local themes = {
   "material_plus.nvim", "aurora", "aurora", "tokyonight.nvim", "material_plus.nvim", "aurora",
   "gruvbox-material", "sonokai", "github-nvim-theme"
 }
+
 if plugin_folder() == [[~/github/]] then
-  -- debug the color theme
+  if daylight() == 'light' then
+    -- themes = {"gruvbox-material", "material_plus.nvim"}
+    themes = {"material_plus.nvim"}
+  end
+
   themes = {"material_plus.nvim"}
+  -- debug the color theme
+  -- themes = {"material_plus.nvim"}
   -- themes = {"aurora"}
 end
 local v = math.random(1, #themes)

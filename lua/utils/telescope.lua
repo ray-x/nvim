@@ -286,7 +286,7 @@ M.setup = function()
   telescope.setup {
     defaults = {
       shorten_path = true,
-      prompt_prefix = "🍔 ",
+      prompt_prefix = "🙊",
       layout_strategy = 'flex',
       layout_config = {
         prompt_position = "top",
@@ -314,7 +314,7 @@ M.setup = function()
       sorting_strategy = "ascending",
       selection_strategy = 'closest',
       scroll_strategy = 'cycle',
-      selection_caret = ' ▷ ',
+      selection_caret = [[🦑]],
       file_previewer = require"telescope.previewers".vim_buffer_cat.new,
       grep_previewer = require"telescope.previewers".vim_buffer_vimgrep.new,
       qflist_previewer = require"telescope.previewers".vim_buffer_qflist.new,
@@ -330,6 +330,12 @@ M.setup = function()
             local height = vim.api.nvim_win_get_height(results_win)
             action_set.shift_selection(prompt_bufnr, math.floor(height / 2))
           end,
+          ['<Space>'] = {
+            actions.toggle_selection,
+            type = 'action',
+            -- See https://github.com/nvim-telescope/telescope.nvim/pull/890
+            keymap_opts = {nowait = true}
+          },
           ["<C-p>"] = function(prompt_bufnr)
             local results_win = state.get_status(prompt_bufnr).results_win
             local height = vim.api.nvim_win_get_height(results_win)
@@ -344,12 +350,6 @@ M.setup = function()
           ['<C-q>'] = custom_actions.smart_send_to_qflist,
           -- ['w'] = myactions.smart_send_to_qflist,
           -- ['e'] = myactions.send_to_qflist,
-          ['<Space>'] = {
-            actions.toggle_selection,
-            type = 'action',
-            -- See https://github.com/nvim-telescope/telescope.nvim/pull/890
-            keymap_opts = {nowait = true}
-          },
           ['J'] = actions.toggle_selection + actions.move_selection_next,
           ['K'] = actions.toggle_selection + actions.move_selection_previous,
           ["<C-n>"] = function(prompt_bufnr)

@@ -5,12 +5,14 @@ local state = _G.WindLine.state
 
 local lsp_comps = require('windline.components.lsp')
 local git_comps = require('windline.components.git')
+local HSL = require('wlanimation.utils')
 local sep = helper.separators
 local luffy_text = ""
 
 local hl_list = {
-  Black = {'white', 'black'},
+  NormalBg = {'NormalFg', 'NormalBg'},
   White = {'black', 'white'},
+  Normal = {'NormalFg', 'NormalBg'},
   Inactive = {'InactiveFg', 'InactiveBg'},
   Active = {'ActiveFg', 'ActiveBg'}
 }
@@ -66,15 +68,12 @@ local current_treesitter_context = function(width)
   }
 
   if vim.o.ft == 'json' then
-    type_patterns = {'object', 'pari'}
+    type_patterns = {'object', 'pair'}
   end
 
   local f = require'nvim-treesitter'.statusline({
     indicator_size = width,
-    type_patterns = {
-      "class", "function", "method", "interface", "type_spec", "table", "if_statement",
-      "for_statement", "for_in_statement", "call_expression", "object", "pair"
-    }
+    type_patterns = type_patterns
   })
   local context = string.format("%s", f) -- convert to string, it may be a empty ts node
 
@@ -209,7 +208,11 @@ basic.square_mode = {
 
 basic.lsp_diagnos = {
   name = 'diagnostic',
-  hl_colors = {red = {'red', 'black'}, yellow = {'yellow', 'black'}, blue = {'blue', 'black'}},
+  hl_colors = {
+    red = {'red', 'NormalBg'},
+    yellow = {'yellow_b', 'NormalBg'},
+    blue = {'blue', 'NormalBg'}
+  },
   width = breakpoint_width,
   text = function()
     if lsp_comps.check_lsp() then
@@ -248,7 +251,11 @@ end
 
 basic.file = {
   name = 'file',
-  hl_colors = {default = hl_list.Black, white = {'white', 'black'}, magenta = {'magenta', 'black'}},
+  hl_colors = {
+    default = hl_list.NormalBg,
+    white = {'white', 'NormalBg'},
+    magenta = {'magenta', 'NormalBg'}
+  },
   text = function(_, winnr, width, is_float)
     -- lprint("winline", width, is_float)
     if width < breakpoint_width then -- vim.api.nvim_win_get_width(winnr)
@@ -280,7 +287,7 @@ basic.file = {
 
 basic.folder = {
   name = 'folder',
-  hl_colors = {default = hl_list.Black, white = {'white', 'black'}, blue = {'blue', 'black'}},
+  hl_colors = {default = hl_list.NormalBg, white = {'white', 'black'}, blue = {'blue', 'NormalBg'}},
   text = function(_, winnr)
     if should_show() then
       return {
@@ -297,17 +304,22 @@ basic.folder = {
 basic.funcname = {
   name = 'funcname',
   hl_colors = {
-    default = hl_list.Black,
+    default = hl_list.NormalBg,
     white = {'white', 'black'},
-    green_light = {'green_light', 'black'}
+    green = {'green_b', 'NormalBg'},
+    green_light = {'green_light', 'NormalBg'}
   },
   text = function(_, winnr, width, is_float)
-    return {{' ', 'default'}, {current_function(width), 'green_light'}, {' ', 'default'}}
+    return {{' ', 'default'}, {current_function(width), 'green'}, {' ', 'default'}}
   end
 }
 
 basic.file_right = {
-  hl_colors = {default = hl_list.Black, white = {'white', 'black'}, magenta = {'magenta', 'black'}},
+  hl_colors = {
+    default = hl_list.NormalBg,
+    white = {'NormalFg', 'NormalBg'},
+    magenta = {'magenta', 'NormalBg'}
+  },
   text = function(_, winnr, width, is_float)
     if width < breakpoint_width then
       return {{b_components.line_col_lua, 'white'}, {b_components.progress_lua, ''}, {' ', ''}}
@@ -318,7 +330,11 @@ basic.file_right = {
 }
 
 basic.scrollbar_right = {
-  hl_colors = {default = hl_list.Black, white = {'white', 'black'}, blue = {'blue', 'black'}},
+  hl_colors = {
+     default = hl_list.NormalBg,
+    white = {'NormalFg', 'NormalBg'},
+    blue = {'blue', 'NormalBg'}
+  },
   text = function(_, winnr, width, is_float)
     if width > breakpoint_width or is_float then
       return {{b_components.progress_lua, ''}, {' ', ''}, {scrollbar_instance(), 'blue'}}
@@ -328,7 +344,11 @@ basic.scrollbar_right = {
 
 basic.git = {
   name = 'git',
-  hl_colors = {green = {'green', 'black'}, red = {'red', 'black'}, blue = {'blue', 'black'}},
+  hl_colors = {
+    green = {'green', 'NormalBg'},
+    red = {'red', 'NormalBg'},
+    blue = {'blue', 'NormalBg'}
+  },
   width = breakpoint_width,
   text = function()
     if git_comps.is_git() then
@@ -362,8 +382,8 @@ local quickfix = {
 local explorer = {
   filetypes = {'fern', 'NvimTree', 'lir'},
   active = {
-    {'  ', {'white', 'black'}}, {helper.separators.slant_right, {'black', 'black_light'}},
-    {b_components.divider, ''}, {b_components.file_name(''), {'white', 'black_light'}}
+    {'  ', {'white', 'NormalBg'}}, {helper.separators.slant_right, {'black', 'NormalBg'}},
+    {b_components.divider, ''}, {b_components.file_name(''), {'white', 'NormalBg'}}
   },
   always_active = true,
   show_last_status = true
@@ -372,15 +392,15 @@ local default = {
   filetypes = {'default'},
   active = {
     basic.square_mode, basic.ani, basic.vi_mode,
-    {git_comps.git_branch(), {'magenta', 'black'}, breakpoint_width}, basic.file, basic.lsp_diagnos,
-    basic.funcname, basic.divider, -- {sep.slant_right,{'black_light', 'green_light'}},
+    {git_comps.git_branch(), {'magenta', 'NormalBg'}, breakpoint_width}, basic.file,
+    basic.lsp_diagnos, basic.funcname, basic.divider, -- {sep.slant_right,{'black_light', 'green_light'}},
     -- {sep.slant_right,{'green_light', 'blue_light'}},
     -- {sep.slant_right,{'blue_light', 'red_light'}},
     -- {sep.slant_right,{'red_light', 'cyan_light'}},
     -- {sep.slant_right,{'cyan_light', 'black'}},
     basic.file_right, basic.scrollbar_right,
-    {lsp_comps.lsp_name(), {'magenta', 'black'}, breakpoint_width}, basic.git, basic.folder,
-    {' ', hl_list.Black}, basic.square_mode
+    {lsp_comps.lsp_name(), {'magenta', 'NormalBg'}, breakpoint_width}, basic.git, basic.folder,
+    {' ', hl_list.NormalBg}, basic.square_mode
   },
   inactive = {
     {b_components.full_file_name, hl_list.Inactive}, basic.file_name_inactive, basic.divider,
@@ -412,11 +432,42 @@ local default = {
 windline.setup({
   colors_name = function(colors)
     --- add more color
+
+    local mod = function(c, value)
+      if vim.o.background == 'light' then
+        return HSL.rgb_to_hsl(c):tint(value):to_rgb()
+      end
+      return HSL.rgb_to_hsl(c):shade(value):to_rgb()
+    end
+
+    local normalFg, normalBg = require('windline.themes').get_hl_color('StatusLine')
+
+    colors.NormalFg = normalFg or colors.white
+    colors.NormalBg = normalBg or colors.yellow
     colors.FilenameFg = colors.white_light
-    colors.FilenameBg = colors.black
+    colors.FilenameBg = colors.NormalFg
 
     -- this color will not update if you change a colorscheme
     colors.gray = "#fefefe"
+    colors.magenta_a = colors.magenta
+    colors.magenta_b = mod(colors.magenta, 0.5)
+    colors.magenta_c = mod(colors.magenta, 0.7)
+
+    colors.yellow_a = colors.yellow
+    colors.yellow_b = mod(colors.yellow, 0.5)
+    colors.yellow_c = mod(colors.yellow, 0.7)
+
+    colors.blue_a = colors.blue
+    colors.blue_b = mod(colors.blue, 0.5)
+    colors.blue_c = mod(colors.blue, 0.7)
+
+    colors.green_a = colors.green
+    colors.green_b = mod(colors.green, 0.1)
+    colors.green_c = mod(colors.green, 0.7)
+
+    colors.red_a = colors.red
+    colors.red_b = mod(colors.red, 0.5)
+    colors.red_c = mod(colors.red, 0.7)
     return colors
   end,
   statuslines = {default, quickfix, explorer}

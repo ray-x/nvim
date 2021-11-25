@@ -73,8 +73,11 @@ ui["projekt0n/github-nvim-theme"] = {
   opt = true,
   config = function()
     -- vim.cmd [[hi CursorLine guibg=#353644]]
-    local styles = {'dark', 'dimmed'}
-    local v = math.random(1, 2)
+    local styles = {'dark', 'dark_default', 'dimmed'}
+    if tonumber(vim.fn.system('date +%H')) < 18 then
+      styles = {'light', 'light_default'}
+    end
+    local v = math.random(1, #styles)
     local st = styles[v]
     require('github-theme').setup({
       function_style = "bold",
@@ -82,6 +85,9 @@ ui["projekt0n/github-nvim-theme"] = {
       sidebars = {"qf", "vista_kind", "terminal", "packer"},
       colors = {bg_statusline = '#332344'}
     })
+    -- vim.cmd([[highlight StatusLine guibg='#A3B3C4']])
+    vim.cmd([[doautocmd ColorScheme]])
+
   end
 }
 

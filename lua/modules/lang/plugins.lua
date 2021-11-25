@@ -53,6 +53,7 @@ lang["nvim-treesitter/playground"] = {
 }
 
 lang["ElPiloto/sidekick.nvim"] = {opt = true, fn = {'SideKickNoReload'}, setup = conf.sidekick}
+lang['stevearc/aerial.nvim'] = {opt = true, setup=conf.aeial}
 
 lang["bfredl/nvim-luadev"] = {opt = true, ft = 'lua', cmd = "Luadev", setup = conf.luadev}
 lang["mfussenegger/nvim-dap"] = {config = conf.dap, opt = true} -- cmd = "Luadev",

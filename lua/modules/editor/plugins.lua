@@ -16,21 +16,21 @@ editor["windwp/nvim-autopairs"] = {
   opt = true
 }
 
-editor["andymass/vim-matchup"] = {
-  opt = true,
-  event = {"CursorMoved", "CursorMovedI"},
-  cmd = {'MatchupWhereAmI?'},
-  setup = function()
-    vim.g.matchup_enabled = 1
-    vim.g.matchup_surround_enabled = 1
-    -- vim.g.matchup_transmute_enabled = 1
-    vim.g.matchup_matchparen_deferred = 1
-    vim.g.matchup_matchparen_insert_timeout = 200
-    vim.g.matchup_matchparen_deferred_show_delay = 150
-    vim.g.matchup_matchparen_offscreen = {method = 'status_manual'} -- = {method = 'popup'}
-    vim.cmd([[nnoremap <c-s-k> :<c-u>MatchupWhereAmI?<cr>]])
-  end
-}
+-- I like this plugin, but 1) offscreen context is slow
+-- 2) it not friendly to lazyload and treesitter startup
+-- editor["andymass/vim-matchup"] = {
+--   opt = true,
+--   event = {"CursorMoved", "CursorMovedI"},
+--   cmd = {'MatchupWhereAmI?'},
+--   config = function()
+--     vim.g.matchup_enabled = 1
+--     vim.g.matchup_surround_enabled = 1
+--     -- vim.g.matchup_transmute_enabled = 1
+--     vim.g.matchup_matchparen_deferred = 1
+--     vim.g.matchup_matchparen_offscreen = {method = 'popup'}
+--     vim.cmd([[nnoremap <c-s-k> :<c-u>MatchupWhereAmI?<cr>]])
+--   end
+-- }
 
 -- editor["ggandor/lightspeed.nvim"] = {
 --   as = "lightspeed",
