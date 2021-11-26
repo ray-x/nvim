@@ -1,8 +1,8 @@
 local vim = vim
 local options = setmetatable({}, {__index = {global_local = {}, window_local = {}}})
 
-local function bind_option(options)
-  for k, v in pairs(options) do
+local function bind_option(opts)
+  for k, v in pairs(opts) do
     if v == true or v == false then
       vim.cmd("set " .. k)
     else
@@ -15,12 +15,7 @@ function options:load_options()
   self.global_local = {}
   self.window_local = {}
   if vim.wo.diff then
-    self.global_local = {
-      foldmethod = diff,
-      diffopt = "context:0",
-      foldlevel = 0,
-      mouse = "a"
-    }
+    self.global_local = {foldmethod = 'diff', diffopt = "context:0", foldlevel = 0, mouse = "a"}
     self.window_local = {
       -- foldmethod = "expr",
       cursorline = true
@@ -32,7 +27,7 @@ function options:load_options()
       ttyfast = true, -- Indicate fast terminal conn for faster redraw
       errorbells = false, -- No beeps
       hidden = true, -- Buffer should still exist if window is closed
-      fileencoding = "utf-8", --fenc
+      fileencoding = "utf-8", -- fenc
       mouse = "a",
       textwidth = 120, -- wrap lines at 120 chars. 80 is somewaht antiquated with nowadays displays.
       expandtab = true, -- " expand tabs to spaces
@@ -41,13 +36,13 @@ function options:load_options()
       smartcase = true, -- ... but not it begins with upper case
       incsearch = true, -- Shows the match while typing
       hlsearch = true, -- Highlight found searches
-      grepformat = "%f:%l:%m,%m\\ %f\\ match%ts,%f", --"%f:%l:%c:%m";
+      grepformat = "%f:%l:%m,%m\\ %f\\ match%ts,%f", -- "%f:%l:%c:%m";
       shortmess = "aotTIcF",
       -- showcmd        = false;
       cmdheight = 1,
       splitbelow = true, -- Horizontal windows should split to bottom
-      splitright = true, --Vertical windows should be split to right
-      backspace = "indent,eol,start", --Makes backspace key more powerful.
+      splitright = true, -- Vertical windows should be split to right
+      backspace = "indent,eol,start", -- Makes backspace key more powerful.
       backup = true,
       writebackup = true,
       diffopt = "filler,iwhite,internal,algorithm:patience",
@@ -85,7 +80,7 @@ function options:load_options()
     vim.wo[name] = value
   end
 
-  vim.cmd("imap <M-V> <C-R>+") --mac
+  vim.cmd("imap <M-V> <C-R>+") -- mac
   vim.cmd("imap <C-V> <C-R>*")
   vim.cmd('vmap <LeftRelease> "*ygv')
   vim.cmd("unlet loaded_matchparen")

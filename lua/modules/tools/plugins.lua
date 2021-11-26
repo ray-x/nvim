@@ -16,16 +16,34 @@ tools["kristijanhusak/vim-dadbod-ui"] = {
 }
 
 tools['vim-test/vim-test'] = {cmd = {'TestNearest', 'TestFile', 'TestSuite'}}
-tools['camspiers/snap'] = {
-  event = {'CursorMoved', 'CursorMovedI'},
-  -- rocks = {'fzy'},
-  opt = true,
-  config = conf.snap
-}
+
+-- tools['camspiers/snap'] = {
+--   -- event = {'CursorMoved', 'CursorMovedI'},
+--   -- rocks = {'fzy'},
+--   opt = true,
+--   config = conf.snap
+-- }
+
 tools["editorconfig/editorconfig-vim"] = {
   opt = true,
   cmd = {"EditorConfigReload"}
   -- ft = { 'go','typescript','javascript','vim','rust','zig','c','cpp' }
+}
+
+tools['ThePrimeagen/harpoon'] = {
+  opt = true,
+  config = function()
+    require("harpoon").setup({
+      global_settings = {
+        save_on_toggle = false,
+        save_on_change = true,
+        enter_on_sendcmd = false,
+        tmux_autoclose_windows = false,
+        excluded_filetypes = {"harpoon"}
+      }
+    })
+    require("telescope").load_extension('harpoon')
+  end
 }
 
 -- github GH ui

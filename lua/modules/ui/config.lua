@@ -97,7 +97,6 @@ function config.nvim_tree_setup()
       arrow_closed = "",
       default = "",
       open = "",
-      symlink = "",
       empty = "",
       empty_open = "",
       symlink = "",

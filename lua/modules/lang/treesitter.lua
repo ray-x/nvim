@@ -1,16 +1,9 @@
-local treesitter = function()
+local enable = true
+local langtree = true
+local lines = vim.fn.line('$')
 
-  -- if not packer_plugins['nvim-treesitter-textobjects'].loaded then
-  --   print("check: textobj not loaded")
-  --   require'packer'.loader("nvim-treesitter-textobjects nvim-treesitter-refactor")
-  --   -- vim.cmd([[packadd nvim-treesitter-textobjects]])
-  --   -- vim.cmd([[packadd nvim-treesitter-refactor]])
-  --   -- packer_plugins['nvim-treesitter-textobjects'].loaded = true
-  --   -- packer_plugins['nvim-treesitter-refactor'].loaded = true
-  -- end
-  local enable = true
-  local langtree = true
-  local lines = vim.fn.line('$')
+local treesitter = function()
+  lprint("loading treesitter")
   if lines > 30000 then -- skip some settings for large file
     -- vim.cmd[[syntax on]]
     print('skip treesitter')
@@ -24,32 +17,37 @@ local treesitter = function()
     print("disable ts txtobj")
   end
 
-  -- if vim.fn.line('$') > 20000 then  -- skip for large file
-  --   vim.cmd[[syntax on]]
-  --   print('skip treesitter')
-  --   enable = false
-  -- end
-  -- print('load treesitter', vim.fn.line('$'))
-
   require"nvim-treesitter.configs".setup {
     highlight = {
       enable = true, -- false will disable the whole extension
       additional_vim_regex_highlighting = false,
       disable = {"elm"}, -- list of language that will be disabled
-      -- custom_captures = {},
-      use_languagetree = langtree
+      use_languagetree = langtree,
+      custom_captures = {todo = 'Todo'}
     },
     incremental_selection = {
       enable = enable,
-      disable = {"elm"},
+      -- disable = {"elm"},
       keymaps = {
         -- mappings for incremental selection (visual mappings)
         init_selection = "gnn", -- maps in normal mode to init the node/scope selection
-        node_incremental = "grn", -- increment to the upper named parent
-        scope_incremental = "grc", -- increment to the upper scope (as defined in locals.scm)
-        node_decremental = "grm" -- decrement to the previous node
+        scope_incremental = "gnn", -- increment to the upper scope (as defined in locals.scm)
+        node_incremental = "<TAB>", -- increment to the upper named parent
+        node_decremental = "<S-TAB>" -- decrement to the previous node
       }
-    },
+    }
+  }
+end
+
+local treesitter_obj = function()
+  lprint("loading treesitter textobj")
+  if lines > 30000 then -- skip some settings for large file
+    print('skip treesitter obj')
+    return
+  end
+
+  require"nvim-treesitter.configs".setup {
+
     indent = {enable = true},
     context_commentstring = {enable = true, enable_autocmd = false},
     textobjects = {
@@ -58,7 +56,7 @@ local treesitter = function()
       disable = {"elm"},
       lsp_interop = {
         enable = enable,
-        peek_definition_code = {["DF"] = "@function.outer", ["DF"] = "@class.outer"}
+        peek_definition_code = {["DF"] = "@function.outer", ["CF"] = "@class.outer"}
       },
       keymaps = {
         ["iL"] = {
@@ -118,8 +116,11 @@ local treesitter = function()
         swap_previous = {["<leader>A"] = "@parameter.inner"}
       }
     },
-    ensure_installed = "maintained"
-    -- { "go", "css", "html", "javascript", "typescript", "jsdoc", "json", "c", "java", "toml", "tsx", "lua", "cpp", "python", "rust", "jsonc", "dart", "css", "yaml", "vue"}
+    -- ensure_installed = "maintained"
+    ensure_installed = {
+      "go", "css", "html", "javascript", "typescript", "jsdoc", "json", "c", "java", "toml", "tsx",
+      "lua", "cpp", "python", "rust", "jsonc", "dart", "css", "yaml", "vue"
+    }
   }
 
   -- vim.api.nvim_command("setlocal foldmethod=expr")
@@ -129,15 +130,9 @@ local treesitter = function()
 end
 
 local treesitter_ref = function()
-  -- if not packer_plugins['nvim-treesitter-textobjects'].loaded then
-  --   print("check: textobj not loaded")
-  --   require'packer'.loader("nvim-treesitter-textobjects nvim-treesitter-refactor")
-  --   -- vim.cmd([[packadd nvim-treesitter-textobjects]])
-  --   -- vim.cmd([[packadd nvim-treesitter-refactor]])
-  --   -- packer_plugins['nvim-treesitter-textobjects'].loaded = true
-  --   -- packer_plugins['nvim-treesitter-refactor'].loaded = true
-  -- end
-  local enable = true
+
+  lprint("loading treesitter refactor")
+
   if vim.fn.line('$') > 10000 then -- skip for large file
     -- vim.cmd[[syntax on]]
     print('skip treesitter')
@@ -147,27 +142,27 @@ local treesitter_ref = function()
 
   require"nvim-treesitter.configs".setup {
     refactor = {
-      highlight_definitions = {enable = false},
+      highlight_definitions = {enable = enable},
       highlight_current_scope = {enable = enable},
       smart_rename = {
-        enable = enable,
+        enable = false,
         keymaps = {
           smart_rename = "<Leader>gr" -- mapping to rename reference under cursor
         }
       },
       navigation = {
-        enable = true,
+        enable = false, -- use navigator
         keymaps = {
           goto_definition = "gnd", -- mapping to go to definition of symbol under cursor
           list_definitions = "gnD", -- mapping to list all definitions in current file
-          list_definitions_toc = "gO"
+          list_definitions_toc = "gO" -- gT navigator
           -- goto_next_usage = "<c->>",
           -- goto_previous_usage = "<c-<>",
         }
       }
     },
     matchup = {
-      enable = true, -- mandatory, false will disable the whole extension
+      enable = false, -- mandatory, false will disable the whole extension
       disable = {'ruby'} -- optional, list of language that will be disabled
     },
     autopairs = {enable = true},
@@ -200,5 +195,20 @@ local treesitter_ref = function()
   }
 end
 
+function textsubjects()
+  require'nvim-treesitter.configs'.setup {
+    textsubjects = {
+      enable = true,
+      keymaps = {['<S-.>'] = 'textsubjects-smart', [';'] = 'textsubjects-container-outer'}
+    }
+  }
+end
+
 -- treesitter()
-return {treesitter = treesitter, treesitter_ref = treesitter_ref}
+
+return {
+  treesitter = treesitter,
+  treesitter_obj = treesitter_obj,
+  treesitter_ref = treesitter_ref,
+  textsubjects = textsubjects
+}

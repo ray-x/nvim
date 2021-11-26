@@ -114,7 +114,7 @@ local should_show = function()
   return true
 end
 
-function getEntryFromEnd(table, entry)
+local function getEntryFromEnd(table, entry)
   local count = (table and #table or false)
   if (count) then
     return table[count - entry]
@@ -331,7 +331,7 @@ basic.file_right = {
 
 basic.scrollbar_right = {
   hl_colors = {
-     default = hl_list.NormalBg,
+    default = hl_list.NormalBg,
     white = {'NormalFg', 'NormalBg'},
     blue = {'blue', 'NormalBg'}
   },

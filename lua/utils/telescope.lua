@@ -184,7 +184,7 @@ function M.command_history()
 end
 
 function M.load_dotfiles()
-  local has_telescope, telescope = pcall(require, 'telescope.builtin')
+  local has_telescope = pcall(require, 'telescope.builtin')
   if has_telescope then
     local themes = require('telescope.themes')
 
@@ -196,11 +196,12 @@ function M.load_dotfiles()
       end
     end
 
+    local global = require 'core.global'
     for file in io.popen('find "' .. global.vim_path .. '" -type f'):lines() do
       table.insert(results, file)
     end
 
-    telescope.dotfiles = function(opts)
+    builtin.dotfiles = function(opts)
       opts = themes.get_dropdown {}
       pickers.new(opts, {
         prompt = 'dotfiles',
@@ -210,7 +211,7 @@ function M.load_dotfiles()
       }):find()
     end
   end
-  require('telescope.builtin').dotfiles()
+  builtin.dotfiles()
 end
 
 -- https://github.com/AshineFoster/nvim/blob/master/lua/plugins/telescope.lua
@@ -263,7 +264,6 @@ end
 
 -- https://github.com/nvim-telescope/telescope.nvim/issues/416#issuecomment-841273053
 
-local actions = require("telescope.actions")
 local action_state = require("telescope.actions.state")
 
 function custom_actions.fzf_multi_select(prompt_bufnr)
@@ -281,8 +281,6 @@ function custom_actions.fzf_multi_select(prompt_bufnr)
 end
 
 M.setup = function()
-
-  local loader = require"packer".loader
   telescope.setup {
     defaults = {
       shorten_path = true,

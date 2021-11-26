@@ -1,16 +1,15 @@
 function lazyload()
   local loader = require"packer".loader
-  -- vim.cmd([[syntax on]])
   if vim.wo.diff then
-    local plugins = "nvim-treesitter" -- nvim-treesitter-textobjects will be autoloaded with loader
     -- loader(plugins)
+    lprint("diffmode")
     vim.cmd([[packadd nvim-treesitter]])
-    require"nvim-treesitter.configs".setup {highlight = {enable = true, use_languagetree = true}}
+    require"nvim-treesitter.configs".setup {highlight = {enable = true, use_languagetree = false}}
     -- vim.cmd([[syntax on]])
     return
   end
 
-  print("I am lazy")
+  lprint("I am lazy")
 
   local disable_ft = {
     "NvimTree", "guihua", "guihua_rust", "clap_input", "clap_spinner", "TelescopePrompt", "csv",
@@ -48,15 +47,11 @@ function lazyload()
     loader("lua-dev.nvim")
   end
 
-  if vim.bo.filetype == 'norg' then
-    loader("neorg")
-  end
-
   vim.g.vimsyn_embed = 'lPr'
 
   local gitrepo = vim.fn.isdirectory('.git/index')
   if gitrepo then
-    loader("gitsigns.nvim neogit") -- vgit.nvim
+    loader("gitsigns.nvim") -- neogit vgit.nvim
   end
 
   if load_lsp then
@@ -76,11 +71,11 @@ function lazyload()
     loader("navigator.lua")
   end
 
-  local bytes = vim.fn.wordcount()['bytes']
-  -- print(bytes)
-
+  -- local bytes = vim.fn.wordcount()['bytes']
   if load_ts_plugins then
-    plugins = "nvim-treesitter-refactor nvim-ts-autotag nvim-ts-context-commentstring" --  nvim-ts-rainbow  nvim-treesitter nvim-treesitter-refactor
+    plugins = "nvim-treesitter-textobjects nvim-treesitter-refactor nvim-ts-autotag nvim-ts-context-commentstring" --  nvim-ts-rainbow  nvim-treesitter nvim-treesitter-refactor
+
+    lprint(plugins)
     -- nvim-treesitter-textobjects should be autoloaded
     loader(plugins)
     loader("indent-blankline.nvim")
@@ -90,16 +85,16 @@ function lazyload()
   --   vim.cmd([[setlocal syntax=on]])
   -- end
 
-  vim.cmd([[autocmd FileType vista,guihua,guihua setlocal syntax=on]])
+  vim.cmd([[autocmd FileType vista,guihua setlocal syntax=on]])
   vim.cmd(
-      [[autocmd FileType * silent! lua if vim.fn.wordcount()['bytes'] > 2048000 then print("syntax off") vim.cmd("setlocal syntax=off") else print("syntax on") vim.cmd("setlocal syntax=on") end]])
+      [[autocmd FileType * silent! lua if vim.fn.wordcount()['bytes'] > 2048000 then print("syntax off") vim.cmd("setlocal syntax=off") else vim.cmd("setlocal syntax=on") end]])
 end
 
 vim.cmd([[autocmd User LoadLazyPlugin lua lazyload()]])
 vim.cmd("command! Gram lua require'modules.tools.config'.grammcheck()")
 vim.cmd("command! Spell call spelunker#check()")
 
-local lazy_timer = 50
+local lazy_timer = 100
 vim.defer_fn(function()
   vim.cmd([[doautocmd User LoadLazyPlugin]])
 end, lazy_timer)
@@ -114,6 +109,5 @@ end, lazy_timer + 20)
 
 vim.defer_fn(function()
   local loader = require'packer'.loader
-
   loader('telescope.nvim telescope-zoxide project.nvim nvim-neoclip.lua')
 end, lazy_timer + 50)

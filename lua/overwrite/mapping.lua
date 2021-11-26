@@ -82,10 +82,10 @@ local keys = {
   ["xon|F"] = map_cmd("<cmd>lua  Line_ft('F')<cr>"),
   ["xon|t"] = map_cmd("<cmd>lua  Line_ft('t')<cr>"),
   ["xon|T"] = map_cmd("<cmd>lua  Line_ft('T')<cr>"),
-  ["n|s"] = map_cr("HopChar1AC"),
-  ["n|S"] = map_cr("HopChar1BC"),
-  ["xv|s"] = map_cmd("<cmd>HopChar1AC<CR>"):with_silent(),
-  ["xv|S"] = map_cmd("<cmd>HopChar1BC<CR>"):with_silent(),
+  ["n|s"] = map_cmd("<cmd>lua hop1(1)<cr>"),
+  ["n|S"] = map_cmd("<cmd>lua hop1()<cr>"),
+  ["x|s"] = map_cmd("<cmd>lua hop1(1)<CR>"):with_silent(),
+  ["x|S"] = map_cmd("<cmd>lua hop1()<CR>"):with_silent(),
   -- ["v|<M-s>"] = map_cmd("<cmd>lua require'hop'.hint_char1()<cr>"):with_silent():with_expr(),
   -- ["n|<Space>s"] = map_cr("HopChar2"),
   ["n|<M-s>"] = map_cr("HopChar2AC"),
@@ -109,7 +109,9 @@ local keys = {
   -- ["i|<d-f>"] = map_cu("Clap grep ++query=<cword> |  startinsert"):with_noremap():with_silent(),
   ["n|<Leader>df"] = map_cu("Clap dumb_jump ++query=<cword> | startinsert"),
   ["i|<Leader>df"] = map_cu("Clap dumb_jump ++query=<cword> | startinsert"):with_noremap():with_silent(),
-  ["in|<Leader>c<Space>"] = map_cr("<cmd>lua require'dap.ui.variables'.hover()"):with_expr()
+  -- ["n|<F2>"] = map_cr(""):with_expr(),
+  ["n|<F5>"] = map_cmd("v:lua.run_or_test(v:true)"):with_expr(),
+  ["n|<F9>"] = map_cr("GoBreakToggle")
   -- session
   -- ["n|<Leader>ss"] = map_cu('SessionSave'):with_noremap(),
   -- ["n|<Leader>sl"] = map_cu('SessionLoad'):with_noremap(),
@@ -129,7 +131,7 @@ vim.cmd([[inoremap  <D-v>  <CTRL-r>*]])
 --
 bind.nvim_load_mapping(keys)
 
-_G.run_or_test = function(...)
+_G.run_or_test = function(debug)
   local ft = vim.bo.filetype
   local fn = vim.fn.expand("%")
   fn = string.lower(fn)
@@ -147,10 +149,50 @@ _G.run_or_test = function(...)
     end
     return t("<Plug>PlenaryTestFile")
   end
+  if ft == "go" then
+    local f = string.find(fn, "test.go")
+    if f == nil then
+      -- let run lua test
+      if debug then
+        return t("<cmd>GoDebug <CR>")
+      else
+        return t("<cmd>GoRun <CR>")
+      end
+    end
+
+    if debug then
+      return t("<cmd>GoDebug nearest<CR>")
+    else
+      return t("<cmd>GoTestFile <CR>")
+    end
+  end
+end
+
+_G.hop1 = function(ac)
+  if packer_plugins['hop'].loaded ~= true then
+    loader('hop')
+  end
+  if vim.fn.mode() == 's' then
+    print(vim.fn.mode(), vim.fn.mode() == 's')
+    return vim.cmd('exe "normal! i s"')
+  else
+    print(vim.fn.mode(), vim.fn.mode() == 's')
+  end
+  if ac == 1 then
+    require'hop'.hint_char1({direction = require'hop.hint'.HintDirection.AFTER_CURSOR})
+  else
+    require'hop'.hint_char1({direction = require'hop.hint'.HintDirection.AFTER_CURSOR})
+  end
 end
 
 _G.Line_ft = function(a)
 
+  if packer_plugins['hop'].loaded ~= true then
+    loader('hop')
+  end
+  if vim.fn.mode() == 's' then
+    return vim.fn.input(a)
+  end
   -- check and load hop
   local loaded, hop = pcall(require, 'hop')
   if not loaded or not hop.initialized then

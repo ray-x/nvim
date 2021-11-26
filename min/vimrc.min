@@ -191,22 +191,34 @@ local sumneko_binary = vim.fn.expand("$HOME")
 local single = {"╭", "─", "╮", "│", "╯", "─", "╰", "│"}
 print("navigator setup")
 
+require'navigator'.setup({
+  debug = false, -- log output, set to true and log path: ~/.local/share/nvim/gh.log
 
-require('navigator').setup({
-  debug = true,
-  width = 0.7,
-  lspinstall = false,
-  border = single, -- "single",
-  lsp = { sumneko_lua = {
-    sumneko_binary = sumneko_binary,
-    sumneko_root_path = sumneko_root_path,
-    },
-    efm=efm_cfg,
-  },
-  icons = {
-    code_action_icon = ""
-  },
+  icons={code_action_icon = " "},
+
+  width = 0.75, -- max width ratio (number of cols for the floating window) / (window width)
+  height = 0.3, -- max list window height, 0.3 by default
+  preview_height = 0.35, -- max height of preview windows
+  border = 'none',
 })
+
+
+--
+-- require('navigator').setup({
+--   debug = true,
+--   width = 0.7,
+--   border = single, -- "single",
+--   lsp = {
+--
+--     disable_lsp = {'pyright', 'jedi_language_server'},
+--     sumneko_lua = {
+--       sumneko_binary = sumneko_binary,
+--       sumneko_root_path = sumneko_root_path,
+--     },
+--     efm=efm_cfg,
+--   },
+--   icons={code_action_icon = " "},
+-- })
 
 
 

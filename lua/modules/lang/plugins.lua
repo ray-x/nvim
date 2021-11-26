@@ -1,13 +1,6 @@
 local lang = {}
 local conf = require("modules.lang.config")
 local path = plugin_folder()
-lang["nvim-treesitter/nvim-treesitter"] = {opt = true}
-
-lang["nvim-treesitter/nvim-treesitter-textobjects"] = {
-  -- after = "nvim-treesitter",
-  config = conf.nvim_treesitter,
-  opt = true
-}
 
 lang['nathom/filetype.nvim'] = {
   -- event = {'BufEnter'},
@@ -16,16 +9,32 @@ lang['nathom/filetype.nvim'] = {
   end
 }
 
--- lang['scalameta/nvim-metals'] = {requires = {"nvim-lua/plenary.nvim"}}
+lang["nvim-treesitter/nvim-treesitter"] = {opt = true, config = conf.nvim_treesitter}
+
+lang["nvim-treesitter/nvim-treesitter-textobjects"] = {
+  after = "nvim-treesitter",
+  config = conf.treesitter_obj,
+  opt = true
+}
+
+lang['danymat/neogen'] = {
+  opt = true,
+  config = function()
+    require("neogen").setup({enabled = true})
+  end
+}
+
+lang['ThePrimeagen/refactoring.nvim'] = {opt = true}
 
 lang["nvim-treesitter/nvim-treesitter-refactor"] = {
   after = "nvim-treesitter-textobjects", -- manual loading
-  config = conf.nvim_treesitter_ref, -- let the last loaded config treesitter
+  config = conf.treesitter_ref, -- let the last loaded config treesitter
   opt = true
 }
 
 lang["yardnsm/vim-import-cost"] = {cmd = "ImportCost", opt = true}
 
+-- lang['scalameta/nvim-metals'] = {requires = {"nvim-lua/plenary.nvim"}}
 -- lang["lifepillar/pgsql.vim"] = {ft = {"sql", "pgsql"}}
 
 lang["nanotee/sqls.nvim"] = {ft = {"sql", "pgsql"}, setup = conf.sqls, opt = true}
@@ -53,7 +62,7 @@ lang["nvim-treesitter/playground"] = {
 }
 
 lang["ElPiloto/sidekick.nvim"] = {opt = true, fn = {'SideKickNoReload'}, setup = conf.sidekick}
-lang['stevearc/aerial.nvim'] = {opt = true, setup=conf.aeial}
+lang['stevearc/aerial.nvim'] = {opt = true, setup = conf.aeial}
 
 lang["bfredl/nvim-luadev"] = {opt = true, ft = 'lua', cmd = "Luadev", setup = conf.luadev}
 lang["mfussenegger/nvim-dap"] = {config = conf.dap, opt = true} -- cmd = "Luadev",
