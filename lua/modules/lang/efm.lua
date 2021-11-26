@@ -58,8 +58,8 @@ local efm_cfg = {
   end,
   filetypes = {
     "javascript", "javascriptreact", 'typescript', 'typescriptreact', 'html', 'css', 'go', 'lua',
-    'sql', 'json', 'markdown', 'scss', 'yaml', 'javascript.jsx', 'less', 'graphql', 'vue',
-    'svelte', 'proto'
+    'sql', 'json', 'markdown', 'scss', 'yaml', 'javascript.jsx', 'less', 'graphql', 'vue', 'svelte',
+    'proto'
   },
 
   settings = {
@@ -68,7 +68,6 @@ local efm_cfg = {
     formatDebounce = "1000ms",
     languages = {
       css = {prettier},
-      html = {prettier},
       json = {prettier},
       scss = {prettier},
       yaml = {prettier},

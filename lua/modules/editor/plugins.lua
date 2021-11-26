@@ -174,6 +174,9 @@ editor["folke/zen-mode.nvim"] = {
 editor["nvim-neorg/neorg"] = {
   opt = true,
   config = conf.neorg,
+  ft = "norg",
+  after = {"nvim-treesitter"},
+  setup = vim.cmd("autocmd BufRead,BufNewFile *.norg setlocal filetype=norg"),
   requires = {"nvim-neorg/neorg-telescope", ft = {"norg"}}
 }
 return editor

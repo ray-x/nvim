@@ -179,6 +179,7 @@ tools["rcarriga/vim-ultest"] = {
   opt = true
 }
 
+-- lua require'telescope'.extensions.project.project{ display_type = 'full' }
 tools["ahmedkhalf/project.nvim"] = {
   opt = true,
   after = {"telescope.nvim"},
@@ -219,7 +220,28 @@ tools["AckslD/nvim-neoclip.lua"] = {
 tools['nvim-telescope/telescope-frecency.nvim'] = {
   keys = {'<M>', '<Leader>'},
   after = {"telescope.nvim"},
-  requires = {'tami5/sqlite.lua', module = 'sqlite'},
-  opt = true
+  requires = {'tami5/sqlite.lua', module = 'sqlite', opt = true},
+  opt = true,
+  config = function()
+    local telescope = require "telescope"
+    telescope.load_extension("frecency")
+    telescope.setup {
+      extensions = {
+        frecency = {
+          show_scores = false,
+          show_unindexed = true,
+          ignore_patterns = {"*.git/*", "*/tmp/*"},
+          disable_devicons = false,
+          workspaces = {
+            -- ["conf"] = "/home/my_username/.config",
+            -- ["data"] = "/home/my_username/.local/share",
+            -- ["project"] = "/home/my_username/projects",
+            -- ["wiki"] = "/home/my_username/wiki"
+          }
+        }
+      }
+    }
+    -- vim.api.nvim_set_keymap("n", "<leader><leader>p", "<Cmd>lua require('telescope').extensions.frecency.frecency()<CR>", {noremap = true, silent = true})
+  end
 }
 return tools
