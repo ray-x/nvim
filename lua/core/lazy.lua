@@ -1,5 +1,34 @@
+local function daylight()
+  local h = tonumber(os.date("%H"))
+  if h > 6 and h < 18 then
+    return 'light'
+  else
+    return 'dark'
+  end
+end
+
 function lazyload()
   local loader = require"packer".loader
+
+  math.randomseed(os.time())
+  local themes = {
+    "material_plus.nvim", "aurora", "aurora", "tokyonight.nvim", "material_plus.nvim", "aurora",
+    "gruvbox-material", "sonokai", "github-nvim-theme"
+  }
+
+  if plugin_folder() == [[~/github/]] then
+    if daylight() == 'light' then
+      -- themes = {"gruvbox-material", "material_plus.nvim"}
+      themes = {"material_plus.nvim"}
+    end
+    -- debug the color theme
+    -- themes = {"material_plus.nvim"}
+    -- themes = {"aurora"}
+  end
+  local v = math.random(1, #themes)
+  local loading_theme = themes[v]
+  loader(loading_theme)
+
   if vim.wo.diff then
     -- loader(plugins)
     lprint("diffmode")
@@ -15,6 +44,7 @@ function lazyload()
     "NvimTree", "guihua", "guihua_rust", "clap_input", "clap_spinner", "TelescopePrompt", "csv",
     "txt", "defx", "sidekick"
   }
+
   local syn_on = not vim.tbl_contains(disable_ft, vim.bo.filetype)
   if syn_on then
     vim.cmd([[syntax manual]])
@@ -88,13 +118,19 @@ function lazyload()
   vim.cmd([[autocmd FileType vista,guihua setlocal syntax=on]])
   vim.cmd(
       [[autocmd FileType * silent! lua if vim.fn.wordcount()['bytes'] > 2048000 then print("syntax off") vim.cmd("setlocal syntax=off") else vim.cmd("setlocal syntax=on") end]])
+  -- local cmd = [[au VimEnter * ++once lua require("packer.load")({']] .. loading_theme
+  --                 .. [['}, { event = "VimEnter *" }, _G.packer_plugins)]]
+  -- vim.cmd(cmd)
+  require("modules.ui.eviline")
+  require('wlfloatline').setup()
+
 end
 
 vim.cmd([[autocmd User LoadLazyPlugin lua lazyload()]])
 vim.cmd("command! Gram lua require'modules.tools.config'.grammcheck()")
 vim.cmd("command! Spell call spelunker#check()")
 
-local lazy_timer = 100
+local lazy_timer = 50
 vim.defer_fn(function()
   vim.cmd([[doautocmd User LoadLazyPlugin]])
 end, lazy_timer)
@@ -102,8 +138,8 @@ end, lazy_timer)
 vim.defer_fn(function()
   -- lazyload()
   local cmd = 'TSEnableAll highlight ' .. vim.o.ft
-  vim.cmd(cmd)
-  vim.cmd([[doautocmd ColorScheme]])
+  -- vim.cmd(cmd)
+  -- vim.cmd([[doautocmd ColorScheme]])
   vim.cmd(cmd)
 end, lazy_timer + 20)
 

@@ -1,25 +1,12 @@
 local config = {}
 packer_plugins = packer_plugins or {} -- supress warning
 
-function daylight()
-  local h = tonumber(vim.fn.system('date +%H'))
-  if h > 6 and h < 18 then
-    vim.cmd([[set background=light]])
-    return 'light'
-  else
-    vim.cmd([[set background=dark]])
-    return 'dark'
-  end
-end
-
 function config.windline()
   if not packer_plugins["nvim-web-devicons"].loaded then
     packer_plugins["nvim-web-devicons"].loaded = true
     require"packer".loader("nvim-web-devicons")
   end
 
-  require("modules.ui.eviline")
-  require('wlfloatline').setup()
   -- require('wlfloatline').toggle()
 end
 
@@ -393,31 +380,7 @@ vim.api.nvim_exec([[
     hi def link MyTodo Todo
   ]], true)
 
-math.randomseed(os.time())
-local themes = {
-  "material_plus.nvim", "aurora", "aurora", "tokyonight.nvim", "material_plus.nvim", "aurora",
-  "gruvbox-material", "sonokai", "github-nvim-theme"
-}
-
-if plugin_folder() == [[~/github/]] then
-  if daylight() == 'light' then
-    -- themes = {"gruvbox-material", "material_plus.nvim"}
-    themes = {"material_plus.nvim"}
-  end
-
-  themes = {"material_plus.nvim"}
-  -- debug the color theme
-  -- themes = {"material_plus.nvim"}
-  -- themes = {"aurora"}
-end
-local v = math.random(1, #themes)
-local loading_theme = themes[v]
--- if loading_theme == "gruvbox.nvim" then
---   -- require "packer".loader("lush.nvim")
---   vim.cmd([[packadd lush.nvim]])
--- end
-
-local cmd = [[au VimEnter * ++once lua require("packer.load")({']] .. loading_theme
-                .. [['}, { event = "VimEnter *" }, _G.packer_plugins)]]
-vim.cmd(cmd)
+-- local cmd = [[au VimEnter * ++once lua require("packer.load")({']] .. loading_theme
+--                 .. [['}, { event = "VimEnter *" }, _G.packer_plugins)]]
+-- vim.cmd(cmd)
 return config

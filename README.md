@@ -3,7 +3,7 @@
 ## Need for speed! 🏎 🏎 🏎
 
 This neovim configure file is highly optimized for the impatient. Packer lazy loading + After syntax highlight rendering. Maybe the
-only nvim setup in github that can render multiple files with treesitter in less than 80ms with ~80 plugins installed
+only nvim setup in github that can render multiple files with treesitter in less than 80ms with ~110 plugins installed
 (e.g. Open both util.lua(1686 loc) and lsp.lua(1538 loc) from neovim source code in 80.6ms)
 
 The `Plug` config is located in branch [Plug branch](https://github.com/ray-x/dotfiles/tree/zprezto-plug)
