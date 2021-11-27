@@ -7,8 +7,9 @@ local function daylight()
   end
 end
 
-function lazyload()
-  local loader = require"packer".loader
+local loader = require"packer".loader
+_G.PLoader = loader
+function Lazyload()
 
   --
   math.randomseed(os.time())
@@ -128,7 +129,7 @@ function lazyload()
 
 end
 
-vim.cmd([[autocmd User LoadLazyPlugin lua lazyload()]])
+vim.cmd([[autocmd User LoadLazyPlugin lua Lazyload()]])
 vim.cmd("command! Gram lua require'modules.tools.config'.grammcheck()")
 vim.cmd("command! Spell call spelunker#check()")
 
@@ -137,15 +138,16 @@ vim.defer_fn(function()
   vim.cmd([[doautocmd User LoadLazyPlugin]])
 end, lazy_timer)
 
-vim.defer_fn(function()
-  -- lazyload()
-  local cmd = 'TSEnableAll highlight ' .. vim.o.ft
-  -- vim.cmd(cmd)
-  -- vim.cmd([[doautocmd ColorScheme]])
-  vim.cmd(cmd)
-end, lazy_timer + 20)
+-- vim.defer_fn(function()
+--   -- lazyload()
+--   local cmd = 'TSEnableAll highlight ' .. vim.o.ft
+--   -- vim.cmd(cmd)
+--   -- vim.cmd([[doautocmd ColorScheme]])
+--   -- vim.cmd(cmd)
+-- end, lazy_timer + 20)
 
 vim.defer_fn(function()
   local loader = require'packer'.loader
   loader('telescope.nvim telescope-zoxide project.nvim nvim-neoclip.lua')
-end, lazy_timer + 50)
+  loader('neogen harpoon')
+end, lazy_timer + 100)
