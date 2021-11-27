@@ -10,6 +10,7 @@ end
 function lazyload()
   local loader = require"packer".loader
 
+  --
   math.randomseed(os.time())
   local themes = {
     "material_plus.nvim", "aurora", "aurora", "tokyonight.nvim", "material_plus.nvim", "aurora",
@@ -28,7 +29,7 @@ function lazyload()
   local v = math.random(1, #themes)
   local loading_theme = themes[v]
   loader(loading_theme)
-
+  --
   if vim.wo.diff then
     -- loader(plugins)
     lprint("diffmode")
@@ -103,7 +104,8 @@ function lazyload()
 
   -- local bytes = vim.fn.wordcount()['bytes']
   if load_ts_plugins then
-    plugins = "nvim-treesitter-textobjects nvim-treesitter-refactor nvim-ts-autotag nvim-ts-context-commentstring" --  nvim-ts-rainbow  nvim-treesitter nvim-treesitter-refactor
+    plugins =
+        "nvim-treesitter-textobjects nvim-treesitter-refactor nvim-ts-autotag nvim-ts-context-commentstring nvim-treesitter-textsubjects" --  nvim-ts-rainbow  nvim-treesitter nvim-treesitter-refactor
 
     lprint(plugins)
     -- nvim-treesitter-textobjects should be autoloaded

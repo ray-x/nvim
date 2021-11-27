@@ -56,6 +56,15 @@ ui["kyazdani42/nvim-tree.lua"] = {
 
 ui["lukas-reineke/indent-blankline.nvim"] = {opt = true, config = conf.blankline} -- after="nvim-treesitter",
 
+ui['lukas-reineke/virt-column.nvim'] = {
+  opt = true,
+  event = {"CursorMoved", "CursorMovedI"},
+  config = function()
+    vim.cmd("highlight clear ColorColumn")
+    require("virt-column").setup()
+  end
+}
+
 ui["dstein64/nvim-scrollview"] = {event = {'CursorMoved', 'CursorMovedI'}, config = conf.scrollview}
 
 ui[plugin_folder() .. "aurora"] = {opt = true, config = conf.aurora}

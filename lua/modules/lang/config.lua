@@ -57,6 +57,15 @@ function config.refactor()
                           {noremap = true, silent = true, expr = false})
 end
 
+function config.tsubject()
+  require'nvim-treesitter.configs'.setup {
+    textsubjects = {
+      enable = true,
+      keymaps = {['.'] = 'textsubjects-smart', [';'] = 'textsubjects-container-outer'}
+    }
+  }
+end
+
 function config.sidekick()
   -- body
   vim.g.sidekick_printable_def_types = {

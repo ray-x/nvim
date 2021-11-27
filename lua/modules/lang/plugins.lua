@@ -17,6 +17,8 @@ lang["nvim-treesitter/nvim-treesitter-textobjects"] = {
   opt = true
 }
 
+lang['RRethy/nvim-treesitter-textsubjects'] = {opt = true, config = conf.tsubject}
+
 lang['danymat/neogen'] = {
   opt = true,
   config = function()
