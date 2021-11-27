@@ -3,6 +3,7 @@ local map_cr = bind.map_cr
 local map_cu = bind.map_cu
 local map_cmd = bind.map_cmd
 local map_args = bind.map_args
+local map_key = bind.map_key
 local global = require 'core.global'
 require('keymap.config')
 
@@ -67,17 +68,16 @@ local plug_map = {
   -- ["x|gcc"] = map_cmd("<ESC><CMD>lua ___comment_gb(vim.fn.visualmode())<CR>"):with_silent(),
   -- ["x|gcc"] = map_cmd("<ESC><CMD>lua ___comment_gc(vim.fn.visualmode())<CR>"):with_silent(),
 
-  ["x|<Leader>c<Space>"] = map_cmd("<ESC><CMD>lua ___comment_gc(vim.fn.visualmode())<CR>"):with_silent(),
-  ["n|<Leader>c<Space>"] = map_cmd(
-      [[v:count == 0 ? '<CMD>lua ___comment_call("gcc")<CR>g@$' : '<CMD>lua ___comment_count_gcc()<CR>']]):with_silent()
-      :with_expr(),
-  ["n|<d-/>"] = map_cmd("<ESC><CMD>lua ___comment_gcc(vim.fn.visualmode())<CR>"):with_silent(),
-  ["i|<d-/>"] = map_cmd("<ESC><CMD>lua ___comment_gb(vim.fn.visualmode())<CR>"):with_silent(),
-  ["x|<d-/>"] = map_cmd('<ESC><CMD>lua ___comment_gb(vim.fn.visualmode())<CR>'):with_silent(),
+  ["x|<Leader>c<Space>"] = "gc",
+  ["n|<Leader>c<Space>"] = map_cmd("<CMD>lua require'Comment'.toggle()<CR>"):with_silent(),
+  ["n|<d-/>"] = map_cmd("<ESC><CMD>lua require'Comment'.toggle()<CR>"):with_silent(),
+  ["i|<d-/>"] = map_cmd("<ESC><CMD>lua require'Comment'.toggle()<CR>"):with_silent(),
+  ["x|<d-/>"] = map_key("gc"),
 
-  ["n|<m-/>"] = map_cmd("<ESC><CMD>lua ___comment_gcc(vim.fn.visualmode())<CR>"):with_silent(),
-  ["i|<m-/>"] = map_cmd("<ESC><CMD>lua ___comment_gb(vim.fn.visualmode())<CR>"):with_silent(),
-  ["x|<m-/>"] = map_cmd('<ESC><CMD>lua ___comment_gb(vim.fn.visualmode())<CR>'):with_silent()
+  ["n|<m-/>"] = map_cmd("<ESC><CMD>lua require'Comment'.toggle()<CR>"):with_silent(),
+  ["i|<m-/>"] = map_cmd("<ESC><CMD>lua require'Comment'.toggle()<CR>"):with_silent(),
+  ["x|<m-/>"] = "gc"
+
 };
 
 bind.nvim_load_mapping(plug_map)

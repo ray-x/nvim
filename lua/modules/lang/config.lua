@@ -172,9 +172,9 @@ function config.navigator()
     debug = plugin_debug(),
     width = 0.7,
     lsp_installer = false,
-    -- on_attach = function(client, bufnr)
-    --   require'aerial'.on_attach(client, bufnr)
-    -- end,
+    on_attach = function(client, bufnr)
+      -- require'aerial'.on_attach(client, bufnr)
+    end,
     border = single, -- "single",
     ts_fold = true,
     -- external = true, -- true: enable for goneovim multigrid otherwise false
@@ -231,6 +231,7 @@ function config.navigator()
   }
   vim.lsp.set_log_level("error") -- error debug info
   -- require"navigator".setup(nav_cfg)
+  -- PLoader('aerial.nvim')
   require"navigator".setup(nav_cfg)
 end
 

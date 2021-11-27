@@ -3,14 +3,9 @@ local rhs_options = {}
 function rhs_options:new()
   local instance = {
     cmd = '',
-    options = {
-      noremap = false,
-      silent = false,
-      expr = false,
-      nowait = false,
-    }
+    options = {noremap = false, silent = false, expr = false, nowait = false}
   }
-  setmetatable(instance,self)
+  setmetatable(instance, self)
   self.__index = self
   return instance
 end
@@ -25,13 +20,18 @@ function rhs_options:map_cr(cmd_string)
   return self
 end
 
-function  rhs_options:map_args(cmd_string)
+function rhs_options:map_args(cmd_string)
   self.cmd = (":%s<Space>"):format(cmd_string)
   return self
 end
 
 function rhs_options:map_cu(cmd_string)
   self.cmd = (":<C-u>%s<CR>"):format(cmd_string)
+  return self
+end
+
+function rhs_options:map_key(key_string)
+  self.cmd = ("%s"):format(key_string)
   return self
 end
 
@@ -72,22 +72,29 @@ function pbind.map_cu(cmd_string)
   return ro:map_cu(cmd_string)
 end
 
+function pbind.map_key(keystr)
+  local ro = rhs_options:new()
+  return ro:map_key(keystr)
+end
+
 function pbind.map_args(cmd_string)
   local ro = rhs_options:new()
   return ro:map_args(cmd_string)
 end
 
 function pbind.nvim_load_mapping(mapping)
-    for key,value in pairs(mapping) do
-      local mode,keymap = key:match("([^|]*)|?(.*)")
-      for i = 1, #mode do
-        if type(value) == 'table' then
-          local rhs = value.cmd
-          local options = value.options
-          vim.api.nvim_set_keymap(mode:sub(i,i),keymap,rhs,options)
-        end
+  for key, value in pairs(mapping) do
+    local mode, keymap = key:match("([^|]*)|?(.*)")
+    for i = 1, #mode do
+      if type(value) == 'table' then
+        local rhs = value.cmd
+        local options = value.options
+        vim.api.nvim_set_keymap(mode:sub(i, i), keymap, rhs, options)
+      elseif type(value) == 'string' then
+        vim.api.nvim_set_keymap(mode:sub(i, i), keymap, value, {})
       end
     end
+  end
 end
 
 return pbind
