@@ -132,6 +132,8 @@ function config.nvim_cmp()
     -- You should specify your *installed* sources.
     sources = sources
   }
+
+  require'cmp'.setup.cmdline(':', {sources = {{name = 'cmdline'}}})
   if vim.o.ft == 'clap_input' or vim.o.ft == 'guihua' or vim.o.ft == 'guihua_rust' then
     require'cmp'.setup.buffer {completion = {enable = false}}
   end

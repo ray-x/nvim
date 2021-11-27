@@ -20,15 +20,18 @@ function Lazyload()
 
   if plugin_folder() == [[~/github/]] then
     if daylight() == 'light' then
-      -- themes = {"gruvbox-material", "material_plus.nvim"}
-      themes = {"material_plus.nvim"}
+      themes = {"gruvbox-material", "material_plus.nvim"}
+      -- themes = {"material_plus.nvim"}
     end
+
+    -- themes = {"gruvbox-material"}
     -- debug the color theme
     -- themes = {"material_plus.nvim"}
     -- themes = {"aurora"}
   end
   local v = math.random(1, #themes)
   local loading_theme = themes[v]
+
   loader(loading_theme)
   --
   if vim.wo.diff then

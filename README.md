@@ -1,6 +1,6 @@
 # vim as a programming IDE
 
-## Need for speed! 🏎 🏎 🏎
+## 🏎 🏎 🏎 Need for speed! 🏎 🏎 🏎
 
 This neovim configure file is highly optimized for the impatient. Packer lazy loading + After syntax highlight rendering. Maybe the
 only nvim setup in github that can render multiple files with treesitter in less than 80ms with ~110 plugins installed

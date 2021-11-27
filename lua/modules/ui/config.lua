@@ -10,6 +10,15 @@ function config.windline()
   -- require('wlfloatline').toggle()
 end
 
+local function daylight()
+  local h = tonumber(os.date("%H"))
+  if h > 6 and h < 18 then
+    return 'light'
+  else
+    return 'dark'
+  end
+end
+
 local winwidth = function()
   return vim.api.nvim_call_function("winwidth", {0})
 end
@@ -253,16 +262,6 @@ function config.nightfly()
   -- body
 end
 
-function config.moonfly()
-  vim.g.moonflyCursorColor = 1
-  vim.g.moonflyUnderlineMatchParen = 1
-  vim.g.moonflyUndercurls = 1
-  vim.g.moonflyTransparent = 1
-  vim.g.moonflyNormalFloat = 1
-  vim.g.moonflyItalics = 1
-  -- body
-end
-
 function config.nvcode()
   vim.g.nvcode_termcolors = 256
   local opt = {"nvcode", "nord", "aurora", "onedark", "gruvbox", "palenight", "snazzy"}
@@ -271,21 +270,6 @@ function config.nvcode()
   -- body
 end
 
--- function config.neon()
---   local opt = {"default", "dark", "doom"}
---   vim.g.neon_style = opt[math.random(1, #opt)]
---   vim.g.neon_italic_keyword = true
---   vim.g.neon_italic_function = true
---   vim.g.neon_italic_boolean = true
---   vim.g.neon_bold = true
---   vim.cmd([[colorscheme neon]])
---   vim.cmd([[hi CursorColumn guibg=#433343]])
--- end
---
-function config.zephyr()
-  require("zephyr")
-  vim.cmd([[hi PmenuSel guibg=#315f7f]])
-end
 function config.sonokai()
   local opt = {"andromeda", "default", "andromeda", "shusia", "maia", "atlantis"}
   local v = opt[math.random(1, #opt)]
@@ -332,17 +316,19 @@ function config.indentguides()
 end
 
 function config.gruvbox()
-
   local opt = {"soft", "medium", "hard"}
   local palettes = {"material", "mix", "original"}
   local v = opt[math.random(1, #opt)]
   local palette = palettes[math.random(1, #palettes)]
-
-  if daylight() == 'dark' then
-    vim.cmd("set background=dark")
-  else
+  local h = tonumber(os.date("%H"))
+  if h > 6 and h < 18 then
+    lprint('gruvboxlight')
     vim.cmd("set background=light")
+  else
+    lprint('gruvboxdark')
+    vim.cmd("set background=dark")
   end
+
   vim.g.gruvbox_material_invert_selection = 0
   vim.g.gruvbox_material_enable_italic = 1
   -- vim.g.gruvbox_material_italicize_strings = 1
