@@ -56,12 +56,15 @@ ui["kyazdani42/nvim-tree.lua"] = {
 
 ui["lukas-reineke/indent-blankline.nvim"] = {opt = true, config = conf.blankline} -- after="nvim-treesitter",
 
+-- disabled does not work with muliti split
 ui['lukas-reineke/virt-column.nvim'] = {
   opt = true,
-  event = {"CursorMoved", "CursorMovedI"},
+  -- event = {"CursorMoved", "CursorMovedI"},
   config = function()
     vim.cmd("highlight clear ColorColumn")
     require("virt-column").setup()
+
+    vim.cmd("highlight VirtColumn guifg=#4358BF")
   end
 }
 
@@ -92,6 +95,7 @@ ui["projekt0n/github-nvim-theme"] = {
       colors = {bg_statusline = '#332344'}
     })
     -- vim.cmd([[highlight StatusLine guibg='#A3B3C4']])
+    vim.cmd([[highlight ColorColumn guibg='#335364']])
     vim.cmd([[doautocmd ColorScheme]])
 
   end

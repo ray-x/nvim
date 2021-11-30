@@ -340,6 +340,7 @@ function config.gruvbox()
   vim.g.gruvbox_material_enable_bold = 1
   vim.g.gruvbox_material_palette = palette
   vim.cmd("colorscheme gruvbox-material")
+  vim.cmd("doautocmd ColorScheme")
 end
 
 function config.minimap()

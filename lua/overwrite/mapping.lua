@@ -58,7 +58,7 @@ local keys = {
   ["n|<Leader><Leader>r"] = map_cmd("v:lua.run_or_test()"):with_expr(),
   ["v|<Leader><Leader>r"] = map_cmd("v:lua.run_or_test()"):with_expr(),
 
-  ["n|<Leader>Bp"] = map_cu("BufferLinePick"):with_noremap():with_silent(),
+  ["n|<Leader>bp"] = map_cu("BufferLinePick"):with_noremap():with_silent(),
 
   ["n|<Leader>di"] = map_cr("<cmd>lua require'dap.ui.variables'.hover()"):with_expr(),
   ["n|<Leader>dw"] = map_cr("<cmd>lua require'dap.ui.widgets'.hover()"):with_expr(), -- TODO: another key?
@@ -111,10 +111,21 @@ local keys = {
   ["i|<Leader>df"] = map_cu("Clap dumb_jump ++query=<cword> | startinsert"):with_noremap():with_silent(),
   -- ["n|<F2>"] = map_cr(""):with_expr(),
   ["n|<F5>"] = map_cmd("v:lua.run_or_test(v:true)"):with_expr(),
-  ["n|<F9>"] = map_cr("GoBreakToggle")
+  ["n|<F9>"] = map_cr("GoBreakToggle"),
   -- session
   -- ["n|<Leader>ss"] = map_cu('SessionSave'):with_noremap(),
   -- ["n|<Leader>sl"] = map_cu('SessionLoad'):with_noremap(),
+
+  ["n|<Space>M"] = map_cmd([[<cmd> lua require("harpoon.mark").toggle_file()<CR>]]),
+  ["n|<Space>m1"] = map_cmd([[<cmd> lua require("harpoon.ui").nav_file(1)<CR>]]),
+  ["n|<Space>m2"] = map_cmd([[<cmd> lua require("harpoon.ui").nav_file(2)<CR>]]),
+  ["n|<Space>m3"] = map_cmd([[<cmd> lua require("harpoon.ui").nav_file(3)<CR>]]),
+  ["n|<Space>m4"] = map_cmd([[<cmd> lua require("harpoon.ui").nav_file(4)<CR>]]),
+  ["n|<Space>m"] = map_cmd([[<cmd> Telescope harpoon marks <CR>]]),
+  ["v|<Leader>re"] = map_cmd("<esc><cmd>lua require('refactoring').refactor('Extract Function')<cr>"),
+  ["v|<Leader>rf"] = map_cmd("<esc><cmd>lua require('refactoring').refactor('Extract Function To File')<cr>"),
+  ["v|<Leader>rt"] = map_cmd("<esc><cmd>lua require('refactoring').refactor()<cr>")
+
 }
 
 --
@@ -230,6 +241,7 @@ _G.Line_ft = function(a)
 end
 
 vim.cmd([[command! -nargs=*  DebugOpen lua require"modules.lang.dap".prepare()]])
+vim.cmd([[command! -nargs=*  HpoonClear lua require"harpoon.mark".clear_all()]])
 -- Use `git ls-files` for git files, use `find ./ *` for all files under work directory.
 --
 return K

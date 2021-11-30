@@ -136,6 +136,25 @@ layout.custom = function(self, columns, lines)
   return {preview = has_preview and preview, results = results, prompt = prompt}
 end
 
+M.jump = function()
+  require('telescope.builtin').jumplist {layout_strategy = 'vertical'}
+end
+
+function M.installed_plugins()
+  require('telescope.builtin').find_files {
+    cwd = vim.fn.stdpath('data') .. '/site/pack/packer/start/'
+  }
+end
+
+function M.project_search()
+  require('telescope.builtin').find_files {
+    previewer = false,
+    layout_strategy = "vertical",
+    cwd = require('nvim_lsp.util').root_pattern(".git")(vim.fn.expand("%:p")),
+  }
+end
+
+
 M.theme = function(opts)
   return vim.tbl_deep_extend("force", {
     sorting_strategy = "ascending",

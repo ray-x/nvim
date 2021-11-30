@@ -21,18 +21,15 @@ function config.refactor()
   local refactor = require("refactoring")
   refactor.setup({})
 
-  -- telescope refactoring helper
-  local function _refactor(prompt_bufnr)
-    local content = require("telescope.actions.state").get_selected_entry(prompt_bufnr)
-    require("telescope.actions").close(prompt_bufnr)
-    require("refactoring").refactor(content.value)
-  end
-  -- NOTE: M is a global object
-  -- for the sake of simplicity in this example
-  -- you can extract this function and the helper above
-  -- and then require the file and call the extracted function
-  -- in the mappings below
+  print('refactor')
   _G.ts_refactors = function()
+    -- telescope refactoring helper
+    local function _refactor(prompt_bufnr)
+      local content = require("telescope.actions.state").get_selected_entry(prompt_bufnr)
+      require("telescope.actions").close(prompt_bufnr)
+      require("refactoring").refactor(content.value)
+    end
+
     local opts = require("telescope.themes").get_cursor() -- set personal telescope options
     require("telescope.pickers").new(opts, {
       prompt_title = "refactors",
@@ -48,13 +45,6 @@ function config.refactor()
     }):find()
   end
 
-  vim.api.nvim_set_keymap("v", "<Leader>re", [[ <Esc><Cmd>lua require('refactoring').refactor('Extract Function')<CR>]],
-                          {noremap = true, silent = true, expr = false})
-  vim.api.nvim_set_keymap("v", "<Leader>rf",
-                          [[ <Esc><Cmd>lua require('refactoring').refactor('Extract Function To File')<CR>]],
-                          {noremap = true, silent = true, expr = false})
-  vim.api.nvim_set_keymap("v", "<Leader>rt", [[ <Esc><Cmd>lua M.refactors()<CR>]],
-                          {noremap = true, silent = true, expr = false})
 end
 
 function config.tsubject()
@@ -66,68 +56,158 @@ function config.tsubject()
   }
 end
 
-function config.sidekick()
-  -- body
-  vim.g.sidekick_printable_def_types = {
-    'function', 'class', 'type', 'module', 'parameter', 'method', 'field'
+function config.outline()
+  vim.g.symbols_outline = {
+    highlight_hovered_item = true,
+    show_guides = true,
+    auto_preview = true,
+    position = 'right',
+    relative_width = true,
+    width = 25,
+    show_numbers = false,
+    show_relative_numbers = false,
+    show_symbol_details = true,
+    preview_bg_highlight = 'Pmenu',
+    keymaps = { -- These keymaps can be a string or a table for multiple keys
+      close = {"<Esc>", "q"},
+      goto_location = "<Cr>",
+      focus_location = "o",
+      hover_symbol = "<C-space>",
+      toggle_preview = "K",
+      rename_symbol = "r",
+      code_actions = "a"
+    },
+    lsp_blacklist = {},
+    symbol_blacklist = {},
+    symbols = {
+      File = {icon = "", hl = "TSURI"},
+      Module = {icon = "", hl = "TSNamespace"},
+      Namespace = {icon = "", hl = "TSNamespace"},
+      Package = {icon = "", hl = "TSNamespace"},
+      Class = {icon = "𝓒", hl = "TSType"},
+      Method = {icon = "ƒ", hl = "TSMethod"},
+      Property = {icon = "", hl = "TSMethod"},
+      Field = {icon = "", hl = "TSField"},
+      Constructor = {icon = "", hl = "TSConstructor"},
+      Enum = {icon = "ℰ", hl = "TSType"},
+      Interface = {icon = "ﰮ", hl = "TSType"},
+      Function = {icon = "", hl = "TSFunction"},
+      Variable = {icon = "", hl = "TSConstant"},
+      Constant = {icon = "", hl = "TSConstant"},
+      String = {icon = "𝓐", hl = "TSString"},
+      Number = {icon = "#", hl = "TSNumber"},
+      Boolean = {icon = "⊨", hl = "TSBoolean"},
+      Array = {icon = "", hl = "TSConstant"},
+      Object = {icon = "⦿", hl = "TSType"},
+      Key = {icon = "🔐", hl = "TSType"},
+      Null = {icon = "NULL", hl = "TSType"},
+      EnumMember = {icon = "", hl = "TSField"},
+      Struct = {icon = "𝓢", hl = "TSType"},
+      Event = {icon = "🗲", hl = "TSType"},
+      Operator = {icon = "+", hl = "TSOperator"},
+      TypeParameter = {icon = "𝙏", hl = "TSParameter"}
+    }
   }
-  -- vim.g.sidekick_def_type_icons = {
-  --    class = "\\uf0e8",
-  --    type = "\\uf0e8",
-  --    ['function'] = "\\uf794",
-  --    module = "\\uf7fe",
-  --    arc_component = "\\uf6fe",
-  --    sweep = "\\uf7fd",
-  --    parameter = "•",
-  --    var = "v",
-  --    method = "\\uf794",
-  --    field = "\\uf6de",
-  -- }
-  -- vim.g.sidekick_ignore_by_def_type = {
-  --   ['var'] = {"_": 1, "self": 1},
-  --   parameters = {"self": 1},
-  -- }
-
-  -- Indicates which definition types should have their line number displayed in the outline window.
-  vim.g.sidekick_line_num_def_types = {
-    class = 1,
-    type = 1,
-    ['function'] = 1,
-    module = 1,
-    method = 1
-  }
-
-  -- What to display between definition and line number
-  vim.g.sidekick_line_num_separator = " "
-  -- What to display to the left and right of the line number
-  -- vim.g.sidekick_line_num_left = "\\ue0b2"
-  -- vim.g.sidekick_line_num_right = "\\ue0b0"
-  -- -- What to display before outer vs inner vs folded outer definitions
-  -- vim.g.sidekick_outer_node_folded_icon = "\\u2570\\u2500\\u25C9"
-  -- vim.g.sidekick_outer_node_icon = "\\u2570\\u2500\\u25CB"
-  -- vim.g.sidekick_inner_node_icon = "\\u251c\\u2500\\u25CB"
-  -- -- What to display to left and right of def_type_icon
-  -- vim.g.sidekick_left_bracket = "\\u27ea"
-  -- vim.g.sidekick_right_bracket = "\\u27eb"
 end
 
 function config.sqls()
 end
 
 function config.aerial()
-  local aerial = require 'aerial'
+  vim.g.aerial = {
+    -- Priority list of preferred backends for aerial
+    backends = {"lsp", "treesitter", "markdown"},
+
+    -- Enum: persist, close, auto, global
+    --   persist - aerial window will stay open until closed
+    --   close   - aerial window will close when original file is no longer visible
+    --   auto    - aerial window will stay open as long as there is a visible
+    --             buffer to attach to
+    --   global  - same as 'persist', and will always show symbols for the current buffer
+    close_behavior = "auto",
+
+    -- Set to false to remove the default keybindings for the aerial buffer
+    default_bindings = true,
+
+    -- Enum: prefer_right, prefer_left, right, left
+    -- Determines the default direction to open the aerial window. The 'prefer'
+    -- options will open the window in the other direction *if* there is a
+    -- different buffer in the way of the preferred direction
+    default_direction = "prefer_right",
+
+    -- A list of all symbols to display. Set to false to display all symbols.
+    filter_kind = {"Class", "Constructor", "Enum", "Function", "Interface", "Method", "Struct"},
+
+    -- Enum: split_width, full_width, last, none
+    -- Determines line highlighting mode when multiple buffers are visible
+    highlight_mode = "split_width",
+
+    -- When jumping to a symbol, highlight the line for this many ms
+    -- Set to 0 or false to disable
+    highlight_on_jump = 300,
+
+    -- Fold code when folding the tree. Only works when manage_folds is enabled
+    link_tree_to_folds = true,
+
+    -- Fold the tree when folding code. Only works when manage_folds is enabled
+    link_folds_to_tree = false,
+
+    -- Use symbol tree for folding. Set to true or false to enable/disable
+    -- 'auto' will manage folds if your previous foldmethod was 'manual'
+    manage_folds = "auto",
+
+    -- The maximum width of the aerial window
+    max_width = 40,
+
+    -- The minimum width of the aerial window.
+    -- To disable dynamic resizing, set this to be equal to max_width
+    min_width = 10,
+
+    -- Set default symbol icons to use Nerd Font icons (see https://www.nerdfonts.com/)
+    nerd_font = "auto",
+
+    -- Whether to open aerial automatically when entering a buffer.
+    -- Can also be specified per-filetype as a map (see below)
+    open_automatic = false,
+
+    -- If open_automatic is true, only open aerial if the source buffer is at
+    -- least this long
+    open_automatic_min_lines = 0,
+
+    -- If open_automatic is true, only open aerial if there are at least this many symbols
+    open_automatic_min_symbols = 0,
+
+    -- Set to true to only open aerial at the far right/left of the editor
+    -- Default behavior opens aerial relative to current window
+    placement_editor_edge = false,
+
+    -- Run this command after jumping to a symbol (false will disable)
+    post_jump_cmd = "normal! zz",
+
+    -- If close_on_select is true, aerial will automatically close after jumping to a symbol
+    close_on_select = false,
+
+    lsp = {
+      -- Fetch document symbols when LSP diagnostics change.
+      -- If you set this to false, you will need to manually fetch symbols
+      diagnostics_trigger_update = true,
+
+      -- Set to false to not update the symbols when there are LSP errors
+      update_when_errors = true
+    },
+
+    treesitter = {
+      -- How long to wait (in ms) after a buffer change before updating
+      update_delay = 300
+    },
+
+    markdown = {
+      -- How long to wait (in ms) after a buffer change before updating
+      update_delay = 300
+    }
+  }
 
   -- Aerial does not set any mappings by default, so you'll want to set some up
-  aerial.register_attach_cb(function(bufnr)
-    -- Toggle the aerial window with <leader>a
-    vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>a', '<cmd>AerialToggle!<CR>', {})
-    -- Jump forwards/backwards with '{' and '}'
-    vim.api.nvim_buf_set_keymap(bufnr, 'n', '{', '<cmd>AerialPrev<CR>', {})
-    vim.api.nvim_buf_set_keymap(bufnr, 'n', '}', '<cmd>AerialNext<CR>', {})
-    -- Jump up the tree with '[[' or ']]'
-    vim.api.nvim_buf_set_keymap(bufnr, 'n', '[[', '<cmd>AerialPrevUp<CR>', {})
-    vim.api.nvim_buf_set_keymap(bufnr, 'n', ']]', '<cmd>AerialNextUp<CR>', {})
-  end)
 end
 
 function config.syntax_folding()

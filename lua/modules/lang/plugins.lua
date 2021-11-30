@@ -26,7 +26,11 @@ lang['danymat/neogen'] = {
   end
 }
 
-lang['ThePrimeagen/refactoring.nvim'] = {opt = true}
+lang['ThePrimeagen/refactoring.nvim'] = {
+  opt = true,
+  event = {'CursorMoved', 'CursorMovedI'},
+  config = conf.refactor
+}
 
 lang["nvim-treesitter/nvim-treesitter-refactor"] = {
   after = "nvim-treesitter-textobjects", -- manual loading
@@ -63,9 +67,31 @@ lang["nvim-treesitter/playground"] = {
   config = conf.playground
 }
 
-lang["ElPiloto/sidekick.nvim"] = {opt = true, fn = {'SideKickNoReload'}, setup = conf.sidekick}
-lang['stevearc/aerial.nvim'] = {opt = true, cmd = {'AerialToggle'}, setup = conf.aeial}
-
+-- great plugin but not been maintained
+-- lang["ElPiloto/sidekick.nvim"] = {opt = true, fn = {'SideKickNoReload'}, setup = conf.sidekick}
+lang['stevearc/aerial.nvim'] = {
+  opt = true,
+  cmd = {'AerialToggle'},
+  setup = conf.aerial,
+  config = function()
+    local aerial = require 'aerial'
+    aerial.register_attach_cb(function(bufnr)
+      -- Toggle the aerial window with <leader>a
+      vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>a', '<cmd>AerialToggle!<CR>', {})
+      -- Jump forwards/backwards with '{' and '}'
+      vim.api.nvim_buf_set_keymap(bufnr, 'n', '{', '<cmd>AerialPrev<CR>', {})
+      vim.api.nvim_buf_set_keymap(bufnr, 'n', '}', '<cmd>AerialNext<CR>', {})
+      -- Jump up the tree with '[[' or ']]'
+      vim.api.nvim_buf_set_keymap(bufnr, 'n', '[[', '<cmd>AerialPrevUp<CR>', {})
+      vim.api.nvim_buf_set_keymap(bufnr, 'n', ']]', '<cmd>AerialNextUp<CR>', {})
+    end)
+  end
+}
+lang['simrat39/symbols-outline.nvim'] = {
+  opt = true,
+  cmd = {'SymbolsOutline', 'SymbolsOutlineOpen'},
+  setup = conf.outline
+}
 lang["bfredl/nvim-luadev"] = {opt = true, ft = 'lua', cmd = "Luadev", setup = conf.luadev}
 lang["mfussenegger/nvim-dap"] = {config = conf.dap, opt = true} -- cmd = "Luadev",
 
