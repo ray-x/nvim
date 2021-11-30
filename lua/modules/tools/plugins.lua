@@ -149,7 +149,6 @@ tools["lewis6991/gitsigns.nvim"] = {
 tools['tanvirtin/vgit.nvim'] = { -- gitsign has similar features
   setup = function()
     vim.o.updatetime = 2000
-    vim.wo.signcolumn = 'yes'
   end,
   cmd = {'VGit'},
   -- after = {"telescope.nvim"},

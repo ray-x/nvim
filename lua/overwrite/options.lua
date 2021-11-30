@@ -18,9 +18,8 @@ function options:load_options()
     self.global_local = {foldmethod = 'diff', diffopt = "context:0", foldlevel = 0, mouse = "a"}
     self.window_local = {
       -- foldmethod = "expr",
-      cursorline = true
+      cursorline = false
       -- noreadonly = false;
-      -- signcolumn = "yes";   -- auto
     }
   else
     self.global_local = {
@@ -60,7 +59,6 @@ function options:load_options()
 
     self.window_local = {
       foldmethod = "indent", -- indent? expr?  expr is slow for large files
-      -- signcolumn     = "yes";   -- auto
       number = true,
       relativenumber = true,
       foldenable = true
