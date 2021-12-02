@@ -109,11 +109,11 @@ ui["sainnhe/gruvbox-material"] = {opt = true, config = conf.gruvbox}
 -- cant config cursor line
 -- ui["rafamadriz/neon"] = {opt = true, config = conf.neon}
 
-ui[plugin_folder() .. "material_plus.nvim"] = {
+ui[plugin_folder() .. "starry.nvim"] = {
   opt = true,
-  setup = conf.material,
+  setup = conf.starry,
   config = function()
-    require("material").set()
+    require("starry").set()
   end
 }
 return ui

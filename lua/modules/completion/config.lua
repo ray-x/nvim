@@ -6,10 +6,6 @@ function config.nvim_lsp()
   lspclient.setup()
 end
 
-local function t(str)
-  return vim.api.nvim_replace_termcodes(str, true, true, true)
-end
-
 local function is_prior_char_whitespace()
   local col = vim.fn.col('.') - 1
   if col == 0 or vim.fn.getline('.'):sub(col, col):match('%s') then
@@ -21,6 +17,25 @@ end
 
 function config.nvim_cmp()
   local cmp = require('cmp')
+
+  local has_words_before = function()
+    local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+    return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
+  end
+  local luasnip = require("luasnip")
+  local function tab(fallback)
+    if cmp.visible() then
+      cmp.select_next_item()
+    elseif luasnip.expand_or_jumpable() then
+      luasnip.expand_or_jump()
+    elseif has_words_before() then
+      cmp.complete()
+    else
+      -- F("<Tab>")
+      fallback()
+    end
+  end
+
   if load_coq() then
     local sources = {}
     cmp.setup.buffer {completion = {autocomplete = false}}
@@ -103,37 +118,36 @@ function config.nvim_cmp()
       ['<C-Space>'] = cmp.mapping.complete(),
       ['<C-e>'] = cmp.mapping.close(),
       ['<CR>'] = cmp.mapping.confirm({behavior = cmp.ConfirmBehavior.Replace, select = true}),
-      ["<tab>"] = cmp.mapping(function(fallback)
-        if vim.fn.pumvisible() == 1 then
-          vim.fn.feedkeys(t("<C-n>"), "n")
-          -- elseif require'snippy'.can_expand_or_advance()  then
-          --   vim.fn.feedkeys(t("<Plug>(snippy-expand-or-next)"), "")
-        elseif require'luasnip'.expand_or_jumpable() then
-          vim.fn.feedkeys(t("<Plug>luasnip-expand-or-jump"), "")
-        elseif check_back_space() then
-          vim.fn.feedkeys(t("<tab>"), "n")
+      -- ['<Tab>'] = cmp.mapping(tab, {'i', 's'}),
+
+      ["<Tab>"] = cmp.mapping(function(fallback)
+        if cmp.visible() then
+          cmp.select_next_item()
+        elseif luasnip.expand_or_jumpable() then
+          luasnip.expand_or_jump()
+        elseif has_words_before() then
+          cmp.complete()
         else
           fallback()
         end
       end, {"i", "s"}),
-      ["<S-tab>"] = cmp.mapping(function(fallback)
-        if vim.fn.pumvisible() == 1 then
-          vim.fn.feedkeys(t("<C-p>"), "n")
-          -- elseif require'snippy'.can_jump(-1) then
-          --   vim.fn.feedkeys(t("<Plug>(snippy-previous)"), "")
-        elseif require'luasnip'.jumpable(-1) then
-          vim.fn.feedkeys(t("<Plug>luasnip-jump-prev"), "")
+      ["<S-Tab>"] = cmp.mapping(function(fallback)
+        if cmp.visible() then
+          cmp.select_prev_item()
+        elseif luasnip.jumpable(-1) then
+          luasnip.jump(-1)
         else
           fallback()
         end
       end, {"i", "s"})
+
     },
 
     -- You should specify your *installed* sources.
     sources = sources
   }
 
-  require'cmp'.setup.cmdline(':', {sources = {{name = 'cmdline'}}})
+  -- require'cmp'.setup.cmdline(':', {sources = {{name = 'cmdline'}}})
   if vim.o.ft == 'clap_input' or vim.o.ft == 'guihua' or vim.o.ft == 'guihua_rust' then
     require'cmp'.setup.buffer {completion = {enable = false}}
   end

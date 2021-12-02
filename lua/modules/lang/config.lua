@@ -265,7 +265,7 @@ function config.navigator()
       format_on_save = true, -- set to false to disasble lsp code format on save (if you are using prettier/efm/formater etc)
       disable_format_cap = {"sqls", "gopls"}, -- a list of lsp not enable auto-format (e.g. if you using efm or vim-codeformat etc)
       -- disable_lsp = {'denols'},
-      disable_lsp = {"rls", "flow"},
+      disable_lsp = {"rls", "flow", "pylsp"},
       code_lens = true,
       disply_diagnostic_qf = false,
       denols = {filetypes = {}},

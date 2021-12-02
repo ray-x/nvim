@@ -222,21 +222,21 @@ function config.aurora()
   vim.cmd("hi EndOfBuffer guibg=NONE ctermbg=NONE") -- remove background
 end
 
-function config.material()
+function config.starry()
   -- local opt = {"oceanic", "darker", "palenight", "deep ocean", "moonlight", "dracula", "dracula_blood", "monokai", "mariana", "ceramic"}
   -- local v = math.random(1, #opt)
-  -- vim.g.material_style = opt[v]
-  vim.g.material_italic_comments = true
-  vim.g.material_italic_keywords = false
-  vim.g.material_italic_functions = false
-  vim.g.material_italic_variables = false
-  vim.g.material_italic_string = false
-  vim.g.material_contrast = true
-  vim.g.material_borders = true
-  vim.g.material_disable_background = false
-  vim.g.material_daylight_switch = true
-  -- vim.g.material_style = "earlysummer" -- 'moonlight' emerald middlenight_blue earlysummer
-  -- vim.g.material_style_fix = true
+  -- vim.g.starry_style = opt[v]
+  vim.g.starry_italic_comments = true
+  vim.g.starry_italic_keywords = false
+  vim.g.starry_italic_functions = false
+  vim.g.starry_italic_variables = false
+  vim.g.starry_italic_string = false
+  vim.g.starry_contrast = true
+  vim.g.starry_borders = true
+  vim.g.starry_disable_background = false
+  vim.g.starry_daylight_switch = true
+  -- vim.g.starry_style = "earlysummer" -- 'moonlight' emerald middlenight_blue earlysummer
+  -- vim.g.starry_style_fix = true
   -- config.default()
 end
 

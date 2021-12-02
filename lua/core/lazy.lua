@@ -14,19 +14,18 @@ function Lazyload()
   --
   math.randomseed(os.time())
   local themes = {
-    "material_plus.nvim", "aurora", "aurora", "tokyonight.nvim", "material_plus.nvim", "aurora",
+    "starry.nvim", "aurora", "aurora", "tokyonight.nvim", "starry.nvim", "aurora",
     "gruvbox-material", "sonokai", "github-nvim-theme"
   }
 
   if plugin_folder() == [[~/github/]] then
     if daylight() == 'light' then
-      themes = {"gruvbox-material", "material_plus.nvim"}
-      -- themes = {"material_plus.nvim"}
+      themes = {"gruvbox-material", "starry.nvim"}
     end
 
     -- themes = {"gruvbox-material"}
     -- debug the color theme
-    -- themes = {"material_plus.nvim"}
+    -- themes = {"starry.nvim"}
     -- themes = {"aurora"}
   end
   local v = math.random(1, #themes)

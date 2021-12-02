@@ -50,7 +50,7 @@ local plug_map = {
   -- ["in|<d-f>"] = map_cr("<cmd> lua require'telescope.builtin'.grep_string({defulat_text=vim.fn.expand('cword')})"):with_noremap()
   --     :with_silent(),
 
-  ["in|<d-f>"] = map_cmd([['<cmd>lua require"telescope.builtin".grep_string() <cr>' . expand('<cword>')]]):with_expr()
+  ["in|<d-f>"] = map_cmd([['<cmd>lua require"telescope.builtin".grep_string()<cr>' . expand('<cword>')]]):with_expr()
       :with_silent(),
   --     :with_expr(),
   -- ["in|<d-f>"] = map_cmd([[ ':Telescope live_grep<cr>' . expand('<cword>')]]):with_expr():with_silent(),
