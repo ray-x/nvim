@@ -82,8 +82,8 @@ local keys = {
   ["xon|F"] = map_cmd("<cmd>lua  Line_ft('F')<cr>"),
   ["xon|t"] = map_cmd("<cmd>lua  Line_ft('t')<cr>"),
   ["xon|T"] = map_cmd("<cmd>lua  Line_ft('T')<cr>"),
-  ["n|s"] = map_cmd("<cmd>lua hop1(1)<cr>"),
-  ["n|S"] = map_cmd("<cmd>lua hop1()<cr>"),
+  ["n|s"] = map_cmd("<cmd>lua hop1(1)<CR>"):with_silent(),
+  ["n|S"] = map_cmd("<cmd>lua hop1()<CR>"):with_silent(),
   ["x|s"] = map_cmd("<cmd>lua hop1(1)<CR>"):with_silent(),
   ["x|S"] = map_cmd("<cmd>lua hop1()<CR>"):with_silent(),
   -- ["v|<M-s>"] = map_cmd("<cmd>lua require'hop'.hint_char1()<cr>"):with_silent():with_expr(),
@@ -124,7 +124,9 @@ local keys = {
   ["n|<Space>m"] = map_cmd([[<cmd> Telescope harpoon marks <CR>]]),
   ["v|<Leader>re"] = map_cmd("<esc><cmd>lua require('refactoring').refactor('Extract Function')<cr>"),
   ["v|<Leader>rf"] = map_cmd("<esc><cmd>lua require('refactoring').refactor('Extract Function To File')<cr>"),
-  ["v|<Leader>rt"] = map_cmd("<esc><cmd>lua require('refactoring').refactor()<cr>")
+  ["v|<Leader>rt"] = map_cmd("<esc><cmd>lua require('refactoring').refactor()<cr>"),
+
+  ["v|<Leader>gs"] = map_cmd("<cmd>lua require('utils.git').qf_add()<cr>")
 
 }
 
@@ -184,15 +186,13 @@ _G.hop1 = function(ac)
     loader('hop')
   end
   if vim.fn.mode() == 's' then
-    print(vim.fn.mode(), vim.fn.mode() == 's')
+    -- print(vim.fn.mode(), vim.fn.mode() == 's')
     return vim.cmd('exe "normal! i s"')
-  else
-    print(vim.fn.mode(), vim.fn.mode() == 's')
   end
   if ac == 1 then
     require'hop'.hint_char1({direction = require'hop.hint'.HintDirection.AFTER_CURSOR})
   else
-    require'hop'.hint_char1({direction = require'hop.hint'.HintDirection.AFTER_CURSOR})
+    require'hop'.hint_char1({direction = require'hop.hint'.HintDirection.BEFORE_CURSOR})
   end
 end
 

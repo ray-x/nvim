@@ -145,6 +145,15 @@ tools["lewis6991/gitsigns.nvim"] = {
   opt = true
 }
 
+local path = plugin_folder()
+tools[path .. "sad.nvim"] = {
+  cmd = {'Sad'},
+  opt = true,
+  config = function()
+    require'sad'.setup({debug = true, log_path = "~/tmp/sad.log"})
+  end
+}
+
 -- early stage...
 tools['tanvirtin/vgit.nvim'] = { -- gitsign has similar features
   setup = function()

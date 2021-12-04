@@ -125,6 +125,7 @@ completion[plugin_folder() .. "lsp_signature.nvim"] = {
   config = function()
     require"lsp_signature".setup({
       bind = true,
+      -- doc_lines = 4,
       toggle_key = '<M-x>',
       floating_window = true,
       floating_window_above_cur_line = true,

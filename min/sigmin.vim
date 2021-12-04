@@ -23,14 +23,6 @@ local nvim_lsp = require'lspconfig'
 local signature_config = {
   log_path = vim.fn.expand("$HOME") .. "/tmp/sig.log",
   debug = true,
-  -- bind = true,
-  -- hint_prefix = "",
-  -- hi_parameter = "Search",
-  -- fix_pos = true,
-  -- extra_trigger_chars = {"(", ","},
-  -- handler_opts = {
-  --   border = "none",
-  -- }
   hint_enable = false,
   handler_opts = {
     border = "single",
@@ -64,14 +56,11 @@ local lua_cfg = {
   settings = {
     Lua = {
       runtime = {
-        -- Tell the language server which version of Lua you're -- using (most ely LuaJIT in the case of Neovim)
-        version = "LuaJIT",
-        -- Setup your lua path
+         version = "LuaJIT",
         path = vim.split(package.path, ";")
       },
       diagnostics = {
         enable = true,
-        -- Get the language server to recognize the `vim` global
         globals = {
           "vim",
           "describe",
@@ -83,7 +72,6 @@ local lua_cfg = {
         }
       },
       workspace = {
-        -- Make the server aware of Neovim runtime files
         library = {
           [vim.fn.expand("$VIMRUNTIME/lua")] = true,
           [vim.fn.expand("$VIMRUNTIME/lua/vim")] = true,
@@ -101,9 +89,9 @@ require "lsp_signature".setup(signature_config)
 require 'go'.setup({
   verbose = true,
   goimport = 'goimports',
-  lsp_cfg = 
+  lsp_cfg =
    {settings={gopls={matcher='CaseInsensitive', ['local'] = "~/github/go", gofumpt = true }}}
-  
+
 })
 
 EOF

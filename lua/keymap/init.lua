@@ -39,7 +39,7 @@ local plug_map = {
   ["n|<Leader>cl"] = map_cr('<cmd>lua require("telescope").extensions.neoclip.default()'):with_silent(),
   ["n|<Leader>fz"] = map_cr('<cmd>lua require("telescope").extensions.zoxide.list()'):with_silent(),
   ["n|<Leader>fp"] = map_cr('<cmd>lua require("telescope").extensions.projects.projects()'):with_silent(),
-  -- ["n|<Leader>fw"] = map_cu('Telescope grep_string'):with_noremap():with_silent(),
+  ["n|<Leader>fw"] = map_cu('Telescope grep_string'):with_noremap():with_silent(),
   ["n|<Leader>fl"] = map_cu('Telescope loclist'):with_noremap():with_silent(),
   ["n|<Leader>fc"] = map_cu('Telescope git_commits'):with_noremap():with_silent(),
   ["n|<Leader>ft"] = map_cu('Telescope help_tags'):with_noremap():with_silent(),
@@ -50,7 +50,7 @@ local plug_map = {
   -- ["in|<d-f>"] = map_cr("<cmd> lua require'telescope.builtin'.grep_string({defulat_text=vim.fn.expand('cword')})"):with_noremap()
   --     :with_silent(),
 
-  ["in|<d-f>"] = map_cmd([['<cmd>lua require"telescope.builtin".grep_string()<cr>' . expand('<cword>')]]):with_expr()
+  ["in|<d-f>"] = map_cmd([['<cmd>lua require"telescope.builtin".live_grep()<cr>' . expand('<cword>')]]):with_expr()
       :with_silent(),
   --     :with_expr(),
   -- ["in|<d-f>"] = map_cmd([[ ':Telescope live_grep<cr>' . expand('<cword>')]]):with_expr():with_silent(),
