@@ -89,6 +89,7 @@ function Lazyload()
   end
 
   if load_lsp then
+    loader('null-ls.nvim')
     loader("nvim-lspconfig") -- null-ls.nvim
     loader("lsp_signature.nvim")
   end

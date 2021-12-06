@@ -298,9 +298,9 @@ function config.navigator()
 
       sumneko_lua = luadev,
 
-      jedi_language_server = {filetypes = {}},
-      efm = require('modules.lang.efm').efm
+      jedi_language_server = {filetypes = {}}
     }
+
     -- icons = {
     --   diagnostic_err = "",
     --   diagnostic_warn = "",
@@ -309,6 +309,13 @@ function config.navigator()
     --   diagnostic_virtual_text = ""
     -- }
   }
+
+  if not use_nulls() then
+    nav_cfg.lsp.efm = require('modules.lang.efm').efm
+  else
+    table.insert(nav_cfg.lsp.disable_lsp, 'efm')
+  end
+
   vim.lsp.set_log_level("error") -- error debug info
   -- require"navigator".setup(nav_cfg)
   -- PLoader('aerial.nvim')
