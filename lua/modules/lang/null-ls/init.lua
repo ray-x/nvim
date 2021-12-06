@@ -1,26 +1,28 @@
 return {
   config = function()
-    local null_ls = require("null-ls")
-    local lspconfig = require("lspconfig")
+  local null_ls = require("null-ls")
+  local lspconfig = require("lspconfig")
 
-    local sources = {}
+  local sources = {null_ls.builtins.formatting.autopep8,
+  null_ls.builtins.formatting.rustfmt,
+  null_ls.builtins.diagnostics.yamllint,
+  null_ls.builtins.code_actions.gitsigns,
+  null_ls.builtins.code_actions.proselint,
+  null_ls.builtins.code_actions.refactoring,
+  null_ls.builtins.diagnostics.staticcheck,
+  null_ls.builtins.diagnostics.revive
+    }
 
     local function exist(bin)
       return vim.fn.exepath(bin) ~= ""
     end
 
-    -- lua
-    if exist("stylua") then
-      table.insert(sources, null_ls.builtins.formatting.stylua)
-    end
-
-    table.insert(sources, null_ls.builtins.formatting.autopep8)
     table.insert(
       sources,
-      null_ls.builtins.formatting.golines.with({
+      null_ls.builtins.formatting.golines.with({extra_args = {
         "--max-len=120",
         "--base-formatter=gofumpt",
-      })
+      }})
     )
 
     -- shell script
@@ -28,7 +30,6 @@ return {
       table.insert(sources, null_ls.builtins.diagnostics.shellcheck)
     end
 
-    table.insert(sources, null_ls.builtins.formatting.rustfmt)
 
     -- shell script
     if exist("shfmt") then
@@ -60,8 +61,8 @@ return {
     end
 
     if exist("stylua") then
-      table.insert(null_ls.builtins.formatting.stylua.with({
-        args = { "--indent-type", "Spaces", "--indent_width", "2", "-" },
+      table.insert(sources, null_ls.builtins.formatting.stylua.with({
+        extra_args = { "--indent-type", "Spaces", "--indent-width", "2"},
       }))
     end
 
@@ -85,7 +86,12 @@ return {
       })
     )
 
-    null_ls.config({ sources = sources })
+    local cfg = {sources = sources, debug=true}
+    if plugin_debug() then
+      cfg.debug = true
+    end
+
+    null_ls.config(cfg)
 
     if lspconfig["null-ls"] then
       lspconfig["null-ls"].setup({
@@ -102,7 +108,6 @@ return {
       })
     end
 
-    local setup = require("null-ls")
     null_ls.config({ sources = sources })
   end,
 }
