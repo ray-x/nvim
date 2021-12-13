@@ -336,11 +336,15 @@ M.setup = function()
       grep_previewer = require"telescope.previewers".vim_buffer_vimgrep.new,
       qflist_previewer = require"telescope.previewers".vim_buffer_qflist.new,
       extensions = {fzy_native = {override_generic_sorter = false, override_file_sorter = true}},
+      -- check telescoe/mappings.lua
+      -- n<C-u/d> pageup/down in preview
+      -- i <C-_> help keymap
+      -- n ? which key
       mappings = {
         n = {
           ["<esc>"] = actions.close,
-          ["<tab>"] = actions.toggle_selection + actions.move_selection_next,
-          ["<s-tab>"] = actions.toggle_selection + actions.move_selection_previous,
+          -- ["<tab>"] = actions.toggle_selection + actions.move_selection_next, -- this is default
+          -- ["<s-tab>"] = actions.toggle_selection + actions.move_selection_previous,
           ["<cr>"] = custom_actions.fzf_multi_select,
           ["<C-n>"] = function(prompt_bufnr)
             local results_win = state.get_status(prompt_bufnr).results_win
@@ -357,18 +361,19 @@ M.setup = function()
             local results_win = state.get_status(prompt_bufnr).results_win
             local height = vim.api.nvim_win_get_height(results_win)
             action_set.shift_selection(prompt_bufnr, -math.floor(height / 2))
-          end
+          end,
+          ['<C-q>'] = custom_actions.smart_send_to_qflist,
         },
         i = {
           ['<S-Down>'] = actions.cycle_history_next,
           ['<S-Up>'] = actions.cycle_history_prev,
-          ['<Down>'] = actions.move_selection_next,
-          ['<Up>'] = actions.move_selection_previous,
+          -- ['<Down>'] = actions.move_selection_next,
+          -- ['<Up>'] = actions.move_selection_previous,
           ['<C-q>'] = custom_actions.smart_send_to_qflist,
           -- ['w'] = myactions.smart_send_to_qflist,
           -- ['e'] = myactions.send_to_qflist,
-          ['J'] = actions.toggle_selection + actions.move_selection_next,
-          ['K'] = actions.toggle_selection + actions.move_selection_previous,
+          ['<c-j>'] = actions.toggle_selection + actions.move_selection_next,
+          ['<c-k>'] = actions.toggle_selection + actions.move_selection_previous,
           ["<C-n>"] = function(prompt_bufnr)
             local results_win = state.get_status(prompt_bufnr).results_win
             local height = vim.api.nvim_win_get_height(results_win)

@@ -122,6 +122,7 @@ completion["mattn/emmet-vim"] = {
 
 -- note: part of the code is used in navigator
 completion[plugin_folder() .. "lsp_signature.nvim"] = {
+  opt = true,
   config = function()
     require"lsp_signature".setup({
       bind = true,

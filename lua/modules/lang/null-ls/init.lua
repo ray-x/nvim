@@ -1,16 +1,16 @@
 return {
   config = function()
-  local null_ls = require("null-ls")
-  local lspconfig = require("lspconfig")
+    local null_ls = require("null-ls")
+    local lspconfig = require("lspconfig")
 
-  local sources = {null_ls.builtins.formatting.autopep8,
-  null_ls.builtins.formatting.rustfmt,
-  null_ls.builtins.diagnostics.yamllint,
-  null_ls.builtins.code_actions.gitsigns,
-  null_ls.builtins.code_actions.proselint,
-  null_ls.builtins.code_actions.refactoring,
-  null_ls.builtins.diagnostics.staticcheck,
-  null_ls.builtins.diagnostics.revive
+    local sources = {
+      null_ls.builtins.formatting.autopep8,
+      null_ls.builtins.formatting.rustfmt,
+      null_ls.builtins.diagnostics.yamllint,
+      null_ls.builtins.code_actions.gitsigns,
+      null_ls.builtins.code_actions.proselint,
+      null_ls.builtins.code_actions.refactoring,
+      null_ls.builtins.formatting.prettier,
     }
 
     local function exist(bin)
@@ -19,17 +19,18 @@ return {
 
     table.insert(
       sources,
-      null_ls.builtins.formatting.golines.with({extra_args = {
-        "--max-len=120",
-        "--base-formatter=gofumpt",
-      }})
+      null_ls.builtins.formatting.golines.with({
+        extra_args = {
+          "--max-len=120",
+          "--base-formatter=gofumpt",
+        },
+      })
     )
 
     -- shell script
     if exist("shellcheck") then
       table.insert(sources, null_ls.builtins.diagnostics.shellcheck)
     end
-
 
     -- shell script
     if exist("shfmt") then
@@ -40,8 +41,6 @@ return {
     if exist("golangci-lint") then
       table.insert(sources, null_ls.builtins.diagnostics.golangci_lint)
     end
-    table.insert(sources, null_ls.builtins.diagnostics.staticcheck)
-    table.insert(sources, null_ls.builtins.diagnostics.revive)
 
     -- docker
     if exist("hadolint") then
@@ -61,9 +60,12 @@ return {
     end
 
     if exist("stylua") then
-      table.insert(sources, null_ls.builtins.formatting.stylua.with({
-        extra_args = { "--indent-type", "Spaces", "--indent-width", "2"},
-      }))
+      table.insert(
+        sources,
+        null_ls.builtins.formatting.stylua.with({
+          extra_args = { "--indent-type", "Spaces", "--indent-width", "2" },
+        })
+      )
     end
 
     table.insert(sources, null_ls.builtins.formatting.trim_newlines)
@@ -86,10 +88,10 @@ return {
       })
     )
 
-    local cfg = {sources = sources, debug=true}
-    if plugin_debug() then
-      cfg.debug = true
-    end
+    local cfg = { sources = sources }
+    -- if plugin_debug() then
+    --   cfg.debug = true
+    -- end
 
     null_ls.config(cfg)
 
