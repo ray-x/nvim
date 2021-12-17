@@ -61,13 +61,16 @@ local load_core = function()
     require 'impatient'
   end
 
-  pack.ensure_plugins()
-  require('core.options')
-  require('core.mapping')
-  require('keymap')
-  require('core.event')
-  pack.load_compile()
-  require('core.lazy')
+  if pack.ensure_plugins() == 'installed' then
+    require('core.options')
+    require('core.mapping')
+    require('keymap')
+    require('core.event')
+    pack.load_compile()
+    require('core.lazy')
+  else
+    print('install all plugins, please wait')
+  end
 end
 
 load_core()

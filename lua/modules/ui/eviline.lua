@@ -64,7 +64,7 @@ local current_treesitter_context = function(width)
   end
   local type_patterns = {
     "class", "function", "method", "interface", "type_spec", "table", "if_statement",
-    "for_statement", "for_in_statement", "call_expression"
+    "for_statement", "for_in_statement", "call_expression", "comment"
   }
 
   if vim.o.ft == 'json' then

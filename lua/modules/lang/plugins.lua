@@ -28,7 +28,6 @@ lang['danymat/neogen'] = {
 
 lang['ThePrimeagen/refactoring.nvim'] = {
   opt = true,
-  event = {'CursorMoved', 'CursorMovedI'},
   config = conf.refactor
 }
 

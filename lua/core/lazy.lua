@@ -21,8 +21,7 @@ function Lazyload()
     "aurora",
     "gruvbox-material",
     "sonokai",
-    "github-nvim-theme",
-    "mechanical.nvim",
+    "github-nvim-theme"
   }
 
   if plugin_folder() == [[~/github/]] then
@@ -45,7 +44,7 @@ function Lazyload()
     lprint("diffmode")
     vim.cmd([[packadd nvim-treesitter]])
     require("nvim-treesitter.configs").setup({ highlight = { enable = true, use_languagetree = false } })
-    -- vim.cmd([[syntax on]])
+    vim.cmd([[syntax on]])
     return
   end
 
@@ -66,9 +65,9 @@ function Lazyload()
 
   local syn_on = not vim.tbl_contains(disable_ft, vim.bo.filetype)
   if syn_on then
+    vim.cmd([[syntax on]])
+  else
     vim.cmd([[syntax manual]])
-    -- else
-    --   vim.cmd([[syntax on]])
   end
 
   -- local fname = vim.fn.expand("%:p:f")
@@ -104,9 +103,9 @@ function Lazyload()
   end
 
   if load_lsp then
-    loader("null-ls.nvim")
     loader("nvim-lspconfig") -- null-ls.nvim
     loader("lsp_signature.nvim")
+    loader("null-ls.nvim")
   end
 
   require("vscripts.cursorhold")
@@ -128,7 +127,7 @@ function Lazyload()
 
     lprint(plugins)
     -- nvim-treesitter-textobjects should be autoloaded
-    loader(plugins)
+    loader('refactoring.nvim')
     loader("indent-blankline.nvim")
   end
 
@@ -138,13 +137,11 @@ function Lazyload()
 
   vim.cmd([[autocmd FileType vista,guihua setlocal syntax=on]])
   vim.cmd(
-    [[autocmd FileType * silent! lua if vim.fn.wordcount()['bytes'] > 2048000 then print("syntax off") vim.cmd("setlocal syntax=off") else vim.cmd("setlocal syntax=on") end]]
+    [[autocmd FileType * silent! lua if vim.fn.wordcount()['bytes'] > 2048000 then print("syntax off") vim.cmd("setlocal syntax=off") else lprint('setlocal syntax=on') vim.cmd("setlocal syntax=on") end]]
   )
   -- local cmd = [[au VimEnter * ++once lua require("packer.load")({']] .. loading_theme
   --                 .. [['}, { event = "VimEnter *" }, _G.packer_plugins)]]
   -- vim.cmd(cmd)
-  require("modules.ui.eviline")
-  require("wlfloatline").setup()
 end
 
 vim.cmd([[autocmd User LoadLazyPlugin lua Lazyload()]])
@@ -156,13 +153,16 @@ vim.defer_fn(function()
   vim.cmd([[doautocmd User LoadLazyPlugin]])
 end, lazy_timer)
 
--- vim.defer_fn(function()
---   -- lazyload()
---   local cmd = 'TSEnableAll highlight ' .. vim.o.ft
---   -- vim.cmd(cmd)
---   -- vim.cmd([[doautocmd ColorScheme]])
---   -- vim.cmd(cmd)
--- end, lazy_timer + 20)
+vim.defer_fn(function()
+  -- lazyload()
+  local cmd = "TSEnableAll highlight " .. vim.o.ft
+  vim.cmd(cmd)
+  vim.cmd(
+    [[autocmd BufEnter * silent! lua vim.fn.wordcount()['bytes'] < 2048000 then vim.cmd('set syntax=on') local cmd= "TSBufEnable "..vim.o.ft vim.cmd(cmd) lprint(cmd, vim.o.ft, vim.o.syntax) end]]
+  )
+  -- vim.cmd([[doautocmd ColorScheme]])
+  -- vim.cmd(cmd)
+end, lazy_timer + 20)
 
 vim.cmd([[hi LineNr guifg=#505068]])
 
@@ -170,5 +170,7 @@ vim.defer_fn(function()
   local loader = require("packer").loader
   loader("telescope.nvim telescope-zoxide project.nvim nvim-neoclip.lua")
   loader("neogen harpoon")
-  loader('windline.nvim')
+  loader("windline.nvim")
+  require("modules.ui.eviline")
+  require("wlfloatline").setup()
 end, lazy_timer + 100)

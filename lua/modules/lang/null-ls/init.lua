@@ -88,28 +88,13 @@ return {
       })
     )
 
-    local cfg = { sources = sources }
-    -- if plugin_debug() then
-    --   cfg.debug = true
-    -- end
+    local cfg = { 
+      sources = sources,
+      debounce = 1000, 
+      root_dir = require'lspconfig'.util.root_pattern(".null-ls-root", "Makefile", ".git", "go.mod", "package.json", "tsconfig.json"),
+    }
 
-    null_ls.config(cfg)
 
-    if lspconfig["null-ls"] then
-      lspconfig["null-ls"].setup({
-        on_attach = function(client, bufnr)
-          if client.resolved_capabilities.document_formatting then
-            vim.cmd([[
-					augroup null_ls_format
-						au!
-						au BufWritePost <buffer> lua vim.lsp.buf.formatting_sync()
-					augroup end
-				]])
-          end
-        end,
-      })
-    end
-
-    null_ls.config({ sources = sources })
+    null_ls.setup(cfg)
   end,
 }
