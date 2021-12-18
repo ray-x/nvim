@@ -1,33 +1,33 @@
-local windline = require('windline')
-local helper = require('windline.helpers')
-local b_components = require('windline.components.basic')
+local windline = require("windline")
+local helper = require("windline.helpers")
+local b_components = require("windline.components.basic")
 local state = _G.WindLine.state
 
-local lsp_comps = require('windline.components.lsp')
-local git_comps = require('windline.components.git')
-local HSL = require('wlanimation.utils')
+local lsp_comps = require("windline.components.lsp")
+local git_comps = require("windline.components.git")
+local HSL = require("wlanimation.utils")
 local sep = helper.separators
 local luffy_text = ""
 
 local hl_list = {
-  NormalBg = {'NormalFg', 'NormalBg'},
-  White = {'black', 'white'},
-  Normal = {'NormalFg', 'NormalBg'},
-  Inactive = {'InactiveFg', 'InactiveBg'},
-  Active = {'ActiveFg', 'ActiveBg'}
+  NormalBg = { "NormalFg", "NormalBg" },
+  White = { "black", "white" },
+  Normal = { "NormalFg", "NormalBg" },
+  Inactive = { "InactiveFg", "InactiveBg" },
+  Active = { "ActiveFg", "ActiveBg" },
 }
 local basic = {}
 
 local breakpoint_width = 100
-basic.divider = {b_components.divider, ''}
-basic.bg = {' ', 'StatusLine'}
+basic.divider = { b_components.divider, "" }
+basic.bg = { " ", "StatusLine" }
 
 local colors_mode = {
-  Normal = {'red', 'black'},
-  Insert = {'green', 'black'},
-  Visual = {'yellow', 'black'},
-  Replace = {'blue_light', 'black'},
-  Command = {'magenta', 'black'}
+  Normal = { "red", "black" },
+  Insert = { "green", "black" },
+  Visual = { "yellow", "black" },
+  Replace = { "blue_light", "black" },
+  Command = { "magenta", "black" },
 }
 
 local split = function(str, pat)
@@ -55,7 +55,7 @@ end
 
 local winwidth = function()
   -- body
-  return vim.api.nvim_call_function("winwidth", {0})
+  return vim.api.nvim_call_function("winwidth", { 0 })
 end
 
 local current_treesitter_context = function(width)
@@ -63,17 +63,26 @@ local current_treesitter_context = function(width)
     return " "
   end
   local type_patterns = {
-    "class", "function", "method", "interface", "type_spec", "table", "if_statement",
-    "for_statement", "for_in_statement", "call_expression", "comment"
+    "class",
+    "function",
+    "method",
+    "interface",
+    "type_spec",
+    "table",
+    "if_statement",
+    "for_statement",
+    "for_in_statement",
+    "call_expression",
+    "comment",
   }
 
-  if vim.o.ft == 'json' then
-    type_patterns = {'object', 'pair'}
+  if vim.o.ft == "json" then
+    type_patterns = { "object", "pair" }
   end
 
-  local f = require'nvim-treesitter'.statusline({
+  local f = require("nvim-treesitter").statusline({
     indicator_size = width,
-    type_patterns = type_patterns
+    type_patterns = type_patterns,
   })
   local context = string.format("%s", f) -- convert to string, it may be a empty ts node
 
@@ -105,6 +114,14 @@ local current_function = function(width)
   return string.sub(" " .. ts, 1, width)
 end
 
+local current_signature = function(width)
+  if not packer_plugins["lsp_signature.nvim"] or packer_plugins["lsp_signature.nvim"].loaded == false then
+    return ""
+  end
+  local sig = require("lsp_signature").status_line(80)
+  return sig.label .. "🐼" .. sig.hint
+end
+
 local should_show = function()
   -- body
   local ft = vim.api.nvim_buf_get_option(0, "filetype")
@@ -116,14 +133,14 @@ end
 
 local function getEntryFromEnd(table, entry)
   local count = (table and #table or false)
-  if (count) then
+  if count then
     return table[count - entry]
   end
   return nil
 end
 
 local TrimmedDirectory = function(dir)
-  local home = require'core.global'.home
+  local home = require("core.global").home
   local _, index = string.find(dir, home, 1)
   if index ~= nil and index ~= string.len(dir) then
     -- TODO Trimmed Home Directory
@@ -154,7 +171,7 @@ local TrimmedDirectory = function(dir)
     pc = ""
   end
   pc = " " .. pc
-  return (pc)
+  return pc
 end
 
 local buffer_not_empty = function()
@@ -167,23 +184,23 @@ end
 local mode = function()
   local mod = vim.fn.mode()
   -- print(state.mode[2])
-  if mod == "n" or mod == 'no' or mod == 'nov' then
-    return {"  ", state.mode[2]}
+  if mod == "n" or mod == "no" or mod == "nov" then
+    return { "  ", state.mode[2] }
   elseif mod == "i" or mod == "ic" or mod == "ix" then
-    return {"  ", state.mode[2]}
+    return { "  ", state.mode[2] }
   elseif mod == "V" or mod == "v" or mod == "vs" or mod == "Vs" or mod == "cv" then
-    return {"  ", state.mode[2]}
+    return { "  ", state.mode[2] }
   elseif mod == "c" or mod == "ce" then
-    return {" ﴣ ", state.mode[2]}
+    return { " ﴣ ", state.mode[2] }
   elseif mod == "r" or mod == "rm" or mod == "r?" then
-    return {mod .. "  ", state.mode[2]} -- 
+    return { mod .. "  ", state.mode[2] } -- 
   elseif mod == "s" then
-    return {mod .. '  ', state.mode[2]}
+    return { mod .. "  ", state.mode[2] }
   elseif mod == "R" or mod == "Rc" or mod == "Rv" or mod == "Rv" then
-    return {mod .. '  ', state.mode[2]}
+    return { mod .. "  ", state.mode[2] }
   end
 
-  return {mod .. "  ", state.mode[2]}
+  return { mod .. "  ", state.mode[2] }
 end
 
 local checkwidth = function()
@@ -192,45 +209,54 @@ local checkwidth = function()
 end
 
 basic.vi_mode = {
-  name = 'vi_mode',
+  name = "vi_mode",
   hl_colors = colors_mode,
   text = function()
-    return {mode()}
-  end
+    return { mode() }
+  end,
 }
 
 basic.square_mode = {
   hl_colors = colors_mode,
   text = function()
-    return {{'▊', state.mode[2]}}
-  end
+    return { { "▊", state.mode[2] } }
+  end,
 }
 
 basic.lsp_diagnos = {
-  name = 'diagnostic',
+  name = "diagnostic",
   hl_colors = {
-    red = {'red', 'NormalBg'},
-    yellow = {'yellow_b', 'NormalBg'},
-    blue = {'blue', 'NormalBg'}
+    red = { "red", "NormalBg" },
+    yellow = { "yellow_b", "NormalBg" },
+    blue = { "blue", "NormalBg" },
   },
   width = breakpoint_width,
   text = function()
     if lsp_comps.check_lsp() then
       return {
-        {' ', 'red'}, {lsp_comps.lsp_error({format = ' %s', show_zero = true}), 'red'},
-        {lsp_comps.lsp_warning({format = '  %s', show_zero = true}), 'yellow'},
-        {lsp_comps.lsp_hint({format = '  %s', show_zero = true}), 'blue'}
+        { " ", "red" },
+        { lsp_comps.lsp_error({ format = " %s", show_zero = true }), "red" },
+        { lsp_comps.lsp_warning({ format = "  %s", show_zero = true }), "yellow" },
+        { lsp_comps.lsp_hint({ format = "  %s", show_zero = true }), "blue" },
       }
     end
-    return ''
-  end
+    return ""
+  end,
 }
 
 function scrollbar_instance(scrollbar_chars)
-  local current_line = vim.fn.line('.')
-  local total_lines = vim.fn.line('$')
+  local current_line = vim.fn.line(".")
+  local total_lines = vim.fn.line("$")
   local default_chars = {
-    '__', '▁▁', '▂▂', '▃▃', '▄▄', '▅▅', '▆▆', '▇▇', '██'
+    "__",
+    "▁▁",
+    "▂▂",
+    "▃▃",
+    "▄▄",
+    "▅▅",
+    "▆▆",
+    "▇▇",
+    "██",
   }
   local chars = scrollbar_chars or default_chars
   local index = 1
@@ -250,31 +276,35 @@ function scrollbar_instance(scrollbar_chars)
 end
 
 basic.file = {
-  name = 'file',
+  name = "file",
   hl_colors = {
     default = hl_list.NormalBg,
-    white = {'white', 'NormalBg'},
-    magenta = {'magenta', 'NormalBg'}
+    white = { "white", "NormalBg" },
+    magenta = { "magenta", "NormalBg" },
   },
   text = function(_, winnr, width, is_float)
     -- lprint("winline", width, is_float)
     if width < breakpoint_width then -- vim.api.nvim_win_get_width(winnr)
       return {
-        {b_components.cache_file_size(), 'default'}, {' ', ''},
-        {b_components.cache_file_icon({default = ''}), 'default'}, {' ', ''},
-        {b_components.cache_file_name('[No Name]', ''), 'magenta'},
+        { b_components.cache_file_size(), "default" },
+        { " ", "" },
+        { b_components.cache_file_icon({ default = "" }), "default" },
+        { " ", "" },
+        { b_components.cache_file_name("[No Name]", ""), "magenta" },
         -- {b_components.line_col_lua, 'white'}, -- { b_components.progress, '' },
         -- { ' ', '' },
-        {b_components.file_modified(' '), 'magenta'}
+        { b_components.file_modified(" "), "magenta" },
       }
     else
       return {
-        {b_components.cache_file_size(), 'default'}, {' ', ''},
-        {b_components.cache_file_name('[No Name]', ''), 'magenta'}, {' ', ''},
-        {b_components.file_modified(' '), 'magenta'}
+        { b_components.cache_file_size(), "default" },
+        { " ", "" },
+        { b_components.cache_file_name("[No Name]", ""), "magenta" },
+        { " ", "" },
+        { b_components.file_modified(" "), "magenta" },
       }
     end
-  end
+  end,
 }
 
 -- basic.ani = {
@@ -286,127 +316,161 @@ basic.file = {
 -- }
 
 basic.folder = {
-  name = 'folder',
-  hl_colors = {default = hl_list.NormalBg, white = {'white', 'black'}, blue = {'blue', 'NormalBg'}},
+  name = "folder",
+  hl_colors = { default = hl_list.NormalBg, white = { "white", "black" }, blue = { "blue", "NormalBg" } },
   text = function(_, winnr)
     if should_show() then
       return {
-        {' ', 'default'},
+        { " ", "default" },
         {
           TrimmedDirectory(vim.api.nvim_call_function("getcwd", {}) .. "/" .. vim.fn.expand("%p")),
-          'blue'
-        }, {' ', 'default'}
+          "blue",
+        },
+        { " ", "default" },
       }
     end
-  end
+  end,
 }
 
 basic.funcname = {
-  name = 'funcname',
+  name = "funcname",
   hl_colors = {
     default = hl_list.NormalBg,
-    white = {'white', 'black'},
-    green = {'green_b', 'NormalBg'},
-    green_light = {'green_light', 'NormalBg'}
+    white = { "white", "black" },
+    green = { "green_b", "NormalBg" },
+    green_light = { "green_light", "NormalBg" },
   },
   text = function(_, winnr, width, is_float)
-    return {{' ', 'default'}, {current_function(width), 'green'}, {' ', 'default'}}
-  end
+    return { { " ", "default" }, { current_function(width), "green" }, { " ", "default" } }
+  end,
+}
+
+basic.signature = {
+  name = "signature",
+  hl_colors = {
+    default = hl_list.NormalBg,
+    white = { "white", "black" },
+    green_light = { "green_light", "NormalBg" },
+  },
+  text = function(_, winnr, width, is_float)
+    return { { " ", "default" }, { current_signature(width), "green_light" }, { " ", "default" } }
+  end,
 }
 
 basic.file_right = {
   hl_colors = {
     default = hl_list.NormalBg,
-    white = {'NormalFg', 'NormalBg'},
-    magenta = {'magenta', 'NormalBg'}
+    white = { "NormalFg", "NormalBg" },
+    magenta = { "magenta", "NormalBg" },
   },
   text = function(_, winnr, width, is_float)
     if width < breakpoint_width then
-      return {{b_components.line_col_lua, 'white'}, {b_components.progress_lua, ''}, {' ', ''}}
+      return { { b_components.line_col_lua, "white" }, { b_components.progress_lua, "" }, { " ", "" } }
     else
-      return {{b_components.line_col_lua, 'white'}}
+      return { { b_components.line_col_lua, "white" } }
     end
-  end
+  end,
 }
 
 basic.scrollbar_right = {
   hl_colors = {
     default = hl_list.NormalBg,
-    white = {'NormalFg', 'NormalBg'},
-    blue = {'blue', 'NormalBg'}
+    white = { "NormalFg", "NormalBg" },
+    blue = { "blue", "NormalBg" },
   },
   text = function(_, winnr, width, is_float)
     if width > breakpoint_width or is_float then
-      return {{b_components.progress_lua, ''}, {' ', ''}, {scrollbar_instance(), 'blue'}}
+      return { { b_components.progress_lua, "" }, { " ", "" }, { scrollbar_instance(), "blue" } }
     end
-  end
+  end,
 }
 
 basic.git = {
-  name = 'git',
+  name = "git",
   hl_colors = {
-    green = {'green', 'NormalBg'},
-    red = {'red', 'NormalBg'},
-    blue = {'blue', 'NormalBg'}
+    green = { "green", "NormalBg" },
+    red = { "red", "NormalBg" },
+    blue = { "blue", "NormalBg" },
   },
   width = breakpoint_width,
   text = function()
     if git_comps.is_git() then
       return {
-        {' ', ''}, {git_comps.diff_added({format = ' %s', show_zero = true}), 'green'},
-        {git_comps.diff_removed({format = '  %s', show_zero = true}), 'red'},
-        {git_comps.diff_changed({format = ' 柳%s', show_zero = true}), 'blue'}
+        { " ", "" },
+        { git_comps.diff_added({ format = " %s", show_zero = true }), "green" },
+        { git_comps.diff_removed({ format = "  %s", show_zero = true }), "red" },
+        { git_comps.diff_changed({ format = " 柳%s", show_zero = true }), "blue" },
       }
     end
-    return ''
-  end
+    return ""
+  end,
 }
 
 local quickfix = {
-  filetypes = {'qf', 'Trouble'},
+  filetypes = { "qf", "Trouble" },
   active = {
-    {'🚦 Quickfix ', {'white', 'black'}},
-    {helper.separators.slant_right, {'black', 'black_light'}}, {
+    { "🚦 Quickfix ", { "white", "black" } },
+    { helper.separators.slant_right, { "black", "black_light" } },
+    {
       function()
-        return vim.fn.getqflist({title = 0}).title
-      end, {'cyan', 'black_light'}
-    }, {' Total : %L ', {'cyan', 'black_light'}},
-    {helper.separators.slant_right, {'black_light', 'InactiveBg'}},
-    {' ', {'InactiveFg', 'InactiveBg'}}, basic.divider,
-    {helper.separators.slant_right, {'InactiveBg', 'black'}}, {'🧛 ', {'white', 'black'}}
+        return vim.fn.getqflist({ title = 0 }).title
+      end,
+      { "cyan", "black_light" },
+    },
+    { " Total : %L ", { "cyan", "black_light" } },
+    { helper.separators.slant_right, { "black_light", "InactiveBg" } },
+    { " ", { "InactiveFg", "InactiveBg" } },
+    basic.divider,
+    { helper.separators.slant_right, { "InactiveBg", "black" } },
+    { "🧛 ", { "white", "black" } },
   },
 
-  always_active = true
+  always_active = true,
 }
 
 local explorer = {
-  filetypes = {'fern', 'NvimTree', 'lir'},
+  filetypes = { "fern", "NvimTree", "lir" },
   active = {
-    {'  ', {'white', 'NormalBg'}}, {helper.separators.slant_right, {'black', 'NormalBg'}},
-    {b_components.divider, ''}, {b_components.file_name(''), {'white', 'NormalBg'}}
+    { "  ", { "white", "NormalBg" } },
+    { helper.separators.slant_right, { "black", "NormalBg" } },
+    { b_components.divider, "" },
+    { b_components.file_name(""), { "white", "NormalBg" } },
   },
   always_active = true,
-  show_last_status = true
+  show_last_status = true,
 }
 local default = {
-  filetypes = {'default'},
+  filetypes = { "default" },
   active = {
-    basic.square_mode, basic.ani, basic.vi_mode,
-    {git_comps.git_branch(), {'magenta', 'NormalBg'}, breakpoint_width}, basic.file,
-    basic.lsp_diagnos, basic.funcname, basic.divider, -- {sep.slant_right,{'black_light', 'green_light'}},
+    basic.square_mode,
+    basic.ani,
+    basic.vi_mode,
+    { git_comps.git_branch(), { "magenta", "NormalBg" }, breakpoint_width },
+    basic.file,
+    basic.lsp_diagnos,
+    basic.signature,
+    basic.funcname,
+    basic.divider, -- {sep.slant_right,{'black_light', 'green_light'}},
     -- {sep.slant_right,{'green_light', 'blue_light'}},
     -- {sep.slant_right,{'blue_light', 'red_light'}},
     -- {sep.slant_right,{'red_light', 'cyan_light'}},
     -- {sep.slant_right,{'cyan_light', 'black'}},
-    basic.file_right, basic.scrollbar_right,
-    {lsp_comps.lsp_name(), {'magenta', 'NormalBg'}, breakpoint_width}, basic.git, basic.folder,
-    {' ', hl_list.NormalBg}, basic.square_mode
+    basic.file_right,
+    basic.scrollbar_right,
+    { lsp_comps.lsp_name(), { "magenta", "NormalBg" }, breakpoint_width },
+    basic.git,
+    basic.folder,
+    { " ", hl_list.NormalBg },
+    basic.square_mode,
   },
   inactive = {
-    {b_components.full_file_name, hl_list.Inactive}, basic.file_name_inactive, basic.divider,
-    basic.divider, {b_components.line_col_lua, hl_list.Inactive},
-    {b_components.progress_lua, hl_list.Inactive}
-  }
+    { b_components.full_file_name, hl_list.Inactive },
+    basic.file_name_inactive,
+    basic.divider,
+    basic.divider,
+    { b_components.line_col_lua, hl_list.Inactive },
+    { b_components.progress_lua, hl_list.Inactive },
+  },
 }
 -- ⚡
 
@@ -434,13 +498,13 @@ windline.setup({
     --- add more color
 
     local mod = function(c, value)
-      if vim.o.background == 'light' then
+      if vim.o.background == "light" then
         return HSL.rgb_to_hsl(c):tint(value):to_rgb()
       end
       return HSL.rgb_to_hsl(c):shade(value):to_rgb()
     end
 
-    local normalFg, normalBg = require('windline.themes').get_hl_color('StatusLine')
+    local normalFg, normalBg = require("windline.themes").get_hl_color("StatusLine")
 
     colors.NormalFg = normalFg or colors.white
     colors.NormalBg = normalBg or colors.yellow
@@ -470,7 +534,7 @@ windline.setup({
     colors.red_c = mod(colors.red, 0.7)
     return colors
   end,
-  statuslines = {default, quickfix, explorer}
+  statuslines = { default, quickfix, explorer },
 })
 
 -- windline.add_component({
