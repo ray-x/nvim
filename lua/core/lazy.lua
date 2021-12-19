@@ -142,6 +142,10 @@ function Lazyload()
   -- local cmd = [[au VimEnter * ++once lua require("packer.load")({']] .. loading_theme
   --                 .. [['}, { event = "VimEnter *" }, _G.packer_plugins)]]
   -- vim.cmd(cmd)
+  loader('windline.nvim')
+  require("modules.ui.eviline")
+  require('wlfloatline').setup()
+
 end
 
 vim.cmd([[autocmd User LoadLazyPlugin lua Lazyload()]])
@@ -149,6 +153,15 @@ vim.cmd("command! Gram lua require'modules.tools.config'.grammcheck()")
 vim.cmd("command! Spell call spelunker#check()")
 
 local lazy_timer = 50
+if _G.packer_plugins == nil or _G.packer_plugins['packer.nvim'] == nil  then
+  print('recompile')
+  vim.cmd([[PackerCompile]])
+  vim.defer_fn(function()
+    print('Packer recompiled, please restart nvim')
+  end, 1000)
+  return
+end
+
 vim.defer_fn(function()
   vim.cmd([[doautocmd User LoadLazyPlugin]])
 end, lazy_timer)
