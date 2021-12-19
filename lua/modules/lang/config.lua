@@ -242,7 +242,7 @@ function config.navigator()
 
   local single = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" }
 
-  -- local efm_cfg = require('modules.lang.efm').efm
+  local efm_cfg = require('modules.lang.efm').efm
 
   -- loader('aerial.nvim')
   local nav_cfg = {
