@@ -47,7 +47,7 @@ function Packer:load_packer()
   local use_rocks = packer.use_rocks
   self:load_plugins()
   use {"wbthomason/packer.nvim"}
-  use {'lewis6991/impatient.nvim'}
+  -- use {'lewis6991/impatient.nvim'}
   for _, repo in ipairs(self.repos) do
     use(repo)
   end
@@ -67,7 +67,9 @@ function Packer:init_ensure_plugins()
     end)
     self:load_packer()
     packer.install()
+    return 'installing'
   end
+  return 'installed'
 end
 
 local plugins = setmetatable({}, {
@@ -80,7 +82,7 @@ local plugins = setmetatable({}, {
 })
 
 function plugins.ensure_plugins()
-  Packer:init_ensure_plugins()
+  return Packer:init_ensure_plugins()
 end
 
 function plugins.convert_compile_file()
@@ -145,6 +147,9 @@ function plugins.load_compile()
     require('_compiled')
   else
     assert('Missing packer compile file Run PackerCompile Or PackerInstall to fix')
+    vim.cmd('packadd packer.nvim')
+    plugins.magic_compile()
+    require('_compiled')
   end
   vim.cmd [[command! PackerCompile lua require('core.pack').magic_compile()]]
   vim.cmd [[command! PackerInstall lua require('core.pack').install()]]

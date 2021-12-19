@@ -3,16 +3,16 @@ local conf = require("modules.ui.config")
 
 --
 local winwidth = function()
-  return vim.api.nvim_call_function("winwidth", {0})
+  return vim.api.nvim_call_function("winwidth", { 0 })
 end
 
 ui["kyazdani42/nvim-web-devicons"] = {}
 
 ui["windwp/windline.nvim"] = {
-  event = "UIEnter",
+  -- event = "UIEntwindlineer",
   config = conf.windline,
   -- requires = {'kyazdani42/nvim-web-devicons'},
-  opt = true
+  opt = true,
 }
 
 ui["lambdalisue/glyph-palette.vim"] = {}
@@ -23,7 +23,7 @@ ui["akinsho/bufferline.nvim"] = {
   diagnostics_update_in_insert = false,
   -- after = {"aurora"}
   -- requires = {'kyazdani42/nvim-web-devicons'}
-  opt = true
+  opt = true,
 }
 -- 'luaromgrk/barbar.nvim'
 -- ui['romgrk/barbar.nvim'] = {
@@ -40,24 +40,16 @@ ui["akinsho/bufferline.nvim"] = {
 -- }
 
 ui["kyazdani42/nvim-tree.lua"] = {
-  cmd = {"NvimTreeToggle", "NvimTreeOpen"},
+  cmd = { "NvimTreeToggle", "NvimTreeOpen" },
   -- requires = {'kyazdani42/nvim-web-devicons'},
   setup = conf.nvim_tree_setup,
-  config = conf.nvim_tree
+  config = conf.nvim_tree,
 }
 
--- ui['ms-jpq/chadtree'] = {
---   run = 'python3 -m chadtree deps',
---   branch = 'chad',
---   setup = function()
---     vim.g.chadtree_settings = {['theme.text_colour_set'] = 'nerdtree_syntax_dark'}
---   end
--- }
-
-ui["lukas-reineke/indent-blankline.nvim"] = {opt = true, config = conf.blankline} -- after="nvim-treesitter",
+ui["lukas-reineke/indent-blankline.nvim"] = { opt = true, config = conf.blankline } -- after="nvim-treesitter",
 
 -- disabled does not work with muliti split
-ui['lukas-reineke/virt-column.nvim'] = {
+ui["lukas-reineke/virt-column.nvim"] = {
   opt = true,
   -- event = {"CursorMoved", "CursorMovedI"},
   config = function()
@@ -65,46 +57,45 @@ ui['lukas-reineke/virt-column.nvim'] = {
     require("virt-column").setup()
 
     vim.cmd("highlight VirtColumn guifg=#4358BF")
-  end
+  end,
 }
 
-ui["dstein64/nvim-scrollview"] = {event = {'CursorMoved', 'CursorMovedI'}, config = conf.scrollview}
+ui["dstein64/nvim-scrollview"] = { event = { "CursorMoved", "CursorMovedI" }, config = conf.scrollview }
 
-ui[plugin_folder() .. "aurora"] = {opt = true, config = conf.aurora}
+ui[plugin_folder() .. "aurora"] = { opt = true, config = conf.aurora }
 ui["folke/tokyonight.nvim"] = {
   opt = true,
   setup = conf.tokyonight,
   config = function()
     -- vim.cmd [[hi CursorLine guibg=#353644]]
-    vim.cmd [[colorscheme tokyonight]]
-    vim.cmd [[hi TSCurrentScope guibg=#282338]]
-  end
+    vim.cmd([[colorscheme tokyonight]])
+    vim.cmd([[hi TSCurrentScope guibg=#282338]])
+  end,
 }
 
 ui["projekt0n/github-nvim-theme"] = {
   opt = true,
   config = function()
     -- vim.cmd [[hi CursorLine guibg=#353644]]
-    local styles = {'dark', 'dark_default', 'dimmed'}
+    local styles = { "dark", "dark_default", "dimmed" }
     local v = math.random(1, #styles)
     local st = styles[v]
-    require('github-theme').setup({
+    require("github-theme").setup({
       function_style = "bold",
       theme_style = st,
-      sidebars = {"qf", "vista_kind", "terminal", "packer"},
-      colors = {bg_statusline = '#332344'}
+      sidebars = { "qf", "vista_kind", "terminal", "packer" },
+      colors = { bg_statusline = "#332344" },
     })
     -- vim.cmd([[highlight StatusLine guibg='#A3B3C4']])
     vim.cmd([[highlight ColorColumn guibg='#335364']])
     vim.cmd([[doautocmd ColorScheme]])
-
-  end
+  end,
 }
 
 -- ui["ChristianChiarulli/nvcode-color-schemes.vim"] = {opt = true, config = conf.nvcode}
 
-ui["sainnhe/sonokai"] = {opt = true, config = conf.sonokai}
-ui["sainnhe/gruvbox-material"] = {opt = true, config = conf.gruvbox}
+ui["sainnhe/sonokai"] = { opt = true, config = conf.sonokai }
+ui["sainnhe/gruvbox-material"] = { opt = true, config = conf.gruvbox }
 
 -- cant config cursor line
 -- ui["rafamadriz/neon"] = {opt = true, config = conf.neon}
@@ -114,6 +105,10 @@ ui[plugin_folder() .. "starry.nvim"] = {
   setup = conf.starry,
   config = function()
     require("starry").set()
-  end
+  end,
+}
+
+ui["wiliamks/mechanical.nvim"] = {
+  opt = true,
 }
 return ui

@@ -371,7 +371,7 @@ function config.floaterm()
   vim.g.floaterm_keymap_next = "<F21>"
   vim.g.floaterm_keymap_toggle = "<F24>"
   -- Use `git ls-files` for git files, use `find ./ *` for all files under work directory.
-  vim.cmd([[ command! Sad lua Sad()]])
+  -- vim.cmd([[ command! Sad lua Sad()]])
   -- grep -rli 'old-word' * | xargs -i@ sed -i 's/old-word/new-word/g' @
   --  rg -l 'old-word' * | xargs -i@ sed -i 's/old-word/new-word/g' @
 end

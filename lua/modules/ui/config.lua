@@ -39,7 +39,7 @@ function config.nvim_bufferline()
       max_name_length = 14,
       max_prefix_length = 10,
       tab_size = 16,
-      diagnostics = "nvim_lsp",
+      -- diagnostics = "nvim_lsp",
       show_buffer_icons = true,
       show_buffer_close_icons = false,
       show_tab_indicators = true,

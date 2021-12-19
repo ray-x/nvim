@@ -21,7 +21,7 @@ function config.refactor()
   local refactor = require("refactoring")
   refactor.setup({})
 
-  print('refactor')
+  lprint("refactor")
   _G.ts_refactors = function()
     -- telescope refactoring helper
     local function _refactor(prompt_bufnr)
@@ -34,26 +34,25 @@ function config.refactor()
     require("telescope.pickers").new(opts, {
       prompt_title = "refactors",
       finder = require("telescope.finders").new_table({
-        results = require("refactoring").get_refactors()
+        results = require("refactoring").get_refactors(),
       }),
       sorter = require("telescope.config").values.generic_sorter(opts),
       attach_mappings = function(_, map)
         map("i", "<CR>", _refactor)
         map("n", "<CR>", _refactor)
         return true
-      end
+      end,
     }):find()
   end
-
 end
 
 function config.tsubject()
-  require'nvim-treesitter.configs'.setup {
+  require("nvim-treesitter.configs").setup({
     textsubjects = {
       enable = true,
-      keymaps = {['.'] = 'textsubjects-smart', [';'] = 'textsubjects-container-outer'}
-    }
-  }
+      keymaps = { ["."] = "textsubjects-smart", [";"] = "textsubjects-container-outer" },
+    },
+  })
 end
 
 function config.outline()
@@ -61,62 +60,61 @@ function config.outline()
     highlight_hovered_item = true,
     show_guides = true,
     auto_preview = true,
-    position = 'right',
+    position = "right",
     relative_width = true,
     width = 25,
     show_numbers = false,
     show_relative_numbers = false,
     show_symbol_details = true,
-    preview_bg_highlight = 'Pmenu',
+    preview_bg_highlight = "Pmenu",
     keymaps = { -- These keymaps can be a string or a table for multiple keys
-      close = {"<Esc>", "q"},
+      close = { "<Esc>", "q" },
       goto_location = "<Cr>",
       focus_location = "o",
       hover_symbol = "<C-space>",
       toggle_preview = "K",
       rename_symbol = "r",
-      code_actions = "a"
+      code_actions = "a",
     },
     lsp_blacklist = {},
     symbol_blacklist = {},
     symbols = {
-      File = {icon = "", hl = "TSURI"},
-      Module = {icon = "", hl = "TSNamespace"},
-      Namespace = {icon = "", hl = "TSNamespace"},
-      Package = {icon = "", hl = "TSNamespace"},
-      Class = {icon = "𝓒", hl = "TSType"},
-      Method = {icon = "ƒ", hl = "TSMethod"},
-      Property = {icon = "", hl = "TSMethod"},
-      Field = {icon = "", hl = "TSField"},
-      Constructor = {icon = "", hl = "TSConstructor"},
-      Enum = {icon = "ℰ", hl = "TSType"},
-      Interface = {icon = "ﰮ", hl = "TSType"},
-      Function = {icon = "", hl = "TSFunction"},
-      Variable = {icon = "", hl = "TSConstant"},
-      Constant = {icon = "", hl = "TSConstant"},
-      String = {icon = "𝓐", hl = "TSString"},
-      Number = {icon = "#", hl = "TSNumber"},
-      Boolean = {icon = "⊨", hl = "TSBoolean"},
-      Array = {icon = "", hl = "TSConstant"},
-      Object = {icon = "⦿", hl = "TSType"},
-      Key = {icon = "🔐", hl = "TSType"},
-      Null = {icon = "NULL", hl = "TSType"},
-      EnumMember = {icon = "", hl = "TSField"},
-      Struct = {icon = "𝓢", hl = "TSType"},
-      Event = {icon = "🗲", hl = "TSType"},
-      Operator = {icon = "+", hl = "TSOperator"},
-      TypeParameter = {icon = "𝙏", hl = "TSParameter"}
-    }
+      File = { icon = "", hl = "TSURI" },
+      Module = { icon = "", hl = "TSNamespace" },
+      Namespace = { icon = "", hl = "TSNamespace" },
+      Package = { icon = "", hl = "TSNamespace" },
+      Class = { icon = "𝓒", hl = "TSType" },
+      Method = { icon = "ƒ", hl = "TSMethod" },
+      Property = { icon = "", hl = "TSMethod" },
+      Field = { icon = "", hl = "TSField" },
+      Constructor = { icon = "", hl = "TSConstructor" },
+      Enum = { icon = "ℰ", hl = "TSType" },
+      Interface = { icon = "ﰮ", hl = "TSType" },
+      Function = { icon = "", hl = "TSFunction" },
+      Variable = { icon = "", hl = "TSConstant" },
+      Constant = { icon = "", hl = "TSConstant" },
+      String = { icon = "𝓐", hl = "TSString" },
+      Number = { icon = "#", hl = "TSNumber" },
+      Boolean = { icon = "⊨", hl = "TSBoolean" },
+      Array = { icon = "", hl = "TSConstant" },
+      Object = { icon = "⦿", hl = "TSType" },
+      Key = { icon = "🔐", hl = "TSType" },
+      Null = { icon = "NULL", hl = "TSType" },
+      EnumMember = { icon = "", hl = "TSField" },
+      Struct = { icon = "𝓢", hl = "TSType" },
+      Event = { icon = "🗲", hl = "TSType" },
+      Operator = { icon = "+", hl = "TSOperator" },
+      TypeParameter = { icon = "𝙏", hl = "TSParameter" },
+    },
   }
 end
 
-function config.sqls()
-end
+function config.sqls() end
 
 function config.aerial()
   vim.g.aerial = {
     -- Priority list of preferred backends for aerial
-    backends = {"lsp", "treesitter", "markdown"},
+    backends = { "lsp", "treesitter", "markdown" },
 
     -- Enum: persist, close, auto, global
     --   persist - aerial window will stay open until closed
@@ -136,7 +134,7 @@ function config.aerial()
     default_direction = "prefer_right",
 
     -- A list of all symbols to display. Set to false to display all symbols.
-    filter_kind = {"Class", "Constructor", "Enum", "Function", "Interface", "Method", "Struct"},
+    filter_kind = { "Class", "Constructor", "Enum", "Function", "Interface", "Method", "Struct" },
 
     -- Enum: split_width, full_width, last, none
     -- Determines line highlighting mode when multiple buffers are visible
@@ -193,18 +191,18 @@ function config.aerial()
       diagnostics_trigger_update = true,
 
       -- Set to false to not update the symbols when there are LSP errors
-      update_when_errors = true
+      update_when_errors = true,
     },
 
     treesitter = {
       -- How long to wait (in ms) after a buffer change before updating
-      update_delay = 300
+      update_delay = 300,
     },
 
     markdown = {
       -- How long to wait (in ms) after a buffer change before updating
-      update_delay = 300
-    }
+      update_delay = 300,
+    },
   }
 
   -- Aerial does not set any mappings by default, so you'll want to set some up
@@ -230,7 +228,6 @@ table.insert(path, "lua/?.lua")
 table.insert(path, "lua/?/init.lua")
 
 function config.navigator()
-
   local luadev = {}
   -- if ok and l then
   --   luadev = l.setup(cfg)
@@ -243,9 +240,9 @@ function config.navigator()
 
   -- local capabilities = vim.lsp.protocol.make_client_capabilities()
 
-  local single = {"╭", "─", "╮", "│", "╯", "─", "╰", "│"}
+  local single = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" }
 
-  -- local efm_cfg = require('modules.lang.efm').efm
+  local efm_cfg = require('modules.lang.efm').efm
 
   -- loader('aerial.nvim')
   local nav_cfg = {
@@ -263,44 +260,48 @@ function config.navigator()
     -- keymaps = {{key = "gs", func = "references()"}},
     lsp = {
       format_on_save = true, -- set to false to disasble lsp code format on save (if you are using prettier/efm/formater etc)
-      disable_format_cap = {"sqls", "gopls"}, -- a list of lsp not enable auto-format (e.g. if you using efm or vim-codeformat etc)
+      disable_format_cap = { "sqls", "gopls" }, -- a list of lsp not enable auto-format (e.g. if you using efm or vim-codeformat etc)
       -- disable_lsp = {'denols'},
-      disable_lsp = {"rls", "flow", "pylsp"},
+      disable_lsp = { "rls", "flow", "pylsp" },
       code_lens = true,
       disply_diagnostic_qf = false,
-      denols = {filetypes = {}},
+      denols = { filetypes = {} },
       tsserver = {
         filetypes = {
-          "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact",
-          "typescript.tsx"
+          "javascript",
+          "javascriptreact",
+          "javascript.jsx",
+          "typescript",
+          "typescriptreact",
+          "typescript.tsx",
         },
         on_attach = function(client)
           client.resolved_capabilities.document_formatting = false -- allow efm to format
-        end
+        end,
       },
-      flow = {autostart = false},
+      flow = { autostart = false },
       gopls = {
         -- on_attach = function(client)
         --   -- print("i am a hook")
         --   -- client.resolved_capabilities.document_formatting = false -- efm
         -- end,
         settings = {
-          gopls = {gofumpt = true} -- enable gofumpt etc,
-        }
+          gopls = { gofumpt = true }, -- enable gofumpt etc,
+        },
         -- set to {} to disable the lspclient for all filetype
       },
       sqls = {
         on_attach = function(client)
           client.resolved_capabilities.document_formatting = false -- efm
-        end
+        end,
       },
-      ccls = {filetypes = {}}, -- using clangd
+      ccls = { filetypes = {} }, -- using clangd
 
       sumneko_lua = luadev,
 
-      jedi_language_server = {filetypes = {}},
-      efm = require('modules.lang.efm').efm
-    }
+      jedi_language_server = { filetypes = {} },
+    },
+
     -- icons = {
     --   diagnostic_err = "",
     --   diagnostic_warn = "",
@@ -309,41 +310,46 @@ function config.navigator()
     --   diagnostic_virtual_text = ""
     -- }
   }
+
+  if not use_nulls() then
+    nav_cfg.lsp.efm = require("modules.lang.efm").efm
+  else
+    table.insert(nav_cfg.lsp.disable_lsp, "efm")
+  end
+
   vim.lsp.set_log_level("error") -- error debug info
   -- require"navigator".setup(nav_cfg)
   -- PLoader('aerial.nvim')
-  require"navigator".setup(nav_cfg)
+  require("navigator").setup(nav_cfg)
 end
 
 function config.playground()
-  require"nvim-treesitter.configs".setup {
+  require("nvim-treesitter.configs").setup({
     playground = {
       enable = true,
       disable = {},
       updatetime = 50, -- Debounced time for highlighting nodes in the playground from source code
-      persist_queries = true -- Whether the query persists across vim sessions
-    }
-  }
+      persist_queries = true, -- Whether the query persists across vim sessions
+    },
+  })
 end
 function config.luadev()
   vim.cmd([[vmap <leader><leader>r <Plug>(Luadev-Run)]])
 end
-function config.lua_dev()
-end
+function config.lua_dev() end
 
 function config.go()
   require("go").setup({
     verbose = plugin_debug(),
     -- goimport = 'goimports', -- 'gopls'
-    filstruct = 'gopls',
+    filstruct = "gopls",
     log_path = vim.fn.expand("$HOME") .. "/tmp/gonvim.log",
     lsp_codelens = false, -- use navigator
     dap_debug = true,
 
     dap_debug_gui = true,
-    test_runner = 'richgo', -- richgo, go test, richgo, dlv, ginkgo
-    run_in_floaterm = true -- set to true to run in float window.
-
+    test_runner = "richgo", -- richgo, go test, richgo, dlv, ginkgo
+    -- run_in_floaterm = true, -- set to true to run in float window.
   })
 
   vim.cmd("augroup go")
@@ -363,7 +369,6 @@ function config.go()
   vim.cmd("au FileType go command! Gtn :TestNearest -v -tags=integration")
   vim.cmd("au FileType go command! Gts :TestSuite -v -tags=integration")
   vim.cmd("augroup END")
-
 end
 
 function config.dap()
