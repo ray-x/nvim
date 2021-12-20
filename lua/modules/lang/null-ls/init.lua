@@ -42,6 +42,10 @@ return {
       table.insert(sources, null_ls.builtins.diagnostics.golangci_lint)
     end
 
+    if exist("revive") then
+      table.insert(sources, null_ls.builtins.diagnostics.revive)
+    end
+
     -- docker
     if exist("hadolint") then
       table.insert(sources, null_ls.builtins.diagnostics.hadolint)
@@ -91,14 +95,20 @@ return {
     local cfg = {
       sources = sources,
       debounce = 1000,
-      root_dir = require'lspconfig'.util.root_pattern(".null-ls-root", "Makefile", ".git", "go.mod", "package.json", "tsconfig.json"),
-      on_attach = function (client)
+      root_dir = require("lspconfig").util.root_pattern(
+        ".null-ls-root",
+        "Makefile",
+        ".git",
+        "go.mod",
+        "package.json",
+        "tsconfig.json"
+      ),
+      on_attach = function(client)
         if client.resolved_capabilities.document_formatting then
-            vim.cmd("autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()")
+          vim.cmd("autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()")
         end
-     end
+      end,
     }
-
 
     null_ls.setup(cfg)
   end,

@@ -21,7 +21,7 @@ function Lazyload()
     "aurora",
     "gruvbox-material",
     "sonokai",
-    "github-nvim-theme"
+    "github-nvim-theme",
   }
 
   if plugin_folder() == [[~/github/]] then
@@ -127,7 +127,7 @@ function Lazyload()
 
     lprint(plugins)
     -- nvim-treesitter-textobjects should be autoloaded
-    loader('refactoring.nvim')
+    loader("refactoring.nvim")
     loader("indent-blankline.nvim")
   end
 
@@ -142,10 +142,9 @@ function Lazyload()
   -- local cmd = [[au VimEnter * ++once lua require("packer.load")({']] .. loading_theme
   --                 .. [['}, { event = "VimEnter *" }, _G.packer_plugins)]]
   -- vim.cmd(cmd)
-  loader('windline.nvim')
-  require("modules.ui.eviline")
-  require('wlfloatline').setup()
-
+  -- loader('windline.nvim')
+  -- require("modules.ui.eviline")
+  -- require('wlfloatline').setup()
 end
 
 vim.cmd([[autocmd User LoadLazyPlugin lua Lazyload()]])
@@ -153,11 +152,11 @@ vim.cmd("command! Gram lua require'modules.tools.config'.grammcheck()")
 vim.cmd("command! Spell call spelunker#check()")
 
 local lazy_timer = 50
-if _G.packer_plugins == nil or _G.packer_plugins['packer.nvim'] == nil  then
-  print('recompile')
+if _G.packer_plugins == nil or _G.packer_plugins["packer.nvim"] == nil then
+  print("recompile")
   vim.cmd([[PackerCompile]])
   vim.defer_fn(function()
-    print('Packer recompiled, please restart nvim')
+    print("Packer recompiled, please restart nvim")
   end, 1000)
   return
 end

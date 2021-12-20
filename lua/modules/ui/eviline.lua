@@ -9,6 +9,8 @@ local HSL = require("wlanimation.utils")
 local sep = helper.separators
 local luffy_text = ""
 
+local home = require("core.global").home
+
 local hl_list = {
   NormalBg = { "NormalFg", "NormalBg" },
   White = { "black", "white" },
@@ -140,7 +142,6 @@ local function getEntryFromEnd(table, entry)
 end
 
 local TrimmedDirectory = function(dir)
-  local home = require("core.global").home
   local _, index = string.find(dir, home, 1)
   if index ~= nil and index ~= string.len(dir) then
     -- TODO Trimmed Home Directory
