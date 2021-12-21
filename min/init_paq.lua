@@ -11,7 +11,9 @@ require("paq")({
   "savq/paq-nvim", -- Let Paq manage itself
   "neovim/nvim-lspconfig", -- Mind the semi-colons
   "hrsh7th/nvim-cmp", -- Use braces when passing options
-  "lsp_signature.nvim",
+  "ray-x/lsp_signature.nvim",
+  "ray-x/guihua.lua",
+  "ray-x/navigator.lua",
   "hrsh7th/cmp-nvim-lsp",
   "L3MON4D3/LuaSnip",
   "saadparwaiz1/cmp_luasnip",
@@ -80,109 +82,27 @@ local lua_cfg = {
 
 require("lsp_signature").setup()
 
-require("lspconfig").sumneko_lua.setup(lua_cfg)
-require("lspconfig").gopls.setup({ capabilities = capabilities })
+-- require("lspconfig").sumneko_lua.setup(lua_cfg)
+-- require("lspconfig").gopls.setup({ capabilities = capabilities })
 vim.cmd([[set mouse=a]])
 
 config = function()
   local null_ls = require("null-ls")
-  local lspconfig = require("lspconfig")
-
   local sources = {
-    null_ls.builtins.formatting.autopep8,
-    null_ls.builtins.formatting.rustfmt,
-    null_ls.builtins.diagnostics.yamllint,
-    null_ls.builtins.code_actions.gitsigns,
-    null_ls.builtins.code_actions.proselint,
-    null_ls.builtins.code_actions.refactoring,
-    null_ls.builtins.diagnostics.staticcheck,
     null_ls.builtins.diagnostics.revive,
     null_ls.builtins.formatting.prettier,
   }
-
-  local function exist(bin)
-    return vim.fn.exepath(bin) ~= ""
-  end
-
-  table.insert(
-    sources,
-    null_ls.builtins.formatting.golines.with({
-      extra_args = {
-        "--max-len=120",
-        "--base-formatter=gofumpt",
-      },
-    })
-  )
-
-  -- shell script
-  if exist("shellcheck") then
-    table.insert(sources, null_ls.builtins.diagnostics.shellcheck)
-  end
-
-  -- shell script
-  if exist("shfmt") then
-    table.insert(sources, null_ls.builtins.formatting.shfmt)
-  end
-
-  -- golang
-  if exist("golangci-lint") then
-    table.insert(sources, null_ls.builtins.diagnostics.golangci_lint)
-  end
   table.insert(sources, null_ls.builtins.diagnostics.staticcheck)
-  table.insert(sources, null_ls.builtins.diagnostics.revive)
-
-  -- docker
-  if exist("hadolint") then
-    table.insert(sources, null_ls.builtins.diagnostics.hadolint)
-  end
-
-  if exist("eslint_d") then
-    table.insert(sources, null_ls.builtins.diagnostics.eslint_d)
-  end
-  -- js, ts
-  if exist("prettierd") then
-    table.insert(sources, null_ls.builtins.formatting.prettierd)
-  end
-  -- lua
-  if exist("selene") then
-    table.insert(sources, null_ls.builtins.diagnostics.selene)
-  end
-
-  if exist("stylua") then
-    table.insert(
-      sources,
-      null_ls.builtins.formatting.stylua.with({
-        extra_args = { "--indent-type", "Spaces", "--indent-width", "2" },
-      })
-    )
-  end
-
-  table.insert(sources, null_ls.builtins.formatting.trim_newlines)
-  table.insert(sources, null_ls.builtins.formatting.trim_whitespace)
-
   local cfg = { sources = sources }
-  -- if plugin_debug() then
-  --   cfg.debug = true
-  -- end
-
   null_ls.config(cfg)
-
-  if lspconfig["null-ls"] then
-    lspconfig["null-ls"].setup({
-      on_attach = function(client, bufnr)
-        if client.resolved_capabilities.document_formatting then
-          vim.cmd([[
-					augroup null_ls_format
-						au!
-						au BufWritePost <buffer> lua vim.lsp.buf.formatting_sync()
-					augroup end
-				]])
-        end
-      end,
-    })
-  end
-
   null_ls.config({ sources = sources })
 end
+
+require("navigator").setup({
+  debug = true,
+  lsp = {
+    sumneko_lua = lua_cfg,
+  },
+})
 
 config()
