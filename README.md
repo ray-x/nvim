@@ -137,6 +137,10 @@ Please backup this folder if necessary
 The setup should work with nvim0.5.1+ or nvim0.6+. A patched nerd font is needed. Also if you start nvim from terminal,
 make sure it support nerdfont and emoji
 
+### Youtube video recording of install process
+
+[Install process](https://youtu.be/5XB28yocmuw)
+
 ## Configure
 
 If you would like to sync to my branch. You can add you own setup in lua/overwrite folder
