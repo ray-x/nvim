@@ -32,7 +32,7 @@ function Lazyload()
     -- themes = {"gruvbox-material"}
     -- debug the color theme
     -- themes = { "starry.nvim" }
-    themes = { "aurora" }
+    -- themes = { "aurora" }
   end
   local v = math.random(1, #themes)
   local loading_theme = themes[v]
