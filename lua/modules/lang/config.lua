@@ -242,7 +242,7 @@ function config.navigator()
 
   local single = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" }
 
-  local efm_cfg = require('modules.lang.efm').efm
+  local efm_cfg = require("modules.lang.efm").efm
 
   -- loader('aerial.nvim')
   local nav_cfg = {
@@ -257,7 +257,8 @@ function config.navigator()
     -- external = true, -- true: enable for goneovim multigrid otherwise false
     lsp_signature_help = true,
     -- default_mapping = false,
-    -- keymaps = {{key = "gs", func = "references()"}},
+--     keymaps = { { mode = 'i', key = '<M-k>', func = 'signature_help()' },
+-- { key = "<c-i>", func = "signature_help()" } },
     lsp = {
       format_on_save = true, -- set to false to disasble lsp code format on save (if you are using prettier/efm/formater etc)
       disable_format_cap = { "sqls", "gopls" }, -- a list of lsp not enable auto-format (e.g. if you using efm or vim-codeformat etc)

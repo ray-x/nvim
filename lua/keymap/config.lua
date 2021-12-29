@@ -55,7 +55,7 @@ end
 
 _G.ctrl_k = function()
   vim.lsp.buf.signature_help()
-  vim.cmd([[:MatchupWhereAmI?]])
+  -- vim.cmd([[:MatchupWhereAmI?]])
 end
 
 _G.word_motion_move = function(key)

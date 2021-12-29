@@ -32,7 +32,7 @@ function Lazyload()
     -- themes = {"gruvbox-material"}
     -- debug the color theme
     -- themes = { "starry.nvim" }
-    -- themes = {"aurora"}
+    themes = { "aurora" }
   end
   local v = math.random(1, #themes)
   local loading_theme = themes[v]
@@ -105,7 +105,9 @@ function Lazyload()
   if load_lsp then
     loader("nvim-lspconfig") -- null-ls.nvim
     loader("lsp_signature.nvim")
-    loader("null-ls.nvim")
+    if use_nulls() then
+      loader("null-ls.nvim")
+    end
   end
 
   require("vscripts.cursorhold")
@@ -131,6 +133,7 @@ function Lazyload()
     loader("indent-blankline.nvim")
   end
 
+  loader("nvim-notify")
   -- if bytes < 2 * 1024 * 1024 and syn_on then
   --   vim.cmd([[setlocal syntax=on]])
   -- end
@@ -156,7 +159,7 @@ if _G.packer_plugins == nil or _G.packer_plugins["packer.nvim"] == nil then
   print("recompile")
   vim.cmd([[PackerCompile]])
   vim.defer_fn(function()
-    print("Packer recompiled, please restart nvim")
+    print("Packer recompiled, please run `:PackerCompile` and restart nvim")
   end, 1000)
   return
 end

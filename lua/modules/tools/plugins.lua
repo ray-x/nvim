@@ -106,6 +106,7 @@ tools["iamcco/markdown-preview.nvim"] = {
   opt = true
 }
 
+--     browser-sync https://github.com/BrowserSync/browser-sync
 tools["turbio/bracey.vim"] = {
   ft = {"html", "javascript", "typescript"},
   cmd = {"Bracey", "BraceyEval"},

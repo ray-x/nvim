@@ -2,54 +2,59 @@ local lang = {}
 local conf = require("modules.lang.config")
 local path = plugin_folder()
 
-lang['nathom/filetype.nvim'] = {
+lang["nathom/filetype.nvim"] = {
   -- event = {'BufEnter'},
   setup = function()
     vim.g.did_load_filetypes = 1
-  end
+  end,
 }
 
-lang["nvim-treesitter/nvim-treesitter"] = {opt = true, config = conf.nvim_treesitter}
+lang["nvim-treesitter/nvim-treesitter"] = { opt = true, config = conf.nvim_treesitter }
 
 lang["nvim-treesitter/nvim-treesitter-textobjects"] = {
   after = "nvim-treesitter",
   config = conf.treesitter_obj,
-  opt = true
+  opt = true,
 }
 
-lang['RRethy/nvim-treesitter-textsubjects'] = {opt = true, config = conf.tsubject}
+lang["RRethy/nvim-treesitter-textsubjects"] = { opt = true, config = conf.tsubject }
 
-lang['danymat/neogen'] = {
+lang["danymat/neogen"] = {
   opt = true,
   config = function()
-    require("neogen").setup({enabled = true})
-  end
+    require("neogen").setup({ enabled = true })
+  end,
 }
 
-lang['ThePrimeagen/refactoring.nvim'] = {
+lang["ThePrimeagen/refactoring.nvim"] = {
   opt = true,
-  config = conf.refactor
+  config = conf.refactor,
 }
 
 lang["nvim-treesitter/nvim-treesitter-refactor"] = {
   after = "nvim-treesitter-textobjects", -- manual loading
   config = conf.treesitter_ref, -- let the last loaded config treesitter
-  opt = true
+  opt = true,
 }
 
-lang["yardnsm/vim-import-cost"] = {cmd = "ImportCost", opt = true}
+lang["yardnsm/vim-import-cost"] = { cmd = "ImportCost", opt = true }
 
 -- lang['scalameta/nvim-metals'] = {requires = {"nvim-lua/plenary.nvim"}}
 -- lang["lifepillar/pgsql.vim"] = {ft = {"sql", "pgsql"}}
 
-lang["nanotee/sqls.nvim"] = {ft = {"sql", "pgsql"}, setup = conf.sqls, opt = true}
+lang["nanotee/sqls.nvim"] = { ft = { "sql", "pgsql" }, setup = conf.sqls, opt = true }
 
-lang[path .. "go.nvim"] = {ft = {"go", "gomod"}, config = conf.go}
+lang[path .. "go.nvim"] = { ft = { "go", "gomod" }, config = conf.go }
 
 lang[path .. "navigator.lua"] = {
-  requires = {path .. "guihua.lua", run = 'cd lua/fzy && make'},
+  requires = { path .. "guihua.lua", run = "cd lua/fzy && make" },
   config = conf.navigator,
-  opt = true
+  opt = true,
+}
+
+lang[path .. "liveview.nvim"] = {
+  ft = { "html", "javascript" },
+  opt = true,
 }
 
 -- lang["gcmt/wildfire.vim"] = {
@@ -63,59 +68,59 @@ lang["nvim-treesitter/playground"] = {
   -- after = "nvim-treesitter",
   opt = true,
   cmd = "TSPlaygroundToggle",
-  config = conf.playground
+  config = conf.playground,
 }
 
 -- great plugin but not been maintained
 -- lang["ElPiloto/sidekick.nvim"] = {opt = true, fn = {'SideKickNoReload'}, setup = conf.sidekick}
-lang['stevearc/aerial.nvim'] = {
+lang["stevearc/aerial.nvim"] = {
   opt = true,
-  cmd = {'AerialToggle'},
+  cmd = { "AerialToggle" },
   setup = conf.aerial,
   config = function()
-    local aerial = require 'aerial'
+    local aerial = require("aerial")
     aerial.register_attach_cb(function(bufnr)
       -- Toggle the aerial window with <leader>a
-      vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>a', '<cmd>AerialToggle!<CR>', {})
+      vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>a", "<cmd>AerialToggle!<CR>", {})
       -- Jump forwards/backwards with '{' and '}'
-      vim.api.nvim_buf_set_keymap(bufnr, 'n', '{', '<cmd>AerialPrev<CR>', {})
-      vim.api.nvim_buf_set_keymap(bufnr, 'n', '}', '<cmd>AerialNext<CR>', {})
+      vim.api.nvim_buf_set_keymap(bufnr, "n", "{", "<cmd>AerialPrev<CR>", {})
+      vim.api.nvim_buf_set_keymap(bufnr, "n", "}", "<cmd>AerialNext<CR>", {})
       -- Jump up the tree with '[[' or ']]'
-      vim.api.nvim_buf_set_keymap(bufnr, 'n', '[[', '<cmd>AerialPrevUp<CR>', {})
-      vim.api.nvim_buf_set_keymap(bufnr, 'n', ']]', '<cmd>AerialNextUp<CR>', {})
+      vim.api.nvim_buf_set_keymap(bufnr, "n", "[[", "<cmd>AerialPrevUp<CR>", {})
+      vim.api.nvim_buf_set_keymap(bufnr, "n", "]]", "<cmd>AerialNextUp<CR>", {})
     end)
-  end
+  end,
 }
-lang['simrat39/symbols-outline.nvim'] = {
+lang["simrat39/symbols-outline.nvim"] = {
   opt = true,
-  cmd = {'SymbolsOutline', 'SymbolsOutlineOpen'},
-  setup = conf.outline
+  cmd = { "SymbolsOutline", "SymbolsOutlineOpen" },
+  setup = conf.outline,
 }
-lang["bfredl/nvim-luadev"] = {opt = true, ft = 'lua', cmd = "Luadev", setup = conf.luadev}
-lang["mfussenegger/nvim-dap"] = {config = conf.dap, opt = true} -- cmd = "Luadev",
+lang["bfredl/nvim-luadev"] = { opt = true, ft = "lua", cmd = "Luadev", setup = conf.luadev }
+lang["mfussenegger/nvim-dap"] = { config = conf.dap, opt = true } -- cmd = "Luadev",
 
-lang["JoosepAlviste/nvim-ts-context-commentstring"] = {opt = true}
+lang["JoosepAlviste/nvim-ts-context-commentstring"] = { opt = true }
 
 lang["rcarriga/nvim-dap-ui"] = {
   -- requires = {"mfussenegger/nvim-dap"},
   config = conf.dapui,
   cmd = "Luadev",
-  opt = true
+  opt = true,
 }
 
-lang["theHamsta/nvim-dap-virtual-text"] = {opt = true, cmd = "Luadev"}
+lang["theHamsta/nvim-dap-virtual-text"] = { opt = true, cmd = "Luadev" }
 
-lang["jbyuki/one-small-step-for-vimkind"] = {opt = true, ft = {"lua"}}
+lang["jbyuki/one-small-step-for-vimkind"] = { opt = true, ft = { "lua" } }
 
 lang["nvim-telescope/telescope-dap.nvim"] = {
   config = conf.dap,
   -- cmd = "Telescope",
-  opt = true
+  opt = true,
 }
 
-lang["mfussenegger/nvim-dap-python"] = {ft = {"python"}}
+lang["mfussenegger/nvim-dap-python"] = { ft = { "python" } }
 
-lang["mtdl9/vim-log-highlighting"] = {ft = {"text", "log"}}
+lang["mtdl9/vim-log-highlighting"] = { ft = { "text", "log" } }
 
 -- lang["RRethy/vim-illuminate"] = {opt=true, ft = {"go"}}
 
@@ -137,32 +142,32 @@ lang["mtdl9/vim-log-highlighting"] = {ft = {"text", "log"}}
 -- lang["gennaro-tedesco/nvim-jqx"] = {opt = true, cmd = {"JqxList", "JqxQuery"}}
 
 lang["windwp/nvim-ts-autotag"] = {
-  opt = true
+  opt = true,
   -- after = "nvim-treesitter",
   -- config = function() require"nvim-treesitter.configs".setup {autotag = {enable = true}} end
 }
 
-lang['folke/lua-dev.nvim'] = {
+lang["folke/lua-dev.nvim"] = {
   opt = true,
   -- ft = {'lua'},
-  config = conf.lua_dev
+  config = conf.lua_dev,
 }
 
 lang["p00f/nvim-ts-rainbow"] = {
   opt = true,
   -- after = "nvim-treesitter",
   -- Highlight also non-parentheses delimiters, boolean or table: lang -> boolean
-  cmd = 'Rainbow',
+  cmd = "Rainbow",
   config = function()
-    require"nvim-treesitter.configs".setup {rainbow = {enable = true, extended_mode = true}}
-  end
+    require("nvim-treesitter.configs").setup({ rainbow = { enable = true, extended_mode = true } })
+  end,
 }
 
-lang['folke/trouble.nvim'] = {
-  cmd = {'Trouble', 'TroubleToggle'},
+lang["folke/trouble.nvim"] = {
+  cmd = { "Trouble", "TroubleToggle" },
   config = function()
-    require("trouble").setup {}
-  end
+    require("trouble").setup({})
+  end,
 }
 
 -- lang['ldelossa/calltree.nvim'] = {
@@ -172,6 +177,6 @@ lang['folke/trouble.nvim'] = {
 --   end
 -- }
 
-lang['jose-elias-alvarez/null-ls.nvim'] = {opt = true, config = require"modules.lang.null-ls".config}
+lang["jose-elias-alvarez/null-ls.nvim"] = { opt = true, config = require("modules.lang.null-ls").config }
 
 return lang

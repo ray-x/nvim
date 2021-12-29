@@ -16,7 +16,11 @@ ui["windwp/windline.nvim"] = {
 }
 
 ui["lambdalisue/glyph-palette.vim"] = {}
-
+ui["rcarriga/nvim-notify"] = {
+  opt = true,
+  -- event = "User LoadLazyPlugin",
+  config = conf.notify,
+}
 ui["akinsho/bufferline.nvim"] = {
   config = conf.nvim_bufferline,
   event = "UIEnter",
