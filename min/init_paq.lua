@@ -8,10 +8,12 @@ if fn.empty(fn.glob(install_path)) > 0 then
 end
 
 require("paq")({
-  "savq/paq-nvim", -- Let Paq manage itself
-  "neovim/nvim-lspconfig", -- Mind the semi-colons
-  "hrsh7th/nvim-cmp", -- Use braces when passing options
+  "savq/paq-nvim",
+  "neovim/nvim-lspconfig",
+  "nvim-treesitter/nvim-treesitter",
+  "hrsh7th/nvim-cmp",
   "ray-x/lsp_signature.nvim",
+  "ray-x/aurora",
   "ray-x/guihua.lua",
   "ray-x/navigator.lua",
   "hrsh7th/cmp-nvim-lsp",
@@ -19,8 +21,31 @@ require("paq")({
   "saadparwaiz1/cmp_luasnip",
   "windwp/nvim-autopairs",
   "jose-elias-alvarez/null-ls.nvim",
+  'christoomey/vim-tmux-navigator'
 })
-vim.cmd([[colorscheme darkblue]])
+
+local sumneko_root_path = vim.fn.expand("$HOME") .. "/github/sumneko/lua-language-server"
+local sumneko_binary = vim.fn.expand("$HOME") .. "/github/sumneko/lua-language-server/bin/macOS/lua-language-server"
+
+local lua_cfg = {
+  cmd = { sumneko_binary, "-E", sumneko_root_path .. "/main.lua" },
+  settings = {
+    Lua = {
+      runtime = { version = "LuaJIT", path = vim.split(package.path, ";") },
+      diagnostics = { enable = true },
+    },
+  },
+}
+require("navigator").setup({
+  debug = true,
+  default_mapping = false,
+  keymaps = { { mode = 'i', key = '<M-k>', func = 'signature_help()' },
+{ key = "<c-i>", func = "signature_help()" } },
+  lsp_signature_help = true,
+  lsp = {
+    sumneko_lua = lua_cfg,
+  },
+})
 
 local cmp = require("cmp")
 cmp.setup({
@@ -66,24 +91,7 @@ cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done({ map_char = { tex = 
 
 cmp_autopairs.lisp[#cmp_autopairs.lisp + 1] = "racket"
 
-local sumneko_root_path = vim.fn.expand("$HOME") .. "/github/sumneko/lua-language-server"
-local sumneko_binary = vim.fn.expand("$HOME") .. "/github/sumneko/lua-language-server/bin/macOS/lua-language-server"
-
-local lua_cfg = {
-  cmd = { sumneko_binary, "-E", sumneko_root_path .. "/main.lua" },
-  settings = {
-    Lua = {
-      runtime = { version = "LuaJIT", path = vim.split(package.path, ";") },
-      diagnostics = { enable = true },
-    },
-  },
-  capabilities = capabilities,
-}
-
-require("lsp_signature").setup()
-
--- require("lspconfig").sumneko_lua.setup(lua_cfg)
--- require("lspconfig").gopls.setup({ capabilities = capabilities })
+--- require("lsp_signature").setup()
 vim.cmd([[set mouse=a]])
 
 config = function()
@@ -98,11 +106,6 @@ config = function()
   null_ls.config({ sources = sources })
 end
 
-require("navigator").setup({
-  debug = true,
-  lsp = {
-    sumneko_lua = lua_cfg,
-  },
-})
-
+vim.cmd([[set mouse=a]])
+vim.cmd([[colorscheme aurora]])
 config()
