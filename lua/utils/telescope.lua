@@ -1,43 +1,48 @@
 local a = vim.api
 
-local loader = require"packer".loader
-if not packer_plugins['telescope.nvim'].loaded then
-  loader('telescope.nvim')
+local loader = require("packer").loader
+if not packer_plugins["telescope.nvim"].loaded then
+  loader("telescope.nvim")
 end
 local telescope = require("telescope")
-local actions = require('telescope.actions')
-local conf = require('telescope.config').values
+local actions = require("telescope.actions")
+local conf = require("telescope.config").values
 
-local layout = require('telescope.pickers.layout_strategies')
-local resolve = require('telescope.config.resolve')
-local make_entry = require('telescope.make_entry')
-local previewers = require('telescope.previewers')
-local sorters = require('telescope.sorters')
-local pickers = require('telescope.pickers')
-local finders = require('telescope.finders')
-local builtin = require('telescope.builtin')
-local state = require('telescope.state')
-local action_set = require "telescope.actions.set"
+local layout = require("telescope.pickers.layout_strategies")
+local resolve = require("telescope.config.resolve")
+local make_entry = require("telescope.make_entry")
+local previewers = require("telescope.previewers")
+local sorters = require("telescope.sorters")
+local pickers = require("telescope.pickers")
+local finders = require("telescope.finders")
+local builtin = require("telescope.builtin")
+local state = require("telescope.state")
+local action_set = require("telescope.actions.set")
 
 M = {}
 
 M.find_dots = function(opts)
   opts = opts or {}
 
-  opts.cwd = require'core.global'.home
+  opts.cwd = require("core.global").home
   -- By creating the entry maker after the cwd options,
   -- we ensure the maker uses the cwd options when being created.
   opts.entry_maker = opts.entry_maker or make_entry.gen_from_file(opts)
 
   pickers.new(opts, {
-    prompt_title = '~~ Dotfiles ~~',
+    prompt_title = "~~ Dotfiles ~~",
     finder = finders.new_oneshot_job({
-      "git", "--git-dir=" .. require'core.global'.home .. "/.dots/",
-      "--work-tree=" .. require'core.global'.home, "ls-tree", "--full-tree", "-r", "--name-only",
-      "HEAD"
+      "git",
+      "--git-dir=" .. require("core.global").home .. "/.dots/",
+      "--work-tree=" .. require("core.global").home,
+      "ls-tree",
+      "--full-tree",
+      "-r",
+      "--name-only",
+      "HEAD",
     }, opts),
     previewer = previewers.cat.new(opts),
-    sorter = conf.file_sorter(opts)
+    sorter = conf.file_sorter(opts),
   }):find()
 end
 
@@ -48,7 +53,7 @@ M.files = function(opts)
   vim.fn.system("git status")
   local is_not_git = vim.v.shell_error > 0
   if is_not_git then
-    require'telescope.builtin'.find_files(opts)
+    require("telescope.builtin").find_files(opts)
     return
   end
 
@@ -56,7 +61,7 @@ M.files = function(opts)
     opts.cwd = vim.fn.expand(opts.cwd)
   else
     --- Find root of git directory and remove trailing newline characters
-    opts.cwd = string.gsub(vim.fn.system("git rev-parse --show-toplevel"), '[\n\r]+', '')
+    opts.cwd = string.gsub(vim.fn.system("git rev-parse --show-toplevel"), "[\n\r]+", "")
   end
 
   -- By creating the entry maker after the cwd options,
@@ -64,10 +69,10 @@ M.files = function(opts)
   opts.entry_maker = opts.entry_maker or make_entry.gen_from_file(opts)
 
   pickers.new(opts, {
-    prompt_title = 'Git File',
-    finder = finders.new_oneshot_job({"git", "ls-files", "--recurse-submodules"}, opts),
+    prompt_title = "Git File",
+    finder = finders.new_oneshot_job({ "git", "ls-files", "--recurse-submodules" }, opts),
     previewer = previewers.cat.new(opts),
-    sorter = conf.file_sorter(opts)
+    sorter = conf.file_sorter(opts),
   }):find()
 end
 
@@ -117,7 +122,7 @@ layout.custom = function(self, columns, lines)
   results.width = max_width - (has_preview and (preview.width + bs) or 0)
 
   prompt.line = (lines / 2) - ((max_results + (bs * 2)) / 2)
-  results.line = prompt.line + 1 + (bs)
+  results.line = prompt.line + 1 + bs
   preview.line = results.line
 
   if not self.previewer or columns < self.preview_cutoff then
@@ -133,27 +138,26 @@ layout.custom = function(self, columns, lines)
   prompt.col = results.col
   preview.col = results.col + results.width + bs
 
-  return {preview = has_preview and preview, results = results, prompt = prompt}
+  return { preview = has_preview and preview, results = results, prompt = prompt }
 end
 
 M.jump = function()
-  require('telescope.builtin').jumplist {layout_strategy = 'vertical'}
+  require("telescope.builtin").jumplist({ layout_strategy = "vertical" })
 end
 
 function M.installed_plugins()
-  require('telescope.builtin').find_files {
-    cwd = vim.fn.stdpath('data') .. '/site/pack/packer/start/'
-  }
+  require("telescope.builtin").find_files({
+    cwd = vim.fn.stdpath("data") .. "/site/pack/packer/start/",
+  })
 end
 
 function M.project_search()
-  require('telescope.builtin').find_files {
+  require("telescope.builtin").find_files({
     previewer = false,
     layout_strategy = "vertical",
-    cwd = require('nvim_lsp.util').root_pattern(".git")(vim.fn.expand("%:p")),
-  }
+    cwd = require("nvim_lsp.util").root_pattern(".git")(vim.fn.expand("%:p")),
+  })
 end
-
 
 M.theme = function(opts)
   return vim.tbl_deep_extend("force", {
@@ -168,23 +172,23 @@ M.theme = function(opts)
     results_width = 0.37,
     border = false,
     borderchars = {
-      {"─", "│", "─", "│", "╭", "╮", "╯", "╰"},
-      prompt = {"─", "│", " ", "│", "╭", "╮", "│", "│"},
-      results = {"─", "│", "─", "│", "├", "┬", "┴", "╰"},
-      preview = {"─", "│", "─", "│", "╭", "┤", "╯", "╰"}
-    }
+      { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
+      prompt = { "─", "│", " ", "│", "╭", "╮", "│", "│" },
+      results = { "─", "│", "─", "│", "├", "┬", "┴", "╰" },
+      preview = { "─", "│", "─", "│", "╭", "┤", "╯", "╰" },
+    },
   }, opts or {})
 end
 
 function M.files()
   pickers.new(M.theme(), {
-    finder = finders.new_oneshot_job({"fd", "-t", "f"}),
-    sorter = sorters.get_fzy_sorter()
+    finder = finders.new_oneshot_job({ "fd", "-t", "f" }),
+    sorter = sorters.get_fzy_sorter(),
   }):find()
 end
 
 function M.buffers()
-  local opts = {shorten_path = true}
+  local opts = { shorten_path = true }
   local buffers = vim.tbl_filter(function(b)
     return (opts.show_all_buffers or vim.api.nvim_buf_is_loaded(b)) and 1 == vim.fn.buflisted(b)
   end, vim.api.nvim_list_bufs())
@@ -193,8 +197,8 @@ function M.buffers()
   opts.bufnr_width = #tostring(max_bufnr)
 
   pickers.new(M.theme(), {
-    finder = finders.new_table {results = buffers, entry_maker = make_entry.gen_from_buffer(opts)},
-    sorter = sorters.get_fzy_sorter()
+    finder = finders.new_table({ results = buffers, entry_maker = make_entry.gen_from_buffer(opts) }),
+    sorter = sorters.get_fzy_sorter(),
   }):find()
 end
 
@@ -203,30 +207,30 @@ function M.command_history()
 end
 
 function M.load_dotfiles()
-  local has_telescope = pcall(require, 'telescope.builtin')
+  local has_telescope = pcall(require, "telescope.builtin")
   if has_telescope then
-    local themes = require('telescope.themes')
+    local themes = require("telescope.themes")
 
     local results = {}
-    local dotfiles = require'core.global'.home .. '/.dotfiles'
+    local dotfiles = require("core.global").home .. "/.dotfiles"
     for file in io.popen('find "' .. dotfiles .. '" -type f'):lines() do
-      if not file:find('fonts') then
+      if not file:find("fonts") then
         table.insert(results, file)
       end
     end
 
-    local global = require 'core.global'
+    local global = require("core.global")
     for file in io.popen('find "' .. global.vim_path .. '" -type f'):lines() do
       table.insert(results, file)
     end
 
     builtin.dotfiles = function(opts)
-      opts = themes.get_dropdown {}
+      opts = themes.get_dropdown({})
       pickers.new(opts, {
-        prompt = 'dotfiles',
-        finder = finders.new_table {results = results},
+        prompt = "dotfiles",
+        finder = finders.new_table({ results = results }),
         previewer = previewers.cat.new(opts),
-        sorter = sorters.get_generic_fuzzy_sorter()
+        sorter = sorters.get_generic_fuzzy_sorter(),
       }):find()
     end
   end
@@ -258,27 +262,27 @@ end
 local custom_actions = {}
 
 function custom_actions.send_to_qflist(prompt_bufnr)
-  require('telescope.actions').send_to_qflist(prompt_bufnr)
-  require('user').qflist.open()
+  require("telescope.actions").send_to_qflist(prompt_bufnr)
+  require("user").qflist.open()
 end
 
 function custom_actions.smart_send_to_qflist(prompt_bufnr)
-  require('telescope.actions').smart_send_to_qflist(prompt_bufnr)
-  require('user').qflist.open()
+  require("telescope.actions").smart_send_to_qflist(prompt_bufnr)
+  require("user").qflist.open()
 end
 
-function custom_actions.page_up(prompt_bufnr)
-  require('telescope.actions.set').shift_selection(prompt_bufnr, -5)
-end
-
-function custom_actions.page_down(prompt_bufnr)
-  require('telescope.actions.set').shift_selection(prompt_bufnr, 5)
-end
+-- function custom_actions.page_up(prompt_bufnr)
+--   require('telescope.actions.set').shift_selection(prompt_bufnr, -5)
+-- end
+--
+-- function custom_actions.page_down(prompt_bufnr)
+--   require('telescope.actions.set').shift_selection(prompt_bufnr, 5)
+-- end
 
 function custom_actions.change_directory(prompt_bufnr)
-  local entry = require('telescope.actions.state').get_selected_entry()
-  require('telescope.actions').close(prompt_bufnr)
-  vim.cmd('lcd ' .. entry.path)
+  local entry = require("telescope.actions.state").get_selected_entry()
+  require("telescope.actions").close(prompt_bufnr)
+  vim.cmd("lcd " .. entry.path)
 end
 
 -- https://github.com/nvim-telescope/telescope.nvim/issues/416#issuecomment-841273053
@@ -300,11 +304,11 @@ function custom_actions.fzf_multi_select(prompt_bufnr)
 end
 
 M.setup = function()
-  telescope.setup {
+  telescope.setup({
     defaults = {
       shorten_path = true,
       prompt_prefix = "🙊",
-      layout_strategy = 'flex',
+      layout_strategy = "flex",
       layout_config = {
         prompt_position = "top",
         width = 0.9,
@@ -313,7 +317,7 @@ M.setup = function()
           -- height_padding = 0.1,
           -- preview_cutoff = 60,
           -- width = width_for_nopreview,
-          preview_width = horizontal_preview_width
+          preview_width = horizontal_preview_width,
         },
         vertical = {
           -- width_padding = 0.05,
@@ -321,21 +325,21 @@ M.setup = function()
           width = 0.75,
           height = 0.85,
           preview_height = 0.4,
-          mirror = true
+          mirror = true,
         },
         flex = {
           -- change to horizontal after 120 cols
-          flip_columns = 120
-        }
+          flip_columns = 120,
+        },
       },
       sorting_strategy = "ascending",
-      selection_strategy = 'closest',
-      scroll_strategy = 'cycle',
+      selection_strategy = "closest",
+      scroll_strategy = "cycle",
       selection_caret = [[🦑]],
-      file_previewer = require"telescope.previewers".vim_buffer_cat.new,
-      grep_previewer = require"telescope.previewers".vim_buffer_vimgrep.new,
-      qflist_previewer = require"telescope.previewers".vim_buffer_qflist.new,
-      extensions = {fzy_native = {override_generic_sorter = false, override_file_sorter = true}},
+      file_previewer = require("telescope.previewers").vim_buffer_cat.new,
+      grep_previewer = require("telescope.previewers").vim_buffer_vimgrep.new,
+      qflist_previewer = require("telescope.previewers").vim_buffer_qflist.new,
+      extensions = { fzy_native = { override_generic_sorter = false, override_file_sorter = true } },
       -- check telescoe/mappings.lua
       -- n<C-u/d> pageup/down in preview
       -- i <C-_> help keymap
@@ -351,29 +355,29 @@ M.setup = function()
             local height = vim.api.nvim_win_get_height(results_win)
             action_set.shift_selection(prompt_bufnr, math.floor(height / 2))
           end,
-          ['<Space>'] = {
+          ["<Space>"] = {
             actions.toggle_selection,
-            type = 'action',
+            type = "action",
             -- See https://github.com/nvim-telescope/telescope.nvim/pull/890
-            keymap_opts = {nowait = true}
+            keymap_opts = { nowait = true },
           },
           ["<C-p>"] = function(prompt_bufnr)
             local results_win = state.get_status(prompt_bufnr).results_win
             local height = vim.api.nvim_win_get_height(results_win)
             action_set.shift_selection(prompt_bufnr, -math.floor(height / 2))
           end,
-          ['<C-q>'] = custom_actions.smart_send_to_qflist,
+          ["<C-q>"] = custom_actions.smart_send_to_qflist,
         },
         i = {
-          ['<S-Down>'] = actions.cycle_history_next,
-          ['<S-Up>'] = actions.cycle_history_prev,
+          ["<S-Down>"] = actions.cycle_history_next,
+          ["<S-Up>"] = actions.cycle_history_prev,
           -- ['<Down>'] = actions.move_selection_next,
           -- ['<Up>'] = actions.move_selection_previous,
-          ['<C-q>'] = custom_actions.smart_send_to_qflist,
+          ["<C-q>"] = custom_actions.smart_send_to_qflist,
           -- ['w'] = myactions.smart_send_to_qflist,
           -- ['e'] = myactions.send_to_qflist,
-          ['<c-j>'] = actions.toggle_selection + actions.move_selection_next,
-          ['<c-k>'] = actions.toggle_selection + actions.move_selection_previous,
+          ["<c-j>"] = actions.toggle_selection + actions.move_selection_next,
+          ["<c-k>"] = actions.toggle_selection + actions.move_selection_previous,
           ["<C-n>"] = function(prompt_bufnr)
             local results_win = state.get_status(prompt_bufnr).results_win
             local height = vim.api.nvim_win_get_height(results_win)
@@ -383,37 +387,37 @@ M.setup = function()
             local results_win = state.get_status(prompt_bufnr).results_win
             local height = vim.api.nvim_win_get_height(results_win)
             action_set.shift_selection(prompt_bufnr, -math.floor(height / 2))
-          end
-        }
-      }
-    }
-  }
+          end,
+        },
+      },
+    },
+  })
 
   telescope.load_extension("dotfiles")
   telescope.load_extension("gosource")
+  -- telescope.load_extension("notify")
 
-  loader('telescope-fzy-native.nvim telescope-fzf-native.nvim telescope-live-grep-raw.nvim')
-  loader('sqlite.lua')
-  loader('telescope-frecency.nvim project.nvim telescope-zoxide nvim-neoclip.lua')
+  loader("telescope-fzy-native.nvim telescope-fzf-native.nvim telescope-live-grep-raw.nvim")
+  loader("sqlite.lua")
+  loader("telescope-frecency.nvim project.nvim telescope-zoxide nvim-neoclip.lua")
 
-  telescope.setup {
+  telescope.setup({
     extensions = {
       fzf = {
         fuzzy = true, -- false will only do exact matching
         override_generic_sorter = true, -- override the generic sorter
         override_file_sorter = true, -- override the file sorter
-        case_mode = "smart_case" -- or "ignore_case" or "respect_case"
+        case_mode = "smart_case", -- or "ignore_case" or "respect_case"
         -- the default case_mode is "smart_case"
-      }
-    }
-  }
+      },
+    },
+  })
 
-  telescope.load_extension('fzf')
-  telescope.setup {
-    extensions = {fzy_native = {override_generic_sorter = false, override_file_sorter = true}}
-  }
-  telescope.load_extension('fzy_native')
-
+  telescope.load_extension("fzf")
+  telescope.setup({
+    extensions = { fzy_native = { override_generic_sorter = false, override_file_sorter = true } },
+  })
+  telescope.load_extension("fzy_native")
 end
 
 return M
