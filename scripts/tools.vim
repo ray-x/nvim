@@ -28,7 +28,25 @@ function! FindProjectRoot(lookFor)
 endfunction
    " 搜索 .git 为项目路径
 
+"https://github.com/sindrets/diffview.nvim/issues/105
+" The last line in the command opens the local cwd for each window if you have
+" a netrw-like explorer. Remove this line if you don't.
+command! -bar -nargs=+ -complete=dir CompareDir
+            \ tabnew | let t:paths = [<f-args>] | let t:compare_mode = 1 | vsp
+            \ | silent exe '1windo lcd ' . t:paths[0] . ' | ' . ' 2windo lcd ' . t:paths[1]
+            \ | windo exe 'exe "edit " . getcwd()'
 
+augroup CompareDir
+    au!
+    au BufWinLeave * if get(t:, "compare_mode", 0) | diffoff | endif
+    au BufEnter * if get(t:, "compare_mode", 0)
+                \ |     if &bt ==# ""
+                \ |         setl diff cursorbind scrollbind fdm=diff fdl=0
+                \ |     else
+                \ |         setl nodiff nocursorbind noscrollbind
+                \ |     endif
+                \ | endif
+augroup END
 command Jsonformat %!python -m json.tool
 command Hex :%!xxd
 " command! Jsonf :execute '%!python -c "import json,sys,collections,re; sys.stdout.write(re.sub(r\"\\\u[0-9a-f]{4}\", lambda m:m.group().decode(\"unicode_escape\").encode(\"utf-8\"),json.dumps(json.load(sys.stdin, object_pairs_hook=collections.OrderedDict), indent=2)))"'
