@@ -52,9 +52,12 @@ lang[path .. "navigator.lua"] = {
   opt = true,
 }
 
-lang[path .. "liveview.nvim"] = {
+lang[path .. "web-tools.nvim"] = {
   ft = { "html", "javascript" },
   opt = true,
+  config = function ()
+    require('web-tools').setup()
+  end
 }
 
 -- lang["gcmt/wildfire.vim"] = {
