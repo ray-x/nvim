@@ -359,7 +359,6 @@ Use `git ls-files` for git files, use `find ./ *` for all files under work direc
 function config.floaterm()
   -- Set floaterm window's background to black
   -- Set floating window border line color to cyan, and background to orange
-  print("toggle term")
   require("toggleterm").setup({
     -- size can be a number or function which is passed the current terminal
     size = function(term)
