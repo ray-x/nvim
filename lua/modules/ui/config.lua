@@ -22,7 +22,7 @@ end
 function config.notify()
   require("notify").setup({
     -- Animation style (see below for details)
-    stages = "fade_in_slide_out",
+    stages = "fade_in_slide_out", -- "slide",
 
     -- Function called when a new window is opened, use for changing win settings/config
     on_open = nil,
@@ -38,7 +38,16 @@ function config.notify()
 
     -- For stages that change opacity this is treated as the highlight behind the window
     -- Set this to either a highlight group or an RGB hex value e.g. "#000000"
-    background_colour = "Normal",
+    background_colour = function()
+      local group_bg = vim.fn.synIDattr(vim.fn.synIDtrans(vim.fn.hlID("Normal")), "bg#")
+      if group_bg == "" or group_bg == "none" then
+        group_bg = vim.fn.synIDattr(vim.fn.synIDtrans(vim.fn.hlID("Float")), "bg#")
+        if group_bg == "" or group_bg == "none" then
+          return "#000000"
+        end
+      end
+      return group_bg
+    end,
 
     -- Minimum width for notification windows
     minimum_width = 50,
@@ -436,6 +445,83 @@ function config.minimap()
   else
     vim.g.minimap_width = 2
   end
+end
+
+function config.wilder()
+  vim.cmd([[
+    call wilder#setup({
+      \ 'modes': [':', '/', '?'],
+      \ 'next_key': '<Tab>',
+      \ 'previous_key': '<S-Tab>',
+      \ 'accept_key': '<Down>',
+      \ 'reject_key': '<Up>',
+      \ })]])
+
+  vim.cmd([[call wilder#set_option('pipeline', [
+      \   wilder#branch(
+      \     wilder#python_file_finder_pipeline({
+      \       'file_command': {_, arg -> stridx(arg, '.') != -1 ? ['fd', '-tf', '-H'] : ['fd', '-tf']},
+      \       'dir_command': ['fd', '-td'],
+      \     }),
+      \     wilder#substitute_pipeline({
+      \       'pipeline': wilder#python_search_pipeline({
+      \         'skip_cmdtype_check': 1,
+      \         'pattern': wilder#python_fuzzy_pattern({
+      \           'start_at_boundary': 0,
+      \         }),
+      \       }),
+      \     }),
+      \     wilder#cmdline_pipeline({
+      \       'fuzzy': 1,
+      \       'fuzzy_filter': has('nvim') ? wilder#lua_fzy_filter() : wilder#vim_fuzzy_filter(),
+      \     }),
+      \     [
+      \       wilder#check({_, x -> empty(x)}),
+      \       wilder#history(),
+      \     ],
+      \     wilder#python_search_pipeline({
+      \       'pattern': wilder#python_fuzzy_pattern({
+      \         'start_at_boundary': 0,
+      \       }),
+      \     }),
+      \   ),
+      \ ])
+
+let s:highlighters = [
+      \ wilder#pcre2_highlighter(),
+      \ wilder#lua_fzy_highlighter(),
+      \ ]
+
+let s:popupmenu_renderer = wilder#popupmenu_renderer(wilder#popupmenu_border_theme({
+      \ 'border': 'rounded',
+      \ 'empty_message': wilder#popupmenu_empty_message_with_spinner(),
+      \ 'highlighter': s:highlighters,
+      \ 'left': [
+      \   ' ',
+      \   wilder#popupmenu_devicons(),
+      \   wilder#popupmenu_buffer_flags({
+      \     'flags': ' a + ',
+      \     'icons': {'+': '', 'a': '', 'h': ''},
+      \   }),
+      \ ],
+      \ 'right': [
+      \   ' ',
+      \   wilder#popupmenu_scrollbar(),
+      \ ],
+      \ }))
+
+let s:wildmenu_renderer = wilder#wildmenu_renderer({
+      \ 'highlighter': s:highlighters,
+      \ 'separator': ' · ',
+      \ 'left': [' ', wilder#wildmenu_spinner(), ' '],
+      \ 'right': [' ', wilder#wildmenu_index()],
+      \ })
+
+call wilder#set_option('renderer', wilder#renderer_mux({
+      \ ':': s:popupmenu_renderer,
+      \ '/': s:popupmenu_renderer,
+      \ 'substitute': s:wildmenu_renderer,
+      \ }))]])
 end
 
 vim.api.nvim_exec(

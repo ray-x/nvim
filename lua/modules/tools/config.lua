@@ -1,7 +1,7 @@
 local config = {}
 
 local function load_env_file()
-  local env_file = require'core.global'.home .. "/.env"
+  local env_file = require("core.global").home .. "/.env"
   local env_contents = {}
   if vim.fn.filereadable(env_file) ~= 1 then
     print(".env file does not exist")
@@ -343,35 +343,87 @@ function config.markdown()
   vim.g.vim_markdown_edit_url_in = "vsplit"
   vim.g.vim_markdown_strikethrough = 1
   vim.g.vim_markdown_fenced_languages = {
-    "c++=javascript", "js=javascript", "json=javascript", "jsx=javascript", "tsx=javascript"
+    "c++=javascript",
+    "js=javascript",
+    "json=javascript",
+    "jsx=javascript",
+    "tsx=javascript",
   }
 end
 
 --[[
 Use `git ls-files` for git files, use `find ./ *` for all files under work directory.
-]] --
+]]
+--
 
 function config.floaterm()
   -- Set floaterm window's background to black
   -- Set floating window border line color to cyan, and background to orange
-  vim.g.floaterm_wintype = "float"
-  vim.g.floaterm_width = 0.9
-  vim.g.floaterm_height = 0.9
-  vim.cmd("hi Floaterm guibg=black")
-  -- vim.cmd('hi FloatermBorder guibg=orange guifg=cyan')
-  vim.cmd("command! FZF FloatermNew fzf --autoclose=1")
-  vim.cmd("command! NNN FloatermNew --autoclose=1 --height=0.96 --width=0.96 nnn")
-  vim.cmd("command! FN FloatermNew --autoclose=1 --height=0.96 --width=0.96")
-  vim.cmd("command! LG FloatermNew --autoclose=1 --height=0.96 --width=0.96 lazygit")
-  vim.cmd("command! Ranger FloatermNew --autoclose=1 --height=0.96 --width=0.96 ranger")
+  print("toggle term")
+  require("toggleterm").setup({
+    -- size can be a number or function which is passed the current terminal
+    size = function(term)
+      if term.direction == "horizontal" then
+        return 15
+      elseif term.direction == "vertical" then
+        return vim.o.columns * 0.4
+      end
+    end,
+    open_mapping = [[<c-\>]],
+    -- on_open = fun(t: Terminal), -- function to run when the terminal opens
+    -- on_close = fun(t: Terminal), -- function to run when the terminal closes
+    hide_numbers = true, -- hide the number column in toggleterm buffers
+    shade_filetypes = {},
+    shade_terminals = true,
+    shading_factor = "<number>", -- the degree by which to darken to terminal colour, default: 1 for dark backgrounds, 3 for light
+    start_in_insert = true,
+    insert_mappings = true, -- whether or not the open mapping applies in insert mode
+    persist_size = true,
+    direction = "float",
+    close_on_exit = true, -- close the terminal window when the process exits
+    shell = vim.o.shell, -- change the default shell
+    -- This field is only relevant if direction is set to 'float'
+    float_opts = {
+      -- The border key is *almost* the same as 'nvim_open_win'
+      -- see :h nvim_open_win for details on borders however
+      -- the 'curved' border is a custom border type
+      -- not natively supported but implemented in this plugin.
+      border = "curved",
+      -- width = <value>,
+      -- height = <value>,
+      winblend = 3,
+      highlights = {
+        border = "Normal",
+        background = "Normal",
+      },
+    },
+  })
+  local Terminal = require("toggleterm.terminal").Terminal
+  local lazygit = Terminal:new({ cmd = "lazygit", hidden = true })
 
-  vim.g.floaterm_gitcommit = "split"
-  vim.g.floaterm_keymap_new = "<F19>" -- S-f7
-  vim.g.floaterm_keymap_prev = "<F20>"
-  vim.g.floaterm_keymap_next = "<F21>"
-  vim.g.floaterm_keymap_toggle = "<F24>"
+  function _lazygit_toggle()
+    lazygit:toggle()
+  end
+  vim.cmd("command! LG lua _lazygit_toggle()")
+
+  local fzf = Terminal:new({ cmd = "fzf", hidden = true })
+
+  function _fzf_toggle()
+    lazygit:toggle()
+  end
+  -- vim.cmd('hi FloatermBorder guibg=orange guifg=cyan')
+  vim.cmd("command! FZF lua _fzf_toggle()")
+  -- vim.cmd("command! NNN FloatermNew --autoclose=1 --height=0.96 --width=0.96 nnn")
+  -- vim.cmd("command! FN FloatermNew --autoclose=1 --height=0.96 --width=0.96")
+  -- vim.cmd("command! LG FloatermNew --autoclose=1 --height=0.96 --width=0.96 lazygit")
+  -- vim.cmd("command! Ranger FloatermNew --autoclose=1 --height=0.96 --width=0.96 ranger")
+
+  -- vim.g.floaterm_gitcommit = "split"
+  -- vim.g.floaterm_keymap_new = "<F19>" -- S-f7
+  -- vim.g.floaterm_keymap_prev = "<F20>"
+  -- vim.g.floaterm_keymap_next = "<F21>"
+  -- vim.g.floaterm_keymap_toggle = "<F24>"
   -- Use `git ls-files` for git files, use `find ./ *` for all files under work directory.
-  -- vim.cmd([[ command! Sad lua Sad()]])
   -- grep -rli 'old-word' * | xargs -i@ sed -i 's/old-word/new-word/g' @
   --  rg -l 'old-word' * | xargs -i@ sed -i 's/old-word/new-word/g' @
 end
@@ -391,7 +443,6 @@ function config.spelunker()
 end
 
 function config.spellcheck()
-
   vim.cmd("highlight def link SpelunkerSpellBad SpellBad")
   vim.cmd("highlight def link SpelunkerComplexOrCompoundWord Rare")
 
@@ -401,12 +452,12 @@ end
 function config.grammcheck()
   -- body
   if not packer_plugins["rhysd/vim-grammarous"] or not packer_plugins["rhysd/vim-grammarous"].loaded then
-    require"packer".loader("vim-grammarous")
+    require("packer").loader("vim-grammarous")
   end
-  vim.cmd [[GrammarousCheck]]
+  vim.cmd([[GrammarousCheck]])
 end
 function config.vim_test()
-  vim.g["test#strategy"] = {nearest = "neovim", file = "neovim", suite = "neovim"}
+  vim.g["test#strategy"] = { nearest = "neovim", file = "neovim", suite = "neovim" }
   vim.g["test#neovim#term_position"] = "vert botright 60"
   vim.g["test#go#runner"] = "ginkgo"
   -- nmap <silent> t<C-n> :TestNearest<CR>
@@ -420,24 +471,25 @@ function config.mkdp()
   -- print("mkdp")
   vim.g.mkdp_command_for_global = 1
   vim.cmd(
-      [[let g:mkdp_preview_options = { 'mkit': {}, 'katex': {}, 'uml': {}, 'maid': {}, 'disable_sync_scroll': 0, 'sync_scroll_type': 'middle', 'hide_yaml_meta': 1, 'sequence_diagrams': {}, 'flowchart_diagrams': {}, 'content_editable': v:true, 'disable_filename': 0 }]])
+    [[let g:mkdp_preview_options = { 'mkit': {}, 'katex': {}, 'uml': {}, 'maid': {}, 'disable_sync_scroll': 0, 'sync_scroll_type': 'middle', 'hide_yaml_meta': 1, 'sequence_diagrams': {}, 'flowchart_diagrams': {}, 'content_editable': v:true, 'disable_filename': 0 }]]
+  )
 end
 
 function config.snap()
-  local snap = require 'snap'
-  local limit = snap.get "consumer.limit"
-  local select_vimgrep = snap.get "select.vimgrep"
-  local preview_file = snap.get "preview.file"
-  local preview_vimgrep = snap.get "preview.vimgrep"
-  local producer_vimgrep = snap.get "producer.ripgrep.vimgrep"
+  local snap = require("snap")
+  local limit = snap.get("consumer.limit")
+  local select_vimgrep = snap.get("select.vimgrep")
+  local preview_file = snap.get("preview.file")
+  local preview_vimgrep = snap.get("preview.vimgrep")
+  local producer_vimgrep = snap.get("producer.ripgrep.vimgrep")
   function _G.snap_grep()
     snap.run({
       prompt = "  Grep  ",
       producer = limit(10000, producer_vimgrep),
       select = select_vimgrep.select,
-      steps = {{consumer = snap.get "consumer.fzf", config = {prompt = "FZF>"}}},
+      steps = { { consumer = snap.get("consumer.fzf"), config = { prompt = "FZF>" } } },
       multiselect = select_vimgrep.multiselect,
-      views = {preview_vimgrep}
+      views = { preview_vimgrep },
     })
   end
 
@@ -447,29 +499,30 @@ function config.snap()
       producer = limit(10000, producer_vimgrep),
       select = select_vimgrep.select,
       multiselect = select_vimgrep.multiselect,
-      views = {preview_vimgrep},
-      initial_filter = vim.fn.expand("<cword>")
+      views = { preview_vimgrep },
+      initial_filter = vim.fn.expand("<cword>"),
     })
   end
 
-  snap.maps {
-    {"<Leader>rg", snap.config.file {producer = "ripgrep.file"}},
+  snap.maps({
+    { "<Leader>rg", snap.config.file({ producer = "ripgrep.file" }) },
     -- {"<Leader>fb", snap.config.file {producer = "vim.buffer"}},
-    {"<Leader>fo", snap.config.file {producer = "vim.oldfile"}},
+    { "<Leader>fo", snap.config.file({ producer = "vim.oldfile" }) },
     -- {"<Leader>ff", snap.config.vimgrep {}},
     {
-      "<Leader>fz", function()
-        snap.run {
+      "<Leader>fz",
+      function()
+        snap.run({
           prompt = "  Grep  ",
-          producer = limit(1000, snap.get'producer.ripgrep.vimgrep'.args({'--ignore-case'})),
-          steps = {{consumer = snap.get 'consumer.fzf', config = {prompt = " Fzf  "}}},
-          select = snap.get'select.file'.select,
-          multiselect = snap.get'select.file'.multiselect,
-          views = {snap.get 'preview.vimgrep'}
-        }
-      end
-    }
-  }
+          producer = limit(1000, snap.get("producer.ripgrep.vimgrep").args({ "--ignore-case" })),
+          steps = { { consumer = snap.get("consumer.fzf"), config = { prompt = " Fzf  " } } },
+          select = snap.get("select.file").select,
+          multiselect = snap.get("select.file").multiselect,
+          views = { snap.get("preview.vimgrep") },
+        })
+      end,
+    },
+  })
 end
 
 return config

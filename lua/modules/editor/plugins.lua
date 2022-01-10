@@ -215,4 +215,10 @@ editor["nvim-neorg/neorg"] = {
   setup = vim.cmd("autocmd BufRead,BufNewFile *.norg setlocal filetype=norg"),
   requires = { "nvim-neorg/neorg-telescope", ft = { "norg" } },
 }
+
+editor["hrsh7th/vim-searchx"] = {
+  event = { "CmdwinEnter", "CmdlineEnter" },
+  conf = conf.searchx
+}
+
 return editor

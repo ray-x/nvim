@@ -115,11 +115,12 @@ tools["turbio/bracey.vim"] = {
 }
 
 -- nvim-toggleterm.lua ?
-tools["voldikss/vim-floaterm"] = {
-  cmd = { "FloatermNew", "FloatermToggle" },
-  setup = conf.floaterm,
-  opt = true,
+tools["akinsho/toggleterm.nvim"] = {
+  cmd = { "ToggleTerm", "TermExec" },
+  event = { "CmdwinEnter", "CmdlineEnter" },
+  config = conf.floaterm,
 }
+
 --
 tools["nanotee/zoxide.vim"] = { cmd = { "Z", "Lz", "Zi" } }
 
