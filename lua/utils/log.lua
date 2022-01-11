@@ -1,9 +1,10 @@
-local log_path = vim.fn.expand("$HOME") .. "/tmp/neovim_debug.log"
+local global = require("core.global")
+local log_path = global.log_path
 
 local log = function(...)
-  local arg = {...}
+  local arg = { ... }
   local str = "שׁ "
-  local lineinfo = ''
+  local lineinfo = ""
 
   local info = debug.getinfo(2, "Sl")
   lineinfo = info.short_src .. ":" .. info.currentline
@@ -28,8 +29,4 @@ local log = function(...)
   end
 end
 
-
-
-
-
-return {lprint = log}
+return { lprint = log }
