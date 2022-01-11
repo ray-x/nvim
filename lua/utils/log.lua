@@ -20,6 +20,10 @@ local log = function(...)
   if #str > 2 then
     if log_path ~= nil and #log_path > 3 then
       local f = io.open(log_path, "a+")
+      if f == nil then 
+        print("not found ", log_path) 
+        return 
+      end
       io.output(f)
       io.write(str .. "\n")
       io.close(f)
