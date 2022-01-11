@@ -137,6 +137,13 @@ Please backup this folder if necessary
 The setup should work with nvim0.5.1+ or nvim0.6+. A patched nerd font is needed. Also if you start nvim from terminal,
 make sure it support nerdfont and emoji
 
+### missing sqlite, libsqlite3
+
+Some of the plugin I am using depends on sqlite.
+By default sqlite was installed on MacOS. For other operating system, if you saw error message about sqlite, please
+following the instruction [here to install sqlite](https://github.com/tami5/sqlite.lua#windows)
+
+
 ### Youtube video recording of install process
 
 [Install process](https://youtu.be/5XB28yocmuw)
