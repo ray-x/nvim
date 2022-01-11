@@ -23,7 +23,7 @@ function global:load_variables()
   self.log_dir = string.format("%s%stmp", home, path_sep)
 
   if vim.fn.isdirectory(global.log_dir) == 0 then
-    vim.fn.mkdir(self.log_dir, "p", 0700)
+    vim.fn.mkdir(self.log_dir, "p", 0755)
   end
   self.log_path = string.format("%s%s%s", self.log_dir, path_sep, "neovim_debug.log")
 end
