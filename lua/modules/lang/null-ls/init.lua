@@ -3,6 +3,9 @@ return {
     local null_ls = require("null-ls")
     local lspconfig = require("lspconfig")
 
+    local diagnostics = null_ls.builtins.diagnostics
+    local hover = null_ls.builtins.hover
+    local actions = null_ls.builtins.code_actions
     local sources = {
       null_ls.builtins.formatting.autopep8,
       null_ls.builtins.formatting.rustfmt,
@@ -11,6 +14,24 @@ return {
       null_ls.builtins.code_actions.proselint,
       null_ls.builtins.code_actions.refactoring,
       null_ls.builtins.formatting.prettier,
+      -- hover.dictionary,
+      diagnostics.misspell.with({
+        filetypes = { "markdown", "text", "txt" },
+        args = { "$FILENAME" },
+      }),
+      diagnostics.write_good.with({
+        filetypes = { "markdown", "tex", "" },
+        extra_filetypes = { "txt", "text" },
+        args = { "--text=$TEXT", "--parse" },
+        command = "write-good",
+      }),
+      diagnostics.proselint.with({
+        filetypes = { "markdown", "tex" },
+        extra_filetypes = { "txt", "text" },
+        command = "proselint",
+        args = { "--json" },
+      }),
+      actions.proselint.with({ filetypes = { "markdown", "tex" }, command = "proselint", args = { "--json" } }),
     }
 
     local function exist(bin)

@@ -30,6 +30,11 @@ tools["editorconfig/editorconfig-vim"] = {
   -- ft = { 'go','typescript','javascript','vim','rust','zig','c','cpp' }
 }
 
+tools["ThePrimeagen/git-worktree.nvim"] = {
+  event = { "CmdwinEnter", "CmdlineEnter" },
+  config = conf.worktree,
+}
+
 tools["ThePrimeagen/harpoon"] = {
   opt = true,
   config = function()

@@ -39,7 +39,7 @@ I used following plugin a lots
 
   I followed Raphael(a.k.a glepnir) https://github.com/glepnir/nvim dotfiles. He provides a good wrapper for
   Packer. I have an `overwrite` folder which will override the settings. Also, lots of changes in modules/plugins.
-  luarock setup
+  setup
   A.T.M. nvim-compe/cmp as a completion engine with LSP, LSP saga. vim-multi-cursor, clap/telescope. treesitter,
   lazy load vim-go. So, other than module folder, I could copy/paste everything else from glepnir's configure file,
   which make my life easier.
@@ -50,8 +50,8 @@ I used following plugin a lots
 
 - nvim-lsp with [navigator.lua](https://github.com/ray-x/navigator.lua)
 
-  I turn off vim-go auto-complete/LSP and turn to nvim-lsp. It adds around 200ms bootup time and some of the extensions
-  might crash when I using coc (but it hard to check which becuase ~4 node.js services coc forked)
+  I turn off vim-go auto-complete/LSP and turn to nvim-lsp. It adds around 200ms time and some of the extensions
+  might crash when I using (but it hard to check which because ~4 node.js services coc forked)
   Some useful script from TJ, and [glepnir](https://github.com/glepnir)
 
   nvim-tree: file-explorer (lightweight and fast)
@@ -142,7 +142,6 @@ make sure it support nerdfont and emoji
 Some of the plugin I am using depends on sqlite.
 By default sqlite was installed on MacOS. For other operating system, if you saw error message about sqlite, please
 following the instruction [here to install sqlite](https://github.com/tami5/sqlite.lua#windows)
-
 
 ### Youtube video recording of install process
 

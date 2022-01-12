@@ -17,15 +17,15 @@ end
 
 function config.session()
   local opts = {
-    log_level = 'info',
+    log_level = "info",
     auto_session_enable_last_session = false,
-    auto_session_root_dir = vim.fn.stdpath('data') .. "/sessions/",
+    auto_session_root_dir = vim.fn.stdpath("data") .. "/sessions/",
     auto_session_enabled = true,
     auto_save_enabled = nil,
     auto_restore_enabled = nil,
-    auto_session_suppress_dirs = nil
+    auto_session_suppress_dirs = nil,
   }
-  require('auto-session').setup(opts)
+  require("auto-session").setup(opts)
 end
 
 local function load_dbs()
@@ -40,17 +40,51 @@ local function load_dbs()
   return dbs
 end
 
+function config.worktree()
+  function git_worktree(arg)
+    if arg == "create" then
+      require("telescope").extensions.git_worktree.create_git_worktree()
+    else
+      require("telescope").extensions.git_worktree.git_worktrees()
+    end
+  end
+
+  require("git-worktree").setup({})
+  vim.api.nvim_add_user_command("Worktree", 'lua git_worktree(<f-args>)', {
+    nargs = "*",
+    complete = function()
+      return { "create" }
+    end,
+  })
+
+
+  local Worktree = require("git-worktree")
+  Worktree.on_tree_change(function(op, metadata)
+    if op == Worktree.Operations.Switch then
+      print("Switched from " .. metadata.prev_path .. " to " .. metadata.path)
+    end
+
+    if op == Worktree.Operations.Create then
+      print("Create worktree " .. metadata.path)
+    end
+
+    if op == Worktree.Operations.Delete then
+      print("Delete worktree " .. metadata.path)
+    end
+  end)
+end
+
 function config.diffview()
-  local cb = require"diffview.config".diffview_callback
-  require"diffview".setup {
+  local cb = require("diffview.config").diffview_callback
+  require("diffview").setup({
     diff_binaries = false, -- Show diffs for binaries
     use_icons = true, -- Requires nvim-web-devicons
     enhanced_diff_hl = false, -- See ':h diffview-config-enhanced_diff_hl'
-    signs = {fold_closed = "", fold_open = ""},
+    signs = { fold_closed = "", fold_open = "" },
     file_panel = {
       position = "left", -- One of 'left', 'right', 'top', 'bottom'
       width = 35, -- Only applies when position is 'left' or 'right'
-      height = 10 -- Only applies when position is 'top' or 'bottom'
+      height = 10, -- Only applies when position is 'top' or 'bottom'
     },
     key_bindings = {
       -- The `view` bindings are active in the diff buffers, only when the current
@@ -59,7 +93,7 @@ function config.diffview()
         ["<tab>"] = cb("select_next_entry"), -- Open the diff for the next file
         ["<s-tab>"] = cb("select_prev_entry"), -- Open the diff for the previous file
         ["<leader>e"] = cb("focus_files"), -- Bring focus to the files panel
-        ["<leader>b"] = cb("toggle_files") -- Toggle the files panel.
+        ["<leader>b"] = cb("toggle_files"), -- Toggle the files panel.
       },
       file_panel = {
         ["j"] = cb("next_entry"), -- Bring the cursor to the next file entry
@@ -72,21 +106,21 @@ function config.diffview()
         ["<tab>"] = cb("select_next_entry"),
         ["<s-tab>"] = cb("select_prev_entry"),
         ["<leader>e"] = cb("focus_files"),
-        ["<leader>b"] = cb("toggle_files")
-      }
-    }
-  }
+        ["<leader>b"] = cb("toggle_files"),
+      },
+    },
+  })
 end
 
 function config.vim_dadbod_ui()
   if packer_plugins["vim-dadbod"] and not packer_plugins["vim-dadbod"].loaded then
-    require"packer".loader("vim-dadbod")
+    require("packer").loader("vim-dadbod")
   end
   vim.g.db_ui_show_help = 0
   vim.g.db_ui_win_position = "left"
   vim.g.db_ui_use_nerd_fonts = 1
   vim.g.db_ui_winwidth = 35
-  vim.g.db_ui_save_location = require'core.global'.home .. "/.cache/vim/db_ui_queries"
+  vim.g.db_ui_save_location = require("core.global").home .. "/.cache/vim/db_ui_queries"
   vim.g.dbs = load_dbs()
 end
 
@@ -104,7 +138,7 @@ function config.vim_vista()
     typescript = "nvim_lsp",
     typescriptreact = "nvim_lsp",
     go = "nvim_lsp",
-    lua = "nvim_lsp"
+    lua = "nvim_lsp",
   }
 
   -- vim.g['vista#renderer#icons'] = {['function'] = "", ['method'] = "ℱ", variable = "כֿ"}
@@ -120,71 +154,71 @@ end
 function config.clap()
   vim.g.clap_preview_size = 10
   vim.g.airline_powerline_fonts = 1
-  vim.g.clap_layout = {width = "80%", row = "8%", col = "10%", height = "34%"} -- height = "40%", row = "17%", relative = "editor",
+  vim.g.clap_layout = { width = "80%", row = "8%", col = "10%", height = "34%" } -- height = "40%", row = "17%", relative = "editor",
   -- vim.g.clap_popup_border = "rounded"
-  vim.g.clap_selected_sign = {text = "", texthl = "ClapSelectedSign", linehl = "ClapSelected"}
+  vim.g.clap_selected_sign = { text = "", texthl = "ClapSelectedSign", linehl = "ClapSelected" }
   vim.g.clap_current_selection_sign = {
     text = "",
     texthl = "ClapCurrentSelectionSign",
-    linehl = "ClapCurrentSelection"
+    linehl = "ClapCurrentSelection",
   }
   -- vim.g.clap_always_open_preview = true
   vim.g.clap_preview_direction = "UD"
   -- if vim.g.colors_name == 'zephyr' then
-  vim.g.clap_theme = 'material_design_dark'
+  vim.g.clap_theme = "material_design_dark"
   vim.api.nvim_command(
-      "autocmd FileType clap_input lua require'cmp'.setup.buffer { completion = {autocomplete = false} }")
+    "autocmd FileType clap_input lua require'cmp'.setup.buffer { completion = {autocomplete = false} }"
+  )
   -- end
   -- vim.api.nvim_command("autocmd FileType clap_input call compe#setup({ 'enabled': v:false }, 0)")
 end
 
 function config.clap_after()
   if not packer_plugins["nvim-cmp"].loaded then
-    require"packer".loader("nvim-cmp")
+    require("packer").loader("nvim-cmp")
   end
 end
 
 function config.project()
-    require("project_nvim").setup {
-      datapath = vim.fn.stdpath("data"),
-      ignore_lsp = {'efm'},
-      exclude_dirs = {"~/.cargo/*"},
-      silent_chdir = false
-      -- your configuration comes here
-      -- or leave it empty to use the default settings
-      -- refer to the configuration section below
-    }
-    require 'utils.telescope'
-    require('telescope').load_extension('projects')
-
+  require("project_nvim").setup({
+    datapath = vim.fn.stdpath("data"),
+    ignore_lsp = { "efm" },
+    exclude_dirs = { "~/.cargo/*" },
+    silent_chdir = false,
+    -- your configuration comes here
+    -- or leave it empty to use the default settings
+    -- refer to the configuration section below
+  })
+  require("utils.telescope")
+  require("telescope").load_extension("projects")
 end
 
 function config.vgit()
   -- use this as a diff tool (faster than Diffview)
   -- there are overlaps with gitgutter. following are nice features
-  require('vgit').setup({
+  require("vgit").setup({
     keymaps = {
-      ['n <leader>ga'] = 'actions', -- show all commands in telescope
-      ['n <leader>ba'] = 'buffer_gutter_blame_preview', -- show all blames
-      ['n <leader>bp'] = 'buffer_blame_preview', -- buffer diff
-      ['n <leader>bh'] = 'buffer_history_preview', -- buffer commit history DiffviewFileHistory
-      ['n <leader>gp'] = 'buffer_staged_diff_preview', -- diff for staged changes
-      ['n <leader>pd'] = 'project_diff_preview' -- diffview is slow
+      ["n <leader>ga"] = "actions", -- show all commands in telescope
+      ["n <leader>ba"] = "buffer_gutter_blame_preview", -- show all blames
+      ["n <leader>bp"] = "buffer_blame_preview", -- buffer diff
+      ["n <leader>bh"] = "buffer_history_preview", -- buffer commit history DiffviewFileHistory
+      ["n <leader>gp"] = "buffer_staged_diff_preview", -- diff for staged changes
+      ["n <leader>pd"] = "project_diff_preview", -- diffview is slow
     },
     controller = {
       hunks_enabled = false, -- gitsigns
       blames_enabled = false,
-      diff_strategy = 'index',
-      diff_preference = 'vertical',
+      diff_strategy = "index",
+      diff_preference = "vertical",
       predict_hunk_signs = true,
       predict_hunk_throttle_ms = 500,
       predict_hunk_max_lines = 50000,
       blame_line_throttle_ms = 250,
       show_untracked_file_signs = true,
-      action_delay_ms = 500
-    }
+      action_delay_ms = 500,
+    },
   })
-  require"packer".loader("telescope.nvim")
+  require("packer").loader("telescope.nvim")
   -- print('vgit')
   -- require("vgit")._buf_attach()
 end
@@ -197,9 +231,9 @@ function config.neogit()
     -- customize displayed signs
     signs = {
       -- { CLOSED, OPENED }
-      section = {">", "v"},
-      item = {">", "v"},
-      hunk = {"", ""}
+      section = { ">", "v" },
+      item = { ">", "v" },
+      hunk = { "", "" },
     },
     integrations = {
       -- Neogit only provides inline diffs. If you want a more traditional way to look at diffs, you can use `sindrets/diffview.nvim`.
@@ -214,7 +248,7 @@ function config.neogit()
       --   }
       -- }
       --
-      diffview = true
+      diffview = true,
     },
     -- override/add mappings
     mappings = {
@@ -223,53 +257,53 @@ function config.neogit()
         -- Adds a mapping with "B" as key that does the "BranchPopup" command
         ["B"] = "BranchPopup",
         -- Removes the default mapping of "s"
-        ["s"] = ""
-      }
-    }
+        ["s"] = "",
+      },
+    },
   })
 end
 
 function config.gitsigns()
   if not packer_plugins["plenary.nvim"].loaded then
-    require'packer'.loader("plenary.nvim")
+    require("packer").loader("plenary.nvim")
   end
-  require("gitsigns").setup {
+  require("gitsigns").setup({
     signs = {
-      add = {hl = "GitGutterAdd", text = "│", numhl = "GitSignsAddNr"},
-      change = {hl = "GitGutterChange", text = "│", numhl = "GitSignsChangeNr"},
-      delete = {hl = "GitGutterDelete", text = "ﬠ", numhl = "GitSignsDeleteNr"},
-      topdelete = {hl = "GitGutterDelete", text = "ﬢ", numhl = "GitSignsDeleteNr"},
-      changedelete = {hl = "GitGutterChangeDelete", text = "┊", numhl = "GitSignsChangeNr"}
+      add = { hl = "GitGutterAdd", text = "│", numhl = "GitSignsAddNr" },
+      change = { hl = "GitGutterChange", text = "│", numhl = "GitSignsChangeNr" },
+      delete = { hl = "GitGutterDelete", text = "ﬠ", numhl = "GitSignsDeleteNr" },
+      topdelete = { hl = "GitGutterDelete", text = "ﬢ", numhl = "GitSignsDeleteNr" },
+      changedelete = { hl = "GitGutterChangeDelete", text = "┊", numhl = "GitSignsChangeNr" },
     },
     numhl = false,
     keymaps = {
       -- Default keymap options
       noremap = true,
       buffer = true,
-      ["n ]c"] = {expr = true, '&diff ? \']c\' : \'<cmd>lua require"gitsigns".next_hunk()<CR>\''},
-      ["n [c"] = {expr = true, '&diff ? \'[c\' : \'<cmd>lua require"gitsigns".prev_hunk()<CR>\''},
+      ["n ]c"] = { expr = true, "&diff ? ']c' : '<cmd>lua require\"gitsigns\".next_hunk()<CR>'" },
+      ["n [c"] = { expr = true, "&diff ? '[c' : '<cmd>lua require\"gitsigns\".prev_hunk()<CR>'" },
       ["n <leader>hs"] = '<cmd>lua require"gitsigns".stage_hunk()<CR>',
-      ['v <leader>hs'] = '<cmd>lua require"gitsigns".stage_hunk({vim.fn.line("."), vim.fn.line("v")})<CR>',
+      ["v <leader>hs"] = '<cmd>lua require"gitsigns".stage_hunk({vim.fn.line("."), vim.fn.line("v")})<CR>',
       ["n <leader>hu"] = '<cmd>lua require"gitsigns".undo_stage_hunk()<CR>',
       ["n <leader>hr"] = '<cmd>lua require"gitsigns".reset_hunk()<CR>',
-      ['v <leader>hr'] = '<cmd>lua require"gitsigns".reset_hunk({vim.fn.line("."), vim.fn.line("v")})<CR>',
+      ["v <leader>hr"] = '<cmd>lua require"gitsigns".reset_hunk({vim.fn.line("."), vim.fn.line("v")})<CR>',
       ["n <leader>hp"] = '<cmd>lua require"gitsigns".preview_hunk()<CR>',
       -- ["n <leader>hb"] = '<cmd>lua require"gitsigns".blame_line()<CR>',
       ["n <leader>bs"] = '<cmd>lua require"gitsigns".stage_buffer()<CR>',
       ["n <leader>hq"] = '<cmd>lua do vim.cmd("copen") require"gitsigns".setqflist("all") end <CR>', -- hunk qflist with vgit
       ["o ih"] = ':<C-U>lua require"gitsigns".text_object()<CR>',
-      ["x ih"] = ':<C-U>lua require"gitsigns".text_object()<CR>'
+      ["x ih"] = ':<C-U>lua require"gitsigns".text_object()<CR>',
     },
-    watch_gitdir = {interval = 1000, follow_files = true},
+    watch_gitdir = { interval = 1000, follow_files = true },
     sign_priority = 6,
     status_formatter = nil, -- Use default
     debug_mode = false,
     current_line_blame = true,
-    current_line_blame_opts = {delay = 1500},
+    current_line_blame_opts = { delay = 1500 },
     update_debounce = 300,
     word_diff = true,
-    diff_opts = {internal = true}
-  }
+    diff_opts = { internal = true },
+  })
 end
 
 local function round(x)
@@ -277,21 +311,21 @@ local function round(x)
 end
 
 function config.bqf()
-  require('bqf').setup({
+  require("bqf").setup({
     auto_enable = true,
     preview = {
       win_height = 12,
       win_vheight = 12,
       delay_syntax = 80,
-      border_chars = {'┃', '┃', '━', '━', '┏', '┓', '┗', '┛', '█'}
+      border_chars = { "┃", "┃", "━", "━", "┏", "┓", "┗", "┛", "█" },
     },
-    func_map = {vsplit = '', ptogglemode = 'z,', stoggleup = ''},
+    func_map = { vsplit = "", ptogglemode = "z,", stoggleup = "" },
     filter = {
       fzf = {
-        action_for = {['ctrl-s'] = 'split'},
-        extra_opts = {'--bind', 'ctrl-o:toggle-all', '--prompt', '> '}
-      }
-    }
+        action_for = { ["ctrl-s"] = "split" },
+        extra_opts = { "--bind", "ctrl-o:toggle-all", "--prompt", "> " },
+      },
+    },
   })
 end
 
@@ -301,32 +335,34 @@ function config.dapui()
   \ 'staging': 'postgres://postgres:password@localhost:5432/my-staging-db',
   \ 'wp': 'mysql://root@localhost/wp_awesome' }]])
   require("dapui").setup({
-    icons = {expanded = "⯆", collapsed = "⯈", circular = "↺"},
+    icons = { expanded = "⯆", collapsed = "⯈", circular = "↺" },
 
     mappings = {
       -- Use a table to apply multiple mappings
-      expand = {"<CR>", "<2-LeftMouse>"},
+      expand = { "<CR>", "<2-LeftMouse>" },
       open = "o",
       remove = "d",
-      edit = "e"
+      edit = "e",
     },
     sidebar = {
       elements = {
         -- You can change the order of elements in the sidebar
-        "scopes", "stacks", "watches"
+        "scopes",
+        "stacks",
+        "watches",
       },
       width = 40,
-      position = "left" -- Can be "left" or "right"
+      position = "left", -- Can be "left" or "right"
     },
     tray = {
-      elements = {"repl"},
+      elements = { "repl" },
       height = 10,
-      position = "bottom" -- Can be "bottom" or "top"
+      position = "bottom", -- Can be "bottom" or "top"
     },
     floating = {
       max_height = nil, -- These can be integers or a float between 0 and 1.
-      max_width = nil -- Floats will be treated as percentage of your screen.
-    }
+      max_width = nil, -- Floats will be treated as percentage of your screen.
+    },
   })
 end
 
