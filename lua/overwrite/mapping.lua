@@ -4,7 +4,7 @@ local map_cu = bind.map_cu
 local map_cmd = bind.map_cmd
 local map_args = bind.map_args
 
-local loader = require"packer".loader
+local loader = require("packer").loader
 K = {}
 local function check_back_space()
   local col = vim.fn.col(".") - 1
@@ -40,18 +40,11 @@ local keys = {
   --
   -- Lsp mapp work when insertenter and lsp start
   --
-  -- ["n|<Leader>tc"] = map_cu("Clap colors"):with_noremap():with_silent(),
-  -- ["n|<Leader>bb"] = map_cu("Clap buffers"):with_noremap():with_silent(),
-  -- ["n|<Leader>ff"] = map_cu("Clap grep"):with_noremap():with_silent(),
   ["n|<Leader>fb"] = map_cu("Clap marks"):with_noremap():with_silent(),
-  -- ["n|<C-x><C-f>"] = map_cu("Clap filer"):with_noremap():with_silent(),
   ["n|<Leader>ff"] = map_cu("Clap files ++finder=rg --ignore --hidden --files"):with_noremap():with_silent(),
-  -- ["n|<M-g>"] = map_cu("Clap gfiles"):with_noremap():with_silent(),
   ["n|<Leader>fw"] = map_cu("Clap grep ++query=<Cword>"):with_noremap():with_silent(),
   ["n|<M-h>"] = map_cu("Clap history"):with_noremap():with_silent(),
 
-  -- ["n|<Leader>fW"] = map_cu("Clap windows"):with_noremap():with_silent(),
-  -- ["n|<Leader>fl"] = map_cu("Clap loclist"):with_noremap():with_silent(),
   ["n|<Leader>fu"] = map_cu("Clap git_diff_files"):with_noremap():with_silent(),
   ["n|<Leader>fv"] = map_cu("Clap grep ++query=@visual"):with_noremap():with_silent(),
   ["n|<Leader>fh"] = map_cu("Clap command_history"):with_noremap():with_silent(),
@@ -63,7 +56,7 @@ local keys = {
   ["n|<Leader>di"] = map_cr("<cmd>lua require'dap.ui.variables'.hover()"):with_expr(),
   ["n|<Leader>dw"] = map_cr("<cmd>lua require'dap.ui.widgets'.hover()"):with_expr(), -- TODO: another key?
   ["v|<Leader>di"] = map_cr("<cmd>lua require'dap.ui.variables'.visual_hover()"):with_expr(),
-  ["n|<C-k>"] = map_cmd('v:lua.ctrl_k()'):with_silent():with_expr(),
+  ["n|<C-k>"] = map_cmd("v:lua.ctrl_k()"):with_silent():with_expr(),
 
   -- Plugin QuickRun
   -- ["n|<Leader>r"]     = map_cr("<cmd> lua require'selfunc'.run_command()"):with_noremap():with_silent(),
@@ -98,18 +91,7 @@ local keys = {
   -- clap --
   ["n|<d-C>"] = map_cu("Clap | startinsert"),
   ["i|<d-C>"] = map_cu("Clap | startinsert"):with_noremap():with_silent(),
-  -- ["n|<d-p>"] = map_cu("Clap files | startinsert"),
-  -- ["i|<d-p>"] = map_cu("Clap files | startinsert"):with_noremap():with_silent(),
-  -- ["n|<d-m>"] = map_cu("Clap files | startinsert"),
-  -- ["n|<M-m>"] = map_cu("Clap maps +mode=n | startinsert"),
-  -- ["i|<M-m>"] = map_cu("Clap maps +mode=i | startinsert"),
-  -- ["v|<M-m>"] = map_cu("Clap maps +mode=v | startinsert"),
-
-  -- ["n|<d-f>"] = map_cu("Clap grep ++query=<cword> |  startinsert"),
-  -- ["i|<d-f>"] = map_cu("Clap grep ++query=<cword> |  startinsert"):with_noremap():with_silent(),
   ["n|<Leader>df"] = map_cu("Clap dumb_jump ++query=<cword> | startinsert"),
-  ["i|<Leader>df"] = map_cu("Clap dumb_jump ++query=<cword> | startinsert"):with_noremap():with_silent(),
-  -- ["n|<F2>"] = map_cr(""):with_expr(),
   ["n|<F5>"] = map_cmd("v:lua.run_or_test(v:true)"):with_expr(),
   ["n|<F9>"] = map_cr("GoBreakToggle"),
   -- session
@@ -126,8 +108,7 @@ local keys = {
   ["v|<Leader>rf"] = map_cmd("<esc><cmd>lua require('refactoring').refactor('Extract Function To File')<cr>"),
   ["v|<Leader>rt"] = map_cmd("<esc><cmd>lua require('refactoring').refactor()<cr>"),
 
-  ["v|<Leader>gs"] = map_cmd("<cmd>lua require('utils.git').qf_add()<cr>")
-
+  ["v|<Leader>gs"] = map_cmd("<cmd>lua require('utils.git').qf_add()<cr>"),
 }
 
 --
@@ -142,7 +123,6 @@ vim.cmd([[inoremap  <D-c>  *+yg_]])
 vim.cmd([[inoremap  <D-v>  <CTRL-r>*]])
 
 --
-bind.nvim_load_mapping(keys)
 
 _G.run_or_test = function(debug)
   local ft = vim.bo.filetype
@@ -182,66 +162,87 @@ _G.run_or_test = function(debug)
 end
 
 _G.hop1 = function(ac)
-  if packer_plugins['hop'].loaded ~= true then
-    loader('hop')
+  if packer_plugins["hop"].loaded ~= true then
+    loader("hop")
   end
-  if vim.fn.mode() == 's' then
+  if vim.fn.mode() == "s" then
     -- print(vim.fn.mode(), vim.fn.mode() == 's')
     return vim.cmd('exe "normal! i s"')
   end
   if ac == 1 then
-    require'hop'.hint_char1({direction = require'hop.hint'.HintDirection.AFTER_CURSOR})
+    require("hop").hint_char1({ direction = require("hop.hint").HintDirection.AFTER_CURSOR })
   else
-    require'hop'.hint_char1({direction = require'hop.hint'.HintDirection.BEFORE_CURSOR})
+    require("hop").hint_char1({ direction = require("hop.hint").HintDirection.BEFORE_CURSOR })
   end
 end
 
 _G.Line_ft = function(a)
-
-  if packer_plugins['hop'].loaded ~= true then
-    loader('hop')
+  if packer_plugins["hop"].loaded ~= true then
+    loader("hop")
   end
-  if vim.fn.mode() == 's' then
+  if vim.fn.mode() == "s" then
     return vim.fn.input(a)
   end
   -- check and load hop
-  local loaded, hop = pcall(require, 'hop')
+  local loaded, hop = pcall(require, "hop")
   if not loaded or not hop.initialized then
-    require"packer".loader('hop')
-    loaded, hop = pcall(require, 'hop')
+    require("packer").loader("hop")
+    loaded, hop = pcall(require, "hop")
   end
-  if a == 'f' then
-    require'hop'.hint_char1({
-      direction = require'hop.hint'.HintDirection.AFTER_CURSOR,
+  if a == "f" then
+    require("hop").hint_char1({
+      direction = require("hop.hint").HintDirection.AFTER_CURSOR,
       current_line_only = true,
-      inclusive_jump = true
+      inclusive_jump = true,
     })
   end
-  if a == 'F' then
-    require'hop'.hint_char1({
-      direction = require'hop.hint'.HintDirection.BEFORE_CURSOR,
+  if a == "F" then
+    require("hop").hint_char1({
+      direction = require("hop.hint").HintDirection.BEFORE_CURSOR,
       current_line_only = true,
-      inclusive_jump = true
+      inclusive_jump = true,
     })
   end
 
-  if a == 't' then
-    require'hop'.hint_char1({
-      direction = require'hop.hint'.HintDirection.AFTER_CURSOR,
-      current_line_only = true
+  if a == "t" then
+    require("hop").hint_char1({
+      direction = require("hop.hint").HintDirection.AFTER_CURSOR,
+      current_line_only = true,
     })
   end
-  if a == 'T' then
-    require'hop'.hint_char1({
-      direction = require'hop.hint'.HintDirection.BEFORE_CURSOR,
-      current_line_only = true
+  if a == "T" then
+    require("hop").hint_char1({
+      direction = require("hop.hint").HintDirection.BEFORE_CURSOR,
+      current_line_only = true,
     })
   end
-
 end
 
 vim.cmd([[command! -nargs=*  DebugOpen lua require"modules.lang.dap".prepare()]])
 vim.cmd([[command! -nargs=*  HpoonClear lua require"harpoon.mark".clear_all()]])
+
+local plugmap = require("keymap").map
+
+vim.tbl_extend("force", plugmap, keys)
+lprint(plugmap)
+
+bind.nvim_load_mapping(plugmap)
+local key_maps = bind.all_keys
+lprint(key_maps)
+
+K.get_keymaps = function()
+  local ListView = require("guihua.listview")
+  local win = ListView:new({
+    loc = "top_center",
+    border = "none",
+    prompt = true,
+    enter = true,
+    rect = { height = 20, width = 90 },
+    data = key_maps,
+  })
+end
+
+vim.cmd([[command! -nargs=* Keymaps lua require('overwrite.mapping').get_keymaps()]])
 -- Use `git ls-files` for git files, use `find ./ *` for all files under work directory.
 --
 return K

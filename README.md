@@ -23,7 +23,18 @@ nvim+kitty](https://user-images.githubusercontent.com/1681295/109258178-db2e6d80
 
 ## Battery included
 
-About 100 plugins and 1600 lines of lua and vim code.
+About 120 plugins and 1600 lines of lua and vim code.
+
+### Commands
+
+- Keymaps : floating windows show all keymaps defined in this repo
+- Jsonformat: format json file
+- LG: lazygit
+- FZF: fzf
+- Spell: spell check
+- Gram: Grammar check
+- Kwdb: better `db`
+- Rg: ripgrep with telescope
 
 ## Neovim Plugins
 
