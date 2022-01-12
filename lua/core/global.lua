@@ -20,12 +20,10 @@ function global:load_variables()
   self.path_sep = path_sep
   self.home = home
   self.data_dir = string.format("%s%ssite%s", vim.fn.stdpath("data"), path_sep, path_sep)
-  self.log_dir = string.format("%s%stmp", home, path_sep)
+  self.cache_dir = vim.fn.stdpath("cache")
+  self.log_dir = string.format("%s", self.cache_dir)
 
-  if vim.fn.isdirectory(global.log_dir) == 0 then
-    vim.fn.mkdir(self.log_dir, "p", 0755)
-  end
-  self.log_path = string.format("%s%s%s", self.log_dir, path_sep, "neovim_debug.log")
+  self.log_path = string.format("%s%s%s", self.log_dir, path_sep, "nvim_debug.log")
 end
 
 global:load_variables()
