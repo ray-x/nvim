@@ -1,25 +1,22 @@
 local completion = {}
 local conf = require("modules.completion.config")
+local filetypes = {'html','css', 'javascript', 'java', 'javascriptreact', 'vue','typescript', 'typescriptreact', 'go', 'lua', 'cpp', 'c', 'markdown', 'makefile','python','bash', 'sh', 'php', 'yaml', 'json', 'sql', 'vim', 'sh'}
+
 
 completion["neovim/nvim-lspconfig"] = {
   -- event = 'BufRead',
-  -- ft = {'html','css', 'javascript', 'java', 'javascriptreact', 'vue','typescript', 'typescriptreact', 'go', 'lua', 'cpp', 'c',
-  -- 'markdown', 'makefile','python','bash', 'sh', 'php', 'yaml', 'json', 'sql', 'vim', 'sh'},
   config = conf.nvim_lsp,
   -- event = 'CursorHold',
   opt = true,
 }
-
 if load_coq() then
   completion["ms-jpq/coq_nvim"] = {
     -- opt = true,
-    -- ft = {'html','css', 'javascript', 'java', 'typescript', 'typescriptreact','go', 'python', 'cpp', 'c', 'rust'},
     -- event = "InsertCharPre",
     after = { "coq.artifacts" },
     branch = "coq",
     setup = function()
       vim.g.coq_settings = { auto_start = false }
-      -- vim.g.coq_settings = { auto_start = false, ['display.icons.mode'] = 'short', ['display.pum.kind_context'] = {'',''}, ['display.pum.source_context'] = {'',''} , ['display.pum.fast_close'] = false}
     end,
     config = function()
       vim.g.coq_settings = {

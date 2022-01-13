@@ -32,6 +32,7 @@ editor["windwp/nvim-autopairs"] = {
 --   end
 -- }
 
+-- Feel more comfortable with hop
 -- editor["ggandor/lightspeed.nvim"] = {
 --   as = "lightspeed",
 --   opt = true,
@@ -59,11 +60,6 @@ editor["rrethy/vim-hexokinase"] = {
 -- <A-j>   Move current line/selection down
 -- <A-h>   Move current character/selection left
 -- <A-l>   Move current character/selection right
--- editor["matze/vim-move"] = {
---   opt = true,
---   event = { "CursorMoved", "CursorMovedI" },
---   -- fn = {'<Plug>MoveBlockDown', '<Plug>MoveBlockUp', '<Plug>MoveLineDown', '<Plug>MoveLineUp'}
--- }
 
 editor["booperlv/nvim-gomove"] = {
 
@@ -71,6 +67,7 @@ editor["booperlv/nvim-gomove"] = {
   config = conf.move,
 }
 
+-- Great plugin.
 -- editor["kevinhwang91/nvim-hlslens"] = {
 --   -- keys = {"/", "?", '*', '#'}, --'n', 'N', '*', '#', 'g'
 --   -- opt = true,
@@ -139,15 +136,6 @@ editor["numToStr/Comment.nvim"] = {
   config = conf.comment,
 }
 
--- editor["preservim/nerdcommenter"] = {
---   -- keys = {"<Leader>c<space>", "\\c ", "<D-/>", "<C-<Space>>", "<Leader>cc", "//", "<M-/>"},
---   keys = {'<Leader>c<space>', '\\c ', '<Leader>cc', '//', '<M-/>'},
---   setup = conf.nerdcommenter,
---   fn = {"NERDComment", "nerdcommenter#Comment"}
---   -- cmd = {'NERDCommenterToggle', 'NERDCommenterComment'}
---   -- opt = true,
--- }
-
 -- copy paste failed in block mode when clipboard = unnameplus"
 editor["bfredl/nvim-miniyank"] = {
   keys = { "p", "y", "<C-v>" },
@@ -206,7 +194,6 @@ editor["folke/zen-mode.nvim"] = {
   end,
 }
 
--- editor["nvim-neorg/neorg-telescope"] = {opt = true}
 editor["nvim-neorg/neorg"] = {
   opt = true,
   config = conf.neorg,
@@ -218,7 +205,7 @@ editor["nvim-neorg/neorg"] = {
 
 editor["hrsh7th/vim-searchx"] = {
   event = { "CmdwinEnter", "CmdlineEnter" },
-  conf = conf.searchx
+  conf = conf.searchx,
 }
 
 return editor

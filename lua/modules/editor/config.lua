@@ -154,14 +154,6 @@ function config.lightspeed()
   vim.api.nvim_set_keymap('x', ';', '<cmd>lua repeat_ft(false)<cr>', {noremap = true, silent = true})
   vim.api.nvim_set_keymap('n', ',', '<cmd>lua repeat_ft(true)<cr>', {noremap = true, silent = true})
   vim.api.nvim_set_keymap('x', ',', '<cmd>lua repeat_ft(true)<cr>', {noremap = true, silent = true})
-  -- vim.cmd([[nunmap s]])
-  -- vim.cmd([[vunmap s]])
-  -- local bind = require("keymap.bind")
-  -- local keys = {
-  --   ["n|s"] = map_cr("HopChar1AC"),
-  --   ["n|S"] = map_cr("HopChar1BC"),
-  -- }
-  -- bind.nvim_load_mapping(keys)
 end
 
 function config.comment()

@@ -355,14 +355,6 @@ function config.navigator()
 
       jedi_language_server = { filetypes = {} },
     },
-
-    -- icons = {
-    --   diagnostic_err = "",
-    --   diagnostic_warn = "",
-    --   diagnostic_info = [[]],
-    --   diagnostic_hint = [[ﯦ]],
-    --   diagnostic_virtual_text = ""
-    -- }
   }
 
   if not use_nulls() then

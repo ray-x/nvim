@@ -29,19 +29,6 @@ ui["akinsho/bufferline.nvim"] = {
   -- requires = {'kyazdani42/nvim-web-devicons'}
   opt = true,
 }
--- 'luaromgrk/barbar.nvim'
--- ui['romgrk/barbar.nvim'] = {
---   config = conf.barbar,
---   requires = {'kyazdani42/nvim-web-devicons'}
--- }
---
--- not so useful...
--- ui["wfxr/minimap.vim"] = {
---   run = ":!cargo install --locked code-minimap",
---   keys = {"<F14>"},
---   cmd = {"Minimap", "MinimapToggle"},
---   setup = conf.minimap
--- }
 
 ui["kyazdani42/nvim-tree.lua"] = {
   cmd = { "NvimTreeToggle", "NvimTreeOpen" },
@@ -96,13 +83,8 @@ ui["projekt0n/github-nvim-theme"] = {
   end,
 }
 
--- ui["ChristianChiarulli/nvcode-color-schemes.vim"] = {opt = true, config = conf.nvcode}
-
 ui["sainnhe/sonokai"] = { opt = true, config = conf.sonokai }
 ui["sainnhe/gruvbox-material"] = { opt = true, config = conf.gruvbox }
-
--- cant config cursor line
--- ui["rafamadriz/neon"] = {opt = true, config = conf.neon}
 
 ui[plugin_folder() .. "starry.nvim"] = {
   opt = true,
@@ -112,16 +94,17 @@ ui[plugin_folder() .. "starry.nvim"] = {
   end,
 }
 
--- ui["gelguy/wilder.nvim"] = {
---   requires = {
---     { "romgrk/fzy-lua-native" },
---     -- {'nixprime/cpsm', run='UpdateRemotePlugins'}
---   },
---   opt = true,
---   run = "UpdateRemotePlugins",
---   event = { "CmdwinEnter", "CmdlineEnter" },
---   config = conf.wilder,
--- }
+-- really good one, only issue is dependency ...
+ui["gelguy/wilder.nvim"] = {
+  requires = {
+    { "romgrk/fzy-lua-native" },
+    -- {'nixprime/cpsm', run='UpdateRemotePlugins'}
+  },
+  opt = true,
+  run = "UpdateRemotePlugins",
+  event = { "CmdwinEnter", "CmdlineEnter" },
+  config = conf.wilder,
+}
 
 ui["wiliamks/mechanical.nvim"] = {
   opt = true,

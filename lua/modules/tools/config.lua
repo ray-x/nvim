@@ -50,13 +50,12 @@ function config.worktree()
   end
 
   require("git-worktree").setup({})
-  vim.api.nvim_add_user_command("Worktree", 'lua git_worktree(<f-args>)', {
+  vim.api.nvim_add_user_command("Worktree", "lua git_worktree(<f-args>)", {
     nargs = "*",
     complete = function()
       return { "create" }
     end,
   })
-
 
   local Worktree = require("git-worktree")
   Worktree.on_tree_change(function(op, metadata)
@@ -143,13 +142,6 @@ function config.vim_vista()
 
   -- vim.g['vista#renderer#icons'] = {['function'] = "", ['method'] = "ℱ", variable = "כֿ"}
 end
-
--- function config.far()
---   -- body
---   -- vim.cmd [[UpdateRemotePlugins]]
---   vim.g["far#source"] = "rgnvim"
---   vim.g["far#cmdparse_mode"] = "shell"
--- end
 
 function config.clap()
   vim.g.clap_preview_size = 10
@@ -446,7 +438,6 @@ function config.floaterm()
   function _fzf_toggle()
     lazygit:toggle()
   end
-  -- vim.cmd('hi FloatermBorder guibg=orange guifg=cyan')
   vim.cmd("command! FZF lua _fzf_toggle()")
   -- vim.cmd("command! NNN FloatermNew --autoclose=1 --height=0.96 --width=0.96 nnn")
   -- vim.cmd("command! FN FloatermNew --autoclose=1 --height=0.96 --width=0.96")
@@ -508,56 +499,6 @@ function config.mkdp()
   vim.cmd(
     [[let g:mkdp_preview_options = { 'mkit': {}, 'katex': {}, 'uml': {}, 'maid': {}, 'disable_sync_scroll': 0, 'sync_scroll_type': 'middle', 'hide_yaml_meta': 1, 'sequence_diagrams': {}, 'flowchart_diagrams': {}, 'content_editable': v:true, 'disable_filename': 0 }]]
   )
-end
-
-function config.snap()
-  local snap = require("snap")
-  local limit = snap.get("consumer.limit")
-  local select_vimgrep = snap.get("select.vimgrep")
-  local preview_file = snap.get("preview.file")
-  local preview_vimgrep = snap.get("preview.vimgrep")
-  local producer_vimgrep = snap.get("producer.ripgrep.vimgrep")
-  function _G.snap_grep()
-    snap.run({
-      prompt = "  Grep  ",
-      producer = limit(10000, producer_vimgrep),
-      select = select_vimgrep.select,
-      steps = { { consumer = snap.get("consumer.fzf"), config = { prompt = "FZF>" } } },
-      multiselect = select_vimgrep.multiselect,
-      views = { preview_vimgrep },
-    })
-  end
-
-  function _G.snap_grep_selected_word()
-    snap.run({
-      prompt = "  Grep  ",
-      producer = limit(10000, producer_vimgrep),
-      select = select_vimgrep.select,
-      multiselect = select_vimgrep.multiselect,
-      views = { preview_vimgrep },
-      initial_filter = vim.fn.expand("<cword>"),
-    })
-  end
-
-  snap.maps({
-    { "<Leader>rg", snap.config.file({ producer = "ripgrep.file" }) },
-    -- {"<Leader>fb", snap.config.file {producer = "vim.buffer"}},
-    { "<Leader>fo", snap.config.file({ producer = "vim.oldfile" }) },
-    -- {"<Leader>ff", snap.config.vimgrep {}},
-    {
-      "<Leader>fz",
-      function()
-        snap.run({
-          prompt = "  Grep  ",
-          producer = limit(1000, snap.get("producer.ripgrep.vimgrep").args({ "--ignore-case" })),
-          steps = { { consumer = snap.get("consumer.fzf"), config = { prompt = " Fzf  " } } },
-          select = snap.get("select.file").select,
-          multiselect = snap.get("select.file").multiselect,
-          views = { snap.get("preview.vimgrep") },
-        })
-      end,
-    },
-  })
 end
 
 return config
