@@ -397,7 +397,7 @@ M.setup = function()
   telescope.load_extension("gosource")
   -- telescope.load_extension("notify")
 
-  loader("telescope-fzy-native.nvim telescope-fzf-native.nvim telescope-live-grep-raw.nvim")
+  loader("telescope-fzy-native.nvim telescope-fzf-native.nvim telescope-live-grep-raw.nvim telescope-file-browser.nvim")
   loader("sqlite.lua")
   loader("telescope-frecency.nvim project.nvim telescope-zoxide nvim-neoclip.lua")
 
@@ -410,13 +410,23 @@ M.setup = function()
         case_mode = "smart_case", -- or "ignore_case" or "respect_case"
         -- the default case_mode is "smart_case"
       },
+      file_browser = {
+        theme = "ivy",
+        mappings = {
+          ["i"] = {
+            -- your custom insert mode mappings
+          },
+          ["n"] = {
+            -- your custom normal mode mappings
+          },
+        },
+      },
+      fzy_native = { override_generic_sorter = false, override_file_sorter = true },
     },
   })
 
   telescope.load_extension("fzf")
-  telescope.setup({
-    extensions = { fzy_native = { override_generic_sorter = false, override_file_sorter = true } },
-  })
+  telescope.load_extension("file_browser")
   telescope.load_extension("fzy_native")
 end
 

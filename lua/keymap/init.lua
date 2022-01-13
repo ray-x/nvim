@@ -2,9 +2,7 @@ local bind = require("keymap.bind")
 local map_cr = bind.map_cr
 local map_cu = bind.map_cu
 local map_cmd = bind.map_cmd
-local map_args = bind.map_args
 local map_key = bind.map_key
-local global = require("core.global")
 require("keymap.config")
 
 local plug_map = {
@@ -52,8 +50,6 @@ local plug_map = {
     :with_expr()
     :with_silent(),
   --     :with_expr(),
-  -- ["in|<d-f>"] = map_cmd([[ ':Telescope live_grep<cr>' . expand('<cword>')]]):with_expr():with_silent(),
-  --     :with_expr(),
 
   ["in|<d-F>"] = map_cmd(
     [['<cmd> lua require("telescope").extensions.live_grep_raw.live_grep_raw()<CR>' .  ' --type ' . &ft . ' ' . expand('<cword>')]]
@@ -69,8 +65,6 @@ local plug_map = {
   -- Plugin Vista
   ["n|<Leader>v"] = map_cu("Vista"):with_noremap():with_silent(),
   ["n|<F8>"] = map_cu("AerialToggle"):with_silent(),
-  -- ["x|gcc"] = map_cmd("<ESC><CMD>lua ___comment_gb(vim.fn.visualmode())<CR>"):with_silent(),
-  -- ["x|gcc"] = map_cmd("<ESC><CMD>lua ___comment_gc(vim.fn.visualmode())<CR>"):with_silent(),
 
   ["x|<Leader>c<Space>"] = map_key("gc"),
   ["n|<Leader>c<Space>"] = map_cmd("<CMD>lua require'Comment.api'.toggle_linewise_op()<CR>"):with_silent(),

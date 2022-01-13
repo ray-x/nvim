@@ -172,6 +172,27 @@ You can put your own plugins setup in `modules/user` folder
 
   ![vim_ide with nvim+kitty](https://github.com/ray-x/dotfiles/blob/master/img/kitty.jpg)
 
+## External tools
+
+You may need to install following tools to make best of the setup
+
+- git
+- build tools (e.g. gcc, make etc)
+- fzf
+- bat
+- delta
+- lazgit
+- ranger
+- write-good
+- proselint
+- ispell
+- zodide
+- node.js
+- develop language: python, go, rust etc
+- package management: pip, cater, npm etc
+- exa
+- ...
+
 ## Parking lots
 
 These tools are good, but due to confliction, less use, or, not suite to my workflow
