@@ -72,15 +72,15 @@ local plug_map = {
   -- ["x|gcc"] = map_cmd("<ESC><CMD>lua ___comment_gb(vim.fn.visualmode())<CR>"):with_silent(),
   -- ["x|gcc"] = map_cmd("<ESC><CMD>lua ___comment_gc(vim.fn.visualmode())<CR>"):with_silent(),
 
-  ["x|<Leader>c<Space>"] = "gc",
-  ["n|<Leader>c<Space>"] = map_cmd("<CMD>lua require'Comment'.toggle()<CR>"):with_silent(),
-  ["n|<d-/>"] = map_cmd("<ESC><CMD>lua require'Comment'.toggle()<CR>"):with_silent(),
-  ["i|<d-/>"] = map_cmd("<ESC><CMD>lua require'Comment'.toggle()<CR>"):with_silent(),
+  ["x|<Leader>c<Space>"] = map_key("gc"),
+  ["n|<Leader>c<Space>"] = map_cmd("<CMD>lua require'Comment.api'.toggle_linewise_op()<CR>"):with_silent(),
+  ["n|<d-/>"] = map_cmd("<ESC><CMD>lua require'Comment.api'.toggle_linewise_op({})<CR>"):with_silent(),
+  ["i|<d-/>"] = map_cmd("<ESC><CMD>lua require'Comment.api'.toggle_linewise_op({})<CR>"):with_silent(),
   ["x|<d-/>"] = map_key("gc"),
 
-  ["n|<m-/>"] = map_cmd("<ESC><CMD>lua require'Comment'.toggle()<CR>"):with_silent(),
-  ["i|<m-/>"] = map_cmd("<ESC><CMD>lua require'Comment'.toggle()<CR>"):with_silent(),
-  ["x|<m-/>"] = "gc",
+  ["n|<m-/>"] = map_cmd("<ESC><CMD>lua require'Comment.api'.toggle_linewise_op({})<CR>"):with_silent(),
+  ["i|<m-/>"] = map_cmd("<ESC><CMD>lua require'Comment.api'.toggle_linewise_op({})<CR>"):with_silent(),
+  ["x|<m-/>"] = map_key("gc"),
 }
 
 return { map = plug_map }
