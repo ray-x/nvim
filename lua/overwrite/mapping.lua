@@ -2,10 +2,9 @@ local bind = require("keymap.bind")
 local map_cr = bind.map_cr
 local map_cu = bind.map_cu
 local map_cmd = bind.map_cmd
-local map_args = bind.map_args
 
 local loader = require("packer").loader
-K = {}
+local K = {}
 local function check_back_space()
   local col = vim.fn.col(".") - 1
   if col == 0 or vim.fn.getline("."):sub(col, col):match("%s") then
@@ -222,13 +221,10 @@ vim.cmd([[command! -nargs=*  DebugOpen lua require"modules.lang.dap".prepare()]]
 vim.cmd([[command! -nargs=*  HpoonClear lua require"harpoon.mark".clear_all()]])
 
 local plugmap = require("keymap").map
+local merged = vim.tbl_extend("force", plugmap, keys)
 
-vim.tbl_extend("force", plugmap, keys)
-lprint(plugmap)
-
-bind.nvim_load_mapping(plugmap)
+bind.nvim_load_mapping(merged)
 local key_maps = bind.all_keys
-lprint(key_maps)
 
 K.get_keymaps = function()
   local ListView = require("guihua.listview")
