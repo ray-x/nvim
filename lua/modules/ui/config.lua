@@ -470,6 +470,7 @@ function config.wilder()
   vim.cmd([[
     call wilder#setup({
       \ 'modes': [':', '/', '?'],
+      \ 'enable_cmdline_enter': 0,
       \ 'next_key': '<Tab>',
       \ 'previous_key': '<S-Tab>',
       \ 'accept_key': '<Down>',
@@ -511,8 +512,7 @@ let s:highlighters = [
       \ wilder#lua_fzy_highlighter(),
       \ ]
 
-let s:popupmenu_renderer = wilder#popupmenu_renderer(wilder#popupmenu_border_theme({
-      \ 'border': 'rounded',
+let s:popupmenu_renderer = wilder#popupmenu_renderer({
       \ 'empty_message': wilder#popupmenu_empty_message_with_spinner(),
       \ 'highlighter': s:highlighters,
       \ 'min_height': '20%',
@@ -529,7 +529,7 @@ let s:popupmenu_renderer = wilder#popupmenu_renderer(wilder#popupmenu_border_the
       \   ' ',
       \   wilder#popupmenu_scrollbar(),
       \ ],
-      \ }))
+      \ })
 
 let s:wildmenu_renderer = wilder#wildmenu_renderer({
       \ 'highlighter': s:highlighters,
