@@ -95,16 +95,16 @@ ui[plugin_folder() .. "starry.nvim"] = {
 }
 
 -- really good one, only issue is dependency ...
-ui["gelguy/wilder.nvim"] = {
-  requires = {
-    { "romgrk/fzy-lua-native" },
-    -- {'nixprime/cpsm', run='UpdateRemotePlugins'}
-  },
-  opt = true,
-  run = "UpdateRemotePlugins",
-  event = { "CmdwinEnter", "CmdlineEnter" },
-  config = conf.wilder,
-}
+-- ui["gelguy/wilder.nvim"] = {
+--   requires = {
+--     { "romgrk/fzy-lua-native" },
+--     -- {'nixprime/cpsm', run='UpdateRemotePlugins'}
+--   },
+--   opt = true,
+--   run = "UpdateRemotePlugins",
+--   event = { "CmdwinEnter", "CmdlineEnter" },
+--   config = conf.wilder,
+-- }
 
 ui["wiliamks/mechanical.nvim"] = {
   opt = true,

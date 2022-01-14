@@ -465,6 +465,7 @@ function config.minimap()
   end
 end
 
+-- deprecated?
 function config.wilder()
   vim.cmd([[
     call wilder#setup({
@@ -514,6 +515,8 @@ let s:popupmenu_renderer = wilder#popupmenu_renderer(wilder#popupmenu_border_the
       \ 'border': 'rounded',
       \ 'empty_message': wilder#popupmenu_empty_message_with_spinner(),
       \ 'highlighter': s:highlighters,
+      \ 'min_height': '20%',
+      \ 'max_height': '30%',
       \ 'left': [
       \   ' ',
       \   wilder#popupmenu_devicons(),
