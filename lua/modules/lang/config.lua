@@ -316,6 +316,7 @@ function config.navigator()
       disable_lsp = {
         "rls",
         "flow", --[[ "pylsp" ]]
+        "gopls", -- with go.nvim
       },
       code_lens = true,
       disply_diagnostic_qf = false,
@@ -396,6 +397,7 @@ function config.go()
     dap_debug_gui = true,
     test_runner = "go", -- richgo, go test, richgo, dlv, ginkgo
     -- run_in_floaterm = true, -- set to true to run in float window.
+    lsp_cfg = true,
   })
 
   vim.cmd("augroup go")

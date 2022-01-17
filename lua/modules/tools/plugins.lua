@@ -242,6 +242,7 @@ tools["AckslD/nvim-neoclip.lua"] = {
   config = function()
     require("utils.telescope")
     require("neoclip").setup({ db_path = vim.fn.stdpath("data") .. "/databases/neoclip.sqlite3" })
+    require('telescope').load_extension('neoclip')
   end,
 }
 
