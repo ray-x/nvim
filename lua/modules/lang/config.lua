@@ -312,12 +312,7 @@ function config.navigator()
     lsp = {
       format_on_save = true, -- set to false to disasble lsp code format on save (if you are using prettier/efm/formater etc)
       disable_format_cap = { "sqls", "gopls" }, -- a list of lsp not enable auto-format (e.g. if you using efm or vim-codeformat etc)
-      -- disable_lsp = {'denols'},
-      disable_lsp = {
-        "rls",
-        "flow", --[[ "pylsp" ]]
-        "gopls", -- with go.nvim
-      },
+      disable_lsp = {},  --e.g {denols}
       code_lens = true,
       disply_diagnostic_qf = false,
       denols = { filetypes = {} },
@@ -341,7 +336,33 @@ function config.navigator()
         --   -- client.resolved_capabilities.document_formatting = false -- efm
         -- end,
         settings = {
-          gopls = { gofumpt = true }, -- enable gofumpt etc,
+
+          experimentalPostfixCompletions = true,
+          experimentalUseInvalidMetadata = true,
+          hoverKind = "Structured",
+          gopls = {
+            -- more settings: https://github.com/golang/tools/blob/master/gopls/doc/settings.md
+            -- flags = {allow_incremental_sync = true, debounce_text_changes = 500},
+            -- not supported
+            analyses = { unusedparams = true, unreachable = false },
+            codelenses = {
+              generate = true, -- show the `go generate` lens.
+              gc_details = true, --  // Show a code lens toggling the display of gc's choices.
+              test = true,
+              tidy = true,
+            },
+            usePlaceholders = true,
+            completeUnimported = true,
+            staticcheck = true,
+            matcher = "Fuzzy",
+            diagnosticsDelay = "500ms",
+            experimentalWatchedFileDelay = "100ms",
+            symbolMatcher = "fuzzy",
+            ["local"] = "",
+            gofumpt = true, -- true, -- turn on for new repos, gofmpt is good but also create code turmoils
+            buildFlags = { "-tags", "integration" },
+            -- buildFlags = {"-tags", "functional"}
+          },
         },
         -- set to {} to disable the lspclient for all filetype
       },
@@ -397,7 +418,9 @@ function config.go()
     dap_debug_gui = true,
     test_runner = "go", -- richgo, go test, richgo, dlv, ginkgo
     -- run_in_floaterm = true, -- set to true to run in float window.
-    lsp_cfg = true,
+    lsp_document_formatting = false,
+    -- lsp_on_attach = require("navigator.lspclient.attach").on_attach,
+    -- lsp_cfg = true,
   })
 
   vim.cmd("augroup go")

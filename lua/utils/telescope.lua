@@ -332,6 +332,10 @@ M.setup = function()
           flip_columns = 120,
         },
       },
+      -- history = {
+      --   path = vim.fn.stdpath("data") .. "/telescope_history.sqlite3",
+      --   limit = 1000,
+      -- },
       sorting_strategy = "ascending",
       selection_strategy = "closest",
       scroll_strategy = "cycle",
@@ -393,8 +397,6 @@ M.setup = function()
     },
   })
 
-  telescope.load_extension("dotfiles")
-  telescope.load_extension("gosource")
   -- telescope.load_extension("notify")
 
   loader("telescope-fzy-native.nvim telescope-fzf-native.nvim telescope-live-grep-raw.nvim telescope-file-browser.nvim")
@@ -428,6 +430,10 @@ M.setup = function()
   telescope.load_extension("fzf")
   telescope.load_extension("file_browser")
   telescope.load_extension("fzy_native")
+
+  telescope.load_extension("dotfiles")
+  telescope.load_extension("gosource")
+  -- telescope.load_extension("smart_history")
 end
 
 return M

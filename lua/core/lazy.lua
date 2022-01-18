@@ -29,9 +29,6 @@ function Lazyload()
       themes = { "gruvbox-material", "starry.nvim" }
     end
 
-    -- themes = {"gruvbox-material"}
-    -- debug the color theme
-    -- themes = { "starry.nvim" }
     -- themes = { "aurora" }
   end
   local v = math.random(1, #themes)
@@ -88,7 +85,7 @@ function Lazyload()
     return
   end
 
-  local plugins = "plenary.nvim" -- nvim-lspconfig navigator.lua   guihua.lua navigator.lua  -- gitsigns.nvim
+  local plugins = "plenary.nvim"
   loader("plenary.nvim")
 
   if vim.bo.filetype == "lua" then
@@ -125,7 +122,7 @@ function Lazyload()
   -- local bytes = vim.fn.wordcount()['bytes']
   if load_ts_plugins then
     plugins =
-      "nvim-treesitter-textobjects nvim-treesitter-refactor nvim-ts-autotag nvim-ts-context-commentstring nvim-treesitter-textsubjects" --  nvim-ts-rainbow  nvim-treesitter nvim-treesitter-refactor
+      "nvim-treesitter-textobjects nvim-treesitter-refactor nvim-ts-autotag nvim-ts-context-commentstring nvim-treesitter-textsubjects"
 
     lprint(plugins)
     -- nvim-treesitter-textobjects should be autoloaded
@@ -134,6 +131,7 @@ function Lazyload()
   end
 
   loader("nvim-notify")
+  vim.notify = require("notify")
   -- if bytes < 2 * 1024 * 1024 and syn_on then
   --   vim.cmd([[setlocal syntax=on]])
   -- end
@@ -142,12 +140,6 @@ function Lazyload()
   vim.cmd(
     [[autocmd FileType * silent! lua if vim.fn.wordcount()['bytes'] > 2048000 then print("syntax off") vim.cmd("setlocal syntax=off") else lprint('setlocal syntax=on') vim.cmd("setlocal syntax=on") end]]
   )
-  -- local cmd = [[au VimEnter * ++once lua require("packer.load")({']] .. loading_theme
-  --                 .. [['}, { event = "VimEnter *" }, _G.packer_plugins)]]
-  -- vim.cmd(cmd)
-  -- loader('windline.nvim')
-  -- require("modules.ui.eviline")
-  -- require('wlfloatline').setup()
 end
 
 vim.cmd([[autocmd User LoadLazyPlugin lua Lazyload()]])

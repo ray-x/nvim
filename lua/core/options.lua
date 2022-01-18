@@ -35,7 +35,7 @@ local function load_options()
     backupdir      = global.cache_dir .. "backup/";
     viewdir        = global.cache_dir .. "view/";
     spellfile      = global.cache_dir .. "spell/en.uft-8.add";
-    history        = 2000;
+    history        = 4000;
     shada          = "!,'300,<50,@100,s10,h";
     backupskip     = "/tmp/*,$TMPDIR/*,$TMP/*,$TEMP/*,*/shm/*,/private/var/*,.vault.vim";
     smarttab       = true;
@@ -68,7 +68,7 @@ local function load_options()
     completeopt    = "menuone,noselect";
     jumpoptions    = "stack";
     showmode       = false;
-    shortmess      = "aotTIcF"; 
+    shortmess      = "aotTIcF";
     scrolloff      = 2;
     sidescrolloff  = 5;
     foldlevelstart = 99;
@@ -86,7 +86,7 @@ local function load_options()
     equalalways    = false;
     laststatus     = 2;
     display        = "lastline";
-    showbreak      = "﬌  "; --↳
+    showbreak      = "﬌  ";
     listchars      = "tab:»·,nbsp:+,trail:·,extends:→,precedes:←";
     pumblend       = 10;
     winblend       = 10;
@@ -136,5 +136,6 @@ local function load_options()
 end
 
 vim.cmd([[syntax off]])
+vim.cmd([[set viminfo-=:42 | set viminfo+=:1000]])
 
 load_options()
