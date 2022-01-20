@@ -67,6 +67,7 @@ local load_core = function()
     require('keymap')
     require('core.event')
     pack.load_compile()
+    _G.lprint=require'utils.log'.lprint
     require('core.lazy')
   else
     print('install all plugins, please wait')

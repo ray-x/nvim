@@ -12,7 +12,6 @@ lang["nathom/filetype.nvim"] = {
 lang["nvim-treesitter/nvim-treesitter"] = { opt = true, config = conf.nvim_treesitter }
 
 lang["nvim-treesitter/nvim-treesitter-textobjects"] = {
-  after = "nvim-treesitter",
   config = conf.treesitter_obj,
   opt = true,
 }

@@ -67,8 +67,8 @@ function! FindRoot()
   return expand("%:p:h")
 endfunction
 
-let g:root_dir = FindRoot()
-autocmd BufEnter * silent! lcd g:root_dir  " 设置当前路径为项目路径
+" let g:root_dir = FindRoot() " Note disable root finder, null-ls will do this
+" autocmd BufEnter * silent! lcd g:root_dir  " 设置当前路径为项目路径
 
 
 " Protect large files from sourcing and other overhead.

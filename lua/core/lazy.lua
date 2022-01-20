@@ -8,11 +8,8 @@ local function daylight()
 end
 
 local loader = require("packer").loader
-_G.PLoader = loader
-
-function Lazyload()
-  --
-  math.randomseed(os.time())
+math.randomseed(os.time())
+function loadscheme()
   local themes = {
     "starry.nvim",
     "aurora",
@@ -36,15 +33,26 @@ function Lazyload()
   local loading_theme = themes[v]
 
   loader(loading_theme)
+end
+
+_G.PLoader = loader
+
+
+if vim.wo.diff then
+  -- loader(plugins)
+  lprint("diffmode")
+  vim.cmd([[packadd nvim-treesitter]])
+  require("nvim-treesitter.configs").setup({ highlight = { enable = true, use_languagetree = false } })
+  vim.cmd([[syntax on]])
+  return
+else
+  loader("nvim-treesitter")
+end
+
+function Lazyload()
   --
-  if vim.wo.diff then
-    -- loader(plugins)
-    lprint("diffmode")
-    vim.cmd([[packadd nvim-treesitter]])
-    require("nvim-treesitter.configs").setup({ highlight = { enable = true, use_languagetree = false } })
-    vim.cmd([[syntax on]])
-    return
-  end
+  --
+
 
   lprint("I am lazy")
 
@@ -58,7 +66,6 @@ function Lazyload()
     "csv",
     "txt",
     "defx",
-    "sidekick",
   }
 
   local syn_on = not vim.tbl_contains(disable_ft, vim.bo.filetype)
@@ -106,11 +113,6 @@ function Lazyload()
     end
   end
 
-  if load_ts_plugins then
-    -- print('load ts plugins')
-    loader("nvim-treesitter")
-  end
-
   if load_lsp or load_ts_plugins then
     loader("guihua.lua")
     loader("navigator.lua")
@@ -119,7 +121,7 @@ function Lazyload()
   -- local bytes = vim.fn.wordcount()['bytes']
   if load_ts_plugins then
     -- nvim-treesitter-textobjects nvim-treesitter-refactor auto loaded with after
-    plugins = "nvim-ts-autotag nvim-ts-context-commentstring nvim-treesitter-textsubjects"
+    plugins = "nvim-treesitter-textobjects nvim-ts-autotag nvim-ts-context-commentstring nvim-treesitter-textsubjects"
     loader(plugins)
     lprint(plugins)
     loader("neogen")
@@ -128,8 +130,6 @@ function Lazyload()
     loader("indent-blankline.nvim")
   end
 
-  loader("nvim-notify")
-  vim.notify = require("notify")
   -- if bytes < 2 * 1024 * 1024 and syn_on then
   --   vim.cmd([[setlocal syntax=on]])
   -- end
@@ -138,6 +138,7 @@ function Lazyload()
   vim.cmd(
     [[autocmd FileType * silent! lua if vim.fn.wordcount()['bytes'] > 2048000 then print("syntax off") vim.cmd("setlocal syntax=off") end]]
   )
+  lprint("LoadLazyPlugin finished")
 end
 
 local lazy_timer = 30
@@ -146,7 +147,7 @@ if _G.packer_plugins == nil or _G.packer_plugins["packer.nvim"] == nil then
   vim.cmd([[PackerCompile]])
   vim.defer_fn(function()
     print("Packer recompiled, please run `:PackerCompile` and restart nvim")
-  end, 1000)
+  end, 400)
   return
 end
 
@@ -154,19 +155,19 @@ vim.defer_fn(function()
   vim.cmd([[doautocmd User LoadLazyPlugin]])
 end, lazy_timer)
 
-vim.defer_fn(function()
-
-  -- in case highlight is incorrect
-  -- local cmd = "TSEnableAll highlight " .. vim.o.ft
-  -- vim.cmd(cmd)
-  -- vim.cmd([[doautocmd ColorScheme]])
-  -- vim.cmd(cmd)
-end, lazy_timer + 20)
+-- vim.defer_fn(function()
+--   -- in case highlight is incorrect
+--   local cmd = "TSEnableAll highlight " .. vim.o.ft
+--   vim.cmd(cmd)
+--   vim.cmd([[doautocmd ColorScheme]])
+--   vim.cmd(cmd)
+-- end, lazy_timer + 20)
 
 vim.cmd([[hi LineNr guifg=#505068]])
 
 vim.cmd([[autocmd User LoadLazyPlugin lua Lazyload()]])
 
+loadscheme()
 vim.defer_fn(function()
   loader("windline.nvim")
   require("modules.ui.eviline")
@@ -174,6 +175,7 @@ vim.defer_fn(function()
   require("vscripts.tools")
   vim.cmd("command! Gram lua require'modules.tools.config'.grammcheck()")
   vim.cmd("command! Spell call spelunker#check()")
+  lprint("ui loaded")
 end, lazy_timer + 60)
 --
 vim.defer_fn(function()
@@ -181,6 +183,8 @@ vim.defer_fn(function()
   loader("telescope.nvim")
   loader("telescope-zoxide project.nvim nvim-neoclip.lua")
   loader("harpoon")
+  loader("nvim-notify")
+  vim.notify = require("notify")
   -- require("vscripts.cursorhold")
   lprint("all done")
-end, lazy_timer + 100)
+end, lazy_timer + 80)
