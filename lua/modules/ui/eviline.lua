@@ -166,8 +166,6 @@ local TrimmedDirectory = function(dir)
     pc = string.sub(p3, 0, 4) .. "/" .. string.sub(p2, 0, 4) .. "/" .. string.sub(p1, 0, 5)
   elseif p2 ~= nil then
     pc = string.sub(p2, 0, 5) .. "/" .. string.sub(p1, 0, 6)
-  elseif p2 ~= nil then
-    pc = p1
   else
     pc = ""
   end
@@ -499,7 +497,7 @@ windline.setup({
     --- add more color
 
     local mod = function(c, value)
-      if vim.o.background == "light" then
+      if vim.o.background == "dark" then
         return HSL.rgb_to_hsl(c):tint(value):to_rgb()
       end
       return HSL.rgb_to_hsl(c):shade(value):to_rgb()
@@ -526,8 +524,8 @@ windline.setup({
     colors.blue_b = mod(colors.blue, 0.5)
     colors.blue_c = mod(colors.blue, 0.7)
 
-    colors.green_a = colors.green
-    colors.green_b = mod(colors.green, 0.1)
+    colors.green_a = mod(colors.green, 0.3)
+    colors.green_b = mod(colors.green, 0.5)
     colors.green_c = mod(colors.green, 0.7)
 
     colors.red_a = colors.red
