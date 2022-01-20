@@ -8,7 +8,7 @@ local log = function(...)
 
   local info = debug.getinfo(2, "Sl")
   lineinfo = info.short_src .. ":" .. info.currentline
-  str = str .. lineinfo
+  str = string.format("%s %s %s:", str, lineinfo, os.date('%H:%M:%S') )
 
   for i, v in ipairs(arg) do
     if type(v) == "table" then
