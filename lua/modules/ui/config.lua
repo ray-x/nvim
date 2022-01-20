@@ -543,7 +543,7 @@ call wilder#set_option('renderer', wilder#renderer_mux({
       \ }))]])
 end
 
-vim.api.nvim_exec(
+vim.cmd(
   [[
     set nocursorcolumn
     set nocursorline
@@ -556,7 +556,4 @@ vim.api.nvim_exec(
   true
 )
 
--- local cmd = [[au VimEnter * ++once lua require("packer.load")({']] .. loading_theme
---                 .. [['}, { event = "VimEnter *" }, _G.packer_plugins)]]
--- vim.cmd(cmd)
 return config

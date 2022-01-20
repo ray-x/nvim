@@ -9,6 +9,7 @@ end
 
 local loader = require("packer").loader
 _G.PLoader = loader
+
 function Lazyload()
   --
   math.randomseed(os.time())
@@ -61,9 +62,7 @@ function Lazyload()
   }
 
   local syn_on = not vim.tbl_contains(disable_ft, vim.bo.filetype)
-  if syn_on then
-    vim.cmd([[syntax on]])
-  else
+  if not syn_on then
     vim.cmd([[syntax manual]])
   end
 
@@ -107,8 +106,6 @@ function Lazyload()
     end
   end
 
-  require("vscripts.cursorhold")
-  require("vscripts.tools")
   if load_ts_plugins then
     -- print('load ts plugins')
     loader("nvim-treesitter")
@@ -121,10 +118,11 @@ function Lazyload()
 
   -- local bytes = vim.fn.wordcount()['bytes']
   if load_ts_plugins then
-    plugins =
-      "nvim-treesitter-textobjects nvim-treesitter-refactor nvim-ts-autotag nvim-ts-context-commentstring nvim-treesitter-textsubjects"
-
+    -- nvim-treesitter-textobjects nvim-treesitter-refactor auto loaded with after
+    plugins = "nvim-ts-autotag nvim-ts-context-commentstring nvim-treesitter-textsubjects"
+    loader(plugins)
     lprint(plugins)
+    loader("neogen")
     -- nvim-treesitter-textobjects should be autoloaded
     loader("refactoring.nvim")
     loader("indent-blankline.nvim")
@@ -138,15 +136,11 @@ function Lazyload()
 
   vim.cmd([[autocmd FileType vista,guihua setlocal syntax=on]])
   vim.cmd(
-    [[autocmd FileType * silent! lua if vim.fn.wordcount()['bytes'] > 2048000 then print("syntax off") vim.cmd("setlocal syntax=off") else lprint('setlocal syntax=on') vim.cmd("setlocal syntax=on") end]]
+    [[autocmd FileType * silent! lua if vim.fn.wordcount()['bytes'] > 2048000 then print("syntax off") vim.cmd("setlocal syntax=off") end]]
   )
 end
 
-vim.cmd([[autocmd User LoadLazyPlugin lua Lazyload()]])
-vim.cmd("command! Gram lua require'modules.tools.config'.grammcheck()")
-vim.cmd("command! Spell call spelunker#check()")
-
-local lazy_timer = 50
+local lazy_timer = 30
 if _G.packer_plugins == nil or _G.packer_plugins["packer.nvim"] == nil then
   print("recompile")
   vim.cmd([[PackerCompile]])
@@ -161,23 +155,32 @@ vim.defer_fn(function()
 end, lazy_timer)
 
 vim.defer_fn(function()
-  -- lazyload()
-  local cmd = "TSEnableAll highlight " .. vim.o.ft
-  vim.cmd(cmd)
-  vim.cmd(
-    [[autocmd BufEnter * silent! lua vim.fn.wordcount()['bytes'] < 2048000 then vim.cmd('set syntax=on') local cmd= "TSBufEnable "..vim.o.ft vim.cmd(cmd) lprint(cmd, vim.o.ft, vim.o.syntax) end]]
-  )
+
+  -- in case highlight is incorrect
+  -- local cmd = "TSEnableAll highlight " .. vim.o.ft
+  -- vim.cmd(cmd)
   -- vim.cmd([[doautocmd ColorScheme]])
   -- vim.cmd(cmd)
 end, lazy_timer + 20)
 
 vim.cmd([[hi LineNr guifg=#505068]])
 
+vim.cmd([[autocmd User LoadLazyPlugin lua Lazyload()]])
+
 vim.defer_fn(function()
-  local loader = require("packer").loader
-  loader("telescope.nvim telescope-zoxide project.nvim nvim-neoclip.lua")
-  loader("neogen harpoon")
   loader("windline.nvim")
   require("modules.ui.eviline")
   require("wlfloatline").setup()
+  require("vscripts.tools")
+  vim.cmd("command! Gram lua require'modules.tools.config'.grammcheck()")
+  vim.cmd("command! Spell call spelunker#check()")
+end, lazy_timer + 60)
+--
+vim.defer_fn(function()
+  lprint("telescope family")
+  loader("telescope.nvim")
+  loader("telescope-zoxide project.nvim nvim-neoclip.lua")
+  loader("harpoon")
+  -- require("vscripts.cursorhold")
+  lprint("all done")
 end, lazy_timer + 100)

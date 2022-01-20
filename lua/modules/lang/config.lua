@@ -306,13 +306,15 @@ function config.navigator()
     ts_fold = true,
     -- external = true, -- true: enable for goneovim multigrid otherwise false
     lsp_signature_help = true,
+    combined_attach = 'their', -- both: use both customized attach and navigator default attach, mine: only use my attach defined in vimrc
+
     -- default_mapping = false,
     --     keymaps = { { mode = 'i', key = '<M-k>', func = 'signature_help()' },
     -- { key = "<c-i>", func = "signature_help()" } },
     lsp = {
       format_on_save = true, -- set to false to disasble lsp code format on save (if you are using prettier/efm/formater etc)
       disable_format_cap = { "sqls", "gopls" }, -- a list of lsp not enable auto-format (e.g. if you using efm or vim-codeformat etc)
-      disable_lsp = {},  --e.g {denols}
+      disable_lsp = {}, --e.g {denols}
       code_lens = true,
       disply_diagnostic_qf = false,
       denols = { filetypes = {} },
@@ -330,42 +332,14 @@ function config.navigator()
         end,
       },
       flow = { autostart = false },
-      gopls = {
-        -- on_attach = function(client)
-        --   -- print("i am a hook")
-        --   -- client.resolved_capabilities.document_formatting = false -- efm
-        -- end,
-        settings = {
-
-          experimentalPostfixCompletions = true,
-          experimentalUseInvalidMetadata = true,
-          hoverKind = "Structured",
-          gopls = {
-            -- more settings: https://github.com/golang/tools/blob/master/gopls/doc/settings.md
-            -- flags = {allow_incremental_sync = true, debounce_text_changes = 500},
-            -- not supported
-            analyses = { unusedparams = true, unreachable = false },
-            codelenses = {
-              generate = true, -- show the `go generate` lens.
-              gc_details = true, --  // Show a code lens toggling the display of gc's choices.
-              test = true,
-              tidy = true,
-            },
-            usePlaceholders = true,
-            completeUnimported = true,
-            staticcheck = true,
-            matcher = "Fuzzy",
-            diagnosticsDelay = "500ms",
-            experimentalWatchedFileDelay = "100ms",
-            symbolMatcher = "fuzzy",
-            ["local"] = "",
-            gofumpt = true, -- true, -- turn on for new repos, gofmpt is good but also create code turmoils
-            buildFlags = { "-tags", "integration" },
-            -- buildFlags = {"-tags", "functional"}
-          },
-        },
-        -- set to {} to disable the lspclient for all filetype
-      },
+      gopls = function()
+        local go = pcall(require, 'go')
+        if go then
+          return require("go.lsp").config()
+        else
+          return {}
+        end
+      end,
       sqls = {
         on_attach = function(client)
           client.resolved_capabilities.document_formatting = false -- efm

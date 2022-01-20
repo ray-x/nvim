@@ -1,15 +1,16 @@
-local global = require('core.global')
+local global = require("core.global")
 
 local function bind_option(options)
   for k, v in pairs(options) do
     if v == true or v == false then
-      vim.cmd('set ' .. k)
+      vim.cmd("set " .. k)
     else
-      vim.cmd('set ' .. k .. '=' .. v)
+      vim.cmd("set " .. k .. "=" .. v)
     end
   end
 end
 
+-- stylua: ignore start
 local function load_options()
   local global_local = {
     termguicolors  = true;
@@ -134,6 +135,8 @@ local function load_options()
   end
   bind_option(bw_local)
 end
+
+-- stylua: ignore end
 
 vim.cmd([[syntax off]])
 vim.cmd([[set viminfo-=:42 | set viminfo+=:1000]])
