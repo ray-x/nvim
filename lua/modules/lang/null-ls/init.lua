@@ -42,7 +42,7 @@ return {
       sources,
       null_ls.builtins.formatting.golines.with({
         extra_args = {
-          "--max-len=120",
+          "--max-len=160",
           "--base-formatter=gofumpt",
         },
       })
@@ -116,6 +116,8 @@ return {
     local cfg = {
       sources = sources,
       debounce = 1000,
+      default_timeout = 3000,
+      fallback_severity = vim.diagnostic.severity.WARN,
       root_dir = require("lspconfig").util.root_pattern(
         ".null-ls-root",
         "Makefile",

@@ -306,7 +306,7 @@ function config.navigator()
     ts_fold = true,
     -- external = true, -- true: enable for goneovim multigrid otherwise false
     lsp_signature_help = true,
-    combined_attach = 'their', -- both: use both customized attach and navigator default attach, mine: only use my attach defined in vimrc
+    combined_attach = "their", -- both: use both customized attach and navigator default attach, mine: only use my attach defined in vimrc
 
     -- default_mapping = false,
     --     keymaps = { { mode = 'i', key = '<M-k>', func = 'signature_help()' },
@@ -333,9 +333,13 @@ function config.navigator()
       },
       flow = { autostart = false },
       gopls = function()
-        local go = pcall(require, 'go')
+        local go = pcall(require, "go")
         if go then
-          return require("go.lsp").config()
+          local cfg = require("go.lsp").config()
+          cfg.on_attach = function(client)
+            client.resolved_capabilities.document_formatting = false -- efm/null-ls
+          end
+          return cfg
         else
           return {}
         end

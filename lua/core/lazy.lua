@@ -1,3 +1,20 @@
+local loader = require("packer").loader
+
+local fsize = vim.fn.getfsize(vim.fn.expand("%:p:f"))
+if fsize == nil or fsize < 0 then
+  fsize = 1
+end
+
+local load_ts_plugins = true
+local load_lsp = true
+
+if fsize > 1024 * 1024 then
+  load_ts_plugins = false
+  load_lsp = false
+end
+
+math.randomseed(os.time())
+
 local function daylight()
   local h = tonumber(os.date("%H"))
   if h > 6 and h < 18 then
@@ -7,9 +24,7 @@ local function daylight()
   end
 end
 
-local loader = require("packer").loader
-math.randomseed(os.time())
-function loadscheme()
+local function loadscheme()
   local themes = {
     "starry.nvim",
     "aurora",
@@ -22,27 +37,28 @@ function loadscheme()
     "github-nvim-theme",
   }
 
-  if plugin_folder() == [[~/github/]] then
-    if daylight() == "light" then
-      themes = { "gruvbox-material", "starry.nvim" }
-    end
-
-    -- themes = { "aurora" }
+  if daylight() == "light" then
+    vim.o.background = "light"
+    themes = { "gruvbox-material", "starry.nvim", "github-nvim-theme" }
   end
+
+  -- themes = { "aurora" }
   local v = math.random(1, #themes)
   local loading_theme = themes[v]
 
-  loader(loading_theme)
+  require("packer").loader(loading_theme)
 end
+loadscheme()
 
 _G.PLoader = loader
-
 
 if vim.wo.diff then
   -- loader(plugins)
   lprint("diffmode")
-  vim.cmd([[packadd nvim-treesitter]])
-  require("nvim-treesitter.configs").setup({ highlight = { enable = true, use_languagetree = false } })
+  if load_ts_plugins then
+    vim.cmd([[packadd nvim-treesitter]])
+    require("nvim-treesitter.configs").setup({ highlight = { enable = true, use_languagetree = false } })
+  end
   vim.cmd([[syntax on]])
   return
 else
@@ -50,15 +66,11 @@ else
 end
 
 function Lazyload()
-  --
-  --
-
-
   lprint("I am lazy")
-
   local disable_ft = {
     "NvimTree",
     "guihua",
+    "packer",
     "guihua_rust",
     "clap_input",
     "clap_spinner",
@@ -74,18 +86,6 @@ function Lazyload()
   end
 
   -- local fname = vim.fn.expand("%:p:f")
-  local fsize = vim.fn.getfsize(vim.fn.expand("%:p:f"))
-  if fsize == nil or fsize < 0 then
-    fsize = 1
-  end
-
-  local load_lsp = true
-  local load_ts_plugins = true
-
-  if fsize > 1024 * 1024 then
-    load_ts_plugins = false
-    load_lsp = false
-  end
   if fsize > 6 * 1024 * 1024 then
     vim.cmd([[syntax off]])
     return
@@ -106,38 +106,34 @@ function Lazyload()
   end
 
   if load_lsp then
-    loader("nvim-lspconfig") -- null-ls.nvim
+    loader("nvim-lspconfig")
     loader("lsp_signature.nvim")
-    if use_nulls() then
-      loader("null-ls.nvim")
-    end
   end
 
+  loader("guihua.lua")
   if load_lsp or load_ts_plugins then
-    loader("guihua.lua")
     loader("navigator.lua")
   end
 
-  -- local bytes = vim.fn.wordcount()['bytes']
   if load_ts_plugins then
-    -- nvim-treesitter-textobjects nvim-treesitter-refactor auto loaded with after
     plugins = "nvim-treesitter-textobjects nvim-ts-autotag nvim-ts-context-commentstring nvim-treesitter-textsubjects"
     loader(plugins)
     lprint(plugins)
     loader("neogen")
-    -- nvim-treesitter-textobjects should be autoloaded
     loader("refactoring.nvim")
     loader("indent-blankline.nvim")
+    lprint("ts loaded")
   end
-
-  -- if bytes < 2 * 1024 * 1024 and syn_on then
-  --   vim.cmd([[setlocal syntax=on]])
-  -- end
 
   vim.cmd([[autocmd FileType vista,guihua setlocal syntax=on]])
   vim.cmd(
     [[autocmd FileType * silent! lua if vim.fn.wordcount()['bytes'] > 2048000 then print("syntax off") vim.cmd("setlocal syntax=off") end]]
   )
+
+  if load_lsp and use_nulls() then
+    loader("null-ls.nvim")
+  end
+
   lprint("LoadLazyPlugin finished")
 end
 
@@ -167,8 +163,8 @@ vim.cmd([[hi LineNr guifg=#505068]])
 
 vim.cmd([[autocmd User LoadLazyPlugin lua Lazyload()]])
 
-loadscheme()
 vim.defer_fn(function()
+  lprint("ui start")
   loader("windline.nvim")
   require("modules.ui.eviline")
   require("wlfloatline").setup()
