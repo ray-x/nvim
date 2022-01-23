@@ -3,7 +3,7 @@
 -- first wrote by https://github.com/RishabhRD/nvim-lsputils
 
 M = {
-  log_path = vim.lsp.get_log_path()
+  log_path = vim.lsp.get_log_path(),
 }
 function M.get_data_from_file(filename, startLine)
   local displayLine
@@ -30,7 +30,7 @@ function M.get_data_from_file(filename, startLine)
   end
   return {
     data = data,
-    line = displayLine
+    line = displayLine,
   }
 end
 
@@ -152,7 +152,7 @@ function M.handleGlobalVariable(var, opts)
       coloring = var.prompt.coloring,
       prompt_text = "Symbols",
       search_type = "plain",
-      border = true
+      border = true,
     }
     if var.prompt.border == false or var.prompt.border == true then
       opts.prompt.border = var.prompt.border
@@ -166,7 +166,7 @@ end
 
 -- add log to you lsp.log
 function M.log(...)
-  local arg = {...}
+  local arg = { ... }
   if vim.g.codeagent_verbose == true then
     local str = "[CAT]"
     for i, v in ipairs(arg) do
@@ -225,7 +225,7 @@ end
 
 function M.reload()
   vim.lsp.stop_client(vim.lsp.get_active_clients())
-  vim.cmd [[edit]]
+  vim.cmd([[edit]])
 end
 
 function M.open_log()
@@ -247,11 +247,20 @@ end
 
 function M.newbinsource(cmd)
   return function()
-    local file =io.popen(cmd)
-    local output = file:read('*all')
+    local file = io.popen(cmd)
+    local output = file:read("*all")
     file:close()
-    output = vim.split(output, '\n')
+    output = vim.split(output, "\n")
     return output
+  end
+end
+
+function M.x86()
+  local arch = vim.fn.system("uname -m")
+  if arch == "i386" or arch == "x86_64" then
+    return "x86"
+  else
+    return "arm"
   end
 end
 return M

@@ -43,8 +43,12 @@ return {
         s = vim.fn.expand("<cword>")
       end
       lprint("replace: ", s)
-      local n = s:gsub("%f[^%l]%u", "_%1"):gsub("%f[^%a]%d", "_%1"):gsub("%f[^%d]%a", "_%1"):gsub("(%u)(%u%l)", "%1_%2")
-                    :lower()
+      local n = s
+        :gsub("%f[^%l]%u", "_%1")
+        :gsub("%f[^%a]%d", "_%1")
+        :gsub("%f[^%d]%a", "_%1")
+        :gsub("(%u)(%u%l)", "%1_%2")
+        :lower()
       vim.fn.setreg("s", n)
       vim.cmd([[exe "norm! ciw\<C-R>s"]])
       lprint("newstr", n)
@@ -79,5 +83,5 @@ return {
         vim.cmd([[Jsonformat]]) -- :%!jq .
       end
     end
-  end
+  end,
 }
