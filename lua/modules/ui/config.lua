@@ -342,6 +342,25 @@ function config.nvcode()
   -- body
 end
 
+function config.github()
+  local styles = { "dark", "dark_default", "dimmed" }
+  local light = { "light", "light_default", "light_colorblind" }
+  if daylight() == "light" then
+    styles = light
+  end
+  local v = math.random(1, #styles)
+  local st = styles[v]
+  require("github-theme").setup({
+    function_style = "bold",
+    theme_style = st,
+    sidebars = { "qf", "vista_kind", "terminal", "packer" },
+    colors = { bg_statusline = "#332344" },
+  })
+  -- vim.cmd([[highlight StatusLine guibg='#A3B3C4']])
+  vim.cmd([[highlight ColorColumn guibg='#335364']])
+  vim.cmd([[doautocmd ColorScheme]])
+end
+
 function config.sonokai()
   local opt = { "andromeda", "default", "andromeda", "shusia", "maia", "atlantis" }
   local v = opt[math.random(1, #opt)]
@@ -555,6 +574,5 @@ vim.cmd(
   ]],
   true
 )
-
 
 return config
