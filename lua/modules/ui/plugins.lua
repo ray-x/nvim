@@ -1,6 +1,15 @@
 local ui = {}
 local conf = require("modules.ui.config")
 
+local function daylight()
+  local h = tonumber(os.date("%H"))
+  if h > 6 and h < 18 then
+    return "light"
+  else
+    return "dark"
+  end
+end
+
 --
 local winwidth = function()
   return vim.api.nvim_call_function("winwidth", { 0 })
@@ -66,7 +75,17 @@ ui["folke/tokyonight.nvim"] = {
 
 ui["projekt0n/github-nvim-theme"] = {
   opt = true,
-  config = conf.github,
+  config = function()
+    require("github-theme").setup({
+      function_style = "bold",
+      theme_style = daylight(),
+      sidebars = { "qf", "vista_kind", "terminal", "packer" },
+      colors = { bg_statusline = "#332344" },
+    })
+    vim.cmd([[highlight StatusLine guibg='#A3B3C4']])
+    vim.cmd([[highlight ColorColumn guibg='#335364']])
+    vim.cmd([[doautocmd ColorScheme]])
+  end,
 }
 
 ui["sainnhe/sonokai"] = { opt = true, config = conf.sonokai }
