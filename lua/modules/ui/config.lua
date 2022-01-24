@@ -10,15 +10,6 @@ function config.windline()
   -- require('wlfloatline').toggle()
 end
 
-local function daylight()
-  local h = tonumber(os.date("%H"))
-  if h > 6 and h < 18 then
-    return "light"
-  else
-    return "dark"
-  end
-end
-
 function config.notify()
   require("notify").setup({
     -- Animation style (see below for details)
@@ -342,24 +333,7 @@ function config.nvcode()
   -- body
 end
 
-function config.github()
-  local styles = { "dark", "dark_default", "dimmed" }
-  local light = { "light", "light_default", "light_colorblind" }
-  if daylight() == "light" then
-    styles = light
-  end
-  local v = math.random(1, #styles)
-  local st = styles[v]
-  require("github-theme").setup({
-    function_style = "bold",
-    theme_style = st,
-    sidebars = { "qf", "vista_kind", "terminal", "packer" },
-    colors = { bg_statusline = "#332344" },
-  })
-  -- vim.cmd([[highlight StatusLine guibg='#A3B3C4']])
-  vim.cmd([[highlight ColorColumn guibg='#335364']])
-  vim.cmd([[doautocmd ColorScheme]])
-end
+function config.gh_theme() end
 
 function config.sonokai()
   local opt = { "andromeda", "default", "andromeda", "shusia", "maia", "atlantis" }
