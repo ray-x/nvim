@@ -78,7 +78,7 @@ ui["projekt0n/github-nvim-theme"] = {
   config = function()
     require("github-theme").setup({
       function_style = "bold",
-      theme_style = daylight(),
+      theme_style = "dark",
       sidebars = { "qf", "vista_kind", "terminal", "packer" },
       colors = { bg_statusline = "#332344" },
     })
