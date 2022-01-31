@@ -12,6 +12,24 @@ return {
       end
       return Plugin_folder
     end
+    -- https://www.reddit.com/r/neovim/comments/sg919r/diff_with_clipboard/
+    _G.compare_to_clipboard = function()
+      local ftype = vim.api.nvim_eval("&filetype")
+      vim.cmd(string.format(
+        [[
+          vsplit
+          enew
+          normal! P
+          setlocal buftype=nowrite
+          set filetype=%s
+          diffthis
+          bprevious
+          execute "normal! \<C-w>\<C-w>"
+          diffthis
+        ]],
+        ftype
+      ))
+    end
 
     _G.plugin_debug = function()
       if Plugin_debug ~= nil then

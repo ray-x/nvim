@@ -345,8 +345,8 @@ function config.navigator()
       jedi_language_server = { filetypes = {} },
     },
   }
-  if Plugin_folder() == [[~/github/ray-x/]] then
-    lsp.gopls = function()
+  if plugin_folder() == [[~/github/ray-x/]] then
+    nav_cfg.lsp.gopls = function()
       local go = pcall(require, "go")
       if go then
         local cfg = require("go.lsp").config()
