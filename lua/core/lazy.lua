@@ -159,7 +159,7 @@ end, lazy_timer)
 --   vim.cmd(cmd)
 -- end, lazy_timer + 20)
 
-vim.cmd([[hi LineNr guifg=#505068]])
+-- vim.cmd([[hi LineNr guifg=#505068]])
 
 vim.cmd([[autocmd User LoadLazyPlugin lua Lazyload()]])
 

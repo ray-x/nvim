@@ -29,7 +29,7 @@ local plug_map = {
   ["i|<M-r>"] = map_cmd("<cmd>Telescope registers<cr>"):with_noremap():with_silent(),
   ["n|<Leader>fr"] = map_cmd("<cmd>Telescope registers<cr>"):with_noremap():with_silent(),
   ["n|<Leader>fj"] = map_cmd('<cmd>lua require"utils.telescope".jump()<CR>'):with_noremap():with_silent(),
-  ["n|<M-p>"] = map_cr(
+  ["n|<M-P>"] = map_cr(
     '<cmd>lua require("telescope").extensions.frecency.frecency({ sorter = require("telescope").extensions.fzf.native_fzf_sorter() })'
   ):with_silent(),
   ["n|<Leader>cl"] = map_cr('<cmd>lua require("telescope").extensions.neoclip.default()'):with_silent(),
@@ -42,10 +42,14 @@ local plug_map = {
   -- GUI, kitty
 
   ["in|<d-p>"] = map_cu("Telescope find_files"):with_noremap():with_silent(),
+  ["in|<M-p>"] = map_cu("Telescope find_files"):with_noremap():with_silent(),
   -- ["in|<d-T>"] = map_cu("Telescope"):with_noremap():with_silent(),
   -- ["in|<d-f>"] = map_cr("<cmd> lua require'telescope.builtin'.grep_string({defulat_text=vim.fn.expand('cword')})"):with_noremap()
   --     :with_silent(),
 
+  ["in|<M-f>"] = map_cmd([['<cmd>lua require"telescope.builtin".live_grep()<cr>' . expand('<cword>')]])
+    :with_expr()
+    :with_silent(),
   ["in|<d-f>"] = map_cmd([['<cmd>lua require"telescope.builtin".live_grep()<cr>' . expand('<cword>')]])
     :with_expr()
     :with_silent(),

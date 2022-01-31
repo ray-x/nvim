@@ -284,7 +284,7 @@ function config.navigator()
   -- end
 
   local sumneko_root_path = vim.fn.expand("$HOME") .. "/github/sumneko/lua-language-server"
-  local sumneko_binary = vim.fn.expand("$HOME") .. "/github/sumneko/lua-language-server/bin/macOS/lua-language-server"
+  local sumneko_binary = vim.fn.expand("$HOME") .. "/github/sumneko/lua-language-server/bin/lua-language-server"
   luadev.sumneko_root_path = sumneko_root_path
   luadev.sumneko_binary = sumneko_binary
 
@@ -332,18 +332,7 @@ function config.navigator()
         end,
       },
       flow = { autostart = false },
-      gopls = function()
-        local go = pcall(require, "go")
-        if go then
-          local cfg = require("go.lsp").config()
-          cfg.on_attach = function(client)
-            client.resolved_capabilities.document_formatting = false -- efm/null-ls
-          end
-          return cfg
-        else
-          return {}
-        end
-      end,
+
       sqls = {
         on_attach = function(client)
           client.resolved_capabilities.document_formatting = false -- efm
@@ -356,6 +345,20 @@ function config.navigator()
       jedi_language_server = { filetypes = {} },
     },
   }
+  if Plugin_folder() == [[~/github/ray-x/]] then
+    lsp.gopls = function()
+      local go = pcall(require, "go")
+      if go then
+        local cfg = require("go.lsp").config()
+        cfg.on_attach = function(client)
+          client.resolved_capabilities.document_formatting = false -- efm/null-ls
+        end
+        return cfg
+      else
+        return {}
+      end
+    end
+  end
 
   if not use_nulls() then
     nav_cfg.lsp.efm = require("modules.lang.efm").efm
