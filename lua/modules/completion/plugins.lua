@@ -1,7 +1,30 @@
 local completion = {}
 local conf = require("modules.completion.config")
-local filetypes = {'html','css', 'javascript', 'java', 'javascriptreact', 'vue','typescript', 'typescriptreact', 'go', 'lua', 'cpp', 'c', 'markdown', 'makefile','python','bash', 'sh', 'php', 'yaml', 'json', 'sql', 'vim', 'sh'}
-
+local filetypes = {
+  "html",
+  "css",
+  "javascript",
+  "java",
+  "javascriptreact",
+  "vue",
+  "typescript",
+  "typescriptreact",
+  "go",
+  "lua",
+  "cpp",
+  "c",
+  "markdown",
+  "makefile",
+  "python",
+  "bash",
+  "sh",
+  "php",
+  "yaml",
+  "json",
+  "sql",
+  "vim",
+  "sh",
+}
 
 completion["neovim/nvim-lspconfig"] = {
   -- event = 'BufRead',
@@ -67,6 +90,7 @@ completion["hrsh7th/nvim-cmp"] = {
     { "hrsh7th/cmp-calc", after = "nvim-cmp", opt = true },
     { "hrsh7th/cmp-path", after = "nvim-cmp", opt = true },
     { "hrsh7th/cmp-cmdline", after = "nvim-cmp", opt = true },
+    { "cmp-copilot", after = "nvim-cmp", opt = true },
     { plugin_folder() .. "cmp-treesitter", after = "nvim-cmp", opt = true },
     { "hrsh7th/cmp-nvim-lsp", after = "nvim-cmp", opt = true },
     { "f3fora/cmp-spell", after = "nvim-cmp", opt = true },
@@ -156,4 +180,7 @@ completion[plugin_folder() .. "lsp_signature.nvim"] = {
   end,
 }
 
+completion["github/copilot.vim"] = {
+  opt = false,
+}
 return completion

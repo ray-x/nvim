@@ -71,7 +71,8 @@ local plug_map = {
   ["n|<F8>"] = map_cu("AerialToggle"):with_silent(),
 
   ["x|<Leader>c<Space>"] = map_key("gc"),
-  ["n|<Leader>c<Space>"] = map_cmd("<CMD>lua require'Comment.api'.toggle_linewise_op()<CR>"):with_silent(),
+  ["n|<Leader>c<Space>"] = map_key("gcc"),
+  -- ["n|<Leader>c<Space>"] = map_cmd("<CMD>lua require'Comment.api'.toggle_linewise_op()<CR>"):with_silent(),
   ["n|<d-/>"] = map_cmd("<ESC><CMD>lua require'Comment.api'.toggle_linewise_op({})<CR>"):with_silent(),
   ["i|<d-/>"] = map_cmd("<ESC><CMD>lua require'Comment.api'.toggle_linewise_op({})<CR>"):with_silent(),
   ["x|<d-/>"] = map_key("gc"),

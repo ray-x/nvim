@@ -313,7 +313,7 @@ function config.navigator()
     -- { key = "<c-i>", func = "signature_help()" } },
     lsp = {
       format_on_save = true, -- set to false to disasble lsp code format on save (if you are using prettier/efm/formater etc)
-      disable_format_cap = { "sqls", "gopls" }, -- a list of lsp not enable auto-format (e.g. if you using efm or vim-codeformat etc)
+      disable_format_cap = { "sqls", "gopls", "jsonls" }, -- a list of lsp not enable auto-format (e.g. if you using efm or vim-codeformat etc)
       disable_lsp = {}, --e.g {denols}
       code_lens = true,
       disply_diagnostic_qf = false,
@@ -342,7 +342,8 @@ function config.navigator()
 
       sumneko_lua = luadev,
 
-      jedi_language_server = { filetypes = {} },
+      jedi_language_server = { filetypes = {} }, --another way to disable lsp
+      server = { "terraform_lsp" },
     },
   }
   if plugin_folder() == [[~/github/ray-x/]] then
