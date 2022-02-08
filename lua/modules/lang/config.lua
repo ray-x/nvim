@@ -278,15 +278,6 @@ table.insert(path, "lua/?.lua")
 table.insert(path, "lua/?/init.lua")
 
 function config.navigator()
-  local luadev = {}
-  -- if ok and l then
-  --   luadev = l.setup(cfg)
-  -- end
-
-  local sumneko_root_path = vim.fn.expand("$HOME") .. "/github/sumneko/lua-language-server"
-  local sumneko_binary = vim.fn.expand("$HOME") .. "/github/sumneko/lua-language-server/bin/lua-language-server"
-  luadev.sumneko_root_path = sumneko_root_path
-  luadev.sumneko_binary = sumneko_binary
 
   -- local capabilities = vim.lsp.protocol.make_client_capabilities()
 
@@ -340,7 +331,6 @@ function config.navigator()
       },
       ccls = { filetypes = {} }, -- using clangd
 
-      sumneko_lua = luadev,
 
       jedi_language_server = { filetypes = {} }, --another way to disable lsp
       server = { "terraform_lsp" },

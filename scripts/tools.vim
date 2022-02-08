@@ -53,7 +53,7 @@ command Hex :%!xxd
 
 function! FindRoot()
   let s:root = system('git rev-parse --show-toplevel 2> /dev/null')[:-2]
-  let s:list = ['go.mod', 'Makefile', 'CMakefile.txt']
+  let s:list = ['go.mod', 'Makefile', 'CMakefile.txt', 'package.json']
   if len(s:root) == 0
     for k in s:list
       let s:root =  FindProjectRoot(k)
@@ -67,8 +67,8 @@ function! FindRoot()
   return expand("%:p:h")
 endfunction
 
-" let g:root_dir = FindRoot() " Note disable root finder, null-ls will do this
-" autocmd BufEnter * silent! lcd g:root_dir  " 设置当前路径为项目路径
+let g:root_dir = FindRoot() " Note disable root finder, null-ls will do this
+autocmd BufEnter * silent! lcd g:root_dir  " 设置当前路径为项目路径
 
 
 " Protect large files from sourcing and other overhead.

@@ -75,16 +75,29 @@ ui["folke/tokyonight.nvim"] = {
 
 ui["projekt0n/github-nvim-theme"] = {
   opt = true,
+  -- config = conf.gh_theme()
   config = function()
-    require("github-theme").setup({
-      function_style = "bold",
-      theme_style = "dark",
-      sidebars = { "qf", "vista_kind", "terminal", "packer" },
-      colors = { bg_statusline = "#332344" },
-    })
-    vim.cmd([[highlight StatusLine guibg='#A3B3C4']])
-    vim.cmd([[highlight ColorColumn guibg='#335364']])
-    vim.cmd([[doautocmd ColorScheme]])
+    local function daylight()
+      local h = tonumber(os.date("%H"))
+      print(h)
+      if h > 7 and h < 18 then
+        return "light"
+      else
+        return "dark"
+      end
+    end
+
+    if daylight() == "light" then
+      require("github-theme").setup({
+        theme_style = "light",
+        colors = { bg_statusline = "#e4e4f4", fg_statusline = "#5f4030" },
+      })
+    else
+      require("github-theme").setup({
+        theme_style = "dark",
+        colors = { bg_statusline = "#343464", fg_statusline = "#EfD0F0" },
+      })
+    end
   end,
 }
 

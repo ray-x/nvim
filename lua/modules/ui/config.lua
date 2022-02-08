@@ -9,7 +9,6 @@ function config.windline()
 
   -- require('wlfloatline').toggle()
 end
-
 function config.notify()
   require("notify").setup({
     -- Animation style (see below for details)
@@ -332,8 +331,6 @@ function config.nvcode()
   vim.cmd(v)
   -- body
 end
-
-function config.gh_theme() end
 
 function config.sonokai()
   local opt = { "andromeda", "default", "andromeda", "shusia", "maia", "atlantis" }
