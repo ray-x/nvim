@@ -26,6 +26,8 @@ function config.nvim_cmp()
   local function tab(fallback)
     if cmp.visible() then
       cmp.select_next_item()
+    elseif vim.b._copilot_suggestion ~= nil then
+      vim.fn.feedkeys(vim.api.nvim_replace_termcodes(vim.fn["copilot#Accept"](), true, true, true), "")
     elseif luasnip.expand_or_jumpable() then
       luasnip.expand_or_jump()
     elseif has_words_before() then
@@ -119,7 +121,10 @@ function config.nvim_cmp()
       ["<C-d>"] = cmp.mapping.scroll_docs(-4),
       ["<C-f>"] = cmp.mapping.scroll_docs(4),
       ["<C-Space>"] = cmp.mapping.complete(),
-      ["<C-e>"] = cmp.mapping.close(),
+      ["<C-e>"] = cmp.mapping({
+        i = cmp.mapping.abort(),
+        c = cmp.mapping.close(),
+      }),
       ["<CR>"] = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true }),
       -- ['<Tab>'] = cmp.mapping(tab, {'i', 's'}),
 
@@ -130,10 +135,26 @@ function config.nvim_cmp()
           luasnip.expand_or_jump()
         elseif has_words_before() then
           cmp.complete()
+        else -- if vim.b._copilot_suggestion then
+          local copilot_keys = vim.fn["copilot#Accept"]()
+          if copilot_keys ~= "" then
+            vim.api.nvim_feedkeys(copilot_keys, "i", true)
+          else
+            fallback()
+          end
+        end
+      end, { "i", "s" }),
+      ["<Right>"] = cmp.mapping(function(fallback)
+        local copilot_keys = vim.fn["copilot#Accept"]()
+        if copilot_keys ~= "" then
+          vim.api.nvim_feedkeys(copilot_keys, "i", true)
         else
           fallback()
         end
-      end, { "i", "s" }),
+      end, {
+        "i",
+        "s",
+      }),
       ["<S-Tab>"] = cmp.mapping(function(fallback)
         if cmp.visible() then
           cmp.select_prev_item()
@@ -174,8 +195,8 @@ function config.luasnip()
   ls.config.set_config({ history = true, updateevents = "TextChanged,TextChangedI" })
   require("luasnip.loaders.from_vscode").load({})
 
-  vim.api.nvim_set_keymap("i", "<C-E>", "<Plug>luasnip-next-choice", {})
-  vim.api.nvim_set_keymap("s", "<C-E>", "<Plug>luasnip-next-choice", {})
+  -- vim.api.nvim_set_keymap("i", "<C-E>", "luasnip#choice_active() ? <Plug>luasnip-next-choice", {})
+  -- vim.api.nvim_set_keymap("s", "<C-E>", "luasnip#choice_active() ? <Plug>luasnip-next-choice", {})
 end
 
 function config.telescope_preload()

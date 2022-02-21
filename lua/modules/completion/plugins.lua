@@ -182,5 +182,22 @@ completion[plugin_folder() .. "lsp_signature.nvim"] = {
 
 completion["github/copilot.vim"] = {
   opt = false,
+  setup = function()
+    -- vim.api.nvim_set_keymap("n", "<C-=>", [[copilot#Accept("\<CR>")]], { silent = true, script = true, expr = true })
+    -- vim.api.nvim_set_keymap("i", "<C-=>", [[copilot#Accept("\<CR>")]], { silent = true, script = true, expr = true })
+
+    vim.g.copilot_filetypes = {
+      ["*"] = true,
+      gitcommit = false,
+      NeogitCommitMessage = false,
+    }
+    vim.cmd([[
+      imap <silent><script><expr> <C-j> copilot#Accept("\<CR>")
+      let g:copilot_no_tab_map = v:true
+      let g:copilot_assume_mapped = v:true
+      let g:copilot_tab_fallback = ""
+    ]])
+  end,
 }
+
 return completion

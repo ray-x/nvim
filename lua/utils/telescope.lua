@@ -311,8 +311,9 @@ local new_maker = function(filepath, bufnr, opts)
       command = "file",
       args = { "--mime-type", "-b", filepath },
       on_exit = function(j)
-        local mime_type = vim.split(j:result()[1], "/")[1]
-        if mime_type == "text" then
+        local mime_class = vim.split(j:result()[1], "/")[1]
+        local mime_type = j:result()[1]
+        if mime_class == "text" or (mime_class == "application" and mime_type ~= "application/x-pie-executable") then
           previewers.buffer_previewer_maker(filepath, bufnr, opts)
         else
           -- maybe we want to write something to the buffer here

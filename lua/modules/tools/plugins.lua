@@ -153,7 +153,7 @@ tools[path .. "sad.nvim"] = {
   cmd = { "Sad" },
   opt = true,
   config = function()
-    require("sad").setup({ debug = true, log_path = "~/tmp/neovim_debug.log" })
+    require("sad").setup({ debug = true, log_path = "~/tmp/neovim_debug.log", vsplit = false, height_ratio = 0.8 })
   end,
 }
 
@@ -242,7 +242,7 @@ tools["AckslD/nvim-neoclip.lua"] = {
   config = function()
     require("utils.telescope")
     require("neoclip").setup({ db_path = vim.fn.stdpath("data") .. "/databases/neoclip.sqlite3" })
-    require('telescope').load_extension('neoclip')
+    require("telescope").load_extension("neoclip")
   end,
 }
 

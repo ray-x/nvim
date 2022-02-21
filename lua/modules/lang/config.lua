@@ -278,7 +278,6 @@ table.insert(path, "lua/?.lua")
 table.insert(path, "lua/?/init.lua")
 
 function config.navigator()
-
   -- local capabilities = vim.lsp.protocol.make_client_capabilities()
 
   local single = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" }
@@ -304,7 +303,7 @@ function config.navigator()
     -- { key = "<c-i>", func = "signature_help()" } },
     lsp = {
       format_on_save = true, -- set to false to disasble lsp code format on save (if you are using prettier/efm/formater etc)
-      disable_format_cap = { "sqls", "gopls", "jsonls" }, -- a list of lsp not enable auto-format (e.g. if you using efm or vim-codeformat etc)
+      disable_format_cap = { "sqls", "gopls", "jsonls", "sumneko_lua" }, -- a list of lsp not enable auto-format (e.g. if you using efm or vim-codeformat etc)
       disable_lsp = {}, --e.g {denols}
       code_lens = true,
       disply_diagnostic_qf = false,
@@ -330,7 +329,6 @@ function config.navigator()
         end,
       },
       ccls = { filetypes = {} }, -- using clangd
-
 
       jedi_language_server = { filetypes = {} }, --another way to disable lsp
       server = { "terraform_lsp" },
@@ -386,6 +384,8 @@ function config.go()
     log_path = vim.fn.expand("$HOME") .. "/tmp/gonvim.log",
     lsp_codelens = false, -- use navigator
     dap_debug = true,
+    goimport = "goimports",
+    dap_debug_vt = "true",
 
     dap_debug_gui = true,
     test_runner = "go", -- richgo, go test, richgo, dlv, ginkgo

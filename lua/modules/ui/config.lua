@@ -84,152 +84,30 @@ function config.nvim_bufferline()
         return "" .. icon .. count
       end,
       -- can also be a table containing 2 custom separators
-      -- [focused and unfocused]. eg: { '|', '|' }
       separator_style = "thin",
       enforce_regular_tabs = false,
       always_show_bufferline = false,
-      -- 'extension' | 'directory' |
       sort_by = "directory",
-      --[[ groups = {
-        options = {
-          toggle_hidden_on_enter = true -- when you re-enter a hidden group this options re-opens that group so the buffer is visible
-        },
-        items = {
-          {
-            name = "Tests", -- Mandatory
-            highlight = {gui = "underline", guisp = "blue"}, -- Optional
-            priority = 2, -- determines where it will appear relative to other groups (Optional)
-            icon = "", -- Optional
-            matcher = function(buf) -- Mandatory
-              return buf.filename:match('%_test') or buf.filename:match('%_spec')
-            end,
-          },
-          {
-            name = "Docs",
-            highlight = {gui = "undercurl", guisp = "green"},
-            auto_close = false,  -- whether or not close this group if it doesn't contain the current buffer
-            matcher = function(buf)
-              return buf.filename:match('%.md') or buf.filename:match('%.txt')
-            end,
-            separator = { -- Optional
-              style = require('bufferline.groups').separator.tab
-            },
-          },
-        },
-      }, ]]
     },
   })
 end
 
--- vim.cmd(
---   [[
---   fun! s:disable_statusline(bn)
---     if a:bn == bufname('%')
---       set laststatus=0
---     else
---       set laststatus=2
---     endif
---   endfunction]])
--- vim.cmd([[au BufEnter,BufWinEnter,WinEnter,CmdwinEnter * call s:disable_statusline('NvimTree')]])
-
 function config.nvim_tree_setup()
-  vim.g.nvim_tree_indent_markers = 1
-  vim.g.nvim_tree_width = 28
-  vim.g.nvim_tree_git_hl = 1
-  vim.g.nvim_tree_width_allow_resize = 1
-  vim.g.nvim_tree_highlight_opened_files = 1
-  vim.g.nvim_tree_icons = {
-    default = "",
-    symlink = "",
-    git = {
-      unstaged = "✗",
-      staged = "✓",
-      unmerged = "",
-      renamed = "➜",
-      untracked = "★",
-      deleted = "",
-      ignored = "◌",
-    },
-    folder = {
-      arrow_open = "",
-      arrow_closed = "",
-      default = "",
-      open = "",
-      empty = "",
-      empty_open = "",
-      symlink = "",
-      symlink_open = "",
-    },
-  }
   vim.cmd([[autocmd Filetype NvimTree set cursorline]])
 end
 
 function config.nvim_tree()
-  -- following options are the default
   require("nvim-tree").setup({
-    -- disables netrw completely
-    disable_netrw = true,
-    -- hijack netrw window on startup
-    hijack_netrw = true,
-    -- open the tree when running this setup function
-    open_on_setup = false,
-    -- will not open on setup if the filetype is in this list
-    ignore_ft_on_setup = {},
-    -- closes neovim automatically when the tree is the last **WINDOW** in the view
-    auto_close = false,
-    -- opens the tree when changing/opening a new tab if the tree wasn't previously opened
-    open_on_tab = false,
-    -- hijack the cursor in the tree to put it at the start of the filename
-    update_to_buf_dir = {
-      -- enable the feature
-      enable = false,
-      -- allow to open the tree if it was previously closed
-      auto_open = true,
-    },
-    hijack_cursor = false,
-    -- updates the root directory of the tree on `DirChanged` (when your run `:cd` usually)
-    update_cwd = false,
-    -- update the focused file on `BufEnter`, un-collapses the folders recursively until it finds the file
     update_focused_file = {
-      -- enables the feature
       enable = true,
-      -- update the root directory of the tree to the one of the folder containing the file if the file is not under the current root directory
-      -- only relevant when `update_focused_file.enable` is true
-      update_cwd = false,
-      -- list of buffer names / filetypes that will not update the cwd if the file isn't found under the current root directory
-      -- only relevant when `update_focused_file.update_cwd` is true and `update_focused_file.enable` is true
+      update_cwd = true,
       ignore_list = {},
     },
-    -- configuration options for the system open command (`s` in the tree by default)
-    system_open = {
-      -- the command to run this, leaving nil should work in most cases
-      cmd = nil,
-      -- the command arguments as a list
-      args = {},
-    },
-    diagnostics = {
-      enable = true,
-      icons = { hint = "", info = "", warning = "", error = "" },
-    },
-    filters = { dotfiles = true, custom = {} },
     view = {
-      -- width of the window, can be either a number (columns) or a string in `%`
-      width = 30,
-      -- side of the tree, can be one of 'left' | 'right' | 'top' | 'bottom'
-      side = "left",
-      -- if true the tree will resize itself after opening a file
-      auto_resize = false,
-      mappings = {
-        -- custom only false will merge the list with the default mappings
-        -- if true, it will only use your list to set the mappings
-        custom_only = false,
-        -- list of mappings to set on the tree manually
-        list = {},
-      },
+      auto_resize = true,
     },
   })
 end
-
 -- '▋''▘'
 
 function config.scrollbar()

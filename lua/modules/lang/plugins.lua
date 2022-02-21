@@ -99,7 +99,7 @@ lang["rcarriga/nvim-dap-ui"] = {
 
 lang["theHamsta/nvim-dap-virtual-text"] = { opt = true, cmd = "Luadev" }
 
-lang["jbyuki/one-small-step-for-vimkind"] = { opt = true, ft = { "lua" } }
+-- lang["jbyuki/one-small-step-for-vimkind"] = { opt = true, ft = { "lua" } }
 
 lang["nvim-telescope/telescope-dap.nvim"] = {
   config = conf.dap,
