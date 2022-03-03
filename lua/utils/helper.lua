@@ -2,7 +2,7 @@
 -- and line to highlight
 -- first wrote by https://github.com/RishabhRD/nvim-lsputils
 
-M = {
+local M = {
   log_path = vim.lsp.get_log_path(),
 }
 function M.get_data_from_file(filename, startLine)

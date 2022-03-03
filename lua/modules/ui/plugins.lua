@@ -75,30 +75,7 @@ ui["folke/tokyonight.nvim"] = {
 
 ui["projekt0n/github-nvim-theme"] = {
   opt = true,
-  -- config = conf.gh_theme()
-  config = function()
-    local function daylight()
-      local h = tonumber(os.date("%H"))
-      print(h)
-      if h > 7 and h < 18 then
-        return "light"
-      else
-        return "dark"
-      end
-    end
-
-    if daylight() == "light" then
-      require("github-theme").setup({
-        theme_style = "light",
-        colors = { bg_statusline = "#e4e4f4", fg_statusline = "#5f4030" },
-      })
-    else
-      require("github-theme").setup({
-        theme_style = "dark",
-        colors = { bg_statusline = "#343464", fg_statusline = "#EfD0F0" },
-      })
-    end
-  end,
+  config = conf.gh_theme,
 }
 
 ui["sainnhe/sonokai"] = { opt = true, config = conf.sonokai }

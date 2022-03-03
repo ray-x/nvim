@@ -53,7 +53,7 @@ local treesitter_obj = function()
         enable = enable,
         peek_definition_code = { ["DF"] = "@function.outer", ["CF"] = "@class.outer" },
       },
-       move = {
+      move = {
         enable = enable,
         set_jumps = true, -- whether to set jumps in the jumplist
         goto_next_start = { ["]m"] = "@function.outer", ["]]"] = "@class.outer" },
@@ -109,12 +109,12 @@ local treesitter_obj = function()
 end
 
 local treesitter_ref = function()
-
   if vim.fn.line("$") > 10000 then -- skip for large file
     -- vim.cmd[[syntax on]]
-    print("skip treesitter")
+    lprint("skip treesitter")
     enable = false
   end
+
   -- print('load treesitter refactor', vim.fn.line('$'))
 
   require("nvim-treesitter.configs").setup({
@@ -173,16 +173,20 @@ local treesitter_ref = function()
 end
 
 function textsubjects()
+  lprint("txt subjects")
   require("nvim-treesitter.configs").setup({
     textsubjects = {
       enable = true,
-      keymaps = { ["<S-.>"] = "textsubjects-smart", [";"] = "textsubjects-container-outer" },
+      keymaps = {
+        ["<S-.>"] = "textsubjects-smart",
+        [";"] = "textsubjects-container-outer",
+        ["i;"] = "textsubjects-container-inner",
+      },
     },
   })
 end
 
 -- treesitter()
-
 return {
   treesitter = treesitter,
   treesitter_obj = treesitter_obj,

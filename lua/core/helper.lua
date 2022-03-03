@@ -1,3 +1,4 @@
+_G = _G or {}
 return {
   init = function()
     _G.plugin_folder = function()

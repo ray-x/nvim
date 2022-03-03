@@ -92,8 +92,8 @@ return {
       )
     end
 
-    table.insert(sources, null_ls.builtins.formatting.trim_newlines)
-    table.insert(sources, null_ls.builtins.formatting.trim_whitespace)
+    -- table.insert(sources, null_ls.builtins.formatting.trim_newlines)
+    -- table.insert(sources, null_ls.builtins.formatting.trim_whitespace)
 
     table.insert(
       sources,
@@ -127,7 +127,7 @@ return {
       ),
       on_attach = function(client)
         if client.resolved_capabilities.document_formatting then
-          vim.cmd("autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting()")
+          vim.cmd("autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()")
         end
       end,
     }

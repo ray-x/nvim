@@ -17,6 +17,9 @@ function config.treesitter_ref()
   require("modules.lang.treesitter").treesitter_ref()
 end
 
+function config.treesitter_sub()
+  require("modules.lang.treesitter").textsubjects()
+end
 function config.refactor()
   local refactor = require("refactoring")
   refactor.setup({})
@@ -44,15 +47,6 @@ function config.refactor()
       end,
     }):find()
   end
-end
-
-function config.tsubject()
-  require("nvim-treesitter.configs").setup({
-    textsubjects = {
-      enable = true,
-      keymaps = { ["."] = "textsubjects-smart", [";"] = "textsubjects-container-outer" },
-    },
-  })
 end
 
 function config.outline()

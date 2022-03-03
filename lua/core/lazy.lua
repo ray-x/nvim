@@ -39,7 +39,7 @@ local function loadscheme()
 
   if daylight() == "light" then
     vim.o.background = "light"
-    themes = { "gruvbox-material", "starry.nvim", "github-nvim-theme" }
+    themes = { "gruvbox-material", "starry.nvim" }
   end
 
   -- themes = { "aurora" }

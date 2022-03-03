@@ -162,6 +162,35 @@ function config.aurora()
   vim.cmd("hi EndOfBuffer guibg=NONE ctermbg=NONE") -- remove background
 end
 
+function config.gh_theme()
+  local function daylight()
+    local h = tonumber(os.date("%H"))
+    print(h)
+    if h > 7 and h < 18 then
+      return "light"
+    else
+      return "dark"
+    end
+  end
+
+  if daylight() == "light" then
+    require("github-theme").setup({
+      theme_style = "light",
+      overrides = function(c)
+        return {
+          StatusLine = { fg = c.fg, bg = c.bright_white },
+          StatusLineNC = { fg = c.bg, bg = c.bright_white },
+          TSCurrentScope = { bg = c.bright_white },
+        }
+      end,
+    })
+  else
+    require("github-theme").setup({
+      theme_style = "dark",
+    })
+  end
+end
+
 function config.starry()
   -- local opt = {"oceanic", "darker", "palenight", "deep ocean", "moonlight", "dracula", "dracula_blood", "monokai", "mariana", "ceramic"}
   -- local v = math.random(1, #opt)
