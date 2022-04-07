@@ -39,7 +39,8 @@ local function loadscheme()
 
   if daylight() == "light" then
     vim.o.background = "light"
-    themes = { "gruvbox-material", "starry.nvim" }
+    themes = { "gruvbox-material", "starry.nvim", "github-nvim-theme" }
+    -- themes = { "github-nvim-theme" }
   end
 
   -- themes = { "aurora" }
@@ -118,7 +119,7 @@ function Lazyload()
   if load_ts_plugins then
     plugins = "nvim-treesitter-textobjects nvim-ts-autotag nvim-ts-context-commentstring nvim-treesitter-textsubjects"
     loader(plugins)
-    lprint(plugins)
+    lprint(plugins .. " loaded")
     loader("neogen")
     loader("refactoring.nvim")
     loader("indent-blankline.nvim")
@@ -134,6 +135,9 @@ function Lazyload()
     loader("null-ls.nvim")
   end
 
+  if load_lsp and use_efm() then
+    loader("efm.nvim")
+  end
   lprint("LoadLazyPlugin finished")
 end
 

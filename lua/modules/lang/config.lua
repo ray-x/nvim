@@ -298,7 +298,7 @@ function config.navigator()
     lsp = {
       format_on_save = true, -- set to false to disasble lsp code format on save (if you are using prettier/efm/formater etc)
       disable_format_cap = { "sqls", "gopls", "jsonls", "sumneko_lua" }, -- a list of lsp not enable auto-format (e.g. if you using efm or vim-codeformat etc)
-      disable_lsp = {}, --e.g {denols}
+      disable_lsp = { "clangd" }, --e.g {denols}
       code_lens = true,
       disply_diagnostic_qf = false,
       denols = { filetypes = {} },
@@ -322,7 +322,8 @@ function config.navigator()
           client.resolved_capabilities.document_formatting = false -- efm
         end,
       },
-      ccls = { filetypes = {} }, -- using clangd
+      -- ccls = { filetypes = {} }, -- using clangd
+      clangd = { filetypes = {} }, -- using clangd
 
       jedi_language_server = { filetypes = {} }, --another way to disable lsp
       server = { "terraform_lsp" },
@@ -343,7 +344,7 @@ function config.navigator()
     end
   end
 
-  if not use_nulls() then
+  if use_efm() then
     nav_cfg.lsp.efm = require("modules.lang.efm").efm
   else
     table.insert(nav_cfg.lsp.disable_lsp, "efm")

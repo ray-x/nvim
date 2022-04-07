@@ -202,6 +202,7 @@ function config.starry()
   vim.g.starry_italic_string = false
   vim.g.starry_contrast = true
   vim.g.starry_borders = true
+  vim.starry_deep_black = true --"OLED deep black
   vim.g.starry_disable_background = false
   vim.g.starry_daylight_switch = true
   -- vim.g.starry_style = "earlysummer" -- 'moonlight' emerald middlenight_blue earlysummer

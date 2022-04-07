@@ -56,6 +56,10 @@ return {
       -- return true
     end
 
+    _G.use_efm = function()
+      return false
+      -- return true
+    end
     -- convert word to Snake case
     _G.Snake = function(s)
       if s == nil then
