@@ -112,7 +112,7 @@ lang["nvim-telescope/telescope-dap.nvim"] = {
 
 lang["mfussenegger/nvim-dap-python"] = { ft = { "python" } }
 
-lang["mtdl9/vim-log-highlighting"] = { ft = { "text", "log" } }
+lang["mtdl9/vim-log-highlighting"] = { ft = { "text", "txt", "log" } }
 
 -- lang["RRethy/vim-illuminate"] = {opt=true, ft = {"go"}}
 

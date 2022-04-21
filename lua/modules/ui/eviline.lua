@@ -91,10 +91,6 @@ local current_treesitter_context = function(width)
   if context == "vim.NIL" then
     return " "
   end
-  -- if #context > 200 then
-  --   context = string.format("%-20s", context)
-  --   context = string.format("%.200s", context)
-  -- end
 
   return " " .. context
 end
@@ -105,7 +101,7 @@ local current_function = function(width)
     return ""
   end
   local ts = current_treesitter_context(width)
-  if string.len(ts) < 4 then
+  if string.len(ts) < 3 then
     return " "
   end
   if width > 200 then
@@ -150,15 +146,18 @@ local TrimmedDirectory = function(dir)
   local pa = split_path(dir)
   local p1 = getEntryFromEnd(pa, 1)
   if p1 then
-    p1, _ = string.gsub(p1, "mtribes%-", "m")
+    p1, _ = string.gsub(p1, "github%-", "g")
+    p1, _ = string.gsub(p1, "bitbucket%-", "b")
   end
   local p2 = getEntryFromEnd(pa, 2)
   if p2 then
     p2, _ = string.gsub(p2, "mtribes%-", "m")
+    p2, _ = string.gsub(p2, "bitbucket%-", "b")
   end
   local p3 = getEntryFromEnd(pa, 3)
   if p3 then
     p3, _ = string.gsub(p3, "mtribes%-", "m")
+    p3, _ = string.gsub(p3, "bitbucket%-", "b")
   end
 
   local pc = ""
@@ -306,14 +305,6 @@ basic.file = {
   end,
 }
 
--- basic.ani = {
---     name = 'ani',
---     hl_colors = colors_mode_rev,
---     text = function()
---         return { { luffy_text } }
---     end,
--- }
-
 basic.folder = {
   name = "folder",
   hl_colors = { default = hl_list.NormalBg, white = { "white", "black" }, blue = { "blue", "NormalBg" } },
@@ -442,18 +433,14 @@ local default = {
   filetypes = { "default" },
   active = {
     basic.square_mode,
-    basic.ani,
     basic.vi_mode,
     { git_comps.git_branch(), { "magenta", "NormalBg" }, breakpoint_width },
     basic.file,
     basic.lsp_diagnos,
     basic.signature,
-    basic.funcname,
+    -- basic.funcname,
     basic.divider, -- {sep.slant_right,{'black_light', 'green_light'}},
-    -- {sep.slant_right,{'green_light', 'blue_light'}},
-    -- {sep.slant_right,{'blue_light', 'red_light'}},
-    -- {sep.slant_right,{'red_light', 'cyan_light'}},
-    -- {sep.slant_right,{'cyan_light', 'black'}},
+    {sep.slant_right,{'green_light', 'blue_light'}},
     basic.file_right,
     basic.scrollbar_right,
     { lsp_comps.lsp_name(), { "magenta", "NormalBg" }, breakpoint_width },
@@ -473,24 +460,6 @@ local default = {
 }
 -- ⚡
 
--- local animation = require('wlanimation')
--- local efffects = require('wlanimation.effects')
-
--- animation.stop_all()
-
--- spinner = {'⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏'}
--- spinner2 = {'', '', '', '', '', '', ''}
--- local luffy = spinner
--- animation.stop_all()
--- animation.basic_animation({
---   timeout = nil,
---   delay = 200,
---   interval = 150,
---   effect = efffects.list_text(luffy),
---   on_tick = function(value)
---     luffy_text = value
---   end
--- })
 
 windline.setup({
   colors_name = function(colors)
@@ -535,24 +504,3 @@ windline.setup({
   end,
   statuslines = { default, quickfix, explorer },
 })
-
--- windline.add_component({
---   name = 'test',
---   hl_colors = {red = {'red', 'black'}},
---   text = function()
---     return {{'🧛 ', 'red'}, {b_components.progress, 'red'}, {' ', 'red'}}
---   end
--- }, {filetype = 'default', position = 'git'})
--- animation.animation({
---    data = {
---         {'red_light', efffects.rainbow()},
---         -- {'green_light', efffects.rainbow()},
---         {'cyan_light', efffects.blackwhite()}
---         -- {'cyan_light',efffects.blackwhite()},
---         -- {'FilenameBg',efffects.rainbow()}, --- animation for filename only
---         -- {'FilenameFg',efffects.blackwhite()}
---     },
---     timeout = nil,
---     delay = 200,
---     interval = 100,
--- })

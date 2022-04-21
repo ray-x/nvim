@@ -2,8 +2,8 @@ set termguicolors
 call plug#begin('~/.vim/plugged')
 
 Plug 'neovim/nvim-lspconfig'
-Plug '~/github/lsp_signature.nvim'
-Plug '~/github/go.nvim'
+Plug '~/github/ray-x/lsp_signature.nvim'
+Plug '~/github/ray-x/go.nvim'
 
 call plug#end()
 

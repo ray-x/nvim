@@ -101,7 +101,4 @@ ui["gelguy/wilder.nvim"] = {
   config = conf.wilder,
 }
 
-ui["wiliamks/mechanical.nvim"] = {
-  opt = true,
-}
 return ui

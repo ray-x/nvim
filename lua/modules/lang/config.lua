@@ -379,7 +379,7 @@ function config.go()
     log_path = vim.fn.expand("$HOME") .. "/tmp/gonvim.log",
     lsp_codelens = false, -- use navigator
     dap_debug = true,
-    goimport = "goimports",
+    goimport = "gopls",
     dap_debug_vt = "true",
 
     dap_debug_gui = true,
