@@ -100,15 +100,17 @@ local current_function = function(width)
   if width < 50 then
     return ""
   end
+
+  width = width * 1 / 2
+  if width > 200 then
+    width = width * 2 / 3
+  end
   local ts = current_treesitter_context(width)
   if string.len(ts) < 3 then
     return " "
   end
-  if width > 200 then
-    width = width * 2 / 3
-  else
-    width = width * 1 / 2
-  end
+  ts = string.gsub(ts, "[\n\r]+", " ")
+
   return string.sub(" " .. ts, 1, width)
 end
 
@@ -438,7 +440,7 @@ local default = {
     basic.file,
     basic.lsp_diagnos,
     basic.signature,
-    -- basic.funcname,
+    basic.funcname,
     basic.divider, -- {sep.slant_right,{'black_light', 'green_light'}},
     {sep.slant_right,{'green_light', 'blue_light'}},
     basic.file_right,

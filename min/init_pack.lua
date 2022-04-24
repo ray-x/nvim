@@ -13,44 +13,11 @@ local function load_plugins()
         "/home/ray/github/ray-x/navigator.lua",
         requires = { "ray-x/guihua.lua", run = "cd lua/fzy && make" },
         config = function()
-          local lsp_configs = require("lspconfig.configs")
-          lsp_configs.vhdl_ls = {
-            default_config = {
-              cmd = { "vhdl_ls", "enable_linter" },
-              filetypes = { "vhdl" },
-              root_dir = function(fname)
-                local util = require("lspconfig.util")
-                local root_files = {
-                  "vhdl_ls.toml",
-                }
-                return util.root_pattern(unpack(root_files))(fname)
-                  or util.root_pattern(".git")(fname)
-                  or util.path.dirname(fname)
-              end,
-              settings = {},
-            },
-          }
           require("navigator").setup({
             debug = true,
             lsp = {
-              vhdl_ls = {
-                default_config = {
-                  cmd = { "vhdl_ls", "enable_linter" },
-                  filetypes = { "vhdl" },
-                  root_dir = function(fname)
-                    local util = require("lspconfig.util")
-                    local root_files = {
-                      "vhdl_ls.toml",
-                    }
-                    return util.root_pattern(unpack(root_files))(fname)
-                      or util.root_pattern(".git")(fname)
-                      or util.path.dirname(fname)
-                  end,
-                  settings = {},
-                },
-              },
+              format_on_save = true,
               diagnostic_scrollbar_sign = { "▃", "▆", "█" }, -- set to nil to disable, set to {'╍', 'ﮆ'} to enable diagnostic status in scroll bar area
-              servers = { "vhdl_ls" },
             },
           })
         end,
@@ -106,7 +73,7 @@ local function load_plugins()
         "nvim-treesitter/nvim-treesitter",
         config = function()
           require("nvim-treesitter.configs").setup({
-            ensure_installed = { "python", "go", "javascript" },
+            ensure_installed = { "python", "go", "javascript", "rust" },
             highlight = { enable = true },
           })
         end,

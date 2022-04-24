@@ -55,6 +55,12 @@ editor["rrethy/vim-hexokinase"] = {
   cmd = { "HexokinaseTurnOn", "HexokinaseToggle" },
 }
 
+editor["chrisbra/Colorizer"] = {
+  ft = { "log", "txt", "text" },
+  opt = true,
+  cmd = { "ColorHighlight", "ColorUnhighlight" },
+}
+
 -- booperlv/nvim-gomove
 -- <A-k>   Move current line/selection up
 -- <A-j>   Move current line/selection down
