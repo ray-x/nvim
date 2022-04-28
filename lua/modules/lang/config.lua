@@ -298,8 +298,8 @@ function config.navigator()
     lsp = {
       format_on_save = true, -- set to false to disasble lsp code format on save (if you are using prettier/efm/formater etc)
       disable_format_cap = { "sqls", "gopls", "jsonls", "sumneko_lua" }, -- a list of lsp not enable auto-format (e.g. if you using efm or vim-codeformat etc)
-      disable_lsp = { "clangd" }, --e.g {denols}
-      code_lens = true,
+      disable_lsp = { "clangd", "deno" }, --e.g {denols}
+      -- code_lens = true,
       disply_diagnostic_qf = false,
       denols = { filetypes = {} },
       tsserver = {

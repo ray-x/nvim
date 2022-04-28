@@ -44,23 +44,11 @@ local plug_map = {
   ["in|<d-p>"] = map_cu("Telescope find_files"):with_noremap():with_silent(),
   ["in|<M-p>"] = map_cu("Telescope find_files"):with_noremap():with_silent(),
   -- ["in|<d-T>"] = map_cu("Telescope"):with_noremap():with_silent(),
-  -- ["in|<d-f>"] = map_cr("<cmd> lua require'telescope.builtin'.grep_string({defulat_text=vim.fn.expand('cword')})"):with_noremap()
-  --     :with_silent(),
-
-  ["in|<M-f>"] = map_cmd([['<cmd>lua require"telescope.builtin".live_grep()<cr>' . expand('<cword>')]])
-    :with_expr()
-    :with_silent(),
-  ["in|<d-f>"] = map_cmd([['<cmd>lua require"telescope.builtin".live_grep()<cr>' . expand('<cword>')]])
-    :with_expr()
-    :with_silent(),
-  --     :with_expr(),
-
-  ["in|<d-F>"] = map_cmd(
-    [['<cmd> lua require("telescope").extensions.live_grep_raw.live_grep_raw()<CR>' .  ' --type ' . &ft . ' ' . expand('<cword>')]]
-  ):with_expr():with_silent(),
-  -- ["in|<d-F>"] = map_cr("<cmd> lua require'telescope.builtin'.live_grep({defulat_text=vim.fn.expand('cword')})"):with_noremap()
-  -- :with_silent(),
-  -- ["n|<Leader>fd"]     = map_cu('Telescope dotfiles path='..global..'/.dotfiles'):with_noremap():with_silent(),
+  ["in|<M-f>"] = map_cr([[<cmd>lua lua require"utils.telescope".grep_string_cursor()]]):with_noremap():with_silent(),
+  ["in|<d-f>"] = map_cr([[<cmd>lua require"utils.telescope".grep_string_cursor()]]):with_noremap():with_silent(),
+  ["v|<d-f>"] = map_cr([[<cmd>lua require"utils.telescope".grep_string_viusal()]]):with_noremap():with_silent(),
+  ["in|<d-F>"] = map_cr([[<cmd>lua require"utils.telescope".grep_string_cursor_raw()]]):with_noremap():with_silent(),
+  ["v|<d-F>"] = map_cr([[<cmd>lua require"utils.telescope".grep_string_visual_raw()]]):with_expr():with_silent(),
   ["n|<Leader>fs"] = map_cu("Telescope gosource"):with_noremap():with_silent(),
   ["n|w"] = map_cmd('v:lua.word_motion_move("w")'):with_silent():with_expr(),
 

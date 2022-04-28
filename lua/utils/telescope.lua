@@ -19,7 +19,16 @@ local builtin = require("telescope.builtin")
 local state = require("telescope.state")
 local action_set = require("telescope.actions.set")
 
-M = {}
+-- https://github.com/rafi/vim-config/blob/master/lua/plugins/telescope.lua
+local visual_selection = function()
+  local save_previous = vim.fn.getreg("a")
+  vim.api.nvim_command('silent! normal! "ay')
+  local selection = vim.fn.trim(vim.fn.getreg("a"))
+  vim.fn.setreg("a", save_previous)
+  return vim.fn.substitute(selection, [[\n]], [[\\n]], "g")
+end
+
+local M = {}
 
 M.find_dots = function(opts)
   opts = opts or {}
@@ -47,7 +56,7 @@ M.find_dots = function(opts)
 end
 
 -- Looks for git files, but falls back to normal files
-M.files = function(opts)
+M.git_files = function(opts)
   opts = opts or {}
 
   vim.fn.system("git status")
@@ -367,7 +376,6 @@ M.setup = function()
       file_previewer = require("telescope.previewers").vim_buffer_cat.new,
       grep_previewer = require("telescope.previewers").vim_buffer_vimgrep.new,
       qflist_previewer = require("telescope.previewers").vim_buffer_qflist.new,
-      extensions = { fzy_native = { override_generic_sorter = false, override_file_sorter = true } },
       -- check telescoe/mappings.lua
       -- n<C-u/d> pageup/down in preview
       -- i <C-_> help keymap
@@ -423,7 +431,7 @@ M.setup = function()
 
   -- telescope.load_extension("notify")
 
-  loader("telescope-fzy-native.nvim telescope-fzf-native.nvim telescope-live-grep-raw.nvim telescope-file-browser.nvim")
+  loader("telescope-fzf-native.nvim telescope-live-grep-raw.nvim telescope-file-browser.nvim")
   loader("sqlite.lua")
   loader("telescope-frecency.nvim project.nvim telescope-zoxide nvim-neoclip.lua")
 
@@ -447,17 +455,41 @@ M.setup = function()
           },
         },
       },
-      fzy_native = { override_generic_sorter = false, override_file_sorter = true },
     },
   })
 
   telescope.load_extension("fzf")
-  telescope.load_extension("file_browser")
-  telescope.load_extension("fzy_native")
 
   telescope.load_extension("dotfiles")
   telescope.load_extension("gosource")
   -- telescope.load_extension("smart_history")
+end
+
+M.grep_string_visual = function()
+  require("telescope.builtin").live_grep({
+    default_text = visual_selection(),
+  })
+end
+
+M.grep_string_cursor = function()
+  local w = vim.fn.expand("<cword>")
+  require("telescope.builtin").live_grep({
+    default_text = w,
+  })
+end
+
+M.grep_string_visual_raw = function()
+  require("telescope").extensions.live_grep_raw.live_grep_raw({
+    default_text = visual_selection(),
+    additional_args = "--hidden --type " .. vim.o.ft,
+  })
+end
+
+M.grep_string_cursor_raw = function()
+  local w = vim.fn.expand("<cword>")
+  require("telescope").extensions.live_grep_raw.live_grep_raw({
+    default_text = w,
+  })
 end
 
 return M
