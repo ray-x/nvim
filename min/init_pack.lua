@@ -1,16 +1,31 @@
 vim.cmd([[set runtimepath=$VIMRUNTIME]])
 vim.cmd([[set packpath=/tmp/nvim/site]])
+local Plugin_folder
+local plugin_folder = function()
+  if Plugin_folder then
+    return Plugin_folder
+  end
+  local host = os.getenv("HOST_NAME")
+  if host and (host:find("Ray") or host:find("ray")) then
+    Plugin_folder = [[~/github/ray-x/]] -- vim.fn.expand("$HOME") .. '/github/'
+  else
+    Plugin_folder = [[ray-x/]]
+  end
+  return Plugin_folder
+end
 
+local path = plugin_folder()
 local package_root = "/tmp/nvim/site/pack"
 local install_path = package_root .. "/packer/start/packer.nvim"
 
 local function load_plugins()
+  print("load plugins")
   require("packer").startup({
     function(use)
       use({ "wbthomason/packer.nvim" })
       use({ "neovim/nvim-lspconfig" })
       use({
-        "/home/ray/github/ray-x/navigator.lua",
+        path .. "navigator.lua",
         requires = { "ray-x/guihua.lua", run = "cd lua/fzy && make" },
         config = function()
           require("navigator").setup({
