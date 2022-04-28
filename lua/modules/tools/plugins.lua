@@ -24,8 +24,9 @@ tools["editorconfig/editorconfig-vim"] = {
 }
 
 tools["ThePrimeagen/git-worktree.nvim"] = {
-  event = { "CmdwinEnter", "CmdlineEnter" },
-  config = conf.worktree,
+  opt = true,
+  -- event = { "CmdwinEnter", "CmdlineEnter" },
+  -- config = conf.worktree,
 }
 
 tools["ThePrimeagen/harpoon"] = {

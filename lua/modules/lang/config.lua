@@ -297,7 +297,7 @@ function config.navigator()
     -- { key = "<c-i>", func = "signature_help()" } },
     lsp = {
       format_on_save = true, -- set to false to disasble lsp code format on save (if you are using prettier/efm/formater etc)
-      disable_format_cap = { "sqls", "gopls", "jsonls", "sumneko_lua" }, -- a list of lsp not enable auto-format (e.g. if you using efm or vim-codeformat etc)
+      disable_format_cap = { "sqls", "gopls", "jsonls", "sumneko_lua", "tflint", "terraform_lsp" }, -- a list of lsp not enable auto-format (e.g. if you using efm or vim-codeformat etc)
       disable_lsp = { "clangd", "deno" }, --e.g {denols}
       -- code_lens = true,
       disply_diagnostic_qf = false,

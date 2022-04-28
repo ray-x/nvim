@@ -103,9 +103,6 @@ function config.nvim_tree()
       update_cwd = true,
       ignore_list = {},
     },
-    view = {
-      auto_resize = true,
-    },
   })
 end
 -- '▋''▘'
