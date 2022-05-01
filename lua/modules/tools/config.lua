@@ -50,7 +50,7 @@ function config.worktree()
   end
 
   require("git-worktree").setup({})
-  vim.api.nvim_add_user_command("Worktree", "lua git_worktree(<f-args>)", {
+  vim.api.nvim_create_user_command("Worktree", "lua git_worktree(<f-args>)", {
     nargs = "*",
     complete = function()
       return { "create" }
