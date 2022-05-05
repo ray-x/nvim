@@ -162,6 +162,13 @@ lang["folke/trouble.nvim"] = {
   end,
 }
 
+lang["hashivim/vim-terraform"] = {
+  ft = { "terraform" },
+  opt = true,
+  cmd = { "Terraform", "TerraformToggle" },
+  -- config = conf.terraform,
+}
+
 -- lang['ldelossa/calltree.nvim'] = {
 --   cmd = {'CTExpand', 'CTCollapse', 'CTSwitch', 'CTJump', 'CTFocus'},
 --   config = function()

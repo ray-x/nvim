@@ -497,4 +497,12 @@ function config.mkdp()
   )
 end
 
+function config.git_conflict()
+  require('git-conflict').setup()
+end
+
+function config.igit()
+  require('igit').setup()
+end
+
 return config
