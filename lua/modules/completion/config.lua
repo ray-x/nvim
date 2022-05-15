@@ -57,8 +57,10 @@ function config.nvim_cmp()
     { name = "nvim_lsp" },
     { name = "luasnip" },
     { name = "treesitter", keyword_length = 2 },
-    { name = "look", keyword_length = 4 },
+    { name = "look", keyword_length = 2 },
     { name = "copilot" },
+    { name = 'emoji' },
+    { name = "path" },
     -- {name = 'buffer', keyword_length = 4} {name = 'path'}, {name = 'look'},
     -- {name = 'calc'}, {name = 'ultisnips'} { name = 'snippy' }
   }
@@ -77,7 +79,6 @@ function config.nvim_cmp()
     table.insert(sources, { name = "nvim_lua" })
   end
   if vim.o.ft == "zsh" or vim.o.ft == "sh" or vim.o.ft == "fish" or vim.o.ft == "proto" then
-    table.insert(sources, { name = "path" })
     table.insert(sources, { name = "buffer", keyword_length = 3 })
     table.insert(sources, { name = "calc" })
   end
@@ -107,6 +108,8 @@ function config.nvim_cmp()
           treesitter = " ",
           nvim_lua = " ",
           spell = " 暈",
+          emoji = "ﲃ" ,
+          look = "﬜",
         })[entry.source.name]
         return vim_item
       end,

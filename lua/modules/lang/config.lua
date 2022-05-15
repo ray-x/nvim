@@ -312,14 +312,14 @@ function config.navigator()
           "typescript.tsx",
         },
         on_attach = function(client)
-          client.server_capabilities.documentFormattingVendor = false -- allow efm to format
+          client.server_capabilities.documentFormattingProvider = false -- allow efm to format
         end,
       },
       flow = { autostart = false },
 
       sqls = {
         on_attach = function(client)
-          client.server_capabilities.documentFormattingVendor = false -- efm
+          client.server_capabilities.documentFormattingProvider = false -- efm
         end,
       },
       -- ccls = { filetypes = {} }, -- using clangd
@@ -335,7 +335,7 @@ function config.navigator()
       if go then
         local cfg = require("go.lsp").config()
         cfg.on_attach = function(client)
-          client.server_capabilities.documentFormattingVendor = false -- efm/null-ls
+          client.server_capabilities.documentFormattingProvider = false -- efm/null-ls
         end
         return cfg
       else

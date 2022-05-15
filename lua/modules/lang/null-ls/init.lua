@@ -92,8 +92,8 @@ return {
       )
     end
 
-    -- table.insert(sources, null_ls.builtins.formatting.trim_newlines)
-    -- table.insert(sources, null_ls.builtins.formatting.trim_whitespace)
+    table.insert(sources, null_ls.builtins.formatting.trim_newlines)
+    table.insert(sources, null_ls.builtins.formatting.trim_whitespace)
 
     table.insert(
       sources,

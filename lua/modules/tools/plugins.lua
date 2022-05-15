@@ -287,4 +287,13 @@ tools["nvim-telescope/telescope-frecency.nvim"] = {
   end,
 }
 
+tools["voldikss/vim-translator"] = {
+    opt=true,
+    fn = { "<Plug>TranslateW", "<Plug>TranslateWV" },
+    setup = function()
+      vim.api.nvim_set_keymap("n", "<Leader>ts",  "<Plug>TranslateW", {noremap = true, silent = true})
+      vim.api.nvim_set_keymap("v", "<Leader>ts",  "<Plug>TranslateWV", {noremap = true, silent = true})
+    end
+}
+
 return tools

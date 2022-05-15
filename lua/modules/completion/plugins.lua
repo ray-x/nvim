@@ -91,6 +91,7 @@ completion["hrsh7th/nvim-cmp"] = {
     { "hrsh7th/cmp-path", after = "nvim-cmp", opt = true },
     { "hrsh7th/cmp-cmdline", after = "nvim-cmp", opt = true },
     { "hrsh7th/cmp-copilot", after = "nvim-cmp", opt = true },
+    {"hrsh7th/cmp-emoji", after = "nvim-cmp", opt = true},
     { plugin_folder() .. "cmp-treesitter", after = "nvim-cmp", opt = true },
     { "hrsh7th/cmp-nvim-lsp", after = "nvim-cmp", opt = true },
     { "f3fora/cmp-spell", after = "nvim-cmp", opt = true },
