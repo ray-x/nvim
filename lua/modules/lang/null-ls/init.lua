@@ -122,6 +122,7 @@ return {
         "Makefile",
         ".git",
         "go.mod",
+        "main.go",
         "package.json",
         "tsconfig.json"
       ),

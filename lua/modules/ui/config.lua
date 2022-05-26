@@ -202,8 +202,8 @@ function config.starry()
   vim.starry_deep_black = true --"OLED deep black
   vim.g.starry_disable_background = false
   vim.g.starry_daylight_switch = true
-  -- vim.g.starry_style = "earlysummer" -- 'moonlight' emerald middlenight_blue earlysummer
-  -- vim.g.starry_style_fix = true
+  vim.g.starry_style = "earlysummer" -- 'moonlight' emerald middlenight_blue earlysummer
+  vim.g.starry_style_fix = true
   -- config.default()
 end
 
@@ -392,16 +392,29 @@ function config.wilder()
       wilder.cmdline_pipeline({
         fuzzy = 1,
       }),
-      wilder.python_search_pipeline({
-        pattern = "fuzzy",
-      })
+      wilder.python_file_finder_pipeline({
+        -- to use ripgrep : {'rg', '--files'}
+        -- to use fd      : {'fd', '-tf'}
+        file_command = { "rg", "--files" }, --  { "find", ".", "-type", "f", "-printf", "%P\n" },
+        -- to use fd      : {'fd', '-td'}
+        dir_command = { "fd", "-tf" }, -- { "find", ".", "-type", "d", "-printf", "%P\n" },
+        -- use {'cpsm_filter'} for performance, requires cpsm vim plugin
+        -- found at https://github.com/nixprime/cpsm
+        filters = { "fuzzy_filter", "difflib_sorter" },
+      }),
+
+      wilder.python_search_pipeline()
+      -- wilder.python_search_pipeline({
+      --   pattern = wilder.python_fuzzy_pattern(), --python_fuzzy_delimiter_pattern()
+      --   sorter = wilder.python_difflib_sorter(),
+      --   engine = "re",
+      -- })
     ),
   })
   local highlighters = {
     wilder.highlighter_with_gradient({
       wilder.basic_highlighter(), -- or wilder.lua_fzy_highlighter(),
     }),
-    wilder.pcre2_highlighter(),
     wilder.basic_highlighter(),
   }
   wilder.set_option(

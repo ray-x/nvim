@@ -5,4 +5,4 @@ setlocal foldmethod=indent
 setlocal formatoptions=tcq2l
 setlocal shiftwidth=2
 setlocal softtabstop=2
-setlocal tabstop=4
+setlocal tabstop=2

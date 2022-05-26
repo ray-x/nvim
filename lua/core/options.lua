@@ -42,7 +42,7 @@ local function load_options()
     smarttab       = true;
     smartindent    = true;
     shiftround     = true;
-    -- lazyredraw     = true;
+    lazyredraw     = true;
     timeout        = true;
     ttimeout       = true;
     timeoutlen     = 500;
@@ -72,6 +72,7 @@ local function load_options()
     shortmess      = "aotTIcF";
     scrolloff      = 2;
     sidescrolloff  = 5;
+    foldlevel      = 99;
     foldlevelstart = 99;
     ruler          = false;
     list           = true;

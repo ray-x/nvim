@@ -7,8 +7,8 @@ local lsp_comps = require("windline.components.lsp")
 local git_comps = require("windline.components.git")
 local HSL = require("wlanimation.utils")
 local sep = helper.separators
-local luffy_text = ""
-
+-- local luffy_text = ""
+local git_rev_components = require("windline.components.git_rev")
 local home = require("core.global").home
 
 local hl_list = {
@@ -21,6 +21,8 @@ local hl_list = {
 local basic = {}
 
 local breakpoint_width = 100
+local medium_width = 80
+local large_width = 100
 basic.divider = { b_components.divider, "" }
 basic.bg = { " ", "StatusLine" }
 
@@ -60,52 +62,29 @@ local winwidth = function()
   return vim.api.nvim_call_function("winwidth", { 0 })
 end
 
-local current_treesitter_context = function(width)
-  if not packer_plugins["nvim-treesitter"] or packer_plugins["nvim-treesitter"].loaded == false then
-    return " "
-  end
-  local type_patterns = {
-    "class",
-    "function",
-    "method",
-    "interface",
-    "type_spec",
-    "table",
-    "if_statement",
-    "for_statement",
-    "for_in_statement",
-    "call_expression",
-    "comment",
-  }
+local signature_length = 0
 
-  if vim.o.ft == "json" then
-    type_patterns = { "object", "pair" }
-  end
-
-  local f = require("nvim-treesitter").statusline({
-    indicator_size = width,
-    type_patterns = type_patterns,
-  })
-  local context = string.format("%s", f) -- convert to string, it may be a empty ts node
-
-  if context == "vim.NIL" then
-    return " "
-  end
-
-  return " " .. context
-end
-
+local treesitter_context = require("modules.lang.treesitter").context
 local current_function = function(width)
   -- local wwidth = winwidth()
   if width < 50 then
     return ""
   end
 
-  width = width * 1 / 2
-  if width > 200 then
-    width = width * 2 / 3
+  width = width
+  if width < 100 and signature_length > 50 then
+    return ""
   end
-  local ts = current_treesitter_context(width)
+  if width < 140 then
+    width = math.min(width, 80) - signature_length
+  end
+  if width >= 140 then
+    width = math.max((width - signature_length) * 0.6, 40)
+  end
+  if width > 200 then
+    width = width * 0.7
+  end
+  local ts = treesitter_context(400)
   if string.len(ts) < 3 then
     return " "
   end
@@ -119,7 +98,9 @@ local current_signature = function(width)
     return ""
   end
   local sig = require("lsp_signature").status_line(80)
-  return sig.label .. "🐼" .. sig.hint
+  signature_length = #sig.label
+
+  return sig.label .. "🐼" .. sig.hint, sig
 end
 
 local should_show = function()
@@ -243,6 +224,29 @@ basic.lsp_diagnos = {
     return ""
   end,
 }
+local winbar = {
+  filetypes = { "winbar" },
+  active = {
+    { " " },
+    { "%=" },
+    {
+      "@@",
+      { "red", "white" },
+    },
+  },
+  inactive = {
+    { " ", { "white", "InactiveBg" } },
+    { "%=" },
+    {
+      function(bufnr)
+        local bufname = vim.api.nvim_buf_get_name(bufnr)
+        local path = vim.fn.fnamemodify(bufname, ":~:.")
+        return path
+      end,
+      { "white", "InactiveBg" },
+    },
+  },
+}
 
 function scrollbar_instance(scrollbar_chars)
   local current_line = vim.fn.line(".")
@@ -343,9 +347,27 @@ basic.signature = {
     default = hl_list.NormalBg,
     white = { "white", "black" },
     green_light = { "green_light", "NormalBg" },
+    megenta = { "megenta", "NormalBg" },
+    yellow = { "yellow", "NormalBg" },
   },
   text = function(_, winnr, width, is_float)
-    return { { " ", "default" }, { current_signature(width), "green_light" }, { " ", "default" } }
+    local label, sig = current_signature(width)
+
+    if sig == nil or sig.label == nil or sig.range == nil then
+      return {}
+    end
+    local label1, label2 = "", ""
+    if sig.range.start and sig.range["end"] then
+      label1 = sig.label:sub(1, sig.range["start"] - 1)
+      label2 = sig.label:sub(sig.range["end"] + 1, #sig.label)
+    end
+    return {
+      { " ", "default" },
+      { label1, "green_light" },
+      { sig.hint, "yellow" },
+      { label2, "green_light" },
+      { " ", "default" },
+    }
   end,
 }
 
@@ -384,7 +406,7 @@ basic.git = {
     red = { "red", "NormalBg" },
     blue = { "blue", "NormalBg" },
   },
-  width = breakpoint_width,
+  width = breakpoint_width / 2,
   text = function()
     if git_comps.is_git() then
       return {
@@ -392,6 +414,26 @@ basic.git = {
         { git_comps.diff_added({ format = " %s", show_zero = true }), "green" },
         { git_comps.diff_removed({ format = "  %s", show_zero = true }), "red" },
         { git_comps.diff_changed({ format = " 柳%s", show_zero = true }), "blue" },
+      }
+    end
+    return ""
+  end,
+}
+
+basic.git_branch = {
+  name = "git_branch",
+  hl_colors = hl_list.NormalBg,
+  width = medium_width,
+  text = function(bufnr)
+    if git_comps.is_git(bufnr) then
+      return {
+        { git_comps.git_branch(), hl_list.NormalBg, large_width },
+        {
+          git_rev_components.git_rev(),
+          hl_list.default,
+          large_width,
+        },
+        { " ", "" },
       }
     end
     return ""
@@ -436,13 +478,13 @@ local default = {
   active = {
     basic.square_mode,
     basic.vi_mode,
-    { git_comps.git_branch(), { "magenta", "NormalBg" }, breakpoint_width },
+    basic.git_branch,
     basic.file,
     basic.lsp_diagnos,
     basic.signature,
     basic.funcname,
     basic.divider, -- {sep.slant_right,{'black_light', 'green_light'}},
-    {sep.slant_right,{'green_light', 'blue_light'}},
+    { sep.slant_right, { "green_light", "blue_light" } },
     basic.file_right,
     basic.scrollbar_right,
     { lsp_comps.lsp_name(), { "magenta", "NormalBg" }, breakpoint_width },
@@ -461,7 +503,6 @@ local default = {
   },
 }
 -- ⚡
-
 
 windline.setup({
   colors_name = function(colors)
@@ -504,5 +545,8 @@ windline.setup({
     colors.red_c = mod(colors.red, 0.7)
     return colors
   end,
-  statuslines = { default, quickfix, explorer },
+  statuslines = { default, winbar, quickfix, explorer },
 })
+windline.add_status(winbar)
+
+vim.o.winbar = "%{%v:lua.require'modules.ui.winbar'.eval()%}"

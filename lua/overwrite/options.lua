@@ -1,5 +1,5 @@
 local vim = vim
-local options = setmetatable({}, {__index = {global_local = {}, window_local = {}}})
+local options = setmetatable({}, { __index = { global_local = {}, window_local = {} } })
 
 local function bind_option(opts)
   for k, v in pairs(opts) do
@@ -15,10 +15,10 @@ function options:load_options()
   self.global_local = {}
   self.window_local = {}
   if vim.wo.diff then
-    self.global_local = {foldmethod = 'diff', diffopt = "context:0", foldlevel = 0, mouse = "a"}
+    self.global_local = { foldmethod = "diff", diffopt = "context:0", foldlevel = 10, mouse = "a" }
     self.window_local = {
       -- foldmethod = "expr",
-      cursorline = false
+      cursorline = false,
       -- noreadonly = false;
     }
   else
@@ -54,21 +54,21 @@ function options:load_options()
       breakindent = true, -- Make it so that long lines wrap smartly
       smartindent = true, -- use intelligent indentation
       showmatch = true, -- highlight matching braces
-      numberwidth = 3
+      numberwidth = 3,
     }
 
     self.window_local = {
       foldmethod = "indent", -- indent? expr?  expr is slow for large files
       number = true,
       relativenumber = true,
-      foldenable = true
+      foldenable = true,
     }
   end
   local bw_local = {
     synmaxcol = 500,
     textwidth = 120,
     colorcolumn = "110", -- will reformat lines more than 120, but show ruler at 110
-    wrap = true
+    wrap = true,
   }
   bind_option(bw_local)
   for name, value in pairs(self.global_local) do
@@ -82,8 +82,8 @@ function options:load_options()
   vim.cmd("imap <C-V> <C-R>*")
   vim.cmd('vmap <LeftRelease> "*ygv')
   vim.cmd("unlet loaded_matchparen")
-  vim.g.python3_host_prog = "/usr/local/bin/python3"
-  vim.g.python_host_prog = ""
+  vim.g.python3_host_prog = "/usr/bin/python3"
+  -- vim.g.python_host_prog = ""
 end
 
 options:load_options()
