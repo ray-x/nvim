@@ -68,10 +68,7 @@ tools["ThePrimeagen/harpoon"] = {
 -- }
 tools["TimUntersberger/neogit"] = {
   cmd = { "Neogit" },
-  config = function()
-    local neogit = require("neogit")
-    neogit.setup({})
-  end,
+  config = conf.neogit
 }
 tools["liuchengxu/vista.vim"] = { cmd = "Vista", setup = conf.vim_vista, opt = true }
 

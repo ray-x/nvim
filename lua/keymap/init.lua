@@ -54,6 +54,7 @@ local plug_map = {
 
 
   ["n|<Leader>do"] = map_cu("DiffviewOpen"):with_noremap():with_silent(),
+  ["n|<Leader>dc"] = map_cu("DiffviewClose"):with_noremap():with_silent(),
   ["n|<Leader>ng"] = map_cu("Neogit"):with_noremap():with_silent(),
 
   -- Plugin QuickRun

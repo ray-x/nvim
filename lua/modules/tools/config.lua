@@ -81,9 +81,10 @@ function config.diffview()
     enhanced_diff_hl = false, -- See ':h diffview-config-enhanced_diff_hl'
     signs = { fold_closed = "", fold_open = "" },
     file_panel = {
-      position = "left", -- One of 'left', 'right', 'top', 'bottom'
-      width = 35, -- Only applies when position is 'left' or 'right'
-      height = 10, -- Only applies when position is 'top' or 'bottom'
+      win_config = {
+        position = "left", -- One of 'left', 'right', 'top', 'bottom'
+        width = 35, -- Only applies when position is 'left' or 'right'
+      },
     },
     key_bindings = {
       -- The `view` bindings are active in the diff buffers, only when the current
@@ -216,41 +217,16 @@ function config.vgit()
 end
 
 function config.neogit()
+  local loader = require("packer").loader
+  loader("diffview.nvim")
   require("neogit").setup({
-    disable_signs = false,
-    disable_context_highlighting = false,
-    disable_commit_confirmation = false,
-    -- customize displayed signs
     signs = {
-      -- { CLOSED, OPENED }
-      section = { ">", "v" },
-      item = { ">", "v" },
-      hunk = { "", "" },
+      section = { "", "" },
+      item = { "", "" },
+      hunk = { "", "" },
     },
     integrations = {
-      -- Neogit only provides inline diffs. If you want a more traditional way to look at diffs, you can use `sindrets/diffview.nvim`.
-      -- The diffview integration enables the diff popup, which is a wrapper around `sindrets/diffview.nvim`.
-      --
-      -- Requires you to have `sindrets/diffview.nvim` installed.
-      -- use {
-      --   'TimUntersberger/neogit',
-      --   requires = {
-      --     'nvim-lua/plenary.nvim',
-      --     'sindrets/diffview.nvim'
-      --   }
-      -- }
-      --
       diffview = true,
-    },
-    -- override/add mappings
-    mappings = {
-      -- modify status buffer mappings
-      status = {
-        -- Adds a mapping with "B" as key that does the "BranchPopup" command
-        ["B"] = "BranchPopup",
-        -- Removes the default mapping of "s"
-        ["s"] = "",
-      },
     },
   })
 end
@@ -498,11 +474,11 @@ function config.mkdp()
 end
 
 function config.git_conflict()
-  require('git-conflict').setup()
+  require("git-conflict").setup()
 end
 
 function config.igit()
-  require('igit').setup()
+  require("igit").setup()
 end
 
 return config
