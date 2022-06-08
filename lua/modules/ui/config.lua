@@ -161,30 +161,10 @@ end
 
 local function daylight()
   local h = tonumber(os.date("%H"))
-  -- print(h)
   if h > 7 and h < 18 then
     return "light"
   else
     return "dark"
-  end
-end
-
-function config.gh_theme()
-  if daylight() == "light" then
-    require("github-theme").setup({
-      theme_style = "light",
-      overrides = function(c)
-        return {
-          StatusLine = { fg = c.fg, bg = c.bright_white },
-          StatusLineNC = { fg = c.bg, bg = c.bright_white },
-          TSCurrentScope = { bg = c.bright_white },
-        }
-      end,
-    })
-  else
-    require("github-theme").setup({
-      theme_style = "dark",
-    })
   end
 end
 
@@ -235,16 +215,6 @@ function config.nvcode()
   local v = "colorscheme " .. opt[math.random(1, #opt)]
   vim.cmd(v)
   -- body
-end
-
-function config.catppuccin()
-  if daylight() == "light" then
-    vim.g.catppuccin_flavour = "dusk"
-  else
-  local opt = { "dusk", "latte", "frappe", "macchiato", "mocha" }
-  local v = "colorscheme " .. opt[math.random(1, #opt)]
-  end
-  require("catppuccin").setup({ lsp_trouble = true, neogit = true, hop = true })
 end
 
 function config.sonokai()

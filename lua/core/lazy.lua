@@ -34,19 +34,17 @@ local function loadscheme()
     "aurora",
     "gruvbox-material",
     "sonokai",
-    "catppuccin",
-    "github-nvim-theme",
   }
 
   if daylight() == "light" then
     vim.o.background = "light"
-    themes = { "gruvbox-material", "starry.nvim", "github-nvim-theme", "catppuccin" }
-    -- themes = { "github-nvim-theme" }
+    themes = { "gruvbox-material", "starry.nvim"}
   end
 
   -- themes = { "starry.nvim" }
   local v = math.random(1, #themes)
   local loading_theme = themes[v]
+  print(loading_theme)
 
   require("packer").loader(loading_theme)
 end
