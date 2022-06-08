@@ -267,9 +267,10 @@ tools["nvim-telescope/telescope-frecency.nvim"] = {
   config = function()
     local telescope = require("telescope")
     telescope.load_extension("frecency")
-    telescope.setup({
+    telescope.setup{
       extensions = {
         frecency = {
+          default_workspace = 'CWD',
           show_scores = false,
           show_unindexed = true,
           ignore_patterns = { "*.git/*", "*/tmp/*" },
@@ -282,7 +283,7 @@ tools["nvim-telescope/telescope-frecency.nvim"] = {
           },
         },
       },
-    })
+    }
     -- vim.api.nvim_set_keymap("n", "<leader><leader>p", "<Cmd>lua require('telescope').extensions.frecency.frecency()<CR>", {noremap = true, silent = true})
   end,
 }

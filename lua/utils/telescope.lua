@@ -334,7 +334,7 @@ local new_maker = function(filepath, bufnr, opts)
     })
     :sync()
 end
-M.setup = function()
+M.setup = function(_)
   telescope.setup({
     defaults = {
       shorten_path = true,

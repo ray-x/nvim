@@ -10,6 +10,7 @@ local sep = helper.separators
 -- local luffy_text = ""
 local git_rev_components = require("windline.components.git_rev")
 local home = require("core.global").home
+local hover_info
 
 local hl_list = {
   NormalBg = { "NormalFg", "NormalBg" },
@@ -63,7 +64,7 @@ local winwidth = function()
 end
 
 local signature_length = 0
-
+local lsp_label1, lsp_label2 = "", ""
 local treesitter_context = require("modules.lang.treesitter").context
 local current_function = function(width)
   -- local wwidth = winwidth()
@@ -72,17 +73,17 @@ local current_function = function(width)
   end
 
   width = width
-  if width < 100 and signature_length > 50 then
+  if width < 110 and #lsp_label1 > 50 then
     return ""
   end
   if width < 140 then
-    width = math.min(width, 80) - signature_length
+    width = math.max((80 - #lsp_label1 - #lsp_label2) * 0.5, 20)
   end
   if width >= 140 then
-    width = math.max((width - signature_length) * 0.6, 40)
+    width = math.max((width - 60 - #lsp_label1 - #lsp_label2) * 0.7, 30)
   end
   if width > 200 then
-    width = width * 0.7
+    width = math.max((width - 80 - #lsp_label1 - #lsp_label2) * 0.8, 40)
   end
   local ts = treesitter_context(400)
   if string.len(ts) < 3 then
@@ -97,10 +98,45 @@ local current_signature = function(width)
   if not packer_plugins["lsp_signature.nvim"] or packer_plugins["lsp_signature.nvim"].loaded == false then
     return ""
   end
-  local sig = require("lsp_signature").status_line(80)
+  local sig = require("lsp_signature").status_line(width)
   signature_length = #sig.label
 
   return sig.label .. "🐼" .. sig.hint, sig
+end
+
+local function split_lines(value)
+  return vim.split(value, "\n", true)
+end
+
+local on_hover = function()
+  local params = vim.lsp.util.make_position_params()
+  vim.lsp.buf_request(0, "textDocument/hover", params, function(_, result, ctx, config)
+    config = config or {}
+    config.focus_id = ctx.method
+    if not (result and result.contents and result.contents.value and #result.contents.value > 0) then
+      hover_info = nil
+      return
+    end
+    -- lprint(result.contents)
+    local cnt_kind = result.contents.kind
+    local val = result.contents.value
+    val = split_lines(val)
+    if cnt_kind == "markdown" then
+      table.remove(val, #val)
+      table.remove(val, 1)
+    end
+    for idx, value in ipairs(val) do
+      val[idx] = vim.fn.trim(value)
+      if val[idx]:find("^```") then
+        val[idx] = val[idx]:gsub("^```", "")
+      end
+    end
+    val = vim.fn.join(val, " ")
+    if #val > 1 then
+      hover_info = val
+    end
+    -- lprint(hover_info)
+  end)
 end
 
 local should_show = function()
@@ -314,7 +350,7 @@ basic.file = {
 basic.folder = {
   name = "folder",
   hl_colors = { default = hl_list.NormalBg, white = { "white", "black" }, blue = { "blue", "NormalBg" } },
-  text = function(_, winnr)
+  text = function(_)
     if should_show() then
       return {
         { " ", "default" },
@@ -336,36 +372,50 @@ basic.funcname = {
     green = { "green_b", "NormalBg" },
     green_light = { "green_light", "NormalBg" },
   },
-  text = function(_, winnr, width, is_float)
+  -- text = function(_, winnr, width, is_float)
+  text = function(_, _, width, _)
     return { { " ", "default" }, { current_function(width), "green" }, { " ", "default" } }
   end,
 }
 
-basic.signature = {
+basic.lsp_info = {
   name = "signature",
   hl_colors = {
     default = hl_list.NormalBg,
     white = { "white", "black" },
     green_light = { "green_light", "NormalBg" },
-    megenta = { "megenta", "NormalBg" },
+    magenta = { "magenta", "NormalBg" },
     yellow = { "yellow", "NormalBg" },
   },
   text = function(_, winnr, width, is_float)
     local label, sig = current_signature(width)
-
+    -- if there is signature help info, show signature help, otherwise show
     if sig == nil or sig.label == nil or sig.range == nil then
-      return {}
+      local hover = hover_info
+      if hover == nil or hover == "" or signature_length > 0 then
+        lsp_label1 = ""
+        lsp_label2 = ""
+        return {}
+      end
+      lsp_label1 = hover
+      if #hover > width / 3 then
+        -- lprint(label1)
+        lsp_label1 = hover:sub(1, width / 3)
+      end
+      lsp_label2 = ""
+      sig = { hint = "" }
+    else
+      if sig.range.start and sig.range["end"] then
+        lsp_label1 = sig.label:sub(1, sig.range["start"] - 1)
+        lsp_label2 = sig.label:sub(sig.range["end"] + 1, #sig.label)
+      end
     end
-    local label1, label2 = "", ""
-    if sig.range.start and sig.range["end"] then
-      label1 = sig.label:sub(1, sig.range["start"] - 1)
-      label2 = sig.label:sub(sig.range["end"] + 1, #sig.label)
-    end
+
     return {
-      { " ", "default" },
-      { label1, "green_light" },
+      { "", "default" },
+      { "  " .. lsp_label1, "green_light" },
       { sig.hint, "yellow" },
-      { label2, "green_light" },
+      { lsp_label2, "green_light" },
       { " ", "default" },
     }
   end,
@@ -439,7 +489,6 @@ basic.git_branch = {
     return ""
   end,
 }
-
 local quickfix = {
   filetypes = { "qf", "Trouble" },
   active = {
@@ -481,7 +530,7 @@ local default = {
     basic.git_branch,
     basic.file,
     basic.lsp_diagnos,
-    basic.signature,
+    basic.lsp_info,
     basic.funcname,
     basic.divider, -- {sep.slant_right,{'black_light', 'green_light'}},
     { sep.slant_right, { "green_light", "blue_light" } },
@@ -502,7 +551,6 @@ local default = {
     { b_components.progress_lua, hl_list.Inactive },
   },
 }
--- ⚡
 
 windline.setup({
   colors_name = function(colors)
@@ -547,6 +595,10 @@ windline.setup({
   end,
   statuslines = { default, winbar, quickfix, explorer },
 })
-windline.add_status(winbar)
 
-vim.o.winbar = "%{%v:lua.require'modules.ui.winbar'.eval()%}"
+-- vim.o.winbar = "%{%v:lua.require'modules.ui.winbar'.eval()%}"
+vim.api.nvim_command("autocmd CursorHoldI,CursorHold <buffer> lua require'modules.ui.eviline'.on_hover()")
+
+return {
+  on_hover = on_hover,
+}

@@ -159,17 +159,17 @@ function config.aurora()
   vim.cmd("hi EndOfBuffer guibg=NONE ctermbg=NONE") -- remove background
 end
 
-function config.gh_theme()
-  local function daylight()
-    local h = tonumber(os.date("%H"))
-    print(h)
-    if h > 7 and h < 18 then
-      return "light"
-    else
-      return "dark"
-    end
+local function daylight()
+  local h = tonumber(os.date("%H"))
+  -- print(h)
+  if h > 7 and h < 18 then
+    return "light"
+  else
+    return "dark"
   end
+end
 
+function config.gh_theme()
   if daylight() == "light" then
     require("github-theme").setup({
       theme_style = "light",
@@ -202,8 +202,8 @@ function config.starry()
   vim.starry_deep_black = true --"OLED deep black
   vim.g.starry_disable_background = false
   vim.g.starry_daylight_switch = true
-  vim.g.starry_style = "earlysummer" -- 'moonlight' emerald middlenight_blue earlysummer
-  vim.g.starry_style_fix = true
+  -- vim.g.starry_style = "earlysummer" -- 'moonlight' emerald middlenight_blue earlysummer
+  -- vim.g.starry_style_fix = true
   -- config.default()
 end
 
@@ -235,6 +235,16 @@ function config.nvcode()
   local v = "colorscheme " .. opt[math.random(1, #opt)]
   vim.cmd(v)
   -- body
+end
+
+function config.catppuccin()
+  if daylight() == "light" then
+    vim.g.catppuccin_flavour = "dusk"
+  else
+  local opt = { "dusk", "latte", "frappe", "macchiato", "mocha" }
+  local v = "colorscheme " .. opt[math.random(1, #opt)]
+  end
+  require("catppuccin").setup({ lsp_trouble = true, neogit = true, hop = true })
 end
 
 function config.sonokai()

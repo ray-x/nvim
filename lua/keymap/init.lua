@@ -30,13 +30,13 @@ local plug_map = {
   ["n|<Leader>fr"] = map_cmd("<cmd>Telescope registers<cr>"):with_noremap():with_silent(),
   ["n|<Leader>fj"] = map_cmd('<cmd>lua require"utils.telescope".jump()<CR>'):with_noremap():with_silent(),
   ["n|<M-P>"] = map_cr(
-    '<cmd>lua require("telescope").extensions.frecency.frecency({ sorter = require("telescope").extensions.fzf.native_fzf_sorter() })'
+    '<cmd>lua require("telescope").extensions.frecency.frecency({ sorter = require("telescope").extensions.fzf.native_fzf_sorter(),default_text=":CWD:" })'
   ):with_silent(),
-  ["n|<Leader>cl"] = map_cr('<cmd>lua require("telescope").extensions.neoclip.default()'):with_silent(),
+  ["n|<Leader>fl"] = map_cr('<cmd>lua require("telescope").extensions.neoclip.default()'):with_silent(),
   ["n|<Leader>fz"] = map_cr('<cmd>lua require("telescope").extensions.zoxide.list()'):with_silent(),
   ["n|<Leader>fp"] = map_cr('<cmd>lua require("telescope").extensions.projects.projects()'):with_silent(),
   ["n|<Leader>fw"] = map_cu("Telescope grep_string"):with_noremap():with_silent(),
-  ["n|<Leader>fl"] = map_cu("Telescope loclist"):with_noremap():with_silent(),
+  -- ["n|<Leader>fl"] = map_cu("Telescope loclist"):with_noremap():with_silent(),
   ["n|<Leader>fc"] = map_cu("Telescope git_commits"):with_noremap():with_silent(),
   ["n|<Leader>ft"] = map_cu("Telescope help_tags"):with_noremap():with_silent(),
   -- GUI, kitty
@@ -52,8 +52,12 @@ local plug_map = {
   ["n|<Leader>fs"] = map_cu("Telescope gosource"):with_noremap():with_silent(),
   ["n|w"] = map_cmd('v:lua.word_motion_move("w")'):with_silent():with_expr(),
 
+
+  ["n|<Leader>do"] = map_cu("DiffviewOpen"):with_noremap():with_silent(),
+  ["n|<Leader>ng"] = map_cu("Neogit"):with_noremap():with_silent(),
+
   -- Plugin QuickRun
-  ["n|<Leader>r"] = map_cr("<cmd> lua require'internal.quickrun'.run_command()"):with_noremap():with_silent(),
+  -- ["n|<Leader>r"] = map_cr("<cmd> lua require'internal.quickrun'.run_command()"):with_noremap():with_silent(),
   -- Plugin Vista
   ["n|<Leader>v"] = map_cu("Vista"):with_noremap():with_silent(),
   ["n|<F8>"] = map_cu("AerialToggle"):with_silent(),

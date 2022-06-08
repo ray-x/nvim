@@ -41,7 +41,7 @@ local function load_dbs()
 end
 
 function config.worktree()
-  function git_worktree(arg)
+  local function git_worktree(arg)
     if arg == "create" then
       require("telescope").extensions.git_worktree.create_git_worktree()
     else

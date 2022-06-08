@@ -34,16 +34,17 @@ local function loadscheme()
     "aurora",
     "gruvbox-material",
     "sonokai",
+    "catppuccin",
     "github-nvim-theme",
   }
 
   if daylight() == "light" then
     vim.o.background = "light"
-    themes = { "gruvbox-material", "starry.nvim", "github-nvim-theme" }
+    themes = { "gruvbox-material", "starry.nvim", "github-nvim-theme", "catppuccin" }
     -- themes = { "github-nvim-theme" }
   end
 
-  -- themes = { "aurora" }
+  -- themes = { "starry.nvim" }
   local v = math.random(1, #themes)
   local loading_theme = themes[v]
 
@@ -188,4 +189,7 @@ vim.defer_fn(function()
   vim.notify = require("notify")
   require("vscripts.cursorhold")
   lprint("all done")
+  if vim.fn.executable(vim.g.python3_host_prog) == 0 then
+    print("file not find, please update path setup", vim.g.python3_host_prog)
+  end
 end, lazy_timer + 80)

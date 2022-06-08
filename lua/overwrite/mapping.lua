@@ -47,9 +47,11 @@ local keys = {
   ["n|<Leader>fu"] = map_cu("Clap git_diff_files"):with_noremap():with_silent(),
   ["n|<Leader>fv"] = map_cu("Clap grep ++query=@visual"):with_noremap():with_silent(),
   ["n|<Leader>fh"] = map_cu("Clap command_history"):with_noremap():with_silent(),
-  ["n|<Leader><Leader>r"] = map_cmd("v:lua.run_or_test()"):with_expr(),
-  ["v|<Leader><Leader>r"] = map_cmd("v:lua.run_or_test()"):with_expr(),
+  ["n|<Leader>r"] = map_cmd("v:lua.run_or_test()"):with_expr(),
+  ["v|<Leader>r"] = map_cmd("v:lua.run_or_test()"):with_expr(),
 
+  ["n|<Leader>R"] = map_cmd("v:lua.run_or_test(v:true)"):with_expr(),
+  ["v|<Leader>R"] = map_cmd("v:lua.run_or_test(v:true)"):with_expr(),
   ["n|<Leader>bp"] = map_cu("BufferLinePick"):with_noremap():with_silent(),
 
   ["n|<Leader>di"] = map_cr("<cmd>lua require'dap.ui.variables'.hover()"):with_expr(),
@@ -153,9 +155,9 @@ _G.run_or_test = function(debug)
     end
 
     if debug then
-      return t("<cmd>GoDebug nearest<CR>")
+      return t("<cmd>GoDebug -t<CR>")
     else
-      return t("<cmd>GoTestFile <CR>")
+      return t("<cmd>GoTestFunc -F <CR>")
     end
   end
 end
@@ -218,6 +220,7 @@ _G.Line_ft = function(a)
 end
 
 vim.cmd([[command! -nargs=*  DebugOpen lua require"modules.lang.dap".prepare()]])
+vim.cmd([[command! -nargs=*  Format lua vim.lsp.buf.format({async=true}) ]])
 vim.cmd([[command! -nargs=*  HpoonClear lua require"harpoon.mark".clear_all()]])
 
 local plugmap = require("keymap").map

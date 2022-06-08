@@ -23,20 +23,6 @@ function config.nvim_cmp()
     return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
   end
   local luasnip = require("luasnip")
-  local function tab(fallback)
-    if cmp.visible() then
-      cmp.select_next_item()
-    elseif vim.b._copilot_suggestion ~= nil then
-      vim.fn.feedkeys(vim.api.nvim_replace_termcodes(vim.fn["copilot#Accept"](), true, true, true), "")
-    elseif luasnip.expand_or_jumpable() then
-      luasnip.expand_or_jump()
-    elseif has_words_before() then
-      cmp.complete()
-    else
-      -- F("<Tab>")
-      fallback()
-    end
-  end
 
   if load_coq() then
     local sources = {}
@@ -59,7 +45,7 @@ function config.nvim_cmp()
     { name = "treesitter", keyword_length = 2 },
     { name = "look", keyword_length = 2 },
     { name = "copilot" },
-    { name = 'emoji' },
+    { name = "emoji" },
     { name = "path" },
     -- {name = 'buffer', keyword_length = 4} {name = 'path'}, {name = 'look'},
     -- {name = 'calc'}, {name = 'ultisnips'} { name = 'snippy' }
@@ -108,7 +94,8 @@ function config.nvim_cmp()
           treesitter = " ",
           nvim_lua = " ",
           spell = " 暈",
-          emoji = "ﲃ" ,
+          emoji = "ﲃ",
+          copilot = "🤖",
           look = "﬜",
         })[entry.source.name]
         return vim_item
@@ -138,7 +125,7 @@ function config.nvim_cmp()
           luasnip.expand_or_jump()
         elseif has_words_before() then
           cmp.complete()
-        else -- if vim.b._copilot_suggestion then
+        else
           local copilot_keys = vim.fn["copilot#Accept"]()
           if copilot_keys ~= "" then
             vim.api.nvim_feedkeys(copilot_keys, "i", true)
@@ -147,17 +134,6 @@ function config.nvim_cmp()
           end
         end
       end, { "i", "s" }),
-      ["<Right>"] = cmp.mapping(function(fallback)
-        local copilot_keys = vim.fn["copilot#Accept"]()
-        if copilot_keys ~= "" then
-          vim.api.nvim_feedkeys(copilot_keys, "i", true)
-        else
-          fallback()
-        end
-      end, {
-        "i",
-        "s",
-      }),
       ["<S-Tab>"] = cmp.mapping(function(fallback)
         if cmp.visible() then
           cmp.select_prev_item()

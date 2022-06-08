@@ -90,7 +90,7 @@ completion["hrsh7th/nvim-cmp"] = {
     { "hrsh7th/cmp-calc", after = "nvim-cmp", opt = true },
     { "hrsh7th/cmp-path", after = "nvim-cmp", opt = true },
     { "hrsh7th/cmp-cmdline", after = "nvim-cmp", opt = true },
-    { "hrsh7th/cmp-copilot", after = "nvim-cmp", opt = true },
+    -- { "hrsh7th/cmp-copilot", after = "nvim-cmp", opt = true },
     {"hrsh7th/cmp-emoji", after = "nvim-cmp", opt = true},
     { plugin_folder() .. "cmp-treesitter", after = "nvim-cmp", opt = true },
     { "hrsh7th/cmp-nvim-lsp", after = "nvim-cmp", opt = true },
@@ -192,7 +192,7 @@ completion["github/copilot.vim"] = {
       NeogitCommitMessage = false,
     }
     vim.cmd([[
-      imap <silent><script><expr> <C-j> copilot#Accept("\<CR>")
+      imap <silent><script><expr> <C-j> copilot#Accept()
       let g:copilot_no_tab_map = v:true
       let g:copilot_assume_mapped = v:true
       let g:copilot_tab_fallback = ""

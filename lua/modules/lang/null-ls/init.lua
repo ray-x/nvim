@@ -41,7 +41,7 @@ return {
       sources,
       null_ls.builtins.formatting.golines.with({
         extra_args = {
-          "--max-len=160",
+          "--max-len=180",
           "--base-formatter=gofumpt",
         },
       })
