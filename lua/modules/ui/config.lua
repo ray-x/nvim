@@ -1,6 +1,17 @@
 local config = {}
 packer_plugins = packer_plugins or {} -- supress warning
 
+local function daylight()
+  local h = tonumber(os.date("%H"))
+  if h > 7 and h < 18 then
+    return "light"
+  else
+    return "dark"
+  end
+end
+
+local day = daylight()
+
 function config.windline()
   if not packer_plugins["nvim-web-devicons"].loaded then
     packer_plugins["nvim-web-devicons"].loaded = true
@@ -9,6 +20,7 @@ function config.windline()
 
   -- require('wlfloatline').toggle()
 end
+
 function config.notify()
   require("notify").setup({
     -- Animation style (see below for details)
@@ -152,6 +164,18 @@ function config.default()
   -- theme()
 end
 
+function config.cat()
+  if day == "light" then
+    vim.g.catppuccin_flavor = "latte"
+  else
+    local opt = { "frappe", "macchiato", "mocha" }
+    local v = math.random(1, #opt)
+    vim.g.catppuccin_flavor = opt[v]
+  end
+  require("catppuccin").setup({ lsp_trouble = true, neogit = true, hop = true })
+  vim.cmd("colorscheme catppuccin")
+end
+
 function config.aurora()
   -- print("aurora")
   vim.cmd("colorscheme aurora")
@@ -159,12 +183,36 @@ function config.aurora()
   vim.cmd("hi EndOfBuffer guibg=NONE ctermbg=NONE") -- remove background
 end
 
-local function daylight()
-  local h = tonumber(os.date("%H"))
-  if h > 7 and h < 18 then
-    return "light"
+function config.gh_theme()
+  if day == "light" then
+    local opt = { "light_colorblind", "light_default", "light" }
+    local v = math.random(1, #opt)
+    v = opt[v]
+    require("github-theme").setup({
+      theme_style = v,
+      overrides = function(c)
+        return {
+          StatusLine = { fg = c.bright_black, bg = c.highlight },
+          StatusLineNC = { fg = c.bg, bg = c.bright_white },
+          TSCurrentScope = { bg = c.bright_white },
+        }
+      end,
+    })
   else
-    return "dark"
+    local opt = { "dark_colorblind", "dark_default", "dark", "dimmed" }
+    local v = math.random(1, #opt)
+    v = opt[v]
+    require("github-theme").setup({
+      theme_style = v,
+
+      overrides = function(c)
+        return {
+          StatusLine = { fg = c.bright_write, bg = c.bg_highlight },
+          StatusLineNC = { fg = c.bg, bg = c.bright_white },
+          TSCurrentScope = { bg = c.bright_white },
+        }
+      end,
+    })
   end
 end
 

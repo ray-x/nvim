@@ -73,8 +73,18 @@ ui["folke/tokyonight.nvim"] = {
   end,
 }
 
+ui["projekt0n/github-nvim-theme"] = {
+  opt = true,
+  config = conf.gh_theme,
+}
+
 ui["sainnhe/sonokai"] = { opt = true, config = conf.sonokai }
 ui["sainnhe/gruvbox-material"] = { opt = true, config = conf.gruvbox }
+ui["catppuccin/nvim"] = {
+  opt = true,
+  as = "catppuccin",
+  config = conf.cat,
+}
 
 ui[plugin_folder() .. "starry.nvim"] = {
   opt = true,
