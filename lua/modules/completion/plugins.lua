@@ -91,7 +91,7 @@ completion["hrsh7th/nvim-cmp"] = {
     { "hrsh7th/cmp-path", after = "nvim-cmp", opt = true },
     { "hrsh7th/cmp-cmdline", after = "nvim-cmp", opt = true },
     -- { "hrsh7th/cmp-copilot", after = "nvim-cmp", opt = true },
-    {"hrsh7th/cmp-emoji", after = "nvim-cmp", opt = true},
+    { "hrsh7th/cmp-emoji", after = "nvim-cmp", opt = true },
     { plugin_folder() .. "cmp-treesitter", after = "nvim-cmp", opt = true },
     { "hrsh7th/cmp-nvim-lsp", after = "nvim-cmp", opt = true },
     { "f3fora/cmp-spell", after = "nvim-cmp", opt = true },
@@ -176,6 +176,8 @@ completion[plugin_folder() .. "lsp_signature.nvim"] = {
         border = "rounded", -- "shadow", --{"╭", "─" ,"╮", "│", "╯", "─", "╰", "│" },
       },
       max_height = 4,
+      toggle_key = [[<M-x>]], -- toggle signature on and off in insert mode,  e.g. '<M-x>'
+      select_signature_key = [[<M-n>]], -- toggle signature on and off in insert mode,  e.g. '<M-x>'
     })
   end,
 }

@@ -6,7 +6,7 @@ return {
         return Plugin_folder
       end
       local host = os.getenv("HOST_NAME")
-      if host and (host:find("Ray") or host:find("ray")) then
+      if host and host:lower():find("ray") then
         Plugin_folder = [[~/github/ray-x/]] -- vim.fn.expand("$HOME") .. '/github/'
       else
         Plugin_folder = [[ray-x/]]
@@ -37,7 +37,7 @@ return {
         return Plugin_debug
       end
       local host = os.getenv("HOST_NAME")
-      if host and host:find("Ray") then
+      if host and host:lower():find("ray") then
         Plugin_debug = true -- enable debug here, will be slow
       else
         Plugin_debug = false

@@ -1,15 +1,6 @@
 local ui = {}
 local conf = require("modules.ui.config")
 
-local function daylight()
-  local h = tonumber(os.date("%H"))
-  if h > 6 and h < 18 then
-    return "light"
-  else
-    return "dark"
-  end
-end
-
 --
 local winwidth = function()
   return vim.api.nvim_call_function("winwidth", { 0 })
@@ -44,6 +35,20 @@ ui["kyazdani42/nvim-tree.lua"] = {
   -- requires = {'kyazdani42/nvim-web-devicons'},
   setup = conf.nvim_tree_setup,
   config = conf.nvim_tree,
+}
+
+ui["sidebar-nvim/sidebar.nvim"] = {
+  cmd = { "SidebarNvimToggle", "SidebarNvimOpen" },
+  -- requires = {'kyazdani42/nvim-web-devicons'},
+  config = conf.sidebar,
+}
+
+ui["nvim-neo-tree/neo-tree.nvim"] = {
+  cmd = { "Neotree" },
+  requires = { "MunifTanjim/nui.nvim" },
+  module = "neo-tree",
+  -- requires = {'kyazdani42/nvim-web-devicons'},
+  config = conf.neo_tree,
 }
 
 ui["lukas-reineke/indent-blankline.nvim"] = { opt = true, config = conf.blankline } -- after="nvim-treesitter",

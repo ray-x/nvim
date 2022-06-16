@@ -110,8 +110,11 @@ end
 
 local on_hover = function()
   local params = vim.lsp.util.make_position_params()
-  vim.lsp.buf_request(0, "textDocument/hover", params, function(_, result, ctx, config)
+  vim.lsp.buf_request(0, "textDocument/hover", params, function(err, result, ctx, config)
     config = config or {}
+    if err then
+      lprint(result, ctx, config)
+    end
     config.focus_id = ctx.method
     if not (result and result.contents and result.contents.value and #result.contents.value > 0) then
       hover_info = nil

@@ -399,11 +399,17 @@ function config.floaterm()
   })
   local Terminal = require("toggleterm.terminal").Terminal
   local lazygit = Terminal:new({ cmd = "lazygit", hidden = true })
+  local gd = Terminal:new({ cmd = "gd", hidden = true })
 
   function _lazygit_toggle()
     lazygit:toggle()
   end
+  function _gd_toggle()
+    gd:toggle()
+    vim.cmd("normal! a")
+  end
   vim.cmd("command! LG lua _lazygit_toggle()")
+  vim.cmd("command! GD lua _gd_toggle()")
 
   local fzf = Terminal:new({ cmd = "fzf", hidden = true })
 

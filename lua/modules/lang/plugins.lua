@@ -46,6 +46,20 @@ lang["yardnsm/vim-import-cost"] = { cmd = "ImportCost", opt = true }
 
 lang["nanotee/sqls.nvim"] = { ft = { "sql", "pgsql" }, setup = conf.sqls, opt = true }
 
+lang['simrat39/rust-tools.nvim'] = {
+  ft = {'rust'},
+  after = {"nvim-lspconfig"},
+  config = function()
+    require('rust-tools').setup({
+       server = {
+        on_attach = function(_, _)
+          require('navigator.mappings').setup()
+        end,
+      }
+    })
+  end,
+}
+
 lang[path .. "go.nvim"] = { ft = { "go", "gomod" }, config = conf.go }
 
 lang[path .. "navigator.lua"] = {
@@ -86,7 +100,10 @@ lang["stevearc/aerial.nvim"] = {
 lang["simrat39/symbols-outline.nvim"] = {
   opt = true,
   cmd = { "SymbolsOutline", "SymbolsOutlineOpen" },
-  setup = conf.outline,
+  config = conf.outline,
+}
+
+lang["ElPiloto/sidekick.nvim"] = {
 }
 lang["bfredl/nvim-luadev"] = { opt = true, ft = "lua", cmd = "Luadev", setup = conf.luadev }
 lang["mfussenegger/nvim-dap"] = { config = conf.dap, opt = true } -- cmd = "Luadev",

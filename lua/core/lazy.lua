@@ -194,3 +194,10 @@ vim.defer_fn(function()
     print("file not find, please update path setup", vim.g.python3_host_prog)
   end
 end, lazy_timer + 80)
+
+
+if plugin_folder() == [[~/github/ray-x/]] then
+  -- it is my own box, setup fish
+  vim.cmd([[set shell=/usr/bin/fish]])
+  vim.cmd([[command! GD term gd]])
+end

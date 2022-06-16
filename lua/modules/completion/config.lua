@@ -30,7 +30,7 @@ function config.nvim_cmp()
     return
   end
   -- print("cmp setup")
-  local comp_kind = nil
+  local comp_kind
   local t = function(str)
     return vim.api.nvim_replace_termcodes(str, true, true, true)
   end
@@ -47,8 +47,6 @@ function config.nvim_cmp()
     { name = "copilot" },
     { name = "emoji" },
     { name = "path" },
-    -- {name = 'buffer', keyword_length = 4} {name = 'path'}, {name = 'look'},
-    -- {name = 'calc'}, {name = 'ultisnips'} { name = 'snippy' }
   }
   if vim.o.ft == "sql" then
     table.insert(sources, { name = "vim-dadbod-completion" })
@@ -72,8 +70,6 @@ function config.nvim_cmp()
     snippet = {
       expand = function(args)
         require("luasnip").lsp_expand(args.body)
-        -- require 'snippy'.expand_snippet(args.body)
-        -- vim.fn["UltiSnips#Anon"](args.body)
       end,
     },
     completion = {
@@ -126,12 +122,12 @@ function config.nvim_cmp()
         elseif has_words_before() then
           cmp.complete()
         else
-          local copilot_keys = vim.fn["copilot#Accept"]()
-          if copilot_keys ~= "" then
-            vim.api.nvim_feedkeys(copilot_keys, "i", true)
-          else
+          -- local copilot_keys = vim.fn["copilot#Accept"]()
+          -- if copilot_keys ~= "" then
+          --   vim.api.nvim_feedkeys(copilot_keys, "i", true)
+          -- else
             fallback()
-          end
+          -- end
         end
       end, { "i", "s" }),
       ["<S-Tab>"] = cmp.mapping(function(fallback)
