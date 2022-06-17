@@ -295,13 +295,16 @@ function config.cat()
     local opt = { "frappe", "macchiato", "mocha" }
     local v = math.random(1, #opt)
     vim.g.catppuccin_flavour = opt[v]
+
   end
+
+  lprint(vim.g.catppuccin_flavour)
   require("catppuccin").setup({ lsp_trouble = true, neogit = true, hop = true })
   vim.cmd("colorscheme catppuccin")
 end
 
 function config.aurora()
-  -- print("aurora")
+  lprint("aurora")
   vim.cmd("colorscheme aurora")
   vim.cmd("hi Normal guibg=NONE ctermbg=NONE") -- remove background
   vim.cmd("hi EndOfBuffer guibg=NONE ctermbg=NONE") -- remove background
@@ -316,18 +319,20 @@ function config.gh_theme()
       day = "dark"
     end
   end
-  print(day)
   if day == "light" then
     local opt = { "light_colorblind", "light_default", "light" }
     local v = math.random(1, #opt)
     v = opt[v]
+
+    lprint("gh theme ",v)
     require("github-theme").setup({
       theme_style = v,
       overrides = function(c)
         return {
           StatusLine = { fg = c.black, bg = c.bg_highlight },
           StatusLineNC = { fg = c.bg, bg = c.bright_white },
-          TSCurrentScope = { bg = c.bright_white },
+          TSCurrentScope = { bg = c.bg2 },
+          CursorLine = { bg = c.bg2 },
         }
       end,
     })
@@ -335,6 +340,7 @@ function config.gh_theme()
     local opt = { "dark_colorblind", "dark_default", "dark", "dimmed" }
     local v = math.random(1, #opt)
     v = opt[v]
+    lprint("gh theme ",v)
     require("github-theme").setup({
       theme_style = v,
 
@@ -342,7 +348,8 @@ function config.gh_theme()
         return {
           StatusLine = { fg = c.bright_write, bg = c.bg_highlight },
           StatusLineNC = { fg = c.bg, bg = c.bg_highlight },
-          TSCurrentScope = { bg = c.bg_highlight },
+          TSCurrentScope = { bg = c.bg2 },
+          CursorLine = { bg = c.bg2 },
         }
       end,
     })
