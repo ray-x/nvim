@@ -1,7 +1,7 @@
 local config = {}
 packer_plugins = packer_plugins or {} -- supress warning
 
-local function daylight()
+function config.daylight()
   local h = tonumber(os.date("%H"))
   if h > 7 and h < 18 then
     return "light"
@@ -10,7 +10,7 @@ local function daylight()
   end
 end
 
-local day = daylight()
+local day = config.daylight()
 
 function config.windline()
   if not packer_plugins["nvim-web-devicons"].loaded then
@@ -281,12 +281,20 @@ function config.default()
 end
 
 function config.cat()
+  if day == nil then
+    local h = tonumber(os.date("%H"))
+    if h > 7 and h < 18 then
+      day = "light"
+    else
+      day = "dark"
+    end
+  end
   if day == "light" then
-    vim.g.catppuccin_flavor = "latte"
+    vim.g.catppuccin_flavour = "latte"
   else
     local opt = { "frappe", "macchiato", "mocha" }
     local v = math.random(1, #opt)
-    vim.g.catppuccin_flavor = opt[v]
+    vim.g.catppuccin_flavour = opt[v]
   end
   require("catppuccin").setup({ lsp_trouble = true, neogit = true, hop = true })
   vim.cmd("colorscheme catppuccin")
@@ -300,6 +308,15 @@ function config.aurora()
 end
 
 function config.gh_theme()
+  if day == nil then
+    local h = tonumber(os.date("%H"))
+    if h > 7 and h < 18 then
+      day = "light"
+    else
+      day = "dark"
+    end
+  end
+  print(day)
   if day == "light" then
     local opt = { "light_colorblind", "light_default", "light" }
     local v = math.random(1, #opt)
@@ -308,7 +325,7 @@ function config.gh_theme()
       theme_style = v,
       overrides = function(c)
         return {
-          StatusLine = { fg = c.bright_black, bg = c.highlight },
+          StatusLine = { fg = c.black, bg = c.bg_highlight },
           StatusLineNC = { fg = c.bg, bg = c.bright_white },
           TSCurrentScope = { bg = c.bright_white },
         }
@@ -324,8 +341,8 @@ function config.gh_theme()
       overrides = function(c)
         return {
           StatusLine = { fg = c.bright_write, bg = c.bg_highlight },
-          StatusLineNC = { fg = c.bg, bg = c.bright_white },
-          TSCurrentScope = { bg = c.bright_white },
+          StatusLineNC = { fg = c.bg, bg = c.bg_highlight },
+          TSCurrentScope = { bg = c.bg_highlight },
         }
       end,
     })

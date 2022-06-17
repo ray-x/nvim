@@ -50,7 +50,7 @@ function config.worktree()
   end
 
   require("git-worktree").setup({})
-  vim.api.nvim_create_user_command("Worktree", "lua git_worktree(<f-args>)", {
+  vim.api.nvim_create_user_command("Worktree", "lua require'modules.tools.config'.worktree()(<f-args>)", {
     nargs = "*",
     complete = function()
       return { "create" }
@@ -71,6 +71,7 @@ function config.worktree()
       print("Delete worktree " .. metadata.path)
     end
   end)
+  return { git_worktree = git_worktree }
 end
 
 function config.diffview()

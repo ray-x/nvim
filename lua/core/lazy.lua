@@ -40,7 +40,7 @@ local function loadscheme()
 
   if daylight() == "light" then
     vim.o.background = "light"
-    themes = { "gruvbox-material", "starry.nvim", "github-nvim-theme", "catppuccin" }
+    themes = { "gruvbox-material", "starry.nvim", "catppuccin", "github-nvim-theme" }
   end
 
   -- themes = { "starry.nvim" }
@@ -194,7 +194,6 @@ vim.defer_fn(function()
     print("file not find, please update path setup", vim.g.python3_host_prog)
   end
 end, lazy_timer + 80)
-
 
 if plugin_folder() == [[~/github/ray-x/]] then
   -- it is my own box, setup fish
