@@ -1,4 +1,5 @@
 local windline = require("windline")
+local fn = vim.fn
 local helper = require("windline.helpers")
 local b_components = require("windline.components.basic")
 local state = _G.WindLine.state
@@ -110,6 +111,16 @@ end
 
 local on_hover = function()
   local params = vim.lsp.util.make_position_params()
+  local clients = vim.lsp.buf_get_clients()
+  local hoverProvider = true
+  for _, client in ipairs(clients) do
+    if client.server_capabilities.hoverProvider == true and client.name ~= "null-ls" then
+      hoverProvider = false
+    end
+  end
+  if not hoverProvider then
+    return ""
+  end
   vim.lsp.buf_request(0, "textDocument/hover", params, function(err, result, ctx, config)
     config = config or {}
     if err then
@@ -287,6 +298,10 @@ local winbar = {
   },
 }
 
+local function get_offset()
+  return ":" .. fn.line2byte(fn.line(".")) + fn.col(".") - 1
+end
+
 function scrollbar_instance(scrollbar_chars)
   local current_line = vim.fn.line(".")
   local total_lines = vim.fn.line("$")
@@ -432,9 +447,27 @@ basic.file_right = {
   },
   text = function(_, winnr, width, is_float)
     if width < breakpoint_width then
-      return { { b_components.line_col_lua, "white" }, { b_components.progress_lua, "" }, { " ", "" } }
+      return {
+        { b_components.line_col_lua, "white" },
+        { b_components.progress_lua, "" },
+        { " ", "" },
+      }
     else
       return { { b_components.line_col_lua, "white" } }
+    end
+  end,
+}
+
+basic.offset = {
+  hl_colors = {
+    default = hl_list.NormalBg,
+    white = { "white", "NormalBg" },
+  },
+  text = function(_, winnr, width, is_float)
+    if width > breakpoint_width then
+      return {
+        { get_offset(), "white" },
+      }
     end
   end,
 }
@@ -492,6 +525,7 @@ basic.git_branch = {
     return ""
   end,
 }
+
 local quickfix = {
   filetypes = { "qf", "Trouble" },
   active = {
@@ -538,6 +572,7 @@ local default = {
     basic.divider, -- {sep.slant_right,{'black_light', 'green_light'}},
     { sep.slant_right, { "green_light", "blue_light" } },
     basic.file_right,
+    basic.offset,
     basic.scrollbar_right,
     { lsp_comps.lsp_name(), { "magenta", "NormalBg" }, breakpoint_width },
     basic.git,
