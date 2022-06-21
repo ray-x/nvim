@@ -400,9 +400,13 @@ function config.floaterm()
   })
   local Terminal = require("toggleterm.terminal").Terminal
   local lazygit = Terminal:new({ cmd = "lazygit", hidden = true })
+  local lazydocker = Terminal:new({ cmd = "lazydocker", hidden = true })
 
   function _lazygit_toggle()
     lazygit:toggle()
+  end
+  function _lazydocker_toggle()
+    lazydocker:toggle()
   end
   function _gd_toggle(...)
     local args = { ... }
@@ -416,11 +420,12 @@ function config.floaterm()
   end
   vim.cmd("command! LG lua _lazygit_toggle()")
   vim.cmd("command! -nargs=* GD lua _gd_toggle(<f-args>)")
+  vim.cmd("command! LD lua _lazydocker_toggle()")
 
   local fzf = Terminal:new({ cmd = "fzf", hidden = true })
 
   function _fzf_toggle()
-    lazygit:toggle()
+    fzf:toggle()
   end
   vim.cmd("command! FZF lua _fzf_toggle()")
   -- vim.cmd("command! NNN FloatermNew --autoclose=1 --height=0.96 --width=0.96 nnn")
