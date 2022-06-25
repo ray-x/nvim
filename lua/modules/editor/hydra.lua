@@ -37,7 +37,7 @@ if gitrepo then
       end,
     },
     mode = { "n", "x" },
-    body = "<leader>g",
+    body = "<Space>g",
     heads = {
       { "d", ":DiffviewOpen<CR>", { silent = true, exit = true } },
       { "K", vgit.project_diff_preview, { exit = true } },

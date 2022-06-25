@@ -39,14 +39,14 @@ local keys = {
   --
   -- Lsp mapp work when insertenter and lsp start
   --
-  ["n|<Leader>fb"] = map_cu("Clap marks"):with_noremap():with_silent(),
-  ["n|<Leader>ff"] = map_cu("Clap files ++finder=rg --ignore --hidden --files"):with_noremap():with_silent(),
-  ["n|<Leader>fw"] = map_cu("Clap grep ++query=<Cword>"):with_noremap():with_silent(),
   ["n|<M-h>"] = map_cu("Clap history"):with_noremap():with_silent(),
 
-  ["n|<Leader>fu"] = map_cu("Clap git_diff_files"):with_noremap():with_silent(),
-  ["n|<Leader>fv"] = map_cu("Clap grep ++query=@visual"):with_noremap():with_silent(),
-  ["n|<Leader>fh"] = map_cu("Clap command_history"):with_noremap():with_silent(),
+  -- ["n|<Leader>fb"] = map_cu("Clap marks"):with_noremap():with_silent(),
+  -- ["n|<Leader>ff"] = map_cu("Clap files ++finder=rg --ignore --hidden --files"):with_noremap():with_silent(),
+  -- ["n|<Leader>fw"] = map_cu("Clap grep ++query=<Cword>"):with_noremap():with_silent(),
+  -- ["n|<Leader>fu"] = map_cu("Clap git_diff_files"):with_noremap():with_silent(),
+  -- ["n|<Leader>fv"] = map_cu("Clap grep ++query=@visual"):with_noremap():with_silent(),
+  -- ["n|<Leader>fh"] = map_cu("Clap command_history"):with_noremap():with_silent(),
   ["n|<Leader>r"] = map_cmd("v:lua.run_or_test()"):with_expr(),
   ["v|<Leader>r"] = map_cmd("v:lua.run_or_test()"):with_expr(),
 
