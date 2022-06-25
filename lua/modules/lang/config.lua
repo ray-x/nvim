@@ -18,7 +18,17 @@ function config.treesitter_ref()
 end
 
 function config.treesitter_sub()
-  require("modules.lang.treesitter").textsubjects()
+  require("modules.lang.treesitter").textsubjects({
+    textsubjects = {
+      enable = true,
+      prev_selection = ",", -- (Optional) keymap to select the previous selection
+      keymaps = {
+        ["."] = "textsubjects-smart",
+        [";"] = "textsubjects-container-outer",
+        ["i;"] = "textsubjects-container-inner",
+      },
+    },
+  })
 end
 function config.refactor()
   local refactor = require("refactoring")
@@ -94,7 +104,7 @@ function config.navigator()
       -- require'aerial'.on_attach(client, bufnr)
     end,
     border = single, -- "single",
-    ts_fold = true,
+    ts_fold = true, -- "ufo"
     -- external = true, -- true: enable for goneovim multigrid otherwise false
     lsp_signature_help = true,
     combined_attach = "their", -- both: use both customized attach and navigator default attach, mine: only use my attach defined in vimrc

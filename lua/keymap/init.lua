@@ -23,22 +23,25 @@ local plug_map = {
   -- Plugin DadbodUI
   ["n|<Leader>od"] = map_cr("DBUIToggle"):with_noremap():with_silent(),
   -- Plugin Telescope
-  ["n|<Leader>bb"] = map_cu("Telescope buffers"):with_noremap():with_silent(),
-  ["n|<Leader>fb"] = map_cu("Telescope file_browser"):with_noremap():with_silent(),
-  ["n|<Leader>fg"] = map_cu("Telescope git_files"):with_noremap():with_silent(),
   ["i|<M-r>"] = map_cmd("<cmd>Telescope registers<cr>"):with_noremap():with_silent(),
-  ["n|<Leader>fr"] = map_cmd("<cmd>Telescope registers<cr>"):with_noremap():with_silent(),
-  ["n|<Leader>fj"] = map_cmd('<cmd>lua require"utils.telescope".jump()<CR>'):with_noremap():with_silent(),
   ["n|<M-P>"] = map_cr(
     '<cmd>lua require("telescope").extensions.frecency.frecency({ sorter = require("telescope").extensions.fzf.native_fzf_sorter(),default_text=":CWD:" })'
   ):with_silent(),
-  ["n|<Leader>fl"] = map_cr('<cmd>lua require("telescope").extensions.neoclip.default()'):with_silent(),
-  ["n|<Leader>fz"] = map_cr('<cmd>lua require("telescope").extensions.zoxide.list()'):with_silent(),
-  ["n|<Leader>fp"] = map_cr('<cmd>lua require("telescope").extensions.projects.projects()'):with_silent(),
-  ["n|<Leader>fw"] = map_cu("Telescope grep_string"):with_noremap():with_silent(),
-  -- ["n|<Leader>fl"] = map_cu("Telescope loclist"):with_noremap():with_silent(),
-  ["n|<Leader>fc"] = map_cu("Telescope git_commits"):with_noremap():with_silent(),
-  ["n|<Leader>ft"] = map_cu("Telescope help_tags"):with_noremap():with_silent(),
+
+  -- hydra
+  -- ["n|<Leader>bb"] = map_cu("Telescope buffers"):with_noremap():with_silent(),
+  -- ["n|<Leader>fb"] = map_cu("Telescope file_browser"):with_noremap():with_silent(),
+  -- ["n|<Leader>fg"] = map_cu("Telescope git_files"):with_noremap():with_silent(),
+  -- ["n|<Leader>fr"] = map_cmd("<cmd>Telescope registers<cr>"):with_noremap():with_silent(),
+  -- ["n|<Leader>fj"] = map_cmd('<cmd>lua require"utils.telescope".jump()<CR>'):with_noremap():with_silent(),
+  -- ["n|<Leader>fl"] = map_cr('<cmd>lua require("telescope").extensions.neoclip.default()'):with_silent(),
+  -- ["n|<Leader>fz"] = map_cr('<cmd>lua require("telescope").extensions.zoxide.list()'):with_silent(),
+  -- ["n|<Leader>fp"] = map_cr('<cmd>lua require("telescope").extensions.projects.projects()'):with_silent(),
+  -- ["n|<Leader>fw"] = map_cu("Telescope grep_string"):with_noremap():with_silent(),
+  -- -- ["n|<Leader>fl"] = map_cu("Telescope loclist"):with_noremap():with_silent(),
+  -- ["n|<Leader>fc"] = map_cu("Telescope git_commits"):with_noremap():with_silent(),
+  -- ["n|<Leader>ft"] = map_cu("Telescope help_tags"):with_noremap():with_silent(),
+  -- ["n|<Leader>fs"] = map_cu("Telescope gosource"):with_noremap():with_silent(),
   -- GUI, kitty
 
   ["in|<d-p>"] = map_cu("Telescope find_files"):with_noremap():with_silent(),
@@ -49,7 +52,6 @@ local plug_map = {
   ["v|<d-f>"] = map_cr([[<cmd>lua require"utils.telescope".grep_string_viusal()]]):with_noremap():with_silent(),
   ["in|<d-F>"] = map_cr([[<cmd>lua require"utils.telescope".grep_string_cursor_raw()]]):with_noremap():with_silent(),
   ["v|<d-F>"] = map_cr([[<cmd>lua require"utils.telescope".grep_string_visual_raw()]]):with_expr():with_silent(),
-  ["n|<Leader>fs"] = map_cu("Telescope gosource"):with_noremap():with_silent(),
   ["n|w"] = map_cmd('v:lua.word_motion_move("w")'):with_silent():with_expr(),
 
 
@@ -60,8 +62,8 @@ local plug_map = {
   -- Plugin QuickRun
   -- ["n|<Leader>r"] = map_cr("<cmd> lua require'internal.quickrun'.run_command()"):with_noremap():with_silent(),
   -- Plugin Vista
-  ["n|<Leader>v"] = map_cu("Vista"):with_noremap():with_silent(),
-  ["n|<F8>"] = map_cu("AerialToggle"):with_silent(),
+  ["n|<Leader>v"] = map_cu("TSymbols"):with_noremap():with_silent(),
+  ["n|<F8>"] = map_cu("LspSymbols"):with_silent(),
 
   ["x|<Leader>c<Space>"] = map_key("gc"),
   ["n|<Leader>c<Space>"] = map_key("gcc"),

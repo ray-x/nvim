@@ -61,4 +61,8 @@ if vim.fn.exists('g:nvui') ~= 0 then
   -- vim.cmd([[set guicursor=n-v-c-sm:block-Cursor,i-ci-ve:ver25-Cursor-blinkwait300-blinkon500-blinkoff300,r-cr-o:hor20]])
 end
 
+vim.cmd([[autocmd TermOpen * setlocal nospell]])
+vim.cmd([[autocmd TermOpen,BufEnter term://* startinsert]])
+vim.cmd([[tnoremap <Esc>q <C-\><C-n>]])
+
 overwrite()

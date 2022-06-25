@@ -92,11 +92,11 @@ lang["nvim-treesitter/playground"] = {
 
 -- great plugin but not been maintained
 -- lang["ElPiloto/sidekick.nvim"] = {opt = true, fn = {'SideKickNoReload'}, setup = conf.sidekick}
-lang["stevearc/aerial.nvim"] = {
-  opt = true,
-  cmd = { "AerialToggle" },
-  config = conf.aerial,
-}
+-- lang["stevearc/aerial.nvim"] = {
+--   opt = true,
+--   cmd = { "AerialToggle" },
+--   config = conf.aerial,
+-- }
 lang["simrat39/symbols-outline.nvim"] = {
   opt = true,
   cmd = { "SymbolsOutline", "SymbolsOutlineOpen" },
@@ -155,6 +155,12 @@ lang["windwp/nvim-ts-autotag"] = {
   -- after = "nvim-treesitter",
   -- config = function() require"nvim-treesitter.configs".setup {autotag = {enable = true}} end
 }
+-- highlight your args with TS
+lang["m-demare/hlargs.nvim"] = {
+  opt = true,
+  after = "nvim-treesitter",
+  config = function() require('hlargs').setup() end
+}
 
 lang["folke/lua-dev.nvim"] = {
   opt = true,
@@ -164,9 +170,9 @@ lang["folke/lua-dev.nvim"] = {
 
 lang["p00f/nvim-ts-rainbow"] = {
   opt = true,
-  -- after = "nvim-treesitter",
+  after = "nvim-treesitter",
   -- Highlight also non-parentheses delimiters, boolean or table: lang -> boolean
-  cmd = "Rainbow",
+  -- cmd = "Rainbow",
   config = function()
     require("nvim-treesitter.configs").setup({ rainbow = { enable = true, extended_mode = true } })
   end,

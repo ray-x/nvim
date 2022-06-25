@@ -26,7 +26,7 @@ local function load_plugins()
       use({ "neovim/nvim-lspconfig" })
       use({
         path .. "navigator.lua",
-        requires = { "ray-x/guihua.lua", run = "cd lua/fzy && make" },
+        requires = { path .. "guihua.lua", run = "cd lua/fzy && make" },
         config = function()
           require("navigator").setup({
             debug = true,
@@ -38,6 +38,12 @@ local function load_plugins()
         end,
       })
       use({ "L3MON4D3/LuaSnip" })
+      use({
+        path .. "go.nvim",
+        config = function()
+          require("go").setup({ verbose = true })
+        end,
+      })
       use({
         "hrsh7th/nvim-cmp",
         requires = {
@@ -95,7 +101,7 @@ local function load_plugins()
         run = ":TSUpdate",
       })
       use({
-        "ray-x/lsp_signature.nvim",
+        path .. "lsp_signature.nvim",
         config = function()
           local signature_config = {
             log_path = vim.fn.expand("$HOME") .. "/tmp/sig.log",

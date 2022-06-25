@@ -90,6 +90,7 @@ completion["hrsh7th/nvim-cmp"] = {
     { "hrsh7th/cmp-calc", after = "nvim-cmp", opt = true },
     { "hrsh7th/cmp-path", after = "nvim-cmp", opt = true },
     { "hrsh7th/cmp-cmdline", after = "nvim-cmp", opt = true },
+    { "tzachar/cmp-tabnine", after = "nvim-cmp", run = "./install.sh", opt = true, config = conf.tabnine},
     -- { "hrsh7th/cmp-copilot", after = "nvim-cmp", opt = true },
     { "hrsh7th/cmp-emoji", after = "nvim-cmp", opt = true },
     { plugin_folder() .. "cmp-treesitter", after = "nvim-cmp", opt = true },

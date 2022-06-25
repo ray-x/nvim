@@ -15,6 +15,22 @@ local function is_prior_char_whitespace()
   end
 end
 
+function config.tabnine()
+  local tabnine = require("cmp_tabnine.config")
+  tabnine:setup({
+    max_lines = 1000,
+    max_num_results = 20,
+    sort = true,
+    run_on_every_keystroke = true,
+    snippet_placeholder = "..",
+    ignored_file_types = { -- default is not to ignore
+      -- uncomment to ignore in lua:
+      -- lua = true
+    },
+    show_prediction_strength = false,
+  })
+end
+
 function config.nvim_cmp()
   local cmp = require("cmp")
 
@@ -44,7 +60,7 @@ function config.nvim_cmp()
     { name = "luasnip" },
     { name = "treesitter", keyword_length = 2 },
     { name = "look", keyword_length = 2 },
-    { name = "copilot" },
+    { name = "cmp_tabnine", keyword_length = 0 },
     { name = "emoji" },
     { name = "path" },
   }
@@ -66,6 +82,7 @@ function config.nvim_cmp()
     table.insert(sources, { name = "buffer", keyword_length = 3 })
     table.insert(sources, { name = "calc" })
   end
+  local compare = require("cmp.config.compare")
   cmp.setup({
     snippet = {
       expand = function(args)
@@ -91,7 +108,8 @@ function config.nvim_cmp()
           nvim_lua = " ",
           spell = " 暈",
           emoji = "ﲃ",
-          copilot = "🤖",
+          -- copilot = "🤖",
+          cmp_tabnine = "🤖",
           look = "﬜",
         })[entry.source.name]
         return vim_item
@@ -126,7 +144,7 @@ function config.nvim_cmp()
           -- if copilot_keys ~= "" then
           --   vim.api.nvim_feedkeys(copilot_keys, "i", true)
           -- else
-            fallback()
+          fallback()
           -- end
         end
       end, { "i", "s" }),

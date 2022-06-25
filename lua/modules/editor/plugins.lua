@@ -16,6 +16,14 @@ editor["windwp/nvim-autopairs"] = {
   opt = true,
 }
 
+editor["anuvyklack/hydra.nvim"] = {
+  requires = "anuvyklack/keymap-layer.nvim",
+  event = { "CmdwinEnter", "CmdlineEnter" , "CursorMoved"},
+  keys = {"<Leader>"},
+  config = conf.hydra,
+  opt = true,
+}
+
 -- I like this plugin, but 1) offscreen context is slow
 -- 2) it not friendly to lazyload and treesitter startup
 -- editor["andymass/vim-matchup"] = {
@@ -79,6 +87,13 @@ editor["booperlv/nvim-gomove"] = {
 --   -- opt = true,
 --   -- config = conf.hlslens
 -- }
+
+editor["kevinhwang91/nvim-ufo"] = {
+  opt = true,
+  ft = { "c" },
+  requires = { "kevinhwang91/promise-async" },
+  config = conf.ufo,
+}
 
 editor["mg979/vim-visual-multi"] = {
   keys = {

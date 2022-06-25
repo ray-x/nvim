@@ -62,7 +62,7 @@ local keys = {
   -- Plugin QuickRun
   -- ["n|<Leader>r"]     = map_cr("<cmd> lua require'selfunc'.run_command()"):with_noremap():with_silent(),
   -- Plugin Vista
-  ["n|<Leader>v"] = map_cu("Vista!!"):with_noremap():with_silent(),
+  -- ["n|<Leader>v"] = map_cu("Vista!!"):with_noremap():with_silent(),
   -- Plugin SplitJoin
   ["n|<Leader><Leader>s"] = map_cr("SplitjoinSplit"),
   ["n|<Leader><Leader>j"] = map_cr("SplitjoinJoin"),
