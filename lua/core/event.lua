@@ -44,7 +44,6 @@ function autocmd.load_autocmds()
       -- Check if file changed when its window is focus, more eager than 'autoread'
       {"FocusGained", "* checktime"};
       -- -- {"CmdwinEnter,CmdwinLeave", "*", "lua require'wlfloatline'.toggle()"};
-      -- {"CmdlineEnter,CmdlineLeave", "*", "echom 'kkk'"};
     };
 
     ft = {
@@ -53,7 +52,7 @@ function autocmd.load_autocmds()
     };
 
     yank = {
-      {"TextYankPost", [[* silent! lua vim.highlight.on_yank({higroup="IncSearch", timeout=400})]]};
+      {"TextYankPost", [[* silent! lua vim.highlight.on_yank({higroup="IncSearch", timeout=800, on_visual=false})]]};
     };
   }
 
