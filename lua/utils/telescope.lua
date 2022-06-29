@@ -168,6 +168,10 @@ function M.project_search()
   })
 end
 
+function M.folder_search()
+  require("telescope.builtin").live_grep({ layout_strategy = "vertical", cwd = vim.fn.expand("%:p:h") })
+end
+
 M.theme = function(opts)
   return vim.tbl_deep_extend("force", {
     sorting_strategy = "ascending",

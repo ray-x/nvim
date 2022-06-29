@@ -112,13 +112,15 @@ end
 local on_hover = function()
   local params = vim.lsp.util.make_position_params()
   local clients = vim.lsp.buf_get_clients()
-  local hoverProvider = true
+  local hoverProvider = false
   for _, client in ipairs(clients) do
+    -- lprint(client.name, client.server_capabilities.hoverProvider)
     if client.server_capabilities.hoverProvider == true and client.name ~= "null-ls" then
-      hoverProvider = false
+      lprint('hover enabled for ', client.name)
+      hoverProvider = true
     end
   end
-  if not hoverProvider then
+  if hoverProvider == false then
     return ""
   end
   vim.lsp.buf_request(0, "textDocument/hover", params, function(err, result, ctx, config)
