@@ -6,7 +6,7 @@ local gitrepo = vim.fn.isdirectory(".git/index")
 if gitrepo then
   loader("keymap-layer.nvim vgit.nvim gitsigns.nvim")
   local hint = [[
- _d_: diftree  _s_ stagehunk    _x_ show del   _b_ gutterView
+ _d_ diftree  _s_ stagehunk    _x_ show del   _b_ gutterView
  _K_ proj diff _u_ unstage hunk _p_ view hunk  _B_ blameFull
  _D_ buf diff  _g_ diff staged  _P_ projStaged _f_ proj hunkQF
  _U_ unstagebuf _S_ stage buf   _G_ stage diff _/_ show base
@@ -72,7 +72,7 @@ local hint_telescope = [[
  _l_ neoclip    _z_ Z        _p_ project _w_ grep
  _/_ searchhist _d_ dumbjump _C_ Clap    _m_ commands
  _B_ blines     _s_ color    _c_ cmdhist _o_ oldfiles
- ^ ^_k_ maps    _f_ folder _<Enter>_ Telescope _q_ exit
+ _k_ maps     _f_ folder _<Enter>_ Telescope _q_ exit
 ]]
 
 local telescope = require("telescope")
@@ -108,7 +108,6 @@ Hydra({
     { "s", ":Clap colors<CR>", { exit = true } },
     { "C", ":Clap<CR>", { exit = true } },
     { "o", ":Telescope oldfiles<CR>", { exit = true } },
-    { "b", ":Clap blines<CR>", { exit = true } },
     { "<Enter>", "<cmd>Telescope<CR>", { exit = true } },
     { "q", nil, { exit = true, nowait = true } },
   },
