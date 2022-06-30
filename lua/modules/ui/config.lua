@@ -528,6 +528,8 @@ end
 
 -- deprecated?
 function config.wilder()
+  -- not sure why nneed to do this from time to tome
+  -- vim.cmd([[UpdateRemotePlugins]])
   local wilder = require("wilder")
   wilder.setup({ modes = { ":", "/", "?" } })
   local gradient = {
