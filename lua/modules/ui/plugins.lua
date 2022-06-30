@@ -106,7 +106,10 @@ ui["gelguy/wilder.nvim"] = {
     -- {'nixprime/cpsm', run='UpdateRemotePlugins'}
   },
   opt = true,
-  run = "UpdateRemotePlugins",
+  run = function()
+    vim.cmd([[packadd wilder.nvim]])
+    vim.cmd([[silent UpdateRemotePlugins]])
+  end,
   event = { "CmdwinEnter", "CmdlineEnter" },
   config = conf.wilder,
 }
