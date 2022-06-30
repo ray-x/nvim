@@ -1,59 +1,70 @@
 local vim = vim
+local api = vim.api
+local cmd_group = api.nvim_create_augroup("LocalAuGroup", {})
+
 local autocmd = {}
 
+api.nvim_create_autocmd({ "BufWritePre" }, {
+  group = cmd_group,
+  pattern = { "/tmp/*", "COMMIT_EDITMSG", "MERGE_MSG", "*.tmp", "*.bak" },
+  callback = function()
+    vim.opt_local.undofile = false
+  end,
+})
+
+api.nvim_create_autocmd("TextYankPost", {
+  group = cmd_group,
+  pattern = "*",
+  callback = function()
+    vim.highlight.on_yank({ higroup = "IncSearch", timeout = 400 })
+  end,
+})
+
 function autocmd.nvim_create_augroups(definitions)
-  for group_name, definition in pairs(definitions) do
-    vim.api.nvim_command('augroup '.. group_name)
-    vim.api.nvim_command('autocmd!')
-    for _, def in ipairs(definition) do
-      local command = table.concat(vim.tbl_flatten{'autocmd', def}, ' ')
-      vim.api.nvim_command(command)
+  for group_name, defs in pairs(definitions) do
+    local gn = api.nvim_create_augroup("LocalAuGroup" .. group_name, {})
+    for _, def in ipairs(defs) do
+    api.nvim_create_autocmd( vim.split(def[1], ',') , {
+      group = gn,
+      pattern = def[2],
+      -- callback = def.callback,
+      command = def[3],
+    })
     end
-    vim.api.nvim_command('augroup END')
   end
 end
 
 function autocmd.load_autocmds()
   local definitions = {
     packer = {
-      {"BufWritePost","*.lua","lua require('core.pack').auto_compile()"};
+      { "BufWritePost", "*.lua", "lua require('core.pack').auto_compile()" },
     },
     bufs = {
       -- Reload vim config automatically
-      {"BufWritePost",[[$VIM_PATH/{*.vim,*.yaml,vimrc} nested source $MYVIMRC | redraw]]};
+      -- { "BufWritePost", [[$VIM_PATH/{*.vim,*.yaml,vimrc} nested source $MYVIMRC | redraw]] },
       -- Reload Vim script automatically if setlocal autoread
-      {"BufWritePost,FileWritePost","*.vim", [[nested if &l:autoread > 0 | source <afile> | echo 'source ' . bufname('%') | endif]]};
-      {"BufWritePre","/tmp/*","setlocal noundofile"};
-      {"BufWritePre","COMMIT_EDITMSG","setlocal noundofile"};
-      {"BufWritePre","MERGE_MSG","setlocal noundofile"};
-      {"BufWritePre","*.tmp","setlocal noundofile"};
-      {"BufWritePre","*.bak","setlocal noundofile"};
-    };
+      {
+        "BufWritePost,FileWritePost",
+        "*.vim",
+        [[nested if &l:autoread > 0 | source <afile> | echo 'source ' . bufname('%') | endif]],
+      },
+    },
 
     wins = {
       -- Highlight current line only on focused window
       -- {"WinEnter,BufEnter,InsertLeave", "*", [[if ! &cursorline && &filetype !~# '^\(dashboard\|clap_\)' && ! &pvw | setlocal cursorline | endif]]};
       -- {"WinLeave,BufLeave,InsertEnter", "*", [[if &cursorline && &filetype !~# '^\(dashboard\|clap_\|NvimTree\)' && ! &pvw | setlocal nocursorline | endif]]};
       -- {"WinLeave,BufLeave,InsertEnter", "*", [[if &cursorline && &filetype !~# '^\(dashboard\|clap_\|NvimTree\)' && ! &pvw | setlocal nocursorcolumn | endif]]};
-      {"BufEnter", "NvimTree", [[setlocal cursorline]]};
+      { "BufEnter", "NvimTree", [[setlocal cursorline]] },
 
       -- Equalize window dimensions when resizing vim window
-      {"VimResized", "*", [[tabdo wincmd =]]};
+      { "VimResized", "*", [[tabdo wincmd =]] },
       -- Force write shada on leaving nvim
-      {"VimLeave", "*", [[if has('nvim') | wshada! | else | wviminfo! | endif]]};
+      { "VimLeave", "*", [[if has('nvim') | wshada! | else | wviminfo! | endif]] },
       -- Check if file changed when its window is focus, more eager than 'autoread'
-      {"FocusGained", "* checktime"};
+      { "FocusGained", "*",  "checktime" },
       -- -- {"CmdwinEnter,CmdwinLeave", "*", "lua require'wlfloatline'.toggle()"};
-    };
-
-    ft = {
-      {"FileType", "dashboard", "set showtabline=0 | autocmd WinLeave <buffer> set showtabline=2"};
-      {"BufNewFile,BufRead","*.toml"," setf toml"},
-    };
-
-    yank = {
-      {"TextYankPost", [[* silent! lua vim.highlight.on_yank({higroup="IncSearch", timeout=800, on_visual=false})]]};
-    };
+    },
   }
 
   autocmd.nvim_create_augroups(definitions)
