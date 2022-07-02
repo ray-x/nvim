@@ -6,15 +6,20 @@ local gitrepo = vim.fn.isdirectory(".git/index")
 if gitrepo then
   loader("keymap-layer.nvim vgit.nvim gitsigns.nvim")
   local hint = [[
- _d_ diftree  _s_ stagehunk    _x_ show del   _b_ gutterView
+ _d_ diftree  _s_ stagebuf      _x_ show del   _b_ gutterView
  _K_ proj diff _u_ unstage hunk _p_ view hunk  _B_ blameFull
  _D_ buf diff  _g_ diff staged  _P_ projStaged _f_ proj hunkQF
  _U_ unstagebuf _S_ stage buf   _G_ stage diff _/_ show base
- ^ ^          _<Enter>_ Neogit      _q_ exit
+ ^ ^  _r_ reset buf     _<Enter>_ Neogit      _q_ exit
 ]]
 
   local gitsigns = require("gitsigns")
   local vgit = require("vgit")
+  local function gitsigns_visual_op(op)
+    return function()
+      return gitsigns[op]({ vim.fn.line("."), vim.fn.line("v") })
+    end
+  end
   Hydra({
     hint = hint,
     config = {
@@ -41,8 +46,10 @@ if gitrepo then
     heads = {
       { "d", ":DiffviewOpen<CR>", { silent = true, exit = true } },
       { "K", vgit.project_diff_preview, { exit = true } },
-      { "s", ":Gitsigns stage_hunk<CR>", { silent = true } },
+      -- { "s", ":Gitsigns stage_hunk<CR>", { silent = true } },
+      { "s", gitsigns.stage_buffer },
       { "u", gitsigns.undo_stage_hunk },
+      { "r", gitsigns.reset_buffer },
       { "S", gitsigns.stage_buffer },
       { "p", gitsigns.preview_hunk },
       { "x", gitsigns.toggle_deleted, { nowait = true } },
@@ -96,7 +103,7 @@ Hydra({
     { "l", telescope.extensions.neoclip.default },
     { "z", telescope.extensions.zoxide.list },
     { "p", telescope.extensions.projects.projects },
-    { "f", ":lua require'utils.telescope'.folder_search()<CR>", {exit = true} },
+    { "f", ":lua require'utils.telescope'.folder_search()<CR>", { exit = true } },
     { "w", ":Telescope grep_string<CR>", { exit = true } },
     { "/", ":Telescope search_history<CR>", { exit = true } },
     { "c", ":Telescope command_history<CR>", { exit = true } },

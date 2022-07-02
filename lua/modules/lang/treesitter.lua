@@ -98,6 +98,7 @@ local treesitter_obj = function()
       "dart",
       "css",
       "yaml",
+      "sql",
       "vue",
     },
   })
@@ -177,8 +178,9 @@ function textsubjects()
   require("nvim-treesitter.configs").setup({
     textsubjects = {
       enable = true,
+      prev_selection = ',',
       keymaps = {
-        ["<S-.>"] = "textsubjects-smart",
+        [">"] = "textsubjects-smart",
         [";"] = "textsubjects-container-outer",
         ["i;"] = "textsubjects-container-inner",
       },

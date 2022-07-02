@@ -1,5 +1,6 @@
 local lang = {}
 local conf = require("modules.lang.config")
+local ts = require("modules.lang.treesitter")
 local path = plugin_folder()
 
 lang["nathom/filetype.nvim"] = {
@@ -18,8 +19,20 @@ lang["nvim-treesitter/nvim-treesitter-textobjects"] = {
 
 lang["RRethy/nvim-treesitter-textsubjects"] = {
   opt = true,
-  config = conf.treesitter_sub,
+  config = ts.textsubjects,
 }
+
+-- lang['ziontee113/syntax-tree-surfer'] = {
+--   opt = true,
+--   config = conf.surfer,
+-- }
+
+lang['bennypowers/nvim-regexplainer']={
+  opt = true,
+  cmd = { "RegexplainerToggle", "RegexplainerShow",  },
+  config = conf.regexplainer,
+}
+
 
 lang["danymat/neogen"] = {
   opt = true,

@@ -17,19 +17,19 @@ function config.treesitter_ref()
   require("modules.lang.treesitter").treesitter_ref()
 end
 
-function config.treesitter_sub()
-  require("modules.lang.treesitter").textsubjects({
-    textsubjects = {
-      enable = true,
-      prev_selection = ",", -- (Optional) keymap to select the previous selection
-      keymaps = {
-        ["."] = "textsubjects-smart",
-        [";"] = "textsubjects-container-outer",
-        ["i;"] = "textsubjects-container-inner",
-      },
-    },
-  })
-end
+-- function config.treesitter_sub()
+--   require("modules.lang.treesitter").textsubjects({
+--     textsubjects = {
+--       enable = true,
+--       prev_selection = ",", -- (Optional) keymap to select the previous selection
+--       keymaps = {
+--         ["."] = "textsubjects-smart",
+--         [";"] = "textsubjects-container-outer",
+--         ["i;"] = "textsubjects-container-inner",
+--       },
+--     },
+--   })
+-- end
 function config.refactor()
   local refactor = require("refactoring")
   refactor.setup({})
@@ -65,10 +65,6 @@ end
 
 function config.sqls() end
 
-function config.aerial()
-  require("aerial").setup({})
-end
-
 function config.syntax_folding()
   local fname = vim.fn.expand("%:p:f")
   local fsize = vim.fn.getfsize(fname)
@@ -79,6 +75,93 @@ function config.syntax_folding()
   end
   vim.api.nvim_command("setlocal foldmethod=expr")
   vim.api.nvim_command("setlocal foldexpr=nvim_treesitter#foldexpr()")
+end
+
+function config.surfer()
+  -- Syntax Tree Surfer
+  local opts = { noremap = true, silent = true }
+
+  -- Normal Mode Swapping:
+  -- Swap The Master Node relative to the cursor with it's siblings, Dot Repeatable
+  vim.keymap.set("n", "vU", function()
+    vim.opt.opfunc = "v:lua.STSSwapUpNormal_Dot"
+    return "g@l"
+  end, { silent = true, expr = true })
+  vim.keymap.set("n", "vD", function()
+    vim.opt.opfunc = "v:lua.STSSwapDownNormal_Dot"
+    return "g@l"
+  end, { silent = true, expr = true })
+
+  -- Swap Current Node at the Cursor with it's siblings, Dot Repeatable
+  vim.keymap.set("n", "vd", function()
+    vim.opt.opfunc = "v:lua.STSSwapCurrentNodeNextNormal_Dot"
+    return "g@l"
+  end, { silent = true, expr = true })
+  vim.keymap.set("n", "vu", function()
+    vim.opt.opfunc = "v:lua.STSSwapCurrentNodePrevNormal_Dot"
+    return "g@l"
+  end, { silent = true, expr = true })
+
+  --> If the mappings above don't work, use these instead (no dot repeatable)
+  -- vim.keymap.set("n", "vd", '<cmd>STSSwapCurrentNodeNextNormal<cr>', opts)
+  -- vim.keymap.set("n", "vu", '<cmd>STSSwapCurrentNodePrevNormal<cr>', opts)
+  -- vim.keymap.set("n", "vD", '<cmd>STSSwapDownNormal<cr>', opts)
+  -- vim.keymap.set("n", "vU", '<cmd>STSSwapUpNormal<cr>', opts)
+
+  -- Visual Selection from Normal Mode
+  vim.keymap.set("n", "vx", "<cmd>STSSelectMasterNode<cr>", opts)
+  vim.keymap.set("n", "vn", "<cmd>STSSelectCurrentNode<cr>", opts)
+
+  -- Select Nodes in Visual Mode
+  vim.keymap.set("x", "J", "<cmd>STSSelectNextSiblingNode<cr>", opts)
+  vim.keymap.set("x", "K", "<cmd>STSSelectPrevSiblingNode<cr>", opts)
+  vim.keymap.set("x", "H", "<cmd>STSSelectParentNode<cr>", opts)
+  vim.keymap.set("x", "L", "<cmd>STSSelectFirstChildNode<cr>", opts)
+
+  -- Swapping Nodes in Visual Mode
+  vim.keymap.set("x", "<A-j>", "<cmd>STSSwapNextVisual<cr>", opts)
+  vim.keymap.set("x", "<A-k>", "<cmd>STSSwapPrevVisual<cr>", opts)
+  require("syntax-tree-surfer").setup({})
+end
+
+function config.regexplainer()
+  require("regexplainer").setup({
+    -- 'narrative'
+    mode = "narrative", -- TODO: 'ascii', 'graphical'
+
+    -- automatically show the explainer when the cursor enters a regexp
+    auto = false,
+
+    -- filetypes (i.e. extensions) in which to run the autocommand
+    filetypes = {
+      "html",
+      "js",
+      "cjs",
+      "mjs",
+      "ts",
+      "jsx",
+      "tsx",
+      "cjsx",
+      "mjsx",
+      "go",
+      "lua",
+      "vim",
+    },
+
+
+    mappings = {
+      toggle = "<Leader>gR",
+      -- examples, not defaults:
+      -- show = 'gS',
+      -- hide = 'gH',
+      -- show_split = 'gP',
+      -- show_popup = 'gU',
+    },
+
+    narrative = {
+      separator = "\n",
+    },
+  })
 end
 
 -- https://gist.github.com/folke/fe5d28423ea5380929c3f7ce674c41d8
@@ -115,7 +198,7 @@ function config.navigator()
     lsp = {
       format_on_save = true, -- set to false to disasble lsp code format on save (if you are using prettier/efm/formater etc)
       disable_format_cap = { "sqls", "gopls", "jsonls", "sumneko_lua", "tflint", "terraform_lsp", "terraformls" }, -- a list of lsp not enable auto-format (e.g. if you using efm or vim-codeformat etc)
-      disable_lsp = { "clangd",  "rust_analyzer" }, --e.g {denols}
+      disable_lsp = { "clangd", "rust_analyzer" }, --e.g {denols}
       -- code_lens = true,
       disply_diagnostic_qf = false,
       denols = { filetypes = {} },

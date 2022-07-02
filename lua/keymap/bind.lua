@@ -87,6 +87,13 @@ function pbind.nvim_load_mapping(mapping)
   for key, value in pairs(mapping) do
     local mode, keymap = key:match("([^|]*)|?(.*)")
     for i = 1, #mode do
+      if type(value) == "function" then
+        local opts = {remap = false}
+        if mapping.buffer then
+          opts.buffer = mapping.buffer
+        end
+        vim.keymap.set(mode:sub(i,i), keymap, value)
+      end
       if type(value) == "table" then
         local rhs = value.cmd
         local options = value.options

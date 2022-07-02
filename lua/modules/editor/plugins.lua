@@ -24,6 +24,18 @@ editor["anuvyklack/hydra.nvim"] = {
   opt = true,
 }
 
+editor['gbprod/substitute.nvim'] = {
+  requires = "gbprod/yanky.nvim",
+  event = {"CursorMoved", "CmdlineEnter"},
+  config = conf.substitute,
+  opt = true,
+}
+
+editor['tpope/vim-abolish'] = {
+  event = {"CursorMoved", "CmdlineEnter"},
+  opt = true,
+}
+
 -- I like this plugin, but 1) offscreen context is slow
 -- 2) it not friendly to lazyload and treesitter startup
 -- editor["andymass/vim-matchup"] = {

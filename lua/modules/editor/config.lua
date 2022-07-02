@@ -121,7 +121,7 @@ local esc = function(cmd)
 end
 
 function config.hydra()
-  local hydra = require('modules.editor.hydra')
+  local hydra = require("modules.editor.hydra")
 end
 function config.hexokinase()
   vim.g.Hexokinase_optInPatterns = {
@@ -140,6 +140,20 @@ function config.hexokinase()
     -- 'foreground',
     -- 'foregroundfull'
   }
+end
+
+function config.substitute()
+  require("substitute").setup({
+    yank_substituted_text = true,
+    on_substitute = function(event)
+      require("yanky").init_ring("p", event.register, event.count, event.vmode:match("[vV�]"))
+    end,
+  })
+  vim.keymap.set("n", "<Space>s", "<cmd>lua require('substitute').operator()<cr>", { noremap = true })
+  -- vim.keymap.set("n", "<Space>ss", "<cmd>lua require('substitute').line()<cr>", { noremap = true })
+  vim.keymap.set("n", "<Space>S", "<cmd>lua require('substitute').eol()<cr>", { noremap = true })
+  vim.keymap.set("x", "<Space>s", "<cmd>lua require('substitute').visual()<cr>", { noremap = true })
+  vim.keymap.set("n", "<Leader>S", "<cmd>lua require('substitute.range').operator({ prefix = 'S' })<cr>", { noremap = true })
 end
 
 function config.lightspeed()
@@ -174,8 +188,6 @@ function config.lightspeed()
   vim.api.nvim_set_keymap("n", ",", "<cmd>lua repeat_ft(true)<cr>", { noremap = true, silent = true })
   vim.api.nvim_set_keymap("x", ",", "<cmd>lua repeat_ft(true)<cr>", { noremap = true, silent = true })
 end
-
-
 
 function config.comment()
   require("Comment").setup({

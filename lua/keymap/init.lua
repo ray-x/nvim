@@ -28,7 +28,6 @@ local plug_map = {
     '<cmd>lua require("telescope").extensions.frecency.frecency({ sorter = require("telescope").extensions.fzf.native_fzf_sorter(),default_text=":CWD:" })'
   ):with_silent(),
 
-  -- hydra
   -- ["n|<Leader>bb"] = map_cu("Telescope buffers"):with_noremap():with_silent(),
   -- ["n|<Leader>fb"] = map_cu("Telescope file_browser"):with_noremap():with_silent(),
   -- ["n|<Leader>fg"] = map_cu("Telescope git_files"):with_noremap():with_silent(),

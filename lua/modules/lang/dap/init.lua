@@ -12,29 +12,27 @@ local function keybind()
     -- DAP --
     --
 
-    ["n|<leader><F5>"] = map_cr('<cmd>lua require"dap".continue()'):with_noremap():with_silent(),
-    ["n|<leader><F10>"] = map_cr('<cmd>lua require"dap".step_over()'):with_noremap():with_silent(),
-    ["n|<leader><F11>"] = map_cr('<cmd>lua require"dap".step_into()'):with_noremap():with_silent(),
-    ["n|<leader><F12>"] = map_cr('<cmd>lua require"dap".step_out()'):with_noremap():with_silent(),
-    ["n|<leader>ds"] = map_cr('<cmd>lua require"dap".stop()'):with_noremap():with_silent(),
-    ["n|<leader>dk"] = map_cr('<cmd>lua require"dap".up()'):with_noremap():with_silent(),
-    ["n|<leader>dj"] = map_cr('<cmd>lua require"dap".down()'):with_noremap():with_silent(),
-    ["n|<leader><F9>"] = map_cr('<cmd>lua require"dap".toggle_breakpoint()'):with_noremap():with_silent(),
-    ["n|<leader>dsbr"] = map_cr('<cmd>lua require"dap".set_breakpoint(vim.fn.input("Breakpoint condition: "))'):with_noremap()
-        :with_silent(),
-    ["n|<leader>dsbm"] = map_cr('<cmd>lua require"dap".set_breakpoint(nil, nil, vim.fn.input("Log point message: "))'):with_noremap()
-        :with_silent(),
+    ["n|<leader><F5>"] = require"dap".continue,
+    ["n|<leader><F10>"] = require"dap".step_over,
+    ["n|<leader><F11>"] = require"dap".step_into,
+    ["n|<leader><F12>"] = require"dap".step_out,
+    ["n|<leader>ds"] = require"dap".stop,
+    ["n|<leader>dk"] = require"dap".up,
+    ["n|<leader>dj"] = require"dap".down,
+    ["n|<leader><F9>"] = require"dap".toggle_breakpoint,
+    ["n|<leader>dsbr"] = function()require"dap".set_breakpoint(vim.fn.input("breakpoint condition: "))end,
+    ["n|<leader>dsbm"] = function() require"dap".set_breakpoint(nil, nil, vim.fn.input("Log point message: "))end,
     ["n|<leader>dro"] = map_cr('<cmd>:'):with_noremap():with_silent(),
-    ["n|<leader>drl"] = map_cr('<cmd>lua require"dap".repl.run_last()'):with_noremap():with_silent(),
+    ["n|<leader>drl"] = require"dap".repl.run_last,
     -- ["n|[t"] = map_cr("lua require'nvim-treesitter-refactor.navigation'.goto_previous_usage(0)"):with_noremap():with_silent(),
     -- ["n|]t"] = map_cr("lua require'nvim-treesitter-refactor.navigation'.goto_next_usage(0)"):with_noremap():with_silent(),
-    ["n|<leader>dcc"] = map_cr('<cmd>lua require"telescope".extensions.dap.commands{}'):with_noremap():with_silent(),
+    ["n|<leader>dcc"] = require"telescope".extensions.dap.commands,
     ["n|<leader>dco"] = map_cr('<cmd>lua require"telescope".extensions.dap.configurations{}'):with_noremap()
         :with_silent(),
     ["n|<leader>dlb"] = map_cr('<cmd>lua require"telescope".extensions.dap.list_breakpoints{}'):with_noremap()
         :with_silent(),
-    ["n|<leader>dv"] = map_cr('<cmd>lua require"telescope".extensions.dap.variables{}'):with_noremap():with_silent(),
-    ["n|<leader>df"] = map_cr('<cmd>lua require"telescope".extensions.dap.frames{}'):with_noremap():with_silent()
+    ["n|<leader>dv"] = require"telescope".extensions.dap.variables,
+    ["n|<leader>df"] = require"telescope".extensions.dap.frames
     --
   }
 
@@ -44,18 +42,18 @@ local function keybind()
     -- run
     -- ["n|r"] = map_cr('<cmd>lua require"go.dap".run()<CR>'):with_noremap():with_silent(),
 
-    ["n|c"] = map_cr('<cmd>lua require"dap".continue()<CR>'):with_noremap():with_silent(),
-    ["n|n"] = map_cr('<cmd>lua require"dap".step_over()<CR>'):with_noremap():with_silent(),
-    ["n|s"] = map_cr('<cmd>lua require"dap".step_into()<CR>'):with_noremap():with_silent(),
-    ["n|o"] = map_cr('<cmd>lua require"dap".step_out()<CR>'):with_noremap():with_silent(),
-    ["n|S"] = map_cr('<cmd>lua require"dap".stop()<CR>'):with_noremap():with_silent(),
-    ["n|u"] = map_cr('<cmd>lua require"dap".up()<CR>'):with_noremap():with_silent(),
-    ["n|D"] = map_cr('<cmd>lua require"dap".down()<CR>'):with_noremap():with_silent(),
-    ["n|C"] = map_cr('<cmd>lua require"dap".run_to_cursor()<CR>'):with_noremap():with_silent(),
-    ["n|b"] = map_cr('<cmd>lua require"dap".toggle_breakpoint()<CR>'):with_noremap():with_silent(),
-    ["n|P"] = map_cr('<cmd>lua require"dap".pause()<CR>'):with_noremap():with_silent(),
-    ["n|p"] = map_cr('<cmd>lua require"dap.ui.widgets".hover()<CR>'):with_noremap():with_silent(),
-    ["v|p"] = map_cr('<cmd>lua require"dap.ui.variables".visual_hover()<CR>'):with_noremap():with_silent()
+    ["n|c"] = require"dap".continue,
+    ["n|n"] = require"dap".step_over,
+    ["n|s"] = require"dap".step_into,
+    ["n|o"] = require"dap".step_out,
+    ["n|S"] = require"dap".stop,
+    ["n|u"] = require"dap".up,
+    ["n|D"] = require"dap".down,
+    ["n|C"] = require"dap".run_to_cursor,
+    ["n|b"] = require"dap".toggle_breakpoint,
+    ["n|P"] = require"dap".pause,
+    ["n|p"] = require"dap.ui.widgets".hover,
+    ["v|p"] = require"dap.ui.variables".visual_hover
     --
   }
 
@@ -79,7 +77,7 @@ M.prepare = function()
 
   if ft == 'lua' then
     local keys = {
-      ["n|<F5>"] = map_cr('<cmd>lua require"osv".launch()'):with_noremap():with_silent()
+      ["n|<F5>"] = require"osv".launch
     }
     bind.nvim_load_mapping(keys)
     require('modules.lang.dap.lua')
