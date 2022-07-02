@@ -60,7 +60,7 @@ function config.nvim_cmp()
     { name = "luasnip" },
     { name = "treesitter", keyword_length = 2 },
     { name = "look", keyword_length = 2 },
-    { name = "cmp_tabnine", keyword_length = 0 },
+    -- { name = "cmp_tabnine", keyword_length = 0 },
     { name = "emoji" },
     { name = "path" },
   }

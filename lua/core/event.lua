@@ -48,6 +48,24 @@ function autocmd.load_autocmds()
         "*.vim",
         [[nested if &l:autoread > 0 | source <afile> | echo 'source ' . bufname('%') | endif]],
       },
+      { "BufWritePost", "*.sum, *.mod", ":silent :GoModTidy" },
+      { "FileType", "css,scss", "let b:prettier_exec_cmd = 'prettier-stylelint'" },
+      -- {"FileType","lua","nmap <leader><leader>t <Plug>PlenaryTestFile"};
+      {
+        "FileType",
+        "markdown",
+        "let b:prettier_exec_cmd = 'prettier' | let g:prettier#exec_cmd_path = '/usr/local/bin/prettier' | let g:spelunker_check_type = 1",
+      },
+      {
+        "BufReadPre",
+        "*",
+        'if getfsize(expand("%")) > 1000000 | ownsyntax off | endif',
+      },
+      { "BufWritePost", "plugins.lua", "PackerCompile" },
+      -- {"UIEnter", "*", ":silent! :lua require('modules.lang.config').syntax_folding()"},
+      { "BufReadPre", "*", ":silent! :lua require('modules.lang.config').nvim_treesitter()" },
+      -- {"BufWritePre", "*.js,*.rs,*.lua", ":FormatWrite"},
+      -- {"BufWritePre", "*.go", ":silent! :lua require('go.format').gofmt()"}
     },
 
     wins = {

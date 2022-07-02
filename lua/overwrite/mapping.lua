@@ -33,12 +33,6 @@ local keys = {
   -- ["n|F24"]  = map_cmd("<S-F12>"),
   --
   --
-  -- pack?
-  -- ["n|<Leader>tr"]     = map_cr("call dein#recache_runtimepath()"):with_noremap():with_silent(),
-  -- ["n|<Leader>tf"]     = map_cu('DashboardNewFile'):with_noremap():with_silent(),
-  --
-  -- Lsp mapp work when insertenter and lsp start
-  --
   ["n|<M-h>"] = map_cu("Clap history"):with_noremap():with_silent(),
 
   -- ["n|<Leader>fb"] = map_cu("Clap marks"):with_noremap():with_silent(),
@@ -54,9 +48,6 @@ local keys = {
   ["v|<Leader>R"] = map_cmd("v:lua.run_or_test(v:true)"):with_expr(),
   ["n|<Leader>bp"] = map_cu("BufferLinePick"):with_noremap():with_silent(),
 
-  ["n|<Leader>di"] = map_cr("<cmd>lua require'dap.ui.variables'.hover()"):with_expr(),
-  ["n|<Leader>dw"] = map_cr("<cmd>lua require'dap.ui.widgets'.hover()"):with_expr(), -- TODO: another key?
-  ["v|<Leader>di"] = map_cr("<cmd>lua require'dap.ui.variables'.visual_hover()"):with_expr(),
   ["n|<C-k>"] = map_cmd("v:lua.ctrl_k()"):with_silent():with_expr(),
 
   -- Plugin QuickRun

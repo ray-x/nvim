@@ -52,7 +52,7 @@ local function load_options()
     ignorecase     = true;
     smartcase      = true;
     infercase      = true;
-    incsearch      = true;
+    incsearch      = true, -- Shows the match while typing
     wrapscan       = true;
     complete       = ".,w,b,k";
     inccommand     = "nosplit";  --split

@@ -66,6 +66,7 @@ local load_core = function()
   if pack.ensure_plugins() == "installed" then
     require("core.options")
     require("core.mapping")
+    require('core.dot_repeat')
     require("keymap")
     require("core.event")
     pack.load_compile()

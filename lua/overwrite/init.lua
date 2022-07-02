@@ -1,16 +1,14 @@
-local overwrite =function()
-  require('overwrite.event')
-  require('overwrite.mapping')
-  require('overwrite.options')
+local overwrite = function()
+  require("overwrite.mapping")
+  require("overwrite.options")
 
   if vim.g.goneovim then
     -- vim.api.nvim_set_option('guifont', "FiraCode Nerd Font:h18")
-    vim.api.nvim_set_option('guifont', "VictorMono Nerd Font:h18")
+    vim.api.nvim_set_option("guifont", "VictorMono Nerd Font:h18")
   end
 
-
   if vim.g.neoray then
-    vim.api.nvim_set_option('guifont', 'Victor Mono:h14')
+    vim.api.nvim_set_option("guifont", "Victor Mono:h14")
     vim.cmd([[NeoraySet CursorAnimTime 0.04]])
     vim.cmd([[NeoraySet Transparency   0.95]])
     vim.cmd([[NeoraySet TargetTPS      120]])
@@ -25,14 +23,14 @@ local overwrite =function()
 end
 
 if vim.g.neovide then
-  vim.g.neovide_cursor_animation_length=0.01
-  vim.g.neovide_cursor_trail_length=0.05
-  vim.g.neovide_cursor_antialiasing=true
+  vim.g.neovide_cursor_animation_length = 0.01
+  vim.g.neovide_cursor_trail_length = 0.05
+  vim.g.neovide_cursor_antialiasing = true
   vim.g.neovide_remember_window_size = true
   vim.cmd([[set guifont=JetBrainsMono\ Nerd\ Font:h16]])
 end
 
-if vim.fn.exists('g:nvui') ~= 0 then
+if vim.fn.exists("g:nvui") ~= 0 then
   -- Configure nvui here
   vim.cmd([[NvuiCmdFontFamily VictorMono Nerd Font]])
   vim.cmd([[set linespace=1]])

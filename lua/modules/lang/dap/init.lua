@@ -53,8 +53,8 @@ local function keybind()
     ["n|b"] = require"dap".toggle_breakpoint,
     ["n|P"] = require"dap".pause,
     ["n|p"] = require"dap.ui.widgets".hover,
-    ["v|p"] = require"dap.ui.variables".visual_hover
-    --
+    ["v|p"] = require"dap.ui.variables".visual_hover,
+    ["n|<Leader>di"] = require'dap.ui.variables'.hover,
   }
 
   bind.nvim_load_mapping(dap_keys)
