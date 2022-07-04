@@ -116,8 +116,6 @@ lang["simrat39/symbols-outline.nvim"] = {
   config = conf.outline,
 }
 
-lang["ElPiloto/sidekick.nvim"] = {
-}
 lang["bfredl/nvim-luadev"] = { opt = true, ft = "lua", cmd = "Luadev", setup = conf.luadev }
 lang["mfussenegger/nvim-dap"] = { config = conf.dap, opt = true } -- cmd = "Luadev",
 
@@ -183,7 +181,8 @@ lang["folke/lua-dev.nvim"] = {
 
 lang["p00f/nvim-ts-rainbow"] = {
   opt = true,
-  after = "nvim-treesitter",
+  -- after = "nvim-treesitter",
+  event = {"CursorHold", "CursorHoldI"},
   -- Highlight also non-parentheses delimiters, boolean or table: lang -> boolean
   -- cmd = "Rainbow",
   config = function()

@@ -24,12 +24,12 @@ function autocmd.nvim_create_augroups(definitions)
   for group_name, defs in pairs(definitions) do
     local gn = api.nvim_create_augroup("LocalAuGroup" .. group_name, {})
     for _, def in ipairs(defs) do
-    api.nvim_create_autocmd( vim.split(def[1], ',') , {
-      group = gn,
-      pattern = def[2],
-      -- callback = def.callback,
-      command = def[3],
-    })
+      api.nvim_create_autocmd(vim.split(def[1], ","), {
+        group = gn,
+        pattern = def[2],
+        -- callback = def.callback,
+        command = def[3],
+      })
     end
   end
 end
@@ -46,7 +46,7 @@ function autocmd.load_autocmds()
       {
         "BufWritePost,FileWritePost",
         "*.vim",
-        [[nested if &l:autoread > 0 | source <afile> | echo 'source ' . bufname('%') | endif]],
+        [[ if &l:autoread > 0 | source <afile> | echo 'source ' . bufname('%') | endif]],
       },
       { "BufWritePost", "*.sum, *.mod", ":silent :GoModTidy" },
       { "FileType", "css,scss", "let b:prettier_exec_cmd = 'prettier-stylelint'" },
@@ -80,7 +80,7 @@ function autocmd.load_autocmds()
       -- Force write shada on leaving nvim
       { "VimLeave", "*", [[if has('nvim') | wshada! | else | wviminfo! | endif]] },
       -- Check if file changed when its window is focus, more eager than 'autoread'
-      { "FocusGained", "*",  "checktime" },
+      { "FocusGained", "*", "checktime" },
       -- -- {"CmdwinEnter,CmdwinLeave", "*", "lua require'wlfloatline'.toggle()"};
     },
   }

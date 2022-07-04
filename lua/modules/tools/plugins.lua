@@ -68,7 +68,7 @@ tools["ThePrimeagen/harpoon"] = {
 -- }
 tools["TimUntersberger/neogit"] = {
   cmd = { "Neogit" },
-  config = conf.neogit
+  config = conf.neogit,
 }
 tools["liuchengxu/vista.vim"] = { cmd = "Vista", setup = conf.vim_vista, opt = true }
 
@@ -194,8 +194,9 @@ tools["ipod825/igit.nvim"] = {
 tools["rmagatti/auto-session"] = { config = conf.session }
 
 tools["rmagatti/session-lens"] = {
-  cmd = "SearchSession",
-  after = { "telescope.nvim" },
+  opt = true,
+  -- cmd = "SearchSession",
+  -- after = { "telescope.nvim" },
   config = function()
     require("packer").loader("telescope.nvim")
     require("telescope").load_extension("session-lens")
@@ -258,16 +259,17 @@ tools["AckslD/nvim-neoclip.lua"] = {
 
 tools["nvim-telescope/telescope-frecency.nvim"] = {
   keys = { "<M>", "<Leader>" },
-  after = { "telescope.nvim" },
+  -- after = { "telescope.nvim" },
+  -- cmd = {'Telescope'},
   requires = { "tami5/sqlite.lua", module = "sqlite", opt = true },
   opt = true,
   config = function()
     local telescope = require("telescope")
     telescope.load_extension("frecency")
-    telescope.setup{
+    telescope.setup({
       extensions = {
         frecency = {
-          default_workspace = 'CWD',
+          default_workspace = "CWD",
           show_scores = false,
           show_unindexed = true,
           ignore_patterns = { "*.git/*", "*/tmp/*" },
@@ -280,18 +282,18 @@ tools["nvim-telescope/telescope-frecency.nvim"] = {
           },
         },
       },
-    }
+    })
     -- vim.api.nvim_set_keymap("n", "<leader><leader>p", "<Cmd>lua require('telescope').extensions.frecency.frecency()<CR>", {noremap = true, silent = true})
   end,
 }
 
 tools["voldikss/vim-translator"] = {
-    opt=true,
-    fn = { "<Plug>TranslateW", "<Plug>TranslateWV" },
-    setup = function()
-      vim.api.nvim_set_keymap("n", "<Leader>ts",  "<Plug>TranslateW", {noremap = true, silent = true})
-      vim.api.nvim_set_keymap("v", "<Leader>ts",  "<Plug>TranslateWV", {noremap = true, silent = true})
-    end
+  opt = true,
+  fn = { "<Plug>TranslateW", "<Plug>TranslateWV" },
+  setup = function()
+    vim.api.nvim_set_keymap("n", "<Leader>ts", "<Plug>TranslateW", { noremap = true, silent = true })
+    vim.api.nvim_set_keymap("v", "<Leader>ts", "<Plug>TranslateWV", { noremap = true, silent = true })
+  end,
 }
 
 return tools

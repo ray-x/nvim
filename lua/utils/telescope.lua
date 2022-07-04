@@ -435,37 +435,39 @@ M.setup = function(_)
 
   -- telescope.load_extension("notify")
 
-  loader("telescope-fzf-native.nvim telescope-live-grep-raw.nvim telescope-file-browser.nvim")
-  loader("sqlite.lua")
-  loader("telescope-frecency.nvim project.nvim telescope-zoxide nvim-neoclip.lua")
+  vim.defer_fn(function() -- defer loading
+    loader("telescope-fzf-native.nvim telescope-live-grep-raw.nvim telescope-file-browser.nvim")
+    loader("sqlite.lua")
+    loader("telescope-frecency.nvim project.nvim telescope-zoxide nvim-neoclip.lua")
 
-  telescope.setup({
-    extensions = {
-      fzf = {
-        fuzzy = true, -- false will only do exact matching
-        override_generic_sorter = true, -- override the generic sorter
-        override_file_sorter = true, -- override the file sorter
-        case_mode = "smart_case", -- or "ignore_case" or "respect_case"
-        -- the default case_mode is "smart_case"
-      },
-      file_browser = {
-        theme = "ivy",
-        mappings = {
-          ["i"] = {
-            -- your custom insert mode mappings
-          },
-          ["n"] = {
-            -- your custom normal mode mappings
+    telescope.setup({
+      extensions = {
+        fzf = {
+          fuzzy = true, -- false will only do exact matching
+          override_generic_sorter = true, -- override the generic sorter
+          override_file_sorter = true, -- override the file sorter
+          case_mode = "smart_case", -- or "ignore_case" or "respect_case"
+          -- the default case_mode is "smart_case"
+        },
+        file_browser = {
+          theme = "ivy",
+          mappings = {
+            ["i"] = {
+              -- your custom insert mode mappings
+            },
+            ["n"] = {
+              -- your custom normal mode mappings
+            },
           },
         },
       },
-    },
-  })
+    })
 
-  telescope.load_extension("fzf")
+    telescope.load_extension("fzf")
 
-  telescope.load_extension("dotfiles")
-  telescope.load_extension("gosource")
+    telescope.load_extension("dotfiles")
+    telescope.load_extension("gosource")
+  end, 200)
   -- telescope.load_extension("smart_history")
 end
 

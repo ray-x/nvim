@@ -121,7 +121,7 @@ completion["kristijanhusak/vim-dadbod-completion"] = {
 }
 
 completion["nvim-telescope/telescope.nvim"] = {
-  cmd = "Telescope",
+  -- cmd = "Telescope",
   config = conf.telescope,
   setup = conf.telescope_preload,
   requires = {

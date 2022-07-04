@@ -43,6 +43,7 @@ local function loadscheme()
     themes = { "gruvbox-material", "starry.nvim", "catppuccin", "github-nvim-theme" }
   end
 
+  -- themes = { "aurora" }
   -- themes = { "starry.nvim" }
   -- themes = { "catppuccin" }
   -- themes = { "github-nvim-theme" }
@@ -185,7 +186,8 @@ end, lazy_timer + 60)
 vim.defer_fn(function()
   lprint("telescope family")
   loader("telescope.nvim")
-  loader("telescope-zoxide project.nvim nvim-neoclip.lua")
+  -- load from
+  -- loader("telescope-zoxide project.nvim nvim-neoclip.lua")
   loader("harpoon")
   loader("nvim-notify")
   vim.notify = require("notify")
@@ -194,7 +196,7 @@ vim.defer_fn(function()
   if vim.fn.executable(vim.g.python3_host_prog) == 0 then
     print("file not find, please update path setup", vim.g.python3_host_prog)
   end
-end, lazy_timer + 80)
+end, lazy_timer + 100)
 
 if plugin_folder() == [[~/github/ray-x/]] then
   -- it is my own box, setup fish
