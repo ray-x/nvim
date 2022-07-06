@@ -78,8 +78,8 @@ local keys = {
   ["xv|<M-s>"] = map_cmd("<cmd>HopChar2AC<CR>"):with_silent(),
   ["xv|<M-S>"] = map_cmd("<cmd>HopChar2BC<CR>"):with_silent(),
   ["n|<Space>F"] = map_cr("HopPattern"),
-  ["n|<Space>]"] = map_cr("HopPatternAC"),
-  ["n|<Space>["] = map_cr("HopPatternBC"),
+  ["n|<Space>]"] = map_cr("HopChar1MW"),
+  ["n|<Space>["] = map_cr("HopChar2MW"),
   -- clap --
   ["n|<d-C>"] = map_cu("Clap | startinsert"),
   ["i|<d-C>"] = map_cu("Clap | startinsert"):with_noremap():with_silent(),

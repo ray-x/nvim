@@ -27,12 +27,11 @@ lang["RRethy/nvim-treesitter-textsubjects"] = {
 --   config = conf.surfer,
 -- }
 
-lang['bennypowers/nvim-regexplainer']={
+lang["bennypowers/nvim-regexplainer"] = {
   opt = true,
-  cmd = { "RegexplainerToggle", "RegexplainerShow",  },
+  cmd = { "RegexplainerToggle", "RegexplainerShow" },
   config = conf.regexplainer,
 }
-
 
 lang["danymat/neogen"] = {
   opt = true,
@@ -59,16 +58,16 @@ lang["yardnsm/vim-import-cost"] = { cmd = "ImportCost", opt = true }
 
 lang["nanotee/sqls.nvim"] = { ft = { "sql", "pgsql" }, setup = conf.sqls, opt = true }
 
-lang['simrat39/rust-tools.nvim'] = {
-  ft = {'rust'},
-  after = {"nvim-lspconfig"},
+lang["simrat39/rust-tools.nvim"] = {
+  ft = { "rust" },
+  after = { "nvim-lspconfig" },
   config = function()
-    require('rust-tools').setup({
-       server = {
+    require("rust-tools").setup({
+      server = {
         on_attach = function(_, _)
-          require('navigator.mappings').setup()
+          require("navigator.mappings").setup()
         end,
-      }
+      },
     })
   end,
 }
@@ -86,6 +85,23 @@ lang[path .. "web-tools.nvim"] = {
   opt = true,
   config = function()
     require("web-tools").setup()
+  end,
+}
+
+lang["glepnir/lspsaga.nvim"] = {
+  opt = true,
+  cmd = {
+    "LspSaga",
+  },
+  config = function()
+    local saga = require("lspsaga")
+
+    saga.init_lsp_saga({
+      border_style = "rounded",
+      code_action_lightbulb = {
+        enable = false,
+      },
+    })
   end,
 }
 
@@ -170,7 +186,9 @@ lang["windwp/nvim-ts-autotag"] = {
 lang["m-demare/hlargs.nvim"] = {
   opt = true,
   after = "nvim-treesitter",
-  config = function() require('hlargs').setup() end
+  config = function()
+    require("hlargs").setup()
+  end,
 }
 
 lang["folke/lua-dev.nvim"] = {
@@ -182,7 +200,7 @@ lang["folke/lua-dev.nvim"] = {
 lang["p00f/nvim-ts-rainbow"] = {
   opt = true,
   -- after = "nvim-treesitter",
-  event = {"CursorHold", "CursorHoldI"},
+  event = { "CursorHold", "CursorHoldI" },
   -- Highlight also non-parentheses delimiters, boolean or table: lang -> boolean
   -- cmd = "Rainbow",
   config = function()
