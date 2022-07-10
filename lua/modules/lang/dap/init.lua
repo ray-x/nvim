@@ -9,8 +9,6 @@ local map_cr = bind.map_cr
 local function keybind()
 
   local keys = {
-    -- DAP --
-    --
 
     ["n|<leader><F5>"] = require"dap".continue,
     ["n|<leader><F10>"] = require"dap".step_over,

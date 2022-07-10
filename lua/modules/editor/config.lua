@@ -46,21 +46,15 @@ function config.autopairs()
       local pair = opts.line:sub(opts.col - 1, opts.col)
       return vim.tbl_contains({ "()", "[]", "{}" }, pair)
     end),
-    Rule("(", ")")
-      :with_pair(function(opts)
-        return opts.prev_char:match(".%)") ~= nil
-      end)
-      :use_key(")"),
-    Rule("{", "}")
-      :with_pair(function(opts)
-        return opts.prev_char:match(".%}") ~= nil
-      end)
-      :use_key("}"),
-    Rule("[", "]")
-      :with_pair(function(opts)
-        return opts.prev_char:match(".%]") ~= nil
-      end)
-      :use_key("]"),
+    Rule("(", ")"):with_pair(function(opts)
+      return opts.prev_char:match(".%)") ~= nil
+    end):use_key(")"),
+    Rule("{", "}"):with_pair(function(opts)
+      return opts.prev_char:match(".%}") ~= nil
+    end):use_key("}"),
+    Rule("[", "]"):with_pair(function(opts)
+      return opts.prev_char:match(".%]") ~= nil
+    end):use_key("]"),
     Rule("%", "%", "lua") -- press % => %% is only inside comment or string
       :with_pair(ts_conds.is_ts_node({ "string", "comment" })),
     Rule("$", "$", "lua"):with_pair(ts_conds.is_not_ts_node({ "function" })),
@@ -142,6 +136,53 @@ function config.hexokinase()
   }
 end
 
+function config.yanky()
+  require("yanky").setup({
+    highlight = {
+      on_put = true,
+      on_yank = true,
+      timer = 500,
+    },
+  })
+  local utils = require("yanky.utils")
+  local mapping = require("yanky.telescope.mapping")
+  require("telescope").load_extension("yank_history")
+  require("yanky").setup({
+    highlight = {
+      on_put = true,
+      on_yank = true,
+      timer = 500,
+    },
+    preserve_cursor_position = {
+      enabled = true,
+    },
+    picker = {
+      -- select = {
+      -- 	action = require("yanky.picker").actions.put("p"),
+      -- },
+      telescope = {
+        mappings = {
+          default = mapping.put("p"),
+          i = {
+            ["<c-p>"] = mapping.put("p"),
+            ["<c-k>"] = mapping.put("P"),
+            ["<c-x>"] = mapping.delete(),
+            ["<c-r>"] = mapping.set_register(utils.get_default_register()),
+          },
+          n = {
+            p = mapping.put("p"),
+            P = mapping.put("P"),
+            gp = mapping.put("gp"),
+            gP = mapping.put("gP"),
+            d = mapping.delete(),
+            r = mapping.set_register(utils.get_default_register()),
+          },
+        },
+      },
+    },
+  })
+end
+
 function config.substitute()
   require("substitute").setup({
     yank_substituted_text = true,
@@ -153,7 +194,25 @@ function config.substitute()
   -- vim.keymap.set("n", "<Space>ss", "<cmd>lua require('substitute').line()<cr>", { noremap = true })
   vim.keymap.set("n", "<Space>S", "<cmd>lua require('substitute').eol()<cr>", { noremap = true })
   vim.keymap.set("x", "<Space>s", "<cmd>lua require('substitute').visual()<cr>", { noremap = true })
-  vim.keymap.set("n", "<Leader>S", "<cmd>lua require('substitute.range').operator({ prefix = 'S' })<cr>", { noremap = true })
+
+  vim.keymap.set(
+    "n",
+    "<Leader>S",
+    "<cmd>lua require('substitute.range').operator({ prefix = 'S' })<cr>",
+    { noremap = true, desc = "substitute" }
+  )
+  vim.keymap.set(
+    "x",
+    "<leader>S",
+    "<cmd>lua require('substitute.range').visual()<cr>",
+    { noremap = true, desc = "substitute range" }
+  )
+  vim.keymap.set(
+    "n",
+    "<Leader>ss",
+    "<cmd>lua require('substitute.range').word()<cr>",
+    { noremap = true, desc = "substitute range" }
+  )
 end
 
 function config.lightspeed()

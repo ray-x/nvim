@@ -148,7 +148,6 @@ function config.regexplainer()
       "vim",
     },
 
-
     mappings = {
       toggle = "<Leader>gR",
       -- examples, not defaults:
@@ -287,8 +286,10 @@ function config.go()
     test_runner = "go", -- richgo, go test, richgo, dlv, ginkgo
     -- run_in_floaterm = true, -- set to true to run in float window.
     lsp_document_formatting = false,
+    luasnip = true,
     -- lsp_on_attach = require("navigator.lspclient.attach").on_attach,
     -- lsp_cfg = true,
+    -- test_efm = true, -- errorfomat for quickfix, default mix mode, set to true will be efm only
   })
 
   vim.cmd("augroup go")

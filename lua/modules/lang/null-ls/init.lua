@@ -87,7 +87,7 @@ return {
       table.insert(
         sources,
         null_ls.builtins.formatting.stylua.with({
-          extra_args = { "--indent-type", "Spaces", "--indent-width", "2" },
+          extra_args = { "--indent-type", "Spaces", "--indent-width", "2"}, --, "--collapse-simple-statement", "always"
         })
       )
     end

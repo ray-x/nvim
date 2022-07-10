@@ -83,7 +83,7 @@ completion["hrsh7th/nvim-cmp"] = {
   -- opt = true,
   -- event = "InsertEnter", -- InsertCharPre
   -- ft = {'lua', 'markdown',  'yaml', 'json', 'sql', 'vim', 'sh', 'sql', 'vim', 'sh'},
-  after = { "LuaSnip" }, -- "nvim-snippy",
+  after = { "LuaSnip" },
   requires = {
     { "hrsh7th/cmp-buffer", after = "nvim-cmp", opt = true },
     { "hrsh7th/cmp-nvim-lua", after = "nvim-cmp", opt = true },
@@ -108,7 +108,7 @@ completion["hrsh7th/nvim-cmp"] = {
 completion["L3MON4D3/LuaSnip"] = { -- need to be the first to load
   event = "InsertEnter",
   requires = { "rafamadriz/friendly-snippets", event = "InsertEnter" }, -- , event = "InsertEnter"
-  config = conf.luasnip,
+  config = function() require('modules.completion.luasnip') end,
 }
 completion["kristijanhusak/vim-dadbod-completion"] = {
   event = "InsertEnter",

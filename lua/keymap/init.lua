@@ -53,7 +53,6 @@ local plug_map = {
   ["v|<d-F>"] = map_cr([[<cmd>lua require"utils.telescope".grep_string_visual_raw()]]):with_expr():with_silent(),
   ["n|w"] = map_cmd('v:lua.word_motion_move("w")'):with_silent():with_expr(),
 
-
   ["n|<Leader>do"] = map_cu("DiffviewOpen"):with_noremap():with_silent(),
   ["n|<Leader>dc"] = map_cu("DiffviewClose"):with_noremap():with_silent(),
   ["n|<Leader>ng"] = map_cu("Neogit"):with_noremap():with_silent(),
@@ -67,13 +66,13 @@ local plug_map = {
   ["x|<Leader>c<Space>"] = map_key("gc"),
   ["n|<Leader>c<Space>"] = map_key("gcc"),
   -- ["n|<Leader>c<Space>"] = map_cmd("<CMD>lua require'Comment.api'.toggle_linewise_op()<CR>"):with_silent(),
-  ["n|<d-/>"] = map_cmd("<ESC><CMD>lua require'Comment.api'.toggle_linewise_op({})<CR>"):with_silent(),
-  ["i|<d-/>"] = map_cmd("<ESC><CMD>lua require'Comment.api'.toggle_linewise_op({})<CR>"):with_silent(),
-  ["x|<d-/>"] = map_key("gc"),
+  ["n|<d-/>"] = map_cmd("<ESC><CMD>lua require'Comment.api'.toggle_current_linewise({})<CR>"):with_silent(),
+  ["i|<d-/>"] = map_cmd("<ESC><CMD>lua require'Comment.api'.toggle_current_linewise({})<CR>"):with_silent(),
+  ["x|<d-/>"] = map_cmd("<ESC><CMD>lua require'Comment.api'.toggle_linewise_op(vim.fn.visualmode())<CR>"):with_silent(),
 
-  ["n|<m-/>"] = map_cmd("<ESC><CMD>lua require'Comment.api'.toggle_linewise_op({})<CR>"):with_silent(),
-  ["i|<m-/>"] = map_cmd("<ESC><CMD>lua require'Comment.api'.toggle_linewise_op({})<CR>"):with_silent(),
-  ["x|<m-/>"] = map_key("gc"),
+  ["n|<m-/>"] = map_cmd("<ESC><CMD>lua require'Comment.api'.toggle_current_linewise({})<CR>"):with_silent(),
+  ["i|<m-/>"] = map_cmd("<ESC><CMD>lua require'Comment.api'.toggle_current_linewise({})<CR>"):with_silent(),
+  ["x|<m-/>"] = map_cmd("<ESC><CMD>lua require'Comment.api'.toggle_linewise_op(vim.fn.visualmode())<CR>"):with_silent(),
 }
 
 return { map = plug_map }

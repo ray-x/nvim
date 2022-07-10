@@ -75,10 +75,10 @@ if gitrepo then
 end
 
 local hint_telescope = [[
- _g_ gitfiles   _r_ register _j_ jumps   _b_ buffers
- _l_ neoclip    _z_ Z        _p_ project _w_ grep
+ _g_ gitfiles   _r_ registers _j_ jumps   _b_ buffers
+ _y_ neoclip    _z_ Z        _p_ project _w_ grep
  _/_ searchhist _d_ dumbjump _C_ Clap    _m_ commands
- _B_ blines     _s_ color    _c_ cmdhist _o_ oldfiles
+ _l_ blines     _s_ color    _c_ cmdhist _o_ oldfiles
  _k_ maps     _f_ folder _<Enter>_ Telescope _q_ exit
 ]]
 

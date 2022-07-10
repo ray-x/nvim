@@ -18,21 +18,20 @@ editor["windwp/nvim-autopairs"] = {
 
 editor["anuvyklack/hydra.nvim"] = {
   requires = "anuvyklack/keymap-layer.nvim",
-  event = { "CmdwinEnter", "CmdlineEnter" , "CursorMoved"},
-  keys = {"<Leader>"},
+  event = { "CmdwinEnter", "CmdlineEnter", "CursorMoved" },
+  keys = { "<Leader>" },
   config = conf.hydra,
   opt = true,
 }
 
-editor['gbprod/substitute.nvim'] = {
-  requires = "gbprod/yanky.nvim",
-  event = {"CursorMoved", "CmdlineEnter"},
+editor["gbprod/substitute.nvim"] = {
+  event = { "CursorMoved", "CursorMovedI", "CmdlineEnter" },
   config = conf.substitute,
   opt = true,
 }
 
-editor['tpope/vim-abolish'] = {
-  event = {"CursorMoved", "CmdlineEnter"},
+editor["tpope/vim-abolish"] = {
+  event = { "CursorMoved", "CmdlineEnter" },
   opt = true,
 }
 
@@ -62,7 +61,7 @@ editor['tpope/vim-abolish'] = {
 
 editor["tpope/vim-surround"] = {
   opt = true,
-  event = "InsertEnter",
+  event = { "InsertEnter", "CursorMoved", "CursorMovedI" },
   -- keys={'c', 'd'}
 }
 
@@ -173,13 +172,28 @@ editor["numToStr/Comment.nvim"] = {
 }
 
 -- copy paste failed in block mode when clipboard = unnameplus"
-editor["bfredl/nvim-miniyank"] = {
-  keys = { "p", "y", "<C-v>" },
+-- editor["bfredl/nvim-miniyank"] = {
+--   keys = { "p", "y", "<C-v>" },
+--   opt = true,
+--   setup = function()
+--     vim.api.nvim_command("map p <Plug>(miniyank-autoput)")
+--     vim.api.nvim_command("map P <Plug>(miniyank-autoPut)")
+--   end,
+-- }
+editor["gbprod/yanky.nvim"] = {
+  event = { "CursorMoved", "CursorMovedI" },
   opt = true,
   setup = function()
-    vim.api.nvim_command("map p <Plug>(miniyank-autoput)")
-    vim.api.nvim_command("map P <Plug>(miniyank-autoPut)")
+    vim.keymap.set("n", "p", "<Plug>(YankyPutAfter)", {})
+    vim.keymap.set("n", "P", "<Plug>(YankyPutBefore)", {})
+    vim.keymap.set("x", "p", "<Plug>(YankyPutAfter)", {})
+    vim.keymap.set("x", "P", "<Plug>(YankyPutBefore)", {})
+    -- vim.keymap.set("n", "gp", "<Plug>(YankyGPutAfter)", {})
+    vim.keymap.set("n", "gP", "<Plug>(YankyGPutBefore)", {})
+    vim.keymap.set("x", "gp", "<Plug>(YankyGPutAfter)", {})
+    vim.keymap.set("x", "gP", "<Plug>(YankyGPutBefore)", {})
   end,
+  config = conf.yanky,
 }
 
 editor["dhruvasagar/vim-table-mode"] = { cmd = { "TableModeToggle" } }
