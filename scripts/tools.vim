@@ -6,14 +6,9 @@ fun! <SID>StripTrailingWhitespace()
     %s/\($\n\s*\)\+\%$//e
     call cursor(l, c)
 endfun
-autocmd BufWritePre * :call <SID>StripTrailingWhitespace()
+" autocmd BufWritePre * :call <SID>StripTrailingWhitespace()
 
-"
-"
-"
-"
 " Search in project
-"
 function! FindProjectRoot(lookFor)
     let s:root=expand('%:p:h')
     let pathMaker='%:p'
@@ -26,7 +21,7 @@ function! FindProjectRoot(lookFor)
     endwhile
     return s:root
 endfunction
-   " 搜索 .git 为项目路径
+" 搜索 .git 为项目路径
 
 "https://github.com/sindrets/diffview.nvim/issues/105
 " The last line in the command opens the local cwd for each window if you have
@@ -111,6 +106,7 @@ command! Scratch new | setlocal bt=nofile bh=wipe nobl noswapfile nu
 
 " nnoremap <Leader><S-h> :call ToggleHiddenAll()<CR>
 
+" lfile loclist jump
 function! LF()
     let temp = tempname()
     exec 'silent !lf -selection-path=' . shellescape(temp)

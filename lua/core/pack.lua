@@ -15,9 +15,9 @@ function Packer:load_plugins()
   self.repos = {}
   self.rocks = {}
 
-  local get_plugins_list = function ()
+  local get_plugins_list = function()
     local list = {}
-    local tmp = vim.split(fn.globpath(modules_dir,'*/plugins.lua'),'\n')
+    local tmp = vim.split(fn.globpath(modules_dir, "*/plugins.lua"), "\n")
     for _, f in ipairs(tmp) do
       list[#list + 1] = string.match(f, "lua/(.+).lua$")
     end
@@ -25,7 +25,7 @@ function Packer:load_plugins()
   end
 
   local plugins_file = get_plugins_list()
-  for _,m in ipairs(plugins_file) do
+  for _, m in ipairs(plugins_file) do
     local repos = require(m)
     for repo, conf in pairs(repos) do
       self.repos[#self.repos + 1] = vim.tbl_extend("force", { repo }, conf)
@@ -47,7 +47,7 @@ function Packer:load_packer()
   local use_rocks = packer.use_rocks
   self:load_plugins()
   use({ "wbthomason/packer.nvim" })
-  -- use {'lewis6991/impatient.nvim'}
+  use({ "lewis6991/impatient.nvim" , config=function() require('impatient') end})
   for _, repo in ipairs(self.repos) do
     use(repo)
   end
@@ -86,12 +86,12 @@ function plugins.ensure_plugins()
 end
 
 function plugins.register_plugin(repo)
-  table.insert(Packer.repos,repo)
+  table.insert(Packer.repos, repo)
 end
 
 function plugins.compile_notify()
   plugins.compile()
-  vim.notify('Compile Done!','info',{ title = 'Packer' })
+  vim.notify("Compile Done!", "info", { title = "Packer" })
 end
 
 function plugins.auto_compile()
@@ -101,7 +101,7 @@ function plugins.auto_compile()
     plugins.compile()
   end
   vim.cmd([[silent UpdateRemotePlugins]])
-  require('packer_compiled')
+  require("packer_compiled")
 end
 
 function plugins.compile_loader()

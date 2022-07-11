@@ -18,8 +18,7 @@ editor["windwp/nvim-autopairs"] = {
 
 editor["anuvyklack/hydra.nvim"] = {
   requires = "anuvyklack/keymap-layer.nvim",
-  event = { "CmdwinEnter", "CmdlineEnter", "CursorMoved" },
-  keys = { "<Leader>" },
+  -- event = { "CmdwinEnter", "CmdlineEnter", "CursorMoved" },
   config = conf.hydra,
   opt = true,
 }
@@ -31,7 +30,7 @@ editor["gbprod/substitute.nvim"] = {
 }
 
 editor["tpope/vim-abolish"] = {
-  event = { "CursorMoved", "CmdlineEnter" },
+  event = { "CmdlineEnter" },
   opt = true,
 }
 
@@ -59,10 +58,37 @@ editor["tpope/vim-abolish"] = {
 --   config = conf.lightspeed
 -- }
 
-editor["tpope/vim-surround"] = {
+-- editor["tpope/vim-surround"] = {
+--   opt = true,
+--   event = { "InsertEnter", "CursorMoved", "CursorMovedI" },
+--   -- keys={'c', 'd'}
+-- }
+--
+editor["machakann/vim-sandwich"] = {
   opt = true,
-  event = { "InsertEnter", "CursorMoved", "CursorMovedI" },
-  -- keys={'c', 'd'}
+  event = { "CursorMoved", "CursorMovedI" },
+  setup = function()
+    vim.g.sandwich_no_default_key_mappings = 1
+    vim.cmd[[
+  nmap za <Plug>(sandwich-add)
+	xmap za <Plug>(sandwich-add)
+	omap za <Plug>(sandwich-add)
+	nmap zd <Plug>(sandwich-delete)
+	xmap zd <Plug>(sandwich-delete)
+	nmap zdb <Plug>(sandwich-delete-auto)
+	nmap zr <Plug>(sandwich-replace)
+	xmap zr <Plug>(sandwich-replace)
+	nmap zrb <Plug>(sandwich-replace-auto)
+  omap ib <Plug>(textobj-sandwich-auto-i)
+	xmap ib <Plug>(textobj-sandwich-auto-i)
+	omap ab <Plug>(textobj-sandwich-auto-a)
+	xmap ab <Plug>(textobj-sandwich-auto-a)
+	omap is <Plug>(textobj-sandwich-query-i)
+	xmap is <Plug>(textobj-sandwich-query-i)
+	omap as <Plug>(textobj-sandwich-query-a)
+	xmap as <Plug>(textobj-sandwich-query-a)
+    ]]
+  end,
 }
 
 -- nvim-colorizer replacement
