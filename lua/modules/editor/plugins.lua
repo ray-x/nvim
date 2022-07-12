@@ -31,6 +31,10 @@ editor["gbprod/substitute.nvim"] = {
 
 editor["tpope/vim-abolish"] = {
   event = { "CmdlineEnter" },
+  setup = function()
+    vim.g.abolish_no_mappings = true
+    vim.cmd("nmap Cr  <Plug>(abolish-coerce-word)")
+  end,
   opt = true,
 }
 
@@ -70,23 +74,23 @@ editor["machakann/vim-sandwich"] = {
   setup = function()
     vim.g.sandwich_no_default_key_mappings = 1
     vim.cmd[[
-  nmap za <Plug>(sandwich-add)
-	xmap za <Plug>(sandwich-add)
-	omap za <Plug>(sandwich-add)
-	nmap zd <Plug>(sandwich-delete)
-	xmap zd <Plug>(sandwich-delete)
-	nmap zdb <Plug>(sandwich-delete-auto)
-	nmap zr <Plug>(sandwich-replace)
-	xmap zr <Plug>(sandwich-replace)
-	nmap zrb <Plug>(sandwich-replace-auto)
-  omap ib <Plug>(textobj-sandwich-auto-i)
-	xmap ib <Plug>(textobj-sandwich-auto-i)
-	omap ab <Plug>(textobj-sandwich-auto-a)
-	xmap ab <Plug>(textobj-sandwich-auto-a)
-	omap is <Plug>(textobj-sandwich-query-i)
-	xmap is <Plug>(textobj-sandwich-query-i)
-	omap as <Plug>(textobj-sandwich-query-a)
-	xmap as <Plug>(textobj-sandwich-query-a)
+      nmap ca <Plug>(sandwich-add)
+	    xmap ca <Plug>(sandwich-add)
+	    omap ca <Plug>(sandwich-add)
+	    nmap cd <Plug>(sandwich-delete)
+	    xmap cd <Plug>(sandwich-delete)
+	    nmap cdb <Plug>(sandwich-delete-auto)
+	    nmap cr <Plug>(sandwich-replace)
+	    xmap cr <Plug>(sandwich-replace)
+	    nmap crb <Plug>(sandwich-replace-auto)
+      omap ib <Plug>(textobj-sandwich-auto-i)
+	    xmap ib <Plug>(textobj-sandwich-auto-i)
+	    omap ab <Plug>(textobj-sandwich-auto-a)
+	    xmap ab <Plug>(textobj-sandwich-auto-a)
+	    omap is <Plug>(textobj-sandwich-query-i)
+	    xmap is <Plug>(textobj-sandwich-query-i)
+	    omap as <Plug>(textobj-sandwich-query-a)
+	    xmap as <Plug>(textobj-sandwich-query-a)
     ]]
   end,
 }
