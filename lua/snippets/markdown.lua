@@ -1,7 +1,7 @@
 local ls = require("luasnip")
 local fmt = require("luasnip.extras.fmt").fmt
 
-return {
+ls.add_snippets("markdown", {
   ls.s( -- Link {{{
     {
       trig = "link",
@@ -33,6 +33,6 @@ return {
       ls.i(0),
     })
   ), --}}}
-}
+})
 
 -- vim: fdm=marker fdl=0

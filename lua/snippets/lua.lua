@@ -68,7 +68,7 @@ ls.add_snippets("lua", {
   s( -- Require Module {{{
     { trig = "req", name = "Require", dscr = "Choices are on the variable name" },
     fmt([[local {} = require("{}")]], {
-      ls.d(2, last_lua_module_section, { 1 }),
+      d(2, last_lua_module_section, { 1 }),
       ls.i(1),
     })
   ), --}}}

@@ -15,7 +15,7 @@ local function make(trig, name)
   )
 end
 
-return {
+ls.add_snippets("gitcommit", {
   make("ref", "ref"),
   make("rev", "revert"),
   make("add", "add"),
@@ -27,5 +27,5 @@ return {
   make("chore", "chore"),
   make("chore", "chore"),
   make("ci", "ci"),
-}
+})
 

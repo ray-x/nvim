@@ -179,6 +179,7 @@ completion[plugin_folder() .. "lsp_signature.nvim"] = {
       max_height = 4,
       toggle_key = [[<M-x>]], -- toggle signature on and off in insert mode,  e.g. '<M-x>'
       select_signature_key = [[<M-n>]], -- toggle signature on and off in insert mode,  e.g. '<M-x>'
+      select_signature_key = [[<M-c>]], -- toggle signature on and off in insert mode,  e.g. '<M-x>'
     })
   end,
 }
