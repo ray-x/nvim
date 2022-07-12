@@ -47,7 +47,12 @@ function Packer:load_packer()
   local use_rocks = packer.use_rocks
   self:load_plugins()
   use({ "wbthomason/packer.nvim" })
-  use({ "lewis6991/impatient.nvim" , config=function() require('impatient') end})
+  use({
+    "lewis6991/impatient.nvim",
+    config = function()
+      require("impatient")
+    end,
+  })
   for _, repo in ipairs(self.repos) do
     use(repo)
   end
@@ -66,6 +71,7 @@ function Packer:init_ensure_plugins()
       assert("make compile path dir faield")
     end)
     self:load_packer()
+    -- packer.install()
     packer.sync()
     return "installing"
   end
