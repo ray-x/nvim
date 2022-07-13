@@ -214,19 +214,6 @@ tools["kevinhwang91/nvim-bqf"] = {
   config = conf.bqf,
 }
 
-tools["rcarriga/vim-ultest"] = {
-  requires = { "vim-test/vim-test", setup = conf.vim_test, opt = true },
-  cmd = { "Ultest", "UltestNearest" },
-  run = function()
-    vim.cmd([[packadd vim-ultest]])
-    vim.cmd([[UpdateRemotePlugins]])
-  end,
-  config = function()
-    vim.cmd([[UpdateRemotePlugins]])
-  end,
-  opt = true,
-}
-
 -- lua require'telescope'.extensions.project.project{ display_type = 'full' }
 tools["ahmedkhalf/project.nvim"] = {
   opt = true,

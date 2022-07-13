@@ -64,8 +64,8 @@ lang["simrat39/rust-tools.nvim"] = {
   config = function()
     require("rust-tools").setup({
       server = {
-        on_attach = function(_, _)
-          require("navigator.mappings").setup()
+        on_attach = function(c, b)
+          require("navigator.lspclient.mapping").setup({ client = c, bufnr = b })
         end,
       },
     })
