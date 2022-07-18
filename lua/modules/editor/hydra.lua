@@ -1,20 +1,32 @@
 local Hydra = require("hydra")
 local loader = require("packer").loader
 
-local gitrepo = vim.fn.isdirectory(".git/index")
+function hydra_git()
+  local function diffmaster()
+    local master = vim.fn.systemlist("git rev-parse --verify master")
+    if not master[1]:find("^fatal") then
+      return vim.cmd("DiffviewOpen master")
+    end
 
-if gitrepo then
+    local main = vim.fn.systemlist("git rev-parse --verify main")
+    if not master[1]:find("^fatal") then
+      return vim.cmd("DiffviewOpen main")
+    end
+    master = vim.fn.systemlist("git rev-parse --verify develop")
+    if not master[1]:find("^fatal") then
+      return vim.cmd("DiffviewOpen develop")
+    end
+  end
   loader("keymap-layer.nvim vgit.nvim gitsigns.nvim")
   local hint = [[
- _d_ diftree  _s_ stagebuf      _x_ show del   _b_ gutterView
- _K_ proj diff _u_ unstage hunk _p_ view hunk  _B_ blameFull
- _D_ buf diff  _g_ diff staged  _P_ projStaged _f_ proj hunkQF
- _U_ unstagebuf _S_ stage buf   _G_ stage diff _/_ show base
+ _d_ diffview _s_ stagehunk    _M_ difmast    _H_ filehist
+ _f_ hunkqf   _u_ unstage hunk _p_ view hunk  _B_ blameFull
+ _D_ bufdiff  _g_ diff staged  _m_ merge      _x_ show del
+ _S_ stagebuf _l_ log          _c_ conflict   _/_ show base
  ^ ^  _r_ reset buf     _<Enter>_ Neogit      _q_ exit
 ]]
 
   local gitsigns = require("gitsigns")
-  local vgit = require("vgit")
   local function gitsigns_visual_op(op)
     return function()
       return gitsigns[op]({ vim.fn.line("."), vim.fn.line("v") })
@@ -45,35 +57,40 @@ if gitrepo then
     body = "<Space>g",
     heads = {
       { "d", ":DiffviewOpen<CR>", { silent = true, exit = true } },
-      { "K", vgit.project_diff_preview, { exit = true } },
-      -- { "s", ":Gitsigns stage_hunk<CR>", { silent = true } },
-      { "s", gitsigns.stage_buffer },
+      { "M", diffmaster, { silent = true, exit = true } },
+      { "H", ":DiffviewFileHistory<CR>", { silent = true, exit = true } },
+      { "s", gitsigns.stage_hunk, { silent = true } },
       { "u", gitsigns.undo_stage_hunk },
       { "r", gitsigns.reset_buffer },
       { "S", gitsigns.stage_buffer },
       { "p", gitsigns.preview_hunk },
       { "x", gitsigns.toggle_deleted, { nowait = true } },
+      { "D", gitsigns.diffthis },
       -- { "b", gitsigns.blame_line },
-      { "b", vgit.buffer_gutter_blame_preview, { exit = true } },
-      { "D", vgit.buffer_diff_preview, { exit = true } },
-      { "g", vgit.buffer_diff_staged_preview, { exit = true } },
-      { "P", vgit.project_staged_hunks_preview },
-      { "f", vgit.project_hunks_qf },
-      { "U", vgit.buffer_unstage },
-      { "G", vgit.buffer_diff_staged_preview },
+      {
+        "f",
+        function()
+          gitsigns.setqflist("all")
+        end,
+      },
+      { "g", gitsigns.setqflist },
       {
         "B",
         function()
           gitsigns.blame_line({ full = true })
         end,
       },
+      -- fugitive
+      -- { "l", "Git log --oneline --decorate --graph --all<CR>" },
+      { "l", "Flogsplit<CR>" },
+      { "m", ":Git mergetool<CR>" },
+      { "c", ":GitConflictListQf<CR>" },
       { "/", gitsigns.show, { exit = true } }, -- show the base of the file
       { "<Enter>", "<cmd>Neogit<CR>", { exit = true } },
       { "q", nil, { exit = true, nowait = true } },
     },
   })
 end
-
 local hint_telescope = [[
  _g_ gitfiles   _r_ registers _j_ jumps   _b_ buffers
  _y_ neoclip    _z_ Z        _p_ project _w_ grep
@@ -119,3 +136,7 @@ Hydra({
     { "q", nil, { exit = true, nowait = true } },
   },
 })
+
+return {
+  hydra_git = hydra_git,
+}

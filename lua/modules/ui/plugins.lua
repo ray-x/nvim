@@ -67,7 +67,14 @@ ui["lukas-reineke/virt-column.nvim"] = {
 
 ui["dstein64/nvim-scrollview"] = { event = { "CursorMoved", "CursorMovedI" }, config = conf.scrollview }
 
-ui[plugin_folder() .. "aurora"] = { opt = true, config = conf.aurora }
+ui[plugin_folder() .. "aurora"] = {
+  opt = true,
+  setup = function()
+    vim.g.aurora_italic = 1
+    vim.g.aurora_bold = 1
+  end,
+  config = conf.aurora,
+}
 ui["folke/tokyonight.nvim"] = {
   opt = true,
   setup = conf.tokyonight,

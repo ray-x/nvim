@@ -80,7 +80,7 @@ function config.diffview()
   require("diffview").setup({
     diff_binaries = false, -- Show diffs for binaries
     use_icons = true, -- Requires nvim-web-devicons
-    enhanced_diff_hl = false, -- See ':h diffview-config-enhanced_diff_hl'
+    enhanced_diff_hl = true, -- See ':h diffview-config-enhanced_diff_hl'
     signs = { fold_closed = "", fold_open = "" },
     file_panel = {
       win_config = {
@@ -186,42 +186,6 @@ function config.project()
   })
   require("utils.telescope")
   require("telescope").load_extension("projects")
-end
-
-function config.vgit()
-  -- use this as a diff tool (faster than Diffview)
-  -- there are overlaps with gitgutter. following are nice features
-  require("vgit").setup({
-    keymaps = {
-      -- ["n <leader>ga"] = "actions", -- show all commands in telescope
-      -- ["n <leader>ba"] = "buffer_gutter_blame_preview", -- show all blames
-      -- ["n <leader>bp"] = "buffer_blame_preview", -- buffer diff
-      -- ["n <leader>bh"] = "buffer_history_preview", -- buffer commit history DiffviewFileHistory
-      -- ["n <leader>gp"] = "buffer_staged_diff_preview", -- diff for staged changes
-      -- ["n <leader>pd"] = "project_diff_preview", -- diffview is slow
-    },
-    settings = {
-      live_gutter = {
-        enabled = false,
-        edge_navigation = false, -- This allows users to navigate within a hunk
-      },
-      scene = {
-        diff_preference = "unified",
-      },
-      diff_preview = {
-        keymaps = {
-          buffer_stage = "S",
-          buffer_unstage = "U",
-          buffer_hunk_stage = "s",
-          buffer_hunk_unstage = "u",
-          toggle_view = "t",
-        },
-      },
-    },
-  })
-  require("packer").loader("telescope.nvim")
-  -- print('vgit')
-  -- require("vgit")._buf_attach()
 end
 
 function config.neogit()
@@ -535,8 +499,5 @@ function config.git_conflict()
   require("git-conflict").setup()
 end
 
-function config.igit()
-  require("igit").setup()
-end
 
 return config

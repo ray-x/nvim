@@ -252,7 +252,6 @@ function config.navigator()
 
   vim.lsp.set_log_level("error") -- error debug info
   -- require"navigator".setup(nav_cfg)
-  -- PLoader('aerial.nvim')
   require("navigator").setup(nav_cfg)
 end
 

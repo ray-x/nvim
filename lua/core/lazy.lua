@@ -1,5 +1,7 @@
 local loader = require("packer").loader
 
+lprint("lazy")
+
 local fsize = vim.fn.getfsize(vim.fn.expand("%:p:f"))
 if fsize == nil or fsize < 0 then
   fsize = 1
@@ -43,19 +45,17 @@ local function loadscheme()
     themes = { "gruvbox-material", "starry.nvim", "catppuccin", "github-nvim-theme" }
   end
 
-  -- themes = { "aurora" }
+  themes = { "aurora" }
   -- themes = { "starry.nvim" }
   -- themes = { "catppuccin" }
   -- themes = { "github-nvim-theme" }
   local v = math.random(1, #themes)
   local loading_theme = themes[v]
-  lprint(loading_theme)
+  -- lprint(loading_theme, os.clock())
 
   require("packer").loader(loading_theme)
 end
 loadscheme()
-
-_G.PLoader = loader
 
 if vim.wo.diff then
   -- loader(plugins)
@@ -105,12 +105,6 @@ function Lazyload()
 
   vim.g.vimsyn_embed = "lPr"
 
-  local gitrepo = vim.fn.isdirectory(".git/index")
-  if gitrepo then
-    loader("gitsigns.nvim vgit.nvim") -- neogit vgit.nvim
-  end
-
-  loader("hydra.nvim")
   if load_lsp then
     loader("nvim-lspconfig")
     loader("lsp_signature.nvim")
@@ -124,7 +118,7 @@ function Lazyload()
   if load_ts_plugins then
     plugins = "nvim-treesitter-textobjects nvim-ts-autotag nvim-ts-context-commentstring nvim-treesitter-textsubjects"
     loader(plugins)
-    lprint(plugins .. " loaded")
+    -- lprint(plugins .. " loaded", os.clock())
     loader("neogen")
     loader("refactoring.nvim")
     loader("indent-blankline.nvim")
@@ -143,7 +137,7 @@ function Lazyload()
   if load_lsp and use_efm() then
     loader("efm.nvim")
   end
-  lprint("LoadLazyPlugin finished")
+  -- lprint("LoadLazyPlugin finished", os.clock())
 end
 
 local lazy_timer = 30
@@ -160,31 +154,19 @@ vim.defer_fn(function()
   vim.cmd([[doautocmd User LoadLazyPlugin]])
 end, lazy_timer)
 
--- vim.defer_fn(function()
---   -- in case highlight is incorrect
---   local cmd = "TSEnableAll highlight " .. vim.o.ft
---   vim.cmd(cmd)
---   vim.cmd([[doautocmd ColorScheme]])
---   vim.cmd(cmd)
--- end, lazy_timer + 20)
-
--- vim.cmd([[hi LineNr guifg=#505068]])
-
 vim.cmd([[autocmd User LoadLazyPlugin lua Lazyload()]])
 
 vim.defer_fn(function()
-  lprint("ui start")
+  loader("hydra.nvim")
   loader("windline.nvim")
   require("modules.ui.eviline")
   require("wlfloatline").setup()
   require("vscripts.tools")
   vim.cmd("command! Gram lua require'modules.tools.config'.grammcheck()")
   vim.cmd("command! Spell call spelunker#check()")
-  lprint("ui loaded")
-end, lazy_timer + 60)
+end, lazy_timer + 30)
 --
 vim.defer_fn(function()
-  lprint("telescope family")
   loader("telescope.nvim")
   -- load from
   -- loader("telescope-zoxide project.nvim nvim-neoclip.lua")
@@ -192,11 +174,18 @@ vim.defer_fn(function()
   loader("nvim-notify")
   vim.notify = require("notify")
   require("vscripts.cursorhold")
-  lprint("all done")
+
+  local gitrepo = vim.fn.isdirectory(".git/index")
+  if gitrepo then
+    loader("gitsigns.nvim") -- neogit
+    loader("git-conflict.nvim")
+    require("modules.editor.hydra").hydra_git()
+  end
+  -- lprint("all done", os.clock())
   if vim.fn.executable(vim.g.python3_host_prog) == 0 then
     print("file not find, please update path setup", vim.g.python3_host_prog)
   end
-end, lazy_timer + 100)
+end, lazy_timer + 80)
 
 if plugin_folder() == [[~/github/ray-x/]] then
   -- it is my own box, setup fish

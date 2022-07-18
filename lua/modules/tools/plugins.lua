@@ -174,21 +174,19 @@ tools["tanvirtin/vgit.nvim"] = { -- gitsign has similar features
 }
 
 tools["akinsho/git-conflict.nvim"] = {
-  cmd = { "GitConflict" },
+  cmd = { "GitConflictListQf" },
   opt = true,
   config = conf.git_conflict,
+}
+
+tools['rbong/vim-flog'] = {
+  cmd = { 'Flog', 'Flogsplit' },
+  opt = true,
 }
 
 tools["tpope/vim-fugitive"] = {
   cmd = { "Gvsplit", "Git", "Gedit", "Gstatus", "Gdiffsplit", "Gvdiffsplit" },
   opt = true,
-}
-
-tools["ipod825/igit.nvim"] = {
-  requires = { "ipod825/libp.nvim" },
-  cmd = { "IGit" },
-  opt = true,
-  config = conf.igit,
 }
 
 tools["rmagatti/auto-session"] = { config = conf.session }

@@ -71,9 +71,12 @@ editor["tpope/vim-abolish"] = {
 editor["machakann/vim-sandwich"] = {
   opt = true,
   event = { "CursorMoved", "CursorMovedI" },
+  cmd = { "Sandwith" },
   setup = function()
     vim.g.sandwich_no_default_key_mappings = 1
-    vim.cmd[[
+  end,
+  config = function()
+    vim.cmd([[
       nmap ca <Plug>(sandwich-add)
 	    xmap ca <Plug>(sandwich-add)
 	    omap ca <Plug>(sandwich-add)
@@ -91,7 +94,26 @@ editor["machakann/vim-sandwich"] = {
 	    xmap is <Plug>(textobj-sandwich-query-i)
 	    omap as <Plug>(textobj-sandwich-query-a)
 	    xmap as <Plug>(textobj-sandwich-query-a)
-    ]]
+    ]])
+  end,
+}
+
+editor["kylechui/nvim-surround"] = {
+  opt = true,
+  event = { "CursorMoved", "CursorMovedI" },
+  config = function()
+    require("nvim-surround").setup({
+      -- Configuration here, or leave empty to use defaults
+      -- sournd  cs, ds, yss
+      keymaps = {
+        -- default
+        -- [insert] = "ys",
+        -- insert_line = "yss",
+        visual = "cr",
+        -- delete = "ds",
+        -- change = "cs",
+      },
+    })
   end,
 }
 
