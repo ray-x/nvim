@@ -1,20 +1,34 @@
 local Hydra = require("hydra")
 local loader = require("packer").loader
 
-function hydra_git()
+local function hydra_git()
   local function diffmaster()
-    local master = vim.fn.systemlist("git rev-parse --verify master")
+    local branch = "origin/master"
+    local master = vim.fn.systemlist("git rev-parse --verify develop")
     if not master[1]:find("^fatal") then
-      return vim.cmd("DiffviewOpen master")
+      branch = "origin/master"
+    else
+      master = vim.fn.systemlist("git rev-parse --verify master")
+      if not master[1]:find("^fatal") then
+        branch = "origin/master"
+      else
+        master = vim.fn.systemlist("git rev-parse --verify main")
+        if not master[1]:find("^fatal") then
+          branch = "origin/main"
+        end
+      end
     end
+    lprint(branch)
+    local current_branch = vim.fn.systemlist("git branch --show-current")[1]
+    -- git rev-list --boundary feature/FDEL-3386...origin/main | grep "^-"
+    local cmd = string.format([[git rev-list --boundary %s...%s | grep "^-"]], current_branch, branch)
+    local hash = vim.fn.systemlist(cmd)[1]
 
-    local main = vim.fn.systemlist("git rev-parse --verify main")
-    if not master[1]:find("^fatal") then
-      return vim.cmd("DiffviewOpen main")
-    end
-    master = vim.fn.systemlist("git rev-parse --verify develop")
-    if not master[1]:find("^fatal") then
-      return vim.cmd("DiffviewOpen develop")
+    lprint(cmd, hash)
+    if hash then
+      vim.cmd("DiffviewOpen " .. hash)
+    else
+      vim.cmd("DiffviewOpen " .. branch)
     end
   end
   loader("keymap-layer.nvim vgit.nvim gitsigns.nvim")
