@@ -295,7 +295,6 @@ function config.cat()
     local opt = { "frappe", "macchiato", "mocha" }
     local v = math.random(1, #opt)
     vim.g.catppuccin_flavour = opt[v]
-
   end
 
   lprint(vim.g.catppuccin_flavour)
@@ -324,7 +323,7 @@ function config.gh_theme()
     local v = math.random(1, #opt)
     v = opt[v]
 
-    lprint("gh theme ",v)
+    lprint("gh theme ", v)
     require("github-theme").setup({
       theme_style = v,
       overrides = function(c)
@@ -340,7 +339,7 @@ function config.gh_theme()
     local opt = { "dark_colorblind", "dark_default", "dark", "dimmed" }
     local v = math.random(1, #opt)
     v = opt[v]
-    lprint("gh theme ",v)
+    lprint("gh theme ", v)
     require("github-theme").setup({
       theme_style = v,
 
@@ -439,6 +438,7 @@ function config.blankline()
     space_char_blankline = " ",
     use_treesitter = true,
     show_current_context = true,
+    show_current_context_start = true,
     char_highlight_list = {
       "IndentBlanklineIndent1",
       "IndentBlanklineIndent2",
