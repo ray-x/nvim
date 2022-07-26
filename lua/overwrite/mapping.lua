@@ -101,6 +101,33 @@ local keys = {
   ["v|<Leader>rt"] = map_cmd("<esc><cmd>lua require('refactoring').refactor()<cr>"),
 
   ["v|<Leader>gs"] = map_cmd("<cmd>lua require('utils.git').qf_add()<cr>"),
+
+  ["n|<F10>"] = {
+    cmd = function()
+      if vim.o.conceallevel > 0 then
+        vim.o.conceallevel = 0
+      else
+        vim.o.conceallevel = 2
+      end
+    end,
+    options = { noremap = true, silent = true, desc = "toggle concel" },
+  },
+  ["n|<F11>"] = {
+    cmd = function()
+      if vim.o.concealcursor == "n" then
+        vim.o.concealcursor = ""
+      else
+        vim.o.concealcursor = "n"
+      end
+    end,
+    options = { noremap = true, silent = true, desc = "toggle concelcursor" },
+  },
+
+-- -- Add word to search then replace
+-- vim.keymap.set('n', '<Leader>j', [[<cmd>let @/='\<'.expand('<cword>').'\>'<cr>"_ciw]])
+--
+-- -- Add selection to search then replace
+-- vim.keymap.set('x', '<Leader>j', [[y<cmd>let @/=substitute(escape(@", '/'), '\n', '\\n', 'g')<cr>"_cgn]])
 }
 
 --
