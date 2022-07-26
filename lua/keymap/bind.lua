@@ -90,21 +90,26 @@ function pbind.nvim_load_mapping(mapping)
     for i = 1, #mode do
       if type(value) == "function" then
         if mapping.buffer then
-          opts.buffer = {buffer = mapping.buffer}
+          opts.buffer = { buffer = mapping.buffer }
         end
-        vim.keymap.set(mode:sub(i,i), keymap, value, opts)
+        vim.keymap.set(mode:sub(i, i), keymap, value, opts)
       end
       if type(value) == "table" then
         local rhs = value.cmd
-        local options = value.options
+        local options = value.options or {}
         -- vim.api.nvim_set_keymap(mode:sub(i, i), keymap, rhs, options)
 
-        vim.keymap.set(mode:sub(i,i), keymap, rhs, options)
-        rhs = vim.trim(rhs, {}, 0)
-        table.insert(pbind.all_keys, mode:sub(i, i) .. " | " .. keymap .. " : " .. rhs)
+        vim.keymap.set(mode:sub(i, i), keymap, rhs, options)
+        if type(rhs) == "string" then
+          rhs = vim.trim(rhs, {}, 0)
+          table.insert(pbind.all_keys, mode:sub(i, i) .. " | " .. keymap .. " : " .. rhs)
+        else
+          table.insert(pbind.all_keys, mode:sub(i, i) .. " | " .. keymap .. " : " .. (options.desc or ""))
+
+        end
       elseif type(value) == "string" then
         -- vim.api.nvim_set_keymap(mode:sub(i, i), keymap, value, {})
-        vim.keymap.set(mode:sub(i,i), keymap, value)
+        vim.keymap.set(mode:sub(i, i), keymap, value)
         value = vim.trim(value, {}, 0)
         table.insert(pbind.all_keys, mode:sub(i, i) .. " | " .. keymap .. " : " .. value)
       end
