@@ -18,16 +18,17 @@ local function hydra_git()
         end
       end
     end
-    lprint(branch)
     local current_branch = vim.fn.systemlist("git branch --show-current")[1]
     -- git rev-list --boundary feature/FDEL-3386...origin/main | grep "^-"
-    local cmd = string.format([[git rev-list --boundary %s...%s | grep "^-"]], current_branch, branch)
+    -- local cmd = string.format([[git rev-list --boundary %s...%s | grep "^-"]], current_branch, branch)
+    local cmd = string.format([[git merge-base %s %s ]], branch, current_branch)
     local hash = vim.fn.systemlist(cmd)[1]
 
-    lprint(cmd, hash)
     if hash then
+      vim.notify("DiffviewOpen " .. hash)
       vim.cmd("DiffviewOpen " .. hash)
     else
+      vim.notify("DiffviewOpen " .. branch)
       vim.cmd("DiffviewOpen " .. branch)
     end
   end
@@ -131,7 +132,7 @@ Hydra({
     { "r", ":Telescope registers<CR>", { exit = true } },
     { "b", ":Telescope buffers<CR>", { exit = true } },
     { "j", ":lua require'utils.telescope'.jump()<CR>", { exit = true } },
-    { "l", telescope.extensions.neoclip.default },
+    { "y", telescope.extensions.neoclip.default },
     { "z", telescope.extensions.zoxide.list },
     { "p", telescope.extensions.projects.projects },
     { "f", ":lua require'utils.telescope'.folder_search()<CR>", { exit = true } },
@@ -142,10 +143,11 @@ Hydra({
     { "o", ":Telescope oldfiles<CR>", { exit = true } },
     { "k", ":Telescope keymaps<CR>", { exit = true } },
     { "d", ":Clap dumb_jump<CR>", { exit = true } },
-    { "B", ":Clap blines<CR>", { exit = true } },
+    { "l", ":Clap blines<CR>", { exit = true } },
     { "s", ":Clap colors<CR>", { exit = true } },
     { "C", ":Clap<CR>", { exit = true } },
     { "o", ":Telescope oldfiles<CR>", { exit = true } },
+    { "y", ":Telescope neoclip<CR>", { exit = true } },
     { "<Enter>", "<cmd>Telescope<CR>", { exit = true } },
     { "q", nil, { exit = true, nowait = true } },
   },

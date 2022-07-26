@@ -71,6 +71,9 @@ return {
       table.insert(sources, null_ls.builtins.diagnostics.hadolint)
     end
 
+    if exist('codespell') then
+      table.insert(sources,  null_ls.builtins.diagnostics.codespell)
+    end
     if exist("eslint_d") then
       table.insert(sources, null_ls.builtins.diagnostics.eslint_d)
     end
