@@ -305,8 +305,8 @@ end
 function config.aurora()
   lprint("aurora")
   vim.cmd("colorscheme aurora")
-  vim.cmd("hi Normal guibg=NONE ctermbg=NONE") -- remove background
-  vim.cmd("hi EndOfBuffer guibg=NONE ctermbg=NONE") -- remove background
+  -- vim.cmd("hi Normal guibg=NONE ctermbg=NONE") -- remove background
+  -- vim.cmd("hi EndOfBuffer guibg=NONE ctermbg=NONE") -- remove background
 end
 
 function config.gh_theme()
