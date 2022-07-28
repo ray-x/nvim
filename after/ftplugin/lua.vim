@@ -1,5 +1,6 @@
 setlocal autoindent
-setlocal conceallevel=0
+setlocal conceallevel=1
+setlocal concealcursor=""
 setlocal expandtab
 setlocal foldmethod=indent
 setlocal formatoptions=tcq2l
