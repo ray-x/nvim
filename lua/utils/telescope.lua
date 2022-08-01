@@ -38,21 +38,23 @@ M.find_dots = function(opts)
   -- we ensure the maker uses the cwd options when being created.
   opts.entry_maker = opts.entry_maker or make_entry.gen_from_file(opts)
 
-  pickers.new(opts, {
-    prompt_title = "~~ Dotfiles ~~",
-    finder = finders.new_oneshot_job({
-      "git",
-      "--git-dir=" .. require("core.global").home .. "/.dots/",
-      "--work-tree=" .. require("core.global").home,
-      "ls-tree",
-      "--full-tree",
-      "-r",
-      "--name-only",
-      "HEAD",
-    }, opts),
-    previewer = previewers.cat.new(opts),
-    sorter = conf.file_sorter(opts),
-  }):find()
+  pickers
+    .new(opts, {
+      prompt_title = "~~ Dotfiles ~~",
+      finder = finders.new_oneshot_job({
+        "git",
+        "--git-dir=" .. require("core.global").home .. "/.dots/",
+        "--work-tree=" .. require("core.global").home,
+        "ls-tree",
+        "--full-tree",
+        "-r",
+        "--name-only",
+        "HEAD",
+      }, opts),
+      previewer = previewers.cat.new(opts),
+      sorter = conf.file_sorter(opts),
+    })
+    :find()
 end
 
 -- Looks for git files, but falls back to normal files
@@ -77,12 +79,14 @@ M.git_files = function(opts)
   -- we ensure the maker uses the cwd options when being created.
   opts.entry_maker = opts.entry_maker or make_entry.gen_from_file(opts)
 
-  pickers.new(opts, {
-    prompt_title = "Git File",
-    finder = finders.new_oneshot_job({ "git", "ls-files", "--recurse-submodules" }, opts),
-    previewer = previewers.cat.new(opts),
-    sorter = conf.file_sorter(opts),
-  }):find()
+  pickers
+    .new(opts, {
+      prompt_title = "Git File",
+      finder = finders.new_oneshot_job({ "git", "ls-files", "--recurse-submodules" }, opts),
+      previewer = previewers.cat.new(opts),
+      sorter = conf.file_sorter(opts),
+    })
+    :find()
 end
 
 -- nnoremap <Leader>o <Cmd>lua require'telescope_config'.files{}<CR>
@@ -194,10 +198,12 @@ M.theme = function(opts)
 end
 
 function M.files()
-  pickers.new(M.theme(), {
-    finder = finders.new_oneshot_job({ "fd", "-t", "f" }),
-    sorter = sorters.get_fzy_sorter(),
-  }):find()
+  pickers
+    .new(M.theme(), {
+      finder = finders.new_oneshot_job({ "fd", "-t", "f" }),
+      sorter = sorters.get_fzy_sorter(),
+    })
+    :find()
 end
 
 function M.buffers()
@@ -209,10 +215,12 @@ function M.buffers()
   local max_bufnr = math.max(unpack(buffers))
   opts.bufnr_width = #tostring(max_bufnr)
 
-  pickers.new(M.theme(), {
-    finder = finders.new_table({ results = buffers, entry_maker = make_entry.gen_from_buffer(opts) }),
-    sorter = sorters.get_fzy_sorter(),
-  }):find()
+  pickers
+    .new(M.theme(), {
+      finder = finders.new_table({ results = buffers, entry_maker = make_entry.gen_from_buffer(opts) }),
+      sorter = sorters.get_fzy_sorter(),
+    })
+    :find()
 end
 
 function M.command_history()
@@ -239,12 +247,14 @@ function M.load_dotfiles()
 
     builtin.dotfiles = function(opts)
       opts = themes.get_dropdown({})
-      pickers.new(opts, {
-        prompt = "dotfiles",
-        finder = finders.new_table({ results = results }),
-        previewer = previewers.cat.new(opts),
-        sorter = sorters.get_generic_fuzzy_sorter(),
-      }):find()
+      pickers
+        .new(opts, {
+          prompt = "dotfiles",
+          finder = finders.new_table({ results = results }),
+          previewer = previewers.cat.new(opts),
+          sorter = sorters.get_generic_fuzzy_sorter(),
+        })
+        :find()
     end
   end
   builtin.dotfiles()
@@ -319,24 +329,22 @@ local previewers = require("telescope.previewers")
 local Job = require("plenary.job")
 local new_maker = function(filepath, bufnr, opts)
   filepath = vim.fn.expand(filepath)
-  Job
-    :new({
-      command = "file",
-      args = { "--mime-type", "-b", filepath },
-      on_exit = function(j)
-        local mime_class = vim.split(j:result()[1], "/")[1]
-        local mime_type = j:result()[1]
-        if mime_class == "text" or (mime_class == "application" and mime_type ~= "application/x-pie-executable") then
-          previewers.buffer_previewer_maker(filepath, bufnr, opts)
-        else
-          -- maybe we want to write something to the buffer here
-          vim.schedule(function()
-            vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, { "BINARY" })
-          end)
-        end
-      end,
-    })
-    :sync()
+  Job:new({
+    command = "file",
+    args = { "--mime-type", "-b", filepath },
+    on_exit = function(j)
+      local mime_class = vim.split(j:result()[1], "/")[1]
+      local mime_type = j:result()[1]
+      if mime_class == "text" or (mime_class == "application" and mime_type ~= "application/x-pie-executable") then
+        previewers.buffer_previewer_maker(filepath, bufnr, opts)
+      else
+        -- maybe we want to write something to the buffer here
+        vim.schedule(function()
+          vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, { "BINARY" })
+        end)
+      end
+    end,
+  }):sync()
 end
 M.setup = function(_)
   telescope.setup({
@@ -436,7 +444,7 @@ M.setup = function(_)
   -- telescope.load_extension("notify")
 
   vim.defer_fn(function() -- defer loading
-    loader("telescope-fzf-native.nvim telescope-live-grep-raw.nvim telescope-file-browser.nvim")
+    loader("telescope-fzf-native.nvim telescope-live-grep-args.nvim telescope-file-browser.nvim")
     loader("sqlite.lua")
     loader("telescope-frecency.nvim project.nvim telescope-zoxide nvim-neoclip.lua")
 
@@ -485,16 +493,16 @@ M.grep_string_cursor = function()
 end
 
 M.grep_string_visual_raw = function()
-  require("telescope").extensions.live_grep_raw.live_grep_raw({
-    default_text = visual_selection(),
+  require("telescope").extensions.live_grep_args.live_grep_args({
+    default_text = "'" .. visual_selection() .. "'",
     additional_args = "--hidden --type " .. vim.o.ft,
   })
 end
 
 M.grep_string_cursor_raw = function()
   local w = vim.fn.expand("<cword>")
-  require("telescope").extensions.live_grep_raw.live_grep_raw({
-    default_text = w,
+  require("telescope").extensions.live_grep_args.live_grep_args({
+    default_text = "'" .. w .. "'",
   })
 end
 

@@ -366,13 +366,15 @@ function config.starry()
   vim.g.starry_italic_string = false
   vim.g.starry_contrast = true
   vim.g.starry_borders = true
-  vim.starry_deep_black = true --"OLED deep black
-  vim.g.starry_disable_background = false
+  vim.g.starry_deep_black = true --"OLED deep black
   vim.g.starry_daylight_switch = true
   vim.g.starry_set_hl = true
-  -- vim.g.starry_style = "earlysummer" -- 'moonlight' emerald middlenight_blue earlysummer
-  -- vim.g.starry_style_fix = true
+  vim.g.starry_style = "earlysummer" -- 'moonlight' emerald middlenight_blue earlysummer
+  vim.g.starry_style = "mariana" -- 'moonlight' emerald middlenight_blue earlysummer
+  vim.g.starry_style_fix = true
   -- config.default()
+
+  vim.g.starry_disable_background = true
 end
 
 function config.tokyonight()

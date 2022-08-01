@@ -46,11 +46,13 @@ local plug_map = {
   ["in|<d-p>"] = map_cu("Telescope find_files"):with_noremap():with_silent(),
   ["in|<M-p>"] = map_cu("Telescope find_files"):with_noremap():with_silent(),
   -- ["in|<d-T>"] = map_cu("Telescope"):with_noremap():with_silent(),
-  ["in|<M-f>"] = map_cr([[<cmd>lua lua require"utils.telescope".grep_string_cursor()]]):with_noremap():with_silent(),
-  ["in|<d-f>"] = map_cr([[<cmd>lua require"utils.telescope".grep_string_cursor()]]):with_noremap():with_silent(),
-  ["v|<d-f>"] = map_cr([[<cmd>lua require"utils.telescope".grep_string_viusal()]]):with_noremap():with_silent(),
-  ["in|<d-F>"] = map_cr([[<cmd>lua require"utils.telescope".grep_string_cursor_raw()]]):with_noremap():with_silent(),
-  ["v|<d-F>"] = map_cr([[<cmd>lua require"utils.telescope".grep_string_visual_raw()]]):with_expr():with_silent(),
+  ["in|<M-f>"] = map_cr([[<cmd>lua lua require"utils.telescope".grep_string_cursor_raw()]])
+    :with_noremap()
+    :with_silent(),
+  ["in|<d-F>"] = map_cr([[<cmd>lua require"utils.telescope".grep_string_cursor()]]):with_noremap():with_silent(),
+  ["v|<d-F>"] = map_cr([[<cmd>lua require"utils.telescope".grep_string_viusal()]]):with_noremap():with_silent(),
+  ["in|<d-f>"] = map_cr([[<cmd>lua require"utils.telescope".grep_string_cursor_raw()]]):with_noremap():with_silent(),
+  ["v|<d-f>"] = map_cr([[<cmd>lua require"utils.telescope".grep_string_visual_raw()]]):with_expr():with_silent(),
   ["n|w"] = map_cmd('v:lua.word_motion_move("w")'):with_silent():with_expr(),
 
   ["n|<Leader>do"] = map_cu("DiffviewOpen"):with_noremap():with_silent(),

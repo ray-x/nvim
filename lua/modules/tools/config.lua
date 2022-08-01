@@ -418,9 +418,15 @@ function config.floaterm()
     local ver
     if #args > 0 then
       ver = args[1]
+    else
+      ver = ""
     end
-    local gd = Terminal:new({ cmd = "gd" .. " " .. ver, hidden = true })
-    gd:toggle(...)
+    local cmd = "gd" .. " " .. ver
+    if ver == "a" then
+      cmd = "git diff"
+    end
+    local gd = Terminal:new({ cmd = cmd, hidden = true })
+    gd:toggle()
     vim.cmd("normal! a")
   end
   vim.cmd("command! LG lua _lazygit_toggle()")
@@ -499,5 +505,16 @@ function config.git_conflict()
   require("git-conflict").setup()
 end
 
+vim.api.nvim_create_user_command("LspClients", function(opts)
 
+  if opts.fargs ~= nil then
+    for _, client in pairs(vim.lsp.get_active_clients()) do
+      if client.name == opts.fargs[1] then
+        lprint(client)
+      end
+    end
+  else
+    lprint(vim.lsp.get_active_clients())
+  end
+end, { nargs = "*" })
 return config

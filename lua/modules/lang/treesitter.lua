@@ -121,26 +121,26 @@ local treesitter_ref = function()
   require("nvim-treesitter.configs").setup({
     refactor = {
       highlight_definitions = { enable = enable },
-      highlight_current_scope = { enable = enable },
+      highlight_current_scope = { enable = false }, -- prefer black-line
       smart_rename = {
-        enable = false,
-        keymaps = {
-          smart_rename = "<Leader>gr", -- mapping to rename reference under cursor
-        },
+        enable = false, -- prefer lsp rename
+        -- keymaps = {
+        --   smart_rename = "<Leader>gr", -- mapping to rename reference under cursor
+        -- },
       },
       navigation = {
         enable = false, -- use navigator
-        keymaps = {
-          goto_definition = "gnd", -- mapping to go to definition of symbol under cursor
-          list_definitions = "gnD", -- mapping to list all definitions in current file
-          list_definitions_toc = "gO", -- gT navigator
-          -- goto_next_usage = "<c->>",
-          -- goto_previous_usage = "<c-<>",
-        },
+        -- keymaps = {
+        --   goto_definition = "gnd", -- mapping to go to definition of symbol under cursor
+        --   list_definitions = "gnD", -- mapping to list all definitions in current file
+        --   list_definitions_toc = "gO", -- gT navigator
+        --   -- goto_next_usage = "<c->>",
+        --   -- goto_previous_usage = "<c-<>",
+        -- },
       },
     },
     matchup = {
-      enable = false, -- mandatory, false will disable the whole extension
+      enable = true, -- mandatory, false will disable the whole extension
       disable = { "ruby" }, -- optional, list of language that will be disabled
     },
     autopairs = { enable = true },
@@ -178,7 +178,7 @@ function textsubjects()
   require("nvim-treesitter.configs").setup({
     textsubjects = {
       enable = true,
-      prev_selection = ',',
+      prev_selection = ",",
       keymaps = {
         [">"] = "textsubjects-smart",
         [";"] = "textsubjects-container-outer",
@@ -187,7 +187,6 @@ function textsubjects()
     },
   })
 end
-
 
 local treesitter_context = function(width)
   if not packer_plugins["nvim-treesitter"] or packer_plugins["nvim-treesitter"].loaded == false then
@@ -231,5 +230,5 @@ return {
   treesitter_obj = treesitter_obj,
   treesitter_ref = treesitter_ref,
   textsubjects = textsubjects,
-  context = treesitter_context
+  context = treesitter_context,
 }

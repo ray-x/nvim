@@ -1,6 +1,5 @@
 local ui = {}
 local conf = require("modules.ui.config")
-
 --
 local winwidth = function()
   return vim.api.nvim_call_function("winwidth", { 0 })
@@ -104,6 +103,18 @@ ui[plugin_folder() .. "starry.nvim"] = {
   setup = conf.starry,
   config = function()
     require("starry").set()
+    if vim.g.starry_disable_background ~= true then
+      return
+    end
+    if vim.g.starry_style == "limestone" then
+      vim.api.nvim_set_hl(0, 'Normal', {bg='#E0E6D8'})
+      return
+    end
+
+    if vim.g.starry_style == "ukraine" then
+      vim.api.nvim_set_hl(0, 'Normal', {bg='#1056B8'})
+      return
+    end
   end,
 }
 

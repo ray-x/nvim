@@ -45,13 +45,21 @@ local function loadscheme()
     themes = { "gruvbox-material", "starry.nvim", "catppuccin", "github-nvim-theme" }
   end
 
-  themes = { "aurora" }
-  -- themes = { "starry.nvim" }
+  -- themes = { "aurora" }
+  themes = { "starry.nvim" }
   -- themes = { "catppuccin" }
   -- themes = { "github-nvim-theme" }
   local v = math.random(1, #themes)
+
   local loading_theme = themes[v]
   -- lprint(loading_theme, os.clock())
+  -- if daylight() == "light" then
+    -- if loading_theme == "github-nvim-theme" or loading_theme == "catppuccin" then
+      -- if vim.fn.executable("kitty") == 1 then
+      --   vim.cmd([[silent exec "!kitty +kitten themes --reload-in=all Material"]])
+      -- end
+    -- end
+  -- end
 
   require("packer").loader(loading_theme)
 end

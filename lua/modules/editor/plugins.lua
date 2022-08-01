@@ -40,19 +40,19 @@ editor["tpope/vim-abolish"] = {
 
 -- I like this plugin, but 1) offscreen context is slow
 -- 2) it not friendly to lazyload and treesitter startup
--- editor["andymass/vim-matchup"] = {
---   opt = true,
---   event = {"CursorMoved", "CursorMovedI"},
---   cmd = {'MatchupWhereAmI?'},
---   config = function()
---     vim.g.matchup_enabled = 1
---     vim.g.matchup_surround_enabled = 1
---     -- vim.g.matchup_transmute_enabled = 1
---     vim.g.matchup_matchparen_deferred = 1
---     vim.g.matchup_matchparen_offscreen = {method = 'popup'}
---     vim.cmd([[nnoremap <c-s-k> :<c-u>MatchupWhereAmI?<cr>]])
---   end
--- }
+editor["andymass/vim-matchup"] = {
+  opt = true,
+  event = { "CursorMoved", "CursorMovedI" },
+  cmd = { "MatchupWhereAmI?" },
+  config = function()
+    vim.g.matchup_enabled = 1
+    vim.g.matchup_surround_enabled = 1
+    -- vim.g.matchup_transmute_enabled = 1
+    vim.g.matchup_matchparen_deferred = 1
+    vim.g.matchup_matchparen_offscreen = { method = "popup" }
+    vim.cmd([[nnoremap <c-s-k> :<c-u>MatchupWhereAmI?<cr>]])
+  end,
+}
 
 -- Feel more comfortable with hop
 -- editor["ggandor/lightspeed.nvim"] = {
@@ -288,11 +288,11 @@ editor["chaoren/vim-wordmotion"] = {
   -- keys = {'w','W', 'gE', 'aW'}
 }
 
-editor["folke/zen-mode.nvim"] = {
+editor["Pocco81/true-zen.nvim"] = {
   opt = true,
-  cmd = { "ZenMode" },
+  cmd = {"TZAtaraxis", "TZMinimalist", "TZNarrow", "TZFocus"},
   config = function()
-    require("zen-mode").setup({})
+    require("true-zen").setup({})
   end,
 }
 
