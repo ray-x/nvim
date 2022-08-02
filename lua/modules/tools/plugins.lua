@@ -216,13 +216,11 @@ tools["kevinhwang91/nvim-bqf"] = {
 tools["ahmedkhalf/project.nvim"] = {
   opt = true,
   after = { "telescope.nvim" },
-  keys = { "<M>", "<Leader>" },
   config = conf.project,
 }
 
 tools["jvgrootveld/telescope-zoxide"] = {
   opt = true,
-  keys = { "<M>", "<Leader>" },
   after = { "telescope.nvim" },
   config = function()
     require("utils.telescope")
@@ -232,7 +230,6 @@ tools["jvgrootveld/telescope-zoxide"] = {
 
 tools["AckslD/nvim-neoclip.lua"] = {
   opt = true,
-  keys = { "<M>", "<Leader>" },
   after = { "telescope.nvim" },
   requires = { "tami5/sqlite.lua", module = "sqlite" },
   config = function()
@@ -243,8 +240,7 @@ tools["AckslD/nvim-neoclip.lua"] = {
 }
 
 tools["nvim-telescope/telescope-frecency.nvim"] = {
-  keys = { "<M>", "<Leader>" },
-  -- after = { "telescope.nvim" },
+  after = { "telescope.nvim" },
   -- cmd = {'Telescope'},
   requires = { "tami5/sqlite.lua", module = "sqlite", opt = true },
   opt = true,

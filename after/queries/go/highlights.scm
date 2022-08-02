@@ -1,5 +1,5 @@
 ;; Keywords
-(("return"   @keyword) (#set! conceal "﬋ "))
+(("return"   @keyword) (#set! conceal ""))
 (("var"      @keyword) (#set! conceal  "כֿ"))
 ;; (("if"       @keyword) (#set! conceal "? "))
 ;; (("else"     @keyword) (#set! conceal "! "))
@@ -8,7 +8,6 @@
 (("switch"   @keyword) (#set! conceal   "ﳟ"))
 (("default"  @keyword) (#set! conceal  ""))
 (("break"    @keyword) (#set! conceal  ""))
-;; (("for"      @keyword) (#set! conceal  " "))
 (("case"     @keyword) (#set! conceal  ""))
 (("import"   @keyword) (#set! conceal  ""))
 (("package"  @keyword) (#set! conceal  ""))

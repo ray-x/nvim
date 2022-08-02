@@ -1,5 +1,5 @@
 ;; Keywords
-(("return"   @keyword) (#set! conceal "﬋"))
+(("return"   @keyword) (#set! conceal ""))
 
 (("local"    @keyword) (#set! conceal "~"))
 
