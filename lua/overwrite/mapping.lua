@@ -123,11 +123,11 @@ local keys = {
     options = { noremap = true, silent = true, desc = "toggle concelcursor" },
   },
 
--- -- Add word to search then replace
--- vim.keymap.set('n', '<Leader>j', [[<cmd>let @/='\<'.expand('<cword>').'\>'<cr>"_ciw]])
---
--- -- Add selection to search then replace
--- vim.keymap.set('x', '<Leader>j', [[y<cmd>let @/=substitute(escape(@", '/'), '\n', '\\n', 'g')<cr>"_cgn]])
+  -- -- Add word to search then replace
+  -- vim.keymap.set('n', '<Leader>j', [[<cmd>let @/='\<'.expand('<cword>').'\>'<cr>"_ciw]])
+  --
+  -- -- Add selection to search then replace
+  -- vim.keymap.set('x', '<Leader>j', [[y<cmd>let @/=substitute(escape(@", '/'), '\n', '\\n', 'g')<cr>"_cgn]])
 }
 
 --
@@ -212,14 +212,12 @@ _G.Line_ft = function(a)
     require("hop").hint_char1({
       direction = require("hop.hint").HintDirection.AFTER_CURSOR,
       current_line_only = true,
-      inclusive_jump = true,
     })
   end
   if a == "F" then
     require("hop").hint_char1({
       direction = require("hop.hint").HintDirection.BEFORE_CURSOR,
       current_line_only = true,
-      inclusive_jump = true,
     })
   end
 
@@ -227,12 +225,14 @@ _G.Line_ft = function(a)
     require("hop").hint_char1({
       direction = require("hop.hint").HintDirection.AFTER_CURSOR,
       current_line_only = true,
+      hint_offset = -1,
     })
   end
   if a == "T" then
     require("hop").hint_char1({
       direction = require("hop.hint").HintDirection.BEFORE_CURSOR,
       current_line_only = true,
+      hint_offset = 1,
     })
   end
 end
