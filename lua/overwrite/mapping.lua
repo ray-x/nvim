@@ -151,31 +151,31 @@ _G.run_or_test = function(debug)
     if not packer_plugins["nvim-luadev"].loaded then
       loader("nvim-luadev")
     end
-    return t("<Plug>(Luadev-Run)")
+    return "<Plug>(Luadev-Run)"
   end
   if ft == "lua" then
     local f = string.find(fn, "spec")
     if f == nil then
       -- let run lua test
-      return t("<cmd>luafile %<CR>")
+      return "<cmd>luafile %<CR>"
     end
-    return t("<Plug>PlenaryTestFile")
+    return "<Plug>PlenaryTestFile"
   end
   if ft == "go" then
     local f = string.find(fn, "test.go")
     if f == nil then
       -- let run lua test
       if debug then
-        return t("<cmd>GoDebug <CR>")
+        return "<cmd>GoDebug <CR>"
       else
-        return t("<cmd>GoRun <CR>")
+        return "<cmd>GoRun <CR>"
       end
     end
 
     if debug then
-      return t("<cmd>GoDebug -t<CR>")
+      return "<cmd>GoDebug -t<CR>"
     else
-      return t("<cmd>GoTestFunc -F <CR>")
+      return "<cmd>GoTestFunc -F <CR>"
     end
   end
 end
