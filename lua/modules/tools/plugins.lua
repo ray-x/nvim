@@ -174,7 +174,7 @@ tools["tanvirtin/vgit.nvim"] = { -- gitsign has similar features
 }
 
 tools["akinsho/git-conflict.nvim"] = {
-  cmd = { "GitConflictListQf" },
+  cmd = { "GitConflictListQf", "GitConflictChooseOurs", "GitConflictChooseTheirs", "GitConflictChooseBoth", "GitConflictNextConflict" },
   opt = true,
   config = conf.git_conflict,
 }
