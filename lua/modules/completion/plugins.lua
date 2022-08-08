@@ -60,9 +60,6 @@ if load_coq() then
     -- event = "InsertEnter",
     branch = "3p",
     config = function()
-      if not load_coq() then
-        return
-      end
       require("coq_3p")({ { src = "nvimlua", short_name = "", conf_only = true } })
     end,
   }
@@ -72,10 +69,6 @@ if load_coq() then
     event = "InsertEnter",
     branch = "artifacts",
   }
-else
-  completion["ms-jpq/coq_nvim"] = { opt = true }
-  completion["ms-jpq/coq.thirdparty"] = { opt = true }
-  completion["ms-jpq/coq.artifacts"] = { opt = true }
 end
 
 -- loading sequence LuaSnip -> nvim-cmp -> cmp_luasnip -> cmp-nvim-lua -> cmp-nvim-lsp ->cmp-buffer -> friendly-snippets

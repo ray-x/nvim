@@ -60,7 +60,6 @@ local plug_map = {
   ["n|<Leader>ng"] = map_cu("Neogit"):with_noremap():with_silent(),
 
   -- Plugin QuickRun
-  -- ["n|<Leader>r"] = map_cr("<cmd> lua require'internal.quickrun'.run_command()"):with_noremap():with_silent(),
   -- Plugin Vista
   ["n|<Leader>v"] = map_cu("TSymbols"):with_noremap():with_silent(),
   ["n|<F8>"] = map_cu("LspSymbols"):with_silent(),
