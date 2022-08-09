@@ -17,9 +17,9 @@ function Packer:load_plugins()
 
   local get_plugins_list = function()
     local list = {}
-    local tmp = vim.split(fn.globpath(modules_dir, "*/plugins.lua"), "\n")
+    local tmp = vim.split(fn.globpath(modules_dir, "*" .. path_sep .. "plugins.lua"), "\n")
     for _, f in ipairs(tmp) do
-      list[#list + 1] = string.match(f, "lua/(.+).lua$")
+      list[#list + 1] = string.match(f, "lua" .. path_sep .. "(.+).lua$")
     end
     return list
   end
