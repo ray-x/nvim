@@ -152,7 +152,7 @@ make sure it support nerdfont and emoji
 
 Some of the plugin I am using depends on sqlite.
 By default sqlite was installed on MacOS. For other operating system, if you saw error message about sqlite, please
-following the instruction [here to install sqlite](https://github.com/tami5/sqlite.lua#windows)
+following the instruction [here to install sqlite](https://github.com/kkharji/sqlite.lua#windows)
 
 ### Youtube video recording of install process
 

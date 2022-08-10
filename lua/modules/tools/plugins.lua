@@ -230,8 +230,8 @@ tools["jvgrootveld/telescope-zoxide"] = {
 
 tools["AckslD/nvim-neoclip.lua"] = {
   opt = true,
-  after = { "telescope.nvim" },
-  requires = { "tami5/sqlite.lua", module = "sqlite" },
+  -- after = { "telescope.nvim" }, -- manul load
+  requires = { "kkharji/sqlite.lua", module = "sqlite" },
   config = function()
     require("utils.telescope")
     require("neoclip").setup({ db_path = vim.fn.stdpath("data") .. "/databases/neoclip.sqlite3" })
@@ -240,9 +240,9 @@ tools["AckslD/nvim-neoclip.lua"] = {
 }
 
 tools["nvim-telescope/telescope-frecency.nvim"] = {
-  after = { "telescope.nvim" },
+  -- after = { "telescope.nvim" },  -- manual load
   -- cmd = {'Telescope'},
-  requires = { "tami5/sqlite.lua", module = "sqlite", opt = true },
+  requires = { "kkharji/sqlite.lua", module = "sqlite", opt = true },
   opt = true,
   config = function()
     local telescope = require("telescope")

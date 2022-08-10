@@ -132,7 +132,7 @@ Hydra({
     { "r", ":Telescope registers<CR>", { exit = true } },
     { "b", ":Telescope buffers<CR>", { exit = true } },
     { "j", ":lua require'utils.telescope'.jump()<CR>", { exit = true } },
-    { "y", telescope.extensions.neoclip.default },
+    -- { "y", telescope.extensions.neoclip.default },
     { "z", telescope.extensions.zoxide.list },
     { "p", telescope.extensions.projects.projects },
     { "f", ":lua require'utils.telescope'.folder_search()<CR>", { exit = true } },
