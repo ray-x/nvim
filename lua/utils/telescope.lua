@@ -443,35 +443,44 @@ M.setup = function(_)
 
   -- telescope.load_extension("notify")
 
+  local global = require 'core.global'
+  local win = global.is_windows
   vim.defer_fn(function() -- defer loading
-    loader("telescope-fzf-native.nvim telescope-live-grep-args.nvim telescope-file-browser.nvim")
-    loader("sqlite.lua")
-    loader("telescope-frecency.nvim project.nvim telescope-zoxide nvim-neoclip.lua")
+    loader("telescope-live-grep-args.nvim telescope-file-browser.nvim")
+    loader("project.nvim telescope-zoxide")
 
-    telescope.setup({
-      extensions = {
-        fzf = {
-          fuzzy = true, -- false will only do exact matching
-          override_generic_sorter = true, -- override the generic sorter
-          override_file_sorter = true, -- override the file sorter
-          case_mode = "smart_case", -- or "ignore_case" or "respect_case"
-          -- the default case_mode is "smart_case"
-        },
-        file_browser = {
-          theme = "ivy",
-          mappings = {
-            ["i"] = {
-              -- your custom insert mode mappings
-            },
-            ["n"] = {
-              -- your custom normal mode mappings
-            },
+    local ext = {
+      file_browser = {
+        theme = "ivy",
+        mappings = {
+          ["i"] = {
+            -- your custom insert mode mappings
+          },
+          ["n"] = {
+            -- your custom normal mode mappings
           },
         },
       },
-    })
+    }
 
-    telescope.load_extension("fzf")
+    if not win then
+      loader("sqlite.lua")
+      loader("telescope-fzf-native.nvim")
+      loader("telescope-frecency.nvim nvim-neoclip.lua")
+      ext.fzf = {
+        fuzzy = true, -- false will only do exact matching
+        override_generic_sorter = true, -- override the generic sorter
+        override_file_sorter = true, -- override the file sorter
+        case_mode = "smart_case", -- or "ignore_case" or "respect_case"
+        -- the default case_mode is "smart_case"
+      }
+    end
+
+    telescope.setup({ extensions = ext })
+
+    if not win then
+      telescope.load_extension("fzf")
+    end
 
     telescope.load_extension("dotfiles")
     telescope.load_extension("gosource")

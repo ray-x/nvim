@@ -404,7 +404,7 @@ function config.floaterm()
     },
   })
   local Terminal = require("toggleterm.terminal").Terminal
-  local lazygit = Terminal:new({ cmd = "lazygit", hidden = true })
+  local lazygit = Terminal:new({ cmd = "lazygit --debug", hidden = true })
   local lazydocker = Terminal:new({ cmd = "lazydocker", hidden = true })
 
   function _lazygit_toggle()
@@ -505,8 +505,19 @@ function config.git_conflict()
   require("git-conflict").setup()
 end
 
-vim.api.nvim_create_user_command("LspClients", function(opts)
+function config.rest()
+  require("rest-nvim").setup({})
+  local set = vim.keymap.set
+  local rest = require("rest-nvim")
+  local bufnr = tonumber(vim.fn.expand("<abuf>"), 10)
+  set("n", "<leader>rn", rest.run, { noremap = true, buffer = bufnr })
+  set("n", "<leader>rl", rest.last, { noremap = true, buffer = bufnr })
+  set("n", "<leader>rp", function()
+    rest.run(true)
+  end, { noremap = true, buffer = bufnr })
+end
 
+vim.api.nvim_create_user_command("LspClients", function(opts)
   if opts.fargs ~= nil then
     for _, client in pairs(vim.lsp.get_active_clients()) do
       if client.name == opts.fargs[1] then

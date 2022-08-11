@@ -7,16 +7,16 @@ local t = ls.t --> text node
 local d = ls.dynamic_node
 local c = ls.choice_node
 local f = ls.function_node
-local sn = ls.snippet_node
+-- local sn = ls.snippet_node
 
 local fmt = require("luasnip.extras.fmt").fmt
-local rep = require("luasnip.extras").rep
+-- local rep = require("luasnip.extras").rep
 
-local snippets, autosnippets = {}, {} --}}}
+-- local snippets, autosnippets = {}, {} --}}}
 
-local group = vim.api.nvim_create_augroup("Lua Snippets", { clear = true })
-local file_pattern = "*.lua"
-local utils = require("snippets.utils")
+-- local group = vim.api.nvim_create_augroup("Lua Snippets", { clear = true })
+-- local file_pattern = "*.lua"
+-- local utils = require("snippets.utils")
 
 local function last_lua_module_section(args) --{{{
   local text = args[1][1] or ""

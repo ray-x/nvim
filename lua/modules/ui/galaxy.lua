@@ -66,19 +66,28 @@ local Usual = {
     SignColumn = { bg = nil },
     CursorLine = { bg = c.purple_four },
     CursorColumn = { bg = c.purple_four },
-    CursorLineNr = { fg = c.yellow_one, bold = true },
+    CursorLineNr = { fg = c.yellow_one, bold = true, underline = true },
     StatusLine = { fg = c.white_two, bg = c.background_three },
     StatusLineNC = { fg = c.white_two, bg = c.background_three_two },
+    ModeMsg = { fg = c.green },
+    Question = { fg = c.blue },
+    WarningMsg = { fg = c.pink },
+    WildMenu = { fg = c.white_two, bg = c.background_three },
+    Title = { fg = c.white_two, bold = true },
+    Cursor = { bg = c.orange_one },
+    SpecialKey = { fg = c.green_five },
     Search = { fg = c.black_two, bg = c.yellow_one, bold = true },
     IncSearch = { fg = c.black_two, bg = c.orange_one, bold = true },
     Folded = { fg = c.blue_seven, bold = true, italic = true },
     Visual = { reverse = true },
+    VisualNOS = { bg = c.background_three },
     EndOfBuffer = { bg = back },
     Comment = { fg = c.blue_seven, bold = true, italic = true },
     preProc = { fg = c.blue_four },
     Matchparen = { underline = true },
     Pmenu = { fg = c.white_two, bg = c.background_two },
     Pmenusel = { fg = c.white, bg = c.purple_one },
+    VertSplit = { fg = c.background_three_two },
   },
   Vim = {
     VimCommand = { fg = c.purple_two },
@@ -115,14 +124,14 @@ local Usual = {
     TSFloat = { fg = c.pink },
     TSOperator = { fg = c.green_six },
     TSKeyword = { fg = c.purple_two, italic = true },
-    TSString = { fg = c.white },
+    TSString = { fg = c.green_five },
     TSConstant = { fg = c.blue_three },
     TSProperty = { fg = c.blue_three },
-    TSField = { fg = c.green_one },
-    TSBoolean = { fg = c.purple_one },
+    TSField = { fg = c.pink },
+    TSBoolean = { fg = c.purple_one, bold = true, italic = true },
     TSRepeat = { fg = c.red_two },
     TSKeywordFunction = { fg = c.red_two },
-    TSFunction = { fg = c.green_two, bold = true },
+    TSFunction = { fg = c.blue_one, bold = true },
     TSMethod = { fg = c.green_two, bold = true },
     TSType = { fg = c.red_two },
     TSTypeBuiltin = { fg = c.purple_two, italic = true },
@@ -133,10 +142,17 @@ local Usual = {
   },
 
   LspRelated = {
-    LspDiagnosticsDefaultError = { bg = back, fg = c.red_four },
-    LspDiagnosticsDefaultHint = { bg = back, fg = c.pink },
-    LspDiagnosticsDefaultWarning = { bg = back, fg = c.orange_one },
-    LspDiagnosticsDefaultInformation = { bg = back, fg = c.yellow_one },
+    DiagnosticsDefaultError = { bg = back, fg = c.red_four },
+    DiagnosticsDefaultHint = { bg = back, fg = c.pink },
+    DiagnosticsDefaultWarning = { bg = back, fg = c.orange_one },
+    DiagnosticsDefaultInformation = { bg = back, fg = c.yellow_one },
+
+    DiagnosticError = { fg = c.red_one, bold = true }, -- used to underline "Error" diagnostics.
+    DiagnosticWarn = { fg = c.orange_one, bold = true }, -- used to underline "Error" diagnostics.
+    DiagnosticInfo = { fg = c.green_one }, -- used to underline "Error" diagnostics.
+    DiagnosticUnderlineError = { bold = true, undercurl = true, sp = c.red }, -- used to underline "Error" diagnostics.
+    DiagnosticUnderlineWarn = { bold = true, undercurl = true, sp = c.orange_one }, -- used to underline "Error" diagnostics.
+    DiagnosticUnderlineInfo = { bold = true, undercurl = true, sp = c.yellow }, -- used to underline "Error" diagnostics.
   },
   Packer = { packerStatusSuccess = { fg = c.blue_three }, packerString = { fg = c.blue_three } },
 }
@@ -174,9 +190,6 @@ function M.shine()
   end
 
   local bg = back or "none"
-  -- vim.cmd("hi Normal guibg=" .. bg .. " guifg=#dddddd")
-
-  -- vim.cmd [[au BufEnter,FileType * :lua require"modules.ui.galaxy".Lang_high(vim.bo.ft)]]
   vim.api.nvim__set_hl_ns(ns)
 end
 

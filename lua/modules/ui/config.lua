@@ -90,7 +90,7 @@ function config.nvim_bufferline()
       show_buffer_icons = true,
       show_buffer_close_icons = false,
       show_tab_indicators = true,
-      diagnostics_update_in_insert = false,
+      diagnostics_upeate_in_insert = false,
       diagnostics_indicator = function(count, level)
         local icon = level:match("error") and "" or "" -- "" or ""
         return "" .. icon .. count
@@ -118,18 +118,6 @@ function config.nvim_tree()
   })
 end
 -- '▋''▘'
-
-function config.sidebar()
-  if not packer_plugins["neogit"].loaded then
-    require("packer").loader("neogit")
-  end
-  require("sidebar-nvim").setup({
-    section_separator = { "────────────────" },
-    -- sections = { git = {
-    --   icon = "",
-    -- } },
-  })
-end
 
 function config.neotree()
   require("neo-tree").setup({
@@ -371,6 +359,7 @@ function config.starry()
   vim.g.starry_set_hl = true
   vim.g.starry_style = "earlysummer" -- 'moonlight' emerald middlenight_blue earlysummer
   vim.g.starry_style = "mariana" -- 'moonlight' emerald middlenight_blue earlysummer
+  vim.g.starry_style = "oceanic" -- 'moonlight' emerald middlenight_blue earlysummer -- vim.g.starry_style = "darksolar" -- 'moonlight' emerald middlenight_blue earlysummer
   vim.g.starry_style_fix = true
   -- config.default()
 

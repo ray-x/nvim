@@ -40,6 +40,8 @@ editor["tpope/vim-abolish"] = {
 
 -- I like this plugin, but 1) offscreen context is slow
 -- 2) it not friendly to lazyload and treesitter startup
+--  motions g%, [%, ]%, and z%.
+--  text objects i% and a%
 editor["andymass/vim-matchup"] = {
   opt = true,
   event = { "CursorMoved", "CursorMovedI" },
@@ -54,7 +56,7 @@ editor["andymass/vim-matchup"] = {
   end,
 }
 
--- Feel more comfortable with hop
+-- Feel more comfortale with hop
 -- editor["ggandor/lightspeed.nvim"] = {
 --   as = "lightspeed",
 --   opt = true,
@@ -100,7 +102,8 @@ editor["machakann/vim-sandwich"] = {
 
 editor["kylechui/nvim-surround"] = {
   opt = true,
-  event = { "CursorMoved", "CursorMovedI" },
+  -- opt for sandwitch for now until some issue been addressed
+  -- event = { "CursorMoved", "CursorMovedI" },
   config = function()
     require("nvim-surround").setup({
       -- Configuration here, or leave empty to use defaults
@@ -109,7 +112,7 @@ editor["kylechui/nvim-surround"] = {
         -- default
         -- [insert] = "ys",
         -- insert_line = "yss",
-        visual = "cr",
+        visual = "<Leader>cr",
         -- delete = "ds",
         -- change = "cs",
       },
@@ -139,7 +142,6 @@ editor["chrisbra/Colorizer"] = {
 -- <A-l>   Move current character/selection right
 
 editor["booperlv/nvim-gomove"] = {
-
   event = { "CursorMoved", "CursorMovedI" },
   config = conf.move,
 }
@@ -290,7 +292,7 @@ editor["chaoren/vim-wordmotion"] = {
 
 editor["Pocco81/true-zen.nvim"] = {
   opt = true,
-  cmd = {"TZAtaraxis", "TZMinimalist", "TZNarrow", "TZFocus"},
+  cmd = { "TZAtaraxis", "TZMinimalist", "TZNarrow", "TZFocus" },
   config = function()
     require("true-zen").setup({})
   end,

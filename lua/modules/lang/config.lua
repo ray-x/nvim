@@ -226,7 +226,7 @@ function config.navigator()
       clangd = { filetypes = {} }, -- using clangd
 
       jedi_language_server = { filetypes = {} }, --another way to disable lsp
-      servers = { "terraform_lsp" },
+      servers = { "terraform_lsp", "vuels" },
     },
   }
   if plugin_folder() == [[~/github/ray-x/]] then

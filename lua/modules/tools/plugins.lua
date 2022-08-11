@@ -53,19 +53,6 @@ tools["ThePrimeagen/harpoon"] = {
 -- }
 
 -- tools["wellle/targets.vim"] = {}
--- tools["williamboman/nvim-lsp-installer"] = {
--- cmd = "LspInstall",
--- config = function()
---   local lsp_installer = require("nvim-lsp-installer")
-
---   -- lsp_installer.on_server_ready(function (server)
---   --   print(vim.inspect(server))
---   --   local opts=require'navigator.lspclient.clients'.get_cfg(server.name)
---   --   opts.cmd = server:get_default_options().cmd
---   --   server:setup {opts}
---   -- end)
--- end
--- }
 tools["TimUntersberger/neogit"] = {
   cmd = { "Neogit" },
   config = conf.neogit,
@@ -116,6 +103,12 @@ tools["akinsho/toggleterm.nvim"] = {
   config = conf.floaterm,
 }
 
+tools["NTBBloodbath/rest.nvim"] = {
+  opt = true,
+  ft = { "http" },
+  -- keys = { "<Plug>RestNvim", "<Plug>RestNvimPreview", "<Plug>RestNvimLast" },
+  config = conf.rest,
+}
 --
 tools["nanotee/zoxide.vim"] = { cmd = { "Z", "Lz", "Zi" } }
 
@@ -174,13 +167,19 @@ tools["tanvirtin/vgit.nvim"] = { -- gitsign has similar features
 }
 
 tools["akinsho/git-conflict.nvim"] = {
-  cmd = { "GitConflictListQf", "GitConflictChooseOurs", "GitConflictChooseTheirs", "GitConflictChooseBoth", "GitConflictNextConflict" },
+  cmd = {
+    "GitConflictListQf",
+    "GitConflictChooseOurs",
+    "GitConflictChooseTheirs",
+    "GitConflictChooseBoth",
+    "GitConflictNextConflict",
+  },
   opt = true,
   config = conf.git_conflict,
 }
 
-tools['rbong/vim-flog'] = {
-  cmd = { 'Flog', 'Flogsplit' },
+tools["rbong/vim-flog"] = {
+  cmd = { "Flog", "Flogsplit" },
   opt = true,
 }
 

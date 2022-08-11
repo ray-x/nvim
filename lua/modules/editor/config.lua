@@ -181,6 +181,9 @@ function config.yanky()
       },
     },
   })
+
+  -- vim.api.nvim_set_hl(0, "YankyPut", { link = "Search" })
+  -- vim.api.nvim_set_hl(0, "YankyYanked", { link = "Search" })
 end
 
 -- <Space>siw replace word
@@ -284,11 +287,29 @@ function config.comment()
       -- Only update commentstring for tsx filetypes
       if
         vim.bo.filetype == "typescriptreact"
+        or vim.bo.filetype == "typescript"
         or vim.bo.filetype == "javascript"
         or vim.bo.filetype == "css"
         or vim.bo.filetype == "html"
+        or vim.bo.filetype == "scss"
+        or vim.bo.filetype == "svelte"
+        or vim.bo.filetype == "uve"
+        or vim.bo.filetype == "graphql"
+        or vim.bo.filetype == "lua"
       then
-        require("ts_context_commentstring.internal").update_commentstring()
+        local U = require("Comment.utils")
+
+        local location = nil
+        if ctx.ctype == U.ctype.block then
+          location = require("ts_context_commentstring.utils").get_cursor_location()
+        elseif ctx.cmotion == U.cmotion.v or ctx.cmotion == U.cmotion.V then
+          location = require("ts_context_commentstring.utils").get_visual_start_location()
+        end
+
+        return require("ts_context_commentstring.internal").calculate_commentstring({
+          key = ctx.ctype == U.ctype.line and "__default" or "__multiline",
+          location = location,
+        })
       end
     end,
     post_hook = function(ctx)

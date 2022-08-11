@@ -70,6 +70,7 @@ local function hydra_git()
     },
     mode = { "n", "x" },
     body = "<Space>g",
+-- stylua: ignore start
     heads = {
       { "d", ":DiffviewOpen<CR>", { silent = true, exit = true } },
       { "M", diffmaster, { silent = true, exit = true } },
@@ -82,19 +83,9 @@ local function hydra_git()
       { "x", gitsigns.toggle_deleted, { nowait = true } },
       { "D", gitsigns.diffthis },
       -- { "b", gitsigns.blame_line },
-      {
-        "f",
-        function()
-          gitsigns.setqflist("all")
-        end,
-      },
+      { "f", function() gitsigns.setqflist("all") end },
       { "g", gitsigns.setqflist },
-      {
-        "B",
-        function()
-          gitsigns.blame_line({ full = true })
-        end,
-      },
+      { "B", function() gitsigns.blame_line({ full = true }) end },
       -- fugitive
       -- { "l", "Git log --oneline --decorate --graph --all<CR>" },
       { "l", "Flogsplit<CR>" },
@@ -153,6 +144,7 @@ Hydra({
   },
 })
 
+-- stylua: ignore end
 return {
   hydra_git = hydra_git,
 }
