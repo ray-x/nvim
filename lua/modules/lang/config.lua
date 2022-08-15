@@ -5,18 +5,6 @@ local config = {}
 -- local map_cmd = bind.map_cmd
 -- local loader = require"packer".loader
 
-function config.nvim_treesitter()
-  require("modules.lang.treesitter").treesitter()
-end
-
-function config.treesitter_obj()
-  require("modules.lang.treesitter").treesitter_obj()
-end
-
-function config.treesitter_ref()
-  require("modules.lang.treesitter").treesitter_ref()
-end
-
 -- function config.treesitter_sub()
 --   require("modules.lang.treesitter").textsubjects({
 --     textsubjects = {

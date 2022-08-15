@@ -3,10 +3,10 @@ local conf = require("modules.lang.config")
 local ts = require("modules.lang.treesitter")
 local path = plugin_folder()
 
-lang["nvim-treesitter/nvim-treesitter"] = { opt = true, config = conf.nvim_treesitter }
+lang["nvim-treesitter/nvim-treesitter"] = { opt = true, config = ts.treesitter }
 
 lang["nvim-treesitter/nvim-treesitter-textobjects"] = {
-  config = conf.treesitter_obj,
+  config = ts.treesitter_obj,
   opt = true,
 }
 
@@ -40,7 +40,7 @@ lang["ThePrimeagen/refactoring.nvim"] = {
 
 lang["nvim-treesitter/nvim-treesitter-refactor"] = {
   after = "nvim-treesitter-textobjects", -- manual loading
-  config = conf.treesitter_ref, -- let the last loaded config treesitter
+  config = ts.treesitter_ref, -- let the last loaded config treesitter
   opt = true,
 }
 
@@ -173,10 +173,9 @@ lang["windwp/nvim-ts-autotag"] = {
   -- after = "nvim-treesitter",
   -- config = function() require"nvim-treesitter.configs".setup {autotag = {enable = true}} end
 }
--- highlight your args with TS
+-- highlight your args with Treesitter
 lang["m-demare/hlargs.nvim"] = {
   opt = true,
-  after = "nvim-treesitter",
   config = function()
     require("hlargs").setup()
   end,

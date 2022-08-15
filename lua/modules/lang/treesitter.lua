@@ -1,28 +1,50 @@
-local enable = true
-local langtree = true
-local lines = vim.fn.line("$")
+local enable = false
+local langtree = false
 local treesitter = function()
+  local has_ts = pcall(require, "nvim-treesitter.configs")
+  if not has_ts then
+    vim.notify("ts not installed")
+    return
+  end
+  local lines = vim.fn.line("$")
   if lines > 30000 then -- skip some settings for large file
-    -- vim.cmd[[syntax on]]
+    vim.cmd([[syntax manual]])
     print("skip treesitter")
-    require("nvim-treesitter.configs").setup({ highlight = { enable = enable } })
     return
   end
 
   if lines > 7000 then
     enable = false
     langtree = false
-    print("disable ts txtobj")
+    vim.cmd([[syntax on]])
+  else
+    enable = true
+    langtree = true
+    lprint("ts enable")
   end
 
   require("nvim-treesitter.configs").setup({
     highlight = {
-      enable = true, -- false will disable the whole extension
-      additional_vim_regex_highlighting = false,
+      enable = enable, -- false will disable the whole extension
+      additional_vim_regex_highlighting = false, -- unless not supported by ts
       disable = { "elm" }, -- list of language that will be disabled
       use_languagetree = langtree,
       custom_captures = { todo = "Todo" },
     },
+  })
+end
+
+local treesitter_obj = function()
+  local lines = vim.fn.line("$")
+  if lines > 30000 then -- skip some settings for large file
+    print("skip treesitter obj")
+    return
+  end
+
+  require("nvim-treesitter.configs").setup({
+
+    indent = { enable = true },
+    context_commentstring = { enable = true, enable_autocmd = false },
     incremental_selection = {
       enable = enable,
       -- disable = {"elm"},
@@ -34,19 +56,6 @@ local treesitter = function()
         node_decremental = "<S-TAB>", -- decrement to the previous node
       },
     },
-  })
-end
-
-local treesitter_obj = function()
-  if lines > 30000 then -- skip some settings for large file
-    print("skip treesitter obj")
-    return
-  end
-
-  require("nvim-treesitter.configs").setup({
-
-    indent = { enable = true },
-    context_commentstring = { enable = true, enable_autocmd = false },
     textobjects = {
       -- syntax-aware textobjects
       lsp_interop = {
@@ -103,15 +112,11 @@ local treesitter_obj = function()
     },
   })
 
-  -- vim.api.nvim_command("setlocal foldmethod=expr")
-  -- vim.api.nvim_command("setlocal foldexpr=nvim_treesitter#foldexpr()")
-  -- print("loading ts")
-  vim.cmd([[syntax on]])
+  lprint("loading ts")
 end
 
 local treesitter_ref = function()
-  if vim.fn.line("$") > 10000 then -- skip for large file
-    -- vim.cmd[[syntax on]]
+  if vim.fn.line("$") > 7000 then -- skip for large file
     lprint("skip treesitter")
     enable = false
   end
@@ -176,6 +181,7 @@ end
 function textsubjects()
   lprint("txt subjects")
   require("nvim-treesitter.configs").setup({
+
     textsubjects = {
       enable = true,
       prev_selection = ",",
@@ -223,8 +229,6 @@ local treesitter_context = function(width)
 
   return " " .. context
 end
-
--- treesitter()
 return {
   treesitter = treesitter,
   treesitter_obj = treesitter_obj,
