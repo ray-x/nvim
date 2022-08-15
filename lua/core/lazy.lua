@@ -20,11 +20,12 @@ math.randomseed(os.time())
 
 local function daylight()
   local h = tonumber(os.date("%H"))
-  if h > 6 and h < 18 then
-    return "light"
-  else
-    return "dark"
-  end
+  return "dark"
+  -- if h > 8 and h < 18 then
+  --   return "light"
+  -- else
+  --   return "dark"
+  -- end
 end
 
 local function randomscheme()
@@ -44,7 +45,7 @@ local function randomscheme()
 
   if daylight() == "light" then
     vim.o.background = "light"
-    themes = { "gruvbox-material", "starry.nvim", "catppuccin", "github-nvim-theme" }
+    themes = { "starry.nvim", "catppuccin" }
   end
 
   local v = math.random(1, #themes)
@@ -53,8 +54,8 @@ local function randomscheme()
   --[[ loading_theme = "aurora" ]]
   -- lprint(loading_theme, os.clock())
   if daylight() == "light" then
-    if loading_theme == "github-nvim-theme" or loading_theme == "catppuccin" then
-      if vim.fn.executable("kitty") == 1 and transparent == true then --TODO: not finished
+    if loading_theme == "starry" or loading_theme == "catppuccin" then
+      if vim.fn.executable("kitty") == 1 then --TODO: not finished
         vim.cmd([[silent exec "!kitty +kitten themes --reload-in=all Material"]])
       end
     end
@@ -186,7 +187,7 @@ end, lazy_timer)
 vim.cmd([[autocmd User LoadLazyPlugin lua Lazyload()]])
 
 vim.defer_fn(function()
-  loader("hydra.nvim")
+  load_colorscheme(loading_theme)
   loader("windline.nvim")
   require("modules.ui.eviline")
   require("wlfloatline").setup()
@@ -212,6 +213,8 @@ vim.defer_fn(function()
     loader("git-conflict.nvim")
     require("modules.editor.hydra").hydra_git()
   end
+
+  loader("hydra.nvim")
   -- lprint("all done", os.clock())
   if vim.fn.executable(vim.g.python3_host_prog) == 0 then
     print("file not find, please update path setup", vim.g.python3_host_prog)

@@ -116,7 +116,7 @@ local on_hover = function()
   for _, client in ipairs(clients) do
     -- lprint(client.name, client.server_capabilities.hoverProvider)
     if client.server_capabilities.hoverProvider == true and client.name ~= "null-ls" then
-      lprint('hover enabled for ', client.name)
+      lprint("hover enabled for ", client.name)
       hoverProvider = true
     end
   end
@@ -606,7 +606,7 @@ windline.setup({
     local normalFg, normalBg = require("windline.themes").get_hl_color("StatusLine")
 
     colors.NormalFg = normalFg or colors.white
-    colors.NormalBg = normalBg or colors.yellow
+    colors.NormalBg = normalBg or mod(colors.white, 0.3)
     colors.FilenameFg = colors.white_light
     colors.FilenameBg = colors.NormalFg
 

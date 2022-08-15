@@ -295,9 +295,10 @@ function config.comment()
         or vim.bo.filetype == "svelte"
         or vim.bo.filetype == "uve"
         or vim.bo.filetype == "graphql"
-        or vim.bo.filetype == "lua"
       then
         local U = require("Comment.utils")
+        -- Determine whether to use linewise or blockwise commentstring
+        local type = ctx.ctype == U.ctype.linewise and "__default" or "__multiline"
 
         local location = nil
         if ctx.ctype == U.ctype.block then
@@ -307,7 +308,7 @@ function config.comment()
         end
 
         return require("ts_context_commentstring.internal").calculate_commentstring({
-          key = ctx.ctype == U.ctype.line and "__default" or "__multiline",
+          key = type,
           location = location,
         })
       end

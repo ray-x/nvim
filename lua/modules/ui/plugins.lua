@@ -53,16 +53,16 @@ ui["nvim-neo-tree/neo-tree.nvim"] = {
 ui["lukas-reineke/indent-blankline.nvim"] = { opt = true, config = conf.blankline } -- after="nvim-treesitter",
 
 -- disabled does not work with muliti split
-ui["lukas-reineke/virt-column.nvim"] = {
-  opt = true,
-  -- event = {"CursorMoved", "CursorMovedI"},
-  config = function()
-    vim.cmd("highlight clear ColorColumn")
-    require("virt-column").setup()
-
-    vim.cmd("highlight VirtColumn guifg=#4358BF")
-  end,
-}
+-- ui["lukas-reineke/virt-column.nvim"] = {
+--   opt = true,
+--   -- event = {"CursorMoved", "CursorMovedI"},
+--   config = function()
+--     vim.cmd("highlight clear ColorColumn")
+--     require("virt-column").setup()
+-- 
+--     vim.cmd("highlight VirtColumn guifg=#4358BF")
+--   end,
+-- }
 
 ui["dstein64/nvim-scrollview"] = { event = { "CursorMoved", "CursorMovedI" }, config = conf.scrollview }
 
@@ -102,17 +102,18 @@ ui[plugin_folder() .. "starry.nvim"] = {
   opt = true,
   setup = conf.starry,
   config = function()
-    require("starry").set()
+    require("starry").clear()
+    require("starry").set(vim.g.starry_style)
     if vim.g.starry_disable_background ~= true then
       return
     end
     if vim.g.starry_style == "limestone" then
-      vim.api.nvim_set_hl(0, 'Normal', {bg='#E0E6D8'})
+      vim.api.nvim_set_hl(0, "Normal", { bg = "#E0E6D8" })
       return
     end
 
     if vim.g.starry_style == "ukraine" then
-      vim.api.nvim_set_hl(0, 'Normal', {bg='#1056B8'})
+      vim.api.nvim_set_hl(0, "Normal", { bg = "#1056B8" })
       return
     end
   end,

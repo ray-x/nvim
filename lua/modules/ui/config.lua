@@ -314,6 +314,7 @@ function config.gh_theme()
     lprint("gh theme ", v)
     require("github-theme").setup({
       theme_style = v,
+      transparent = true,
       overrides = function(c)
         return {
           StatusLine = { fg = c.black, bg = c.bg_highlight },
@@ -364,7 +365,22 @@ function config.starry()
   -- config.default()
 
   vim.g.starry_disable_background = true
+  if vim.g.starry_style == "limestone" then
+    vim.g.starry_disable_background = false
+  end
+
+  vim.api.nvim_create_user_command("Limestone", function(opts)
+    vim.g.starry_disable_background = false
+    require("starry").clear()
+    require("starry").set("limestone")
+  end, { nargs = "*" })
 end
+
+vim.api.nvim_create_user_command("Transparent", function(opts)
+  vim.api.nvim_set_hl(0, "Normal", { bg = "NONE", ctermbg = "NONE" })
+  vim.api.nvim_set_hl(0, "NormalFloat", { bg = "NONE", ctermbg = "NONE" })
+  vim.api.nvim_set_hl(0, "EndOfBuffer", { bg = "NONE", ctermbg = "NONE" })
+end, { nargs = "*" })
 
 function config.tokyonight()
   local opt = { "storm", "night" }
@@ -372,6 +388,7 @@ function config.tokyonight()
   vim.g.tokyonight_style = opt[v]
   vim.g.tokyonight_italic_functions = true
   vim.g.tokyonight_sidebars = { "qf", "vista_kind", "terminal", "packer" }
+  -- vim.g.tokyonight_transparent = true
 
   -- Change the "hint" color to the "orange" color, and make the "error" color bright red
   vim.g.tokyonight_colors = { hint = "orange", error = "#ae1960" }
@@ -482,9 +499,10 @@ function config.gruvbox()
   local v = opt[math.random(1, #opt)]
   local palette = palettes[math.random(1, #palettes)]
   local h = tonumber(os.date("%H"))
-  if h > 6 and h < 18 then
+  if h > 8 and h < 18 then
     lprint("gruvboxlight")
     vim.cmd("set background=light")
+    opt = "medium"
   else
     lprint("gruvboxdark")
     vim.cmd("set background=dark")
@@ -498,6 +516,7 @@ function config.gruvbox()
   vim.g.gruvbox_material_improved_warnings = 1
   -- vim.g.gruvbox_material_contrast_dark=v
   vim.g.gruvbox_material_background = v
+  vim.g.gruvbox_material_forground = palette
   vim.g.gruvbox_material_enable_bold = 1
   vim.g.gruvbox_material_palette = palette
   vim.cmd("colorscheme gruvbox-material")
