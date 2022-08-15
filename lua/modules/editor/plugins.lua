@@ -24,7 +24,7 @@ editor["anuvyklack/hydra.nvim"] = {
 }
 
 editor["gbprod/substitute.nvim"] = {
-  event = { "CursorMoved", "CursorMovedI", "CmdlineEnter" },
+  event = { "CmdlineEnter", "TextYankPost" },
   config = conf.substitute,
   opt = true,
 }
@@ -44,7 +44,7 @@ editor["tpope/vim-abolish"] = {
 --  text objects i% and a%
 editor["andymass/vim-matchup"] = {
   opt = true,
-  event = { "CursorMoved", "CursorMovedI" },
+  event = { "CursorHold", "CursorHoldI" },
   cmd = { "MatchupWhereAmI?" },
   config = function()
     vim.g.matchup_enabled = 1
@@ -142,7 +142,8 @@ editor["chrisbra/Colorizer"] = {
 -- <A-l>   Move current character/selection right
 
 editor["booperlv/nvim-gomove"] = {
-  event = { "CursorMoved", "CursorMovedI" },
+  -- event = { "CursorMoved", "CursorMovedI" },
+  keys = { "v", "V", "<c-v>", "<c-V>" },
   config = conf.move,
 }
 
@@ -220,8 +221,7 @@ editor["phaazon/hop.nvim"] = {
 }
 
 editor["numToStr/Comment.nvim"] = {
-  keys = { "g", "<ESC>" },
-  event = { "CursorMoved" },
+  keys = { "g", "<ESC>", "v", "V", "<c-v>" },
   config = conf.comment,
 }
 
@@ -235,7 +235,7 @@ editor["numToStr/Comment.nvim"] = {
 --   end,
 -- }
 editor["gbprod/yanky.nvim"] = {
-  event = { "CursorMoved", "CursorMovedI" },
+  event = { "CmdlineEnter", "TextYankPost" },
   opt = true,
   setup = function()
     vim.keymap.set("n", "p", "<Plug>(YankyPutAfter)", {})
@@ -302,8 +302,6 @@ editor["nvim-neorg/neorg"] = {
   opt = true,
   config = conf.neorg,
   ft = "norg",
-  after = { "nvim-treesitter" },
-  setup = vim.cmd("autocmd BufRead,BufNewFile *.norg setlocal filetype=norg"),
   requires = { "nvim-neorg/neorg-telescope", ft = { "norg" } },
 }
 

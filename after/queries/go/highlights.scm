@@ -41,5 +41,5 @@
 (((identifier) @type (#eq? @type "Request"     )) (#set! conceal "黎"))
 (((identifier) @type (#eq? @type "response"     )) (#set! conceal ""))
 (((identifier) @type (#eq? @type "Response"     )) (#set! conceal ""))
-(((field_identifier) @error (#eq? @error "Error"     )) (#set! conceal "E"))
+(((field_identifier) @field (#eq? @field "Error"     )) (#set! conceal "E"))
 ;; (((identifier) @field (#eq? @field "fmt"     )) (#set! conceal ""))

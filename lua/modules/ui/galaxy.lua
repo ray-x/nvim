@@ -9,10 +9,12 @@ end
 local c = {
   black = "#101010",
   black_two = "#282828",
-  white = "#FFFFFF",
+  white = "#EFEFFF",
   white_two = "#CECECE",
+  white_three = "#DECEAE",
 
   gray_one = "#B5B5B5",
+  gray_two = "#556585",
 
   green_one = "#BCFF7B",
   green_two = "#66FF61",
@@ -34,60 +36,106 @@ local c = {
   purple_four = "#755799",
 
   yellow_one = "#ECF683",
+  yellow_two = "#FCF6A3",
+  yellow_three = "#CCD663",
 
   red_one = "#FF7263",
   red_two = "#FF91A4",
   red_three = "#D82B26",
   red_four = "#FB4934",
 
-  pink = "#FFB5F3",
+  pink_one = "#AF95A3",
+  pink_two = "#FFB5F3",
 
   orange_one = "#FE8019",
+  orange_two = "#FEC059",
 
   background_one = "#3C3836",
   background_two = "#262729",
   background_three = "#504945",
   background_three_two = "#546442",
+
+  lime = "#98EE64",
+  cyan = "#89DDFF",
 }
 
 local back = nil
 
 local Usual = {
   UsualHighlights = {
-    Normal = { bg = back },
+    Normal = { fg = c.white },
     NormalFloat = { bg = c.background_two, fg = c.white_two },
-    Identifier = { fg = c.green_two },
-    Keyword = { fg = c.purple_two },
+    Type = { fg = c.blue_three }, -- int, long, char, etc.
+    StorageClass = { fg = c.blue_five }, -- static, register, volatile, etc.
+    Identifier = { fg = c.white_three, bold = true },
+    Keyword = { fg = c.purple_two, bold = true },
     FloatBorder = { fg = c.blue_four, bg = c.background_one },
+    Constant = { fg = c.orange_two }, -- any constant
+    String = { fg = c.green }, -- Any string
+    Character = { fg = c.orange_one }, -- any character constant: 'c', '\n'
+    Number = { fg = c.yello }, -- a number constant: 5
+    Boolean = { fg = c.orange_two, italic = true, bold = true }, -- a boolean constant: TRUE, false
+    Float = { fg = c.red_four }, -- a floating point constant: 2.3e10
+    Statement = { fg = c.blue_seven }, -- any statement
+    Label = { fg = c.label }, -- case, default, etc.
+    Operator = { fg = c.red_four }, -- sizeof", "+", "*", etc.
+    Exception = { fg = c.purple_two }, -- try, catch, throw
+    PreProc = { fg = c.purple_four }, -- generic Preprocessor
+    Include = { fg = c.blue_three }, -- preprocessor #include
+    Define = { fg = c.pink_two }, -- preprocessor #define
+    Macro = { fg = c.cyan }, -- same as Define
+    Typedef = { fg = c.orange_one }, -- A typedef
+    PreCondit = { fg = c.blue_seven }, -- preprocessor #if, #else, #endif, etc.
+    Conditional = { fg = c.blue_seven, bold = true }, -- preprocessor #if, #else, #endif, etc.
+    Repeat = { fg = c.blue_three, bold = true }, -- preprocessor #if, #else, #endif, etc.
+    Special = { fg = c.red }, -- any special symbol
+    SpecialChar = { link = "Define" }, -- special character in a constant
+    Tag = { fg = c.lime, underline = true }, -- you can use CTRL-] on this
+    Delimiter = { fg = c.blue_three }, -- character that needs attention like , or .
+    SpecialComment = { fg = c.gray_one }, -- special things inside a comment
+    Debug = { link = "Special" }, -- debugging statements
+    Ignore = { fg = c.gray_one }, -- left blank, hidden
+    Error = { link = "DiagnosticError", undercurl = true, sp = c.pink }, -- any erroneous construct
+    Todo = { fg = c.yellow, bg = c.bg_alt, bold = true, italic = true },
     netrwDir = { fg = c.green_six },
     netrwList = { fg = c.green_four },
     NonText = { bg = back },
     LineNr = { fg = c.background_two },
     SignColumn = { bg = nil },
-    CursorLine = { bg = c.purple_four },
+    CursorLine = { fg = c.gray_one, bg = c.purple_four },
     CursorColumn = { bg = c.purple_four },
     CursorLineNr = { fg = c.yellow_one, bold = true, underline = true },
     StatusLine = { fg = c.white_two, bg = c.background_three },
     StatusLineNC = { fg = c.white_two, bg = c.background_three_two },
+    Structure = { fg = c.purple_one },
     ModeMsg = { fg = c.green },
     Question = { fg = c.blue },
-    WarningMsg = { fg = c.pink },
+    Function = { fg = c.blue_one, bold = true },
+    WarningMsg = { fg = c.pink_one },
+    Warnings = { fg = c.yellow_two },
     WildMenu = { fg = c.white_two, bg = c.background_three },
     Title = { fg = c.white_two, bold = true },
     Cursor = { bg = c.orange_one },
     SpecialKey = { fg = c.green_five },
+    SpellBad = { fg = c.orange, bold = true, undercurl = true },
+    SpellCap = { fg = c.yellow, underdotted = true },
+    SpellRare = { fg = c.white, underdotted = true },
     Search = { fg = c.black_two, bg = c.yellow_one, bold = true },
     IncSearch = { fg = c.black_two, bg = c.orange_one, bold = true },
     Folded = { fg = c.blue_seven, bold = true, italic = true },
     Visual = { reverse = true },
     VisualNOS = { bg = c.background_three },
     EndOfBuffer = { bg = back },
-    Comment = { fg = c.blue_seven, bold = true, italic = true },
+    Comment = { fg = c.gray_two, italic = true },
     preProc = { fg = c.blue_four },
-    Matchparen = { underline = true },
+    MatchParen = { underline = true, bold = true, bg = c.background_three },
     Pmenu = { fg = c.white_two, bg = c.background_two },
     Pmenusel = { fg = c.white, bg = c.purple_one },
     VertSplit = { fg = c.background_three_two },
+    Underlined = { fg = c.blue, underline = true, sp = c.blue }, -- text that stands out, HTML links
+    ErrorMsg = { fg = c.pink_one, bold = true },
+
+    ColorColumn = { bg = c.background_three },
   },
   Vim = {
     VimCommand = { fg = c.purple_two },
@@ -107,37 +155,37 @@ local Usual = {
     VimFgBgAttrib = { fg = c.green_five },
   },
   Diff = {
-    diffAdded = { fg = c.green_two, bold = true },
-    diffRemoved = { fg = c.purple_two, bold = true },
-    gitDiff = { fg = c.white },
-    diffLine = { fg = c.blue_three },
+    DiffAdd = { fg = c.green_two, bold = true },
+    DiffChange = { fg = c.purple_two, bold = true, underdotted = true, sp = "#666666" },
+    DiffText = { fg = c.white, bold = true },
+    DiffDelete = { fg = c.red_two, bold = true },
   },
   TSHighlights = {
     NodeNumber = { fg = c.blue_five },
     NodeOp = { fg = c.red_four },
-    TSVariable = { fg = c.yellow_one },
+    TSVariable = { link = "Identifier" },
     TSComment = { fg = c.blue_seven, bold = true, italic = true },
     TSInclude = { fg = c.blue_four, italic = true, bold = true },
     TSKeywordOperator = { fg = c.purple_two },
     TSConditional = { fg = c.purple_two },
     TSNumber = { fg = c.pink },
-    TSFloat = { fg = c.pink },
+    TSFloat = { fg = c.orange_two },
     TSOperator = { fg = c.green_six },
     TSKeyword = { fg = c.purple_two, italic = true },
     TSString = { fg = c.green_five },
     TSConstant = { fg = c.blue_three },
-    TSProperty = { fg = c.blue_three },
+    TSProperty = { fg = c.blue_seven },
     TSField = { fg = c.pink },
     TSBoolean = { fg = c.purple_one, bold = true, italic = true },
     TSRepeat = { fg = c.red_two },
     TSKeywordFunction = { fg = c.red_two },
-    TSFunction = { fg = c.blue_one, bold = true },
+    TSFunction = { link = "Function" },
     TSMethod = { fg = c.green_two, bold = true },
     TSType = { fg = c.red_two },
     TSTypeBuiltin = { fg = c.purple_two, italic = true },
     TSException = { fg = c.blue_four },
     TSEnvironmentName = { fg = c.blue_four },
-    TSTitle = { fg = c.green_one },
+    TSTitle = { fg = c.green_one, bold = true },
     TSEnvironment = { fg = c.red_two },
   },
 
@@ -153,6 +201,30 @@ local Usual = {
     DiagnosticUnderlineError = { bold = true, undercurl = true, sp = c.red }, -- used to underline "Error" diagnostics.
     DiagnosticUnderlineWarn = { bold = true, undercurl = true, sp = c.orange_one }, -- used to underline "Error" diagnostics.
     DiagnosticUnderlineInfo = { bold = true, undercurl = true, sp = c.yellow }, -- used to underline "Error" diagnostics.
+    LspReferenceText = { bold = true, italic = true, undercurl = true, sp = "yellow" }, -- used for highlighting "text" references
+    LspReferenceRead = {
+      fg = c.green_four,
+      bold = true,
+      italic = true,
+      underdashed = true,
+      sp = "lime",
+    }, -- used for highlighting "read" references
+    LspReferenceWrite = {
+      fg = c.yellow_two,
+      bg = c.background_one,
+      bold = true,
+      italic = true,
+      underdouble = true,
+      sp = c.red_four,
+    }, -- used for highlighting "write" references
+    LspSignatureActiveParameter = {
+      fg = c.white_two,
+      bg = c.background_three_two,
+      bold = true,
+      italic = true,
+      underdouble = true,
+      sp = "violet",
+    },
   },
   Packer = { packerStatusSuccess = { fg = c.blue_three }, packerString = { fg = c.blue_three } },
 }
@@ -220,13 +292,39 @@ _G.colors = {
   baby_pink = "#DE878F",
   darker_black = "#2A303C",
 }
-vim.api.nvim__set_hl_ns(ns)
+-- vim.api.nvim__set_hl_ns(ns)
+--
+-- local result = vim.loop.now()
+-- vim.cmd("colorscheme aurora")
+-- vim.cmd("colorscheme aurora")
+-- vim.cmd("colorscheme aurora")
+-- vim.cmd("colorscheme aurora")
+-- vim.cmd("colorscheme aurora")
+-- vim.cmd("colorscheme aurora")
+-- vim.cmd("colorscheme aurora")
+-- vim.cmd("colorscheme aurora")
+-- vim.cmd("colorscheme aurora")
+-- vim.cmd("colorscheme aurora")
+-- vim.cmd("colorscheme aurora")
+-- vim.cmd("colorscheme aurora")
+-- vim.cmd("colorscheme aurora")
+-- vim.cmd("colorscheme aurora")
+-- vim.cmd("colorscheme aurora")
+-- vim.cmd("colorscheme aurora")
+-- vim.cmd("colorscheme aurora")
+-- vim.cmd("colorscheme aurora")
+-- vim.cmd("colorscheme aurora")
+-- vim.cmd("colorscheme aurora")
+-- result = result - vim.loop.now()
+-- print(result)
+
+return M
 -- comment
 
--- vim.cmd([[packadd starry.nvim]])
+-- vim.cmd([[packadd c.nvim]])
 -- local start = vim.loop.now()
 
-M.shine()
+-- M.shine()
 
 -- bench test
 
@@ -245,7 +343,6 @@ M.shine()
 -- vim.cmd("colorscheme earlysummer")
 -- result = result - vim.loop.now()
 -- print(result)
-return M
 
 -- vim.cmd("hi Normal guifg=" .. colors.foreground .. " guibg=" .. colors.black)
 -- hl("NormalFloat", { fg = colors.foreground, bg = colors.black })

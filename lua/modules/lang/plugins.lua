@@ -3,13 +3,6 @@ local conf = require("modules.lang.config")
 local ts = require("modules.lang.treesitter")
 local path = plugin_folder()
 
-lang["nathom/filetype.nvim"] = {
-  -- event = {'BufEnter'},
-  setup = function()
-    vim.g.did_load_filetypes = 1
-  end,
-}
-
 lang["nvim-treesitter/nvim-treesitter"] = { opt = true, config = conf.nvim_treesitter }
 
 lang["nvim-treesitter/nvim-treesitter-textobjects"] = {
