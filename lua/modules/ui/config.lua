@@ -278,7 +278,7 @@ function config.cat()
     end
   end
   if day == "light" then
-    vim.g.catppuccin_flavour = "latte"
+    vim.g.catppuccin_flavour = "frappe"
   else
     local opt = { "frappe", "macchiato", "mocha" }
     local v = math.random(1, #opt)
@@ -307,7 +307,7 @@ function config.gh_theme()
     end
   end
   if day == "light" then
-    local opt = { "light_colorblind", "light_default", "light" }
+    local opt = { "dimmed" }
     local v = math.random(1, #opt)
     v = opt[v]
 
@@ -343,6 +343,50 @@ function config.gh_theme()
     })
   end
 end
+
+vim.api.nvim_create_user_command("Light", function(opts)
+  vim.cmd("set background=light")
+  if opts.fargs == "limestone" then
+    vim.cmd("Limestone")
+  end
+  if opts.fargs == "gruvbox" then
+    vim.cmd("packadd gruvbox-material")
+    vim.g.gruvbox_material_background = "light"
+    vim.cmd("colorscheme gruvbox-material")
+    vim.cmd("doautocmd ColorScheme")
+    return
+  end
+  if opts.fargs == "catppuccin" then
+    vim.cmd("packadd catppuccin")
+    vim.g.catppuccin_flavour = "latte"
+    require("catppuccin").setup({ lsp_trouble = true, neogit = true, hop = true })
+    vim.cmd("colorscheme catppuccin")
+    return
+  end
+  -- default github
+  local opt = { "light_colorblind", "light_default", "light" }
+  local v = math.random(1, #opt)
+  v = opt[v]
+
+  vim.cmd("packadd github-theme")
+  require("github-theme").setup({
+    theme_style = v,
+    transparent = true,
+    overrides = function(c)
+      return {
+        StatusLine = { fg = c.black, bg = c.bg_highlight },
+        StatusLineNC = { fg = c.bg, bg = c.bright_white },
+        TSCurrentScope = { bg = c.bg2 },
+        CursorLine = { bg = c.bg2 },
+      }
+    end,
+  })
+end, {
+  complete = function()
+    return { "gruvbox", "github", "catppuccin", "limestone" }
+  end,
+  nargs = "*",
+})
 
 function config.starry()
   -- local opt = {"oceanic", "darker", "palenight", "deep ocean", "moonlight", "dracula", "dracula_blood", "monokai", "mariana", "ceramic"}
@@ -501,8 +545,7 @@ function config.gruvbox()
   local h = tonumber(os.date("%H"))
   if h > 8 and h < 18 then
     lprint("gruvboxlight")
-    vim.cmd("set background=light")
-    opt = "medium"
+    v = "hard"
   else
     lprint("gruvboxdark")
     vim.cmd("set background=dark")
@@ -510,12 +553,11 @@ function config.gruvbox()
 
   vim.g.gruvbox_material_invert_selection = 0
   vim.g.gruvbox_material_enable_italic = 1
-  -- vim.g.gruvbox_material_italicize_strings = 1
   -- vim.g.gruvbox_material_invert_signs = 1
   vim.g.gruvbox_material_improved_strings = 1
   vim.g.gruvbox_material_improved_warnings = 1
   -- vim.g.gruvbox_material_contrast_dark=v
-  vim.g.gruvbox_material_background = v
+  vim.g.gruvbox_material_background = "dark"
   vim.g.gruvbox_material_forground = palette
   vim.g.gruvbox_material_enable_bold = 1
   vim.g.gruvbox_material_palette = palette
