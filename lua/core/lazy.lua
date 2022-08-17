@@ -66,6 +66,7 @@ end
 local loading_theme = randomscheme()
 
 local function load_colorscheme(theme)
+
   if theme == "galaxy" then
     require("modules.ui.galaxy").shine()
   else

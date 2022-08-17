@@ -1,5 +1,6 @@
 M = {}
-local ns = vim.api.nvim_create_namespace("color_galaxy")
+-- local ns = vim.api.nvim_create_namespace("color_galaxy")
+local ns = 0
 local function hl(name, val)
   vim.api.nvim_set_hl(ns, name, val)
 end
