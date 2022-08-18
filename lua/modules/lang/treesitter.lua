@@ -1,5 +1,9 @@
 local enable = false
 local langtree = false
+-- stylua: ignore start
+local ts_ensure_installed = { "go", "css", "html", "javascript", "typescript", "jsdoc", "json", "c", "java", "toml", "tsx", "lua", "cpp", "python", "rust", "jsonc", "dart", "css", "yaml", "sql", "vue" }
+-- stylua: ignore end
+
 local treesitter = function()
   local has_ts = pcall(require, "nvim-treesitter.configs")
   if not has_ts then
@@ -87,29 +91,7 @@ local treesitter_obj = function()
       },
     },
     -- ensure_installed = "maintained"
-    ensure_installed = {
-      "go",
-      "css",
-      "html",
-      "javascript",
-      "typescript",
-      "jsdoc",
-      "json",
-      "c",
-      "java",
-      "toml",
-      "tsx",
-      "lua",
-      "cpp",
-      "python",
-      "rust",
-      "jsonc",
-      "dart",
-      "css",
-      "yaml",
-      "sql",
-      "vue",
-    },
+    ensure_installed = ts_ensure_installed,
   })
 
   lprint("loading ts")
@@ -229,10 +211,27 @@ local treesitter_context = function(width)
 
   return " " .. context
 end
+local definitions = {
+  ft = {
+    { "FileType", "*", "lua require('core.pack').auto_compile()" },
+  },
+}
+
+vim.api.nvim_create_autocmd({"FileType"}, {
+  group = vim.api.nvim_create_augroup("SyntaxFtAuGroup", {}),
+  callback = function()
+    local ft = vim.o.ft
+    if vim.tbl_contains(ts_ensure_installed, ft) then
+      return
+    end
+    vim.cmd("ownsyntax on")
+  end,
+})
 return {
   treesitter = treesitter,
   treesitter_obj = treesitter_obj,
   treesitter_ref = treesitter_ref,
   textsubjects = textsubjects,
   context = treesitter_context,
+  installed = ts_ensure_installed,
 }
