@@ -16,6 +16,7 @@ tools["kristijanhusak/vim-dadbod-ui"] = {
 }
 
 tools["vim-test/vim-test"] = { cmd = { "TestNearest", "TestFile", "TestSuite" } }
+tools["will133/vim-dirdiff"] = { cmd = { "DirDiff"} }
 
 tools["editorconfig/editorconfig-vim"] = {
   opt = true,

@@ -17,6 +17,7 @@ local c = {
   gray_one = "#B5B5B5",
   gray_two = "#556585",
 
+  green = "#4CEF7B",
   green_one = "#BCFF7B",
   green_two = "#66FF61",
   green_three = "#B8BB26",
@@ -24,6 +25,7 @@ local c = {
   green_five = "#59DE73",
   green_six = "#3AF8B7",
 
+  blue= "#3552E5",
   blue_one = "#3572A5",
   blue_two = "#519ABA",
   blue_three = "#73EACC",
@@ -36,20 +38,24 @@ local c = {
   purple_two = "#D9ACF4",
   purple_four = "#755799",
 
+  yellow = "#ECE683",
   yellow_one = "#ECF683",
   yellow_two = "#FCF6A3",
   yellow_three = "#CCD663",
 
+  red = "#FF3263",
   red_one = "#FF7263",
   red_two = "#FF91A4",
   red_three = "#D82B26",
   red_four = "#FB4934",
 
+  pink = "#D57780",
   pink_one = "#AF95A3",
   pink_two = "#FFB5F3",
 
-  orange_one = "#FE8019",
-  orange_two = "#FEC059",
+  orange = "#FE8019",
+  orange_one = "#FE6019",
+  orange_two = "#FE9059",
 
   background_one = "#3C3836",
   background_two = "#262729",
@@ -132,6 +138,7 @@ local Usual = {
     MatchParen = { underline = true, bold = true, bg = c.background_three },
     Pmenu = { fg = c.white_two, bg = c.background_two },
     Pmenusel = { fg = c.white, bg = c.purple_one },
+    PmenuThumb = { fg = c.blue, bg='Grey', bold = true, italic = true},
     VertSplit = { fg = c.background_three_two },
     Underlined = { fg = c.blue, underline = true, sp = c.blue }, -- text that stands out, HTML links
     ErrorMsg = { fg = c.pink_one, bold = true },
@@ -184,6 +191,8 @@ local Usual = {
     TSMethod = { fg = c.green_two, bold = true },
     TSType = { fg = c.red_two },
     TSTypeBuiltin = { fg = c.purple_two, italic = true },
+    TSDefinition = { link = "Keyword"},
+    TSDefinitionUsage = { fg = "IncSearch"},
     TSException = { fg = c.blue_four },
     TSEnvironmentName = { fg = c.blue_four },
     TSTitle = { fg = c.green_one, bold = true },
