@@ -1,7 +1,7 @@
 local enable = false
 local langtree = false
 -- stylua: ignore start
-local ts_ensure_installed = { "go", "css", "html", "javascript", "typescript", "jsdoc", "json", "c", "java", "toml", "tsx", "lua", "cpp", "python", "rust", "jsonc", "dart", "css", "yaml", "sql", "vue" }
+local ts_ensure_installed = { "go", "css", "html", "javascript", "typescript", "jsdoc", "json", "c", "java", "toml", "tsx", "lua", "cpp", "python", "rust", "jsonc", "yaml", "sql", "vue", "vim"}
 -- stylua: ignore end
 
 local treesitter = function()
@@ -224,7 +224,13 @@ vim.api.nvim_create_autocmd({"FileType"}, {
     if vim.tbl_contains(ts_ensure_installed, ft) then
       return
     end
-    vim.cmd("ownsyntax on")
+    -- in case ts not installed
+
+    local fsize = vim.fn.getfsize(vim.fn.expand("%:p:f")) or 1
+    if fsize < 100000 then
+     vim.cmd("syntax on")
+    end
+
   end,
 })
 return {
