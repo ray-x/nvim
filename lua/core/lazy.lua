@@ -209,13 +209,13 @@ vim.defer_fn(function()
   require("vscripts.cursorhold")
 
   local gitrepo = vim.fn.isdirectory(".git/index")
+  loader("hydra.nvim")
   if gitrepo then
     loader("gitsigns.nvim") -- neogit
     loader("git-conflict.nvim")
     require("modules.editor.hydra").hydra_git()
   end
 
-  loader("hydra.nvim")
   -- lprint("all done", os.clock())
   if vim.fn.executable(vim.g.python3_host_prog) == 0 then
     print("file not find, please update path setup", vim.g.python3_host_prog)
