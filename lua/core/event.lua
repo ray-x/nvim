@@ -12,14 +12,6 @@ api.nvim_create_autocmd({ "BufWritePre" }, {
   end,
 })
 
-api.nvim_create_autocmd("TextYankPost", {
-  group = cmd_group,
-  pattern = "*",
-  callback = function()
-    vim.highlight.on_yank({ higroup = "IncSearch", timeout = 400 })
-  end,
-})
-
 function autocmd.nvim_create_augroups(definitions)
   for group_name, defs in pairs(definitions) do
     local gn = api.nvim_create_augroup("LocalAuGroup" .. group_name, {})
