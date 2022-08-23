@@ -130,11 +130,14 @@ kitty.get_kitty_background = function()
   end
 end
 
-local function get_color(group, attr)
-  return fn.synIDattr(fn.synIDtrans(fn.hlID(group)), attr)
+local function get_color(hlgp, attr)
+  return fn.synIDattr(fn.synIDtrans(fn.hlID(hlgp)), attr)
 end
 
+local autocmd = vim.api.nvim_create_autocmd
+local autogroup = vim.api.nvim_create_augroup
 local change_background = function(color)
+  lprint("change_background", color)
   local arg = 'background="' .. color .. '"'
   local command = "kitty @ set-colors " .. arg
   local handle = io.popen(command)
@@ -142,10 +145,38 @@ local change_background = function(color)
     handle:close()
   end
 end
+local function on_leave(color)
+  autocmd("VimLeavePre", {
+    callback = function()
+      local cl = color or vim.g.ORIGINAL_KITTY_BG_COLOR
+      if cl then
+        change_background(cl)
+      end
+    end,
+    group = autogroup("BackgroundRestore", { clear = true }),
+  })
+end
 
-local autocmd = vim.api.nvim_create_autocmd
-local autogroup = vim.api.nvim_create_augroup
-local bg_change = autogroup("BackgroundChange", { clear = true })
+kitty.change_bg = function(color)
+  local Job = require("plenary.job")
+
+  Job:new({
+    command = "kitty",
+    args = { "@", "get-colors" },
+    cwd = "/usr/bin/",
+    on_exit = function(j, _)
+      local bg = split(j:result()[4])[2]
+      vim.g.ORIGINAL_KITTY_BG_COLOR = bg
+      if bg ~= color then
+        change_background(color)
+      end
+    end,
+  }):start()
+
+  on_leave()
+end
+
+-- local bg_change = autogroup("BackgroundChange", { clear = true })
 
 -- autocmd("ColorScheme", {
 --   pattern = "*",
@@ -172,16 +203,22 @@ vim.api.nvim_create_user_command("SetKittyBg", function(opts)
   if opts.fargs ~= nil then
     color = opts.fargs[1]
   end
-  if color == nil then return end
-  change_background(color)
+  if color == nil then
+    return
+  end
+  kitty.change_background(color)
   autocmd("VimLeavePre", {
     callback = function()
       if vim.g.ORIGINAL_KITTY_BG_COLOR ~= nil then
-        change_background(vim.g.ORIGINAL_KITTY_BG_COLOR)
+        kitty.change_background(vim.g.ORIGINAL_KITTY_BG_COLOR)
       end
     end,
     group = autogroup("BackgroundRestore", { clear = true }),
   })
+end, { nargs = "*" })
+
+vim.api.nvim_create_user_command("KittyBg", function(opts)
+  kitty.change_bg(opts.fargs[1])
 end, { nargs = "*" })
 
 -- kitty @ get-colors | grep -w "background" | sed "s/   */:/g" | cut -d : -f 2

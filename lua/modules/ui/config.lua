@@ -292,6 +292,8 @@ end
 
 function config.aurora()
   lprint("aurora")
+
+  require("utils.kitty").change_bg("#211c2f")
   vim.cmd("colorscheme aurora")
   -- vim.cmd("hi Normal guibg=NONE ctermbg=NONE") -- remove background
   -- vim.cmd("hi EndOfBuffer guibg=NONE ctermbg=NONE") -- remove background
@@ -346,17 +348,17 @@ end
 
 vim.api.nvim_create_user_command("Light", function(opts)
   vim.cmd("set background=light")
-  if opts.fargs == "limestone" then
+  if opts.fargs[1] == "limestone" then
     vim.cmd("Limestone")
   end
-  if opts.fargs == "gruvbox" then
+  if opts.fargs[1] == "gruvbox" then
     vim.cmd("packadd gruvbox-material")
     vim.g.gruvbox_material_background = "light"
     vim.cmd("colorscheme gruvbox-material")
     vim.cmd("doautocmd ColorScheme")
     return
   end
-  if opts.fargs == "catppuccin" then
+  if opts.fargs[1] == "catppuccin" then
     vim.cmd("packadd catppuccin")
     vim.g.catppuccin_flavour = "latte"
     require("catppuccin").setup({ lsp_trouble = true, neogit = true, hop = true })
@@ -404,11 +406,12 @@ function config.starry()
   vim.g.starry_set_hl = true
   vim.g.starry_style = "earlysummer" -- 'moonlight' emerald middlenight_blue earlysummer
   vim.g.starry_style = "mariana" -- 'moonlight' emerald middlenight_blue earlysummer
-  vim.g.starry_style = "oceanic" -- 'moonlight' emerald middlenight_blue earlysummer -- vim.g.starry_style = "darksolar" -- 'moonlight' emerald middlenight_blue earlysummer
+  -- vim.g.starry_style = "oceanic" -- 'moonlight' emerald middlenight_blue earlysummer -- vim.g.starry_style = "dark_solar" -- 'moonlight' emerald middlenight_blue earlysummer
+  -- vim.g.starry_style = "dark_solar"
   vim.g.starry_style_fix = true
   -- config.default()
-
   vim.g.starry_disable_background = true
+
   if vim.g.starry_style == "limestone" then
     vim.g.starry_disable_background = false
   end
@@ -418,6 +421,27 @@ function config.starry()
     require("starry").clear()
     require("starry").set("limestone")
   end, { nargs = "*" })
+end
+
+function config.starry_conf()
+  require("starry").clear()
+  require("starry").set(vim.g.starry_style)
+  if vim.g.starry_disable_background ~= true then
+    return
+  end
+
+  local colors = require("starry.colors").color_table()
+  local bg = colors.bg
+  if vim.g.starry_style == "limestone" then
+    vim.api.nvim_set_hl(0, "Normal", { bg = bg })
+    return
+  end
+
+  if vim.g.starry_style == "ukraine" then
+    vim.api.nvim_set_hl(0, "Normal", { bg = bg })
+    return
+  end
+  require("utils.kitty").change_bg(colors.bg)
 end
 
 vim.api.nvim_create_user_command("Transparent", function(opts)

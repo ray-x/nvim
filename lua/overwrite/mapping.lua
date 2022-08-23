@@ -1,8 +1,6 @@
 local bind = require("keymap.bind")
-local map_cr = bind.map_cr
-local map_cu = bind.map_cu
 local map_cmd = bind.map_cmd
-
+local map_func = bind.map_func
 local loader = require("packer").loader
 local K = {}
 local function check_back_space()
@@ -14,9 +12,7 @@ local function check_back_space()
   end
 end
 
-local t = function(str)
-  return vim.api.nvim_replace_termcodes(str, true, true, true)
-end
+-- stylua: ignore start 
 
 local keys = {
   -- ["n|F13"]  = map_cmd("<S-F1>"),
@@ -33,7 +29,7 @@ local keys = {
   -- ["n|F24"]  = map_cmd("<S-F12>"),
   --
   --
-  ["n|<M-h>"] = map_cu("Clap history"):with_noremap():with_silent(),
+  ["n|<M-h>"] = map_cmd("Clap history"):with_noremap():with_silent(),
 
   -- ["n|<Leader>fb"] = map_cu("Clap marks"):with_noremap():with_silent(),
   -- ["n|<Leader>ff"] = map_cu("Clap files ++finder=rg --ignore --hidden --files"):with_noremap():with_silent(),
@@ -41,66 +37,73 @@ local keys = {
   -- ["n|<Leader>fu"] = map_cu("Clap git_diff_files"):with_noremap():with_silent(),
   -- ["n|<Leader>fv"] = map_cu("Clap grep ++query=@visual"):with_noremap():with_silent(),
   -- ["n|<Leader>fh"] = map_cu("Clap command_history"):with_noremap():with_silent(),
-  ["n|<Leader>r"] = map_cmd("v:lua.run_or_test()"):with_expr(),
-  ["v|<Leader>r"] = map_cmd("v:lua.run_or_test()"):with_expr(),
 
-  ["n|<Leader>R"] = map_cmd("v:lua.run_or_test(v:true)"):with_expr(),
-  ["v|<Leader>R"] = map_cmd("v:lua.run_or_test(v:true)"):with_expr(),
-  ["n|<Leader>bp"] = map_cu("BufferLinePick"):with_noremap():with_silent(),
+  ["n|<F5>"] = map_func(function()
+      return _G.run_or_test(true)
+    end)
+    :with_expr()
+    :with_desc("run or test"),
+  ["n|<Leader>r"] = map_func(function() return _G.run_or_test() end):with_expr():with_desc("run or test"),
+
+  ["v|<Leader>r"] = map_func(function() _G.run_or_test() end):with_expr():with_desc("run or test"),
+
+  ["n|<Leader>R"] = map_func(function() _G.run_or_test(true) end):with_expr():with_desc("run or test"),
+  ["v|<Leader>R"] = map_func(function() _G.run_or_test(true) end):with_expr():with_desc("run or test"),
+
+  ["n|<Leader>bp"] = map_cmd("BufferLinePick"):with_noremap():with_silent(),
 
   ["n|<C-k>"] = map_cmd("v:lua.ctrl_k()"):with_silent():with_expr(),
 
   -- Plugin QuickRun
-  -- ["n|<Leader>r"]     = map_cr("<cmd> lua require'selfunc'.run_command()"):with_noremap():with_silent(),
+  -- ["n|<Leader>r"]     = map_cmd("<cmd> lua require'selfunc'.run_command()"):with_noremap():with_silent(),
   -- Plugin Vista
   -- ["n|<Leader>v"] = map_cu("Vista!!"):with_noremap():with_silent(),
   -- Plugin SplitJoin
-  ["n|<Leader><Leader>s"] = map_cr("SplitjoinSplit"),
-  ["n|<Leader><Leader>j"] = map_cr("SplitjoinJoin"),
-  ["n|<F13>"] = map_cr("NvimTreeToggle"),
-  ["n|hW"] = map_cr("HopWordBC"),
-  ["n|hw"] = map_cr("HopWordAC"),
-  ["n|hl"] = map_cr("HopLineStartAC"),
-  ["n|hL"] = map_cr("HopLineStartBC"),
+  ["n|<Leader><Leader>s"] = map_cmd("SplitjoinSplit"),
+  ["n|<Leader><Leader>j"] = map_cmd("SplitjoinJoin"),
+  ["n|<F13>"] = map_cmd("NvimTreeToggle"),
+  ["n|hW"] = map_cmd("HopWordBC"),
+  ["n|hw"] = map_cmd("HopWordAC"),
+  ["n|hl"] = map_cmd("HopLineStartAC"),
+  ["n|hL"] = map_cmd("HopLineStartBC"),
 
-  ["xon|f"] = map_cmd("<cmd>lua  Line_ft('f')<cr>"),
-  ["xon|F"] = map_cmd("<cmd>lua  Line_ft('F')<cr>"),
-  ["xon|t"] = map_cmd("<cmd>lua  Line_ft('t')<cr>"),
-  ["xon|T"] = map_cmd("<cmd>lua  Line_ft('T')<cr>"),
-  ["n|s"] = map_cmd("<cmd>lua hop1(1)<CR>"):with_silent(),
-  ["n|S"] = map_cmd("<cmd>lua hop1()<CR>"):with_silent(),
-  ["x|s"] = map_cmd("<cmd>lua hop1(1)<CR>"):with_silent(),
-  ["x|S"] = map_cmd("<cmd>lua hop1()<CR>"):with_silent(),
-  -- ["v|<M-s>"] = map_cmd("<cmd>lua require'hop'.hint_char1()<cr>"):with_silent():with_expr(),
-  -- ["n|<Space>s"] = map_cr("HopChar2"),
-  ["n|<M-s>"] = map_cr("HopChar2AC"),
-  ["n|<M-S>"] = map_cr("HopChar2BC"),
-  ["xv|<M-s>"] = map_cmd("<cmd>HopChar2AC<CR>"):with_silent(),
-  ["xv|<M-S>"] = map_cmd("<cmd>HopChar2BC<CR>"):with_silent(),
-  ["n|<Space>F"] = map_cr("HopPattern"),
-  ["n|<Space>]"] = map_cr("HopChar1MW"),
-  ["n|<Space>["] = map_cr("HopChar2MW"),
+  ["xon|f"] = map_cmd("lua  Line_ft('f')"),
+  ["xon|F"] = map_cmd("lua  Line_ft('F')"),
+  ["xon|t"] = map_cmd("lua  Line_ft('t')"),
+  ["xon|T"] = map_cmd("lua  Line_ft('T')"),
+  ["n|s"] = map_cmd("lua hop1(1)"):with_silent(),
+  ["n|S"] = map_cmd("lua hop1()"):with_silent(),
+  ["x|s"] = map_cmd("lua hop1(1)"):with_silent(),
+  ["x|S"] = map_cmd("lua hop1()"):with_silent(),
+  -- ["v|<M-s>"] = map_cmd("lua require'hop'.hint_char1()"):with_silent():with_expr(),
+  -- ["n|<Space>s"] = map_cmd("HopChar2"),
+  ["n|<M-s>"] = map_cmd("HopChar2AC"),
+  ["n|<M-S>"] = map_cmd("HopChar2BC"),
+  ["xv|<M-s>"] = map_cmd("HopChar2AC"):with_silent(),
+  ["xv|<M-S>"] = map_cmd("HopChar2BC"):with_silent(),
+  ["n|<Space>F"] = map_cmd("HopPattern"),
+  ["n|<Space>]"] = map_cmd("HopChar1MW"),
+  ["n|<Space>["] = map_cmd("HopChar2MW"),
   -- clap --
-  ["n|<d-C>"] = map_cu("Clap | startinsert"),
-  ["i|<d-C>"] = map_cu("Clap | startinsert"):with_noremap():with_silent(),
-  ["n|<Leader>df"] = map_cu("Clap dumb_jump ++query=<cword> | startinsert"),
-  ["n|<F5>"] = map_cmd("v:lua.run_or_test(v:true)"):with_expr(),
-  ["n|<F9>"] = map_cr("GoBreakToggle"),
+  ["n|<d-C>"] = map_cmd("Clap | startinsert"),
+  ["i|<d-C>"] = map_cmd("Clap | startinsert"):with_noremap():with_silent(),
+  ["n|<Leader>df"] = map_cmd("Clap dumb_jump ++query=<cword> | startinsert"),
+  ["n|<F9>"] = map_cmd("GoBreakToggle"),
   -- session
   -- ["n|<Leader>ss"] = map_cu('SessionSave'):with_noremap(),
   -- ["n|<Leader>sl"] = map_cu('SessionLoad'):with_noremap(),
 
-  ["n|<Space>M"] = map_cmd([[<cmd> lua require("harpoon.mark").toggle_file()<CR>]]),
-  ["n|<Space>m1"] = map_cmd([[<cmd> lua require("harpoon.ui").nav_file(1)<CR>]]),
-  ["n|<Space>m2"] = map_cmd([[<cmd> lua require("harpoon.ui").nav_file(2)<CR>]]),
-  ["n|<Space>m3"] = map_cmd([[<cmd> lua require("harpoon.ui").nav_file(3)<CR>]]),
-  ["n|<Space>m4"] = map_cmd([[<cmd> lua require("harpoon.ui").nav_file(4)<CR>]]),
-  ["n|<Space>m"] = map_cmd([[<cmd> Telescope harpoon marks <CR>]]),
-  ["v|<Leader>re"] = map_cmd("<esc><cmd>lua require('refactoring').refactor('Extract Function')<cr>"),
-  ["v|<Leader>rf"] = map_cmd("<esc><cmd>lua require('refactoring').refactor('Extract Function To File')<cr>"),
-  ["v|<Leader>rt"] = map_cmd("<esc><cmd>lua require('refactoring').refactor()<cr>"),
+  ["n|<Space>M"] = map_cmd([[lua require("harpoon.mark").toggle_file()]]),
+  ["n|<Space>m1"] = map_cmd([[lua require("harpoon.ui").nav_file(1)]]),
+  ["n|<Space>m2"] = map_cmd([[lua require("harpoon.ui").nav_file(2)]]),
+  ["n|<Space>m3"] = map_cmd([[lua require("harpoon.ui").nav_file(3)]]),
+  ["n|<Space>m4"] = map_cmd([[lua require("harpoon.ui").nav_file(4)]]),
+  ["n|<Space>m"] = map_cmd([[Telescope harpoon marks ]]),
+  ["v|<Leader>re"] = map_cmd("<esc>lua require('refactoring').refactor('Extract Function')"),
+  ["v|<Leader>rf"] = map_cmd("<esc>lua require('refactoring').refactor('Extract Function To File')"),
+  ["v|<Leader>rt"] = map_cmd("<esc>lua require('refactoring').refactor()"),
 
-  ["v|<Leader>gs"] = map_cmd("<cmd>lua require('utils.git').qf_add()<cr>"),
+  ["v|<Leader>gs"] = map_cmd("lua require('utils.git').qf_add()"),
 
   ["n|<F10>"] = {
     cmd = function()
@@ -124,12 +127,13 @@ local keys = {
   },
 
   -- -- Add word to search then replace
-  -- vim.keymap.set('n', '<Leader>j', [[<cmd>let @/='\<'.expand('<cword>').'\>'<cr>"_ciw]])
+  -- vim.keymap.set('n', '<Leader>j', [[let @/='\<'.expand('<cword>').'\>'"_ciw]])
   --
   -- -- Add selection to search then replace
-  -- vim.keymap.set('x', '<Leader>j', [[y<cmd>let @/=substitute(escape(@", '/'), '\n', '\\n', 'g')<cr>"_cgn]])
+  -- vim.keymap.set('x', '<Leader>j', [[ylet @/=substitute(escape(@", '/'), '\n', '\\n', 'g')"_cgn]])
 }
 
+-- stylua: ignore end 
 --
 vim.cmd([[vnoremap  <leader>y  "+y]])
 vim.cmd([[nnoremap  <leader>Y  "+yg_]])
@@ -144,6 +148,7 @@ vim.cmd([[inoremap  <D-v>  <CTRL-r>*]])
 --
 
 _G.run_or_test = function(debug)
+  -- local function rot()
   local ft = vim.bo.filetype
   local fn = vim.fn.expand("%")
   fn = string.lower(fn)
@@ -151,13 +156,13 @@ _G.run_or_test = function(debug)
     if not packer_plugins["nvim-luadev"].loaded then
       loader("nvim-luadev")
     end
-    return "<Plug>(Luadev-Run)"
+    return [[<Plug>Luadev-Run]]
   end
   if ft == "lua" then
     local f = string.find(fn, "spec")
     if f == nil then
       -- let run lua test
-      return "<cmd>luafile %<CR>"
+      return "<CMD>luafile %<CR>"
     end
     return "<Plug>PlenaryTestFile"
   end
@@ -166,18 +171,20 @@ _G.run_or_test = function(debug)
     if f == nil then
       -- let run lua test
       if debug then
-        return "<cmd>GoDebug <CR>"
+        return "<CMD>GoDebug <CR>"
       else
-        return "<cmd>GoRun <CR>"
+        return "<CMD>GoRun<CR>"
       end
     end
 
     if debug then
-      return "<cmd>GoDebug -t<CR>"
+      return "<CMD>GoDebug -t<CR>"
     else
-      return "<cmd>GoTestFunc -F <CR>"
+      return "<CMD>GoTestFunc -F<CR>"
     end
   end
+  -- end
+  -- return rot
 end
 
 _G.hop1 = function(ac)

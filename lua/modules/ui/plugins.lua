@@ -101,22 +101,7 @@ ui["catppuccin/nvim"] = {
 ui[plugin_folder() .. "starry.nvim"] = {
   opt = true,
   setup = conf.starry,
-  config = function()
-    require("starry").clear()
-    require("starry").set(vim.g.starry_style)
-    if vim.g.starry_disable_background ~= true then
-      return
-    end
-    if vim.g.starry_style == "limestone" then
-      vim.api.nvim_set_hl(0, "Normal", { bg = "#E0E6D8" })
-      return
-    end
-
-    if vim.g.starry_style == "ukraine" then
-      vim.api.nvim_set_hl(0, "Normal", { bg = "#1056B8" })
-      return
-    end
-  end,
+  config = conf.starry_conf,
 }
 
 -- really good one, only issue is dependency ...
