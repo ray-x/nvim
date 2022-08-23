@@ -129,8 +129,10 @@ function config.nvim_cmp()
         if cmp.visible() then
           cmp.abort()
           cmp.close()
+          vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-y>", true, true, true), "n", true)
+        else
+          vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<End>", true, true, true), "i", true)
         end
-        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-y>", true, true, true), "n", true)
       end,
       ["<CR>"] = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true }),
       -- ['<Tab>'] = cmp.mapping(tab, {'i', 's'}),
