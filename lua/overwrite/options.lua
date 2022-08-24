@@ -60,7 +60,7 @@ function options:load_options()
     }
   end
   local bw_local = {
-    synmaxcol = 500,
+    synmaxcol = 2000, -- handle long lines, esp html
     textwidth = 120,
     colorcolumn = "110", -- will reformat lines more than 120, but show ruler at 110
     wrap = true,
@@ -78,12 +78,12 @@ function options:load_options()
   vim.cmd('vmap <LeftRelease> "*ygv')
   vim.cmd("unlet loaded_matchparen")
 
-  local global = require 'core.global'
+  local global = require("core.global")
   local win = global.is_windows
   if not win then
     vim.g.python3_host_prog = "/usr/bin/python3"
   else
-    vim.notify('pleas setup python3')
+    vim.notify("pleas setup python3")
   end
   -- vim.g.python_host_prog = ""
 end

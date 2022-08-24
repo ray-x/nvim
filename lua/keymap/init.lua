@@ -35,7 +35,7 @@ local plug_map = {
   ["v|<d-F>"] = map_cmd([[lua require"utils.telescope".grep_string_viusal()]]):with_noremap():with_silent(),
   ["in|<d-f>"] = map_cmd([[lua require"utils.telescope".grep_string_cursor_raw()]]):with_noremap():with_silent(),
   ["v|<d-f>"] = map_cmd([[lua require"utils.telescope".grep_string_visual_raw()]]):with_expr():with_silent(),
-  ["n|w"] = map_cmd('v:lua.word_motion_move("w")'):with_silent():with_expr(),
+  ["n|w"] = map_func(function() return '<Plug>WordMotion_w' end):with_expr(),
 
   ["n|<Leader>do"] = map_cmd("DiffviewOpen"):with_noremap():with_silent(),
   ["n|<Leader>dc"] = map_cmd("DiffviewClose"):with_noremap():with_silent(),

@@ -286,7 +286,7 @@ editor["AndrewRadev/splitjoin.vim"] = {
 
 editor["chaoren/vim-wordmotion"] = {
   opt = true,
-  fn = { "<Plug>WordMotion_w" },
+  keys = { "<Plug>WordMotion_w", "<Plug>WordMotion_b" },
   -- keys = {'w','W', 'gE', 'aW'}
 }
 
