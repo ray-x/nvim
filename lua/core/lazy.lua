@@ -228,3 +228,5 @@ if plugin_folder() == [[~/github/ray-x/]] then
   vim.cmd([[set shell=/usr/bin/fish]])
   vim.cmd([[command! GD term gd]])
 end
+
+load_colorscheme(loading_theme)
