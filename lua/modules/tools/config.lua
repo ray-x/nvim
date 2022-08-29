@@ -429,9 +429,17 @@ function config.floaterm()
     gd:toggle()
     vim.cmd("normal! a")
   end
+
+  function _jest_test()
+    local cmd = "npx vue-cli-service test:unit --testPathPattern=" .. [["]] .. vim.fn.expand('%:t') .. [["]]
+    local gd = Terminal:new({ cmd = cmd, hidden = true })
+    gd:toggle()
+  end
+
   vim.cmd("command! LG lua _lazygit_toggle()")
   vim.cmd("command! -nargs=* GD lua _gd_toggle(<f-args>)")
   vim.cmd("command! LD lua _lazydocker_toggle()")
+  vim.cmd("command! Jest lua _jest_test()")
 
   local fzf = Terminal:new({ cmd = "fzf", hidden = true })
 
@@ -483,14 +491,37 @@ function config.grammcheck()
   vim.cmd([[GrammarousCheck]])
 end
 function config.vim_test()
-  vim.g["test#strategy"] = { nearest = "neovim", file = "neovim", suite = "neovim" }
+  vim.g["test#strategy"] = { nearest = "neovim", file = "neovim", suite = "kitty" }
   vim.g["test#neovim#term_position"] = "vert botright 60"
   vim.g["test#go#runner"] = "ginkgo"
+  vim.g["test#javascript#runner"] = "jest"
   -- nmap <silent> t<C-n> :TestNearest<CR>
   -- nmap <silent> t<C-f> :TestFile<CR>
   -- nmap <silent> t<C-s> :TestSuite<CR>
   -- nmap <silent> t<C-l> :TestLast<CR>
   -- nmap <silent> t<C-g> :TestVisit<CR>
+end
+
+function config.neotest()
+  require("neotest").setup({
+    adapters = {
+      require("neotest-python")({
+        dap = { justMyCode = false },
+      }),
+      require("neotest-plenary"),
+      require("neotest-vim-test")({
+        ignore_file_types = { "vim", "lua" },
+      }),
+      require("neotest-jest")({
+        jestCommand = "npm test --",
+        jestConfigFile = "custom.jest.config.ts",
+        env = { CI = true },
+        cwd = function(path)
+          return vim.fn.getcwd()
+        end,
+      }),
+    },
+  })
 end
 
 function config.mkdp()

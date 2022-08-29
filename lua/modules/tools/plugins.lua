@@ -15,7 +15,20 @@ tools["kristijanhusak/vim-dadbod-ui"] = {
   end,
 }
 
-tools["vim-test/vim-test"] = { cmd = { "TestNearest", "TestFile", "TestSuite" } }
+tools["vim-test/vim-test"] = { cmd = { "TestNearest", "TestFile", "TestSuite" },
+  setup = conf.vim_test
+}
+
+tools['nvim-neotest/neotest'] = {
+  module = {'neotest-jest', 'neotest'},
+  config = conf.neotest
+}
+
+tools['haydenmeade/neotest-jest'] = {
+  module = {'neotest-jest', 'neotest'},
+  config = conf.neotest_jest
+}
+
 tools["will133/vim-dirdiff"] = { cmd = { "DirDiff"} }
 
 tools["editorconfig/editorconfig-vim"] = {
