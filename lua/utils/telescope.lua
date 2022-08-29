@@ -510,8 +510,9 @@ end
 
 M.grep_string_cursor_raw = function()
   local w = vim.fn.expand("<cword>")
+  local pwd = vim.fn.expand("%:h")
   require("telescope").extensions.live_grep_args.live_grep_args({
-    default_text = "'" .. w .. "'",
+    default_text = "'" .. w .. "'" ..  " --type " .. vim.o.ft .. " " .. pwd,
   })
 end
 

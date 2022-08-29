@@ -54,4 +54,4 @@ local opts = { nargs = "?", range = "%", addr = "lines" }
 if vim.fn.exists("nvim-0.8") == 1 then
   opts.preview = trim_space
 end
-vim.api.nvim_create_user_command("TrimTrailingWhitespace", trim_space, opts)
+vim.api.nvim_create_user_command("TrimLSpace", trim_space, opts)
