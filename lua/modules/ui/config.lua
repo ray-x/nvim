@@ -292,8 +292,20 @@ end
 
 function config.aurora()
   lprint("aurora")
-
-  require("utils.kitty").change_bg("#211c2f")
+  if day == nil then
+    local h = tonumber(os.date("%H"))
+    if h > 7 and h < 18 then
+      day = "light"
+    else
+      day = "dark"
+    end
+  end
+  if day == "dark" then
+    vim.g.aurora_darker = 1
+    require("utils.kitty").change_bg("#141020")
+  else
+    require("utils.kitty").change_bg("#211c2f")
+  end
   vim.cmd("colorscheme aurora")
   -- vim.cmd("hi Normal guibg=NONE ctermbg=NONE") -- remove background
   -- vim.cmd("hi EndOfBuffer guibg=NONE ctermbg=NONE") -- remove background
@@ -401,14 +413,14 @@ function config.starry()
   vim.g.starry_italic_string = false
   vim.g.starry_contrast = true
   vim.g.starry_borders = true
-  vim.g.starry_deep_black = true --"OLED deep black
+  -- vim.g.starry_deep_black = true --"OLED deep black
   vim.g.starry_daylight_switch = true
   vim.g.starry_set_hl = true
-  vim.g.starry_style = "earlysummer" -- 'moonlight' emerald middlenight_blue earlysummer
-  vim.g.starry_style = "mariana" -- 'moonlight' emerald middlenight_blue earlysummer
+  -- vim.g.starry_style = "earlysummer" -- 'moonlight' emerald middlenight_blue earlysummer
+  -- vim.g.starry_style = "dracula" -- "mariana" --  emerald middlenight_blue earlysummer
   -- vim.g.starry_style = "oceanic" -- 'moonlight' emerald middlenight_blue earlysummer -- vim.g.starry_style = "dark_solar" -- 'moonlight' emerald middlenight_blue earlysummer
   -- vim.g.starry_style = "dark_solar"
-  vim.g.starry_style_fix = true
+  -- vim.g.starry_style_fix = true
   -- config.default()
   vim.g.starry_disable_background = true
 

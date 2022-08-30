@@ -32,18 +32,20 @@ function config.refactor()
     end
 
     local opts = require("telescope.themes").get_cursor() -- set personal telescope options
-    require("telescope.pickers").new(opts, {
-      prompt_title = "refactors",
-      finder = require("telescope.finders").new_table({
-        results = require("refactoring").get_refactors(),
-      }),
-      sorter = require("telescope.config").values.generic_sorter(opts),
-      attach_mappings = function(_, map)
-        map("i", "<CR>", _refactor)
-        map("n", "<CR>", _refactor)
-        return true
-      end,
-    }):find()
+    require("telescope.pickers")
+      .new(opts, {
+        prompt_title = "refactors",
+        finder = require("telescope.finders").new_table({
+          results = require("refactoring").get_refactors(),
+        }),
+        sorter = require("telescope.config").values.generic_sorter(opts),
+        attach_mappings = function(_, map)
+          map("i", "<CR>", _refactor)
+          map("n", "<CR>", _refactor)
+          return true
+        end,
+      })
+      :find()
   end
 end
 
@@ -218,16 +220,18 @@ function config.navigator()
     },
   }
   if plugin_folder() == [[~/github/ray-x/]] then
-    nav_cfg.lsp.gopls = function()
-      local go = pcall(require, "go")
-      if go then
-        local cfg = require("go.lsp").config()
-        cfg.on_attach = function(client)
-          client.server_capabilities.documentFormattingProvider = false -- efm/null-ls
+    if vim.o.ft == "go" or vim.o.ft == "mod" then
+      nav_cfg.lsp.gopls = function()
+        local go = pcall(require, "go")
+        if go then
+          local cfg = require("go.lsp").config()
+          cfg.on_attach = function(client)
+            client.server_capabilities.documentFormattingProvider = false -- efm/null-ls
+          end
+          return cfg
+        else
+          return {}
         end
-        return cfg
-      else
-        return {}
       end
     end
   end
