@@ -23,7 +23,7 @@ nvim+kitty](https://user-images.githubusercontent.com/1681295/109258178-db2e6d80
 
 ## Battery included
 
-About 120 plugins and 1600 lines of lua and vim code.
+About 140 plugins and 1600 lines of lua and vim code.
 
 ### Commands
 
@@ -33,7 +33,8 @@ About 120 plugins and 1600 lines of lua and vim code.
 - FZF: fzf
 - Spell: spell check
 - Gram: Grammar check
-- Kwdb: better `db`
+- Kwdb: better `bdelete`
+- Gd: gitdiff(with fzf and delta)
 - Rg: ripgrep with telescope
 
 ## Neovim Plugins
@@ -48,7 +49,7 @@ I used following plugin a lots
   This was the last Dein/Packer dual supports version I have (init.vim has a flag to choose).
   ATM, minium support for vim. Most plugins only works under neovim 0.5.1+.
 
-  I followed Raphael(a.k.a glepnir) https://github.com/glepnir/nvim dotfiles. He provides a good wrapper for
+  I followed Raphael(a.k.a glepnir) https://github.com/glepnir/nvim dotfiles. He provides a great wrapper for
   Packer. I have an `overwrite` folder which will override the settings. Also, lots of changes in modules/plugins.
   setup
   A.T.M. nvim-compe/cmp as a completion engine with LSP, LSP saga. vim-multi-cursor, clap/telescope. treesitter,
@@ -61,22 +62,22 @@ I used following plugin a lots
 
 - nvim-lsp with [navigator.lua](https://github.com/ray-x/navigator.lua)
 
-  I turn off vim-go auto-complete/LSP and turn to nvim-lsp. It adds around 200ms time and some of the extensions
+  vim-go and coc add around 200ms time and some of the extensions
   might crash when I using (but it hard to check which because ~4 node.js services coc forked)
   Some useful script from TJ, and [glepnir](https://github.com/glepnir)
 
   nvim-tree: file-explorer (lightweight and fast)
   hrsh7th/nvim-cmp: auto-complete
-  vsnip: code snipts(Load snippet from VSCode extension). It is a full featured IDE.
+  vsnip + luasnips: code snipts(Load snippet from VSCode extension). It is a full featured IDE.
 
   ![document symbol](https://github.com/ray-x/files/blob/master/img/navigator/doc_symbol.gif?raw=true)
 
-- ALE -> Efm
+- ALE -> Efm -> null-ls
 
-Lint and format moved to efm-server
+Lint and format moved to null-ls.
 
 - Programming support:
-  Treesitter, nvim-lsp and [navigator.lua](https://github.com/ray-x/navigator.lua), for golang, use [go.nvim](https://github.com/ray-x/go.nvim)
+  Treesitter, nvim-lsp and [navigator.lua](https://github.com/ray-x/navigator.lua), for golang, [go.nvim](https://github.com/ray-x/go.nvim)
 
 - Debug:
 
@@ -93,7 +94,7 @@ Lint and format moved to efm-server
 
 - Git:
 
-  fugitive, nvimtree, gitsigns.nvim, VGit.nvim
+  fugitive, nvimtree, gitsigns.nvim, diffview.nvim
 
 - Format:
 
@@ -101,11 +102,10 @@ Lint and format moved to efm-server
 
 - Menu and tab:
 
-  - quickui(created a menu for the function/keybind I used less often. I can not remember all the commands and keybinds....)
-    But Damn, I spend lots of time configuring it, however, it was used rarely. So I end up delete the plugin.
+  - guihua.lua the UI I created for personal use
   - nvim-bufferline.lua: Yes, with lua and neovim only
 
-- Tools: floatterm, scrollview
+- Tools: Toggleterm, scrollview
 
 - Move and Edit:
 
@@ -202,6 +202,5 @@ These tools are good, but due to confliction, less use, or, not suite to my work
 - easymotion
 - oh-my-zh, iterm2
 - zpreztor
-- rainbow
 - defx
 - ALE
