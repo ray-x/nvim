@@ -34,11 +34,11 @@ local function hydra_git()
   end
   loader("keymap-layer.nvim vgit.nvim gitsigns.nvim")
   local hint = [[
- _d_ diffview _s_ stagehunk    _M_ difmast    _H_ filehist
- _f_ hunkqf   _u_ unstage hunk _p_ view hunk  _B_ blameFull
- _D_ bufdiff  _g_ diff staged  _m_ merge      _x_ show del
- _S_ stagebuf _l_ log          _c_ conflict   _/_ show base
- ^ ^  _r_ reset buf     _<Enter>_ Neogit      _q_ exit
+ _d_iffView   _s_tage hunk     diff_M_aster    file_H_istory
+ hunkq_f_     _u_nstage hunk   _p_ view hunk   _B_lameFull
+ buff_D_iff   _g_ diff staged  _m_erge        _x_ show del﯊
+ _S_tageBufr  _l_og            _c_onflict      _/_ show base
+ resetHun_k_  _r_eset buffer   _<Enter>_ Neo  _q_uit
 ]]
 
   local gitsigns = require("gitsigns")
@@ -78,6 +78,7 @@ local function hydra_git()
       { "s", gitsigns.stage_hunk, { silent = true } },
       { "u", gitsigns.undo_stage_hunk },
       { "r", gitsigns.reset_buffer },
+      { "k", gitsigns.reset_hunk },
       { "S", gitsigns.stage_buffer },
       { "p", gitsigns.preview_hunk },
       { "x", gitsigns.toggle_deleted, { nowait = true } },
@@ -98,11 +99,11 @@ local function hydra_git()
   })
 end
 local hint_telescope = [[
- _g_ gitfiles   _r_ registers _j_ jumps   _b_ buffers
- _y_ neoclip    _z_ Z        _p_ project _w_ grep
- _/_ searchhist _d_ dumbjump _C_ Clap    _m_ commands
- _l_ blines     _s_ color    _c_ cmdhist _o_ oldfiles
- _k_ maps     _f_ folder _<Enter>_ Telescope _q_ exit
+ _g_itfiles      _r_eg       _j_umps     _b_uffers
+ _y_ neo        _z_ Z        _p_roject   _w_ grep
+ _/_ searchhist  _d_umbjump   _C_lap 👏   co_m_mands
+ buf_l_ines      _s_ colo🌈   _c_mdhist   _o_ldfiles
+ _k_eymaps🔑     _f_older📁   _<Enter>_🔭 _q_uit
 ]]
 
 local telescope = require("telescope")
