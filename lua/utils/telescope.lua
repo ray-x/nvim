@@ -325,7 +325,6 @@ function custom_actions.fzf_multi_select(prompt_bufnr)
     actions.file_edit(prompt_bufnr)
   end
 end
-local previewers = require("telescope.previewers")
 local Job = require("plenary.job")
 local new_maker = function(filepath, bufnr, opts)
   filepath = vim.fn.expand(filepath)
@@ -354,6 +353,11 @@ M.setup = function(_)
       layout_strategy = "flex",
       file_ignore_patterns = { "node_modules", "vendor" },
       buffer_previewer_maker = new_maker,
+      path_display = { "smart" },
+      preview = {
+        timeout = 600,
+        filesize_limit = 10,
+      },
       layout_config = {
         prompt_position = "top",
         width = 0.9,
@@ -374,7 +378,7 @@ M.setup = function(_)
         },
         flex = {
           -- change to horizontal after 120 cols
-          flip_columns = 120,
+          flip_columns = 160,
         },
       },
       -- history = {
@@ -443,7 +447,7 @@ M.setup = function(_)
 
   -- telescope.load_extension("notify")
 
-  local global = require 'core.global'
+  local global = require("core.global")
   local win = global.is_windows
   vim.defer_fn(function() -- defer loading
     loader("telescope-live-grep-args.nvim telescope-file-browser.nvim")
@@ -512,9 +516,9 @@ M.grep_string_cursor_raw = function()
   local w = vim.fn.expand("<cword>")
   local pwd = vim.fn.expand("%:h")
   pwd = " --type " .. vim.o.ft .. " " .. pwd
-  vim.fn.setreg('p', pwd)
+  vim.fn.setreg("p", pwd)
   require("telescope").extensions.live_grep_args.live_grep_args({
-    default_text = "'" .. w .. "'"
+    default_text = "'" .. w .. "'",
   })
 end
 
