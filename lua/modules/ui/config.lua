@@ -86,6 +86,7 @@ function config.nvim_bufferline()
       max_name_length = 14,
       max_prefix_length = 10,
       tab_size = 16,
+      indicator = { style = "underline" },
       diagnostics = "nvim_lsp",
       show_buffer_icons = true,
       show_buffer_close_icons = false,
@@ -419,7 +420,7 @@ function config.starry()
   -- vim.g.starry_style = "earlysummer" -- 'moonlight' emerald middlenight_blue earlysummer
   -- vim.g.starry_style = "dracula" -- "mariana" --  emerald middlenight_blue earlysummer
   -- vim.g.starry_style = "oceanic" -- 'moonlight' emerald middlenight_blue earlysummer -- vim.g.starry_style = "dark_solar" -- 'moonlight' emerald middlenight_blue earlysummer
-  -- vim.g.starry_style = "dark_solar"
+  vim.g.starry_style = "dark_solar"
   -- vim.g.starry_style_fix = true
   -- config.default()
   vim.g.starry_disable_background = true
