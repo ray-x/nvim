@@ -110,6 +110,12 @@ tools["turbio/bracey.vim"] = {
   opt = true,
 }
 
+tools["kazhala/close-buffers.nvim"] = {
+  cmd = { "Kwbd", "BDelete", "BWipeout"},
+  config = conf.close_buffers,
+  module = "close-buffers",
+}
+
 -- nvim-toggleterm.lua ?
 tools["akinsho/toggleterm.nvim"] = {
   cmd = { "ToggleTerm", "TermExec" },

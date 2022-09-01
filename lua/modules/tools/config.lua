@@ -366,6 +366,23 @@ Use `git ls-files` for git files, use `find ./ *` for all files under work direc
 ]]
 --
 
+function config.close_buffers()
+  require("close_buffers").setup({
+    preserve_window_layout = { "this" },
+    next_buffer_cmd = function(windows)
+      require("bufferline").cycle(1)
+      local bufnr = vim.api.nvim_get_current_buf()
+
+      for _, window in ipairs(windows) do
+        vim.api.nvim_win_set_buf(window, bufnr)
+      end
+    end,
+  })
+  vim.api.nvim_create_user_command("Kwbd", function()
+    require("close_buffers").delete({ type = "this" })
+  end, { range = true })
+end
+
 function config.floaterm()
   -- Set floaterm window's background to black
   -- Set floating window border line color to cyan, and background to orange
@@ -431,7 +448,7 @@ function config.floaterm()
   end
 
   function _jest_test()
-    local cmd = "npx vue-cli-service test:unit --testPathPattern=" .. [["]] .. vim.fn.expand('%:t') .. [["]]
+    local cmd = "npx vue-cli-service test:unit --testPathPattern=" .. [["]] .. vim.fn.expand("%:t") .. [["]]
     local gd = Terminal:new({ cmd = cmd, hidden = true })
     gd:toggle()
   end

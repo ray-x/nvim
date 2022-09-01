@@ -419,6 +419,7 @@ M.setup = function(_)
             action_set.shift_selection(prompt_bufnr, -math.floor(height / 2))
           end,
           ["<C-q>"] = custom_actions.smart_send_to_qflist,
+          ['d'] = "delete_buffer",
         },
         i = {
           ["<S-Down>"] = actions.cycle_history_next,
@@ -435,6 +436,7 @@ M.setup = function(_)
             local height = vim.api.nvim_win_get_height(results_win)
             action_set.shift_selection(prompt_bufnr, math.floor(height / 2))
           end,
+          ["<c-d>"] = "delete_buffer",
           ["<C-p>"] = function(prompt_bufnr)
             local results_win = state.get_status(prompt_bufnr).results_win
             local height = vim.api.nvim_win_get_height(results_win)

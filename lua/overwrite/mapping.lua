@@ -93,6 +93,7 @@ local keys = {
   -- ["n|<Leader>ss"] = map_cu('SessionSave'):with_noremap(),
   -- ["n|<Leader>sl"] = map_cu('SessionLoad'):with_noremap(),
 
+  ["n|<Leader>bd"] = map_cmd([[lua require("close_buffers").delete({type='this'})]]),
   ["n|<Space>M"] = map_cmd([[lua require("harpoon.mark").toggle_file()]]),
   ["n|<Space>m1"] = map_cmd([[lua require("harpoon.ui").nav_file(1)]]),
   ["n|<Space>m2"] = map_cmd([[lua require("harpoon.ui").nav_file(2)]]),
