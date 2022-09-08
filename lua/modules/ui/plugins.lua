@@ -50,6 +50,32 @@ ui["nvim-neo-tree/neo-tree.nvim"] = {
   config = conf.neo_tree,
 }
 
+ui["levouh/tint.nvim"] = {
+  opt = true,
+  config = function()
+    require("tint").setup({
+      bg = true, -- Tint background portions of highlight groups
+      amt = -30, -- Darken colors, use a positive value to brighten
+      ignore = { "WinSeparator", "Status.*" }, -- Highlight group patterns to ignore, see `string.find`
+      ignorefunc = function(winid)
+        local buf = vim.api.nvim_win_get_buf(winid)
+        local buftype
+        vim.api.nvim_buf_get_option(buf, "buftype")
+
+        if buftype == "terminal" then
+          -- Do not tint `terminal`-type buffers
+          return true
+        end
+
+        -- Tint the window
+        return false
+      end,
+    })
+  end,
+
+  event = { "CmdwinEnter", "CmdlineEnter" },
+}
+
 ui["lukas-reineke/indent-blankline.nvim"] = { opt = true, config = conf.blankline } -- after="nvim-treesitter",
 
 -- disabled does not work with muliti split
@@ -59,7 +85,7 @@ ui["lukas-reineke/indent-blankline.nvim"] = { opt = true, config = conf.blanklin
 --   config = function()
 --     vim.cmd("highlight clear ColorColumn")
 --     require("virt-column").setup()
--- 
+--
 --     vim.cmd("highlight VirtColumn guifg=#4358BF")
 --   end,
 -- }

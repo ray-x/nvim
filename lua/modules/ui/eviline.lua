@@ -101,6 +101,8 @@ local current_signature = function(width)
   end
   local sig = require("lsp_signature").status_line(width)
   signature_length = #sig.label
+  sig.label = sig.label:gsub("[\n\r]+", " ")
+  sig.hint = sig.hint:gsub("[\n\r]+", " ")
 
   return sig.label .. "🐼" .. sig.hint, sig
 end
@@ -430,6 +432,8 @@ basic.lsp_info = {
         lsp_label2 = sig.label:sub(sig.range["end"] + 1, #sig.label)
       end
     end
+    lsp_label1 = lsp_label1:gsub("[\n\r]+", " ")
+    lsp_label2 = lsp_label2:gsub("[\n\r]+", " ")
 
     return {
       { "", "default" },
