@@ -204,7 +204,7 @@ tools["rbong/vim-flog"] = {
 }
 
 tools["tpope/vim-fugitive"] = {
-  cmd = { "Gvsplit", "Git", "Gedit", "Gstatus", "Gdiffsplit", "Gvdiffsplit" },
+  cmd = { "Gvsplit", "Git", "Gedit", "Gstatus", "Gdiffsplit", "Gvdiffsplit", "Flog", "Flogsplit" },
   opt = true,
 }
 
