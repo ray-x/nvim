@@ -64,12 +64,6 @@ editor["andymass/vim-matchup"] = {
 --   config = conf.lightspeed
 -- }
 
--- editor["tpope/vim-surround"] = {
---   opt = true,
---   event = { "InsertEnter", "CursorMoved", "CursorMovedI" },
---   -- keys={'c', 'd'}
--- }
---
 editor["machakann/vim-sandwich"] = {
   opt = true,
   event = { "CursorMoved", "CursorMovedI" },
@@ -226,14 +220,6 @@ editor["numToStr/Comment.nvim"] = {
 }
 
 -- copy paste failed in block mode when clipboard = unnameplus"
--- editor["bfredl/nvim-miniyank"] = {
---   keys = { "p", "y", "<C-v>" },
---   opt = true,
---   setup = function()
---     vim.api.nvim_command("map p <Plug>(miniyank-autoput)")
---     vim.api.nvim_command("map P <Plug>(miniyank-autoPut)")
---   end,
--- }
 editor["gbprod/yanky.nvim"] = {
   event = { "CmdlineEnter", "TextYankPost" },
   opt = true,
