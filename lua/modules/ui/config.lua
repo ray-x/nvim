@@ -17,8 +17,6 @@ function config.windline()
     packer_plugins["nvim-web-devicons"].loaded = true
     require("packer").loader("nvim-web-devicons")
   end
-
-  -- require('wlfloatline').toggle()
 end
 
 function config.notify()
@@ -86,6 +84,7 @@ function config.nvim_bufferline()
       max_name_length = 14,
       max_prefix_length = 10,
       tab_size = 16,
+      truncate_names = false,
       indicator = { style = "underline" },
       diagnostics = "nvim_lsp",
       show_buffer_icons = true,
@@ -420,7 +419,7 @@ function config.starry()
   -- vim.g.starry_style = "earlysummer" -- 'moonlight' emerald middlenight_blue earlysummer
   -- vim.g.starry_style = "dracula" -- "mariana" --  emerald middlenight_blue earlysummer
   -- vim.g.starry_style = "oceanic" -- 'moonlight' emerald middlenight_blue earlysummer -- vim.g.starry_style = "dark_solar" -- 'moonlight' emerald middlenight_blue earlysummer
-  vim.g.starry_style = "dark_solar"
+  vim.g.starry_style = "mariana"
   -- vim.g.starry_style_fix = true
   -- config.default()
   vim.g.starry_disable_background = true
@@ -647,10 +646,12 @@ function config.wilder()
   for i, fg in ipairs(gradient) do
     gradient[i] = wilder.make_hl("WilderGradient" .. i, "Pmenu", { { a = 1 }, { a = 1 }, { foreground = fg } })
   end
+
   wilder.set_option("pipeline", {
     wilder.branch(
       wilder.cmdline_pipeline({
-        fuzzy = 1,
+        language = "python",
+        fuzzy = 2,
       }),
       wilder.python_file_finder_pipeline({
         -- to use ripgrep : {'rg', '--files'}
@@ -662,13 +663,12 @@ function config.wilder()
         -- found at https://github.com/nixprime/cpsm
         filters = { "fuzzy_filter", "difflib_sorter" },
       }),
-
-      wilder.python_search_pipeline()
-      -- wilder.python_search_pipeline({
-      --   pattern = wilder.python_fuzzy_pattern(), --python_fuzzy_delimiter_pattern()
-      --   sorter = wilder.python_difflib_sorter(),
-      --   engine = "re",
-      -- })
+      --
+      wilder.python_search_pipeline({
+        pattern = wilder.python_fuzzy_pattern(), --python_fuzzy_delimiter_pattern()
+        sorter = wilder.python_difflib_sorter(),
+        engine = "re",
+      })
     ),
   })
   local highlighters = {

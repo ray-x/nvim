@@ -65,7 +65,7 @@ lang["simrat39/rust-tools.nvim"] = {
   end,
 }
 
-lang[path .. "go.nvim"] = { ft = { "go", "gomod" }, module = {'go'}, config = conf.go }
+lang[path .. "go.nvim"] = { ft = { "go", "gomod" }, module = { "go" }, config = conf.go }
 
 lang[path .. "navigator.lua"] = {
   requires = { path .. "guihua.lua", run = "cd lua/fzy && make" },
@@ -151,20 +151,21 @@ lang["mfussenegger/nvim-dap-python"] = { ft = { "python" } }
 
 lang["mtdl9/vim-log-highlighting"] = { ft = { "text", "txt", "log" } }
 
--- lang["michaelb/sniprun"] = {
---   run = "bash install.sh",
---   opt = true,
---   cmd = {"SnipRun", "SnipReset"}
---   --   config = function() require'sniprun'.setup({
---   --   -- selected_interpreters = {},     --" use those instead of the default for the current filetype
---   --   -- repl_enable = {},               --" enable REPL-like behavior for the given interpreters
---   --   -- repl_disable = {},              --" disable REPL-like behavior for the given interpreters
-
---   --   inline_messages = 1             --" inline_message (0/1) is a one-line way to display messages
---   --                                   --" to workaround sniprun not being able to display anything
---   -- })
---   -- end
--- }
+lang["michaelb/sniprun"] = {
+  run = "bash install.sh",
+  opt = true,
+  module = {"sniprun"},
+  cmd = { "SnipRun", "SnipReset" },
+  config = function()
+    require("sniprun").setup({
+      -- selected_interpreters = {},     --" use those instead of the default for the current filetype
+      -- repl_enable = {},               --" enable REPL-like behavior for the given interpreters
+      -- repl_disable = {},              --" disable REPL-like behavior for the given interpreters
+      inline_messages = 1, --" inline_message (0/1) is a one-line way to display messages
+      --" to workaround sniprun not being able to display anything
+    })
+  end,
+}
 -- JqxList and JqxQuery json browsing, format
 -- lang["gennaro-tedesco/nvim-jqx"] = {opt = true, cmd = {"JqxList", "JqxQuery"}}
 

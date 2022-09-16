@@ -12,7 +12,7 @@ local function check_back_space()
   end
 end
 
--- stylua: ignore start 
+-- stylua: ignore start
 
 local keys = {
   -- ["n|F13"]  = map_cmd("<S-F1>"),
@@ -134,7 +134,7 @@ local keys = {
   -- vim.keymap.set('x', '<Leader>j', [[ylet @/=substitute(escape(@", '/'), '\n', '\\n', 'g')"_cgn]])
 }
 
--- stylua: ignore end 
+-- stylua: ignore end
 --
 vim.cmd([[vnoremap  <leader>y  "+y]])
 vim.cmd([[nnoremap  <leader>Y  "+yg_]])
@@ -184,8 +184,11 @@ _G.run_or_test = function(debug)
       return "<CMD>GoTestFunc -F<CR>"
     end
   end
-  -- end
-  -- return rot
+  if vim.fn.mode() == "n" then
+    require("sniprun").run()
+  else
+    require("sniprun").run('v')
+  end
 end
 
 _G.hop1 = function(ac)
