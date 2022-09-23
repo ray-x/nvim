@@ -184,7 +184,8 @@ _G.run_or_test = function(debug)
       return "<CMD>GoTestFunc -F<CR>"
     end
   end
-  if vim.fn.mode() == "n" then
+  local m = vim.fn.mode()
+  if m == "n" or m == 'i' then
     require("sniprun").run()
   else
     require("sniprun").run('v')
