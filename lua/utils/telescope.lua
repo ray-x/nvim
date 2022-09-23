@@ -355,8 +355,24 @@ M.setup = function(_)
       buffer_previewer_maker = new_maker,
       path_display = { "smart" },
       preview = {
-        timeout = 600,
-        filesize_limit = 10,
+        timeout = 100,
+        filesize_limit = 2,
+        filesize_hook = function(filepath, bufnr, opts)
+          local path = require("plenary.path"):new(filepath)
+          -- opts exposes winid
+          local height = vim.api.nvim_win_get_height(opts.winid) * 3 / 2
+          local lines = vim.split(path:head(height), "[\r]?\n")
+          vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, lines)
+          vim.api.nvim_buf_set_option(bufnr, "ft", opts.ft)
+        end,
+        timeout_hook = function(filepath, bufnr, opts)
+          local path = require("plenary.path"):new(filepath)
+          -- opts exposes winid
+          local height = vim.api.nvim_win_get_height(opts.winid) * 3 / 2
+          local lines = vim.split(path:head(height), "[\r]?\n")
+          vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, lines)
+          vim.api.nvim_buf_set_option(bufnr, "ft", opts.ft)
+        end,
       },
       layout_config = {
         prompt_position = "top",
@@ -419,7 +435,7 @@ M.setup = function(_)
             action_set.shift_selection(prompt_bufnr, -math.floor(height / 2))
           end,
           ["<C-q>"] = custom_actions.smart_send_to_qflist,
-          ['d'] = "delete_buffer",
+          ["d"] = "delete_buffer",
         },
         i = {
           ["<S-Down>"] = actions.cycle_history_next,
