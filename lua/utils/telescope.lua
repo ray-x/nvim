@@ -92,12 +92,25 @@ end
 -- nnoremap <Leader>o <Cmd>lua require'telescope_config'.files{}<CR>
 -- nnoremap <Leader>d <Cmd>lua require'telescope_config'.find_dots{}<CR>
 
-vim.api.nvim_command([[ command! -nargs=1 Rg call luaeval('require('telescope.builtin').grep_string(
+vim.api.nvim_command([[ command! -nargs=1 Rg call luaeval('require("telescope.builtin").grep_string(
         require("config.telescope").theme({
             search = _A
         })
     )', expand('<args>'))
     ]])
+
+vim.api.nvim_create_user_command("Rg", function(opts)
+  local w = vim.fn.expand("<cword>")
+  local pwd = vim.fn.expand("%:h")
+  if opts.fargs ~= nil and opts.fargs[1] then
+    w = opts.fargs[1]
+  end
+  pwd = pwd .. " --type " .. vim.o.ft .. " "
+  vim.fn.setreg("p", pwd)
+  require("telescope").extensions.live_grep_args.live_grep_args({
+    default_text = "'" .. w .. "'" ..  " " .. pwd,
+  })
+end, { nargs = "*" })
 
 --[[
     +-------------------------------------+
