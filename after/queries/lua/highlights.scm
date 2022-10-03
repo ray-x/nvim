@@ -1,4 +1,6 @@
+;; extends
 ;; Keywords
+;;
 (("return"   @keyword) (#set! conceal ""))
 
 (("local"    @keyword) (#set! conceal "~"))

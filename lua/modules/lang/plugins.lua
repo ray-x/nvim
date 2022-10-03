@@ -154,7 +154,7 @@ lang["mtdl9/vim-log-highlighting"] = { ft = { "text", "txt", "log" } }
 lang["michaelb/sniprun"] = {
   run = "bash install.sh",
   opt = true,
-  module = {"sniprun"},
+  module = { "sniprun" },
   cmd = { "SnipRun", "SnipReset" },
   config = function()
     require("sniprun").setup({

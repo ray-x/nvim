@@ -1,3 +1,4 @@
+;; extends
 ;; Keywords
 (("return"   @keyword) (#set! conceal ""))
 (("var"      @keyword) (#set! conceal  "ν"))
