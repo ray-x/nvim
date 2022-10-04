@@ -361,12 +361,12 @@ end
 M.setup = function(_)
   telescope.setup({
     defaults = {
-      shorten_path = true,
       prompt_prefix = "🙊",
       layout_strategy = "flex",
       file_ignore_patterns = { "node_modules", "vendor" },
       buffer_previewer_maker = new_maker,
-      path_display = { "smart" },
+      -- path_display = { "smart" },
+      path_display={shorten = { len = 3, exclude = {1, -1, -2} }},
       preview = {
         timeout = 100,
         filesize_limit = 2,
