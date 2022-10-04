@@ -247,4 +247,12 @@ lang["hashivim/vim-terraform"] = {
 
 lang["jose-elias-alvarez/null-ls.nvim"] = { opt = true, config = require("modules.lang.null-ls").config }
 
+lang["j-hui/fidget.nvim"] = {
+  opt = true,
+  config = function ()
+    require"fidget".setup{}
+  end,
+  module = 'lspconfig'
+}
+
 return lang
