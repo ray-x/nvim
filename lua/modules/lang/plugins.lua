@@ -190,6 +190,7 @@ lang["folke/lua-dev.nvim"] = {
 
 lang["nvim-treesitter/nvim-treesitter-context"] = {
   opt = true,
+  event = { "CursorHold", "WinScrolled" },
   config = function()
     require("treesitter-context").setup({
       enable = true, -- Enable this plugin (Can be enabled/disabled later via commands)
