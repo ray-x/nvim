@@ -250,7 +250,11 @@ lang["jose-elias-alvarez/null-ls.nvim"] = { opt = true, config = require("module
 lang["j-hui/fidget.nvim"] = {
   opt = true,
   config = function ()
-    require"fidget".setup{}
+    require"fidget".setup{
+      sources = {
+        ['null-ls'] = {ignore = true}
+      }
+    }
   end,
   module = 'lspconfig'
 }
