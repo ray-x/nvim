@@ -44,7 +44,7 @@ ui["sidebar-nvim/sidebar.nvim"] = {
 
 ui["nvim-neo-tree/neo-tree.nvim"] = {
   cmd = { "Neotree" },
-  requires = { "MunifTanjim/nui.nvim" },
+  requires = { "MunifTanjim/nui.nvim", opt = true, module = "nui" },
   module = "neo-tree",
   -- requires = {'kyazdani42/nvim-web-devicons'},
   config = conf.neo_tree,
