@@ -64,6 +64,21 @@ function config.notify()
   require("telescope").load_extension("notify")
 end
 
+function config.noice()
+  require("noice").setup({
+    cmdline = {
+      enable = false,
+      view = "cmdline",
+      opts = { buf_options = { filetype = "vim" } }, -- enable syntax highlighting in the cmdline
+      icons = {
+        ["/"] = { icon = " ", hl_group = "DiagnosticWarn" },
+        ["?"] = { icon = " ", hl_group = "DiagnosticWarn" },
+        [":"] = { icon = " ", hl_group = "DiagnosticInfo", firstc = false },
+      },
+    },
+  })
+end
+
 local winwidth = function()
   return vim.api.nvim_call_function("winwidth", { 0 })
 end
@@ -419,7 +434,7 @@ function config.starry()
   -- vim.g.starry_style = "earlysummer" -- 'moonlight' emerald middlenight_blue earlysummer
   -- vim.g.starry_style = "dracula" -- "mariana" --  emerald middlenight_blue earlysummer
   -- vim.g.starry_style = "oceanic" -- 'moonlight' emerald middlenight_blue earlysummer -- vim.g.starry_style = "dark_solar" -- 'moonlight' emerald middlenight_blue earlysummer
-  vim.g.starry_style = "mariana"
+  vim.g.starry_style = "oceanic"
   -- vim.g.starry_style_fix = true
   -- config.default()
   vim.g.starry_disable_background = true

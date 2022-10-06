@@ -225,5 +225,5 @@ augroup maximizer
     au!
     au WinLeave * call s:restore()
 augroup END
-
+vnoremap * "vy/\V<C-R>=substitute(escape(@v,'/\'),'\n','\\n','g')<CR><CR>
 command! -bang -nargs=0 -range MaximizerToggle :call s:toggle(<bang>0)

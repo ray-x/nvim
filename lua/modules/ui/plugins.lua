@@ -20,6 +20,15 @@ ui["rcarriga/nvim-notify"] = {
   -- event = "User LoadLazyPlugin",
   config = conf.notify,
 }
+
+-- feel a bit laggy
+ui["folke/noice.nvim"] = {
+  opt = true,
+  module = "noice",
+  -- event = "User LoadLazyPlugin",
+  config = conf.noice,
+}
+
 ui["akinsho/bufferline.nvim"] = {
   config = conf.nvim_bufferline,
   event = "UIEnter",
