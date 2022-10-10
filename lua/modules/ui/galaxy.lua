@@ -272,7 +272,7 @@ function M.shine()
   end
 
   local bg = back or "none"
-  vim.api.nvim__set_hl_ns(ns)
+  vim.api.nvim_set_hl_ns(ns)
 end
 
 _G.colors = {
@@ -302,7 +302,7 @@ _G.colors = {
   baby_pink = "#DE878F",
   darker_black = "#2A303C",
 }
--- vim.api.nvim__set_hl_ns(ns)
+-- vim.api.nvim_set_hl_ns(ns)
 --
 -- local result = vim.loop.now()
 -- vim.cmd("colorscheme aurora")
