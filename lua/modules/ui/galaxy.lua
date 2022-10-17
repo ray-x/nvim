@@ -71,7 +71,7 @@ local back = nil
 local Usual = {
   UsualHighlights = {
     Normal = { fg = c.white },
-    NormalFloat = { bg = c.background_two, fg = c.white_two },
+    NormalFloat = { fg = c.white_two },
     Type = { fg = c.blue_three }, -- int, long, char, etc.
     StorageClass = { fg = c.blue_five }, -- static, register, volatile, etc.
     Identifier = { fg = c.white_three, bold = true },
@@ -162,11 +162,30 @@ local Usual = {
     VimHiTermFgBg = { fg = c.yellow_one, bold = true },
     VimFgBgAttrib = { fg = c.green_five },
   },
+
+  Telescope = {
+    TelescopeNormal = { link = "NormalFloat" },
+    TelescopePromptBorder = { link = "Macro" },
+    TelescopeSelectionCaret = { link = "PreProc" },
+    TelescopeBorder = { fg = c.pink },
+    TelescopePreviewTitle = { fg = c.green },
+    TelescopeSelection = { fg = c.purple, bg = c.gray_two },
+    TelescopeMatching = { link = "Macro" },
+    TelescopePromptTitle = { fg = c.blue },
+    TelescopeResultsTitle = { fg = c.red },
+    TelescopePreviewBorder = { fg = c.blue_one },
+    TelescopeResultsBorder = { fg = c.line },
+  },
   Diff = {
-    DiffAdd = { fg = c.green_two, bold = true },
-    DiffChange = { fg = c.purple_two, bold = true, underdotted = true, sp = "#666666" },
+    DiffAdd = { fg = c.green_two, bold = true, undercurl = true, sp = "#2284a1" },
+    DiffChange = { fg = c.purple_two, bold = true, underdotted = true, sp = "#269616" },
     DiffText = { fg = c.white, bold = true },
     DiffDelete = { fg = c.red_two, bold = true },
+  },
+  Git = {
+    GitSignsAdd = { fg = c.red }, -- diff mode: Added line |diff.txt|
+    GitSignsChange = { fg = c.purple_two }, -- diff mode: Changed line |diff.txt|
+    GitSignsDelete = { fg = c.red_two }, -- diff
   },
   TSHighlights = {
     NodeNumber = { fg = c.blue_five },
@@ -271,7 +290,7 @@ function M.shine()
     add_highlight_table(tbl)
   end
 
-  local bg = back or "none"
+  -- local bg = back or "none"
   vim.api.nvim_set_hl_ns(ns)
 end
 
@@ -432,20 +451,3 @@ return M
 -- hl("Typedef", { fg = colors.yellow })
 --
 -- -- Diff highlighting
--- hl("DiffAdd", { fg = colors.green, bg = colors.lightbg })
--- hl("DiffChange", { fg = colors.one_bg3, bg = colors.lightbg })
--- hl("DiffDelete", { fg = colors.pink, bg = colors.lightbg })
--- hl("DiffText", { fg = colors.blue, bg = colors.lightbg })
--- hl("DiffAdded", { fg = colors.green, bg = colors.black })
--- hl("DiffFile", { fg = colors.pink, bg = colors.black })
--- hl("DiffNewFile", { fg = colors.green, bg = colors.black })
--- hl("DiffLine", { fg = colors.blue, bg = colors.black })
--- hl("DiffRemoved", { fg = colors.pink, bg = colors.black })
---
--- hl("TelescopeBorder", { fg = colors.one_bg })
--- hl("TelescopePreviewTitle", { fg = colors.green })
--- hl("TelescopePromptTitle", { fg = colors.blue })
--- hl("TelescopeResultsTitle", { fg = colors.red })
--- hl("TelescopePreviewBorder", { fg = colors.grey })
--- hl("TelescopePromptBorder", { fg = colors.line })
--- hl("TelescopeResultsBorder", { fg = colors.line })

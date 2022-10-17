@@ -35,7 +35,7 @@ function options:load_options()
       hlsearch = true, -- Highlight found searches
       grepformat = "%f:%l:%m,%m\\ %f\\ match%ts,%f", -- "%f:%l:%c:%m";
       -- showcmd        = false;
-      cmdheight = 0,
+      -- cmdheight = 0,
       splitbelow = true, -- Horizontal windows should split to bottom
       splitright = true, -- Vertical windows should be split to right
       backspace = "indent,eol,start", -- Makes backspace key more powerful.

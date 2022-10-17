@@ -209,13 +209,14 @@ function config.gitsigns()
   end
   require("gitsigns").setup({
     signs = {
-      add = { hl = "GitGutterAdd", text = "│", numhl = "GitSignsAddNr" },
-      change = { hl = "GitGutterChange", text = "│", numhl = "GitSignsChangeNr" },
-      delete = { hl = "GitGutterDelete", text = "ﬠ", numhl = "GitSignsDeleteNr" },
-      topdelete = { hl = "GitGutterDelete", text = "ﬢ", numhl = "GitSignsDeleteNr" },
-      changedelete = { hl = "GitGutterChangeDelete", text = "┊", numhl = "GitSignsChangeNr" },
+      add = { hl = "GitGutterAdd", text = "│", numhl = "GitSignsAddNr", linehl='GitSignsAddLn' },
+      change = { hl = "GitGutterChange", text = "│", numhl = "GitSignsChangeNr", linehl='GitSignsChangeLn' },
+      delete = { hl = "GitGutterDelete", text = "ﬠ", numhl = "GitSignsDeleteNr", linehl='GitSignsDeleteLn' },
+      topdelete = { hl = "GitGutterDelete", text = "ﬢ", numhl = "GitSignsDeleteNr", linehl='GitSignsDeleteLn' },
+      changedelete = { hl = "GitGutterChangeDelete", text = "┊", numhl = "GitSignsChangeNr", linehl='GitSignsChangeLn' },
     },
     numhl = false,
+    word_diff = true,
     on_attach = function(bufnr)
       local gs = package.loaded.gitsigns
 
@@ -274,9 +275,12 @@ function config.gitsigns()
     current_line_blame = true,
     current_line_blame_opts = { delay = 1500 },
     update_debounce = 300,
-    word_diff = true,
     diff_opts = { internal = true },
   })
+
+  vim.api.nvim_set_hl(0, 'GitSignsAddInline', {link = 'DiffAdd'}) -- diff mode: Deleted line |diff.txt|
+  vim.api.nvim_set_hl(0, 'GitSignsDeleteInline', {link = 'DiffDelete'}) -- diff mode: Deleted line |diff.txt|
+  vim.api.nvim_set_hl(0, 'GitSignsChangeInline', {link = 'DiffAdd'}) -- diff mode: Deleted line |diff.txt|
   vim.api.nvim_create_user_command("Stage", "'<,'>Gitsigns stage_hunk", { range = true })
 end
 
