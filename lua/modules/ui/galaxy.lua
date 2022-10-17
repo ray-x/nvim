@@ -107,7 +107,7 @@ local Usual = {
     netrwDir = { fg = c.green_six },
     netrwList = { fg = c.green_four },
     NonText = { bg = back },
-    LineNr = { fg = c.background_two },
+    LineNr = { fg = c.gray_two },
     SignColumn = { bg = nil },
     CursorLine = { fg = c.gray_one, bg = c.purple_four },
     CursorColumn = { bg = c.purple_four },
