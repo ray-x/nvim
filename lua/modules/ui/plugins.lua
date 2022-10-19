@@ -59,6 +59,16 @@ ui["nvim-neo-tree/neo-tree.nvim"] = {
   config = conf.neo_tree,
 }
 
+ui["gorbit99/codewindow.nvim"] = {
+  cmd = { "Minimap" },
+  config = function()
+    local codewindow = require("codewindow")
+    codewindow.setup()
+    codewindow.apply_default_keybinds()
+    vim.cmd('command! -nargs=0 Minimap :lua require("codewindow").toggle_minimap()')
+  end,
+}
+
 ui["levouh/tint.nvim"] = {
   opt = true,
   config = function()
