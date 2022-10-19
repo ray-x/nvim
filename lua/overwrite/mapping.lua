@@ -185,10 +185,10 @@ _G.run_or_test = function(debug)
     end
   end
   local m = vim.fn.mode()
-  if m == "n" or m == 'i' then
+  if m == "n" or m == "i" then
     require("sniprun").run()
   else
-    require("sniprun").run('v')
+    require("sniprun").run("v")
   end
 end
 
@@ -272,6 +272,15 @@ K.get_keymaps = function()
 end
 
 vim.cmd([[command! -nargs=* Keymaps lua require('overwrite.mapping').get_keymaps()]])
+
+vim.api.nvim_create_user_command("Jsonfmt", function(opts)
+  if vim.fn.executable("jq") == 0 then
+    lprint("jq not found")
+    return vim.cmd([[%!python -m json.tool]])
+  end
+  vim.cmd("%!jq")
+end, { nargs = "*" })
+
 -- Use `git ls-files` for git files, use `find ./ *` for all files under work directory.
 --
 return K
