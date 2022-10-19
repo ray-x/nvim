@@ -106,7 +106,7 @@ local Usual = {
     Todo = { fg = c.yellow, bg = c.bg_alt, bold = true, italic = true },
     netrwDir = { fg = c.green_six },
     netrwList = { fg = c.green_four },
-    NonText = { bg = back },
+    NonText = { fg = c.blue_five },
     LineNr = { fg = c.gray_two },
     SignColumn = { bg = nil },
     CursorLine = { fg = c.gray_one, bg = c.purple_four },

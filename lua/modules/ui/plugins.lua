@@ -68,7 +68,7 @@ ui["gorbit99/codewindow.nvim"] = {
     vim.cmd('command! -nargs=0 Minimap :lua require("codewindow").toggle_minimap()')
   end,
 }
-
+-- Tint inactive windows in Neovim using window-local highlight namespaces.
 ui["levouh/tint.nvim"] = {
   opt = true,
   config = function()
@@ -98,16 +98,15 @@ ui["levouh/tint.nvim"] = {
 ui["lukas-reineke/indent-blankline.nvim"] = { opt = true, config = conf.blankline } -- after="nvim-treesitter",
 
 -- disabled does not work with muliti split
--- ui["lukas-reineke/virt-column.nvim"] = {
---   opt = true,
---   -- event = {"CursorMoved", "CursorMovedI"},
---   config = function()
---     vim.cmd("highlight clear ColorColumn")
---     require("virt-column").setup()
---
---     vim.cmd("highlight VirtColumn guifg=#4358BF")
---   end,
--- }
+ui["lukas-reineke/virt-column.nvim"] = {
+  opt = true,
+  -- event = {"CursorMoved", "CursorMovedI"},
+  config = function()
+    -- vim.cmd("highlight clear ColorColumn")
+    require("virt-column").setup()
+    -- vim.cmd("highlight VirtColumn guifg=#43488F")
+  end,
+}
 
 ui["dstein64/nvim-scrollview"] = { event = { "CursorMoved", "CursorMovedI" }, config = conf.scrollview }
 

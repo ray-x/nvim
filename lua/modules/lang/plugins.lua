@@ -182,7 +182,7 @@ lang["m-demare/hlargs.nvim"] = {
   end,
 }
 
-lang["folke/lua-dev.nvim"] = {
+lang["folke/neodev.nvim"] = {
   opt = true,
   -- ft = {'lua'},
   config = conf.lua_dev,
