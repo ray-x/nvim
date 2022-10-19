@@ -66,7 +66,6 @@ end
 local loading_theme = randomscheme()
 
 local function load_colorscheme(theme)
-
   if theme == "galaxy" then
     require("modules.ui.galaxy").shine()
   else
@@ -125,7 +124,7 @@ function Lazyload()
   loader("plenary.nvim")
 
   if vim.bo.filetype == "lua" then
-    loader("lua-dev.nvim")
+    loader("neodev.nvim")
   end
 
   vim.g.vimsyn_embed = "lPr"
@@ -183,13 +182,13 @@ end
 
 vim.defer_fn(function()
   Lazyload()
+  vim.cmd([[doautocmd User LoadLazyPlugin]])
 end, lazy_timer)
-
-vim.cmd([[autocmd User LoadLazyPlugin lua Lazyload()]])
 
 vim.defer_fn(function()
   load_colorscheme(loading_theme)
   loader("windline.nvim")
+  loader("virt-column.nvim")
   require("modules.ui.eviline")
   require("wlfloatline").setup()
   require("vscripts.tools")
