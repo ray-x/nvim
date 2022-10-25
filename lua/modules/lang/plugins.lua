@@ -77,7 +77,7 @@ lang[path .. "web-tools.nvim"] = {
   ft = { "html", "javascript" },
   opt = true,
   config = function()
-    require("web-tools").setup()
+    require("web-tools").setup({debug=true})
   end,
 }
 
@@ -258,6 +258,15 @@ lang["j-hui/fidget.nvim"] = {
     }
   end,
   module = 'lspconfig'
+}
+
+lang["smjonas/inc-rename.nvim"] = {
+  opt = true,
+  cmd = { "IncRename" },
+  module = { "inc_rename" },
+  config = function()
+    require("inc_rename").setup()
+  end,
 }
 
 return lang

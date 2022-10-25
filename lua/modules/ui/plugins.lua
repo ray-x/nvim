@@ -163,4 +163,9 @@ ui["gelguy/wilder.nvim"] = {
   config = conf.wilder,
 }
 
+ui["stevearc/dressing.nvim"] = {
+  opt = true,
+  module = {"dressing"}
+}
+
 return ui

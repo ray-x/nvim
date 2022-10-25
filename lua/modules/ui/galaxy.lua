@@ -144,6 +144,7 @@ local Usual = {
     ErrorMsg = { fg = c.pink_one, bold = true },
 
     ColorColumn = { bg = c.background_three },
+    Conceal = { link = "Keyword" },
   },
   Vim = {
     VimCommand = { fg = c.purple_two },

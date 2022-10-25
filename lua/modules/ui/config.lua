@@ -116,7 +116,15 @@ function config.nvim_bufferline()
       always_show_bufferline = false,
       sort_by = "directory",
     },
+    highlights = {
+      buffer_selected = {
+        bold = true,
+        italic = true,
+      },
+    },
   })
+  vim.api.nvim_set_hl(0, "BufferLineBufferSelected", { default = true, fg = "#ffffff", bold = true, underline = true })
+  vim.api.nvim_set_hl(0, "BufferLineInfoSelected", { default = true, fg = "#ffffff", bold = true, underline = true })
 end
 
 function config.nvim_tree_setup()

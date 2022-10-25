@@ -29,6 +29,46 @@ function config.session()
   require("auto-session").setup(opts)
 end
 
+function config.vgit()
+  -- use this as a diff tool (faster than Diffview)
+  -- there are overlaps with gitgutter. following are nice features
+
+  require("vgit").setup({
+    keymaps = {
+      -- ["n <leader>ga"] = "actions", -- show all commands in telescope
+      -- ["n <leader>ba"] = "buffer_gutter_blame_preview", -- show all blames
+      -- ["n <leader>bp"] = "buffer_blame_preview", -- buffer diff
+      -- ["n <leader>bh"] = "buffer_history_preview", -- buffer commit history DiffviewFileHistory
+      -- ["n <leader>gp"] = "buffer_staged_diff_preview", -- diff for staged changes
+      -- ["n <leader>pd"] = "project_diff_preview", -- diffview is slow
+    },
+    settings = {
+      live_gutter = {
+        enabled = false,
+        edge_navigation = false, -- This allows users to navigate within a hunk
+      },
+      live_blame = {
+        enabled = false,
+      },
+      authorship_code_lens = {
+        enabled = false,
+      },
+      scene = {
+        diff_preference = "unified",
+      },
+      diff_preview = {
+        keymaps = {
+          buffer_stage = "S",
+          buffer_unstage = "U",
+          buffer_hunk_stage = "s",
+          buffer_hunk_unstage = "u",
+          toggle_view = "t",
+        },
+      },
+    },
+  })
+end
+
 local function load_dbs()
   local env_contents = load_env_file()
   local dbs = {}
@@ -209,11 +249,16 @@ function config.gitsigns()
   end
   require("gitsigns").setup({
     signs = {
-      add = { hl = "GitGutterAdd", text = "│", numhl = "GitSignsAddNr", linehl='GitSignsAddLn' },
-      change = { hl = "GitGutterChange", text = "│", numhl = "GitSignsChangeNr", linehl='GitSignsChangeLn' },
-      delete = { hl = "GitGutterDelete", text = "ﬠ", numhl = "GitSignsDeleteNr", linehl='GitSignsDeleteLn' },
-      topdelete = { hl = "GitGutterDelete", text = "ﬢ", numhl = "GitSignsDeleteNr", linehl='GitSignsDeleteLn' },
-      changedelete = { hl = "GitGutterChangeDelete", text = "┊", numhl = "GitSignsChangeNr", linehl='GitSignsChangeLn' },
+      add = { hl = "GitGutterAdd", text = "│", numhl = "GitSignsAddNr", linehl = "GitSignsAddLn" },
+      change = { hl = "GitGutterChange", text = "│", numhl = "GitSignsChangeNr", linehl = "GitSignsChangeLn" },
+      delete = { hl = "GitGutterDelete", text = "ﬠ", numhl = "GitSignsDeleteNr", linehl = "GitSignsDeleteLn" },
+      topdelete = { hl = "GitGutterDelete", text = "ﬢ", numhl = "GitSignsDeleteNr", linehl = "GitSignsDeleteLn" },
+      changedelete = {
+        hl = "GitGutterChangeDelete",
+        text = "┊",
+        numhl = "GitSignsChangeNr",
+        linehl = "GitSignsChangeLn",
+      },
     },
     numhl = false,
     word_diff = true,
@@ -278,9 +323,9 @@ function config.gitsigns()
     diff_opts = { internal = true },
   })
 
-  vim.api.nvim_set_hl(0, 'GitSignsAddInline', {link = 'DiffAdd'}) -- diff mode: Deleted line |diff.txt|
-  vim.api.nvim_set_hl(0, 'GitSignsDeleteInline', {link = 'DiffDelete'}) -- diff mode: Deleted line |diff.txt|
-  vim.api.nvim_set_hl(0, 'GitSignsChangeInline', {link = 'DiffAdd'}) -- diff mode: Deleted line |diff.txt|
+  vim.api.nvim_set_hl(0, "GitSignsAddInline", { link = "DiffAdd" }) -- diff mode: Deleted line |diff.txt|
+  vim.api.nvim_set_hl(0, "GitSignsDeleteInline", { link = "DiffDelete" }) -- diff mode: Deleted line |diff.txt|
+  vim.api.nvim_set_hl(0, "GitSignsChangeInline", { link = "DiffAdd" }) -- diff mode: Deleted line |diff.txt|
   vim.api.nvim_create_user_command("Stage", "'<,'>Gitsigns stage_hunk", { range = true })
 end
 

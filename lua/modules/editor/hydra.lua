@@ -34,14 +34,15 @@ local function hydra_git()
   end
   loader("keymap-layer.nvim vgit.nvim gitsigns.nvim")
   local hint = [[
- _d_iffView   _s_tage hunk     diff_M_aster    file_H_istory
- hunkq_f_     _u_nstage hunk   _p_ view hunk   _B_lameFull
- buff_D_iff   _g_ diff staged  _m_erge        _x_ show del﯊
- _S_tageBufr  _l_og            _c_onflict      _/_ show base
- resetHun_k_  _r_eset buffer   _<Enter>_ Neo  _q_uit
+ _d_iffView   _s_tage hunk     diff_M_aster    file_H_istory _S_tageBufr
+ hunkq_f_     _u_nstage hunk   _p_ view hunk   _B_lameFull   _l_og
+ buff_D_iff   _g_ diff staged  _m_erge        _x_ show del﯊ _c_onflict
+ _b_uf gutter _F_iff buf       _U_stage        _G_staged     _/_ show base
+   resetHun_k_  _r_eset buffer   _<Enter>_ Neo  _q_uit
 ]]
 
   local gitsigns = require("gitsigns")
+  local vgit = require("vgit")
   local function gitsigns_visual_op(op)
     return function()
       return gitsigns[op]({ vim.fn.line("."), vim.fn.line("v") })
@@ -58,11 +59,11 @@ local function hydra_git()
       },
       on_enter = function()
         vim.bo.modifiable = false
-        gitsigns.toggle_signs(true)
+        -- gitsigns.toggle_signs(true)
         gitsigns.toggle_linehl(true)
       end,
       on_exit = function()
-        gitsigns.toggle_signs(false)
+        -- gitsigns.toggle_signs(false)
         gitsigns.toggle_linehl(false)
         gitsigns.toggle_deleted(false)
         vim.cmd("echo") -- clear the echo area
@@ -70,7 +71,7 @@ local function hydra_git()
     },
     mode = { "n", "x" },
     body = "<Space>g",
--- stylua: ignore start
+    -- stylua: ignore start
     heads = {
       { "d", ":DiffviewOpen<CR>", { silent = true, exit = true } },
       { "M", diffmaster, { silent = true, exit = true } },
@@ -84,15 +85,35 @@ local function hydra_git()
       { "x", gitsigns.toggle_deleted, { nowait = true } },
       { "D", gitsigns.diffthis },
       -- { "b", gitsigns.blame_line },
-      { "f", function() gitsigns.setqflist("all") end },
+      {
+        "f",
+        function()
+          gitsigns.setqflist("all")
+        end,
+      },
       { "g", gitsigns.setqflist },
-      { "B", function() gitsigns.blame_line({ full = true }) end },
+      {
+        "B",
+        function()
+          gitsigns.blame_line({ full = true })
+        end,
+      },
       -- fugitive
       -- { "l", "Git log --oneline --decorate --graph --all<CR>" },
       { "l", "Flogsplit<CR>" },
       { "m", ":Git mergetool<CR>" },
       { "c", ":GitConflictListQf<CR>" },
       { "/", gitsigns.show, { exit = true } }, -- show the base of the file
+
+      -- vgit
+      { "b", vgit.buffer_gutter_blame_preview, { exit = true } },
+      { "F", vgit.buffer_diff_preview, { exit = true } },
+      -- { "g", vgit.buffer_diff_staged_preview, { exit = true } },
+      -- { "P", vgit.project_staged_hunks_preview },
+      -- { "f", vgit.project_hunks_qf },
+      { "U", vgit.buffer_unstage },
+      { "G", vgit.buffer_diff_staged_preview },
+
       { "<Enter>", "<cmd>Neogit<CR>", { exit = true } },
       { "q", nil, { exit = true, nowait = true } },
     },

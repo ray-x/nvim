@@ -57,11 +57,13 @@ editor["andymass/vim-matchup"] = {
 }
 
 -- Feel more comfortale with hop
--- editor["ggandor/lightspeed.nvim"] = {
---   as = "lightspeed",
+-- editor["ggandor/leap.nvim"] = {
 --   opt = true,
---   keys = {'f', 'F', 't', 'T', 'S', 's'},
---   config = conf.lightspeed
+--   module = "leap",
+--   requires = {
+--     { "ggandor/leap-ast.nvim", after = "leap.nvim", opt = true, config = require('modules.editor.leap').ast() },
+--     { "ggandor/flit.nvim", after = "leap.nvim", opt = true, require('modules.editor.leap').flit()},
+--   }
 -- }
 
 editor["machakann/vim-sandwich"] = {
