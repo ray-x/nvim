@@ -302,11 +302,6 @@ function custom_actions.send_to_qflist(prompt_bufnr)
   require("user").qflist.open()
 end
 
-function custom_actions.smart_send_to_qflist(prompt_bufnr)
-  require("telescope.actions").smart_send_to_qflist(prompt_bufnr)
-  require("user").qflist.open()
-end
-
 -- function custom_actions.page_up(prompt_bufnr)
 --   require('telescope.actions.set').shift_selection(prompt_bufnr, -5)
 -- end
@@ -447,7 +442,7 @@ M.setup = function(_)
             local height = vim.api.nvim_win_get_height(results_win)
             action_set.shift_selection(prompt_bufnr, -math.floor(height / 2))
           end,
-          ["<C-q>"] = custom_actions.smart_send_to_qflist,
+          ["<C-q>"] = actions.toggle_selection + actions.move_selection_previous,
           ["d"] = "delete_buffer",
         },
         i = {
@@ -455,7 +450,7 @@ M.setup = function(_)
           ["<S-Up>"] = actions.cycle_history_prev,
           -- ['<Down>'] = actions.move_selection_next,
           -- ['<Up>'] = actions.move_selection_previous,
-          ["<C-q>"] = custom_actions.smart_send_to_qflist,
+          ["<C-q>"] = actions.smart_add_to_qflist + actions.open_qflist,
           -- ['w'] = myactions.smart_send_to_qflist,
           -- ['e'] = myactions.send_to_qflist,
           ["<c-j>"] = actions.toggle_selection + actions.move_selection_next,

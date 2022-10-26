@@ -38,7 +38,7 @@ local function hydra_git()
  hunkq_f_     _u_nstage hunk   _p_ view hunk   _B_lameFull   _l_og
  buff_D_iff   _g_ diff staged  _m_erge        _x_ show del﯊ _c_onflict
  _b_uf gutter _F_iff buf       _U_stage        _G_staged     _/_ show base
-   resetHun_k_  _r_eset buffer   _<Enter>_ Neo  _q_uit
+ _d_eleted    resetHun_k_     _r_eset buffer   _<Enter>_ Neo  _q_uit
 ]]
 
   local gitsigns = require("gitsigns")
@@ -98,6 +98,7 @@ local function hydra_git()
           gitsigns.blame_line({ full = true })
         end,
       },
+      { "d", gitsigns.toggle_deleted, { nowait = true, desc = "show deleted lines" } },
       -- fugitive
       -- { "l", "Git log --oneline --decorate --graph --all<CR>" },
       { "l", "Flogsplit<CR>" },
