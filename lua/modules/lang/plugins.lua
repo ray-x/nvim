@@ -112,8 +112,6 @@ lang["nvim-treesitter/playground"] = {
   config = conf.playground,
 }
 
--- great plugin but not been maintained
--- lang["ElPiloto/sidekick.nvim"] = {opt = true, fn = {'SideKickNoReload'}, setup = conf.sidekick}
 -- lang["stevearc/aerial.nvim"] = {
 --   opt = true,
 --   cmd = { "AerialToggle" },
@@ -238,13 +236,6 @@ lang["hashivim/vim-terraform"] = {
   cmd = { "Terraform", "TerraformToggle" },
   -- config = conf.terraform,
 }
-
--- lang['ldelossa/calltree.nvim'] = {
---   cmd = {'CTExpand', 'CTCollapse', 'CTSwitch', 'CTJump', 'CTFocus'},
---   config = function()
---     require("calltree").setup {}
---   end
--- }
 
 lang["jose-elias-alvarez/null-ls.nvim"] = { opt = true, config = require("modules.lang.null-ls").config }
 
