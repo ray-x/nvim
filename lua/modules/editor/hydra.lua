@@ -38,7 +38,7 @@ local function hydra_git()
  hunkq_f_     _u_nstage hunk   _p_ view hunk   _B_lameFull   _l_og
  buff_D_iff   _g_ diff staged  _m_erge        _x_ show del﯊ _c_onflict
  _b_uf gutter _F_iff buf       _U_stage        _G_staged     _/_ show base
- _d_eleted    resetHun_k_     _r_eset buffer   _<Enter>_ Neo  _q_uit
+     resetHun_k_     _r_eset buffer   _<Enter>_ Neo  _q_uit
 ]]
 
   local gitsigns = require("gitsigns")
@@ -77,11 +77,11 @@ local function hydra_git()
       { "M", diffmaster, { silent = true, exit = true } },
       { "H", ":DiffviewFileHistory<CR>", { silent = true, exit = true } },
       { "s", gitsigns.stage_hunk, { silent = true } },
-      { "u", gitsigns.undo_stage_hunk },
-      { "r", gitsigns.reset_buffer },
-      { "k", gitsigns.reset_hunk },
-      { "S", gitsigns.stage_buffer },
-      { "p", gitsigns.preview_hunk },
+      { "u", gitsigns.undo_stage_hunk, { exit = true } },
+      { "r", gitsigns.reset_buffer, { exit = true } },
+      { "k", gitsigns.reset_hunk, { exit = true } },
+      { "S", gitsigns.stage_buffer, { exit = true } },
+      { "p", gitsigns.preview_hunk, { exit = true } },
       { "x", gitsigns.toggle_deleted, { nowait = true } },
       { "D", gitsigns.diffthis },
       -- { "b", gitsigns.blame_line },
@@ -90,15 +90,17 @@ local function hydra_git()
         function()
           gitsigns.setqflist("all")
         end,
+        { exit = true },
       },
-      { "g", gitsigns.setqflist },
+      { "g", gitsigns.setqflist, { exit = true } },
       {
         "B",
         function()
           gitsigns.blame_line({ full = true })
         end,
+        { exit = true },
       },
-      { "d", gitsigns.toggle_deleted, { nowait = true, desc = "show deleted lines" } },
+      { "d", gitsigns.toggle_deleted, { nowait = true, desc = "show deleted lines", exit = true } },
       -- fugitive
       -- { "l", "Git log --oneline --decorate --graph --all<CR>" },
       { "l", "Flogsplit<CR>" },
