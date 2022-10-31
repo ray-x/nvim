@@ -153,7 +153,6 @@ completion[plugin_folder() .. "lsp_signature.nvim"] = {
     require("lsp_signature").setup({
       bind = true,
       -- doc_lines = 4,
-      toggle_key = "<C-x>",
       floating_window = true,
       floating_window_above_cur_line = true,
       hint_enable = true,
@@ -171,7 +170,7 @@ completion[plugin_folder() .. "lsp_signature.nvim"] = {
       },
       max_height = 4,
       toggle_key = [[<M-x>]], -- toggle signature on and off in insert mode,  e.g. '<M-x>'
-      select_signature_key = [[<M-n>]], -- toggle signature on and off in insert mode,  e.g. '<M-x>'
+      -- select_signature_key = [[<M-n>]], -- toggle signature on and off in insert mode,  e.g. '<M-x>'
       select_signature_key = [[<M-c>]], -- toggle signature on and off in insert mode,  e.g. '<M-x>'
     })
   end,

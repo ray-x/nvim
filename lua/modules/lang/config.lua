@@ -1,23 +1,5 @@
 local config = {}
--- local bind = require('keymap.bind')
--- local map_cr = bind.map_cr
--- local map_cu = bind.map_cu
--- local map_cmd = bind.map_cmd
--- local loader = require"packer".loader
 
--- function config.treesitter_sub()
---   require("modules.lang.treesitter").textsubjects({
---     textsubjects = {
---       enable = true,
---       prev_selection = ",", -- (Optional) keymap to select the previous selection
---       keymaps = {
---         ["."] = "textsubjects-smart",
---         [";"] = "textsubjects-container-outer",
---         ["i;"] = "textsubjects-container-inner",
---       },
---     },
---   })
--- end
 function config.refactor()
   local refactor = require("refactoring")
   refactor.setup({})
