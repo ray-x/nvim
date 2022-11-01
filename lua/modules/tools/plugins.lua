@@ -66,7 +66,11 @@ tools["ThePrimeagen/harpoon"] = {
 --   end
 -- }
 
--- tools["wellle/targets.vim"] = {}
+tools["wellle/targets.vim"] = {
+  opt = true,
+  event = { "CursorHold", "CursorHoldI", "CursorMoved", "CursorMovedI" },
+  setup = function() end,
+}
 tools["TimUntersberger/neogit"] = {
   cmd = { "Neogit" },
   config = conf.neogit,

@@ -32,16 +32,13 @@ end
 function config.vgit()
   -- use this as a diff tool (faster than Diffview)
   -- there are overlaps with gitgutter. following are nice features
+  if true then
+    -- skip vgit setup as it conflict with gitsigns
+    return
+  end
 
   require("vgit").setup({
-    keymaps = {
-      -- ["n <leader>ga"] = "actions", -- show all commands in telescope
-      -- ["n <leader>ba"] = "buffer_gutter_blame_preview", -- show all blames
-      -- ["n <leader>bp"] = "buffer_blame_preview", -- buffer diff
-      -- ["n <leader>bh"] = "buffer_history_preview", -- buffer commit history DiffviewFileHistory
-      -- ["n <leader>gp"] = "buffer_staged_diff_preview", -- diff for staged changes
-      -- ["n <leader>pd"] = "project_diff_preview", -- diffview is slow
-    },
+    keymaps = {},
     settings = {
       live_gutter = {
         enabled = false,
@@ -63,6 +60,23 @@ function config.vgit()
           buffer_hunk_stage = "s",
           buffer_hunk_unstage = "u",
           toggle_view = "t",
+        },
+      },
+      signs = {
+        priority = 4,
+        definitions = {
+          GitSignsAdd = {
+            texthl = "GitSignsAdd",
+            text = "|",
+          },
+          -- GitSignsDelete = {
+          --   texthl = "GitSignsDelete",
+          --   text = "d",
+          -- },
+          GitSignsChange = {
+            texthl = "GitSignsChange",
+            text = "|",
+          },
         },
       },
     },
@@ -260,6 +274,8 @@ function config.gitsigns()
         linehl = "GitSignsChangeLn",
       },
     },
+    -- sign_priority = 6,
+    update_debounce = 400,
     numhl = false,
     word_diff = true,
     on_attach = function(bufnr)
@@ -314,12 +330,10 @@ function config.gitsigns()
     end,
 
     watch_gitdir = { interval = 1000, follow_files = true },
-    sign_priority = 6,
     status_formatter = nil, -- Use default
     debug_mode = false,
     current_line_blame = true,
     current_line_blame_opts = { delay = 1500 },
-    update_debounce = 300,
     diff_opts = { internal = true },
   })
 
