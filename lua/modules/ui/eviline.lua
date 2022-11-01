@@ -637,7 +637,7 @@ windline.setup({
     colors.red_c = mod(colors.red, 0.7)
     return colors
   end,
-  statuslines = { default, winbar, quickfix, explorer },
+  statuslines = { default, quickfix, explorer },
 })
 
 -- vim.o.winbar = "%{%v:lua.require'modules.ui.winbar'.eval()%}"
