@@ -85,7 +85,7 @@ local function load_options()
     showcmd        = false;
     cmdwinheight   = 5;
     equalalways    = false;
-    laststatus     = 2;
+    laststatus     = 3;
     display        = "lastline";
     showbreak      = "﬌  ";
     listchars      = "tab:»·,nbsp:+,trail:·,extends:→,precedes:←";
