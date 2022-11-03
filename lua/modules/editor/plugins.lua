@@ -308,6 +308,7 @@ editor["AndrewRadev/switch.vim"] = {
   opt = true,
   cmd = { "Switch", "Switch!", "Switch?", "SwitchCase", "SwitchCase!" },
   fn = {"switch#Switch"},
+  keys = {"<Plug>(Switch)"},
   setup = function()
     vim.g.switch_mapping = "<Space>t"
   end,
