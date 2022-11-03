@@ -95,10 +95,9 @@ local keys = {
 
   ["n|<Leader>bd"] = map_cmd([[lua require("close_buffers").delete({type='this'})]]),
   ["n|<Space>M"] = map_cmd([[lua require("harpoon.mark").toggle_file()]]),
-  ["n|<Space>m1"] = map_cmd([[lua require("harpoon.ui").nav_file(1)]]),
-  ["n|<Space>m2"] = map_cmd([[lua require("harpoon.ui").nav_file(2)]]),
-  ["n|<Space>m3"] = map_cmd([[lua require("harpoon.ui").nav_file(3)]]),
-  ["n|<Space>m4"] = map_cmd([[lua require("harpoon.ui").nav_file(4)]]),
+  ["n|<Space>n"] = map_cmd([[lua require("harpoon.ui").nav_next()]]),
+  ["n|<Space>p"] = map_cmd([[lua require("harpoon.ui").nav_prev()]]),
+  -- ["n|<Space>m1"] = map_cmd([[lua require("harpoon.ui").nav_file(1)]]),
   ["n|<Space>m"] = map_cmd([[Telescope harpoon marks ]]),
   ["n|<Leader>N"] = map_cmd([[nohl]]),
   ["v|<Leader>re"] = map_cmd("<esc>lua require('refactoring').refactor('Extract Function')"),

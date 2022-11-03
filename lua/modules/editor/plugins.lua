@@ -298,4 +298,19 @@ editor["hrsh7th/vim-searchx"] = {
   conf = conf.searchx,
 }
 
+editor["wellle/targets.vim"] = {
+  opt = true,
+  event = { "CursorHold", "CursorHoldI", "CursorMoved", "CursorMovedI" },
+  setup = function() end,
+}
+
+editor["AndrewRadev/switch.vim"] = {
+  opt = true,
+  cmd = { "Switch", "Switch!", "Switch?", "SwitchCase", "SwitchCase!" },
+  fn = {"switch#Switch"},
+  setup = function()
+    vim.g.switch_mapping = "<Space>t"
+  end,
+}
+
 return editor

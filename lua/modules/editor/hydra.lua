@@ -123,11 +123,11 @@ local function hydra_git()
   })
 end
 local hint_telescope = [[
- _g_itfiles      _r_eg       _j_umps     _b_uffers
- _y_ neo        _z_ Z        _p_roject   _w_ grep
- _/_ searchhist  _d_umbjump   _C_lap 👏   co_m_mands
- buf_l_ines      _s_ colo🌈   _c_mdhist   _o_ldfiles
- _k_eymaps🔑     _f_older📁   _<Enter>_🔭 _q_uit
+ _g_itfiles   _r_eg       _j_umps      _b_uffers       _y_ neo
+ _z_ Z        _p_roject    _w_ grep     _/_ searchhist  _d_umbjump 
+ _C_lap 👏    co_m_mands   buf_l_ines   _s_ colo🌈      _c_mdhist 
+ _o_ldfiles   _k_eymaps🔑  _f_older📁   _h_arpoon
+               _<Enter>_🔭              _q_uit
 ]]
 
 local telescope = require("telescope")
@@ -148,7 +148,6 @@ Hydra({
     { "r", ":Telescope registers<CR>", { exit = true } },
     { "b", ":Telescope buffers<CR>", { exit = true } },
     { "j", ":lua require'utils.telescope'.jump()<CR>", { exit = true } },
-    -- { "y", telescope.extensions.neoclip.default },
     { "z", telescope.extensions.zoxide.list },
     { "p", telescope.extensions.projects.projects },
     { "f", ":lua require'utils.telescope'.folder_search()<CR>", { exit = true } },
@@ -158,6 +157,7 @@ Hydra({
     { "m", ":Telescope commands<CR>", { exit = true } },
     { "o", ":Telescope oldfiles<CR>", { exit = true } },
     { "k", ":Telescope keymaps<CR>", { exit = true } },
+    { "h", ":Telescope harpoon marks<CR>", { exit = true } },
     { "d", ":Clap dumb_jump<CR>", { exit = true } },
     { "l", ":Clap blines<CR>", { exit = true } },
     { "s", ":Clap colors<CR>", { exit = true } },

@@ -58,6 +58,7 @@ function autocmd.load_autocmds()
       { "BufReadPre", "*", ":silent! :lua require('modules.lang.config').nvim_treesitter()" },
       -- {"BufWritePre", "*.js,*.rs,*.lua", ":FormatWrite"},
       -- {"BufWritePre", "*.go", ":silent! :lua require('go.format').gofmt()"}
+       {"BufWritePost", "*", ":silent! :lua require('harpoon.mark').add_file()"}
     },
 
     wins = {

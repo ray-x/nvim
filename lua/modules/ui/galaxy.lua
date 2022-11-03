@@ -76,7 +76,7 @@ local Usual = {
     StorageClass = { fg = c.blue_five }, -- static, register, volatile, etc.
     Identifier = { fg = c.white_three, bold = true },
     Keyword = { fg = c.purple_two, bold = true },
-    FloatBorder = { fg = c.blue_four, bg = c.background_one },
+    FloatBorder = { fg = c.blue_four },
     Constant = { fg = c.orange_two }, -- any constant
     String = { fg = c.green }, -- Any string
     Character = { fg = c.orange_one }, -- any character constant: 'c', '\n'
@@ -108,7 +108,7 @@ local Usual = {
     netrwList = { fg = c.green_four },
     NonText = { fg = c.blue_five },
     LineNr = { fg = c.gray_two },
-    SignColumn = { bg = nil },
+    SignColumn = { bg = 'None'},
     CursorLine = { fg = c.gray_one, bg = c.purple_four },
     CursorColumn = { bg = c.purple_four },
     CursorLineNr = { fg = c.yellow_one, bold = true, underline = true },
@@ -130,8 +130,8 @@ local Usual = {
     Search = { fg = c.black_two, bg = c.yellow_one, bold = true },
     IncSearch = { fg = c.black_two, bg = c.orange_one, bold = true },
     Folded = { fg = c.blue_seven, bold = true, italic = true },
-    Visual = { reverse = true },
-    VisualNOS = { bg = c.background_three },
+    Visual = { bg = c.background_one },
+    VisualNOS = { bg = c.background_two },
     EndOfBuffer = { bg = back },
     Comment = { fg = c.gray_two, italic = true },
     preProc = { fg = c.blue_four },
@@ -144,6 +144,8 @@ local Usual = {
     ErrorMsg = { fg = c.pink_one, bold = true },
 
     ColorColumn = { bg = c.background_three },
+
+    VirtColumn = { link = "ColorColumn" },
     Conceal = { link = "Keyword" },
   },
   Vim = {

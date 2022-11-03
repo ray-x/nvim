@@ -23,12 +23,12 @@ nvim+kitty](https://user-images.githubusercontent.com/1681295/109258178-db2e6d80
 
 ## Battery included
 
-About 140 plugins and 1600 lines of lua and vim code.
+About 150 plugins and 14000 lines of lua and vim code.
 
 ### Commands
 
 - Keymaps : floating windows show all keymaps defined in this repo
-- Jsonformat: format json file
+- Jsonfmt: format json file
 - LG: lazygit
 - FZF: fzf
 - Spell: spell check
@@ -49,8 +49,8 @@ I used following plugin a lots
   This was the last Dein/Packer dual supports version I have (init.vim has a flag to choose).
   ATM, minium support for vim. Most plugins only works under neovim 0.5.1+.
 
-  I followed Raphael(a.k.a glepnir) https://github.com/glepnir/nvim dotfiles. He provides a great wrapper for
-  Packer. I have an `overwrite` folder which will override the settings. Also, lots of changes in modules/plugins.
+  I followed Raphael(a.k.a glepnir) https://github.com/glepnir/nvim dotfiles when I start this repo. He provides a great wrapper for
+  Packer. There is a `overwrite` folder which will override the settings. Also, lots of changes in modules/plugins.
   setup
   A.T.M. nvim-compe/cmp as a completion engine with LSP, LSP saga. vim-multi-cursor, clap/telescope. treesitter,
   lazy load vim-go. So, other than module folder, I could copy/paste everything else from glepnir's configure file,
@@ -188,7 +188,7 @@ You may need to install following tools to make best of the setup
 - ispell
 - zodide
 - node.js
-- develop language: python, go, rust etc
+- develop language: python(and pynvim), go, rust etc
 - package management: pip, cater, npm etc
 - exa
 - ...
