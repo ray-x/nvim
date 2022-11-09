@@ -13,7 +13,7 @@ local ns = vim.api.nvim_create_namespace("user-kitty")
 local group = vim.api.nvim_create_augroup("user-kitty", { clear = true })
 
 local function has_support()
-  if os.getenv('TERM_PROGRAM):find('kitty') or  os.getenv("TERM"):find('kitty') then
+  if os.getenv("TERM_PROGRAM"):find("kitty") or os.getenv("TERM"):find("kitty") then
     return true
   end
   -- return vim.fn.executable("kitty") and vim.fn.system("kitty @ ls > /dev/null && printf 'ok'") == "ok"
