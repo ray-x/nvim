@@ -31,6 +31,7 @@ editor["gbprod/substitute.nvim"] = {
 
 editor["tpope/vim-abolish"] = {
   event = { "CmdlineEnter" },
+  keys = {"<Plug>(abolish-coerce-word)"},
   setup = function()
     vim.g.abolish_no_mappings = true
     vim.cmd("nmap Cr  <Plug>(abolish-coerce-word)")

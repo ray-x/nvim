@@ -13,7 +13,10 @@ local ns = vim.api.nvim_create_namespace("user-kitty")
 local group = vim.api.nvim_create_augroup("user-kitty", { clear = true })
 
 local function has_support()
-  return vim.fn.executable("kitty") and vim.fn.system("kitty @ ls > /dev/null && printf 'ok'") == "ok"
+  if os.getenv('TERM_PROGRAM):find('kitty') or  os.getenv("TERM"):find('kitty') then
+    return true
+  end
+  -- return vim.fn.executable("kitty") and vim.fn.system("kitty @ ls > /dev/null && printf 'ok'") == "ok"
 end
 
 ---@param window KittyWindow
@@ -90,7 +93,8 @@ end
 
 local function init()
   if not has_support() then
-    vim.notify("Kitty remote control is not enabled or supported, hint: check the output of `kitty @ ls`")
+    -- vim.notify("Kitty remote control is not enabled or supported, hint: check the output of `kitty @ ls`")
+    lprint("Kitty remote control is not enabled or supported, hint: check the output of `kitty @ ls`")
     return
   end
 
