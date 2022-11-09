@@ -5,11 +5,41 @@ local map_func = bind.map_func
 local map_key = bind.map_key
 require("keymap.config")
 
+local function linewise()
+  local api = require("Comment.api")
+  local config = require("Comment.config"):get()
+  api.toggle.linewise.current()
+end
+
+local function blockwise()
+  local api = require("Comment.api")
+  local config = require("Comment.config"):get()
+  local esc = vim.api.nvim_replace_termcodes("<ESC>", true, false, true)
+  vim.api.nvim_feedkeys(esc, "nx", false)
+  api.toggle.linewise(vim.fn.visualmode())
+end
+
 local plug_map = {
-  ["i|<TAB>"] = map_func(function() return _G.tab_complete() end):with_expr():with_silent(),
-  ["i|<S-TAB>"] = map_func(function() return _G.s_tab_complete() end):with_expr():with_silent(),
-  ["s|<TAB>"] = map_func(function() return _G.tab_complete() end):with_expr():with_silent(),
-  ["s|<S-TAB>"] = map_func(function() return _G.s_tab_complete() end):with_expr():with_silent(),
+  ["i|<TAB>"] = map_func(function()
+      return _G.tab_complete()
+    end)
+    :with_expr()
+    :with_silent(),
+  ["i|<S-TAB>"] = map_func(function()
+      return _G.s_tab_complete()
+    end)
+    :with_expr()
+    :with_silent(),
+  ["s|<TAB>"] = map_func(function()
+      return _G.tab_complete()
+    end)
+    :with_expr()
+    :with_silent(),
+  ["s|<S-TAB>"] = map_func(function()
+      return _G.s_tab_complete()
+    end)
+    :with_expr()
+    :with_silent(),
 
   -- person keymap
   ["n|<leader>li"] = map_cmd("LspInfo"):with_noremap():with_silent():with_nowait(),
@@ -35,7 +65,9 @@ local plug_map = {
   ["v|<d-F>"] = map_cmd([[lua require"utils.telescope".grep_string_viusal()]]):with_noremap():with_silent(),
   ["in|<d-f>"] = map_cmd([[lua require"utils.telescope".grep_string_cursor_raw()]]):with_noremap():with_silent(),
   ["v|<d-f>"] = map_cmd([[lua require"utils.telescope".grep_string_visual_raw()]]):with_expr():with_silent(),
-  ["n|w"] = map_func(function() return '<Plug>WordMotion_w' end):with_expr(),
+  ["n|w"] = map_func(function()
+    return "<Plug>WordMotion_w"
+  end):with_expr(),
 
   ["n|<Leader>do"] = map_cmd("DiffviewOpen"):with_noremap():with_silent(),
   ["n|<Leader>dc"] = map_cmd("DiffviewClose"):with_noremap():with_silent(),
@@ -49,13 +81,14 @@ local plug_map = {
   ["x|<Leader>c<Space>"] = map_key("gc"),
   ["n|<Leader>c<Space>"] = map_key("gcc"),
   -- ["n|<Leader>c<Space>"] = map_cmd("<CMD>lua require'Comment.api'.toggle_linewise_op()<CR>"):with_silent(),
-  ["n|<d-/>"] = map_cmd("lua require'Comment.api'.toggle_current_linewise({})"):with_silent(),
-  ["i|<d-/>"] = map_cmd("lua require'Comment.api'.toggle_current_linewise({})"):with_silent(),
-  ["x|<d-/>"] = map_cmd("lua require'Comment.api'.toggle_linewise_op(vim.fn.visualmode())"):with_silent(),
+  ["n|<d-/>"] = map_func(linewise):with_silent(),
+  ["i|<d-/>"] = map_func(linewise):with_silent(),
 
-  ["n|<m-/>"] = map_cmd("lua require'Comment.api'.toggle_current_linewise({})"):with_silent(),
-  ["i|<m-/>"] = map_cmd("lua require'Comment.api'.toggle_current_linewise({})"):with_silent(),
-  ["x|<m-/>"] = map_cmd("lua require'Comment.api'.toggle_linewise_op(vim.fn.visualmode())"):with_silent(),
+  ["n|<m-/>"] = map_func(linewise):with_silent(),
+  ["i|<m-/>"] = map_func(linewise):with_silent(),
+
+  ["x|<d-/>"] = map_func(blockwise):with_silent(),
+  ["x|<m-/>"] = map_func(blockwise):with_silent(),
 }
 
 return { map = plug_map }
