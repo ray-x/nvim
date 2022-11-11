@@ -72,11 +72,11 @@ local plug_map = {
     end)
     :with_desc("grep_string_cursor"),
   ["v|<d-F>"] = map_func(function()
-      require("utils.telescope").grep_string_viusal()
+      require("utils.telescope").grep_string_visual()
     end)
     :with_desc("grep_string_visual"),
   ["v|<m-F>"] = map_func(function()
-      require("utils.telescope").grep_string_viusal()
+      require("utils.telescope").grep_string_visual()
     end)
     :with_desc("grep_string_visual"),
   ["in|<d-f>"] = map_func(function()
