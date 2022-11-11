@@ -7,13 +7,13 @@ require("keymap.config")
 
 local function linewise()
   local api = require("Comment.api")
-  local config = require("Comment.config"):get()
+  -- local config = require("Comment.config"):get()
   api.toggle.linewise.current()
 end
 
 local function blockwise()
   local api = require("Comment.api")
-  local config = require("Comment.config"):get()
+  -- local config = require("Comment.config"):get()
   local esc = vim.api.nvim_replace_termcodes("<ESC>", true, false, true)
   vim.api.nvim_feedkeys(esc, "nx", false)
   api.toggle.linewise(vim.fn.visualmode())
@@ -53,18 +53,44 @@ local plug_map = {
   ["n|<Leader>od"] = map_cmd("DBUIToggle"):with_noremap():with_silent(),
   -- Plugin Telescope
   ["i|<M-r>"] = map_cmd("Telescope registers"):with_noremap():with_silent(),
-  ["n|<M-P>"] = map_cmd(
-    'lua require("telescope").extensions.frecency.frecency({ sorter = require("telescope").extensions.fzf.native_fzf_sorter(),default_text=":CWD:" })'
-  ):with_silent(),
+  ["n|<M-P>"] = map_func(function()
+    require("telescope").extensions.frecency.frecency({
+      sorter = require("telescope").extensions.fzf.native_fzf_sorter(),
+      default_text = ":CWD:",
+    })
+  end):with_silent(),
 
   ["in|<d-p>"] = map_cmd("Telescope find_files"):with_noremap():with_silent(),
   ["in|<M-p>"] = map_cmd("Telescope find_files"):with_noremap():with_silent(),
   -- ["in|<d-T>"] = map_cu("Telescope"):with_noremap():with_silent(),
-  ["in|<M-f>"] = map_cmd([[lua require"utils.telescope".grep_string_cursor_raw()]]):with_noremap():with_silent(),
-  ["in|<d-F>"] = map_cmd([[lua require"utils.telescope".grep_string_cursor()]]):with_noremap():with_silent(),
-  ["v|<d-F>"] = map_cmd([[lua require"utils.telescope".grep_string_viusal()]]):with_noremap():with_silent(),
-  ["in|<d-f>"] = map_cmd([[lua require"utils.telescope".grep_string_cursor_raw()]]):with_noremap():with_silent(),
-  ["v|<d-f>"] = map_cmd([[lua require"utils.telescope".grep_string_visual_raw()]]):with_expr():with_silent(),
+  ["in|<M-f>"] = map_func(function()
+      require("utils.telescope").grep_string_cursor_raw()
+    end)
+    :with_desc("grep_string_cursor_raw"),
+  ["in|<d-F>"] = map_func(function()
+      require("utils.telescope").grep_string_cursor()
+    end)
+    :with_desc("grep_string_cursor"),
+  ["v|<d-F>"] = map_func(function()
+      require("utils.telescope").grep_string_viusal()
+    end)
+    :with_desc("grep_string_visual"),
+  ["v|<m-F>"] = map_func(function()
+      require("utils.telescope").grep_string_viusal()
+    end)
+    :with_desc("grep_string_visual"),
+  ["in|<d-f>"] = map_func(function()
+      require("utils.telescope").grep_string_cursor_raw()
+    end)
+    :with_desc("grep_string_cursor_raw"),
+  ["v|<d-f>"] = map_func(function()
+      require("utils.telescope").grep_string_visual_raw()
+    end)
+    :with_desc("grep_string_cursor_raw"),
+  ["v|<m-f>"] = map_func(function()
+      require("utils.telescope").grep_string_visual_raw()
+    end)
+    :with_desc("grep_string_cursor_raw"),
   ["n|w"] = map_func(function()
     return "<Plug>WordMotion_w"
   end):with_expr(),
