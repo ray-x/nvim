@@ -31,10 +31,13 @@ editor["gbprod/substitute.nvim"] = {
 
 editor["tpope/vim-abolish"] = {
   event = { "CmdlineEnter" },
-  keys = {"<Plug>(abolish-coerce-word)"},
+  keys = { "<Plug>(abolish-coerce-word)" },
   setup = function()
+    -- use default mapping
     vim.g.abolish_no_mappings = true
     vim.cmd("nmap Cr  <Plug>(abolish-coerce-word)")
+    -- s: snake
+    -- c: camel
   end,
   opt = true,
 }
@@ -308,8 +311,8 @@ editor["wellle/targets.vim"] = {
 editor["AndrewRadev/switch.vim"] = {
   opt = true,
   cmd = { "Switch", "Switch!", "Switch?", "SwitchCase", "SwitchCase!" },
-  fn = {"switch#Switch"},
-  keys = {"<Plug>(Switch)"},
+  fn = { "switch#Switch" },
+  keys = { "<Plug>(Switch)" },
   setup = function()
     vim.g.switch_mapping = "<Space>t"
   end,

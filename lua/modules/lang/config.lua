@@ -173,6 +173,7 @@ function config.navigator()
       -- code_lens = true,
       disply_diagnostic_qf = false,
       denols = { filetypes = {} },
+      rename = {style ='floating'},
       tsserver = {
         filetypes = {
           "javascript",
@@ -227,6 +228,7 @@ function config.navigator()
   vim.lsp.set_log_level("error") -- error debug info
   -- require"navigator".setup(nav_cfg)
   require("navigator").setup(nav_cfg)
+  vim.keymap.set("n", "<Space>rn", "<cmd>lua require('navigator.rename').rename_preview()<CR>", {})
 end
 
 function config.playground()
@@ -282,6 +284,19 @@ function config.go()
   vim.cmd("au FileType go command! Gtn :TestNearest -v -tags=integration")
   vim.cmd("au FileType go command! Gts :TestSuite -v -tags=integration")
   vim.cmd("augroup END")
+end
+
+function config.ssr()
+  require("ssr").setup {
+    min_width = 50,
+    min_height = 5,
+    keymaps = {
+      close = "q",
+      next_match = "n",
+      prev_match = "N",
+      replace_all = "<leader><cr>",
+    },
+  }
 end
 
 function config.dap()

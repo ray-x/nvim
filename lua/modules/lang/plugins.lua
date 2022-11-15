@@ -260,4 +260,11 @@ lang["smjonas/inc-rename.nvim"] = {
   end,
 }
 
+-- structural search and replace
+-- put to lang as it depends on treesitter
+lang["cshuaimin/ssr.nvim"] = {
+  module = "ssr",
+  config = conf.ssr
+}
+
 return lang
