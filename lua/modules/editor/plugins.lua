@@ -84,10 +84,12 @@ editor["machakann/vim-sandwich"] = {
 	    omap ca <Plug>(sandwich-add)
 	    nmap cd <Plug>(sandwich-delete)
 	    xmap cd <Plug>(sandwich-delete)
+	    nmap cda <Plug>(sandwich-delete-auto)
 	    nmap cdb <Plug>(sandwich-delete-auto)
 	    nmap cr <Plug>(sandwich-replace)
 	    xmap cr <Plug>(sandwich-replace)
 	    nmap crb <Plug>(sandwich-replace-auto)
+	    nmap cra <Plug>(sandwich-replace-auto)
       omap ib <Plug>(textobj-sandwich-auto-i)
 	    xmap ib <Plug>(textobj-sandwich-auto-i)
 	    omap ab <Plug>(textobj-sandwich-auto-a)
@@ -228,6 +230,7 @@ editor["numToStr/Comment.nvim"] = {
 -- copy paste failed in block mode when clipboard = unnameplus"
 editor["gbprod/yanky.nvim"] = {
   event = { "CmdlineEnter", "TextYankPost" },
+  keys = { "<Plug>(YankyPutAfter)", "<Plug>(YankyPutBefore)" },
   opt = true,
   setup = function()
     vim.keymap.set("n", "p", "<Plug>(YankyPutAfter)", {})

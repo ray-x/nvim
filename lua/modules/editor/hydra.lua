@@ -6,7 +6,7 @@ local function hydra_git()
     local branch = "origin/master"
     local master = vim.fn.systemlist("git rev-parse --verify develop")
     if not master[1]:find("^fatal") then
-      branch = "origin/master"
+      branch = "origin/develop"
     else
       master = vim.fn.systemlist("git rev-parse --verify master")
       if not master[1]:find("^fatal") then
@@ -124,8 +124,8 @@ local function hydra_git()
 end
 local hint_telescope = [[
  _g_itfiles   _r_eg       _j_umps      _b_uffers       _y_ neo
- _z_ Z        _p_roject    _w_ grep     _/_ searchhist  _d_umbjump 
- _C_lap 👏    co_m_mands   buf_l_ines   _s_ colo🌈      _c_mdhist 
+ _z_ Z        _p_roject    _w_ grep     _/_ searchhist  _d_umbjump
+ _C_lap 👏    co_m_mands   buf_l_ines   _s_ colo🌈      _c_mdhist
  _o_ldfiles   _k_eymaps🔑  _f_older📁   _h_arpoon
                _<Enter>_🔭              _q_uit
 ]]
