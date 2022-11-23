@@ -71,8 +71,8 @@ return {
       table.insert(sources, null_ls.builtins.diagnostics.hadolint)
     end
 
-    if exist('codespell') then
-      table.insert(sources,  null_ls.builtins.diagnostics.codespell)
+    if exist("codespell") then
+      table.insert(sources, null_ls.builtins.diagnostics.codespell)
     end
     if exist("eslint_d") then
       table.insert(sources, null_ls.builtins.diagnostics.eslint_d)
@@ -90,7 +90,7 @@ return {
       table.insert(
         sources,
         null_ls.builtins.formatting.stylua.with({
-          extra_args = { "--indent-type", "Spaces", "--indent-width", "2"}, --, "--collapse-simple-statement", "always"
+          extra_args = { "--indent-type", "Spaces", "--indent-width", "2" }, --, "--collapse-simple-statement", "always"
         })
       )
     end
@@ -129,6 +129,11 @@ return {
         "package.json",
         "tsconfig.json"
       ),
+      on_init = function(new_client, _)
+        if vim.tbl_contains({"h", "cpp", "c"}, vim.o.ft) then
+          new_client.offset_encoding = {"utf-32", "utf-16"}
+        end
+      end,
       on_attach = function(client)
         if client.server_capabilities.documentFormatting then
           vim.cmd("autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()")
