@@ -173,7 +173,7 @@ function config.navigator()
       -- code_lens = true,
       disply_diagnostic_qf = false,
       denols = { filetypes = {} },
-      rename = {style ='floating-preview'},
+      rename = { style = "floating-preview" },
       tsserver = {
         filetypes = {
           "javascript",
@@ -195,8 +195,8 @@ function config.navigator()
           client.server_capabilities.documentFormattingProvider = false -- efm
         end,
       },
-      -- ccls = { filetypes = {} }, -- using clangd
-      clangd = { filetypes = {} }, -- using clangd
+      ccls = { filetypes = {} }, -- using clangd
+      -- clangd = { filetypes = {} }, -- using clangd
 
       jedi_language_server = { filetypes = {} }, --another way to disable lsp
       servers = { "terraform_lsp", "vuels" },
@@ -286,7 +286,7 @@ function config.go()
 end
 
 function config.ssr()
-  require("ssr").setup {
+  require("ssr").setup({
     min_width = 50,
     min_height = 5,
     keymaps = {
@@ -295,7 +295,7 @@ function config.ssr()
       prev_match = "N",
       replace_all = "<leader><cr>",
     },
-  }
+  })
 end
 
 function config.dap()
@@ -308,6 +308,22 @@ function config.dap()
   -- vim.fn.sign_define('DapStopped', {text='⭐️', texthl='', linehl='', numhl=''})
   -- require('telescope').load_extension('dap')
   -- vim.g.dap_virtual_text = true
+end
+
+function config.clangd()
+  local capabilities = vim.lsp.protocol.make_client_capabilities()
+  capabilities.offsetEncoding = { "utf-16" }
+  require("clangd_extensions").setup({
+    server = {
+      capabilities = capabilities,
+      on_attach = function(client, bufnr)
+        require("navigator.lspclient.mapping").setup({ client = client, bufnr = bufnr }) -- setup navigator keymaps here,
+        require("navigator.dochighlight").documentHighlight(bufnr)
+        require("navigator.codeAction").code_action_prompt(bufnr)
+        -- otherwise, you can define your own commands to call navigator functions
+      end,
+    },
+  })
 end
 
 return config

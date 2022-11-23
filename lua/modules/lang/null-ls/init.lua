@@ -131,7 +131,7 @@ return {
       ),
       on_init = function(new_client, _)
         if vim.tbl_contains({"h", "cpp", "c"}, vim.o.ft) then
-          new_client.offset_encoding = {"utf-32", "utf-16"}
+          new_client.offset_encoding = "utf-16" -- , "utf-32" for ccls
         end
       end,
       on_attach = function(client)

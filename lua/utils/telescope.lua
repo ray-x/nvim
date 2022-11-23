@@ -532,6 +532,9 @@ M.grep_string_cursor = function()
 end
 
 M.grep_string_visual_raw = function()
+  local pwd = vim.fn.expand("%:h")
+  pwd = " --type " .. vim.o.ft .. " " .. pwd
+  vim.fn.setreg("p", pwd)
   require("telescope").extensions.live_grep_args.live_grep_args({
     default_text = "'" .. visual_selection() .. "'",
     additional_args = "--hidden --type " .. vim.o.ft,

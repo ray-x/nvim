@@ -267,4 +267,11 @@ lang["cshuaimin/ssr.nvim"] = {
   config = conf.ssr
 }
 
+lang["p00f/clangd_extensions.nvim"] ={
+  opt = true,
+  ft = {"c", "cpp", "objc", "objcpp", "h", "hpp"},
+  -- module = "clangd_extensions",
+  config = conf.clangd
+}
+
 return lang
