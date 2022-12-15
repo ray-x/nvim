@@ -15,21 +15,19 @@ tools["kristijanhusak/vim-dadbod-ui"] = {
   end,
 }
 
-tools["vim-test/vim-test"] = { cmd = { "TestNearest", "TestFile", "TestSuite" },
-  setup = conf.vim_test
+tools["vim-test/vim-test"] = { cmd = { "TestNearest", "TestFile", "TestSuite" }, setup = conf.vim_test }
+
+tools["nvim-neotest/neotest"] = {
+  module = { "neotest-jest", "neotest" },
+  config = conf.neotest,
 }
 
-tools['nvim-neotest/neotest'] = {
-  module = {'neotest-jest', 'neotest'},
-  config = conf.neotest
+tools["haydenmeade/neotest-jest"] = {
+  module = { "neotest-jest", "neotest" },
+  config = conf.neotest_jest,
 }
 
-tools['haydenmeade/neotest-jest'] = {
-  module = {'neotest-jest', 'neotest'},
-  config = conf.neotest_jest
-}
-
-tools["will133/vim-dirdiff"] = { cmd = { "DirDiff"} }
+tools["will133/vim-dirdiff"] = { cmd = { "DirDiff" } }
 
 tools["editorconfig/editorconfig-vim"] = {
   opt = true,
@@ -110,7 +108,7 @@ tools["turbio/bracey.vim"] = {
 }
 
 tools["kazhala/close-buffers.nvim"] = {
-  cmd = { "Kwbd", "BDelete", "BWipeout"},
+  cmd = { "Kwbd", "BDelete", "BWipeout" },
   config = conf.close_buffers,
   module = "close-buffers",
 }
@@ -163,6 +161,12 @@ tools[path .. "sad.nvim"] = {
   opt = true,
   config = function()
     require("sad").setup({ debug = true, log_path = "~/tmp/neovim_debug.log", vsplit = false, height_ratio = 0.8 })
+  end,
+}
+
+tools[path .. "forgit.nvim"] = {
+  config = function()
+    require("forgit").setup({ debug = true, log_path = "~/tmp/neovim_debug.log", vsplit = false, height_ratio = 0.8 })
   end,
 }
 
@@ -295,9 +299,9 @@ tools["voldikss/vim-translator"] = {
   end,
 }
 --The linediff plugin provides a simple command, :Linediff, which is used to diff two separate blocks of text.
-tools['AndrewRadev/linediff.vim'] = {
+tools["AndrewRadev/linediff.vim"] = {
   opt = true,
-  cmd = {'Linediff'},
+  cmd = { "Linediff" },
 }
 
 return tools

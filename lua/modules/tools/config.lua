@@ -517,7 +517,6 @@ function config.floaterm()
   end
 
   vim.cmd("command! LG lua _lazygit_toggle()")
-  vim.cmd("command! -nargs=* GD lua _gd_toggle(<f-args>)")
   vim.cmd("command! LD lua _lazydocker_toggle()")
   vim.cmd("command! Jest lua _jest_test()")
 
