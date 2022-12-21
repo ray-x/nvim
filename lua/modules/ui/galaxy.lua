@@ -108,7 +108,7 @@ local Usual = {
     netrwList = { fg = c.green_four },
     NonText = { fg = c.blue_five },
     LineNr = { fg = c.gray_two },
-    SignColumn = { bg = 'None'},
+    SignColumn = { bg = "None" },
     CursorLine = { fg = c.gray_one, bg = c.purple_four },
     CursorColumn = { bg = c.purple_four },
     CursorLineNr = { fg = c.yellow_one, bold = true, underline = true },
@@ -143,9 +143,9 @@ local Usual = {
     Underlined = { fg = c.blue, underline = true, sp = c.blue }, -- text that stands out, HTML links
     ErrorMsg = { fg = c.pink_one, bold = true },
 
-    ColorColumn = { bg = c.background_three },
+    ColorColumn = { link = "VertSplit" },
 
-    VirtColumn = { link = "ColorColumn" },
+    VirtColumn = { link = "VertSplit" },
     Conceal = { link = "Keyword" },
   },
   Vim = {
