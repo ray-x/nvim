@@ -18,7 +18,7 @@ end
 
 function config.session()
   local opts = {
-    log_level = "info",
+    log_level = "error",
     auto_session_enable_last_session = false,
     auto_session_root_dir = vim.fn.stdpath("data") .. "/sessions/",
     auto_session_enabled = true,
@@ -501,13 +501,38 @@ function config.floaterm()
     else
       ver = ""
     end
-    local cmd = "gd" .. " " .. ver
+    local cmd = { "gd", ver }
     if ver == "a" then
       cmd = "git diff"
     end
     local gd = Terminal:new({ cmd = cmd, hidden = true })
     gd:toggle()
     vim.cmd("normal! a")
+  end
+
+  local last_line = ""
+  function _cmd_hist_toggle(...)
+    Terminal:new({
+      cmd = "echo $(history | fzf --print0 | string split0)",
+      on_stdout = function(_, _, data, name)
+        for i, v in ipairs(data) do
+          v = vim.trim(v)
+          if v ~= "" and v:match("%a") == 1 then
+            last_line = v
+            data[i] = last_line
+            lprint("execute: ", last_line)
+          end
+        end
+      end,
+      on_exit = function(_)
+        print("exit", last_line)
+        if last_line ~= "" then
+          local ret = vim.fn.systemlist(last_line)
+          vim.notify(last_line .. ": " .. vim.inspect(ret))
+        end
+        last_line = ""
+      end,
+    }):toggle()
   end
 
   function _jest_test()
@@ -518,6 +543,7 @@ function config.floaterm()
 
   vim.cmd("command! LG lua _lazygit_toggle()")
   vim.cmd("command! LD lua _lazydocker_toggle()")
+  vim.cmd("command! C lua _cmd_hist_toggle()")
   vim.cmd("command! Jest lua _jest_test()")
 
   local fzf = Terminal:new({ cmd = "fzf", hidden = true })
