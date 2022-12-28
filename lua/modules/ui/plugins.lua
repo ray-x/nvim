@@ -31,7 +31,7 @@ ui["folke/noice.nvim"] = {
 
 ui["akinsho/bufferline.nvim"] = {
   config = conf.nvim_bufferline,
-  event = "UIEnter",
+  module = 'bufferline',
   diagnostics_update_in_insert = false,
   -- after = {"aurora"}
   -- requires = {'kyazdani42/nvim-web-devicons'}
