@@ -165,6 +165,9 @@ tools[path .. "sad.nvim"] = {
 }
 
 tools[path .. "forgit.nvim"] = {
+  opt = true,
+  cmd = { "Gd", "Glo" },
+  module = "forgit",
   config = function()
     require("forgit").setup({ debug = true, log_path = "~/tmp/neovim_debug.log", vsplit = false, height_ratio = 0.8 })
   end,

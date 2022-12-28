@@ -198,6 +198,7 @@ vim.defer_fn(function()
 end, lazy_timer + 30)
 --
 vim.defer_fn(function()
+  require("overwrite")
   loader("telescope.nvim")
   -- load from
   -- loader("telescope-zoxide project.nvim nvim-neoclip.lua")
