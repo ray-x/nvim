@@ -14,7 +14,7 @@ tools["kristijanhusak/vim-dadbod-ui"] = {
     }
   end,
 }
-tools["mattn/webapi-vim"] = {opt = true}
+tools["mattn/webapi-vim"] = { opt = true }
 
 tools["vim-test/vim-test"] = { cmd = { "TestNearest", "TestFile", "TestSuite" }, setup = conf.vim_test }
 
@@ -123,8 +123,10 @@ tools["akinsho/toggleterm.nvim"] = {
 
 tools["NTBBloodbath/rest.nvim"] = {
   opt = true,
-  ft = { "http" },
-  -- keys = { "<Plug>RestNvim", "<Plug>RestNvimPreview", "<Plug>RestNvimLast" },
+  ft = { "http", "rest" },
+  module = "rest-nvim",
+  keys = { "<Plug>RestNvim", "<Plug>RestNvimPreview", "<Plug>RestNvimLast" },
+  cmd = { "RestRun", "RestPreview", "RestLast" },
   config = conf.rest,
 }
 --
@@ -167,7 +169,7 @@ tools[path .. "sad.nvim"] = {
 
 tools[path .. "forgit.nvim"] = {
   opt = true,
-  cmd = { "Gd", "Glo" },
+  cmd = {"Ga", "Gaa", "Gd", "Glo", "Gs", "Gc", "Gpl", "Gps" },
   module = "forgit",
   config = function()
     require("forgit").setup({ debug = true, log_path = "~/tmp/neovim_debug.log", vsplit = false, height_ratio = 0.8 })
