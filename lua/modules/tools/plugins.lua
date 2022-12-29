@@ -169,7 +169,7 @@ tools[path .. "sad.nvim"] = {
 
 tools[path .. "forgit.nvim"] = {
   opt = true,
-  cmd = {"Ga", "Gaa", "Gd", "Glo", "Gs", "Gc", "Gpl", "Gps" },
+  cmd = { "Ga", "Gaa", "Gd", "Glo", "Gs", "Gc", "Gpl", "Gps" },
   module = "forgit",
   config = function()
     require("forgit").setup({ debug = true, log_path = "~/tmp/neovim_debug.log", vsplit = false, height_ratio = 0.8 })
@@ -307,7 +307,7 @@ tools["voldikss/vim-translator"] = {
 --The linediff plugin provides a simple command, :Linediff, which is used to diff two separate blocks of text.
 tools["AndrewRadev/linediff.vim"] = {
   opt = true,
-  cmd = { "Linediff" },
+  cmd = { "Linediff", "'<,'>Linediff" },
 }
 
 return tools
