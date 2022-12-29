@@ -487,13 +487,13 @@ function config.floaterm()
   local lazygit = Terminal:new({ cmd = "lazygit --debug", hidden = true })
   local lazydocker = Terminal:new({ cmd = "lazydocker", hidden = true })
 
-  function _lazygit_toggle()
+  local function _lazygit_toggle()
     lazygit:toggle()
   end
-  function _lazydocker_toggle()
+  local function _lazydocker_toggle()
     lazydocker:toggle()
   end
-  function _gd_toggle(...)
+  local function _gd_toggle(...)
     local args = { ... }
     local ver
     if #args > 0 then
@@ -511,7 +511,7 @@ function config.floaterm()
   end
 
   local last_line = ""
-  function _cmd_hist_toggle(...)
+  local function _cmd_hist_toggle(...)
     Terminal:new({
       cmd = "echo $(history | fzf --print0 | string split0)",
       on_stdout = function(_, _, data, name)
@@ -535,23 +535,28 @@ function config.floaterm()
     }):toggle()
   end
 
-  function _jest_test()
+  local function _jest_test()
     local cmd = "npx vue-cli-service test:unit --testPathPattern=" .. [["]] .. vim.fn.expand("%:t") .. [["]]
     local gd = Terminal:new({ cmd = cmd, hidden = true })
     gd:toggle()
   end
 
-  vim.cmd("command! LG lua _lazygit_toggle()")
-  vim.cmd("command! LD lua _lazydocker_toggle()")
-  vim.cmd("command! C lua _cmd_hist_toggle()")
-  vim.cmd("command! Jest lua _jest_test()")
+  local function _gitstatus()
+    local gd = Terminal:new({ cmd = "gs", hidden = true, close_on_exit = false })
+    gd:toggle()
+  end
 
-  local fzf = Terminal:new({ cmd = "fzf", hidden = true })
-
-  function _fzf_toggle()
+  local function _fzf_toggle()
+    local fzf = Terminal:new({ cmd = "fzf", hidden = true })
     fzf:toggle()
   end
-  vim.cmd("command! FZF lua _fzf_toggle()")
+  vim.api.nvim_create_user_command("LG", function()_lazygit_toggle() end,  {nargs = '*'})
+  vim.api.nvim_create_user_command("Gst", function()_gitstatus() end,  {nargs = '*'})
+  vim.api.nvim_create_user_command("LD", function()_lazydocker_toggle() end,  {nargs = '*'})
+  vim.api.nvim_create_user_command("C", function()_cmd_hist_toggle() end,  {nargs = '*'})
+  vim.api.nvim_create_user_command("Jest", function()_jest_test() end,  {nargs = '*'})
+
+  vim.api.nvim_create_user_command("FZF", function()_fzf_toggle() end,  {nargs = '*'})
   -- vim.cmd("command! NNN FloatermNew --autoclose=1 --height=0.96 --width=0.96 nnn")
   -- vim.cmd("command! FN FloatermNew --autoclose=1 --height=0.96 --width=0.96")
   -- vim.cmd("command! LG FloatermNew --autoclose=1 --height=0.96 --width=0.96 lazygit")

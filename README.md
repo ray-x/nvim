@@ -16,7 +16,7 @@ The `Plug` config is located in branch [Plug branch](https://github.com/ray-x/do
 
   ![vim_ide with nvim+kitty](https://github.com/ray-x/dotfiles/blob/master/img/clap.jpg?raw=true)
 
-- nvim+kitty + compe (cmp) :
+- nvim+kitty + cmp :
 
   ![vim_ide with
 nvim+kitty](https://user-images.githubusercontent.com/1681295/109258178-db2e6d80-784d-11eb-9cef-8b1cc6435e01.png?raw=true)
@@ -166,8 +166,7 @@ You can put your own plugins setup in `modules/user` folder
 
 ## Shell
 
-- OhMyZshell is good, iterm2 is popular, but I turned to
-  fish + spaceship + kitty. It is cooool and faster.
+- fish + spaceship + kitty. It is cooool and faster.
   nvim+kitty split view:
 
   ![vim_ide with nvim+kitty](https://github.com/ray-x/dotfiles/blob/master/img/kitty.jpg)
