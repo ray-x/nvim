@@ -14,6 +14,7 @@ tools["kristijanhusak/vim-dadbod-ui"] = {
     }
   end,
 }
+tools["mattn/webapi-vim"] = {opt = true}
 
 tools["vim-test/vim-test"] = { cmd = { "TestNearest", "TestFile", "TestSuite" }, setup = conf.vim_test }
 

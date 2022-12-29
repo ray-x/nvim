@@ -43,7 +43,6 @@ function options:load_options()
       writebackup = true,
       diffopt = "filler,iwhite,internal,algorithm:patience",
       completeopt = "menuone,noselect,noinsert", -- Show popup menu, even if there is one entry  menuone?
-      listchars = "tab:┊ ,nbsp:+,trail:·,extends:→,precedes:←", -- tab:»·,
       autowrite = true, -- Automatically save before :next, :make etc.
       autoread = true, -- Automatically read changed files
       breakindent = true, -- Make it so that long lines wrap smartly
