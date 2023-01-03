@@ -65,7 +65,7 @@ lang["simrat39/rust-tools.nvim"] = {
   end,
 }
 
-lang[path .. "go.nvim"] = { ft = { "go", "gomod" }, module = { "go" }, config = conf.go }
+lang[path .. "go.nvim"] = { opt = true, module = { "go" }, config = conf.go }
 
 lang[path .. "navigator.lua"] = {
   requires = { path .. "guihua.lua", run = "cd lua/fzy && make" },

@@ -109,6 +109,11 @@ function Lazyload()
     vim.cmd([[syntax manual]])
   end
 
+  local load_go = vim.tbl_contains({'go', 'gomod'}, vim.bo.filetype)
+  if load_go then
+    loader("go.nvim")
+  end
+
   -- local fname = vim.fn.expand("%:p:f")
   if fsize > 6 * 1024 * 1024 then
     lprint("syntax off")
@@ -224,7 +229,7 @@ end, lazy_timer + 80)
 
 if plugin_folder() == [[~/github/ray-x/]] then
   -- it is my own box, setup fish
-  vim.cmd([[set shell=/usr/bin/fish]])
+  -- vim.cmd([[set shell=/usr/bin/fish]])
   vim.cmd([[command! GD term gd]])
 end
 

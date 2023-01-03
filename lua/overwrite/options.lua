@@ -21,6 +21,9 @@ function options:load_options()
       cursorline = false,
       -- noreadonly = false;
     }
+    self.bw_local = {
+      wrap = true,
+    }
   else
     self.global_local = {
       ttyfast = true, -- Indicate fast terminal conn for faster redraw
@@ -30,8 +33,6 @@ function options:load_options()
       mouse = "a",
       textwidth = 120, -- wrap lines at 120 chars. 80 is somewaht antiquated with nowadays displays.
       updatetime = 1000, -- Vim waits after you stop typing before it triggers the plugin is governed by the setting updatetime
-      smartcase = true, -- ... but not it begins with upper case
-      incsearch = true, -- Shows the match while typing
       hlsearch = true, -- Highlight found searches
       grepformat = "%f:%l:%m,%m\\ %f\\ match%ts,%f", -- "%f:%l:%c:%m";
       -- showcmd        = false;
@@ -59,10 +60,7 @@ function options:load_options()
     }
   end
   local bw_local = {
-    synmaxcol = 2000, -- handle long lines, esp html
-    textwidth = 120,
     colorcolumn = "110", -- will reformat lines more than 120, but show ruler at 110
-    wrap = true,
   }
   bind_option(bw_local)
   for name, value in pairs(self.global_local) do
@@ -82,7 +80,7 @@ function options:load_options()
   if not win then
     vim.g.python3_host_prog = "/usr/bin/python3"
   else
-    vim.notify("pleas setup python3")
+    vim.notify("please setup python3")
   end
   -- vim.g.python_host_prog = ""
 end

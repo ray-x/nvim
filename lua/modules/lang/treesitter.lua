@@ -168,7 +168,7 @@ function textsubjects()
       enable = true,
       prev_selection = ",",
       keymaps = {
-        [">"] = "textsubjects-smart",
+        ["."] = "textsubjects-smart",
         [";"] = "textsubjects-container-outer",
         ["i;"] = "textsubjects-container-inner",
       },
@@ -217,7 +217,7 @@ local definitions = {
   },
 }
 
-vim.api.nvim_create_autocmd({"FileType"}, {
+vim.api.nvim_create_autocmd({ "FileType" }, {
   group = vim.api.nvim_create_augroup("SyntaxFtAuGroup", {}),
   callback = function()
     local ft = vim.o.ft
@@ -228,9 +228,8 @@ vim.api.nvim_create_autocmd({"FileType"}, {
 
     local fsize = vim.fn.getfsize(vim.fn.expand("%:p:f")) or 1
     if fsize < 100000 then
-     vim.cmd("syntax on")
+      vim.cmd("syntax on")
     end
-
   end,
 })
 return {

@@ -171,6 +171,7 @@ tools[path .. "forgit.nvim"] = {
   opt = true,
   cmd = { "Ga", "Gaa", "Gd", "Glo", "Gs", "Gc", "Gpl", "Gps" },
   module = "forgit",
+  event = { "CmdwinEnter", "CmdlineEnter" },
   config = function()
     require("forgit").setup({ debug = true, log_path = "~/tmp/neovim_debug.log", vsplit = false, height_ratio = 0.8 })
   end,

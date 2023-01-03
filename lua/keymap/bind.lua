@@ -117,7 +117,7 @@ function pbind.nvim_load_mapping(mapping)
           table.insert(pbind.all_keys, mode:sub(i, i) .. " | " .. keymap .. " : " .. rhs)
         elseif type(rhs) == "function" then
           opts.desc=value.desc or 'map lua func'
-          lprint(opts, keymap, mode:sub(i,i))
+          -- lprint(opts, keymap, mode:sub(i,i))
           vim.keymap.set(mode:sub(i, i), keymap, rhs, opts)
           table.insert(pbind.all_keys, mode:sub(i, i) .. " | " .. keymap .. " : " .. (value.desc or ''))
         else

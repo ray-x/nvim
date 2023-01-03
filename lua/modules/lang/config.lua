@@ -153,7 +153,6 @@ function config.navigator()
   local nav_cfg = {
     debug = plugin_debug(),
     width = 0.7,
-    lsp_installer = false,
     on_attach = function(client, bufnr)
       -- require'aerial'.on_attach(client, bufnr)
     end,

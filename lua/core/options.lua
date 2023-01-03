@@ -96,16 +96,16 @@ local function load_options()
   }
 
   local bw_local  = {
-    synmaxcol      = 1000;
+    synmaxcol = 2000, -- handle long lines, esp html
     formatoptions  = "1jcroql";
-    textwidth      = 80;
+    textwidth = 120,
     expandtab      = true;
     autoindent     = true;
     tabstop        = 2;
     shiftwidth     = 2;
     softtabstop    = -1;
     breakindentopt = "shift:2,min:20";
-    wrap           = false;
+    wrap           = true;
     linebreak      = true;
     number         = true;
     colorcolumn    = "80";
