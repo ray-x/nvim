@@ -425,13 +425,42 @@ function config.hlslens()
   require("hlslens").setup({
     calm_down = true,
     -- nearest_only = true,
-    nearest_float_when = "always",
+    nearest_float_when = "auto",
   })
-  vim.cmd([[aug VMlens]])
-  vim.cmd([[au!]])
-  vim.cmd([[au User visual_multi_start lua require('utils.vmlens').start()]])
-  vim.cmd([[au User visual_multi_exit lua require('utils.vmlens').exit()]])
-  vim.cmd([[aug END]])
+  local kopts = { noremap = true, silent = true }
+
+  vim.api.nvim_set_keymap(
+    "n",
+    "n",
+    [[<Cmd>execute('normal! ' . v:count1 . 'n')<CR><Cmd>lua require('hlslens').start()<CR>]],
+    kopts
+  )
+  vim.api.nvim_set_keymap(
+    "n",
+    "N",
+    [[<Cmd>execute('normal! ' . v:count1 . 'N')<CR><Cmd>lua require('hlslens').start()<CR>]],
+    kopts
+  )
+  vim.api.nvim_set_keymap("n", "*", [[*<Cmd>lua require('hlslens').start()<CR>]], kopts)
+  vim.api.nvim_set_keymap("n", "#", [[#<Cmd>lua require('hlslens').start()<CR>]], kopts)
+  vim.api.nvim_set_keymap("n", "g*", [[g*<Cmd>lua require('hlslens').start()<CR>]], kopts)
+  vim.api.nvim_set_keymap("n", "g#", [[g#<Cmd>lua require('hlslens').start()<CR>]], kopts)
+
+  vim.keymap.set({ "n", "x" }, "<Leader>L", function()
+    vim.schedule(function()
+      if require("hlslens").exportLastSearchToQuickfix() then
+        vim.cmd("cw")
+      end
+    end)
+    return ":noh<CR>"
+  end, { expr = true })
+  vim.cmd([[
+    aug VMlens
+        au!
+        au User visual_multi_start lua require('modules.editor.vmlens').start()
+        au User visual_multi_exit lua require('modules.editor.vmlens').exit()
+    aug END
+  ]])
 end
 -- help vm-mappings
 function config.vmulti()

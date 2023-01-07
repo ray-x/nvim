@@ -150,11 +150,12 @@ editor["booperlv/nvim-gomove"] = {
 }
 
 -- Great plugin.
--- editor["kevinhwang91/nvim-hlslens"] = {
---   -- keys = {"/", "?", '*', '#'}, --'n', 'N', '*', '#', 'g'
---   -- opt = true,
---   -- config = conf.hlslens
--- }
+editor["kevinhwang91/nvim-hlslens"] = {
+  keys = { "/", "?", "*", "#" }, --'n', 'N', '*', '#', 'g'
+  module = { "hlslens" },
+  opt = true,
+  config = conf.hlslens,
+}
 
 editor["kevinhwang91/nvim-ufo"] = {
   opt = true,
@@ -229,8 +230,9 @@ editor["numToStr/Comment.nvim"] = {
 
 -- copy paste failed in block mode when clipboard = unnameplus"
 editor["gbprod/yanky.nvim"] = {
-  event = { "CmdlineEnter", "TextYankPost" },
+  event = { "CursorMoved", "CursorMovedI", "TextYankPost" },
   keys = { "<Plug>(YankyPutAfter)", "<Plug>(YankyPutBefore)" },
+  module = "yanky",
   opt = true,
   setup = function()
     vim.keymap.set("n", "p", "<Plug>(YankyPutAfter)", {})

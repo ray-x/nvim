@@ -65,7 +65,7 @@ lang["simrat39/rust-tools.nvim"] = {
   end,
 }
 
-lang[path .. "go.nvim"] = { opt = true, module = { "go" }, config = conf.go }
+lang[path .. "go.nvim"] = { opt = true, event = { "CmdwinEnter", "CmdlineEnter" }, module = { "go" }, config = conf.go }
 
 lang[path .. "navigator.lua"] = {
   requires = { path .. "guihua.lua", run = "cd lua/fzy && make" },
@@ -77,7 +77,7 @@ lang[path .. "web-tools.nvim"] = {
   ft = { "html", "javascript" },
   opt = true,
   config = function()
-    require("web-tools").setup({debug=true})
+    require("web-tools").setup({ debug = true })
   end,
 }
 
@@ -241,14 +241,14 @@ lang["jose-elias-alvarez/null-ls.nvim"] = { opt = true, config = require("module
 
 lang["j-hui/fidget.nvim"] = {
   opt = true,
-  config = function ()
-    require"fidget".setup{
+  config = function()
+    require("fidget").setup({
       sources = {
-        ['null-ls'] = {ignore = true}
-      }
-    }
+        ["null-ls"] = { ignore = true },
+      },
+    })
   end,
-  module = 'lspconfig'
+  module = "lspconfig",
 }
 
 lang["smjonas/inc-rename.nvim"] = {
@@ -264,14 +264,14 @@ lang["smjonas/inc-rename.nvim"] = {
 -- put to lang as it depends on treesitter
 lang["cshuaimin/ssr.nvim"] = {
   module = "ssr",
-  config = conf.ssr
+  config = conf.ssr,
 }
 
-lang["p00f/clangd_extensions.nvim"] ={
+lang["p00f/clangd_extensions.nvim"] = {
   opt = true,
-  ft = {"c", "cpp", "objc", "objcpp", "h", "hpp"},
+  ft = { "c", "cpp", "objc", "objcpp", "h", "hpp" },
   -- module = "clangd_extensions",
-  config = conf.clangd
+  config = conf.clangd,
 }
 
 return lang

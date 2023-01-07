@@ -57,10 +57,10 @@ local c = {
   orange_one = "#FE6019",
   orange_two = "#FE9059",
 
-  background_one = "#3C3836",
-  background_two = "#262729",
-  background_three = "#504945",
-  background_three_two = "#546442",
+  background_one = "#1f404f",
+  background_two = "#10203f",
+  background_three = "#204945",
+  background_four = "#445462",
 
   lime = "#98EE64",
   cyan = "#89DDFF",
@@ -113,7 +113,7 @@ local Usual = {
     CursorColumn = { bg = c.purple_four },
     CursorLineNr = { fg = c.yellow_one, bold = true, underline = true },
     StatusLine = { fg = c.white_two, bg = c.background_three },
-    StatusLineNC = { fg = c.white_two, bg = c.background_three_two },
+    StatusLineNC = { fg = c.white_two, bg = c.background_four },
     Structure = { fg = c.purple_one },
     ModeMsg = { fg = c.green },
     Question = { fg = c.blue },
@@ -127,19 +127,21 @@ local Usual = {
     SpellBad = { fg = c.orange, bold = true, undercurl = true },
     SpellCap = { fg = c.yellow, underdotted = true },
     SpellRare = { fg = c.white, underdotted = true },
-    Search = { fg = c.black_two, bg = c.yellow_one, bold = true },
-    IncSearch = { fg = c.black_two, bg = c.orange_one, bold = true },
+    Search = { reverse = true, bold = true },
+    IncSearch = { reverse = true, bold = true },
+    -- Search = { fg = c.black_two, bg = c.yellow_one, bold = true },
+    -- IncSearch = { fg = c.black_two, bg = c.orange_one, bold = true },
     Folded = { fg = c.blue_seven, bold = true, italic = true },
-    Visual = { bg = c.background_one },
+    Visual = { bg = c.background_one, bold = true },
     VisualNOS = { bg = c.background_two },
     EndOfBuffer = { bg = back },
     Comment = { fg = c.gray_two, italic = true },
     preProc = { fg = c.blue_four },
     MatchParen = { underline = true, bold = true, bg = c.background_three },
     Pmenu = { fg = c.white_two, bg = c.background_two },
-    Pmenusel = { fg = c.white, bg = c.purple_one },
+    Pmenusel = { fg = c.white, bg = c.background_four, bold = true },
     PmenuThumb = { fg = c.blue, bg = "Grey", bold = true, italic = true },
-    VertSplit = { fg = c.background_three_two },
+    VertSplit = { fg = c.background_four },
     Underlined = { fg = c.blue, underline = true, sp = c.blue }, -- text that stands out, HTML links
     ErrorMsg = { fg = c.pink_one, bold = true },
 
@@ -183,7 +185,7 @@ local Usual = {
     DiffAdd = { fg = c.green_two, bold = true, undercurl = true, sp = "#2284a1" },
     DiffChange = { fg = c.purple_two, bold = true, underdotted = true, sp = "#269616" },
     DiffText = { fg = c.white, bold = true },
-    DiffDelete = { fg = c.red_two, bold = true },
+    DiffDelete = { fg = c.red_two, bold = true, strikethrough = true },
   },
   Git = {
     GitSignsAdd = { fg = c.red }, -- diff mode: Added line |diff.txt|
@@ -251,7 +253,7 @@ local Usual = {
     }, -- used for highlighting "write" references
     LspSignatureActiveParameter = {
       fg = c.white_two,
-      bg = c.background_three_two,
+      bg = c.background_four,
       bold = true,
       italic = true,
       underdouble = true,
