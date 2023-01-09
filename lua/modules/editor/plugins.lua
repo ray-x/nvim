@@ -51,10 +51,18 @@ editor["andymass/vim-matchup"] = {
   event = { "CursorHold", "CursorHoldI" },
   cmd = { "MatchupWhereAmI?" },
   config = function()
-    vim.g.matchup_enabled = 1
-    vim.g.matchup_surround_enabled = 1
+    local fsize = vim.fn.getfsize(vim.fn.expand("%:p:f"))
+    if fsize == nil or fsize < 0 then
+      fsize = 1
+    end
+    local enabled = 1
+    if fsize > 500000 then
+      enabled = 0
+    end
+    vim.g.matchup_enabled = enabled
+    vim.g.matchup_surround_enabled = enabled
     -- vim.g.matchup_transmute_enabled = 1
-    vim.g.matchup_matchparen_deferred = 1
+    vim.g.matchup_matchparen_deferred = enabled
     vim.g.matchup_matchparen_offscreen = { method = "popup" }
     vim.cmd([[nnoremap <c-s-k> :<c-u>MatchupWhereAmI?<cr>]])
   end,
@@ -300,6 +308,12 @@ editor["nvim-neorg/neorg"] = {
   config = conf.neorg,
   ft = "norg",
   requires = { "nvim-neorg/neorg-telescope", ft = { "norg" } },
+}
+
+editor["nvim-orgmode/orgmode"] = {
+  opt = true,
+  config = conf.orgmode,
+  ft = "org",
 }
 
 editor["hrsh7th/vim-searchx"] = {

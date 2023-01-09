@@ -230,19 +230,19 @@ function config.substitute()
     "n",
     "<Leader>S",
     "<cmd>lua require('substitute.range').operator({ prefix = 'S' })<cr>",
-    { noremap = true, desc = "substitute range motion" }
+    { noremap = true, desc = "substitute range operator" }
   )
   vim.keymap.set(
     "x",
     "<leader>S",
     "<cmd>lua require('substitute.range').visual()<cr>",
-    { noremap = true, desc = "substitute range motion" }
+    { noremap = true, desc = "X mode substitute range with s/xxx/XXX/g" }
   )
   vim.keymap.set(
     "n",
     "<Leader>ss",
     "<cmd>lua require('substitute.range').word()<cr>",
-    { noremap = true, desc = "substitute range motion" }
+    { noremap = true, desc = "substitute range word with s/xxx/XXX/g" }
   )
 end
 
@@ -355,6 +355,50 @@ function config.ufo()
   end
 end
 
+function config.orgmode()
+  local loader = require("packer").loader
+  if not packer_plugins["nvim-treesitter"].loaded then
+    loader("nvim-treesitter")
+  end
+
+  require("orgmode").setup_ts_grammar()
+  require("nvim-treesitter.configs").setup({
+    -- If TS highlights are not enabled at all, or disabled via `disable` prop,
+    -- highlighting will fallback to default Vim syntax highlighting
+    highlight = {
+      enable = true,
+      -- Required for spellcheck, some LaTex highlights and
+      -- code block highlights that do not have ts grammar
+      additional_vim_regex_highlighting = { "org" },
+    },
+    ensure_installed = { "org" }, -- Or run :TSUpdate org
+  })
+  require("orgmode").setup({
+    mappings = {
+      -- global = {
+      --   org_agenda = { "gA", "<Leader>oa" },
+      --   org_capture = { "gC", "<Leader>oc" },
+      -- },
+      -- agenda = {
+      --   org_agenda_later = ">",
+      --   org_agenda_earlier = "<",
+      --   org_agenda_goto_today = { ".", "T" },
+      -- },
+      -- capture = {
+      --   org_capture_finalize = "<Leader>w",
+      --   org_capture_refile = "R",
+      --   org_capture_kill = "Q",
+      -- },
+      --
+      -- note = {
+      --   org_note_finalize = "<Leader>w",
+      --   org_note_kill = "Q",
+      -- },
+    },
+  })
+  vim.opt.conceallevel = 2
+  vim.cmd('set foldlevel=1')
+end
 function config.neorg()
   local loader = require("packer").loader
   if not packer_plugins["nvim-treesitter"].loaded then
@@ -414,14 +458,6 @@ end
 
 function config.hlslens()
   -- body
-  -- vim.cmd([[packadd nvim-hlslens]])
-  vim.cmd([[noremap <silent> n <Cmd>execute('normal! ' . v:count1 . 'n')<CR> <Cmd>lua require('hlslens').start()<CR>]])
-  vim.cmd([[noremap <silent> N <Cmd>execute('normal! ' . v:count1 . 'N')<CR> <Cmd>lua require('hlslens').start()<CR>]])
-  vim.cmd([[noremap * *<Cmd>lua require('hlslens').start()<CR>]])
-  vim.cmd([[noremap # #<Cmd>lua require('hlslens').start()<CR>]])
-  vim.cmd([[noremap g* g*<Cmd>lua require('hlslens').start()<CR>]])
-  vim.cmd([[noremap g# g#<Cmd>lua require('hlslens').start()<CR>]])
-  vim.cmd([[nnoremap <silent> <leader>l :noh<CR>]])
   require("hlslens").setup({
     calm_down = true,
     -- nearest_only = true,

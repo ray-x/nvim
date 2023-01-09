@@ -550,13 +550,25 @@ function config.floaterm()
     local fzf = Terminal:new({ cmd = "fzf", hidden = true })
     fzf:toggle()
   end
-  vim.api.nvim_create_user_command("LG", function()_lazygit_toggle() end,  {nargs = '*'})
-  vim.api.nvim_create_user_command("Gst", function()_gitstatus() end,  {nargs = '*'})
-  vim.api.nvim_create_user_command("LD", function()_lazydocker_toggle() end,  {nargs = '*'})
-  vim.api.nvim_create_user_command("C", function()_cmd_hist_toggle() end,  {nargs = '*'})
-  vim.api.nvim_create_user_command("Jest", function()_jest_test() end,  {nargs = '*'})
+  vim.api.nvim_create_user_command("LG", function()
+    _lazygit_toggle()
+  end, { nargs = "*" })
+  vim.api.nvim_create_user_command("Gst", function()
+    _gitstatus()
+  end, { nargs = "*" })
+  vim.api.nvim_create_user_command("LD", function()
+    _lazydocker_toggle()
+  end, { nargs = "*" })
+  vim.api.nvim_create_user_command("C", function()
+    _cmd_hist_toggle()
+  end, { nargs = "*" })
+  vim.api.nvim_create_user_command("Jest", function()
+    _jest_test()
+  end, { nargs = "*" })
 
-  vim.api.nvim_create_user_command("FZF", function()_fzf_toggle() end,  {nargs = '*'})
+  vim.api.nvim_create_user_command("FZF", function()
+    _fzf_toggle()
+  end, { nargs = "*" })
   -- vim.cmd("command! NNN FloatermNew --autoclose=1 --height=0.96 --width=0.96 nnn")
   -- vim.cmd("command! FN FloatermNew --autoclose=1 --height=0.96 --width=0.96")
   -- vim.cmd("command! LG FloatermNew --autoclose=1 --height=0.96 --width=0.96 lazygit")
@@ -675,4 +687,14 @@ vim.api.nvim_create_user_command("LspClients", function(opts)
     lprint(vim.lsp.get_active_clients())
   end
 end, { nargs = "*" })
+
+config.hologram = function()
+  if vim.fn.exists("linux") then
+    return
+  end
+  require("hologram").setup({
+    auto_display = true, -- WIP automatic markdown image display, may be prone to breaking
+  })
+end
+
 return config

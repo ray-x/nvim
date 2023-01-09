@@ -1,7 +1,7 @@
 local enable = false
 local langtree = false
 -- stylua: ignore start
-local ts_ensure_installed = { "go", "css", "html", "javascript", "typescript", "jsdoc", "json", "c", "java", "toml", "tsx", "lua", "cpp", "python", "rust", "jsonc", "yaml", "sql", "vue", "vim"}
+local ts_ensure_installed = { "go", "css", "html", "javascript", "typescript", "jsdoc", "json", "c", "java", "toml", "tsx", "lua", "cpp", "python", "rust", "jsonc", "yaml", "sql", "vue", "vim", "org"}
 -- stylua: ignore end
 
 local treesitter = function()
@@ -30,7 +30,7 @@ local treesitter = function()
   require("nvim-treesitter.configs").setup({
     highlight = {
       enable = enable, -- false will disable the whole extension
-      additional_vim_regex_highlighting = false, -- unless not supported by ts
+      additional_vim_regex_highlighting = { "org" }, -- unless not supported by ts
       disable = { "elm" }, -- list of language that will be disabled
       use_languagetree = langtree,
       custom_captures = { todo = "Todo" },

@@ -162,6 +162,7 @@ function config.navigator()
     lsp_signature_help = true,
     combined_attach = "their", -- both: use both customized attach and navigator default attach, mine: only use my attach defined in vimrc
 
+    treesitter_navigation = { "go", "typescript" },
     -- default_mapping = false,
     --     keymaps = { { mode = 'i', key = '<M-k>', func = 'signature_help()' },
     -- { key = "<c-i>", func = "signature_help()" } },

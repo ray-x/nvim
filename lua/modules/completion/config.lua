@@ -71,6 +71,11 @@ function config.nvim_cmp()
   if vim.o.ft == "norg" then
     table.insert(sources, { name = "neorg" })
   end
+
+  if vim.o.ft == "org" then
+    table.insert(sources, { name = "org" })
+    table.insert(sources, { name = "neorg" })
+  end
   if vim.o.ft == "markdown" then
     table.insert(sources, { name = "spell" })
     table.insert(sources, { name = "look" })

@@ -6,9 +6,9 @@
 ;; (("else"     @keyword) (#set! conceal "! "))
 (("func"     @keyword) (#set! conceal ""))
 (("for"      @keyword) (#set! conceal ""))
-(("switch"   @keyword) (#set! conceal   "ﳟ"))
+(("switch"   @keyword) (#set! conceal "🎮"))
 (("default"  @keyword) (#set! conceal  ""))
-(("break"    @keyword) (#set! conceal  ""))
+(("break"    @keyword) (#set! conceal  "⏹️"))
 (("case"     @keyword) (#set! conceal  ""))
 (("import"   @keyword) (#set! conceal  ""))
 (("package"  @keyword) (#set! conceal  ""))
@@ -17,7 +17,8 @@
 (("continue" @keyword) (#set! conceal "↙"))
 (("struct"   @keyword) (#set! conceal ""))
 (("type"     @keyword) (#set! conceal ""))
-(("interface"       @keyword) (#set! conceal ""))
+(("interface"       @keyword) (#set! conceal "🦆"))
+(("*"       @keyword) (#set! conceal "✳️"))
 
 ;; Function names
 ((call_expression function: (identifier) @function (#eq? @function "append"  )) (#set! conceal "匿"))  ;;  
@@ -27,7 +28,7 @@
 (((type_identifier) @type (#eq? @type "error")) (#set! conceal ""))
 (((type_identifier) @type (#eq? @type "int")) (#set! conceal "כֿ"))
 (((type_identifier) @type (#eq? @type "byte")) (#set! conceal ""))
-(((nil) @type (#set! conceal "ﳠ")))
+(((nil) @type (#set! conceal "🈳")))
 (((true) @type (#set! conceal "")))
 ;; fmt.*
 (((selector_expression) @error (#eq? @error "fmt.Println"     )) (#set! conceal ""))
