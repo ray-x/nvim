@@ -188,9 +188,27 @@ local Usual = {
     DiffDelete = { fg = c.red_two, bold = true, strikethrough = true },
   },
   Git = {
-    GitSignsAdd = { fg = c.red }, -- diff mode: Added line |diff.txt|
-    GitSignsChange = { fg = c.purple_two }, -- diff mode: Changed line |diff.txt|
-    GitSignsDelete = { fg = c.red_two }, -- diff
+    -- GitSignsAdd = { fg = c.red }, -- diff mode: Added line |diff.txt|
+    -- GitSignsChange = { fg = c.purple_two }, -- diff mode: Changed line |diff.txt|
+    -- GitSignsDelete = { fg = c.red_two }, -- diff
+
+    GitSignsAdd = { link = "Question" }, -- diff mode: Added line |diff.txt|
+    GitSignsAddNr = { link = "Question" }, -- diff mode: Added line |diff.txt|
+    GitSignsAddLn = { link = "Question" }, -- diff mode: Added line |diff.txt|
+    GitSignsChange = { link = "Include" }, -- diff mode: Changed line |diff.txt|
+    GitSignsChangeNr = { link = "Include" }, -- diff mode: Changed line |diff.txt|
+    GitSignsChangeLn = { link = "Include" }, -- diff mode: Changed line |diff.txt|
+    GitSignsDelete = { link = "Special" }, -- diff mode: Deleted line |diff.txt|
+    GitSignsDeleteNr = { link = "Special" }, -- diff mode: Deleted line |diff.txt|
+    GitSignsDeleteLn = { link = "Special" }, -- diff mode: Deleted line |diff.txt|
+    GitGutterDelete = { link = "GitSignsDelete" },
+    GitGutterChangeDelete = { link = "GitSignsChange" },
+    GitGutterAdd = { link = "GitSignsAdd" },
+    GitGutterChange = { link = "GitSignsChange" },
+
+    -- GitSignsAddInline = { style = 'undercurl', sp = c.green }, -- diff mode: Deleted line |diff.txt|
+    -- GitSignsDeleteInline = { style = 'underline', sp = c.red }, -- diff mode: Deleted line |diff.txt|
+    -- GitSignsChangeInline = { style = 'undercurl', sp = c.blue }, -- diff mode: Deleted line |diff.txt|
   },
   TSHighlights = {
     NodeNumber = { fg = c.blue_five },

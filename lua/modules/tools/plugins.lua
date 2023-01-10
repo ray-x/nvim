@@ -16,6 +16,13 @@ tools["kristijanhusak/vim-dadbod-ui"] = {
 }
 tools["mattn/webapi-vim"] = { opt = true }
 
+tools["edluffy/hologram.nvim"] = {
+  config = conf.hologram,
+  opt = true,
+  ft = { "markdown", "md", "norg", "org" },
+  requires = { "nvim-lua/plenary.nvim" },
+}
+
 tools["vim-test/vim-test"] = { cmd = { "TestNearest", "TestFile", "TestSuite" }, setup = conf.vim_test }
 
 tools["nvim-neotest/neotest"] = {
@@ -163,7 +170,13 @@ tools[path .. "sad.nvim"] = {
   cmd = { "Sad" },
   opt = true,
   config = function()
-    require("sad").setup({ debug = true, log_path = "~/tmp/neovim_debug.log", vsplit = false, height_ratio = 0.8 })
+    require("sad").setup({
+      debug = true,
+      log_path = vim.fn.expand('$HOME') .. "/.cache/nvim/nvim_debug.log",
+      vsplit = false,
+      height_ratio = 0.8,
+      autoclose = false,
+    })
   end,
 }
 
@@ -173,7 +186,7 @@ tools[path .. "forgit.nvim"] = {
   module = "forgit",
   event = { "CmdwinEnter", "CmdlineEnter" },
   config = function()
-    require("forgit").setup({ debug = true, log_path = "~/tmp/neovim_debug.log", vsplit = false, height_ratio = 0.8 })
+    require("forgit").setup({ debug = true, log_path = vim.fn.expand('$HOME') .. "/.cache/nvim/nvim_debug.log", vsplit = false, height_ratio = 0.8 })
   end,
 }
 
@@ -181,7 +194,7 @@ tools[path .. "viewdoc.nvim"] = {
   cmd = { "Viewdoc" },
   opt = true,
   config = function()
-    require("viewdoc").setup({ debug = true, log_path = "~/tmp/neovim_debug.log" })
+    require("viewdoc").setup({ debug = true, log_path = vim.fn.expand('$HOME') .. "/.cache/nvim/nvim_debug.log" })
   end,
 }
 

@@ -360,6 +360,7 @@ function config.orgmode()
   if not packer_plugins["nvim-treesitter"].loaded then
     loader("nvim-treesitter")
   end
+  vim.cmd('set foldleve=2')
 
   require("orgmode").setup_ts_grammar()
   require("nvim-treesitter.configs").setup({

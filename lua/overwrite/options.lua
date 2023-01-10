@@ -50,12 +50,12 @@ function options:load_options()
       smartindent = true, -- use intelligent indentation
       showmatch = true, -- highlight matching braces
       numberwidth = 3,
+      relativenumber = true,
     }
 
     self.window_local = {
       foldmethod = "indent", -- indent? expr?  expr is slow for large files
       number = true,
-      relativenumber = true,
       foldenable = true,
     }
   end

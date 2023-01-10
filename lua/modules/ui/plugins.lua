@@ -21,6 +21,14 @@ ui["rcarriga/nvim-notify"] = {
   config = conf.notify,
 }
 
+ui["luukvbaal/statuscol.nvim"] = {
+  opt = true,
+  -- event = "User LoadLazyPlugin",
+  config = function()
+    require("statuscol").setup({ setopt = true })
+  end,
+}
+
 -- feel a bit laggy
 ui["folke/noice.nvim"] = {
   opt = true,
@@ -31,7 +39,7 @@ ui["folke/noice.nvim"] = {
 
 ui["akinsho/bufferline.nvim"] = {
   config = conf.nvim_bufferline,
-  module = 'bufferline',
+  module = "bufferline",
   diagnostics_update_in_insert = false,
   -- after = {"aurora"}
   -- requires = {'kyazdani42/nvim-web-devicons'}
@@ -165,7 +173,7 @@ ui["gelguy/wilder.nvim"] = {
 
 ui["stevearc/dressing.nvim"] = {
   opt = true,
-  module = {"dressing"}
+  module = { "dressing" },
 }
 
 return ui
