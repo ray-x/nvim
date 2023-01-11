@@ -153,6 +153,7 @@ function config.navigator()
   local nav_cfg = {
     debug = plugin_debug(),
     width = 0.7,
+    -- icons = {icons = false}, -- disable all icons
     on_attach = function(client, bufnr)
       -- require'aerial'.on_attach(client, bufnr)
     end,
@@ -174,6 +175,9 @@ function config.navigator()
       disply_diagnostic_qf = false,
       denols = { filetypes = {} },
       rename = { style = "floating-preview" },
+      sumneko_lua = {
+        before_init = require("neodev.lsp").before_init,
+      },
       tsserver = {
         filetypes = {
           "javascript",
@@ -240,10 +244,27 @@ function config.playground()
     },
   })
 end
-function config.luadev()
-  vim.cmd([[vmap <leader><leader>r <Plug>(Luadev-Run)]])
+function config.luapad()
+  require("luapad").setup({
+    count_limit = 150000,
+    error_indicator = true,
+    eval_on_move = true,
+    error_highlight = "WarningMsg",
+    split_orientation = "horizontal",
+    on_init = function()
+      print("Luapad created!")
+    end,
+    context = {
+      the_answer = 42,
+      shout = function(str)
+        return (string.upper(str) .. "!")
+      end,
+    },
+  })
 end
-function config.lua_dev() end
+function config.luadev() 
+  require('neodev').setup{}
+end
 
 function config.go()
   require("go").setup({

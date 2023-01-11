@@ -18,6 +18,28 @@ end
 
 math.randomseed(os.time())
 
+-- Create cache dir and subs dir
+local createdir = function()
+  local global = require("core.global")
+  local data_dir = {
+    global.cache_dir .. "backup",
+    global.cache_dir .. "session",
+    global.cache_dir .. "swap",
+    global.cache_dir .. "tags",
+    global.cache_dir .. "undo",
+  }
+  -- There only check once that If cache_dir exists
+  -- Then I don't want to check subs dir exists
+  if vim.fn.isdirectory(global.cache_dir) == 0 then
+    os.execute("mkdir -p " .. global.cache_dir)
+    for _, v in pairs(data_dir) do
+      if vim.fn.isdirectory(v) == 0 then
+        os.execute("mkdir -p " .. v)
+      end
+    end
+  end
+end
+
 local function daylight()
   local h = tonumber(os.date("%H"))
   return "dark"
@@ -32,14 +54,14 @@ local function randomscheme()
   local themes = {
     "starry.nvim",
     "aurora",
-    "aurora",
-    "tokyonight.nvim",
-    "starry.nvim",
-    "aurora",
-    "gruvbox-material",
-    "sonokai",
-    "catppuccin",
-    "github-nvim-theme",
+    -- "aurora",
+    -- "tokyonight.nvim",
+    -- "starry.nvim",
+    -- "aurora",
+    -- "gruvbox-material",
+    -- "sonokai",
+    -- "catppuccin",
+    -- "github-nvim-theme",
     "galaxy",
   }
 
@@ -90,6 +112,8 @@ end
 -- load module but not init/config it
 vim.cmd([[packadd nvim-treesitter]])
 function Lazyload()
+  require("core.helper").init()
+  createdir()
   lprint("I am lazy")
   local disable_ft = {
     "NvimTree",
@@ -191,9 +215,11 @@ vim.defer_fn(function()
 end, lazy_timer)
 
 vim.defer_fn(function()
+  vim.cmd('tabdo windo set norelativenumber')
   load_colorscheme(loading_theme)
   loader("windline.nvim")
   loader("virt-column.nvim")
+  loader("statuscol.nvim")
   require("modules.ui.eviline")
   require("vscripts.tools")
   vim.cmd("command! Gram lua require'modules.tools.config'.grammcheck()")
@@ -210,7 +236,7 @@ vim.defer_fn(function()
   loader("harpoon")
   loader("nvim-notify")
   vim.notify = require("notify")
-  require("vscripts.cursorhold")
+  -- require("vscripts.cursorhold")
 
   local gitrepo = vim.fn.isdirectory(".git/index")
   loader("hydra.nvim")
@@ -224,6 +250,8 @@ vim.defer_fn(function()
   if vim.fn.executable(vim.g.python3_host_prog) == 0 then
     print("file not find, please update path setup", vim.g.python3_host_prog)
   end
+
+  require("statuscol").setup({ setopt = true })
   lprint("lazy2 loaded", vim.loop.now() - start)
 end, lazy_timer + 80)
 

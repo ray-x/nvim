@@ -1,12 +1,11 @@
-local editor = {}
 
 local conf = require("modules.editor.config")
 
 -- alternatives: steelsojka/pears.nvim
 -- windwp/nvim-ts-autotag  'html', 'javascript', 'javascriptreact', 'typescriptreact', 'svelte', 'vue'
 -- windwp/nvim-autopairs
-
-editor["windwp/nvim-autopairs"] = {
+return function(editor)
+editor { "windwp/nvim-autopairs",
   -- keys = {{'i', '('}},
   -- keys = {{'i'}},
   after = { "nvim-cmp" }, -- "nvim-treesitter", nvim-cmp "nvim-treesitter", coq_nvim
@@ -16,20 +15,20 @@ editor["windwp/nvim-autopairs"] = {
   opt = true,
 }
 
-editor["anuvyklack/hydra.nvim"] = {
+editor { "anuvyklack/hydra.nvim",
   requires = "anuvyklack/keymap-layer.nvim",
   -- event = { "CmdwinEnter", "CmdlineEnter", "CursorMoved" },
   config = conf.hydra,
   opt = true,
 }
 
-editor["gbprod/substitute.nvim"] = {
+editor { "gbprod/substitute.nvim",
   event = { "CmdlineEnter", "TextYankPost" },
   config = conf.substitute,
   opt = true,
 }
 
-editor["tpope/vim-abolish"] = {
+editor { "tpope/vim-abolish",
   event = { "CmdlineEnter" },
   keys = { "<Plug>(abolish-coerce-word)" },
   setup = function()
@@ -46,7 +45,7 @@ editor["tpope/vim-abolish"] = {
 -- 2) it not friendly to lazyload and treesitter startup
 --  motions g%, [%, ]%, and z%.
 --  text objects i% and a%
-editor["andymass/vim-matchup"] = {
+editor { "andymass/vim-matchup",
   opt = true,
   event = { "CursorHold", "CursorHoldI" },
   cmd = { "MatchupWhereAmI?" },
@@ -69,7 +68,7 @@ editor["andymass/vim-matchup"] = {
 }
 
 -- Feel more comfortale with hop
--- editor["ggandor/leap.nvim"] = {
+-- editor { "ggandor/leap.nvim",
 --   opt = true,
 --   module = "leap",
 --   requires = {
@@ -78,7 +77,7 @@ editor["andymass/vim-matchup"] = {
 --   }
 -- }
 
-editor["machakann/vim-sandwich"] = {
+editor { "machakann/vim-sandwich",
   opt = true,
   event = { "CursorMoved", "CursorMovedI" },
   cmd = { "Sandwith" },
@@ -110,7 +109,7 @@ editor["machakann/vim-sandwich"] = {
   end,
 }
 
-editor["kylechui/nvim-surround"] = {
+editor { "kylechui/nvim-surround",
   opt = true,
   -- opt for sandwitch for now until some issue been addressed
   -- event = { "CursorMoved", "CursorMovedI" },
@@ -131,7 +130,7 @@ editor["kylechui/nvim-surround"] = {
 }
 
 -- nvim-colorizer replacement
-editor["rrethy/vim-hexokinase"] = {
+editor { "rrethy/vim-hexokinase",
   -- ft = { 'html','css','sass','vim','typescript','typescriptreact'},
   config = conf.hexokinase,
   run = "make hexokinase",
@@ -139,7 +138,7 @@ editor["rrethy/vim-hexokinase"] = {
   cmd = { "HexokinaseTurnOn", "HexokinaseToggle" },
 }
 
-editor["chrisbra/Colorizer"] = {
+editor { "chrisbra/Colorizer",
   ft = { "log", "txt", "text" },
   opt = true,
   cmd = { "ColorHighlight", "ColorUnhighlight" },
@@ -151,28 +150,28 @@ editor["chrisbra/Colorizer"] = {
 -- <A-h>   Move current character/selection left
 -- <A-l>   Move current character/selection right
 
-editor["booperlv/nvim-gomove"] = {
+editor { "booperlv/nvim-gomove",
   -- event = { "CursorMoved", "CursorMovedI" },
   keys = { "v", "V", "<c-v>", "<c-V>" },
   config = conf.move,
 }
 
 -- Great plugin.
-editor["kevinhwang91/nvim-hlslens"] = {
+editor { "kevinhwang91/nvim-hlslens",
   keys = { "/", "?", "*", "#" }, --'n', 'N', '*', '#', 'g'
   module = { "hlslens" },
   opt = true,
   config = conf.hlslens,
 }
 
-editor["kevinhwang91/nvim-ufo"] = {
+editor { "kevinhwang91/nvim-ufo",
   opt = true,
   ft = { "c" },
   requires = { "kevinhwang91/promise-async" },
   config = conf.ufo,
 }
 
-editor["mg979/vim-visual-multi"] = {
+editor { "mg979/vim-visual-multi",
   keys = {
     "<Ctrl>",
     "<M>",
@@ -198,10 +197,10 @@ editor["mg979/vim-visual-multi"] = {
   setup = conf.vmulti,
 }
 
-editor["indianboy42/hop-extensions"] = { after = "hop", opt = true }
+editor { "indianboy42/hop-extensions", after = "hop", opt = true }
 
 -- EasyMotion in lua. -- maybe replace sneak
-editor["phaazon/hop.nvim"] = {
+editor { "phaazon/hop.nvim",
   as = "hop",
   cmd = {
     "HopWord",
@@ -231,13 +230,13 @@ editor["phaazon/hop.nvim"] = {
   end,
 }
 
-editor["numToStr/Comment.nvim"] = {
+editor { "numToStr/Comment.nvim",
   keys = { "g", "<ESC>", "v", "V", "<c-v>" },
   config = conf.comment,
 }
 
 -- copy paste failed in block mode when clipboard = unnameplus"
-editor["gbprod/yanky.nvim"] = {
+editor { "gbprod/yanky.nvim",
   event = { "CursorMoved", "CursorMovedI", "TextYankPost" },
   keys = { "<Plug>(YankyPutAfter)", "<Plug>(YankyPutBefore)" },
   module = "yanky",
@@ -255,10 +254,10 @@ editor["gbprod/yanky.nvim"] = {
   config = conf.yanky,
 }
 
-editor["dhruvasagar/vim-table-mode"] = { cmd = { "TableModeToggle" } }
+editor { "dhruvasagar/vim-table-mode", cmd = { "TableModeToggle" } }
 
 -- fix terminal color
-editor["norcalli/nvim-terminal.lua"] = {
+editor { "norcalli/nvim-terminal.lua",
   opt = true,
   ft = { "log", "terminal" },
   config = function()
@@ -266,7 +265,7 @@ editor["norcalli/nvim-terminal.lua"] = {
   end,
 }
 
-editor["simnalamburt/vim-mundo"] = {
+editor { "simnalamburt/vim-mundo",
   opt = true,
   cmd = { "MundoToggle", "MundoShow", "MundoHide" },
   run = function()
@@ -278,8 +277,8 @@ editor["simnalamburt/vim-mundo"] = {
     vim.g.mundo_prefer_python3 = 1
   end,
 }
-editor["mbbill/undotree"] = { opt = true, cmd = { "UndotreeToggle" } }
-editor["AndrewRadev/splitjoin.vim"] = {
+editor { "mbbill/undotree", opt = true, cmd = { "UndotreeToggle" } }
+editor { "AndrewRadev/splitjoin.vim",
   opt = true,
   cmd = { "SplitjoinJoin", "SplitjoinSplit" },
   setup = function()
@@ -289,13 +288,13 @@ editor["AndrewRadev/splitjoin.vim"] = {
   -- keys = {'<space>S', '<space>J'}
 }
 
-editor["chaoren/vim-wordmotion"] = {
+editor { "chaoren/vim-wordmotion",
   opt = true,
   keys = { "<Plug>WordMotion_w", "<Plug>WordMotion_b" },
   -- keys = {'w','W', 'gE', 'aW'}
 }
 
-editor["Pocco81/true-zen.nvim"] = {
+editor { "Pocco81/true-zen.nvim",
   opt = true,
   cmd = { "TZAtaraxis", "TZMinimalist", "TZNarrow", "TZFocus" },
   config = function()
@@ -303,31 +302,31 @@ editor["Pocco81/true-zen.nvim"] = {
   end,
 }
 
-editor["nvim-neorg/neorg"] = {
+editor { "nvim-neorg/neorg",
   opt = true,
   config = conf.neorg,
   ft = "norg",
   requires = { "nvim-neorg/neorg-telescope", ft = { "norg" } },
 }
 
-editor["nvim-orgmode/orgmode"] = {
+editor { "nvim-orgmode/orgmode",
   opt = true,
   config = conf.orgmode,
   ft = "org",
 }
 
-editor["hrsh7th/vim-searchx"] = {
+editor { "hrsh7th/vim-searchx",
   event = { "CmdwinEnter", "CmdlineEnter" },
   conf = conf.searchx,
 }
 
-editor["wellle/targets.vim"] = {
+editor { "wellle/targets.vim",
   opt = true,
   event = { "CursorHold", "CursorHoldI", "CursorMoved", "CursorMovedI" },
   setup = function() end,
 }
 
-editor["AndrewRadev/switch.vim"] = {
+editor { "AndrewRadev/switch.vim",
   opt = true,
   cmd = { "Switch", "Switch!", "Switch?", "SwitchCase", "SwitchCase!" },
   fn = { "switch#Switch" },
@@ -336,5 +335,4 @@ editor["AndrewRadev/switch.vim"] = {
     vim.g.switch_mapping = "<Space>t"
   end,
 }
-
-return editor
+end

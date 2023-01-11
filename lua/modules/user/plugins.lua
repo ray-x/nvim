@@ -1,4 +1,3 @@
-local user = {}
-
 -- your plugin config
-return user
+return function(use)
+end

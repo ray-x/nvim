@@ -11,10 +11,19 @@ local packer = nil
 local Packer = {}
 Packer.__index = Packer
 
-function Packer:load_plugins()
-  self.repos = {}
-  self.rocks = {}
+function Packer:load_plugins(use)
+  if not packer then
+    return
+  end
+  use = use or packer.use
 
+  use({ "wbthomason/packer.nvim" })
+  use({
+    "lewis6991/impatient.nvim",
+    config = function()
+      require("impatient")
+    end,
+  })
   local get_plugins_list = function()
     local list = {}
     local tmp = vim.split(fn.globpath(modules_dir, "*" .. path_sep .. "plugins.lua"), "\n")
@@ -26,56 +35,47 @@ function Packer:load_plugins()
 
   local plugins_file = get_plugins_list()
   for _, m in ipairs(plugins_file) do
-    local repos = require(m)
-    for repo, conf in pairs(repos) do
-      self.repos[#self.repos + 1] = vim.tbl_extend("force", { repo }, conf)
-    end
+    require(m)(use)
   end
-  self.rocks = require("modules.rocks")
 end
-
-Packer:load_plugins()
 
 function Packer:load_packer()
   if not packer then
-    api.nvim_command("packadd packer.nvim")
+    vim.cmd("packadd packer.nvim")
     packer = require("packer")
   end
   packer.init({ compile_path = packer_compiled, git = { clone_timeout = 240 }, disable_commands = true })
   packer.reset()
   local use = packer.use
-  local use_rocks = packer.use_rocks
-  self:load_plugins()
-  use({ "wbthomason/packer.nvim" })
-  use({
-    "lewis6991/impatient.nvim",
-    config = function()
-      require("impatient")
-    end,
-  })
-  for _, repo in ipairs(self.repos) do
-    use(repo)
-  end
-  for _, rock in ipairs(self.rocks) do
-    use_rocks(rock)
-  end
 end
 
-function Packer:init_ensure_plugins()
-  local packer_dir = data_dir .. "pack" .. path_sep .. "packer" .. path_sep .. "start" .. path_sep .. "packer.nvim"
-  local state = uv.fs_stat(packer_dir)
-  if not state then
-    local cmd = "!git clone https://github.com/wbthomason/packer.nvim " .. packer_dir
-    api.nvim_command(cmd)
-    uv.fs_mkdir(data_dir .. "lua", 511, function()
-      assert("make compile path dir faield")
-    end)
-    self:load_packer()
-    -- packer.install()
-    packer.sync()
-    return "installing"
+local ensure_packer = function()
+  local fn = vim.fn
+  local install_path = data_dir .. "pack" .. path_sep .. "packer" .. path_sep .. "start" .. path_sep .. "packer.nvim"
+  if fn.empty(fn.glob(install_path)) > 0 then
+    fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
+    vim.cmd [[packadd packer.nvim]]
+    return true
   end
-  return "installed"
+  return false
+end
+
+local packer_bootstrap = ensure_packer()
+
+function Packer:init_ensure_plugins()
+  if not packer then
+    vim.cmd("packadd packer.nvim")
+    packer = require("packer")
+    packer.init({ compile_path = packer_compiled, git = { clone_timeout = 240 }, disable_commands = true })
+  end
+
+  return require('packer').startup(function(use)
+    self:load_plugins(packer.use)
+    if packer_bootstrap then
+      packer.sync()
+    end
+  end
+  )
 end
 
 local plugins = setmetatable({}, {
@@ -89,10 +89,6 @@ local plugins = setmetatable({}, {
 
 function plugins.ensure_plugins()
   return Packer:init_ensure_plugins()
-end
-
-function plugins.register_plugin(repo)
-  table.insert(Packer.repos, repo)
 end
 
 function plugins.compile_notify()
@@ -123,8 +119,8 @@ function plugins.load_compile()
     assert("Missing packer compile file Run PackerCompile Or PackerInstall to fix")
     vim.cmd("packadd packer.nvim")
     plugins.compile()
-    require("packer_compiled")
     vim.notify("compile finished successfully wrote to " .. packer_compiled)
+    -- require("packer_compiled")
   end
   vim.cmd([[command! PackerCompile lua require('core.pack').compile_notify()]])
   vim.cmd([[command! PackerInstall lua require('core.pack').install()]])
