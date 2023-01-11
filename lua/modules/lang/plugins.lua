@@ -2,55 +2,50 @@ local conf = require("modules.lang.config")
 local ts = require("modules.lang.treesitter")
 local path = plugin_folder()
 return function(lang)
-  lang { "nvim-treesitter/nvim-treesitter", opt = true, config = ts.treesitter }
+  lang({ "nvim-treesitter/nvim-treesitter", opt = true, config = ts.treesitter })
 
-  lang { "nvim-treesitter/nvim-treesitter-textobjects",
-    config = ts.treesitter_obj,
-    opt = true,
-  }
+  lang({ "nvim-treesitter/nvim-treesitter-textobjects", config = ts.treesitter_obj, opt = true })
 
-  lang { "RRethy/nvim-treesitter-textsubjects",
-    opt = true,
-    config = ts.textsubjects,
-  }
+  lang({ "RRethy/nvim-treesitter-textsubjects", opt = true, config = ts.textsubjects })
 
   -- lang['ziontee113/syntax-tree-surfer'] = {
   --   opt = true,
   --   config = conf.surfer,
   -- }
 
-  lang { "bennypowers/nvim-regexplainer",
+  lang({
+    "bennypowers/nvim-regexplainer",
     opt = true,
     cmd = { "RegexplainerToggle", "RegexplainerShow" },
     config = conf.regexplainer,
-  }
+  })
 
-  lang { "danymat/neogen",
+  lang({
+    "danymat/neogen",
     opt = true,
     config = function()
       require("neogen").setup({ enabled = true })
     end,
-  }
+  })
 
-  lang { "ThePrimeagen/refactoring.nvim",
-    opt = true,
-    config = conf.refactor,
-  }
+  lang({ "ThePrimeagen/refactoring.nvim", opt = true, config = conf.refactor })
 
-  lang { "nvim-treesitter/nvim-treesitter-refactor",
+  lang({
+    "nvim-treesitter/nvim-treesitter-refactor",
     after = "nvim-treesitter-textobjects", -- manual loading
     config = ts.treesitter_ref, -- let the last loaded config treesitter
     opt = true,
-  }
+  })
 
-  lang { "yardnsm/vim-import-cost", cmd = "ImportCost", opt = true }
+  lang({ "yardnsm/vim-import-cost", cmd = "ImportCost", opt = true })
 
   -- lang['scalameta/nvim-metals'] = {requires = {"nvim-lua/plenary.nvim"}}
   -- lang { "lifepillar/pgsql.vim",ft = {"sql", "pgsql"}}
 
-  lang { "nanotee/sqls.nvim", ft = { "sql", "pgsql" }, setup = conf.sqls, opt = true }
+  lang({ "nanotee/sqls.nvim", ft = { "sql", "pgsql" }, setup = conf.sqls, opt = true })
 
-  lang { "simrat39/rust-tools.nvim",
+  lang({
+    "simrat39/rust-tools.nvim",
     ft = { "rust" },
     after = { "nvim-lspconfig" },
     config = function()
@@ -62,26 +57,34 @@ return function(lang)
         },
       })
     end,
-  }
+  })
 
-  lang{ path .. "go.nvim",
-     opt = true, event = { "CmdwinEnter", "CmdlineEnter" }, module = { "go" }, config = conf.go }
+  lang({
+    path .. "go.nvim",
+    opt = true,
+    event = { "CmdwinEnter", "CmdlineEnter" },
+    module = { "go" },
+    config = conf.go,
+  })
 
-  lang{ path .. "navigator.lua",
+  lang({
+    path .. "navigator.lua",
     requires = { path .. "guihua.lua", run = "cd lua/fzy && make" },
     config = conf.navigator,
     opt = true,
-  }
+  })
 
-  lang{ path .. "web-tools.nvim",
+  lang({
+    path .. "web-tools.nvim",
     ft = { "html", "javascript" },
     opt = true,
     config = function()
       require("web-tools").setup({ debug = true })
     end,
-  }
+  })
 
-  lang { "glepnir/lspsaga.nvim",
+  lang({
+    "glepnir/lspsaga.nvim",
     opt = true,
     cmd = {
       "Lspsaga",
@@ -96,7 +99,7 @@ return function(lang)
         },
       })
     end,
-  }
+  })
 
   -- lang { "gcmt/wildfire.vim",
   --   setup = function()
@@ -105,50 +108,55 @@ return function(lang)
   --   fn = {'<Plug>(wildfire-fuel)', '<Plug>(wildfire-water)', '<Plug>(wildfire-quick-select)'}
   -- }
 
-  lang { "nvim-treesitter/playground",
+  lang({
+    "nvim-treesitter/playground",
     -- after = "nvim-treesitter",
     opt = true,
     cmd = "TSPlaygroundToggle",
     config = conf.playground,
-  }
+  })
 
   -- lang { "stevearc/aerial.nvim",
   --   opt = true,
   --   cmd = { "AerialToggle" },
   --   config = conf.aerial,
   -- }
-  lang { "simrat39/symbols-outline.nvim",
+  lang({
+    "simrat39/symbols-outline.nvim",
     opt = true,
     cmd = { "SymbolsOutline", "SymbolsOutlineOpen" },
     config = conf.outline,
-  }
+  })
 
-  lang{ "rafcamlet/nvim-luapad", opt = true, ft = "lua", model = "luapad", cmd = { "Lua", "Luapad" }, config = conf.luapad }
-  lang { "mfussenegger/nvim-dap", config = conf.dap, opt = true }
+  lang({ "rafcamlet/nvim-luapad", opt = true, model = "luapad", cmd = { "Lua", "Luapad" }, config = conf.luapad })
+  lang({ "mfussenegger/nvim-dap", config = conf.dap, opt = true })
 
-  lang { "JoosepAlviste/nvim-ts-context-commentstring", opt = true }
+  lang({ "JoosepAlviste/nvim-ts-context-commentstring", opt = true })
 
-  lang { "rcarriga/nvim-dap-ui",
+  lang({
+    "rcarriga/nvim-dap-ui",
     -- requires = {"mfussenegger/nvim-dap"},
     config = conf.dapui,
     opt = true,
-  }
+  })
 
-  lang { "theHamsta/nvim-dap-virtual-text", opt = true, module = "nvim-dap-virtual-text" }
+  lang({ "theHamsta/nvim-dap-virtual-text", opt = true, module = "nvim-dap-virtual-text" })
 
   -- lang { "jbyuki/one-small-step-for-vimkind", opt = true, ft = { "lua" } }
 
-  lang { "nvim-telescope/telescope-dap.nvim",
+  lang({
+    "nvim-telescope/telescope-dap.nvim",
     config = conf.dap,
     -- cmd = "Telescope",
     opt = true,
-  }
+  })
 
-  lang { "mfussenegger/nvim-dap-python", ft = { "python" } }
+  lang({ "mfussenegger/nvim-dap-python", ft = { "python" } })
 
-  lang { "mtdl9/vim-log-highlighting", ft = { "text", "txt", "log" } }
+  lang({ "mtdl9/vim-log-highlighting", ft = { "text", "txt", "log" } })
 
-  lang { "michaelb/sniprun",
+  lang({
+    "michaelb/sniprun",
     run = "bash install.sh",
     opt = true,
     module = { "sniprun" },
@@ -162,30 +170,34 @@ return function(lang)
         --" to workaround sniprun not being able to display anything
       })
     end,
-  }
+  })
   -- JqxList and JqxQuery json browsing, format
   -- lang { "gennaro-tedesco/nvim-jqx",opt = true, cmd = {"JqxList", "JqxQuery"}}
 
-  lang { "windwp/nvim-ts-autotag",
+  lang({
+    "windwp/nvim-ts-autotag",
     opt = true,
     -- after = "nvim-treesitter",
     -- config = function() require"nvim-treesitter.configs".setup {autotag = {enable = true}} end
-  }
+  })
   -- highlight your args with Treesitter
-  lang { "m-demare/hlargs.nvim",
+  lang({
+    "m-demare/hlargs.nvim",
     opt = true,
     config = function()
       require("hlargs").setup()
     end,
-  }
+  })
 
-  lang { "folke/neodev.nvim",
+  lang({
+    "folke/neodev.nvim",
     opt = true,
     -- ft = {'lua'},
     config = conf.luadev,
-  }
+  })
 
-  lang { "nvim-treesitter/nvim-treesitter-context",
+  lang({
+    "nvim-treesitter/nvim-treesitter-context",
     opt = true,
     event = { "CursorHold", "WinScrolled" },
     config = function()
@@ -209,9 +221,10 @@ return function(lang)
         },
       })
     end,
-  }
+  })
 
-  lang { "p00f/nvim-ts-rainbow",
+  lang({
+    "p00f/nvim-ts-rainbow",
     opt = true,
     -- after = "nvim-treesitter",
     event = { "CursorHold", "CursorHoldI" },
@@ -220,25 +233,28 @@ return function(lang)
     config = function()
       require("nvim-treesitter.configs").setup({ rainbow = { enable = true, extended_mode = true } })
     end,
-  }
+  })
 
-  lang { "folke/trouble.nvim",
+  lang({
+    "folke/trouble.nvim",
     cmd = { "Trouble", "TroubleToggle" },
     config = function()
       require("trouble").setup({})
     end,
-  }
+  })
 
-  lang { "hashivim/vim-terraform",
+  lang({
+    "hashivim/vim-terraform",
     ft = { "terraform" },
     opt = true,
     cmd = { "Terraform", "TerraformToggle" },
     -- config = conf.terraform,
-  }
+  })
 
-  lang { "jose-elias-alvarez/null-ls.nvim", opt = true, config = require("modules.lang.null-ls").config }
+  lang({ "jose-elias-alvarez/null-ls.nvim", opt = true, config = require("modules.lang.null-ls").config })
 
-  lang { "j-hui/fidget.nvim",
+  lang({
+    "j-hui/fidget.nvim",
     opt = true,
     config = function()
       require("fidget").setup({
@@ -248,28 +264,27 @@ return function(lang)
       })
     end,
     module = "lspconfig",
-  }
+  })
 
-  lang { "smjonas/inc-rename.nvim",
+  lang({
+    "smjonas/inc-rename.nvim",
     opt = true,
     cmd = { "IncRename" },
     module = { "inc_rename" },
     config = function()
       require("inc_rename").setup()
     end,
-  }
+  })
 
   -- structural search and replace
   -- put to lang as it depends on treesitter
-  lang { "cshuaimin/ssr.nvim",
-    module = "ssr",
-    config = conf.ssr,
-  }
+  lang({ "cshuaimin/ssr.nvim", module = "ssr", config = conf.ssr })
 
-  lang { "p00f/clangd_extensions.nvim",
+  lang({
+    "p00f/clangd_extensions.nvim",
     opt = true,
     ft = { "c", "cpp", "objc", "objcpp", "h", "hpp" },
     -- module = "clangd_extensions",
     config = conf.clangd,
-  }
+  })
 end

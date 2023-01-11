@@ -233,7 +233,7 @@ return function(tools)
     opt = true,
   })
 
-  tools({ "rmagatti/auto-session", config = conf.session })
+  tools({ "rmagatti/auto-session", config = conf.session, opt = true })
 
   tools({
     "rmagatti/session-lens",

@@ -78,7 +78,10 @@ local function randomscheme()
   if daylight() == "light" then
     if loading_theme == "starry" or loading_theme == "catppuccin" then
       if vim.fn.executable("kitty") == 1 then --TODO: not finished
-        vim.cmd([[silent exec "!kitty +kitten themes --reload-in=all Material"]])
+        local cmd = "kitty +kitten themes --reload-in=all Material"
+        vim.fn.jobstart(cmd, {
+          on_stdout = function(_, data, _) end,
+        })
       end
     end
   end
@@ -99,7 +102,6 @@ load_colorscheme(loading_theme)
 
 if vim.wo.diff then
   -- loader(plugins)
-  lprint("diffmode")
   if load_ts_plugins then
     vim.cmd([[packadd nvim-treesitter]])
     require("nvim-treesitter.configs").setup({ highlight = { enable = true, use_languagetree = false } })
@@ -133,7 +135,7 @@ function Lazyload()
     vim.cmd([[syntax manual]])
   end
 
-  local load_go = vim.tbl_contains({'go', 'gomod'}, vim.bo.filetype)
+  local load_go = vim.tbl_contains({ "go", "gomod" }, vim.bo.filetype)
   if load_go then
     loader("go.nvim")
   end
@@ -215,7 +217,7 @@ vim.defer_fn(function()
 end, lazy_timer)
 
 vim.defer_fn(function()
-  vim.cmd('tabdo windo set norelativenumber')
+  vim.cmd("tabdo windo set norelativenumber")
   load_colorscheme(loading_theme)
   loader("windline.nvim")
   loader("virt-column.nvim")
@@ -249,6 +251,10 @@ vim.defer_fn(function()
   -- lprint("all done", os.clock())
   if vim.fn.executable(vim.g.python3_host_prog) == 0 then
     print("file not find, please update path setup", vim.g.python3_host_prog)
+  end
+  loader("auto-session")
+  if vim.fn.empty(vim.fn.expand("%")) == 1 then
+    vim.cmd([[RestoreSession]])
   end
 
   require("statuscol").setup({ setopt = true })

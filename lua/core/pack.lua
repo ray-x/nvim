@@ -21,7 +21,7 @@ function Packer:load_plugins(use)
   use({
     "lewis6991/impatient.nvim",
     config = function()
-      require("impatient")
+      require'impatient'.enable_profile()
     end,
   })
   local get_plugins_list = function()
