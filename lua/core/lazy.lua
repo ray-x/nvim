@@ -1,4 +1,5 @@
 local loader = require("packer").loader
+local api = vim.api
 
 lprint("lazy")
 
@@ -42,32 +43,32 @@ end
 
 local function daylight()
   local h = tonumber(os.date("%H"))
-  return "dark"
-  -- if h > 8 and h < 18 then
-  --   return "light"
-  -- else
-  --   return "dark"
-  -- end
+  if h > 8 and h < 17 then
+    return "light"
+  else
+    return "dark"
+  end
 end
 
 local function randomscheme()
   local themes = {
     "starry.nvim",
     "aurora",
-    -- "aurora",
-    -- "tokyonight.nvim",
-    -- "starry.nvim",
-    -- "aurora",
-    -- "gruvbox-material",
-    -- "sonokai",
-    -- "catppuccin",
-    -- "github-nvim-theme",
+    "tokyonight.nvim",
+    "starry.nvim",
+    "aurora",
+    "gruvbox-material",
+    "sonokai",
+    "catppuccin",
+    "github-nvim-theme",
+    "vim-nightfly-colors",
     "galaxy",
   }
+  local style = daylight()
 
-  if daylight() == "light" then
-    vim.o.background = "light"
-    themes = { "starry.nvim", "catppuccin" }
+  if style == "light" then
+    -- vim.o.background = "light"
+    themes = { "starry.nvim", "catppuccin", "gruvbox-material", "sonokai" }
   end
 
   local v = math.random(1, #themes)
@@ -75,16 +76,15 @@ local function randomscheme()
   local loading_theme = themes[v]
   --[[ loading_theme = "aurora" ]]
   -- lprint(loading_theme, os.clock())
-  if daylight() == "light" then
-    if loading_theme == "starry" or loading_theme == "catppuccin" then
-      if vim.fn.executable("kitty") == 1 then --TODO: not finished
-        local cmd = "kitty +kitten themes --reload-in=all Material"
-        vim.fn.jobstart(cmd, {
-          on_stdout = function(_, data, _) end,
-        })
-      end
-    end
-  end
+  -- load a light theme may require reset kitty background so termainl tool, e.g. lazygit will pickup
+  -- if loading_theme == "starry" or loading_theme == "catppuccin" then
+  --   if vim.fn.executable("kitty") == 1 then --TODO: not finished
+  --     local cmd = "kitty +kitten themes --reload-in=all Material"
+  --     vim.fn.jobstart(cmd, {
+  --       on_stdout = function(_, data, _) end,
+  --     })
+  --   end
+  -- end
   return loading_theme
 end
 
@@ -113,8 +113,10 @@ end
 
 -- load module but not init/config it
 vim.cmd([[packadd nvim-treesitter]])
+vim.cmd([[packadd nvim-lspconfig]])
 function Lazyload()
   require("core.helper").init()
+  loader("impatient.nvim")
   createdir()
   lprint("I am lazy")
   local disable_ft = {
@@ -151,6 +153,8 @@ function Lazyload()
     lprint("loading treesitter")
     loader("nvim-treesitter")
   end
+
+  load_colorscheme(loading_theme)
   local plugins = "plenary.nvim"
   loader("plenary.nvim")
 
@@ -203,7 +207,7 @@ end
 
 local lazy_timer = 20
 if _G.packer_plugins == nil or _G.packer_plugins["packer.nvim"] == nil then
-  print("recompile")
+  print("packer recompile")
   vim.cmd([[PackerCompile]])
   vim.defer_fn(function()
     print("Packer recompiled, please run `:PackerCompile` and restart nvim")
@@ -218,7 +222,6 @@ end, lazy_timer)
 
 vim.defer_fn(function()
   vim.cmd("tabdo windo set norelativenumber")
-  load_colorscheme(loading_theme)
   loader("windline.nvim")
   loader("virt-column.nvim")
   loader("statuscol.nvim")
@@ -252,11 +255,6 @@ vim.defer_fn(function()
   if vim.fn.executable(vim.g.python3_host_prog) == 0 then
     print("file not find, please update path setup", vim.g.python3_host_prog)
   end
-  loader("auto-session")
-  if vim.fn.empty(vim.fn.expand("%")) == 1 then
-    vim.cmd([[RestoreSession]])
-  end
-
   require("statuscol").setup({ setopt = true })
   lprint("lazy2 loaded", vim.loop.now() - start)
 end, lazy_timer + 80)
@@ -266,5 +264,16 @@ if plugin_folder() == [[~/github/ray-x/]] then
   -- vim.cmd([[set shell=/usr/bin/fish]])
   vim.cmd([[command! GD term gd]])
 end
+vim.schedule(function()
+  loader("auto-session")
+  if vim.fn.empty(vim.fn.expand("%")) == 1 then
+    local bufnr = vim.fn.bufnr()
+    require("auto-session").RestoreSession()
+    -- close nameless buffers
+    if api.nvim_buf_is_valid(bufnr) then
+      api.nvim_buf_delete(bufnr, { force = true })
+    end
+  end
+end)
 
 load_colorscheme(loading_theme)

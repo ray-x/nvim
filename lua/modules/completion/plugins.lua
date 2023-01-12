@@ -25,7 +25,7 @@ local filetypes = {
   "sh",
 }
 return function(use)
-  use{ "neovim/nvim-lspconfig", config = conf.nvim_lsp, opt = true }
+  use{ "neovim/nvim-lspconfig", config = conf.nvim_lsp, module = 'lspconfig', opt = true }
   if load_coq() then
     use({
       "ms-jpq/coq_nvim",
@@ -119,6 +119,7 @@ return function(use)
     "nvim-telescope/telescope.nvim",
     -- cmd = "Telescope",
     config = conf.telescope,
+    module = {'telescope', 'telescope.builtin', 'telescope.actions'},
     setup = conf.telescope_preload,
     requires = {
       { "nvim-lua/plenary.nvim", opt = true },

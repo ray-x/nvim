@@ -316,6 +316,15 @@ function custom_actions.change_directory(prompt_bufnr)
   vim.cmd("lcd " .. entry.path)
 end
 
+function custom_actions.force_delete(prompt_bufnr)
+  local action_state = require "telescope.actions.state"
+  local current_picker = action_state.get_current_picker(prompt_bufnr)
+  current_picker:delete_selection(function(selection)
+    local force = (vim.fn.empty(vim.fn.bufname(selection.bufnr)) == 1)
+    vim.api.nvim_buf_delete(selection.bufnr, { force = force })
+  end)
+end
+
 -- https://github.com/nvim-telescope/telescope.nvim/issues/416#issuecomment-841273053
 
 local action_state = require("telescope.actions.state")
@@ -460,7 +469,7 @@ M.setup = function(_)
             local height = vim.api.nvim_win_get_height(results_win)
             action_set.shift_selection(prompt_bufnr, math.floor(height / 2))
           end,
-          ["<c-d>"] = "delete_buffer",
+          ["<c-d>"] = custom_actions.force_delete,
           ["<C-p>"] = function(prompt_bufnr)
             local results_win = state.get_status(prompt_bufnr).results_win
             local height = vim.api.nvim_win_get_height(results_win)

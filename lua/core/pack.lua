@@ -20,8 +20,9 @@ function Packer:load_plugins(use)
   use({ "wbthomason/packer.nvim" })
   use({
     "lewis6991/impatient.nvim",
+    opt = true,
     config = function()
-      require'impatient'.enable_profile()
+      require'impatient'
     end,
   })
   local get_plugins_list = function()

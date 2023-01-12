@@ -66,7 +66,8 @@ function autocmd.load_autocmds()
       -- {"WinEnter,BufEnter,InsertLeave", "*", [[if ! &cursorline && &filetype !~# '^\(dashboard\|clap_\)' && ! &pvw | setlocal cursorline | endif]]};
       -- {"WinLeave,BufLeave,InsertEnter", "*", [[if &cursorline && &filetype !~# '^\(dashboard\|clap_\|NvimTree\)' && ! &pvw | setlocal nocursorline | endif]]};
       -- {"WinLeave,BufLeave,InsertEnter", "*", [[if &cursorline && &filetype !~# '^\(dashboard\|clap_\|NvimTree\)' && ! &pvw | setlocal nocursorcolumn | endif]]};
-      { "BufEnter", "NvimTree", [[setlocal cursorline]] },
+      { "BufEnter", "NvimTree", [[setlocal  cursorline]] },
+      { "BufEnter", "*", [[setlocal relativenumber]] },
 
       -- Equalize window dimensions when resizing vim window
       { "VimResized", "*", [[tabdo wincmd =]] },

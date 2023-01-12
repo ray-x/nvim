@@ -33,19 +33,14 @@ local load_core = function()
   vim.g.mapleader = "\\"
   local installed = pack.ensure_plugins()
 
-
-    if pcall(require, "impatient") then
-   require("core.options")
-    require("core.mapping")
-    -- require("core.dot_repeat")
-    require("keymap")
-    require("core.event")
-    _G.lprint = require("utils.log").lprint
-    pack.load_compile()
-    require("core.lazy")
-    end
- 
-
+  require("core.options")
+  require("core.mapping")
+  -- require("core.dot_repeat")
+  require("keymap")
+  require("core.event")
+  _G.lprint = require("utils.log").lprint
+  pack.load_compile()
+  require("core.lazy")
 end
 
 load_core()

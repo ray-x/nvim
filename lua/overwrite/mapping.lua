@@ -99,7 +99,10 @@ local keys = {
   ["n|<Space>p"] = map_cmd([[lua require("harpoon.ui").nav_prev()]]),
   -- ["n|<Space>m1"] = map_cmd([[lua require("harpoon.ui").nav_file(1)]]),
   ["n|<Space>m"] = map_cmd([[Telescope harpoon marks ]]),
-  ["n|<Leader>N"] = map_cmd([[nohl]]),
+  ["n|<Leader>N"] = map_func(function()
+    require('close_buffers').wipe({ type = 'nameless', force = true })
+    vim.cmd([[nohl]])
+  end),
   ["v|<Leader>re"] = map_cmd("<esc>lua require('refactoring').refactor('Extract Function')"),
   ["v|<Leader>rf"] = map_cmd("<esc>lua require('refactoring').refactor('Extract Function To File')"),
   ["v|<Leader>rt"] = map_cmd("<esc>lua require('refactoring').refactor()"),

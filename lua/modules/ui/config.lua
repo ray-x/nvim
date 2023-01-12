@@ -1,7 +1,7 @@
 local config = {}
 packer_plugins = packer_plugins or {} -- supress warning
 
-function config.daylight()
+function daylight()
   local h = tonumber(os.date("%H"))
   if h > 7 and h < 18 then
     return "light"
@@ -10,7 +10,7 @@ function config.daylight()
   end
 end
 
-local day = config.daylight()
+local day = daylight()
 
 function config.windline()
   if not packer_plugins["nvim-web-devicons"].loaded then
@@ -306,18 +306,10 @@ function config.default()
 end
 
 function config.cat()
-  if day == nil then
-    local h = tonumber(os.date("%H"))
-    if h > 7 and h < 18 then
-      day = "light"
-    else
-      day = "dark"
-    end
-  end
   if day == "light" then
     vim.g.catppuccin_flavour = "frappe"
   else
-    local opt = { "frappe", "macchiato", "mocha" }
+    local opt = { "latte", "macchiato", "mocha" }
     local v = math.random(1, #opt)
     vim.g.catppuccin_flavour = opt[v]
   end
@@ -440,9 +432,12 @@ end, {
 })
 
 function config.starry()
-  -- local opt = {"oceanic", "darker", "palenight", "deep ocean", "moonlight", "dracula", "dracula_blood", "monokai", "mariana", "ceramic"}
-  -- local v = math.random(1, #opt)
-  -- vim.g.starry_style = opt[v]
+  local opt = {"oceanic", "darker", "palenight", "deep ocean", "moonlight", "dracula", "dracula_blood", "monokai", "mariana", "darksolar"}
+  if day == 'light' then
+    opt = {"mariana", "earlysummer", "monokai"}
+  end
+  local v = math.random(1, #opt)
+  vim.g.starry_style = opt[v]
   vim.g.starry_italic_comments = true
   vim.g.starry_italic_keywords = false
   vim.g.starry_italic_functions = false
@@ -456,7 +451,7 @@ function config.starry()
   -- vim.g.starry_style = "earlysummer" -- 'moonlight' emerald middlenight_blue earlysummer
   -- vim.g.starry_style = "dracula" -- "mariana" --  emerald middlenight_blue earlysummer
   -- vim.g.starry_style = "oceanic" -- 'moonlight' emerald middlenight_blue earlysummer -- vim.g.starry_style = "dark_solar" -- 'moonlight' emerald middlenight_blue earlysummer
-  vim.g.starry_style = "oceanic"
+  -- vim.g.starry_style = "oceanic"
   -- vim.g.starry_style_fix = true
   -- config.default()
   vim.g.starry_disable_background = true
@@ -521,18 +516,21 @@ function config.nightfly()
 
   -- body
 end
-
-function config.nvcode()
-  vim.g.nvcode_termcolors = 256
-  local opt = { "nvcode", "nord", "aurora", "onedark", "gruvbox", "palenight", "snazzy" }
-  local v = "colorscheme " .. opt[math.random(1, #opt)]
-  vim.cmd(v)
-  -- body
-end
+--
+-- function config.nvcode()
+--   vim.g.nvcode_termcolors = 256
+--   local opt = { "nvcode", "nord", "aurora", "onedark", "gruvbox", "palenight", "snazzy" }
+--   local v = "colorscheme " .. opt[math.random(1, #opt)]
+--   vim.cmd(v)
+--   -- body
+-- end
 
 function config.sonokai()
   local opt = { "andromeda", "default", "andromeda", "shusia", "maia", "atlantis" }
   local v = opt[math.random(1, #opt)]
+  if day == 'light' then
+    v ='espresso'
+  end
   vim.g.sonokai_style = v
   vim.g.sonokai_enable_italic = 1
   vim.g.sonokai_diagnostic_virtual_text = "colored"

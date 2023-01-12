@@ -49,13 +49,15 @@ return function(lang)
     ft = { "rust" },
     after = { "nvim-lspconfig" },
     config = function()
-      require("rust-tools").setup({
-        server = {
-          on_attach = function(c, b)
-            require("navigator.lspclient.mapping").setup({ client = c, bufnr = b })
-          end,
-        },
-      })
+      vim.defer_fn(function()
+        require("rust-tools").setup({
+          server = {
+            on_attach = function(c, b)
+              require("navigator.lspclient.mapping").setup({ client = c, bufnr = b })
+            end,
+          },
+        })
+      end, 200)
     end,
   })
 
