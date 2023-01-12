@@ -306,13 +306,12 @@ function config.default()
 end
 
 function config.cat()
-  if day == "light" then
-    vim.g.catppuccin_flavour = "frappe"
-  else
-    local opt = { "latte", "macchiato", "mocha" }
-    local v = math.random(1, #opt)
-    vim.g.catppuccin_flavour = opt[v]
+  local opt = { "frappe", "catppuccin" }
+  if day ~= "light" then
+    opt = { "macchiato", "mocha", "amoled", "catppuccino" } -- "latte" is a light theme
   end
+  local v = math.random(1, #opt)
+  vim.g.catppuccin_flavour = opt[v]
 
   lprint(vim.g.catppuccin_flavour)
   require("catppuccin").setup({ lsp_trouble = true, neogit = true, hop = true })
@@ -432,9 +431,20 @@ end, {
 })
 
 function config.starry()
-  local opt = {"oceanic", "darker", "palenight", "deep ocean", "moonlight", "dracula", "dracula_blood", "monokai", "mariana", "darksolar"}
-  if day == 'light' then
-    opt = {"mariana", "earlysummer", "monokai"}
+  local opt = {
+    "oceanic",
+    "darker",
+    "palenight",
+    "deep ocean",
+    "moonlight",
+    "dracula",
+    "dracula_blood",
+    "monokai",
+    "mariana",
+    "darksolar",
+  }
+  if day == "light" then
+    opt = { "mariana", "earlysummer", "monokai" }
   end
   local v = math.random(1, #opt)
   vim.g.starry_style = opt[v]
@@ -528,8 +538,8 @@ end
 function config.sonokai()
   local opt = { "andromeda", "default", "andromeda", "shusia", "maia", "atlantis" }
   local v = opt[math.random(1, #opt)]
-  if day == 'light' then
-    v ='espresso'
+  if day == "light" then
+    v = "espresso"
   end
   vim.g.sonokai_style = v
   vim.g.sonokai_enable_italic = 1
