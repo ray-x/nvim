@@ -446,6 +446,7 @@ function config.starry()
   if day == "light" then
     opt = { "mariana", "earlysummer", "monokai" }
   end
+  math.randomseed(os.time())
   local v = math.random(1, #opt)
   vim.g.starry_style = opt[v]
   vim.g.starry_italic_comments = true
@@ -462,7 +463,7 @@ function config.starry()
   -- vim.g.starry_style = "dracula" -- "mariana" --  emerald middlenight_blue earlysummer
   -- vim.g.starry_style = "oceanic" -- 'moonlight' emerald middlenight_blue earlysummer -- vim.g.starry_style = "dark_solar" -- 'moonlight' emerald middlenight_blue earlysummer
   -- vim.g.starry_style = "oceanic"
-  -- vim.g.starry_style_fix = true
+  vim.g.starry_style_fix = true
   -- config.default()
   vim.g.starry_disable_background = true
 

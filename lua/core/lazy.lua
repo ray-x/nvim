@@ -17,7 +17,7 @@ if fsize > 1024 * 1024 then
   load_lsp = false
 end
 
-math.randomseed(os.time())
+math.randomseed(start)
 
 -- Create cache dir and subs dir
 local createdir = function()
@@ -71,6 +71,7 @@ local function randomscheme()
     themes = { "starry.nvim", "catppuccin", "gruvbox-material", "sonokai" }
   end
 
+  -- themes = { "starry.nvim", "starry.nvim" }
   local v = math.random(1, #themes)
 
   local loading_theme = themes[v]
