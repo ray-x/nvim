@@ -189,6 +189,7 @@ end
 -- <Space>siw replace word
 -- x mode <Space>s replace virtual select.
 -- dot operator  repeat
+-- space-s
 function config.substitute()
   require("substitute").setup({
     yank_substituted_text = true,
@@ -225,12 +226,11 @@ function config.substitute()
     "<cmd>lua require('substitute').visual()<cr>",
     { noremap = true, desc = "substitute visual range" }
   )
-
   vim.keymap.set(
     "n",
     "<Leader>S",
     "<cmd>lua require('substitute.range').operator({ prefix = 'S' })<cr>",
-    { noremap = true, desc = "substitute range operator" }
+    { noremap = true, desc = "substitute range operator s/xxx/XXX/g" }
   )
   vim.keymap.set(
     "x",
@@ -360,7 +360,7 @@ function config.orgmode()
   if not packer_plugins["nvim-treesitter"].loaded then
     loader("nvim-treesitter")
   end
-  vim.cmd('set foldleve=2')
+  vim.cmd('set foldlevel=2')
 
   require("orgmode").setup_ts_grammar()
   require("nvim-treesitter.configs").setup({

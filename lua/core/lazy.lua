@@ -222,7 +222,7 @@ vim.defer_fn(function()
 end, lazy_timer)
 
 vim.defer_fn(function()
-  vim.cmd("tabdo windo set norelativenumber")
+  vim.cmd("tabdo windo set relativenumber")
   loader("windline.nvim")
   loader("virt-column.nvim")
   loader("statuscol.nvim")

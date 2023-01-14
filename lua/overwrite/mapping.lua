@@ -148,7 +148,6 @@ vim.cmd([[vnoremap  <D-c>  *+y]])
 vim.cmd([[nnoremap  <D-c>  *+yg_]])
 vim.cmd([[inoremap  <D-c>  *+yg_]])
 vim.cmd([[inoremap  <D-v>  <CTRL-r>*]])
-
 --
 
 _G.run_or_test = function(debug)
@@ -284,6 +283,20 @@ vim.api.nvim_create_user_command("Jsonfmt", function(opts)
   vim.cmd("%!jq")
 end, { nargs = "*" })
 
+vim.api.nvim_create_user_command("NewOrg", function(opts)
+  local fn = vim.fn.strftime("%Y_%m_%d") .. ".org"
+  if vim.fn.empty(opts.args) == 0 then
+    fn = opts.args[1] or fn
+  end
+  vim.cmd("e " .. fn)
+  vim.api.nvim_buf_set_lines(
+    0,
+    0,
+    4,
+    false,
+    { "#+TITLE: ", "#+AUTHER: Ray", "#+Date:" .. vim.fn.strftime("%c"), "", "* 1st", "* 2nd" }
+  )
+end, { nargs = "*" })
 -- Use `git ls-files` for git files, use `find ./ *` for all files under work directory.
 --
 return K

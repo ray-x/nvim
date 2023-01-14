@@ -14,8 +14,7 @@ end
 local function load_options()
   local global_local = {
     termguicolors  = true;
-    mouse          = "nv";
-    errorbells     = true;
+    errorbells     = false;
     visualbell     = true;
     hidden         = true;
     fileformats    = "unix,mac,dos";
@@ -27,8 +26,8 @@ local function load_options()
     clipboard      = "unnamedplus";
     wildignorecase = true;
     wildignore     = ".git/**,.hg,.svn,*.pyc,*.o,*.out,*.jpg,*.jpeg,*.png,*.gif,*.zip,**/tmp/**,*.DS_Store,**/node_modules/**,**/bower_modules/**";
-    backup         = false;
-    writebackup    = false;
+    backup         = true;
+    writebackup    = true;
     undofile       = true;
     swapfile       = false;
     directory      = global.cache_dir .. "swag/";
@@ -56,7 +55,7 @@ local function load_options()
     wrapscan       = true;
     complete       = ".,w,b,k";
     inccommand     = "nosplit";  --split
-    grepformat     = "%f:%l:%c:%m";
+    grepformat     = "%f:%l:%m,%m\\ %f\\ match%ts,%f", -- "%f:%l:%c:%m";
     grepprg        = 'rg --hidden --vimgrep --smart-case --glob "!{.git,node_modules,*~}/*" --';
     breakat        = [[\ \	;:,!?]];
     startofline    = false;
@@ -66,7 +65,7 @@ local function load_options()
     switchbuf      = "useopen";
     backspace      = "indent,eol,start";
     diffopt        = "filler,iwhite,internal,algorithm:patience";
-    completeopt    = "menuone,noselect";
+    completeopt = "menuone,noselect,noinsert", -- Show popup menu, even if there is one entry  menuone?
     jumpoptions    = "stack";
     showmode       = false;
     shortmess      = "aotTIcF";
@@ -93,6 +92,20 @@ local function load_options()
     winblend       = 10;
     syntax         = "off";
     background     = "dark";
+--------------------------------------
+    ttyfast = true, -- Indicate fast terminal conn for faster redraw
+    fileencoding = "utf-8", -- fenc
+    mouse = "a",
+    textwidth = 120, -- wrap lines at 120 chars. 80 is somewaht antiquated with nowadays displays.
+    hlsearch = true, -- Highlight found searches
+    -- showcmd        = false;
+    -- cmdheight = 0,
+    autowrite = true, -- Automatically save before :next, :make etc.
+    autoread = true, -- Automatically read changed files
+    breakindent = true, -- Make it so that long lines wrap smartly
+    showmatch = true, -- highlight matching braces
+    numberwidth = 3,
+    relativenumber = true,
   }
 
   local bw_local  = {
@@ -108,7 +121,7 @@ local function load_options()
     wrap           = true;
     linebreak      = true;
     number         = true;
-    colorcolumn    = "80";
+    colorcolumn    = "110";
     foldenable     = true;
     signcolumn     = "auto:1";  --auto auto:2  "number"
     conceallevel   = 2;
@@ -135,7 +148,16 @@ local function load_options()
   for name, value in pairs(global_local) do
     vim.o[name] = value
   end
-  bind_option(bw_local)
+  local window_local = {
+      foldmethod = "indent", -- indent? expr?  expr is slow for large files
+      relativenumber = true,
+      number = true,
+      foldenable = true,
+    }
+
+  for name, value in pairs(window_local) do
+    vim.wo[name] = value
+  end
 end
 
 -- stylua: ignore end
