@@ -276,8 +276,7 @@ function config.go()
       lsp_codelens = false, -- use navigator
       dap_debug = true,
       goimport = "gopls",
-      dap_debug_vt = "true",
-
+      dap_debug_vt = true,
       dap_debug_gui = true,
       test_runner = "go", -- richgo, go test, richgo, dlv, ginkgo
       -- run_in_floaterm = true, -- set to true to run in float window.
