@@ -115,8 +115,11 @@ return {
       })
     )
 
+    table.insert( sources, require("go.null_ls").gotest())
     local cfg = {
       sources = sources,
+      debug = true,
+      log_level = "info",
       debounce = 1000,
       default_timeout = 3000,
       fallback_severity = vim.diagnostic.severity.WARN,

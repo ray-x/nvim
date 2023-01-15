@@ -142,11 +142,13 @@ local autocmd = vim.api.nvim_create_autocmd
 local autogroup = vim.api.nvim_create_augroup
 local change_background = function(color)
   lprint("change_background", color)
-  local arg = 'background="' .. color .. '"'
-  local command = "kitty @ set-colors " .. arg
-  local handle = io.popen(command)
-  if handle ~= nil then
-    handle:close()
+  if color and color ~= "NONE" then
+    local arg = 'background="' .. color .. '"'
+    local command = "kitty @ set-colors " .. arg
+    local handle = io.popen(command)
+    if handle ~= nil then
+      handle:close()
+    end
   end
 end
 local function on_leave(color)

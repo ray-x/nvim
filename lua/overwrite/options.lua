@@ -28,7 +28,7 @@ function options:load_options()
     }
 
     self.window_local = {
-      foldmethod = "indent", -- indent? expr?  expr is slow for large files
+      foldmethod = "expr",
       relativenumber = true,
       number = true,
       foldenable = true,

@@ -52,6 +52,7 @@ local function load_options()
     smartcase      = true;
     infercase      = true;
     incsearch      = true, -- Shows the match while typing
+    wrap           = true;
     wrapscan       = true;
     complete       = ".,w,b,k";
     inccommand     = "nosplit";  --split
@@ -103,9 +104,16 @@ local function load_options()
     autowrite = true, -- Automatically save before :next, :make etc.
     autoread = true, -- Automatically read changed files
     breakindent = true, -- Make it so that long lines wrap smartly
+    breakindentopt = "shift:2,min:20";
     showmatch = true, -- highlight matching braces
     numberwidth = 3,
     relativenumber = true,
+    conceallevel   = 2;
+    concealcursor  = "niv";
+    linebreak      = true;
+    colorcolumn    = "110";
+    foldenable     = true;
+    signcolumn     = "auto:1";  --auto auto:2  "number"
   }
 
   local bw_local  = {
@@ -117,15 +125,6 @@ local function load_options()
     tabstop        = 2;
     shiftwidth     = 2;
     softtabstop    = -1;
-    breakindentopt = "shift:2,min:20";
-    wrap           = true;
-    linebreak      = true;
-    number         = true;
-    colorcolumn    = "110";
-    foldenable     = true;
-    signcolumn     = "auto:1";  --auto auto:2  "number"
-    conceallevel   = 2;
-    concealcursor  = "niv";
   }
 
   if global.is_mac then
@@ -149,7 +148,7 @@ local function load_options()
     vim.o[name] = value
   end
   local window_local = {
-      foldmethod = "indent", -- indent? expr?  expr is slow for large files
+      -- foldmethod = "indent", -- indent? expr?  expr is slow for large files
       relativenumber = true,
       number = true,
       foldenable = true,
@@ -157,6 +156,10 @@ local function load_options()
 
   for name, value in pairs(window_local) do
     vim.wo[name] = value
+  end
+
+  for name, value in pairs(bw_local) do
+    vim.bo[name] = value
   end
 end
 

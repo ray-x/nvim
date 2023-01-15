@@ -116,14 +116,25 @@ return function(ui)
   ui({ "lukas-reineke/indent-blankline.nvim", opt = true, config = conf.blankline }) -- after="nvim-treesitter",
 
   -- disabled does not work with muliti split
+  -- ui({
+  --   "lukas-reineke/virt-column.nvim",
+  --   opt = true,
+  --   -- event = {"CursorMoved", "CursorMovedI"},
+  --   config = function()
+  --     -- vim.cmd("highlight clear ColorColumn")
+  --     require("virt-column").setup()
+  --     -- vim.cmd("highlight VirtColumn guifg=#43488F")
+  --   end,
+  -- })
+
+  -- disabled does not work with muliti split
   ui({
-    "lukas-reineke/virt-column.nvim",
+    "xiyaowong/virtcolumn.nvim",
     opt = true,
-    -- event = {"CursorMoved", "CursorMovedI"},
-    config = function()
-      -- vim.cmd("highlight clear ColorColumn")
-      require("virt-column").setup()
-      -- vim.cmd("highlight VirtColumn guifg=#43488F")
+    event = {"CursorMoved", "CursorMovedI"},
+    setup = function()
+      vim.g.virtcolumn_char = "▕" -- char to display the line
+      vim.g.virtcolumn_priority = 10 -- priority of extmark
     end,
   })
 
@@ -149,7 +160,7 @@ return function(ui)
       vim.cmd([[hi TSCurrentScope guibg=#282338]])
     end,
   })
-  ui({"bluz71/vim-nightfly-colors", opt = true, config = conf.nightfly})
+  ui({ "bluz71/vim-nightfly-colors", opt = true, config = conf.nightfly })
 
   ui({ "projekt0n/github-nvim-theme", opt = true, config = conf.gh_theme })
 
