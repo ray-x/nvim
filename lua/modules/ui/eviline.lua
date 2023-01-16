@@ -68,7 +68,7 @@ end
 local signature_length = 0
 local lsp_label1, lsp_label2 = "", ""
 local treesitter_context = require("modules.lang.treesitter").context
-local ts = ''
+local ts = ""
 local current_function = function(width)
   -- local wwidth = winwidth()
   if width < 50 then
@@ -90,9 +90,9 @@ local current_function = function(width)
   end
   if running % 5 == 4 then
     ts = treesitter_context(400)
-  end
-  if ts and string.len(ts) < 3 then
-    return " "
+    if ts and string.len(ts) < 3 then
+      return " "
+    end
   end
   ts = string.gsub(ts, "[\n\r]+", " ")
   local path = fn.fnamemodify(fn.expand("%"), ":~:.")
