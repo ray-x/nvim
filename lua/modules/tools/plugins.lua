@@ -317,6 +317,10 @@ return function(tools)
       vim.api.nvim_set_keymap("v", "<Leader>ts", "<Plug>TranslateWV", { noremap = true, silent = true })
     end,
   })
+  tools ({
+    "joaomsa/telescope-orgmode.nvim",
+    opt = true,
+  })
   --The linediff plugin provides a simple command, :Linediff, which is used to diff two separate blocks of text.
   tools({ "AndrewRadev/linediff.vim", opt = true, cmd = { "Linediff", "'<,'>Linediff" } })
 end

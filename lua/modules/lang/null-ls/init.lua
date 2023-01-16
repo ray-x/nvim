@@ -1,10 +1,8 @@
 return {
   config = function()
     local null_ls = require("null-ls")
-    local lspconfig = require("lspconfig")
 
     local diagnostics = null_ls.builtins.diagnostics
-    local hover = null_ls.builtins.hover
     local actions = null_ls.builtins.code_actions
     local sources = {
       null_ls.builtins.formatting.autopep8,
@@ -97,7 +95,6 @@ return {
 
     table.insert(sources, null_ls.builtins.formatting.trim_newlines)
     table.insert(sources, null_ls.builtins.formatting.trim_whitespace)
-
     table.insert(
       sources,
       require("null-ls.helpers").make_builtin({
@@ -115,25 +112,74 @@ return {
       })
     )
 
-    table.insert( sources, require("go.null_ls").gotest())
+    local warn_TODO = {
+      name = "no-todo",
+      method = null_ls.methods.DIAGNOSTICS_ON_SAVE,
+      filetypes = {
+        "go",
+        "py",
+        "lua",
+        "sh",
+        "java",
+        "js",
+        "ts",
+        "tsx",
+        "jsx",
+        "html",
+        "css",
+        "scss",
+        "json",
+        "yaml",
+        "toml",
+      },
+      generator = {
+        fn = function(params)
+          local diag = {}
+          -- sources have access to a params object
+          -- containing info about the current file and editor state
+          for i, line in ipairs(params.content) do
+            if line then
+              local f = vim.fn.matchstrpos(line, "\\v(todo)|(fixme)|(xxx)|(fix)|(hack)")
+              local col, end_col = f[2], f[3]
+              if col and end_col >= 0 then
+                lprint('found', col, end_col)
+                -- null-ls fills in undefined positions
+                -- and converts source diagnostics into the required format
+                table.insert(diag, {
+                  row = i,
+                  col = col,
+                  end_col = end_col + 1,
+                  source = "no-todo",
+                  message = "just do it",
+                  severity = vim.diagnostic.severity.INFO,
+                })
+              end
+            end
+          end
+          return diag
+        end,
+      },
+    }
+
+    table.insert(sources, warn_TODO)
+    table.insert(sources, require("go.null_ls").gotest())
     local cfg = {
       sources = sources,
       debug = true,
       log_level = "info",
       debounce = 1000,
-      default_timeout = 3000,
+      default_timeout = 5000,
       fallback_severity = vim.diagnostic.severity.WARN,
       root_dir = require("lspconfig").util.root_pattern(
         ".null-ls-root",
         "Makefile",
         ".git",
         "go.mod",
-        "main.go",
         "package.json",
         "tsconfig.json"
       ),
       on_init = function(new_client, _)
-        if vim.tbl_contains({"h", "cpp", "c"}, vim.o.ft) then
+        if vim.tbl_contains({ "h", "cpp", "c" }, vim.o.ft) then
           new_client.offset_encoding = "utf-16" -- , "utf-32" for ccls
         end
       end,

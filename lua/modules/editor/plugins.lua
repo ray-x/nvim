@@ -322,7 +322,24 @@ return function(editor)
     requires = { "nvim-neorg/neorg-telescope", ft = { "norg" } },
   })
 
-  editor({ "nvim-orgmode/orgmode", opt = true, config = conf.orgmode, ft = "org" })
+  editor({
+    "nvim-orgmode/orgmode",
+    opt = true,
+    config = conf.orgmode,
+    ft = "org",
+    requires = {
+      "akinsho/org-bullets.nvim",
+      opt = true,
+      config = function()
+        require("org-bullets").setup()
+      end,
+    },
+  })
+  editor({
+    "lukas-reineke/headlines.nvim",
+    ft = { "org", "norg", "md" },
+    config = conf.headline,
+  })
 
   editor({ "hrsh7th/vim-searchx", event = { "CmdwinEnter", "CmdlineEnter" }, conf = conf.searchx })
 

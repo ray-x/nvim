@@ -523,6 +523,11 @@ M.setup = function(_)
 
     telescope.load_extension("dotfiles")
     telescope.load_extension("gosource")
+
+    if vim.o.ft == 'org' then
+      loader('telescope-orgmode.nvim')
+      telescope.load_extension("orgmode")
+    end
   end, 200)
   -- telescope.load_extension("smart_history")
 end

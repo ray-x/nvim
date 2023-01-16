@@ -113,9 +113,9 @@ if vim.wo.diff then
 end
 
 -- load module but not init/config it
-vim.cmd([[packadd nvim-treesitter]])
-vim.cmd([[packadd nvim-lspconfig]])
 function Lazyload()
+  vim.cmd([[packadd nvim-treesitter]])
+  vim.cmd([[packadd nvim-lspconfig]])
   require("core.helper").init()
   loader("impatient.nvim")
   createdir()
@@ -226,7 +226,6 @@ vim.defer_fn(function()
   loader("windline.nvim")
   vim.cmd("highlight clear ColorColumn")
   loader("virtcolumn.nvim")
-  loader("statuscol.nvim")
   require("modules.ui.eviline")
   require("vscripts.tools")
   vim.cmd("command! Gram lua require'modules.tools.config'.grammcheck()")
@@ -253,6 +252,7 @@ vim.defer_fn(function()
     require("modules.editor.hydra").hydra_git()
   end
 
+  loader("statuscol.nvim")
   -- lprint("all done", os.clock())
   if vim.fn.executable(vim.g.python3_host_prog) == 0 then
     print("file not find, please update path setup", vim.g.python3_host_prog)
@@ -266,7 +266,7 @@ if plugin_folder() == [[~/github/ray-x/]] then
   -- vim.cmd([[set shell=/usr/bin/fish]])
   vim.cmd([[command! GD term gd]])
 end
-vim.schedule(function()
+vim.defer_fn(function()
   loader("auto-session")
   if vim.fn.empty(vim.fn.expand("%")) == 1 then
     local bufnr = vim.fn.bufnr()
@@ -276,6 +276,6 @@ vim.schedule(function()
       api.nvim_buf_delete(bufnr, { force = true })
     end
   end
-end)
+end, 4)
 
 load_colorscheme(loading_theme)

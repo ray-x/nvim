@@ -360,7 +360,7 @@ function config.orgmode()
   if not packer_plugins["nvim-treesitter"].loaded then
     loader("nvim-treesitter")
   end
-  vim.cmd('set foldlevel=2')
+  vim.cmd("set foldlevel=2")
 
   require("orgmode").setup_ts_grammar()
   require("nvim-treesitter.configs").setup({
@@ -398,7 +398,7 @@ function config.orgmode()
     },
   })
   vim.opt.conceallevel = 2
-  vim.cmd('set foldlevel=1')
+  vim.cmd("set foldlevel=1")
 end
 function config.neorg()
   local loader = require("packer").loader
@@ -565,6 +565,18 @@ function config.searchx()
 
 
   ]])
+end
+
+config.headline = function()
+  vim.cmd([[highlight Headline1 guibg=#042030]])
+  -- vim.cmd([[highlight link Headline2 Function]])
+  vim.cmd([[highlight CodeBlock guibg=#1c1c1c]])
+  vim.cmd([[highlight Dash guibg=#D19A66 gui=bold]])
+  require("headlines").setup({
+    markdown = { fat_headlines = true, headline_highlights = { "Headline1", "Headline2" } },
+    org = { fat_headlines = false, headline_highlights = { "Headline1", "Headline2" } },
+    neorg = { fat_headlines = true, headline_highlights = { "Headline1", "Headline2" } },
+  })
 end
 
 return config

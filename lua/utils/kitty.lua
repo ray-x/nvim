@@ -182,6 +182,19 @@ kitty.change_bg = function(color)
   on_leave()
 end
 
+kitty.set_title = function(title)
+  local Job = require("plenary.job")
+
+  Job:new({
+    command = "kitty",
+    args = { "@", "set-window-title", title },
+    on_exit = function(j, _)
+    end,
+  }):start()
+
+  on_leave()
+end
+
 -- local bg_change = autogroup("BackgroundChange", { clear = true })
 
 -- autocmd("ColorScheme", {

@@ -35,6 +35,7 @@ local colors_mode = {
   Replace = { "blue_light", "black" },
   Command = { "magenta", "black" },
 }
+local running = 1
 
 local split = function(str, pat)
   local t = {} -- NOTE: use {n = 0} in Lua-5.0
@@ -67,6 +68,7 @@ end
 local signature_length = 0
 local lsp_label1, lsp_label2 = "", ""
 local treesitter_context = require("modules.lang.treesitter").context
+local ts = ''
 local current_function = function(width)
   -- local wwidth = winwidth()
   if width < 50 then
@@ -86,12 +88,21 @@ local current_function = function(width)
   if width > 200 then
     width = math.max((width - 80 - #lsp_label1 - #lsp_label2) * 0.8, 40)
   end
-  local ts = treesitter_context(400)
-  if string.len(ts) < 3 then
+  if running % 5 == 4 then
+    ts = treesitter_context(400)
+  end
+  if ts and string.len(ts) < 3 then
     return " "
   end
   ts = string.gsub(ts, "[\n\r]+", " ")
-
+  local path = fn.fnamemodify(fn.expand("%"), ":~:.")
+  local title = path .. " -> " .. ts
+  local kitty = require("utils.kitty")
+  running = running + 1
+  if running % 20 == 19 then
+    kitty.set_title(title)
+    running = 1
+  end
   return string.sub(" " .. ts, 1, width)
 end
 
