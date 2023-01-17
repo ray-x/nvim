@@ -181,6 +181,38 @@ kitty.change_bg = function(color)
 
   on_leave()
 end
+local pid
+kitty.set_title_on_active = function(title)
+  local win_id = vim.fn.expand('$KITTY_WINDOW_ID') -- environ()['KITTY_WINDOW_ID']
+  -- if pid == nil then
+    -- pid = vim.loop.os_getppid() -- this is vim
+    pid = tostring(vim.loop.os_getppid())
+  -- end
+
+  -- local jq = string.format([[kitty @ls | jq  '.[0].tabs.[] | select (.is_focused).windows[] |select (.pid == %s).is_active_window']], pid)
+  local jq = "kitty @ls | jq '.[0].tabs.[] | select (.is_focused).windows[].foreground_processes[].pid'"
+  local function on_event(job_id, data, event)
+
+    if event == "exit" then
+      -- lprint("exit", data, event)
+      return
+    end
+
+    if vim.fn.empty(data) == 1 then
+      return
+    end
+    if vim.tbl_contains(data, pid) then
+      -- lprint(data, title)
+      kitty.set_title(title)
+    end
+
+  end
+  vim.fn.jobstart(jq, {
+    on_stdout = on_event,
+    on_stderr = on_event,
+    on_exit = on_event,
+  })
+end
 
 kitty.set_title = function(title)
   local Job = require("plenary.job")
@@ -188,8 +220,7 @@ kitty.set_title = function(title)
   Job:new({
     command = "kitty",
     args = { "@", "set-window-title", title },
-    on_exit = function(j, _)
-    end,
+    on_exit = function(j, _) end,
   }):start()
 
   on_leave()

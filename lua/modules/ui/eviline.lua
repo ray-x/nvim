@@ -88,7 +88,7 @@ local current_function = function(width)
   if width > 200 then
     width = math.max((width - 80 - #lsp_label1 - #lsp_label2) * 0.8, 40)
   end
-  if running % 5 == 4 then
+  if running % 10 == 4 then
     ts = treesitter_context(400)
     if ts and string.len(ts) < 3 then
       return " "
@@ -99,8 +99,8 @@ local current_function = function(width)
   local title = path .. " -> " .. ts
   local kitty = require("utils.kitty")
   running = running + 1
-  if running % 20 == 19 then
-    kitty.set_title(title)
+  if running % 30 == 19 then
+    kitty.set_title_on_active(title)
     running = 1
   end
   return string.sub(" " .. ts, 1, width)
