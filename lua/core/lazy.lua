@@ -257,7 +257,6 @@ vim.defer_fn(function()
   if vim.fn.executable(vim.g.python3_host_prog) == 0 then
     print("file not find, please update path setup", vim.g.python3_host_prog)
   end
-  require("statuscol").setup({ setopt = true })
   lprint("lazy2 loaded", vim.loop.now() - start)
 end, lazy_timer + 80)
 
