@@ -78,7 +78,9 @@ return function(lang)
 
   lang({
     path .. "web-tools.nvim",
-    ft = { "html", "javascript" },
+    ft = { "html", "javascript", "hurl", "http" },
+    cmd = { "HurlRun", "BrowserOpen" },
+    module = { "web-tools" },
     opt = true,
     config = function()
       require("web-tools").setup({ debug = true })

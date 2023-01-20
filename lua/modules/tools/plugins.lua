@@ -322,5 +322,7 @@ return function(tools)
     opt = true,
   })
   --The linediff plugin provides a simple command, :Linediff, which is used to diff two separate blocks of text.
+  tools({ "pfeiferj/nvim-hurl", opt = true, module =  "nvim-hurl", cmd = { "HurlRun", "'<,'>HurlRun" }, ft =
+    {'hurl', 'http' }})
   tools({ "AndrewRadev/linediff.vim", opt = true, cmd = { "Linediff", "'<,'>Linediff" } })
 end

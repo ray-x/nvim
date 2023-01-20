@@ -28,7 +28,7 @@ return function(ui)
     -- event = "User LoadLazyPlugin",
     config = function()
       -- require("statuscol").setup({ setopt = true })
-      require("statuscol").setup()
+      -- require("statuscol").setup()
     end,
   })
 

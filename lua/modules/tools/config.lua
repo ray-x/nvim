@@ -696,4 +696,16 @@ config.hologram = function()
   })
 end
 
+config.hurl = function()
+    require("hurl").setup() -- add hurl to the nvim-treesitter config
+    require 'nvim-treesitter.config'.setup {
+      ensure_installed = { "hurl" }, -- ensure that hurl gets installed
+      highlight = {
+        enable = true -- hurl plugin provides tree-sitter highlighting
+      },
+      indent = {
+        enable = true -- hurl plugin provides tree-sitter indenting
+      }
+    }
+  end
 return config

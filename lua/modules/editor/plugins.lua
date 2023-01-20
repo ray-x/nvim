@@ -360,4 +360,12 @@ return function(editor)
       vim.g.switch_mapping = "<Space>t"
     end,
   })
+  editor({
+    "mizlan/iswap.nvim",
+    opt = true,
+    cmd = { "ISwap", "ISwapWith", "ISwapNode", "ISwapNodeWith" },
+    config = function()
+      require("iswap").setup({})
+    end,
+  })
 end

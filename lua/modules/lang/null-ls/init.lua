@@ -163,6 +163,7 @@ return {
 
     table.insert(sources, warn_TODO)
     table.insert(sources, require("go.null_ls").gotest())
+    table.insert(sources, require("go.null_ls").gotest_action())
     local cfg = {
       sources = sources,
       debug = true,

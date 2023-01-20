@@ -21,11 +21,9 @@ function options:load_options()
       cursorline = false,
       -- noreadonly = false;
     }
-    self.bw_local = {
-    }
+    self.bw_local = {}
   else
-    self.global_local = {
-    }
+    self.global_local = {}
 
     self.window_local = {
       foldmethod = "expr",
@@ -34,8 +32,7 @@ function options:load_options()
       foldenable = true,
     }
   end
-  local bw_local = {
-  }
+  local bw_local = {}
   bind_option(bw_local)
   for name, value in pairs(self.global_local) do
     vim.o[name] = value

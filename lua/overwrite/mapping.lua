@@ -89,6 +89,10 @@ local keys = {
   ["i|<d-C>"] = map_cmd("Clap | startinsert"):with_noremap():with_silent(),
   ["n|<Leader>df"] = map_cmd("Clap dumb_jump ++query=<cword> | startinsert"),
   ["n|<F9>"] = map_cmd("GoBreakToggle"),
+
+  -- swap
+  ["n|<leader>a"] = map_cmd("ISwapWith"),
+  ["n|<leader>A"] = map_cmd("ISwapNodeWith"),
   -- session
   -- ["n|<Leader>ss"] = map_cu('SessionSave'):with_noremap(),
   -- ["n|<Leader>sl"] = map_cu('SessionLoad'):with_noremap(),

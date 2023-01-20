@@ -84,8 +84,8 @@ local treesitter_obj = function()
           ["ic"] = "@class.inner",
         },
       },
-      swap = {
-        enable = enable,
+      swap = { -- use ISWAP
+        enable = false,
         swap_next = { ["<leader>a"] = "@parameter.inner" },
         swap_previous = { ["<leader>A"] = "@parameter.inner" },
       },
