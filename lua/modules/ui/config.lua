@@ -486,7 +486,8 @@ function config.starry_conf()
   end
 
   local colors = require("starry.colors").color_table()
-  local bg = colors.bg
+  local bg = colors.dark -- dark are set to bg
+  lprint('starrybg: ', bg)
   if vim.g.starry_style == "limestone" then
     vim.api.nvim_set_hl(0, "Normal", { bg = bg })
     return
@@ -496,7 +497,7 @@ function config.starry_conf()
     vim.api.nvim_set_hl(0, "Normal", { bg = bg })
     return
   end
-  require("utils.kitty").change_bg(colors.bg)
+  require("utils.kitty").change_bg(bg)
 end
 
 vim.api.nvim_create_user_command("Transparent", function(opts)
