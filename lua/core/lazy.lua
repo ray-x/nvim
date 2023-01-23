@@ -17,8 +17,6 @@ if fsize > 1024 * 1024 then
   load_lsp = false
 end
 
-math.randomseed(start)
-
 -- Create cache dir and subs dir
 local createdir = function()
   local global = require("core.global")
@@ -41,53 +39,6 @@ local createdir = function()
   end
 end
 
-local function daylight()
-  local h = tonumber(os.date("%H"))
-  if h > 8 and h < 17 then
-    return "light"
-  else
-    return "dark"
-  end
-end
-
-local function randomscheme()
-  local themes = {
-    "starry.nvim",
-    "aurora",
-    "tokyonight.nvim",
-    "starry.nvim",
-    "aurora",
-    "gruvbox-material",
-    "sonokai",
-    "catppuccin",
-    "github-nvim-theme",
-    "vim-nightfly-colors",
-    "galaxy",
-  }
-  local style = daylight()
-
-  if style == "light" then
-    -- vim.o.background = "light"
-    themes = { "starry.nvim", "catppuccin", "gruvbox-material", "sonokai" }
-  end
-
-  -- themes = { "starry.nvim", "starry.nvim" }
-  local v = math.random(1, #themes)
-
-  local loading_theme = themes[v]
-  return loading_theme
-end
-
-local loading_theme = randomscheme()
-
-local function load_colorscheme(theme)
-  if theme == "galaxy" then
-    require("modules.ui.galaxy").shine()
-  else
-    require("packer").loader(theme)
-  end
-end
-
 if vim.wo.diff then
   -- loader(plugins)
   if load_ts_plugins then
@@ -98,6 +49,7 @@ if vim.wo.diff then
   end
   return
 end
+local colorscheme
 
 -- load module but not init/config it
 function Lazyload()
@@ -142,7 +94,6 @@ function Lazyload()
     loader("nvim-treesitter")
   end
 
-  load_colorscheme(loading_theme)
   local plugins = "plenary.nvim"
   loader("plenary.nvim")
 
@@ -193,11 +144,9 @@ function Lazyload()
   lprint("lazy colorscheme loaded", vim.loop.now() - start)
 end
 
-local lazy_timer = 20
+local lazy_timer = 15
 if _G.packer_plugins == nil or _G.packer_plugins["packer.nvim"] == nil then
   return print("need packer recompile")
-else
-  load_colorscheme(loading_theme)
 end
 
 vim.defer_fn(function()
@@ -216,7 +165,7 @@ vim.defer_fn(function()
   vim.cmd("command! Spell call spelunker#check()")
 
   lprint("lazy wlfloat loaded", vim.loop.now() - start)
-end, lazy_timer + 30)
+end, lazy_timer + 10)
 --
 vim.defer_fn(function()
   require("overwrite")
@@ -242,13 +191,14 @@ vim.defer_fn(function()
     print("file not find, please update path setup", vim.g.python3_host_prog)
   end
   lprint("lazy2 loaded", vim.loop.now() - start)
-end, lazy_timer + 80)
+end, lazy_timer + 30)
 
 if plugin_folder() == [[~/github/ray-x/]] then
   -- it is my own box, setup fish
   -- vim.cmd([[set shell=/usr/bin/fish]])
   vim.cmd([[command! GD term gd]])
 end
+require("core.colorscheme")
 vim.defer_fn(function()
   loader("auto-session")
   if vim.fn.empty(vim.fn.expand("%")) == 1 then
@@ -260,5 +210,3 @@ vim.defer_fn(function()
     end
   end
 end, 4)
-
-load_colorscheme(loading_theme)

@@ -160,7 +160,7 @@ return function(ui)
       vim.cmd([[hi TSCurrentScope guibg=#282338]])
     end,
   })
-  ui({ "bluz71/vim-nightfly-colors", opt = true, config = conf.nightfly })
+  ui({ "bluz71/vim-nightfly-colors", opt = true, setup = conf.nightfly, config = function() vim.cmd [[colorscheme nightfly]] end })
 
   ui({ "projekt0n/github-nvim-theme", opt = true, config = conf.gh_theme })
 

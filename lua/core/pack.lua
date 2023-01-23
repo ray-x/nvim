@@ -115,7 +115,7 @@ end
 function plugins.precompile_existed()
   -- return vim.fn.filereadable(packer_compiled) == 1
   local fs, err = vim.loop.fs_stat(packer_compiled)
-  print(packer_compiled, fs, err)
+  -- print(packer_compiled, fs, err)
   if not fs or err then
     return false
   end
