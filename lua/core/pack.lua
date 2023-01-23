@@ -22,7 +22,7 @@ function Packer:load_plugins(use)
     "lewis6991/impatient.nvim",
     opt = true,
     config = function()
-      require'impatient'
+      require("impatient")
     end,
   })
   local get_plugins_list = function()
@@ -54,8 +54,8 @@ local ensure_packer = function()
   local fn = vim.fn
   local install_path = data_dir .. "pack" .. path_sep .. "packer" .. path_sep .. "start" .. path_sep .. "packer.nvim"
   if fn.empty(fn.glob(install_path)) > 0 then
-    fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
-    vim.cmd [[packadd packer.nvim]]
+    fn.system({ "git", "clone", "--depth", "1", "https://github.com/wbthomason/packer.nvim", install_path })
+    vim.cmd([[packadd packer.nvim]])
     return true
   end
   return false
@@ -70,13 +70,12 @@ function Packer:init_ensure_plugins()
     packer.init({ compile_path = packer_compiled, git = { clone_timeout = 240 }, disable_commands = true })
   end
 
-  return require('packer').startup(function(use)
+  return require("packer").startup(function(use)
     self:load_plugins(packer.use)
     if packer_bootstrap then
       packer.sync()
     end
-  end
-  )
+  end)
 end
 
 local plugins = setmetatable({}, {
@@ -113,22 +112,38 @@ function plugins.compile_loader()
   vim.cmd([[silent UpdateRemotePlugins]])
 end
 
-function plugins.load_compile()
-  if vim.fn.filereadable(packer_compiled) == 1 then
-    require("packer_compiled")
-  else
-    assert("Missing packer compile file Run PackerCompile Or PackerInstall to fix")
-    vim.cmd("packadd packer.nvim")
-    plugins.compile()
-    vim.notify("compile finished successfully wrote to " .. packer_compiled)
-    -- require("packer_compiled")
+function plugins.precompile_existed()
+  -- return vim.fn.filereadable(packer_compiled) == 1
+  local fs, err = vim.loop.fs_stat(packer_compiled)
+  print(packer_compiled, fs, err)
+  if not fs or err then
+    return false
   end
+  return true
+end
+
+function plugins.precompile_file()
+  return packer_compiled
+end
+function plugins.load_compile()
   vim.cmd([[command! PackerCompile lua require('core.pack').compile_notify()]])
   vim.cmd([[command! PackerInstall lua require('core.pack').install()]])
   vim.cmd([[command! PackerUpdate lua require('core.pack').update()]])
   vim.cmd([[command! PackerSync lua require('core.pack').sync()]])
   vim.cmd([[command! PackerClean lua require('core.pack').clean()]])
   vim.cmd([[autocmd User PackerComplete lua require('core.pack').compile()]])
+
+  if vim.fn.filereadable(packer_compiled) == 1 then
+    require("packer_compiled")
+    return true
+  else
+    print("compile")
+    assert("Missing packer compile file Run PackerCompile Or PackerInstall to fix")
+    vim.cmd("packadd packer.nvim")
+    plugins.compile()
+    vim.notify("compile finished successfully wrote to " .. packer_compiled)
+    return false
+  end
 end
 
 return plugins

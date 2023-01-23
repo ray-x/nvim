@@ -39,8 +39,16 @@ local load_core = function()
   require("keymap")
   require("core.event")
   _G.lprint = require("utils.log").lprint
-  pack.load_compile()
-  require("core.lazy")
+  if pack.load_compile() then
+    require("core.lazy")
+  else
+    vim.defer_fn(function()
+      print("precompile_existed")
+      pack.load_compile()
+      require("packer_compiled")
+      return require("core.lazy")
+    end, 1500) -- 1.5s is a hacky way to wait for packer to finish compiling
+  end
 end
 
 load_core()

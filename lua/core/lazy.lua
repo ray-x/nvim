@@ -75,17 +75,6 @@ local function randomscheme()
   local v = math.random(1, #themes)
 
   local loading_theme = themes[v]
-  --[[ loading_theme = "aurora" ]]
-  -- lprint(loading_theme, os.clock())
-  -- load a light theme may require reset kitty background so termainl tool, e.g. lazygit will pickup
-  -- if loading_theme == "starry" or loading_theme == "catppuccin" then
-  --   if vim.fn.executable("kitty") == 1 then --TODO: not finished
-  --     local cmd = "kitty +kitten themes --reload-in=all Material"
-  --     vim.fn.jobstart(cmd, {
-  --       on_stdout = function(_, data, _) end,
-  --     })
-  --   end
-  -- end
   return loading_theme
 end
 
@@ -98,8 +87,6 @@ local function load_colorscheme(theme)
     require("packer").loader(theme)
   end
 end
-
-load_colorscheme(loading_theme)
 
 if vim.wo.diff then
   -- loader(plugins)
@@ -208,12 +195,9 @@ end
 
 local lazy_timer = 20
 if _G.packer_plugins == nil or _G.packer_plugins["packer.nvim"] == nil then
-  print("packer recompile")
-  vim.cmd([[PackerCompile]])
-  vim.defer_fn(function()
-    print("Packer recompiled, please run `:PackerCompile` and restart nvim")
-  end, 400)
-  return
+  return print("need packer recompile")
+else
+  load_colorscheme(loading_theme)
 end
 
 vim.defer_fn(function()
