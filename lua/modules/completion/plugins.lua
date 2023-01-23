@@ -25,7 +25,7 @@ local filetypes = {
   "sh",
 }
 return function(use)
-  use{ "neovim/nvim-lspconfig", config = conf.nvim_lsp, module = 'lspconfig', opt = true }
+  use({ "neovim/nvim-lspconfig", config = conf.nvim_lsp, module = "lspconfig", opt = true })
   if load_coq() then
     use({
       "ms-jpq/coq_nvim",
@@ -82,7 +82,7 @@ return function(use)
       { "hrsh7th/cmp-path", after = "nvim-cmp", opt = true },
       { "hrsh7th/cmp-cmdline", after = "nvim-cmp", opt = true },
       -- { "tzachar/cmp-tabnine", after = "nvim-cmp", run = "./install.sh", opt = true, config = conf.tabnine},
-      -- { "hrsh7th/cmp-copilot", after = "nvim-cmp", opt = true },
+      { "hrsh7th/cmp-copilot", after = "nvim-cmp", opt = true },
       { "hrsh7th/cmp-emoji", after = "nvim-cmp", opt = true },
       { plugin_folder() .. "cmp-treesitter", after = "nvim-cmp", opt = true },
       { "hrsh7th/cmp-nvim-lsp", after = "nvim-cmp", opt = true },
@@ -119,7 +119,7 @@ return function(use)
     "nvim-telescope/telescope.nvim",
     -- cmd = "Telescope",
     config = conf.telescope,
-    module = {'telescope', 'telescope.builtin', 'telescope.actions'},
+    module = { "telescope", "telescope.builtin", "telescope.actions" },
     setup = conf.telescope_preload,
     requires = {
       { "nvim-lua/plenary.nvim", opt = true },
@@ -184,7 +184,8 @@ return function(use)
 
   use({
     "github/copilot.vim",
-    opt = false,
+    opt = true,
+    event = "InsertEnter",
     setup = function()
       -- vim.api.nvim_set_keymap("n", "<C-=>", [[copilot#Accept("\<CR>")]], { silent = true, script = true, expr = true })
       -- vim.api.nvim_set_keymap("i", "<C-=>", [[copilot#Accept("\<CR>")]], { silent = true, script = true, expr = true })
@@ -201,5 +202,10 @@ return function(use)
       let g:copilot_tab_fallback = ""
     ]])
     end,
+  })
+  use({
+    "Exafunction/codeium.vim",
+    opt = true,
+    event = "InsertEnter",
   })
 end
