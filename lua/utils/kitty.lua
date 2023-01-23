@@ -122,26 +122,23 @@ end
 
 kitty.get_kitty_background = function(opts)
   local color
-    vim.fn.jobstart(
-      { "kitty", "@", "get-colors" },
-      {
-      cwd = "/usr/bin/",
-      on_exit = function(j, data, event)
-        lprint('kitty get color on exit', code, data, event)
-        if opts then
-          opts.callback(opts.color)
-        end
-      end,
-      on_stdout = function(code, data, event)
-          if #data < 4 then
-            return
-          end
-          local color = split(data[4])[2]
-          lprint('kitty get color on stdout', color)
-          vim.g.ORIGINAL_KITTY_BG_COLOR = color
-      end,
-      }
-    )
+  vim.fn.jobstart({ "kitty", "@", "get-colors" }, {
+    cwd = "/usr/bin/",
+    on_exit = function(j, data, event)
+      lprint("kitty get color on exit", code, data, event)
+      if opts then
+        opts.callback(opts.color)
+      end
+    end,
+    on_stdout = function(code, data, event)
+      if #data < 4 then
+        return
+      end
+      local color = split(data[4])[2]
+      lprint("kitty get color on stdout", color)
+      vim.g.ORIGINAL_KITTY_BG_COLOR = color
+    end,
+  })
 end
 
 local function get_color(hlgp, attr)
@@ -186,16 +183,12 @@ end
 local pid
 kitty.set_title_on_active = function(title)
   local win_id = vim.fn.expand("$KITTY_WINDOW_ID") -- environ()['KITTY_WINDOW_ID']
-  -- if pid == nil then
-  -- pid = vim.loop.os_getppid() -- this is vim
   pid = tostring(vim.loop.os_getppid())
-  -- end
 
-  -- local jq = string.format([[kitty @ls | jq  '.[0].tabs.[] | select (.is_focused).windows[] |select (.pid == %s).is_active_window']], pid)
   local jq = "kitty @ls | jq '.[0].tabs.[] | select (.is_focused).windows[].foreground_processes[].pid'"
   local function on_event(job_id, data, event)
     if event == "exit" then
-      -- lprint("exit", data, event)
+      lprint("get active win exit", data, event)
       return
     end
 
@@ -204,6 +197,7 @@ kitty.set_title_on_active = function(title)
     end
     if vim.tbl_contains(data, pid) then
       -- lprint(data, title)
+      lprint('found pid', pid, title)
       kitty.set_title(title)
     end
   end
@@ -215,10 +209,8 @@ kitty.set_title_on_active = function(title)
 end
 
 kitty.set_title = function(title)
-  vim.fn.jobstart(
-    { "kitty", "@", "set-window-title", title },
-    {on_exit = function(_, _) end}
-  )
+  lprint('set_title', title)
+  vim.fn.jobstart({ "kitty", "@", "set-window-title", title }, { on_exit = function(_, _) end })
 end
 
 vim.api.nvim_create_user_command("SetKittyBg", function(opts)

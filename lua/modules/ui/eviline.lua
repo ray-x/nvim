@@ -96,11 +96,14 @@ local current_function = function(width)
   end
   ts = string.gsub(ts, "[\n\r]+", " ")
   local path = fn.fnamemodify(fn.expand("%"), ":~:.")
-  local title = path .. " -> " .. ts
-  local kitty = require("utils.kitty")
+  local title = path
+  if ts and #ts > 1 then
+    title = title .. " -> " .. ts
+  end
+
   running = running + 1
   if running % 30 == 19 then
-    kitty.set_title_on_active(title)
+    require("utils.kitty").set_title_on_active(title)
     running = 1
   end
   return string.sub(" " .. ts, 1, width)
