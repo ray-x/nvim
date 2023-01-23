@@ -110,6 +110,9 @@ vim.g.ORIGINAL_KITTY_BG_COLOR = nil
 
 local split = function(str)
   local tokens = {}
+  if not str then
+    return
+  end
   for s in string.gmatch(str, "%S+") do
     table.insert(tokens, s)
   end
