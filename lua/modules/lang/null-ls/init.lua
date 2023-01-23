@@ -142,7 +142,7 @@ return {
               local f = vim.fn.matchstrpos(line, "\\v(todo)|(fixme)|(xxx)|(fix)|(hack)")
               local col, end_col = f[2], f[3]
               if col and end_col >= 0 then
-                lprint('found', col, end_col)
+                -- lprint('found', col, end_col)
                 -- null-ls fills in undefined positions
                 -- and converts source diagnostics into the required format
                 table.insert(diag, {

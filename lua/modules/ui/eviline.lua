@@ -612,16 +612,16 @@ windline.setup({
     --- add more color
 
     local mod = function(c, value)
-      if vim.o.background == "dark" then
-        return HSL.rgb_to_hsl(c):tint(value):to_rgb()
-      end
+      -- if vim.o.background ~= "dark" then
+      --   return HSL.rgb_to_hsl(c):tint(value):to_rgb()
+      -- end
       return HSL.rgb_to_hsl(c):shade(value):to_rgb()
     end
 
     local normalFg, normalBg = require("windline.themes").get_hl_color("StatusLine")
 
     colors.NormalFg = normalFg or colors.white
-    colors.NormalBg = normalBg or mod(colors.white, 0.3)
+    colors.NormalBg = normalBg or mod(colors.white, 0.9)
     colors.FilenameFg = colors.white_light
     colors.FilenameBg = colors.NormalFg
 

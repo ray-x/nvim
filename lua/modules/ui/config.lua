@@ -1,4 +1,5 @@
 local config = {}
+math.randomseed(os.time())
 packer_plugins = packer_plugins or {} -- supress warning
 
 function daylight()
@@ -306,15 +307,26 @@ function config.default()
 end
 
 function config.cat()
-  local opt = { "frappe", "catppuccin" }
-  if day ~= "light" then
-    opt = { "macchiato", "mocha", "amoled", "catppuccino" } -- "latte" is a light theme
-  end
+  local opt = { "frappe", "mocha", "macchiato" }
   local v = math.random(1, #opt)
   vim.g.catppuccin_flavour = opt[v]
 
+  if vim.g.catppuccin_flavour == "frappe" then
+    require("utils.kitty").change_bg("#303446")
+  elseif vim.g.catppuccin_flavour == "mocha" then
+    require("utils.kitty").change_bg("#1e1e2e")
+  else
+    require("utils.kitty").change_bg("#24273A")
+  end
   lprint(vim.g.catppuccin_flavour)
-  require("catppuccin").setup({ lsp_trouble = true, neogit = true, hop = true })
+  require("catppuccin").setup({
+    flavor = vim.g.catppuccin_flavour,
+    lsp_trouble = true,
+    neogit = true,
+    hop = true,
+    transparent_background = true,
+    dim_inactive = { enabled = true },
+  })
   vim.cmd("colorscheme catppuccin")
 end
 
@@ -487,7 +499,7 @@ function config.starry_conf()
 
   local colors = require("starry.colors").color_table()
   local bg = colors.dark -- dark are set to bg
-  lprint('starrybg: ', bg)
+  lprint("starrybg: ", bg)
   if vim.g.starry_style == "limestone" then
     vim.api.nvim_set_hl(0, "Normal", { bg = bg })
     return
@@ -507,25 +519,35 @@ vim.api.nvim_create_user_command("Transparent", function(opts)
 end, { nargs = "*" })
 
 function config.tokyonight()
-  local opt = { "storm", "night" }
+  local opt = { "storm", "night", "moon" }
+  math.randomseed(os.time())
   local v = math.random(1, #opt)
-  vim.g.tokyonight_style = opt[v]
-  vim.g.tokyonight_italic_functions = true
-  vim.g.tokyonight_sidebars = { "qf", "vista_kind", "terminal", "packer" }
-  -- vim.g.tokyonight_transparent = true
-
-  -- Change the "hint" color to the "orange" color, and make the "error" color bright red
-  vim.g.tokyonight_colors = { hint = "orange", error = "#ae1960" }
+  v = opt[v]
+  lprint(v)
+  require("tokyonight").setup({
+    style = v,
+    transparent = true,
+  })
+  if v == "storm" then
+    require("utils.kitty").change_bg("#24283b")
+  elseif v == "moon" then
+    require("utils.kitty").change_bg("#222436")
+  else
+    require("utils.kitty").change_bg("#1a1b26")
+  end
+  vim.cmd([[colorscheme tokyonight]])
 end
 
 function config.nightfly()
-  vim.g.nightflyCursorColor = 1
-  vim.g.nightflyUnderlineMatchParen = 1
-  vim.g.nightflyUndercurls = 1
-  vim.g.nightflyItalics = 1
-  vim.g.nightflyNormalFloat = 1
-  vim.g.nightflyTransparent = 1
+  vim.g.nightflyCursorColor = true
+  vim.g.nightflyUnderlineMatchParen = true
+  vim.g.nightflyUndercurls = true
+  vim.g.nightflyItalics = true
+  vim.g.nightflyNormalFloat = true
+  vim.g.nightflyTransparent = true
 
+  require("utils.kitty").change_bg("#011627")
+  vim.cmd([[colorscheme nightfly]])
   -- body
 end
 --

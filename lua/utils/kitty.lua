@@ -120,21 +120,28 @@ local split = function(str)
   return tokens
 end
 
-kitty.get_kitty_background = function()
-  local Job = require("plenary.job")
-
-  if vim.g.ORIGINAL_KITTY_BG_COLOR == nil then
-    -- HACK: getting background color
-    Job:new({
-      command = "kitty",
-      args = { "@", "get-colors" },
+kitty.get_kitty_background = function(opts)
+  local color
+    vim.fn.jobstart(
+      { "kitty", "@", "get-colors" },
+      {
       cwd = "/usr/bin/",
-      on_exit = function(j, _)
-        local color = split(j:result()[4])[2]
-        vim.g.ORIGINAL_KITTY_BG_COLOR = color
+      on_exit = function(j, data, event)
+        lprint('kitty get color on exit', code, data, event)
+        if opts then
+          opts.callback(opts.color)
+        end
       end,
-    }):start()
-  end
+      on_stdout = function(code, data, event)
+          if #data < 4 then
+            return
+          end
+          local color = split(data[4])[2]
+          lprint('kitty get color on stdout', color)
+          vim.g.ORIGINAL_KITTY_BG_COLOR = color
+      end,
+      }
+    )
 end
 
 local function get_color(hlgp, attr)
@@ -167,35 +174,26 @@ local function on_leave(color)
 end
 
 kitty.change_bg = function(color)
-  local Job = require("plenary.job")
-
-  Job:new({
-    command = "kitty",
-    args = { "@", "get-colors" },
-    cwd = "/usr/bin/",
-    on_exit = function(j, _)
-      local bg = split(j:result()[4])[2]
-      vim.g.ORIGINAL_KITTY_BG_COLOR = bg
-      if bg ~= color then
-        change_background(color)
-      end
+  kitty.get_kitty_background({
+    color = color,
+    callback = function(c)
+      change_background(c)
     end,
-  }):start()
-
+  })
   on_leave()
 end
+
 local pid
 kitty.set_title_on_active = function(title)
-  local win_id = vim.fn.expand('$KITTY_WINDOW_ID') -- environ()['KITTY_WINDOW_ID']
+  local win_id = vim.fn.expand("$KITTY_WINDOW_ID") -- environ()['KITTY_WINDOW_ID']
   -- if pid == nil then
-    -- pid = vim.loop.os_getppid() -- this is vim
-    pid = tostring(vim.loop.os_getppid())
+  -- pid = vim.loop.os_getppid() -- this is vim
+  pid = tostring(vim.loop.os_getppid())
   -- end
 
   -- local jq = string.format([[kitty @ls | jq  '.[0].tabs.[] | select (.is_focused).windows[] |select (.pid == %s).is_active_window']], pid)
   local jq = "kitty @ls | jq '.[0].tabs.[] | select (.is_focused).windows[].foreground_processes[].pid'"
   local function on_event(job_id, data, event)
-
     if event == "exit" then
       -- lprint("exit", data, event)
       return
@@ -208,7 +206,6 @@ kitty.set_title_on_active = function(title)
       -- lprint(data, title)
       kitty.set_title(title)
     end
-
   end
   vim.fn.jobstart(jq, {
     on_stdout = on_event,
@@ -218,37 +215,11 @@ kitty.set_title_on_active = function(title)
 end
 
 kitty.set_title = function(title)
-  local Job = require("plenary.job")
-
-  Job:new({
-    command = "kitty",
-    args = { "@", "set-window-title", title },
-    on_exit = function(j, _) end,
-  }):start()
-
-  on_leave()
+  vim.fn.jobstart(
+    { "kitty", "@", "set-window-title", title },
+    {on_exit = function(_, _) end}
+  )
 end
-
--- local bg_change = autogroup("BackgroundChange", { clear = true })
-
--- autocmd("ColorScheme", {
---   pattern = "*",
---   callback = function()
---     kitty.get_kitty_background()
---     local color = get_color("Normal", "bg")
---     change_background(color)
---   end,
---   group = bg_change,
--- })
---
--- autocmd("VimLeavePre", {
---   callback = function()
---     if vim.g.ORIGINAL_KITTY_BG_COLOR ~= nil then
---       change_background(vim.g.ORIGINAL_KITTY_BG_COLOR)
---     end
---   end,
---   group = autogroup("BackgroundRestore", { clear = true }),
--- })
 
 vim.api.nvim_create_user_command("SetKittyBg", function(opts)
   kitty.get_kitty_background()

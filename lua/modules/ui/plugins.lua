@@ -153,14 +153,9 @@ return function(ui)
   ui({
     "folke/tokyonight.nvim",
     opt = true,
-    setup = conf.tokyonight,
-    config = function()
-      -- vim.cmd [[hi CursorLine guibg=#353644]]
-      vim.cmd([[colorscheme tokyonight]])
-      vim.cmd([[hi TSCurrentScope guibg=#282338]])
-    end,
+    config = conf.tokyonight,
   })
-  ui({ "bluz71/vim-nightfly-colors", opt = true, setup = conf.nightfly, config = function() vim.cmd [[colorscheme nightfly]] end })
+  ui({ "bluz71/vim-nightfly-colors", opt = true, config = conf.nightfly })
 
   ui({ "projekt0n/github-nvim-theme", opt = true, config = conf.gh_theme })
 

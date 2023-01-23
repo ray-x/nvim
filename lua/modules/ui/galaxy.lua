@@ -57,9 +57,9 @@ local c = {
   orange_one = "#FE6019",
   orange_two = "#FE9059",
 
-  background_one = "#1f404f",
+  background_one = "#1f233f",
   background_two = "#10203f",
-  background_three = "#204945",
+  background_three = "#202935",
   background_four = "#445462",
 
   lime = "#98EE64",
