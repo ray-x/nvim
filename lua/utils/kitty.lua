@@ -210,7 +210,11 @@ end
 
 kitty.set_title = function(title)
   lprint('set_title', title)
-  vim.fn.jobstart({ "kitty", "@", "set-window-title", title }, { on_exit = function(_, _) end })
+  local cmd = { "kitty", "@", "set-window-title"}
+  if title then
+    table.insert(cmd, title)
+  end
+  vim.fn.jobstart(cmd, { on_exit = function(_, _) lprint('set title', title) end })
 end
 
 vim.api.nvim_create_user_command("SetKittyBg", function(opts)

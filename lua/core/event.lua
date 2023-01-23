@@ -16,12 +16,19 @@ function autocmd.nvim_create_augroups(definitions)
   for group_name, defs in pairs(definitions) do
     local gn = api.nvim_create_augroup("LocalAuGroup" .. group_name, {})
     for _, def in ipairs(defs) do
-      api.nvim_create_autocmd(vim.split(def[1], ","), {
+      local opts = {
         group = gn,
         pattern = def[2],
-        -- callback = def.callback,
-        command = def[3],
-      })
+      }
+      if type(def[3]) == "string" then
+        opts.command = def[3]
+      else
+        opts.callback = def[3]
+      end
+      if def[4] then
+        opts.desc = def[4]
+      end
+      api.nvim_create_autocmd(vim.split(def[1], ","), opts)
     end
   end
 end
@@ -58,7 +65,7 @@ function autocmd.load_autocmds()
       { "BufReadPre", "*", ":silent! :lua require('modules.lang.config').nvim_treesitter()" },
       -- {"BufWritePre", "*.js,*.rs,*.lua", ":FormatWrite"},
       -- {"BufWritePre", "*.go", ":silent! :lua require('go.format').gofmt()"}
-       {"BufWritePost", "*", ":silent! :lua require('harpoon.mark').add_file()"}
+      { "BufWritePost", "*", ":silent! :lua require('harpoon.mark').add_file()" },
     },
 
     wins = {
@@ -72,6 +79,12 @@ function autocmd.load_autocmds()
       { "VimResized", "*", [[tabdo wincmd =]] },
       -- Force write shada on leaving nvim
       { "VimLeave", "*", [[if has('nvim') | wshada! | else | wviminfo! | endif]] },
+      {
+        "VimLeave",
+        "*.lua",
+        "!kitty @set-window-title",
+        "reset kitty",
+      }, -- reset it back
       -- Check if file changed when its window is focus, more eager than 'autoread'
       { "FocusGained", "*", "checktime" },
       -- -- {"CmdwinEnter,CmdwinLeave", "*", "lua require'wlfloatline'.toggle()"};
