@@ -76,7 +76,7 @@ local function load_options()
     foldlevelstart = 99;
     ruler          = false;
     list           = true;
-    showtabline    = 2;
+    showtabline    = 1;
     winwidth       = 30;
     winminwidth    = 10;
     pumheight      = 15;
