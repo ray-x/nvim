@@ -631,24 +631,24 @@ windline.setup({
     -- this color will not update if you change a colorscheme
     colors.gray = "#fefefe"
     colors.magenta_a = colors.magenta
-    colors.magenta_b = mod(colors.magenta, 0.5)
-    colors.magenta_c = mod(colors.magenta, 0.7)
+    colors.magenta_b = mod(colors.magenta, 0.2)
+    colors.magenta_c = mod(colors.magenta, 0.1)
 
     colors.yellow_a = colors.yellow
-    colors.yellow_b = mod(colors.yellow, 0.5)
-    colors.yellow_c = mod(colors.yellow, 0.7)
+    colors.yellow_b = mod(colors.yellow, 0.2)
+    colors.yellow_c = mod(colors.yellow, 0.1)
 
     colors.blue_a = colors.blue
-    colors.blue_b = mod(colors.blue, 0.5)
-    colors.blue_c = mod(colors.blue, 0.7)
+    colors.blue_b = mod(colors.blue, 0.2)
+    colors.blue_c = mod(colors.blue, 0.1)
 
     colors.green_a = mod(colors.green, 0.3)
-    colors.green_b = mod(colors.green, 0.5)
-    colors.green_c = mod(colors.green, 0.7)
+    colors.green_b = mod(colors.green, 0.2)
+    colors.green_c = mod(colors.green, 0.1)
 
     colors.red_a = colors.red
-    colors.red_b = mod(colors.red, 0.5)
-    colors.red_c = mod(colors.red, 0.7)
+    colors.red_b = mod(colors.red, 0.2)
+    colors.red_c = mod(colors.red, 0.1)
     return colors
   end,
   statuslines = { default, quickfix, explorer },

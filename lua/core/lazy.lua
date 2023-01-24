@@ -156,14 +156,14 @@ end, lazy_timer)
 
 vim.defer_fn(function()
   vim.cmd("tabdo windo set relativenumber")
-  loader("windline.nvim")
   vim.cmd("highlight clear ColorColumn")
   loader("virtcolumn.nvim")
-  require("modules.ui.eviline")
   require("vscripts.tools")
   vim.cmd("command! Gram lua require'modules.tools.config'.grammcheck()")
   vim.cmd("command! Spell call spelunker#check()")
 
+  loader("windline.nvim")
+  require("modules.ui.eviline")
   lprint("lazy wlfloat loaded", vim.loop.now() - start)
 end, lazy_timer + 10)
 --

@@ -33,6 +33,8 @@ local load_core = function()
   vim.g.mapleader = "\\"
   local installed = pack.ensure_plugins()
 
+  vim.api.nvim_set_hl(0, "StatusLine", { bg = "None", fg = "#bbc2cf" })
+  vim.api.nvim_set_hl(0, "Normal", { bg = "None", fg = "#bbc2cf" })
   require("core.options")
   require("core.mapping")
   -- require("core.dot_repeat")

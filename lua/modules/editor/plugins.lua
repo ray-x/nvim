@@ -23,12 +23,7 @@ return function(editor)
     opt = true,
   })
 
-  editor({
-    "gbprod/substitute.nvim",
-    event = { "CmdlineEnter", "TextYankPost" },
-    config = conf.substitute,
-    opt = true,
-  })
+  editor({ "gbprod/substitute.nvim", event = { "CmdlineEnter", "TextYankPost" }, config = conf.substitute, opt = true })
 
   editor({
     "tpope/vim-abolish",
@@ -287,15 +282,28 @@ return function(editor)
     end,
   })
   editor({ "mbbill/undotree", opt = true, cmd = { "UndotreeToggle" } })
+  -- editor({
+  --   "AndrewRadev/splitjoin.vim",
+  --   opt = true,
+  --   cmd = { "SplitjoinJoin", "SplitjoinSplit" },
+  --   setup = function()
+  --     vim.g.splitjoin_split_mapping = ""
+  --     vim.g.splitjoin_join_mapping = ""
+  --   end,
+  --   -- keys = {'<space>S', '<space>J'}
+  -- })
+
   editor({
-    "AndrewRadev/splitjoin.vim",
+    "Wansmer/treesj",
     opt = true,
-    cmd = { "SplitjoinJoin", "SplitjoinSplit" },
-    setup = function()
-      vim.g.splitjoin_split_mapping = ""
-      vim.g.splitjoin_join_mapping = ""
+    cmd = { "TSJToggle", "TSJJoin", "TSJSplit" },
+    keys = { "<space>j" },
+    config = function()
+      require("treesj").setup({
+        use_default_keymaps = false,
+      })
+      vim.keymap.set("n", "<Space>j", function() require("treesj").toggle() end, { desc = " join toggle" })
     end,
-    -- keys = {'<space>S', '<space>J'}
   })
 
   editor({

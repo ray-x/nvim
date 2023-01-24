@@ -27,8 +27,8 @@ return function(ui)
     opt = true,
     -- event = "User LoadLazyPlugin",
     config = function()
-      require("statuscol").setup({ setopt = true })
-      -- require("statuscol").setup()
+      -- require("statuscol").setup({ setopt = true })
+      require("statuscol").setup()
     end,
   })
 
@@ -131,7 +131,7 @@ return function(ui)
   ui({
     "xiyaowong/virtcolumn.nvim",
     opt = true,
-    event = {"CursorMoved", "CursorMovedI"},
+    event = { "CursorMoved", "CursorMovedI" },
     setup = function()
       vim.g.virtcolumn_char = "▕" -- char to display the line
       vim.g.virtcolumn_priority = 10 -- priority of extmark
