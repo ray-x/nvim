@@ -10,11 +10,10 @@ The `Plug` config is located in branch [Plug branch](https://github.com/ray-x/do
 
 - nvim+kitty configured with pop menu:
 
-  ![vim_ide with nvim+kitty](https://github.com/ray-x/dotfiles/blob/master/img/menu.jpg?raw=true)
+  ![nvim + kitty](https://user-images.githubusercontent.com/1681295/214219496-1ac36e2a-4550-4fa2-9703-9caa2abeefd9.jpg)
 
-- nvim clap preview:
-
-  ![vim_ide with nvim+kitty](https://github.com/ray-x/dotfiles/blob/master/img/clap.jpg?raw=true)
+- nvim Telescope preview:
+  ![telescope](https://user-images.githubusercontent.com/1681295/214219526-dfb3cd22-7b67-475b-9294-914590d2913b.jpg)
 
 - nvim+kitty + cmp :
 
