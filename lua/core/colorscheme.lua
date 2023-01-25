@@ -31,7 +31,8 @@ local function randomscheme()
     themes = { "starry.nvim", "catppuccin", "gruvbox-material", "sonokai" }
   end
 
-  -- themes = { 'vim-nightfly-colors', "starry.nvim", "starry.nvim", "aurora", "galaxy" }
+  -- themes = { "vim-nightfly-colors", "starry.nvim", "starry.nvim", "aurora", "galaxy", "catppuccin", "tokyonight.nvim" }
+  themes = { "vim-nightfly-colors", "starry.nvim", "aurora", "galaxy" }
   local v = math.random(1, #themes)
 
   loading_theme = themes[v]

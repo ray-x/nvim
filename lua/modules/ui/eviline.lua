@@ -5,7 +5,52 @@ local helper = require("windline.helpers")
 local b_components = require("windline.components.basic")
 local state = _G.WindLine.state
 
-state.disable_kitty_update = false
+state.disable_title_update = false
+
+local function set_title(str)
+  -- lprint(str)
+  -- vim.cmd("let &titlestring='" .. str .. "'")
+  -- io.stdout:write("\27]0;" .. str .. "\7")
+  -- vim.cmd("set titlestring=%f%h%m%r%w")
+  -- local titlestring = vim.fn.fnamemodify(vim.fn.getcwd(), ":t") .. " - NVIM" -- vim.cmd("let &titlestring+=%{v:progname} ")
+  -- vim.cmd("set title | let &titlestring='" .. titlestring .. "'")
+--   vim.cmd([[ set title titlestring=                               " completely reset titlestring
+-- set titlestring+=%t                            " the current filename
+-- set titlestring+=%(\ %M%)                      " modified flag
+-- set titlestring+=%(\ (%{expand(\"%:~:h\")})%)  " relative path to current file
+-- set titlestring+=%(\ %a%)                      " extra attributes ]])
+-- vim.cmd("set titlestring+=" .. str)
+  local branches = {}
+  local dir = vim.fn.getcwd()
+  local home = vim.env.HOME
+  if dir == vim.env.ZK_NOTEBOOK_DIR then
+    return 'ZK'
+  end
+  if dir == home then
+    return 'NVIM'
+  end
+  local branch = vim.b.gitsigns_head
+  local titlestring = ''
+  local _, i = dir:find(home .. '/', 1, true)
+  if i then
+    dir = dir:sub(i + 1)
+  end
+  -- Some buffers are aasociated with a dir but not a branch: telescope, nvim-tree...
+  -- We use the latest branch result for these
+  if dir and not branch then
+    branch = branches[dir]
+  end
+  if branch then
+    titlestring = titlestring .. dir
+    titlestring = titlestring .. ' - ' .. branch
+    branches[dir] = branch
+  end
+  titlestring = titlestring .. ' >> ' .. str .. ''
+  vim.opt.titlestring = titlestring
+  return titlestring
+
+  -- vim.cmd("set titlestring+=%{substitute(getcwd(), $HOME, '~', '')}")
+end
 
 local lsp_comps = require("windline.components.lsp")
 local git_comps = require("windline.components.git")
@@ -101,12 +146,12 @@ local current_function = function(width)
   local path = fn.fnamemodify(fn.expand("%"), ":~:.")
   local title = path
   if ts and #ts > 1 then
-    title = title .. " -> " .. ts
+    title = title .. ">" .. ts
   end
 
   running = running + 1
-  if running % 30 == 19 and state.disable_kitty_update == false then
-    require("utils.kitty").set_title_on_active(title)
+  if running % 30 == 19 and state.disable_title_update == false then
+    set_title(title)
     running = 1
   end
   return string.sub(" " .. ts, 1, width)
@@ -664,14 +709,14 @@ local group = api.nvim_create_augroup("windline", {})
 api.nvim_create_autocmd({ "BufEnter", "WinEnter", "FocusGained" }, {
   group = group,
   callback = function()
-    state.disable_kitty_update = false
+    state.disable_title_update = false
   end,
 })
 
 api.nvim_create_autocmd({ "VimLeave", "WinLeave", "FocusLost" }, {
   group = group,
   callback = function()
-    state.disable_kitty_update = true
+    state.disable_title_update = true
   end,
 })
 

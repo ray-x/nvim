@@ -206,6 +206,7 @@ _G.hop1 = function(ac)
     -- print(vim.fn.mode(), vim.fn.mode() == 's')
     return vim.cmd('exe "normal! i s"')
   end
+
   if ac == 1 then
     require("hop").hint_char1({ direction = require("hop.hint").HintDirection.AFTER_CURSOR })
   else
@@ -301,6 +302,10 @@ vim.api.nvim_create_user_command("NewOrg", function(opts)
     { "#+TITLE: ", "#+AUTHER: Ray", "#+Date:" .. vim.fn.strftime("%c"), "", "* 1st", "* 2nd" }
   )
 end, { nargs = "*" })
+
+vim.api.nvim_create_user_command("Flg", "Flog -date=short", { nargs= "*" } )
+vim.api.nvim_create_user_command("Flgs", "Flogsplit -date=short", {})
+
 -- Use `git ls-files` for git files, use `find ./ *` for all files under work directory.
 --
 return K

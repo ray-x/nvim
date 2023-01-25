@@ -92,6 +92,7 @@ local function load_options()
     pumblend       = 10;
     winblend       = 10;
     syntax         = "off";
+    title          = true;
     background     = "dark";
 --------------------------------------
     ttyfast = true, -- Indicate fast terminal conn for faster redraw

@@ -33,8 +33,13 @@ local load_core = function()
   vim.g.mapleader = "\\"
   local installed = pack.ensure_plugins()
 
-  vim.api.nvim_set_hl(0, "StatusLine", { bg = "None", fg = "#bbc2cf" })
-  vim.api.nvim_set_hl(0, "Normal", { bg = "None", fg = "#bbc2cf" })
+  -- override default colorscheme
+  vim.api.nvim_set_hl(0, "StatusLine", { bg = "None" })
+  vim.api.nvim_set_hl(0, "StatusLineNC", { bg = "None" })
+  vim.api.nvim_set_hl(0, "Normal", { bg = "None" })
+  vim.api.nvim_set_hl(0, "Pmenu", { bg = "None" })
+  vim.api.nvim_set_hl(0, "SignColumn", { bg = "None" })
+  vim.api.nvim_set_hl(0, "FoldColumn", { bg = "None" })
   require("core.options")
   require("core.mapping")
   -- require("core.dot_repeat")

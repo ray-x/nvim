@@ -35,7 +35,7 @@
 (((selector_expression) @error (#eq? @error "fmt.Printf"     )) (#set! conceal "狼"))
 (((selector_expression) @field (#eq? @field "fmt.Sprintf"     )) (#set! conceal ""))
 ;; type
-(((pointer_type) @type (#eq? @type "*testing.T")) (#set! conceal "τ"))
+(((qualified_type) @type (#eq? @type "testing.T")) (#set! conceal "τ"))
 ;; identifiers
 (((identifier) @type (#eq? @type "err"     )) (#set! conceal "ε"))
 (((identifier) @type (#eq? @type "errors"     )) (#set! conceal "é"))
@@ -43,5 +43,8 @@
 (((identifier) @type (#eq? @type "Request"     )) (#set! conceal "黎"))
 (((identifier) @type (#eq? @type "response"     )) (#set! conceal ""))
 (((identifier) @type (#eq? @type "Response"     )) (#set! conceal ""))
+(((identifier) @field (#eq? @field "Errorf"     )) (#set! conceal "🥹"))
+(((identifier) @field (#eq? @field "assert"     )) (#set! conceal "🅰️"))
 (((field_identifier) @field (#eq? @field "Error"     )) (#set! conceal "E"))
+(((field_identifier) @field (#eq? @field "Equal"     )) (#set! conceal "🟰"))
 ;; (((identifier) @field (#eq? @field "fmt"     )) (#set! conceal ""))

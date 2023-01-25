@@ -225,12 +225,17 @@ return function(tools)
     config = conf.git_conflict,
   })
 
-  tools({ "rbong/vim-flog", cmd = { "Flog", "Flogsplit" }, opt = true })
-
   tools({
-    "tpope/vim-fugitive",
-    cmd = { "Gvsplit", "Git", "Gedit", "Gstatus", "Gdiffsplit", "Gvdiffsplit", "Flog", "Flogsplit" },
+    "rbong/vim-flog",
+    cmd = { "Flog", "Flogsplit", "Flg", "Flgs" },
     opt = true,
+    fn = { "flog#cmd#Flog", "flog#cmd#Flogsplit" },
+    requires = {
+      "tpope/vim-fugitive",
+      cmd = { "Gvsplit", "Git", "Gedit", "Gstatus", "Gdiffsplit", "Gvdiffsplit" },
+      fn = {"FugitiveIsGitDir"},
+      opt = true,
+    },
   })
 
   tools({ "rmagatti/auto-session", config = conf.session, opt = true })
@@ -317,12 +322,17 @@ return function(tools)
       vim.api.nvim_set_keymap("v", "<Leader>ts", "<Plug>TranslateWV", { noremap = true, silent = true })
     end,
   })
-  tools ({
+  tools({
     "joaomsa/telescope-orgmode.nvim",
     opt = true,
   })
   --The linediff plugin provides a simple command, :Linediff, which is used to diff two separate blocks of text.
-  tools({ "pfeiferj/nvim-hurl", opt = true, module =  "nvim-hurl", cmd = { "HurlRun", "'<,'>HurlRun" }, ft =
-    {'hurl', 'http' }})
+  tools({
+    "pfeiferj/nvim-hurl",
+    opt = true,
+    module = "nvim-hurl",
+    cmd = { "HurlRun", "'<,'>HurlRun" },
+    ft = { "hurl", "http" },
+  })
   tools({ "AndrewRadev/linediff.vim", opt = true, cmd = { "Linediff", "'<,'>Linediff" } })
 end
