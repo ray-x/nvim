@@ -79,11 +79,14 @@ function autocmd.load_autocmds()
       { "VimResized", "*", [[tabdo wincmd =]] },
       -- Force write shada on leaving nvim
       { "VimLeave", "*", [[if has('nvim') | wshada! | else | wviminfo! | endif]] },
-      { "VimLeave", "*.lua", "!kitty @set-window-title", "reset kitty" }, -- reset it back
       -- Check if file changed when its window is focus, more eager than 'autoread'
       { "FocusGained", "*", "checktime" },
       -- -- {"CmdwinEnter,CmdwinLeave", "*", "lua require'wlfloatline'.toggle()"};
     },
+
+    statusline = {
+      { "VimLeave", "*", "!kitty @set-window-title", "reset kitty" }, -- reset it back			
+    }
   }
 
   autocmd.nvim_create_augroups(definitions)

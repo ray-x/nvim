@@ -262,7 +262,7 @@ function config.luapad()
     },
   })
 end
-function config.luadev()
+function config.neodev()
   require("neodev").setup({})
 end
 

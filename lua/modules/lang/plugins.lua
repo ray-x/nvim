@@ -196,8 +196,9 @@ return function(lang)
   lang({
     "folke/neodev.nvim",
     opt = true,
+    module = 'neodev',
     -- ft = {'lua'},
-    config = conf.luadev,
+    config = conf.neodev,
   })
 
   lang({

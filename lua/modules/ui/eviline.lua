@@ -1,8 +1,11 @@
 local windline = require("windline")
 local fn = vim.fn
+local api = vim.api
 local helper = require("windline.helpers")
 local b_components = require("windline.components.basic")
 local state = _G.WindLine.state
+
+state.disable_kitty_update = false
 
 local lsp_comps = require("windline.components.lsp")
 local git_comps = require("windline.components.git")
@@ -102,7 +105,7 @@ local current_function = function(width)
   end
 
   running = running + 1
-  if running % 30 == 19 then
+  if running % 30 == 19 and state.disable_kitty_update == false then
     require("utils.kitty").set_title_on_active(title)
     running = 1
   end
@@ -656,6 +659,21 @@ windline.setup({
 
 -- vim.o.winbar = "%{%v:lua.require'modules.ui.winbar'.eval()%}"
 vim.api.nvim_command("autocmd CursorHoldI,CursorHold <buffer> lua require'modules.ui.eviline'.on_hover()")
+
+local group = api.nvim_create_augroup("windline", {})
+api.nvim_create_autocmd({ "BufEnter", "WinEnter", "FocusGained" }, {
+  group = group,
+  callback = function()
+    state.disable_kitty_update = false
+  end,
+})
+
+api.nvim_create_autocmd({ "VimLeave", "WinLeave", "FocusLost" }, {
+  group = group,
+  callback = function()
+    state.disable_kitty_update = true
+  end,
+})
 
 return {
   on_hover = on_hover,
