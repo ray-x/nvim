@@ -549,9 +549,9 @@ function config.nightfly()
   require("utils.kitty").change_bg("#011627")
   vim.cmd([[colorscheme nightfly]])
 
-  -- vim.api.nvim_set_hl(0, "GitSignsAddInline", { underdotted = true, default = false, sp = 'yellow'}) -- diff mode: Deleted line |diff.txt|
-  -- vim.api.nvim_set_hl(0, "GitSignsDeleteInline", { strikethrough = true, default = false, sp = 'red' }) -- diff mode: Deleted line |diff.txt|
-  -- vim.api.nvim_set_hl(0, "GitSignsChangeInline", { undercurl = true, default = false, sp = 'red' }) -- diff mode: Deleted line |diff.txt|
+  vim.api.nvim_set_hl(0, "GitSignsAddInline", { underdotted = true, default = false, sp = 'yellow'}) -- diff mode: Deleted line |diff.txt|
+  vim.api.nvim_set_hl(0, "GitSignsDeleteInline", { strikethrough = true, default = false, sp = 'red' }) -- diff mode: Deleted line |diff.txt|
+  vim.api.nvim_set_hl(0, "GitSignsChangeInline", { undercurl = true, default = false, sp = 'red' }) -- diff mode: Deleted line |diff.txt|
   -- body
 end
 --
