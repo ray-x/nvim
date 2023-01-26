@@ -281,6 +281,8 @@ end
 vim.cmd([[command! -nargs=* Keymaps lua require('overwrite.mapping').get_keymaps()]])
 
 vim.api.nvim_create_user_command("Jsonfmt", function(opts)
+  vim.cmd([[silent! %s/\\"/"/g]])
+  vim.cmd([[w]])
   if vim.fn.executable("jq") == 0 then
     lprint("jq not found")
     return vim.cmd([[%!python -m json.tool]])
