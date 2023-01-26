@@ -184,7 +184,8 @@ return function(ui)
   ui({ "stevearc/dressing.nvim", opt = true, module = { "dressing" } })
   ui({
     "beauwilliams/focus.nvim",
-    event = { "FocusGained", "CursorMoved", "ModeChanged" },
+    opt = true,
+    -- event = { "FocusGained", "CursorMoved", "ModeChanged" },
     cmd ={ "FocusToggle", "FocusEnable", "FocusSplitNicely" },
     config = function()
       require("focus").setup({
