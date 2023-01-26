@@ -135,7 +135,7 @@ local current_function = function(width)
     return " "
   end
 
-  lprint(ts)
+  -- lprint(ts)
   ts = string.gsub(ts, "[\n\r]+", " ")
   local path = fn.fnamemodify(fn.expand("%"), ":~:.")
   local title = path
