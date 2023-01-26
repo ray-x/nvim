@@ -336,9 +336,9 @@ function config.gitsigns()
     diff_opts = { internal = true },
   })
 
-  vim.api.nvim_set_hl(0, "GitSignsAddInline", { link = "DiffAdd" }) -- diff mode: Deleted line |diff.txt|
-  vim.api.nvim_set_hl(0, "GitSignsDeleteInline", { link = "DiffDelete" }) -- diff mode: Deleted line |diff.txt|
-  vim.api.nvim_set_hl(0, "GitSignsChangeInline", { link = "DiffAdd" }) -- diff mode: Deleted line |diff.txt|
+  vim.api.nvim_set_hl(0, "GitSignsAddInline", { underdotted = true, default = false, sp = yellow}) -- diff mode: Deleted line |diff.txt|
+  vim.api.nvim_set_hl(0, "GitSignsDeleteInline", { strikethrough = true, default = false, sp = red }) -- diff mode: Deleted line |diff.txt|
+  vim.api.nvim_set_hl(0, "GitSignsChangeInline", { undercurl = true, default = false, sp = red }) -- diff mode: Deleted line |diff.txt|
   vim.api.nvim_create_user_command("Stage", "'<,'>Gitsigns stage_hunk", { range = true })
 end
 

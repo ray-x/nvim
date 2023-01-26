@@ -9,32 +9,23 @@ state.disable_title_update = false
 
 local function set_title(str)
   -- lprint(str)
-  -- vim.cmd("let &titlestring='" .. str .. "'")
   -- io.stdout:write("\27]0;" .. str .. "\7")
   -- vim.cmd("set titlestring=%f%h%m%r%w")
   -- local titlestring = vim.fn.fnamemodify(vim.fn.getcwd(), ":t") .. " - NVIM" -- vim.cmd("let &titlestring+=%{v:progname} ")
   -- vim.cmd("set title | let &titlestring='" .. titlestring .. "'")
---   vim.cmd([[ set title titlestring=                               " completely reset titlestring
--- set titlestring+=%t                            " the current filename
--- set titlestring+=%(\ %M%)                      " modified flag
--- set titlestring+=%(\ (%{expand(\"%:~:h\")})%)  " relative path to current file
--- set titlestring+=%(\ %a%)                      " extra attributes ]])
--- vim.cmd("set titlestring+=" .. str)
+  --   vim.cmd([[ set title titlestring=                               " completely reset titlestring
   local branches = {}
   local dir = vim.fn.getcwd()
   local home = vim.env.HOME
-  if dir == vim.env.ZK_NOTEBOOK_DIR then
-    return 'ZK'
-  end
   if dir == home then
-    return 'NVIM'
+    return "NVIM"
   end
-  local branch = vim.b.gitsigns_head
-  local titlestring = ''
-  local _, i = dir:find(home .. '/', 1, true)
+  local titlestring = ""
+  local _, i = dir:find(home .. "/", 1, true)
   if i then
     dir = dir:sub(i + 1)
   end
+  local branch
   -- Some buffers are aasociated with a dir but not a branch: telescope, nvim-tree...
   -- We use the latest branch result for these
   if dir and not branch then
@@ -42,10 +33,10 @@ local function set_title(str)
   end
   if branch then
     titlestring = titlestring .. dir
-    titlestring = titlestring .. ' - ' .. branch
+    titlestring = titlestring .. " - " .. branch
     branches[dir] = branch
   end
-  titlestring = titlestring .. ' >> ' .. str .. ''
+  titlestring = titlestring .. " " .. str
   vim.opt.titlestring = titlestring
   return titlestring
 
@@ -124,7 +115,7 @@ local current_function = function(width)
   end
 
   width = width
-  if width < 110 and #lsp_label1 > 50 then
+  if width < 80 and #lsp_label1 > 50 then
     return ""
   end
   if width < 140 then
@@ -136,12 +127,15 @@ local current_function = function(width)
   if width > 200 then
     width = math.max((width - 80 - #lsp_label1 - #lsp_label2) * 0.8, 40)
   end
-  if running % 10 == 4 then
+  if running % 5 == 1 and not state.disable_title_update then
     ts = treesitter_context(400)
-    if ts and string.len(ts) < 3 then
-      return " "
-    end
   end
+
+  if ts and string.len(ts) < 3 then
+    return " "
+  end
+
+  lprint(ts)
   ts = string.gsub(ts, "[\n\r]+", " ")
   local path = fn.fnamemodify(fn.expand("%"), ":~:.")
   local title = path
@@ -149,11 +143,10 @@ local current_function = function(width)
     title = title .. ">" .. ts
   end
 
-  running = running + 1
-  if running % 30 == 19 and state.disable_title_update == false then
+  if not state.disable_title_update and running % 5 == 1 then
     set_title(title)
-    running = 1
   end
+  running = running + 1
   return string.sub(" " .. ts, 1, width)
 end
 
@@ -709,13 +702,15 @@ local group = api.nvim_create_augroup("windline", {})
 api.nvim_create_autocmd({ "BufEnter", "WinEnter", "FocusGained" }, {
   group = group,
   callback = function()
+    lprint("enable")
     state.disable_title_update = false
   end,
 })
 
-api.nvim_create_autocmd({ "VimLeave", "WinLeave", "FocusLost" }, {
+api.nvim_create_autocmd({ "VimLeave", "WinLeave" }, {
   group = group,
-  callback = function()
+  callback = function(ev)
+    -- lprint("disable", ev)
     state.disable_title_update = true
   end,
 })

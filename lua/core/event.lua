@@ -79,6 +79,8 @@ function autocmd.load_autocmds()
       { "VimResized", "*", [[tabdo wincmd =]] },
       -- Force write shada on leaving nvim
       -- { "VimLeave", "*", [[if has('nvim') | wshada! | else | wviminfo! | endif]] },
+      { "VimLeavePre", "*", "set winwidth=30 | set winminwidth=10"},
+
       -- Check if file changed when its window is focus, more eager than 'autoread'
       { "FocusGained", "*", "checktime" },
       -- -- {"CmdwinEnter,CmdwinLeave", "*", "lua require'wlfloatline'.toggle()"};

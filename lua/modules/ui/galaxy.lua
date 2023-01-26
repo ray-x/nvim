@@ -184,8 +184,8 @@ local Usual = {
   Diff = {
     DiffAdd = { fg = c.green_two, bold = true, undercurl = true, sp = "#2284a1" },
     DiffChange = { fg = c.purple_two, bold = true, underdotted = true, sp = "#269616" },
-    DiffText = { fg = c.white, bold = true },
-    DiffDelete = { fg = c.red_two, bold = true, strikethrough = true },
+    DiffText = { fg = c.white, bold = true, undercurl = true, sp = "#269616" },
+    DiffDelete = { fg = c.red_two, bold = true, strikethrough = true, sp = c.white },
   },
   Git = {
     -- GitSignsAdd = { fg = c.red }, -- diff mode: Added line |diff.txt|
@@ -206,9 +206,9 @@ local Usual = {
     GitGutterAdd = { link = "GitSignsAdd" },
     GitGutterChange = { link = "GitSignsChange" },
 
-    -- GitSignsAddInline = { style = 'undercurl', sp = c.green }, -- diff mode: Deleted line |diff.txt|
-    -- GitSignsDeleteInline = { style = 'underline', sp = c.red }, -- diff mode: Deleted line |diff.txt|
-    -- GitSignsChangeInline = { style = 'undercurl', sp = c.blue }, -- diff mode: Deleted line |diff.txt|
+    GitSignsAddInline = { underdotted = true, sp = c.green }, -- diff mode: Deleted line |diff.txt|
+    GitSignsDeleteInline = { link = 'DiffDelete' }, -- diff mode: Deleted line |diff.txt|
+    GitSignsChangeInline = { underdotted = true, sp = c.blue }, -- diff mode: Deleted line |diff.txt|
   },
   TSHighlights = {
     NodeNumber = { fg = c.blue_five },
