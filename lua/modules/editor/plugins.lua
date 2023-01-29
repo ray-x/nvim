@@ -32,9 +32,6 @@ return function(editor)
     setup = function()
       -- use default mapping
       vim.g.abolish_no_mappings = true
-      vim.cmd("nmap Cr  <Plug>(abolish-coerce-word)")
-      -- s: snake
-      -- c: camel
     end,
     opt = true,
   })
@@ -83,29 +80,6 @@ return function(editor)
     cmd = { "Sandwith" },
     setup = function()
       vim.g.sandwich_no_default_key_mappings = 1
-    end,
-    config = function()
-      vim.cmd([[
-      nmap ca <Plug>(sandwich-add)
-	    xmap ca <Plug>(sandwich-add)
-	    omap ca <Plug>(sandwich-add)
-	    nmap cd <Plug>(sandwich-delete)
-	    xmap cd <Plug>(sandwich-delete)
-	    nmap cda <Plug>(sandwich-delete-auto)
-	    nmap cdb <Plug>(sandwich-delete-auto)
-	    nmap cr <Plug>(sandwich-replace)
-	    xmap cr <Plug>(sandwich-replace)
-	    nmap crb <Plug>(sandwich-replace-auto)
-	    nmap cra <Plug>(sandwich-replace-auto)
-      omap ib <Plug>(textobj-sandwich-auto-i)
-	    xmap ib <Plug>(textobj-sandwich-auto-i)
-	    omap ab <Plug>(textobj-sandwich-auto-a)
-	    xmap ab <Plug>(textobj-sandwich-auto-a)
-	    omap is <Plug>(textobj-sandwich-query-i)
-	    xmap is <Plug>(textobj-sandwich-query-i)
-	    omap as <Plug>(textobj-sandwich-query-a)
-	    xmap as <Plug>(textobj-sandwich-query-a)
-    ]])
     end,
   })
 
@@ -176,10 +150,8 @@ return function(editor)
   editor({
     "mg979/vim-visual-multi",
     keys = {
-      "<Ctrl>",
-      "<M>",
       "<C-n>",
-      "<C-n>",
+      "<C-N>",
       "<M-n>",
       "<S-Down>",
       "<S-Up>",
@@ -194,7 +166,6 @@ return function(editor)
       "<C-LeftMouse>",
       "<M-LeftMouse>",
       "<M-C-RightMouse>",
-      "<Leader>",
     },
     opt = true,
     setup = conf.vmulti,
@@ -243,16 +214,6 @@ return function(editor)
     keys = { "<Plug>(YankyPutAfter)", "<Plug>(YankyPutBefore)" },
     module = "yanky",
     opt = true,
-    setup = function()
-      vim.keymap.set("n", "p", "<Plug>(YankyPutAfter)", {})
-      vim.keymap.set("n", "P", "<Plug>(YankyPutBefore)", {})
-      vim.keymap.set("x", "p", "<Plug>(YankyPutAfter)", {})
-      vim.keymap.set("x", "P", "<Plug>(YankyPutBefore)", {})
-      -- vim.keymap.set("n", "gp", "<Plug>(YankyGPutAfter)", {})
-      vim.keymap.set("n", "gP", "<Plug>(YankyGPutBefore)", {})
-      vim.keymap.set("x", "gp", "<Plug>(YankyGPutAfter)", {})
-      vim.keymap.set("x", "gP", "<Plug>(YankyGPutBefore)", {})
-    end,
     config = conf.yanky,
   })
 
@@ -282,27 +243,17 @@ return function(editor)
     end,
   })
   editor({ "mbbill/undotree", opt = true, cmd = { "UndotreeToggle" } })
-  -- editor({
-  --   "AndrewRadev/splitjoin.vim",
-  --   opt = true,
-  --   cmd = { "SplitjoinJoin", "SplitjoinSplit" },
-  --   setup = function()
-  --     vim.g.splitjoin_split_mapping = ""
-  --     vim.g.splitjoin_join_mapping = ""
-  --   end,
-  --   -- keys = {'<space>S', '<space>J'}
-  -- })
 
   editor({
     "Wansmer/treesj",
     opt = true,
     cmd = { "TSJToggle", "TSJJoin", "TSJSplit" },
     keys = { "<space>j" },
+    module = "treesj",
     config = function()
       require("treesj").setup({
         use_default_keymaps = false,
       })
-      vim.keymap.set("n", "<Space>j", function() require("treesj").toggle() end, { desc = " join toggle" })
     end,
   })
 

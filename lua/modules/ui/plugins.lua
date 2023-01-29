@@ -186,7 +186,7 @@ return function(ui)
     "beauwilliams/focus.nvim",
     opt = true,
     -- event = { "FocusGained", "CursorMoved", "ModeChanged" },
-    cmd ={ "FocusToggle", "FocusEnable", "FocusSplitNicely" },
+    -- cmd ={ "FocusToggle", "FocusEnable", "FocusSplitNicely" },
     config = function()
       require("focus").setup({
         cursorline = false

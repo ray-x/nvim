@@ -193,57 +193,14 @@ end
 function config.substitute()
   require("substitute").setup({
     yank_substituted_text = true,
+    range = {
+      prefix = 'S',
+      prompt_current_text = true,
+    },
     on_substitute = function(event)
       require("yanky").init_ring("p", event.register, event.count, event.vmode:match("[vV]"))
     end,
   })
-  -- yanky keymap
-  vim.keymap.set({ "n", "x" }, "p", "<Plug>(YankyPutAfter)")
-  vim.keymap.set({ "n", "x" }, "P", "<Plug>(YankyPutBefore)")
-  vim.keymap.set({ "n", "x" }, "gp", "<Plug>(YankyGPutAfter)")
-  vim.keymap.set({ "n", "x" }, "gP", "<Plug>(YankyGPutBefore)")
-  vim.keymap.set(
-    "n",
-    "<Space>s",
-    "<cmd>lua require('substitute').operator()<cr>",
-    { noremap = true, desc = "operator substitute motion e.g. <spc>siw, <spc>sip" }
-  )
-  vim.keymap.set(
-    "n",
-    "<Space>ss",
-    "<cmd>lua require('substitute').line()<cr>",
-    { noremap = true, desc = "substitute line" }
-  )
-  vim.keymap.set(
-    "n",
-    "<Space>S",
-    "<cmd>lua require('substitute').eol()<cr>",
-    { noremap = true, desc = "substitute eol" }
-  )
-  vim.keymap.set(
-    "x",
-    "<Space>s",
-    "<cmd>lua require('substitute').visual()<cr>",
-    { noremap = true, desc = "substitute visual range" }
-  )
-  vim.keymap.set(
-    "n",
-    "<Leader>S",
-    "<cmd>lua require('substitute.range').operator({ prefix = 'S' })<cr>",
-    { noremap = true, desc = "substitute range operator s/xxx/XXX/g" }
-  )
-  vim.keymap.set(
-    "x",
-    "<leader>S",
-    "<cmd>lua require('substitute.range').visual()<cr>",
-    { noremap = true, desc = "X mode substitute range with s/xxx/XXX/g" }
-  )
-  vim.keymap.set(
-    "n",
-    "<Leader>ss",
-    "<cmd>lua require('substitute.range').word()<cr>",
-    { noremap = true, desc = "substitute range word with s/xxx/XXX/g" }
-  )
 end
 
 function config.comment()
@@ -483,14 +440,6 @@ function config.hlslens()
   vim.api.nvim_set_keymap("n", "g*", [[g*<Cmd>lua require('hlslens').start()<CR>]], kopts)
   vim.api.nvim_set_keymap("n", "g#", [[g#<Cmd>lua require('hlslens').start()<CR>]], kopts)
 
-  vim.keymap.set({ "n", "x" }, "<Leader>L", function()
-    vim.schedule(function()
-      if require("hlslens").exportLastSearchToQuickfix() then
-        vim.cmd("cw")
-      end
-    end)
-    return ":noh<CR>"
-  end, { expr = true })
   vim.cmd([[
     aug VMlens
         au!

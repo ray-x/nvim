@@ -25,7 +25,7 @@ local c = {
   green_five = "#59DE73",
   green_six = "#3AF8B7",
 
-  blue = "#3552E5",
+  blue = "#4572E5",
   blue_one = "#5582E5",
   blue_two = "#519ABA",
   blue_three = "#73EACC",
@@ -208,7 +208,7 @@ local Usual = {
 
     GitSignsAddInline = { underdotted = true, sp = c.green }, -- diff mode: Deleted line |diff.txt|
     GitSignsDeleteInline = { link = 'DiffDelete' }, -- diff mode: Deleted line |diff.txt|
-    GitSignsChangeInline = { underdotted = true, sp = c.blue }, -- diff mode: Deleted line |diff.txt|
+    GitSignsChangeInline = { underdotted = true, sp = c.blue_two }, -- diff mode: Deleted line |diff.txt|
   },
   TSHighlights = {
     NodeNumber = { fg = c.blue_five },

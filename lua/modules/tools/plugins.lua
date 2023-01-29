@@ -26,10 +26,26 @@ return function(tools)
 
   tools({ "vim-test/vim-test", cmd = { "TestNearest", "TestFile", "TestSuite" }, setup = conf.vim_test })
 
-  tools({ "nvim-neotest/neotest", module = { "neotest-jest", "neotest" }, config = conf.neotest })
+  tools({
+    "nvim-neotest/neotest",
+    requires = {
+      { "nvim-lua/plenary.nvim", module = "plenary" },
+      {
+        "haydenmeade/neotest-jest",
+        module = {
+          "neotest-jest",
+          "neotest",
+        },
+        config = conf.neotest_jest,
+      },
+      { "nvim-neotest/neotest-plenary", module = { "neotest-plenary", "neotest" } },
+      { "nvim-neotest/neotest-python", module = { "neotest-python", "neotest" } },
+    },
+    module = { "neotest-jest", "neotest" },
+    config = conf.neotest,
+  })
 
-  tools({ "haydenmeade/neotest-jest", module = { "neotest-jest", "neotest" }, config = conf.neotest_jest })
-
+  tools({ "nvim-neotest/neotest-plenary", module = { "neotest-plenary", "neotest" } })
   tools({ "will133/vim-dirdiff", cmd = { "DirDiff" } })
 
   tools({
@@ -233,7 +249,7 @@ return function(tools)
     requires = {
       "tpope/vim-fugitive",
       cmd = { "Gvsplit", "Git", "Gedit", "Gstatus", "Gdiffsplit", "Gvdiffsplit" },
-      fn = {"FugitiveIsGitDir"},
+      fn = { "FugitiveIsGitDir" },
       opt = true,
     },
   })

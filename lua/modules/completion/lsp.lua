@@ -25,6 +25,10 @@ M.setup = function()
   end
 
   lspconfig.emmet_ls.setup {capabilities = capabilities}
+  -- grammarly
+  require'lspconfig'.grammarly.setup{
+    filetypes = { "markdown", "text", "html", "latex", "org" },
+  }
 
 end
 return M

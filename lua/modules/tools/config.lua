@@ -307,25 +307,6 @@ function config.gitsigns()
         return "<Ignore>"
       end, { expr = true })
 
-      -- Actions
-      map({ "n", "v" }, "<leader>hs", ":Gitsigns stage_hunk<CR>")
-      map({ "n", "v" }, "<leader>hr", ":Gitsigns reset_hunk<CR>")
-      -- map("n", "<leader>hS", gs.stage_buffer) -- hydra
-      -- map("n", "<leader>hu", gs.undo_stage_hunk)
-      -- map("n", "<leader>hR", gs.reset_buffer)
-      -- map("n", "<leader>hp", gs.preview_hunk)
-      map("n", "<leader>hb", function()
-        gs.blame_line({ full = true })
-      end)
-      map("n", "<leader>tb", gs.toggle_current_line_blame)
-      map("n", "<leader>hd", gs.diffthis)
-      map("n", "<leader>hD", function()
-        gs.diffthis("~")
-      end)
-      -- map("n", "<leader>td", gs.toggle_deleted)
-
-      -- Text object
-      map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>")
     end,
 
     watch_gitdir = { interval = 1000, follow_files = true },
@@ -336,9 +317,9 @@ function config.gitsigns()
     diff_opts = { internal = true },
   })
 
-  vim.api.nvim_set_hl(0, "GitSignsAddInline", { underdotted = true, default = true, sp = yellow}) -- diff mode: Deleted line |diff.txt|
-  vim.api.nvim_set_hl(0, "GitSignsDeleteInline", { strikethrough = true, default = true, sp = red }) -- diff mode: Deleted line |diff.txt|
-  vim.api.nvim_set_hl(0, "GitSignsChangeInline", { undercurl = true, default = true, sp = red }) -- diff mode: Deleted line |diff.txt|
+  vim.api.nvim_set_hl(0, "GitSignsAddInline", { underdotted = true, default = true, sp = "green" }) -- diff mode: Deleted line |diff.txt|
+  vim.api.nvim_set_hl(0, "GitSignsDeleteInline", { strikethrough = true, default = true, sp = "yellow" }) -- diff mode: Deleted line |diff.txt|
+  vim.api.nvim_set_hl(0, "GitSignsChangeInline", { undercurl = true, default = true, sp = "darkcyan" }) -- diff mode: Deleted line |diff.txt|
   vim.api.nvim_create_user_command("Stage", "'<,'>Gitsigns stage_hunk", { range = true })
 end
 
@@ -630,9 +611,9 @@ function config.neotest()
         dap = { justMyCode = false },
       }),
       require("neotest-plenary"),
-      require("neotest-vim-test")({
-        ignore_file_types = { "vim", "lua" },
-      }),
+      -- require("neotest-vim-test")({
+      --   ignore_file_types = { "vim", "lua" },
+      -- }),
       require("neotest-jest")({
         jestCommand = "npm test --",
         jestConfigFile = "custom.jest.config.ts",
@@ -659,14 +640,10 @@ end
 
 function config.rest()
   require("rest-nvim").setup({})
-  local set = vim.keymap.set
-  local rest = require("rest-nvim")
-  local bufnr = tonumber(vim.fn.expand("<abuf>"), 10)
-  set("n", "<leader>rn", rest.run, { noremap = true, buffer = bufnr })
-  set("n", "<leader>rl", rest.last, { noremap = true, buffer = bufnr })
-  set("n", "<leader>rp", function()
-    rest.run(true)
-  end, { noremap = true, buffer = bufnr })
+  -- local set = vim.keymap.set
+  -- local rest = require("rest-nvim")
+  -- local bufnr = tonumber(vim.fn.expand("<abuf>"), 10)
+
   vim.api.nvim_create_user_command("RestRun", "lua require('rest-nvim').run({verbose=false})", { nargs = "*" })
   vim.api.nvim_create_user_command("RestPreview", "lua require('rest-nvim').run({verbose=true})", { nargs = "*" })
   vim.api.nvim_create_user_command("RestFile", function(_)
@@ -697,15 +674,16 @@ config.hologram = function()
 end
 
 config.hurl = function()
-    require("hurl").setup() -- add hurl to the nvim-treesitter config
-    require 'nvim-treesitter.config'.setup {
-      ensure_installed = { "hurl" }, -- ensure that hurl gets installed
-      highlight = {
-        enable = true -- hurl plugin provides tree-sitter highlighting
-      },
-      indent = {
-        enable = true -- hurl plugin provides tree-sitter indenting
-      }
-    }
-  end
+  require("hurl").setup() -- add hurl to the nvim-treesitter config
+  require("nvim-treesitter.config").setup({
+    ensure_installed = { "hurl" }, -- ensure that hurl gets installed
+    highlight = {
+      enable = true, -- hurl plugin provides tree-sitter highlighting
+    },
+    indent = {
+      enable = true, -- hurl plugin provides tree-sitter indenting
+    },
+  })
+end
+
 return config

@@ -1,6 +1,8 @@
 local bind = require("keymap.bind")
 local map_cmd = bind.map_cmd
 local map_func = bind.map_func
+local map_plug = bind.map_plug
+local map_cu = bind.map_cu
 local loader = require("packer").loader
 local K = {}
 local function check_back_space()
@@ -59,8 +61,10 @@ local keys = {
   -- Plugin Vista
   -- ["n|<Leader>v"] = map_cu("Vista!!"):with_noremap():with_silent(),
   -- Plugin SplitJoin
-  ["n|<Leader><Leader>s"] = map_cmd("SplitjoinSplit"),
-  ["n|<Leader><Leader>j"] = map_cmd("SplitjoinJoin"),
+  ['n|<Space>j'] = map_func(function() require("treesj").toggle() end ):with_desc("SplitJoinToggle"),
+  -- abolish
+  ["n|Cr"] = map_plug("abolish-coerce-word"):with_noremap():with_silent():with_desc('s:snake, c:Camel'),
+
   ["n|<F13>"] = map_cmd("NvimTreeToggle"),
   ["n|hW"] = map_cmd("HopWordBC"),
   ["n|hw"] = map_cmd("HopWordAC"),
@@ -123,6 +127,70 @@ local keys = {
     end,
     options = { noremap = true, silent = true, desc = "toggle concel" },
   },
+
+  ['n|<Leader>ts'] = map_plug('TranslateW'),
+  ['v|<Leader>ts'] = map_plug('TranslateWV'),
+  -- yanky
+  ['nx|p'] = map_plug('YankyPutAfter'):with_desc('yank put after'),
+  ['nx|P'] = map_plug('YankyPutBefore'):with_desc('yank put after'),
+
+  ['nx|gp'] = map_plug('YankyGPutAfter'):with_desc('yank gput after'),
+  ['nx|gP'] = map_plug('YankyGPutBefore'):with_desc('yank gput after'),
+  -- substitute
+
+  ['n|<Space>s'] = map_func(function() require('substitute').operator() end ):with_desc('operator substitute motion e.g. <spc>siw, <spc>sip'):with_noremap(),
+  ['x|<Space>s'] = map_func(function() require('substitute').visual() end ):with_desc('substitute visual'):with_noremap(),
+  ['x|<Leader>s'] = map_func(function() require('substitute.range').visual() end ):with_desc('substitute visual s/xxx/XXX/g'):with_noremap(),
+  ['n|<Leader>s'] = map_func(function() require('substitute.range').operator() end ):with_desc('substitute motion s/xxx/XXX/g'):with_noremap(),
+  ['n|<Leader>x'] = map_cmd('ISwapWith'):with_desc('Swap exchange two ts node'):with_noremap(),
+  ['n|<Leader>X'] = map_cmd('ISwapNodeWith'):with_desc('Swap exchange two Node'):with_noremap(),
+  ['x|<Leader>x'] = map_func(function() require('substitute.exchange').visual() end ):with_desc('substitute exchange two word visual'):with_noremap(),
+
+  ['nx|<Leader>L'] = map_func(function()
+    vim.schedule(function()
+      if require("hlslens").exportLastSearchToQuickfix() then
+        vim.cmd("cw")
+      end
+    end)
+    return ":noh<CR>"
+      end):with_desc('last search to quickfix'):with_expr(),
+
+
+  ["n|<C-M-n>"] = {options = { desc = "vmulti select all" }},
+  ["n|<M-Down>"] = {options = { desc = "Add Cursor Down" }},
+  ["n|<M-Up>"] = {options = { desc = "Add Cursor Up" }},
+  ["n|<M-i>"] = {options = { desc = "Add Cursor at pos" }},
+  ["n|<C-n>"] = {options = { desc = "Add Cursor word at pos" }},
+
+  -- multi
+  ["n|<A-k>"] = {options = { desc = "move lines up" }},
+  ["n|<A-j>"] = {options = { desc = "move lines down" }},
+  ["n|<A-h>"] = {options = { desc = "move lines left" }},
+  ["n|<A-l>"] = {options = { desc = "move lines right" }},
+
+  -- Sandwich
+  ['nox|ca'] = map_plug('sandwich-add'):with_desc('sandwich-add'),
+  ['nx|cd'] = map_plug('sandwich-delete'):with_desc('sandwich-delete'),
+  ['nx|cda'] = map_plug('sandwich-delete-auto'):with_desc('sandwich-delete-auto'),
+
+  ['nx|cr'] = map_plug('sandwich-replace'):with_desc('sandwich-replace'),
+  ['nx|cra'] = map_plug('sandwich-replace-replace'):with_desc('sandwich-replace-replace'),
+  ['ox|ib'] = map_plug('textobject-sandwich-i'),
+  ['ox|ab'] = map_plug('textobject-sandwich-a'),
+  ['ox|is'] = map_plug('textobject-sandwich-query-i'),
+  ['ox|as'] = map_plug('textobject-sandwich-query-a'),
+
+
+  -- git signs
+  ['nv|<Leader>hs'] = map_cmd('GitSigns stage_hunk'),
+  ['nv|<Leader>hr'] = map_cmd('GitSigns reset_hunk'),
+  ['nv|<Leader>tb'] = map_func(function() require('gitsigns').toggle_current_line_blame() end):with_desc('toggle line blame'),
+  ['nv|<Leader>hd'] = map_func(function() require('gitsigns').diffthis() end):with_desc('diff this'),
+  ['nv|<Leader>hD'] = map_func(function() require('gitsigns').diffthis('~') end):with_desc('diff ~'),
+  ['ox|ih'] = map_cu('GitSigns select_hunk'),
+
+
+  ['n|<Leader>gR'] = {options = { desc = "regexplainer" }},
   ["n|<F11>"] = {
     cmd = function()
       if vim.o.concealcursor == "n" then
@@ -134,11 +202,9 @@ local keys = {
     options = { noremap = true, silent = true, desc = "toggle concelcursor" },
   },
 
-  -- -- Add word to search then replace
-  -- vim.keymap.set('n', '<Leader>j', [[let @/='\<'.expand('<cword>').'\>'"_ciw]])
   --
   -- -- Add selection to search then replace
-  -- vim.keymap.set('x', '<Leader>j', [[ylet @/=substitute(escape(@", '/'), '\n', '\\n', 'g')"_cgn]])
+  -- vim.keymap.set('x', '<Leader>j', [[let @/=substitute(escape(@", '/'), '\n', '\\n', 'g')"_cgn]])
 }
 
 -- stylua: ignore end
@@ -278,7 +344,9 @@ K.get_keymaps = function()
   })
 end
 
-vim.cmd([[command! -nargs=* Keymaps lua require('overwrite.mapping').get_keymaps()]])
+vim.api.nvim_create_user_command("Keymaps", function()
+  require("overwrite.mapping").get_keymaps()
+end, {})
 
 vim.api.nvim_create_user_command("Jsonfmt", function(opts)
   vim.cmd([[silent! %s/\\"/"/g]])
@@ -305,7 +373,7 @@ vim.api.nvim_create_user_command("NewOrg", function(opts)
   )
 end, { nargs = "*" })
 
-vim.api.nvim_create_user_command("Flg", "Flog -date=short", { nargs= "*" } )
+vim.api.nvim_create_user_command("Flg", "Flog -date=short", { nargs = "*" })
 vim.api.nvim_create_user_command("Flgs", "Flogsplit -date=short", {})
 
 -- Use `git ls-files` for git files, use `find ./ *` for all files under work directory.

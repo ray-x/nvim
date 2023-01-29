@@ -139,14 +139,13 @@ return function(lang)
 
   lang({
     "rcarriga/nvim-dap-ui",
+    version = '2.6.0',
     -- requires = {"mfussenegger/nvim-dap"},
     config = conf.dapui,
     opt = true,
   })
 
   lang({ "theHamsta/nvim-dap-virtual-text", opt = true, module = "nvim-dap-virtual-text" })
-
-  -- lang { "jbyuki/one-small-step-for-vimkind", opt = true, ft = { "lua" } }
 
   lang({
     "nvim-telescope/telescope-dap.nvim",
