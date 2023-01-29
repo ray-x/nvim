@@ -211,7 +211,7 @@ return function(editor)
   editor({
     "gbprod/yanky.nvim",
     event = { "CursorMoved", "TextYankPost" },
-    keys = { "<Plug>(YankyPutAfter)", "<Plug>(YankyPutBefore)" },
+    keys = { "<Plug>(YankyPutAfter)", "<Plug>(YankyPutBefore)", "<Plug>(YankyGPutBefore)", "<Plug>(YankyGPutAfter)"   },
     module = "yanky",
     opt = true,
     config = conf.yanky,
