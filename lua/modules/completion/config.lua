@@ -59,7 +59,7 @@ function config.nvim_cmp()
     { name = "nvim_lsp" },
     { name = "luasnip" },
     { name = "treesitter", keyword_length = 2 },
-    { name = "look", keyword_length = 2 },
+    
     -- { name = "cmp_tabnine", keyword_length = 0 },
     { name = "emoji" },
     { name = "path" },
@@ -79,7 +79,7 @@ function config.nvim_cmp()
     table.insert(sources, { name = "spell" })
     table.insert(sources, { name = "look" })
   end
-  if vim.o.ft == "markdown" then
+  if vim.o.ft == "markdown" or vim.o.ft == 'txt' then
     table.insert(sources, { name = "spell" })
     table.insert(sources, { name = "look" })
   end
