@@ -130,12 +130,7 @@ local keys = {
 
   ['n|<Leader>ts'] = map_plug('TranslateW'),
   ['v|<Leader>ts'] = map_plug('TranslateWV'),
-  -- yanky
-  -- ['nx|p'] = map_plug('YankyPutAfter'):with_desc('yank put after'),
-  -- ['nx|P'] = map_plug('YankyPutBefore'):with_desc('yank put after'),
 
-  ['nx|gp'] = map_plug('YankyGPutAfter'):with_desc('yank gput after'),
-  ['nx|gP'] = map_plug('YankyGPutBefore'):with_desc('yank gput after'),
   -- substitute
 
   ['n|<Space>s'] = map_func(function() require('substitute').operator() end ):with_desc('operator substitute motion e.g. <spc>siw, <spc>sip'):with_noremap(),
