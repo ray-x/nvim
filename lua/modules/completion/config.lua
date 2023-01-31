@@ -79,7 +79,7 @@ function config.nvim_cmp()
     table.insert(sources, { name = "spell" })
     table.insert(sources, { name = "look" })
   end
-  if vim.o.ft == "markdown" or vim.o.ft == 'txt' then
+  if vim.o.ft == "markdown" or vim.o.ft == 'txt' or vim.o.ft == 'html' then
     table.insert(sources, { name = "spell" })
     table.insert(sources, { name = "look" })
   end

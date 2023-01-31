@@ -27,9 +27,7 @@ function rhs_options:map_cr(cmd_string)
 end
 
 function rhs_options:map_plug(cmd_string)
-  self.cmd = function()
-    return ("<Plug>(%s)"):format(cmd_string)
-  end
+  self.cmd = ("<Plug>(%s)"):format(cmd_string)
   return self
 end
 

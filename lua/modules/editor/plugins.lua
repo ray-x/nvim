@@ -64,14 +64,23 @@ return function(editor)
   })
 
   -- Feel more comfortale with hop
-  -- editor { "ggandor/leap.nvim",
+  -- editor({
+  --   "ggandor/leap.nvim",
+  --   keys = { "s", "S" },
   --   opt = true,
   --   module = "leap",
+  --   config = require("modules.editor.leap").setup,
   --   requires = {
-  --     { "ggandor/leap-ast.nvim", after = "leap.nvim", opt = true, config = require('modules.editor.leap').ast() },
-  --     { "ggandor/flit.nvim", after = "leap.nvim", opt = true, require('modules.editor.leap').flit()},
-  --   }
-  -- }
+  --     {
+  --       "ggandor/leap-ast.nvim",
+  --       after = "leap.nvim",
+  --       opt = true,
+  --       module = "leap-ast",
+  --       config = require("modules.editor.leap").ast,
+  --     },
+  --     { "ggandor/flit.nvim", after = "leap.nvim", opt = true, module = "flit", require("modules.editor.leap").flit },
+  --   },
+  -- })
 
   editor({
     "machakann/vim-sandwich",
@@ -211,7 +220,12 @@ return function(editor)
   editor({
     "gbprod/yanky.nvim",
     event = { "CursorMoved", "TextYankPost" },
-    keys = { "<Plug>(YankyPutAfter)", "<Plug>(YankyPutBefore)", "<Plug>(YankyGPutBefore)", "<Plug>(YankyGPutAfter)"   },
+    keys = {
+      "<Plug>(YankyPutAfter)",
+      "<Plug>(YankyPutBefore)",
+      "<Plug>(YankyGPutBefore)",
+      "<Plug>(YankyGPutAfter)",
+    },
     module = "yanky",
     opt = true,
     config = conf.yanky,

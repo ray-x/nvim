@@ -263,4 +263,64 @@ function M.x86()
     return "arm"
   end
 end
+
+function M.calculate_selection(append)
+  local selection = M.get_visual_text()
+  local result = vim.fn.eval(selection)
+  print(result)
+  if append then
+    local line = vim.fn.getline(".")
+    if not line:match("=%s*$") then
+      result = " = " .. result
+    end
+    vim.fn.setline(".", line .. result)
+  end
+end
+
+function M.get_visual_text()
+  local s, e = vim.fn.getpos("'<"), vim.fn.getpos("'>")
+  local n = math.abs(e[2] - s[2]) + 1
+  print(vim.inspect(s), vim.inspect(e), n)
+  local lines = vim.api.nvim_buf_get_lines(0, s[2] - 1, e[2], false)
+  lines[1] = string.sub(lines[1], s[3], -1)
+  if n == 1 then
+    lines[n] = string.sub(lines[n], 1, e[3] - s[3] + 1)
+  else
+    lines[n] = string.sub(lines[n], 1, e[3])
+  end
+
+  return table.concat(lines, "\n"), n
+end
+
+function M.substitute(from, to, style)
+  from = vim.fn.expand("<cword>")
+  style = style or 's'
+  local cmd
+
+  local left = vim.api.nvim_replace_termcodes("<left>", true, false, true)
+  if vim.fn.mode() == "v" or vim.fn.mode() == "x" then
+    local w, l = M.get_visual_text()
+    print(w, l)
+    if l == 1 then
+      from = w
+      to = to or from
+      cmd = string.format(":%%%s/%s/%s/g", style, from, to)
+      vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<esc>", true, false, true), 'x', true)
+    else -- a range specified
+      from = vim.fn.getreg('"')
+      to = to or from
+      cmd = string.format("'<,'>:%%%s/%s/%s/g", style, from, from)
+    end
+  else
+    to = to or from
+    cmd = string.format(":%%%s/%s/%s/", style, from, to)
+  end
+
+  cmd = vim.api.nvim_replace_termcodes(cmd, true, false, true)
+  return cmd
+end
+vim.keymap.set({ "n", "x" }, "<leader>s", function()
+  vim.api.nvim_feedkeys(M.substitute(), "mi", true)
+end, { silent = true, expr = true })
+
 return M

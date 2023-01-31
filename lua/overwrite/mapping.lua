@@ -86,8 +86,8 @@ local keys = {
   ["xv|<M-s>"] = map_cmd("HopChar2AC"):with_silent(),
   ["xv|<M-S>"] = map_cmd("HopChar2BC"):with_silent(),
   ["n|<Space>F"] = map_cmd("HopPattern"),
-  ["n|<Space>]"] = map_cmd("HopChar1MW"),
-  ["n|<Space>["] = map_cmd("HopChar2MW"),
+  -- ["n|<Space>]"] = map_cmd("HopChar1MW"),
+  -- ["n|<Space>]"] = map_cmd("HopChar2MW"),
   -- clap --
   ["n|<d-C>"] = map_cmd("Clap | startinsert"),
   ["i|<d-C>"] = map_cmd("Clap | startinsert"):with_noremap():with_silent(),
@@ -135,8 +135,10 @@ local keys = {
 
   ['n|<Space>s'] = map_func(function() require('substitute').operator() end ):with_desc('operator substitute motion e.g. <spc>siw, <spc>sip'):with_noremap(),
   ['x|<Space>s'] = map_func(function() require('substitute').visual() end ):with_desc('substitute visual'):with_noremap(),
-  ['x|<Leader>s'] = map_func(function() require('substitute.range').visual() end ):with_desc('substitute visual s/xxx/XXX/g'):with_noremap(),
-  ['n|<Leader>s'] = map_func(function() require('substitute.range').operator() end ):with_desc('substitute motion s/xxx/XXX/g'):with_noremap(),
+
+  ['xn|<Leader>s'] = map_func(function() require('utils.helper').substitute() end ):with_desc('substitute visual s/xxx/XXX/g  '):with_noremap(),
+  -- ['x|<Leader>s'] = map_func(function() require('substitute.range').visual() end ):with_desc('substitute visual s/xxx/XXX/g with motion2 e.g. ap'):with_noremap(),
+  -- ['n|<Leader>s'] = map_func(function() require('substitute.range').operator() end ):with_desc('substitute motion s/xxx/XXX/g with motion1:iw and motion2:ap ' ):with_noremap(),
   ['n|<Leader>x'] = map_cmd('ISwapWith'):with_desc('Swap exchange two ts node'):with_noremap(),
   ['n|<Leader>X'] = map_cmd('ISwapNodeWith'):with_desc('Swap exchange two Node'):with_noremap(),
   ['x|<Leader>x'] = map_func(function() require('substitute.exchange').visual() end ):with_desc('substitute exchange two word visual'):with_noremap(),
@@ -251,6 +253,14 @@ _G.run_or_test = function(debug)
       return "<CMD>GoTestFunc -F<CR>"
     end
   end
+
+  if ft == "hurl" then
+    return "<CMD>HurlRun<CR>"
+  end
+
+  if ft == "rest" then
+    return "<CMD>RestRun<CR>"
+  end
   local m = vim.fn.mode()
   if m == "n" or m == "i" then
     require("sniprun").run()
@@ -344,8 +354,6 @@ vim.api.nvim_create_user_command("Keymaps", function()
 end, {})
 
 vim.api.nvim_create_user_command("Jsonfmt", function(opts)
-  vim.cmd([[silent! %s/\\"/"/g]])
-  vim.cmd([[w]])
   if vim.fn.executable("jq") == 0 then
     lprint("jq not found")
     return vim.cmd([[%!python -m json.tool]])
@@ -353,20 +361,31 @@ vim.api.nvim_create_user_command("Jsonfmt", function(opts)
   vim.cmd("%!jq")
 end, { nargs = "*" })
 
+-- with file name or bang
 vim.api.nvim_create_user_command("NewOrg", function(opts)
-  local fn = vim.fn.strftime("%Y_%m_%d") .. ".org"
-  if vim.fn.empty(opts.args) == 0 then
-    fn = opts.args[1] or fn
+  local fn
+  if vim.fn.empty(opts.fargs) == 0 then
+    fn = opts.fargs[1]
   end
-  vim.cmd("e " .. fn)
-  vim.api.nvim_buf_set_lines(
-    0,
-    0,
-    4,
-    false,
-    { "#+TITLE: ", "#+AUTHER: Ray", "#+Date:" .. vim.fn.strftime("%c"), "", "* 1st", "* 2nd" }
-  )
-end, { nargs = "*" })
+  local path = "~/Desktop/logseq"
+  local j = opts.bang or fn
+  if j then
+    -- this is a page
+    path = path .. "/pages/"
+  else
+    path = path .. "/journals/"
+    fn = vim.fn.strftime("%Y_%m_%d") .. ".org"
+  end
+  vim.cmd("e " .. path .. fn)
+  if j then
+    vim.api.nvim_buf_set_lines(0, 0, 1, false, { "* TODO" })
+  else
+    vim.api.nvim_buf_set_lines(
+      0, 0, 6, false,
+      { "#+TITLE: ", "#+AUTHER: Ray", "#+Date: " .. vim.fn.strftime("%c"), "", "* 1st", "* 2nd" }
+    )
+  end
+end, { nargs = "*", bang = true })
 
 vim.api.nvim_create_user_command("Flg", "Flog -date=short", { nargs = "*" })
 vim.api.nvim_create_user_command("Flgs", "Flogsplit -date=short", {})

@@ -79,12 +79,13 @@ local helper = {
       pcall(vim.cmd, [[%s/\\t/  /g]])
       pcall(vim.cmd, [[%s/\\"/"/g]])
 
+      vim.cmd([[w]])
       -- again
       vim.cmd([[nohl]])
       -- for json run
 
       if json then
-        vim.cmd([[Jsonformat]]) -- :%!jq .
+        vim.cmd([[Jsonfmt]]) -- :%!jq .
       end
     end
   end,

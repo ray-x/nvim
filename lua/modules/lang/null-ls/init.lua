@@ -88,7 +88,7 @@ return {
       table.insert(
         sources,
         null_ls.builtins.formatting.stylua.with({
-          extra_args = { "--indent-type", "Spaces", "--indent-width", "2" }, --, "--collapse-simple-statement", "always"
+          extra_args = { "--indent-type", "Spaces", "--indent-width", "2", "--column_width", "160", "--collapse-simple-statement", "always" }
         })
       )
     end
@@ -142,7 +142,7 @@ return {
               local f = vim.fn.matchstrpos(line, "\\v(todo)|(fixme)|(xxx)|(fix)|(hack)")
               local col, end_col = f[2], f[3]
               if col and end_col >= 0 then
-                -- lprint('found', col, end_col)
+                lprint('found', col, end_col)
                 -- null-ls fills in undefined positions
                 -- and converts source diagnostics into the required format
                 table.insert(diag, {
