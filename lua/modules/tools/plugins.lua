@@ -351,4 +351,17 @@ return function(tools)
     ft = { "hurl", "http" },
   })
   tools({ "AndrewRadev/linediff.vim", opt = true, cmd = { "Linediff", "'<,'>Linediff" } })
+  tools({"ibhagwan/fzf-lua", opt = true, modules = {"fzf-lua"}, cmd = {'FzfLua'}, config = function()
+    require("fzf-lua").setup({
+    winopts = {
+        preview = {
+            default = 'bat_native',
+        },
+        on_create = function()
+            vim.opt_local.buflisted = false
+        end
+    },
+
+    })
+  end})
 end

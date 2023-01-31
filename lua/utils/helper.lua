@@ -280,7 +280,7 @@ end
 function M.get_visual_text()
   local s, e = vim.fn.getpos("'<"), vim.fn.getpos("'>")
   local n = math.abs(e[2] - s[2]) + 1
-  print(vim.inspect(s), vim.inspect(e), n)
+  -- print(vim.inspect(s), vim.inspect(e), n)
   local lines = vim.api.nvim_buf_get_lines(0, s[2] - 1, e[2], false)
   lines[1] = string.sub(lines[1], s[3], -1)
   if n == 1 then
@@ -292,15 +292,25 @@ function M.get_visual_text()
   return table.concat(lines, "\n"), n
 end
 
+function M.getword()
+  local w, l
+  if vim.fn.mode() == "v" or vim.fn.mode() == "x" then
+    w, l = M.get_visual_text()
+  end
+  if not l or l > 1 then
+    w = vim.fn.expand("<cword>")
+  end
+  return w
+end
+
 function M.substitute(from, to, style)
   from = vim.fn.expand("<cword>")
   style = style or 's'
   local cmd
 
-  local left = vim.api.nvim_replace_termcodes("<left>", true, false, true)
   if vim.fn.mode() == "v" or vim.fn.mode() == "x" then
     local w, l = M.get_visual_text()
-    print(w, l)
+    -- lprint(l)
     if l == 1 then
       from = w
       to = to or from
@@ -309,7 +319,8 @@ function M.substitute(from, to, style)
     else -- a range specified
       from = vim.fn.getreg('"')
       to = to or from
-      cmd = string.format("'<,'>:%%%s/%s/%s/g", style, from, from)
+      lprint(from, to)
+      cmd = string.format(":%%%s/%s/%s/g", style, from, to)
     end
   else
     to = to or from

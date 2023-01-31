@@ -61,9 +61,9 @@ local plug_map = {
   end):with_silent(),
 
   ["in|<d-p>"] = map_cmd("Telescope find_files"):with_noremap():with_silent(),
-  ["in|<M-p>"] = map_cmd("Telescope find_files"):with_noremap():with_silent(),
+  ["in|<M-p>"] = map_cmd("FzfLua files"):with_noremap():with_silent(),
   -- ["in|<d-T>"] = map_cu("Telescope"):with_noremap():with_silent(),
-  ["in|<M-f>"] = map_func(function()
+  ["inx|<d-f>"] = map_func(function()
       require("utils.telescope").grep_string_cursor_raw()
     end)
     :with_desc("grep_string_cursor_raw"),
@@ -75,13 +75,12 @@ local plug_map = {
       require("utils.telescope").grep_string_cursor()
     end)
     :with_desc("grep_string_cursor"),
-  ["n|<Leader>p"] = map_func(function()
-    local w = vim.fn.expand('<cword>')
-    local to = vim.fn.getreg('*')
-    vim.cmd(string.format(':s/%s/%s/', w, to))
+  ["ixn|<m-f>"] = map_func(function()
+      local w = require'utils.helper'.getword()
+      require'fzf-lua'.live_grep_native({search = w})
     end)
     :with_desc("grep_string_cursor"),
-  ["v|<d-F>"] = map_func(function()
+  ["x|<d-F>"] = map_func(function()
       require("utils.telescope").grep_string_visual()
     end)
     :with_desc("grep_string_visual"),
