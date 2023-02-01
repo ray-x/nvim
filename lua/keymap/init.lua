@@ -45,6 +45,9 @@ local plug_map = {
   ["n|<leader>li"] = map_cmd("LspInfo"):with_noremap():with_silent():with_nowait(),
   ["n|<leader>ll"] = map_cmd("LspLog"):with_noremap():with_silent():with_nowait(),
   ["n|<leader>lr"] = map_cmd("LspRestart"):with_noremap():with_silent():with_nowait(),
+  ["n|<Space>wa"] = map_func(function() vim.lsp.buf.add_workspace_folder() end):with_desc("Add workspace folder"),
+  ["n|<Space>wr"] = map_func(function() vim.lsp.buf.add_workspace_folder() end):with_desc("remove workspace folder"),
+  ["n|<Space>wl"] = map_func(function() print(vim.inspect(vim.lsp.buf.list_workspace_folders() ))end):with_desc("list workspace folder"),
   -- ["n|<Leader>e"]      = map_cmd('NvimTreeToggle'):with_noremap():with_silent(),
   -- ["n|<Leader>F"] = map_cmd('NvimTreeFindFile'):with_noremap():with_silent(),
   -- Plugin MarkdownPreview

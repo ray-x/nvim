@@ -702,7 +702,7 @@ local group = api.nvim_create_augroup("windline", {})
 api.nvim_create_autocmd({ "BufEnter", "WinEnter", "FocusGained" }, {
   group = group,
   callback = function()
-    lprint("enable")
+    -- lprint("enable")
     state.disable_title_update = false
   end,
 })

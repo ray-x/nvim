@@ -21,6 +21,7 @@ local treesitter = function()
     enable = false
     langtree = false
     vim.cmd([[syntax on]])
+    lprint("ts disabled")
   else
     enable = true
     langtree = true
