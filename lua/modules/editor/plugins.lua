@@ -186,6 +186,7 @@ return function(editor)
   editor({
     "phaazon/hop.nvim",
     as = "hop",
+    module = {'hop', 'tsht'},
     cmd = {
       "HopWord",
       "HopWordMW",

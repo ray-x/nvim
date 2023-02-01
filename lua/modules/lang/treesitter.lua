@@ -17,7 +17,7 @@ local treesitter = function()
     return
   end
 
-  if lines > 7000 then
+  if lines > 10000 then
     enable = false
     langtree = false
     vim.cmd([[syntax on]])
@@ -50,7 +50,7 @@ local treesitter_obj = function()
     indent = { enable = true },
     context_commentstring = { enable = true, enable_autocmd = false },
     incremental_selection = {
-      enable = enable,
+      enable = false, -- use textobjects
       -- disable = {"elm"},
       keymaps = {
         -- mappings for incremental selection (visual mappings)
@@ -63,31 +63,32 @@ local treesitter_obj = function()
     textobjects = {
       -- syntax-aware textobjects
       lsp_interop = {
-        enable = enable,
+        enable = false,  -- use LSP
         peek_definition_code = { ["DF"] = "@function.outer", ["CF"] = "@class.outer" },
       },
       move = {
         enable = true,
         set_jumps = true, -- whether to set jumps in the jumplist
-        goto_next_start = { ["]m"] = "@function.outer", ["]]"] = "@class.outer" },
-        goto_next_end = { ["]M"] = "@function.outer", ["]["] = "@class.outer" },
+        goto_next_start = { ["]m"] = "@function.outer", ["]["] = "@class.outer", ["]o"] = "@loop.*"},
+        goto_next_end = { ["]M"] = "@function.outer", ["]]"] = "@class.outer" },
         goto_previous_start = { ["[m"] = "@function.outer", ["[["] = "@class.outer" },
         goto_previous_end = { ["[M"] = "@function.outer", ["[]"] = "@class.outer" },
       },
       select = {
         enable = enable,
+        lookahead = true,
         keymaps = {
           -- You can use the capture groups defined in textobjects.scm
-          ["af"] = "@function.outer",
-          ["if"] = "@function.inner",
-          ["ac"] = "@class.outer",
-          ["ic"] = "@class.inner",
+          ["af"] = {"@function.outer", desc = "select inner class"},
+          ["if"] = {"@function.inner", desc = "select inner function"},
+          ["ac"] = {"@class.outer", desc = "select outer class"},
+          ["ic"] = {"@class.inner", desc = "select inner class"},
         },
       },
       swap = { -- use ISWAP
         enable = false,
-        swap_next = { ["<leader>a"] = "@parameter.inner" },
-        swap_previous = { ["<leader>A"] = "@parameter.inner" },
+        -- swap_next = { ["<leader>a"] = "@parameter.inner" },
+        -- swap_previous = { ["<leader>A"] = "@parameter.inner" },
       },
     },
     -- ensure_installed = "maintained"
@@ -169,11 +170,15 @@ function textsubjects()
       prev_selection = ",",
       keymaps = {
         ["."] = "textsubjects-smart",
-        [";"] = "textsubjects-container-outer",
-        ["i;"] = "textsubjects-container-inner",
+        -- [";"] = "textsubjects-container-outer",
+        -- ["i;"] = "textsubjects-container-inner",
       },
     },
   })
+end
+
+local function tshopper()
+  -- keymaps
 end
 
 local treesitter_context = function(width)

@@ -33,13 +33,6 @@ local keys = {
   --
   ["n|<M-h>"] = map_cmd("Clap history"):with_noremap():with_silent(),
 
-  -- ["n|<Leader>fb"] = map_cu("Clap marks"):with_noremap():with_silent(),
-  -- ["n|<Leader>ff"] = map_cu("Clap files ++finder=rg --ignore --hidden --files"):with_noremap():with_silent(),
-  -- ["n|<Leader>fw"] = map_cu("Clap grep ++query=<Cword>"):with_noremap():with_silent(),
-  -- ["n|<Leader>fu"] = map_cu("Clap git_diff_files"):with_noremap():with_silent(),
-  -- ["n|<Leader>fv"] = map_cu("Clap grep ++query=@visual"):with_noremap():with_silent(),
-  -- ["n|<Leader>fh"] = map_cu("Clap command_history"):with_noremap():with_silent(),
-
   ["n|<F5>"] = map_func(function()
       return _G.run_or_test(true)
     end)
@@ -55,7 +48,9 @@ local keys = {
   ["n|<Leader>bp"] = map_cmd("BufferLinePick"):with_noremap():with_silent(),
 
   ["n|<C-k>"] = map_cmd("v:lua.ctrl_k()"):with_silent():with_expr(),
-
+  ['xon|<Space>.'] = map_func(function() require('tsht').nodes()end):with_desc('tree hopper'),
+  ['xon|<Sapce>]'] = map_func(function() require('tsht').move({side = "end"})end):with_desc('tree hopper'),
+  ['xon|<Space>['] = map_func(function() require('tsht').move({side = "start"})end):with_desc('tree hopper'),
   -- Plugin QuickRun
   -- ["n|<Leader>r"]     = map_cmd("<cmd> lua require'selfunc'.run_command()"):with_noremap():with_silent(),
   -- Plugin Vista

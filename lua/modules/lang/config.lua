@@ -126,7 +126,7 @@ function config.navigator()
       disable_format_cap = { "sqls", "gopls", "jsonls", "sumneko_lua", "tflint", "terraform_lsp", "terraformls" }, -- a list of lsp not enable auto-format (e.g. if you using efm or vim-codeformat etc)
       disable_lsp = { "clangd", "rust_analyzer" }, --e.g {denols}
       -- code_lens = true,
-      disply_diagnostic_qf = false,
+      disply_diagnostic_qf = false, -- update diagnostic in quickfix window
       denols = { filetypes = {} },
       rename = { style = "floating-preview" },
       sumneko_lua = {

@@ -7,6 +7,7 @@ return function(lang)
   lang({ "nvim-treesitter/nvim-treesitter-textobjects", config = ts.treesitter_obj, opt = true })
 
   lang({ "RRethy/nvim-treesitter-textsubjects", opt = true, config = ts.textsubjects })
+  lang({ "mfussenegger/nvim-treehopper", opt = true, config = ts.tshopper })
 
   -- lang['ziontee113/syntax-tree-surfer'] = {
   --   opt = true,
