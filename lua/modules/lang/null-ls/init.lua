@@ -26,7 +26,6 @@ return {
         filetypes = { "markdown", "tex" },
         extra_filetypes = { "txt", "text" },
         command = "proselint",
-        args = { "--json" },
       }),
       actions.proselint.with({ filetypes = { "markdown", "tex" }, command = "proselint", args = { "--json" } }),
     }
@@ -88,7 +87,7 @@ return {
       table.insert(
         sources,
         null_ls.builtins.formatting.stylua.with({
-          extra_args = { "--indent-type", "Spaces", "--indent-width", "2", "--column_width", "160", "--collapse-simple-statement", "always" }
+          extra_args = { "--indent-type", "Spaces", "--indent-width", "2", "--column_width", "160", "--collapse-simple-statement", "Always", '--quote-style', 'AutoPreferSingle'}
         })
       )
     end

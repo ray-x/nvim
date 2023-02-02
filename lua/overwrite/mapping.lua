@@ -385,6 +385,17 @@ end, { nargs = "*", bang = true })
 vim.api.nvim_create_user_command("Flg", "Flog -date=short", { nargs = "*" })
 vim.api.nvim_create_user_command("Flgs", "Flogsplit -date=short", {})
 
+vim.api.nvim_create_user_command("ResetWorkspace", function(opts)
+  local folder = opts.fargs[1] or vim.fn.expand("%:p:h")
+  local workspaces = vim.lsp.buf.list_workspace_folders()
+  for _, v in ipairs(workspaces) do
+    if v ~= folder then
+      vim.lsp.buf.remove_workspace_folder(v)
+      return
+    end
+  end
+end, { nargs = "*", bang = true })
+
 -- Use `git ls-files` for git files, use `find ./ *` for all files under work directory.
 --
 return K

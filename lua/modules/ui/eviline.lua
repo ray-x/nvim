@@ -116,16 +116,19 @@ local current_function = function(width)
 
   width = width
   if width < 80 and #lsp_label1 > 50 then
+    if not state.disable_title_update and running % 5 == 1 then
+      set_title(lsp_label1)
+    end
     return ""
   end
   if width < 140 then
     width = math.max((80 - #lsp_label1 - #lsp_label2) * 0.5, 20)
   end
   if width >= 140 then
-    width = math.max((width - 60 - #lsp_label1 - #lsp_label2) * 0.7, 30)
+    width = math.max(width/3, 30)
   end
   if width > 200 then
-    width = math.max((width - 80 - #lsp_label1 - #lsp_label2) * 0.8, 40)
+    width = math.max(width/2, 60)
   end
   if running % 5 == 1 and not state.disable_title_update then
     ts = treesitter_context(400)

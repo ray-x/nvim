@@ -115,6 +115,8 @@ local function load_options()
     colorcolumn    = "110";
     foldenable     = true;
     signcolumn     = "auto:1";  --auto auto:2  "number"
+    cursorline     = true;
+    number         = true;
   }
 
   local bw_local  = {

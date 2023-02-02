@@ -195,4 +195,5 @@ return function(ui)
       })
     end,
   })
+  ui({'mawkler/modicator.nvim', opt = true, event = {'CursorMoved', 'CursorMovedI', 'ModeChanged'}, config = function() require('modicator').setup() end})
 end
