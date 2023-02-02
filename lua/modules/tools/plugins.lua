@@ -1,110 +1,125 @@
-local conf = require("modules.tools.config")
+local conf = require('modules.tools.config')
 return function(tools)
   tools({
-    "kristijanhusak/vim-dadbod-ui",
-    cmd = { "DBUIToggle", "DBUIAddConnection", "DBUI", "DBUIFindBuffer", "DBUIRenameBuffer", "DB" },
+    'kristijanhusak/vim-dadbod-ui',
+    cmd = {
+      'DBUIToggle',
+      'DBUIAddConnection',
+      'DBUI',
+      'DBUIFindBuffer',
+      'DBUIRenameBuffer',
+      'DB',
+    },
     config = conf.vim_dadbod_ui,
-    requires = { "tpope/vim-dadbod", ft = { "sql" } },
+    requires = { 'tpope/vim-dadbod', ft = { 'sql' } },
     opt = true,
     setup = function()
       vim.g.dbs = {
-        eraser = "postgres://postgres:password@localhost:5432/eraser_local",
-        staging = "postgres://postgres:password@localhost:5432/my-staging-db",
-        wp = "mysql://root@localhost/wp_awesome",
+        eraser = 'postgres://postgres:password@localhost:5432/eraser_local',
+        staging = 'postgres://postgres:password@localhost:5432/my-staging-db',
+        wp = 'mysql://root@localhost/wp_awesome',
       }
     end,
   })
-  tools({ "mattn/webapi-vim", opt = true })
+  tools({ 'mattn/webapi-vim', opt = true })
 
   tools({
-    "edluffy/hologram.nvim",
+    'edluffy/hologram.nvim',
     config = conf.hologram,
     opt = true,
-    ft = { "markdown", "md", "norg", "org" },
-    requires = { "nvim-lua/plenary.nvim" },
+    ft = { 'markdown', 'md', 'norg', 'org' },
+    requires = { 'nvim-lua/plenary.nvim' },
   })
 
-  tools({ "vim-test/vim-test", cmd = { "TestNearest", "TestFile", "TestSuite" }, setup = conf.vim_test })
+  tools({
+    'vim-test/vim-test',
+    cmd = { 'TestNearest', 'TestFile', 'TestSuite' },
+    setup = conf.vim_test,
+  })
 
   tools({
-    "nvim-neotest/neotest",
+    'nvim-neotest/neotest',
     requires = {
-      { "nvim-lua/plenary.nvim", module = "plenary" },
+      { 'nvim-lua/plenary.nvim', module = 'plenary' },
       {
-        "haydenmeade/neotest-jest",
+        'haydenmeade/neotest-jest',
         module = {
-          "neotest-jest",
-          "neotest",
+          'neotest-jest',
+          'neotest',
         },
         config = conf.neotest_jest,
       },
-      { "nvim-neotest/neotest-plenary", module = { "neotest-plenary", "neotest" } },
-      { "nvim-neotest/neotest-python", module = { "neotest-python", "neotest" } },
+      { 'nvim-neotest/neotest-plenary', module = { 'neotest-plenary', 'neotest' } },
+      { 'nvim-neotest/neotest-python', module = { 'neotest-python', 'neotest' } },
     },
-    module = { "neotest-jest", "neotest" },
+    module = { 'neotest-jest', 'neotest' },
     config = conf.neotest,
   })
 
-  tools({ "nvim-neotest/neotest-plenary", module = { "neotest-plenary", "neotest" } })
-  tools({ "will133/vim-dirdiff", cmd = { "DirDiff" } })
+  tools({ 'nvim-neotest/neotest-plenary', module = { 'neotest-plenary', 'neotest' } })
+  tools({ 'will133/vim-dirdiff', cmd = { 'DirDiff' } })
 
   tools({
-    "editorconfig/editorconfig-vim",
+    'editorconfig/editorconfig-vim',
     opt = true,
-    cmd = { "EditorConfigReload" },
+    cmd = { 'EditorConfigReload' },
     -- ft = { 'go','typescript','javascript','vim','rust','zig','c','cpp' }
   })
 
-  tools({ "ThePrimeagen/git-worktree.nvim", event = { "CmdwinEnter", "CmdlineEnter" }, config = conf.worktree })
+  tools({
+    'ThePrimeagen/git-worktree.nvim',
+    event = { 'CmdwinEnter', 'CmdlineEnter' },
+    config = conf.worktree,
+  })
 
   tools({
-    "ThePrimeagen/harpoon",
+    'ThePrimeagen/harpoon',
     opt = true,
     config = function()
-      require("harpoon").setup({
+      require('harpoon').setup({
         global_settings = {
           save_on_toggle = false,
           save_on_change = true,
           enter_on_sendcmd = false,
           tmux_autoclose_windows = false,
-          excluded_filetypes = { "harpoon" },
+          excluded_filetypes = { 'harpoon' },
         },
       })
-      require("telescope").load_extension("harpoon")
+      require('telescope').load_extension('harpoon')
     end,
   })
 
-  tools({ "TimUntersberger/neogit", cmd = { "Neogit" }, config = conf.neogit })
-  tools({ "liuchengxu/vista.vim", cmd = "Vista", setup = conf.vim_vista, opt = true })
+  tools({ 'TimUntersberger/neogit', cmd = { 'Neogit' }, config = conf.neogit })
+  tools({ 'liuchengxu/vista.vim', cmd = 'Vista', setup = conf.vim_vista, opt = true })
 
   tools({
-    "kamykn/spelunker.vim",
+    'kamykn/spelunker.vim',
     opt = true,
-    fn = { "spelunker#check" },
+    fn = { 'spelunker#check' },
     setup = conf.spelunker,
     config = conf.spellcheck,
   })
   tools({
-    "rhysd/vim-grammarous",
+    'rhysd/vim-grammarous',
     opt = true,
-    cmd = { "GrammarousCheck" },
-    ft = { "markdown", "txt" },
+    cmd = { 'GrammarousCheck' },
+    ft = { 'markdown', 'txt' },
     setup = conf.grammarous,
   })
 
   tools({
-    "plasticboy/vim-markdown",
-    ft = "markdown",
-    requires = { "godlygeek/tabular" },
-    cmd = { "Toc" },
+    'plasticboy/vim-markdown',
+    ft = 'markdown',
+    requires = { 'godlygeek/tabular' },
+    cmd = { 'Toc' },
     setup = conf.markdown,
     opt = true,
   })
 
   tools({
-    "iamcco/markdown-preview.nvim",
-    ft = { "markdown", "pandoc.markdown", "rmd" },
-    cmd = { "MarkdownPreview" },
+    'iamcco/markdown-preview.nvim',
+    ft = { 'markdown', 'pandoc.markdown', 'rmd' },
+    cmd = { 'MarkdownPreview' },
     setup = conf.mkdp,
     run = [[sh -c "cd app && yarn install"]],
     opt = true,
@@ -112,64 +127,64 @@ return function(tools)
 
   --     browser-sync https://github.com/BrowserSync/browser-sync
   tools({
-    "turbio/bracey.vim",
-    ft = { "html", "javascript", "typescript" },
-    cmd = { "Bracey", "BraceyEval" },
+    'turbio/bracey.vim',
+    ft = { 'html', 'javascript', 'typescript' },
+    cmd = { 'Bracey', 'BraceyEval' },
     run = 'sh -c "npm install --prefix server"',
     opt = true,
   })
 
   tools({
-    "kazhala/close-buffers.nvim",
-    cmd = { "Kwbd", "BDelete", "BWipeout" },
+    'kazhala/close-buffers.nvim',
+    cmd = { 'Kwbd', 'BDelete', 'BWipeout' },
     config = conf.close_buffers,
-    module = "close-buffers",
+    module = 'close-buffers',
   })
 
   -- nvim-toggleterm.lua ?
   tools({
-    "akinsho/toggleterm.nvim",
-    cmd = { "ToggleTerm", "TermExec" },
-    event = { "CmdwinEnter", "CmdlineEnter" },
+    'akinsho/toggleterm.nvim',
+    cmd = { 'ToggleTerm', 'TermExec' },
+    event = { 'CmdwinEnter', 'CmdlineEnter' },
     config = conf.floaterm,
   })
 
   tools({
-    "NTBBloodbath/rest.nvim",
+    'NTBBloodbath/rest.nvim',
     opt = true,
-    ft = { "http", "rest" },
-    module = "rest-nvim",
-    keys = { "<Plug>RestNvim", "<Plug>RestNvimPreview", "<Plug>RestNvimLast" },
-    cmd = { "RestRun", "RestPreview", "RestLast" },
+    ft = { 'http', 'rest' },
+    module = 'rest-nvim',
+    keys = { '<Plug>RestNvim', '<Plug>RestNvimPreview', '<Plug>RestNvimLast' },
+    cmd = { 'RestRun', 'RestPreview', 'RestLast' },
     config = conf.rest,
   })
   --
-  tools({ "nanotee/zoxide.vim", cmd = { "Z", "Lz", "Zi" } })
+  tools({ 'nanotee/zoxide.vim', cmd = { 'Z', 'Lz', 'Zi' } })
 
   tools({
-    "liuchengxu/vim-clap",
-    cmd = { "Clap" },
+    'liuchengxu/vim-clap',
+    cmd = { 'Clap' },
     run = function()
-      vim.fn["clap#installer#download_binary"]()
+      vim.fn['clap#installer#download_binary']()
     end,
     setup = conf.clap,
     config = conf.clap_after,
   })
 
   tools({
-    "sindrets/diffview.nvim",
+    'sindrets/diffview.nvim',
     cmd = {
-      "DiffviewOpen",
-      "DiffviewFileHistory",
-      "DiffviewFocusFiles",
-      "DiffviewToggleFiles",
-      "DiffviewRefresh",
+      'DiffviewOpen',
+      'DiffviewFileHistory',
+      'DiffviewFocusFiles',
+      'DiffviewToggleFiles',
+      'DiffviewRefresh',
     },
     config = conf.diffview,
   })
 
   tools({
-    "lewis6991/gitsigns.nvim",
+    'lewis6991/gitsigns.nvim',
     config = conf.gitsigns,
     -- keys = {']c', '[c'},  -- load by lazy.lua
     opt = true,
@@ -177,13 +192,13 @@ return function(tools)
 
   local path = plugin_folder()
   tools({
-    path .. "sad.nvim",
-    cmd = { "Sad" },
+    path .. 'sad.nvim',
+    cmd = { 'Sad' },
     opt = true,
     config = function()
-      require("sad").setup({
+      require('sad').setup({
         debug = true,
-        log_path = vim.fn.expand("$HOME") .. "/.cache/nvim/nvim_debug.log",
+        log_path = vim.fn.expand('$HOME') .. '/.cache/nvim/nvim_debug.log',
         vsplit = false,
         height_ratio = 0.8,
         autoclose = false,
@@ -192,15 +207,15 @@ return function(tools)
   })
 
   tools({
-    path .. "forgit.nvim",
+    path .. 'forgit.nvim',
     opt = true,
-    cmd = { "Ga", "Gaa", "Gd", "Glo", "Gs", "Gc", "Gpl", "Gps" },
-    module = "forgit",
-    event = { "CmdwinEnter", "CmdlineEnter" },
+    cmd = { 'Ga', 'Gaa', 'Gd', 'Glo', 'Gs', 'Gc', 'Gpl', 'Gps' },
+    module = 'forgit',
+    event = { 'CmdwinEnter', 'CmdlineEnter' },
     config = function()
-      require("forgit").setup({
+      require('forgit').setup({
         debug = true,
-        log_path = vim.fn.expand("$HOME") .. "/.cache/nvim/nvim_debug.log",
+        log_path = vim.fn.expand('$HOME') .. '/.cache/nvim/nvim_debug.log',
         vsplit = false,
         height_ratio = 0.8,
       })
@@ -208,113 +223,126 @@ return function(tools)
   })
 
   tools({
-    path .. "viewdoc.nvim",
-    cmd = { "Viewdoc" },
+    path .. 'viewdoc.nvim',
+    cmd = { 'Viewdoc' },
     opt = true,
     config = function()
-      require("viewdoc").setup({ debug = true, log_path = vim.fn.expand("$HOME") .. "/.cache/nvim/nvim_debug.log" })
+      require('viewdoc').setup({
+        debug = true,
+        log_path = vim.fn.expand('$HOME') .. '/.cache/nvim/nvim_debug.log',
+      })
     end,
   })
 
   -- early stage...
   tools({
-    "tanvirtin/vgit.nvim", -- gitsign has similar features
+    'tanvirtin/vgit.nvim', -- gitsign has similar features
     setup = function()
       vim.o.updatetime = 2000
     end,
-    cmd = { "VGit" },
+    cmd = { 'VGit' },
     -- after = {"telescope.nvim"},
     opt = true,
     config = conf.vgit,
   })
 
   tools({
-    "akinsho/git-conflict.nvim",
+    'akinsho/git-conflict.nvim',
     cmd = {
-      "GitConflictListQf",
-      "GitConflictChooseOurs",
-      "GitConflictChooseTheirs",
-      "GitConflictChooseBoth",
-      "GitConflictNextConflict",
+      'GitConflictListQf',
+      'GitConflictChooseOurs',
+      'GitConflictChooseTheirs',
+      'GitConflictChooseBoth',
+      'GitConflictNextConflict',
     },
     opt = true,
     config = conf.git_conflict,
   })
 
   tools({
-    "rbong/vim-flog",
-    cmd = { "Flog", "Flogsplit", "Flg", "Flgs" },
+    'rbong/vim-flog',
+    cmd = { 'Flog', 'Flogsplit', 'Flg', 'Flgs' },
     opt = true,
-    fn = { "flog#cmd#Flog", "flog#cmd#Flogsplit" },
+    fn = { 'flog#cmd#Flog', 'flog#cmd#Flogsplit' },
     requires = {
-      "tpope/vim-fugitive",
-      cmd = { "Gvsplit", "Git", "Gedit", "Gstatus", "Gdiffsplit", "Gvdiffsplit" },
-      fn = { "FugitiveIsGitDir" },
+      'tpope/vim-fugitive',
+      cmd = { 'Gvsplit', 'G', 'Gread', 'Git', 'Gedit', 'Gstatus', 'Gdiffsplit', 'Gvdiffsplit' },
+      fn = { 'FugitiveIsGitDir' },
       opt = true,
     },
   })
 
-  tools({ "rmagatti/auto-session", config = conf.session, opt = true })
+  tools({ 'rmagatti/auto-session', config = conf.session, opt = true })
 
   tools({
-    "rmagatti/session-lens",
+    'rmagatti/session-lens',
     opt = true,
     -- cmd = "SearchSession",
     -- after = { "telescope.nvim" },
     config = function()
-      require("packer").loader("telescope.nvim")
-      require("telescope").load_extension("session-lens")
-      require("session-lens").setup({
-        path_display = { "shorten" },
+      require('packer').loader('telescope.nvim')
+      require('telescope').load_extension('session-lens')
+      require('session-lens').setup({
+        path_display = { 'shorten' },
         theme_conf = { border = true },
         previewer = true,
       })
     end,
   })
 
-  tools({ "kevinhwang91/nvim-bqf", opt = true, event = { "CmdlineEnter", "QuickfixCmdPre" }, config = conf.bqf })
+  tools({
+    'kevinhwang91/nvim-bqf',
+    opt = true,
+    event = { 'CmdlineEnter', 'QuickfixCmdPre' },
+    config = conf.bqf,
+  })
 
   -- lua require'telescope'.extensions.project.project{ display_type = 'full' }
-  tools({ "ahmedkhalf/project.nvim", opt = true, after = { "telescope.nvim" }, config = conf.project })
+  tools({
+    'ahmedkhalf/project.nvim',
+    opt = true,
+    after = { 'telescope.nvim' },
+    config = conf.project,
+  })
 
   tools({
-    "jvgrootveld/telescope-zoxide",
+    'jvgrootveld/telescope-zoxide',
     opt = true,
-    after = { "telescope.nvim" },
+    after = { 'telescope.nvim' },
     config = function()
-      require("utils.telescope")
-      require("telescope").load_extension("zoxide")
+      require('utils.telescope')
+      require('telescope').load_extension('zoxide')
     end,
   })
 
   tools({
-    "AckslD/nvim-neoclip.lua",
+    'AckslD/nvim-neoclip.lua',
     opt = true,
     -- after = { "telescope.nvim" }, -- manul load
-    requires = { "kkharji/sqlite.lua", module = "sqlite" },
+    requires = { 'kkharji/sqlite.lua', module = 'sqlite' },
     config = function()
-      require("utils.telescope")
-      require("neoclip").setup({ db_path = vim.fn.stdpath("data") .. "/databases/neoclip.sqlite3" })
-      require("telescope").load_extension("neoclip")
+      require('utils.telescope')
+      require('neoclip').setup({ db_path = vim.fn.stdpath('data') .. '/databases/neoclip.sqlite3' })
+      require('telescope').load_extension('neoclip')
     end,
   })
 
   tools({
-    "nvim-telescope/telescope-frecency.nvim",
+    'nvim-telescope/telescope-frecency.nvim',
     -- after = { "telescope.nvim" },  -- manual load
     -- cmd = {'Telescope'},
-    requires = { "kkharji/sqlite.lua", module = "sqlite", opt = true },
+    requires = { 'kkharji/sqlite.lua', module = 'sqlite', opt = true },
     opt = true,
     config = function()
-      local telescope = require("telescope")
-      telescope.load_extension("frecency")
+      local telescope = require('telescope')
+      telescope.load_extension('frecency')
       telescope.setup({
         extensions = {
           frecency = {
-            default_workspace = "CWD",
+            default_workspace = 'CWD',
             show_scores = false,
             show_unindexed = true,
-            ignore_patterns = { "*.git/*", "*/tmp/*" },
+            ignore_patterns = { '*.git/*', '*/tmp/*' },
             disable_devicons = false,
             workspaces = {
               -- ["conf"] = "/home/my_username/.config",
@@ -330,38 +358,53 @@ return function(tools)
   })
 
   tools({
-    "voldikss/vim-translator",
+    'voldikss/vim-translator',
     opt = true,
-    keys = { "<Plug>TranslateW", "<Plug>TranslateWV" },
+    keys = { '<Plug>TranslateW', '<Plug>TranslateWV' },
     setup = function()
-      vim.api.nvim_set_keymap("n", "<Leader>ts", "<Plug>TranslateW", { noremap = true, silent = true })
-      vim.api.nvim_set_keymap("v", "<Leader>ts", "<Plug>TranslateWV", { noremap = true, silent = true })
+      vim.api.nvim_set_keymap(
+        'n',
+        '<Leader>ts',
+        '<Plug>TranslateW',
+        { noremap = true, silent = true }
+      )
+      vim.api.nvim_set_keymap(
+        'v',
+        '<Leader>ts',
+        '<Plug>TranslateWV',
+        { noremap = true, silent = true }
+      )
     end,
   })
   tools({
-    "joaomsa/telescope-orgmode.nvim",
+    'joaomsa/telescope-orgmode.nvim',
     opt = true,
   })
   --The linediff plugin provides a simple command, :Linediff, which is used to diff two separate blocks of text.
   tools({
-    "pfeiferj/nvim-hurl",
+    'pfeiferj/nvim-hurl',
     opt = true,
-    module = "nvim-hurl",
-    cmd = { "HurlRun", "'<,'>HurlRun" },
-    ft = { "hurl", "http" },
+    module = 'nvim-hurl',
+    cmd = { 'HurlRun', "'<,'>HurlRun" },
+    ft = { 'hurl', 'http' },
   })
-  tools({ "AndrewRadev/linediff.vim", opt = true, cmd = { "Linediff", "'<,'>Linediff" } })
-  tools({"ibhagwan/fzf-lua", opt = true, module = {"fzf-lua"}, cmd = {'FzfLua'}, config = function()
-    require("fzf-lua").setup({
-    winopts = {
-        preview = {
+  tools({ 'AndrewRadev/linediff.vim', opt = true, cmd = { 'Linediff', "'<,'>Linediff" } })
+  tools({
+    'ibhagwan/fzf-lua',
+    opt = true,
+    module = { 'fzf-lua' },
+    cmd = { 'FzfLua' },
+    config = function()
+      require('fzf-lua').setup({
+        winopts = {
+          preview = {
             default = 'bat_native',
-        },
-        on_create = function()
+          },
+          on_create = function()
             vim.opt_local.buflisted = false
-        end
-    },
-
-    })
-  end})
+          end,
+        },
+      })
+    end,
+  })
 end
