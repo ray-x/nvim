@@ -109,7 +109,7 @@ local Usual = {
     NonText = { fg = c.blue_five },
     LineNr = { fg = c.gray_two },
     SignColumn = { bg = 'None' },
-    CursorLine = { fg = c.gray_one, bg = c.purple_four },
+    CursorLine = { fg = c.gray_one, bg = c.background_two },
     CursorColumn = { bg = c.purple_four },
     CursorLineNr = { fg = c.yellow_one, bold = true, underline = true },
     StatusLine = { fg = c.white_two, bg = c.background_three },

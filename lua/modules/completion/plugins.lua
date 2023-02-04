@@ -206,6 +206,6 @@ return function(use)
   use({
     'Exafunction/codeium.vim',
     opt = true,
-    event = 'InsertEnter',
+    -- event = 'InsertEnter',
   })
 end
