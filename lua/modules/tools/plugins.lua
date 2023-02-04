@@ -237,10 +237,10 @@ return function(tools)
   -- early stage...
   tools({
     'tanvirtin/vgit.nvim', -- gitsign has similar features
-    setup = function()
-      vim.o.updatetime = 2000
-    end,
-    cmd = { 'VGit' },
+    -- setup = function()
+    --   vim.o.updatetime = 500
+    -- end,
+    -- cmd = { 'VGit' },
     -- after = {"telescope.nvim"},
     opt = true,
     config = conf.vgit,

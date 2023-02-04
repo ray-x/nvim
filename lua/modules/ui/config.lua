@@ -474,7 +474,7 @@ function config.starry()
   -- vim.g.starry_style = "earlysummer" -- 'moonlight' emerald middlenight_blue earlysummer
   -- vim.g.starry_style = "dracula" -- "mariana" --  emerald middlenight_blue earlysummer
   -- vim.g.starry_style = "oceanic" -- 'moonlight' emerald middlenight_blue earlysummer -- vim.g.starry_style = "dark_solar" -- 'moonlight' emerald middlenight_blue earlysummer
-  -- vim.g.starry_style = "oceanic"
+  -- vim.g.starry_style = "mariana"
   vim.g.starry_style_fix = true
   -- config.default()
   vim.g.starry_disable_background = true
@@ -769,7 +769,6 @@ end
 vim.cmd(
   [[
     set nocursorcolumn
-    set nocursorline
     augroup vimrc_todo
     au!
     au Syntax *.go,*.c,*.rs,*.js,*.tsx,*.cpp,*.html syn match MyTodo /\v<(FIXME|Fixme|NOTE|Note|TODO|ToDo|OPTIMIZE|XXX):/ containedin=.*Comment,vimCommentTitle

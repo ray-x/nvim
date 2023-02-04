@@ -64,23 +64,22 @@ return function(editor)
   })
 
   -- Feel more comfortale with hop
-  -- editor({
-  --   "ggandor/leap.nvim",
-  --   keys = { "s", "S" },
-  --   opt = true,
-  --   module = "leap",
-  --   config = require("modules.editor.leap").setup,
-  --   requires = {
-  --     {
-  --       "ggandor/leap-ast.nvim",
-  --       after = "leap.nvim",
-  --       opt = true,
-  --       module = "leap-ast",
-  --       config = require("modules.editor.leap").ast,
-  --     },
-  --     { "ggandor/flit.nvim", after = "leap.nvim", opt = true, module = "flit", require("modules.editor.leap").flit },
-  --   },
-  -- })
+ editor({
+   "ggandor/leap.nvim",
+   keys = { "<Plug>(leap-forward-to)", "<Plug>(leap-backward-to)"},
+   opt = true,
+   module = "leap",
+   config = require("modules.editor.leap").setup,
+   requires = {
+     {
+       "ggandor/leap-ast.nvim",
+       opt = true,
+       module = {"leap", "leap-ast"},
+       config = require("modules.editor.leap").ast,
+     },
+     -- { "ggandor/flit.nvim", opt = true, module = {"flit", "leap"}, require("modules.editor.leap").flit },
+   },
+ })
 
   editor({
     "machakann/vim-sandwich",

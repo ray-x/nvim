@@ -32,17 +32,16 @@ local function hydra_git()
       vim.cmd("DiffviewOpen " .. branch)
     end
   end
-  loader("keymap-layer.nvim vgit.nvim gitsigns.nvim")
+  loader("keymap-layer.nvim gitsigns.nvim")
   local hint = [[
  _d_iffView   _s_tage hunk     diff_M_aster    file_H_istory _S_tageBufr
  hunkq_f_     _u_nstage hunk   _p_ view hunk   _B_lameFull   _l_og
  buff_D_iff   _g_ diff staged  _m_erge        _x_ show del﯊ _c_onflict
- _b_uf gutter _F_iff buf       _U_stage        _G_staged     _/_ show base
-     resetHun_k_     _r_eset buffer   _<Enter>_ Neo  _q_uit
+ _/_ show base resetHun_k_     _r_eset buffer   _<Enter>_ Neo  _q_uit
 ]]
-
+--  _b_uf gutter _F_iff buf       _U_stage        _G_staged 
   local gitsigns = require("gitsigns")
-  local vgit = require("vgit")
+  -- local vgit = require("vgit")
   local function gitsigns_visual_op(op)
     return function()
       return gitsigns[op]({ vim.fn.line("."), vim.fn.line("v") })
@@ -109,13 +108,13 @@ local function hydra_git()
       { "/", gitsigns.show, { exit = true } }, -- show the base of the file
 
       -- vgit
-      { "b", vgit.buffer_gutter_blame_preview, { exit = true } },
-      { "F", vgit.buffer_diff_preview, { exit = true } },
+      -- { "b", vgit.buffer_gutter_blame_preview, { exit = true } },
+      -- { "F", vgit.buffer_diff_preview, { exit = true } },
       -- { "g", vgit.buffer_diff_staged_preview, { exit = true } },
       -- { "P", vgit.project_staged_hunks_preview },
       -- { "f", vgit.project_hunks_qf },
-      { "U", vgit.buffer_unstage },
-      { "G", vgit.buffer_diff_staged_preview },
+      -- { "U", vgit.buffer_unstage },
+      -- { "G", vgit.buffer_diff_staged_preview },
 
       { "<Enter>", "<cmd>Neogit<CR>", { exit = true } },
       { "q", nil, { exit = true, nowait = true } },

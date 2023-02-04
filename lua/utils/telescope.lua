@@ -110,7 +110,7 @@ vim.api.nvim_create_user_command("Rg", function(opts)
   require("telescope").extensions.live_grep_args.live_grep_args({
     default_text = "'" .. w .. "'" ..  " " .. pwd,
   })
-end, { nargs = "*" })
+end, { nargs = "*", desc = "Search for word under cursor" })
 
 --[[
     +-------------------------------------+

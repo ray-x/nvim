@@ -54,9 +54,9 @@ if global.is_mac then
   }
 else
   os_map = {
-    ["n|<m-s>"] = map_cu("w"):with_silent(),
-    ["i|<m-s>"] = map_cu('"normal :w"'):with_noremap():with_silent(),
-    ["v|<m-s>"] = map_cu('"normal :w"'):with_noremap():with_silent(),
+    -- ["n|<m-s>"] = map_cu("w"):with_silent(),
+    -- ["i|<m-s>"] = map_cu('"normal :w"'):with_noremap():with_silent(),
+    -- ["v|<m-s>"] = map_cu('"normal :w"'):with_noremap():with_silent(),
 
     ["n|<m-w>"] = map_cu("wqa!"):with_silent(),
     ["i|<m-w>"] = map_cu('"normal :wqa!"'):with_noremap():with_silent(),

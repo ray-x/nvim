@@ -11,20 +11,27 @@ return {
       null_ls.builtins.code_actions.gitsigns,
       null_ls.builtins.code_actions.proselint,
       null_ls.builtins.code_actions.refactoring,
+      null_ls.builtins.diagnostics.cspell.with({
+        filetypes = { 'markdown', 'text', 'txt', 'org' },
+      }),
+      null_ls.builtins.code_actions.cspell.with({
+        filetypes = { 'markdown', 'text', 'txt', 'org' },
+      }),
+      null_ls.builtins.diagnostics.fish,
       -- hover.dictionary,
       diagnostics.misspell.with({
-        filetypes = { 'markdown', 'text', 'txt' },
+        filetypes = { 'markdown', 'text', 'txt', 'org' },
         args = { '$FILENAME' },
       }),
       diagnostics.write_good.with({
-        filetypes = { 'markdown', 'tex', '' },
+        filetypes = { 'markdown', 'tex', '', 'org' },
         extra_filetypes = { 'txt', 'text' },
         args = { '--text=$TEXT', '--parse' },
         command = 'write-good',
       }),
       diagnostics.proselint.with({
         filetypes = { 'markdown', 'tex' },
-        extra_filetypes = { 'txt', 'text' },
+        extra_filetypes = { 'txt', 'text', 'org' },
         command = 'proselint',
       }),
       actions.proselint.with({ filetypes = { 'markdown', 'tex' }, command = 'proselint', args = { '--json' } }),
@@ -74,14 +81,15 @@ return {
             '2',
             '--column-width',
             '100',
-            '--collapse-simple-statement',
-            'FunctionOnly',
+            -- '--collapse-simple-statement',
+            -- 'FunctionOnly',
             '--quote-style',
             'AutoPreferSingle',
           },
         })
       )
     end
+    table.insert(sources, require('null-ls').builtins.formatting.jq)
     -- stylua: ignore end
 
     table.insert(sources, null_ls.builtins.formatting.trim_newlines)

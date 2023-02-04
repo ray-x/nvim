@@ -14,7 +14,7 @@ function M.get_data_from_file(filename, startLine)
     startLine = startLine - 2
     displayLine = 2
   end
-  local uri = "file://" .. filename
+  local uri = 'file://' .. filename
   local bufnr = vim.uri_to_bufnr(uri)
   vim.fn.bufload(bufnr)
   local data = vim.api.nvim_buf_get_lines(bufnr, startLine, startLine + 8, false)
@@ -24,7 +24,7 @@ function M.get_data_from_file(filename, startLine)
     local len = #data
     startLine = startLine + 1
     for i = 1, len, 1 do
-      data[i] = startLine .. " " .. data[i]
+      data[i] = startLine .. ' ' .. data[i]
       startLine = startLine + 1
     end
   end
@@ -37,7 +37,7 @@ end
 function M.get_base(path)
   local len = #path
   for i = len, 1, -1 do
-    if path:sub(i, i) == "/" then
+    if path:sub(i, i) == '/' then
       local ret = path:sub(i + 1, len)
       return ret
     end
@@ -53,7 +53,7 @@ function M.getDirectores(path)
   local last_index = 1
   for i = 2, len do
     local cur_char = path:sub(i, i)
-    if cur_char == "/" then
+    if cur_char == '/' then
       local my_data = path:sub(last_index + 1, i - 1)
       table.insert(data, my_data)
       last_index = i
@@ -83,9 +83,9 @@ function M.get_relative_path(base_path, my_path)
     end
     cur = i
   end
-  local data = ""
+  local data = ''
   for i = cur + 1, my_len do
-    data = data .. my_data[i] .. "/"
+    data = data .. my_data[i] .. '/'
   end
   data = data .. M.get_base(my_path)
   return data
@@ -98,9 +98,9 @@ function M.handleGlobalVariable(var, opts)
   opts.mode = var.mode or opts.mode
   opts.height = var.height or opts.height
   if opts.height == 0 then
-    if opts.mode == "editor" then
+    if opts.mode == 'editor' then
       opts.height = nil
-    elseif opts.mode == "split" then
+    elseif opts.mode == 'split' then
       opts.height = 12
     end
   end
@@ -150,8 +150,8 @@ function M.handleGlobalVariable(var, opts)
     opts.prompt = {
       border_chars = var.prompt.border_chars,
       coloring = var.prompt.coloring,
-      prompt_text = "Symbols",
-      search_type = "plain",
+      prompt_text = 'Symbols',
+      search_type = 'plain',
       border = true,
     }
     if var.prompt.border == false or var.prompt.border == true then
@@ -161,24 +161,24 @@ function M.handleGlobalVariable(var, opts)
 end
 
 function M.setFiletype(buffer, type)
-  vim.api.nvim_buf_set_option(buffer, "filetype", type)
+  vim.api.nvim_buf_set_option(buffer, 'filetype', type)
 end
 
 -- add log to you lsp.log
 function M.log(...)
   local arg = { ... }
   if vim.g.codeagent_verbose == true then
-    local str = "[CAT]"
+    local str = '[CAT]'
     for i, v in ipairs(arg) do
       if v ~= nil then
-        str = str .. " | " .. vim.inspect(v) .. "\n"
+        str = str .. ' | ' .. vim.inspect(v) .. '\n'
       else
-        str = str .. " | " .. "nil"
+        str = str .. ' | ' .. 'nil'
       end
     end
     if #str > 5 then
       if #M.log_path > 3 then
-        local f = io.open(M.log_path, "a+")
+        local f = io.open(M.log_path, 'a+')
         io.output(f)
         io.write(str)
         io.close(f)
@@ -190,20 +190,20 @@ end
 
 function M.split(inputstr, sep)
   if sep == nil then
-    sep = "%s"
+    sep = '%s'
   end
   local t = {}
-  for str in string.gmatch(inputstr, "([^" .. sep .. "]+)") do
+  for str in string.gmatch(inputstr, '([^' .. sep .. ']+)') do
     table.insert(t, str)
   end
   return t
 end
 
 function M.getArgs(inputstr)
-  local sep = "%s"
+  local sep = '%s'
   local t = {}
   local cmd
-  for str in string.gmatch(inputstr, "([^" .. sep .. "]+)") do
+  for str in string.gmatch(inputstr, '([^' .. sep .. ']+)') do
     if not cmd then
       cmd = str
     else
@@ -218,9 +218,9 @@ function M.p(t)
 end
 
 function M.printError(msg)
-  vim.cmd("echohl ErrorMsg")
+  vim.cmd('echohl ErrorMsg')
   vim.cmd(string.format([[echomsg '%s']], msg))
-  vim.cmd("echohl None")
+  vim.cmd('echohl None')
 end
 
 function M.reload()
@@ -230,7 +230,7 @@ end
 
 function M.open_log()
   local path = vim.lsp.get_log_path()
-  vim.cmd("edit " .. path)
+  vim.cmd('edit ' .. path)
 end
 
 function M.exists(var)
@@ -248,19 +248,19 @@ end
 function M.newbinsource(cmd)
   return function()
     local file = io.popen(cmd)
-    local output = file:read("*all")
+    local output = file:read('*all')
     file:close()
-    output = vim.split(output, "\n")
+    output = vim.split(output, '\n')
     return output
   end
 end
 
 function M.x86()
-  local arch = vim.fn.system("uname -m")
-  if arch == "i386" or arch == "x86_64" then
-    return "x86"
+  local arch = vim.fn.system('uname -m')
+  if arch == 'i386' or arch == 'x86_64' then
+    return 'x86'
   else
-    return "arm"
+    return 'arm'
   end
 end
 
@@ -269,11 +269,11 @@ function M.calculate_selection(append)
   local result = vim.fn.eval(selection)
   print(result)
   if append then
-    local line = vim.fn.getline(".")
-    if not line:match("=%s*$") then
-      result = " = " .. result
+    local line = vim.fn.getline('.')
+    if not line:match('=%s*$') then
+      result = ' = ' .. result
     end
-    vim.fn.setline(".", line .. result)
+    vim.fn.setline('.', line .. result)
   end
 end
 
@@ -289,49 +289,49 @@ function M.get_visual_text()
     lines[n] = string.sub(lines[n], 1, e[3])
   end
 
-  return table.concat(lines, "\n"), n
+  return table.concat(lines, '\n'), n
 end
 
 function M.getword()
   local w, l
-  if vim.fn.mode() == "v" or vim.fn.mode() == "x" then
+  if vim.fn.mode() == 'v' or vim.fn.mode() == 'x' then
     w, l = M.get_visual_text()
   end
   if not l or l > 1 then
-    w = vim.fn.expand("<cword>")
+    w = vim.fn.expand('<cword>')
   end
   return w
 end
 
 function M.substitute(from, to, style)
-  from = vim.fn.expand("<cword>")
+  from = vim.fn.expand('<cword>')
   style = style or 's'
   local cmd
 
-  if vim.fn.mode() == "v" or vim.fn.mode() == "x" then
+  if vim.fn.mode() == 'v' or vim.fn.mode() == 'x' then
     local w, l = M.get_visual_text()
     -- lprint(l)
     if l == 1 then
       from = w
       to = to or from
-      cmd = string.format(":%%%s/%s/%s/g", style, from, to)
-      vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<esc>", true, false, true), 'x', true)
+      cmd = string.format(':%%%s/%s/%s/g', style, from, to)
+      vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<esc>', true, false, true), 'x', true)
     else -- a range specified
       from = vim.fn.getreg('"')
       to = to or from
       lprint(from, to)
-      cmd = string.format(":%%%s/%s/%s/g", style, from, to)
+      cmd = string.format(':%%%s/%s/%s/g', style, from, to)
     end
   else
     to = to or from
-    cmd = string.format(":%%%s/%s/%s/", style, from, to)
+    cmd = string.format(':%%%s/%s/%s/', style, from, to)
   end
 
   cmd = vim.api.nvim_replace_termcodes(cmd, true, false, true)
   return cmd
 end
-vim.keymap.set({ "n", "x" }, "<leader>s", function()
-  vim.api.nvim_feedkeys(M.substitute(), "mi", true)
+vim.keymap.set({ 'n', 'x' }, '<leader>s', function()
+  vim.api.nvim_feedkeys(M.substitute(), 'mi', true)
 end, { silent = true, expr = true })
 
 return M
