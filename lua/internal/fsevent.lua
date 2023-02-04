@@ -1,25 +1,25 @@
 local api = vim.api
 local uv = vim.loop
 local fs = {}
- -- Some path manipulation utilities
+-- Some path manipulation utilities
 local function is_dir(filename)
   local stat = uv.fs_stat(filename)
   return stat and stat.type == 'directory' or false
 end
 
-local path_sep = vim.loop.os_uname().sysname == "Windows" and "\\" or "/"
+local path_sep = vim.loop.os_uname().sysname == 'Windows' and '\\' or '/'
 -- Asumes filepath is a file.
 local function dirname(filepath)
   local is_changed = false
-  local result = filepath:gsub(path_sep.."([^"..path_sep.."]+)$", function()
+  local result = filepath:gsub(path_sep .. '([^' .. path_sep .. ']+)$', function()
     is_changed = true
-    return ""
+    return ''
   end)
   return result, is_changed
 end
 
 local function path_join(...)
-  return table.concat(vim.tbl_flatten {...}, path_sep)
+  return table.concat(vim.tbl_flatten({ ... }), path_sep)
 end
 
 -- Ascend the buffer's path until we find the rootdir.
@@ -46,13 +46,13 @@ end
 
 function fs:register_root_pattern()
   self.root_pattern = {
-    go = {'go.mod','.git'},
-    typescript = {'package.json','tsconfig.json','node_modules'},
-    javascript = {'package.json','jsconfig.json','node_modules'},
-    typescriptreact = {'package.json','jsconfig.json','node_modules'},
-    javascriptreact = {'package.json','jsconfig.json','node_modules'},
-    lua = {'.git'},
-    rust = {'.Cargo.toml'}
+    go = { 'go.mod', '.git' },
+    typescript = { 'package.json', 'tsconfig.json', 'node_modules' },
+    javascript = { 'package.json', 'jsconfig.json', 'node_modules' },
+    typescriptreact = { 'package.json', 'jsconfig.json', 'node_modules' },
+    javascriptreact = { 'package.json', 'jsconfig.json', 'node_modules' },
+    lua = { '.git' },
+    rust = { '.Cargo.toml' },
   }
 end
 
@@ -61,8 +61,8 @@ function fs:get_root_dir()
   local bufnr = api.nvim_get_current_buf()
   local filetype = vim.bo.filetype
   local root_dir = buffer_find_root_dir(bufnr, function(dir)
-    for _,pattern in pairs(self.root_pattern[filetype]) do
-      if is_dir(path_join(dir,pattern)) then
+    for _, pattern in pairs(self.root_pattern[filetype]) do
+      if is_dir(path_join(dir, pattern)) then
         return true
       elseif vim.fn.filereadable(path_join(dir, pattern)) == 1 then
         return true
@@ -82,12 +82,10 @@ end
 
 function fs:project_files_list()
   self.file_list = {}
-  local p = io.popen('rg --files '..self.root_dir)
+  local p = io.popen('rg --files ' .. self.root_dir)
   for file in p:lines() do
-    table.insert(self.file_list,file:sub(self.root_dir:len()+2))
+    table.insert(self.file_list, file:sub(self.root_dir:len() + 2))
   end
 end
-
-
 
 return fs

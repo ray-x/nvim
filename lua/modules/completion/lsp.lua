@@ -1,7 +1,6 @@
-local lspconfig = require "lspconfig"
-local configs = require 'lspconfig/configs'
-local lsp = require("vim.lsp")
-
+local lspconfig = require('lspconfig')
+local configs = require('lspconfig/configs')
+local lsp = require('vim.lsp')
 
 -- lsp not included in lspconfig
 
@@ -14,21 +13,20 @@ M.setup = function()
   if not lspconfig.emmet_ls then
     configs.emmet_ls = {
       default_config = {
-        cmd = {'emmet-ls', '--stdio'},
-        filetypes = {'html', 'css', 'javascript', 'typescript', 'scss'},
+        cmd = { 'emmet-ls', '--stdio' },
+        filetypes = { 'html', 'css', 'javascript', 'typescript', 'scss' },
         root_dir = function(fname)
           return vim.loop.cwd()
         end,
-        settings = {}
-      }
+        settings = {},
+      },
     }
   end
 
-  lspconfig.emmet_ls.setup {capabilities = capabilities}
+  lspconfig.emmet_ls.setup({ capabilities = capabilities })
   -- grammarly
-  require'lspconfig'.grammarly.setup{
-    filetypes = { "markdown", "text", "html", "latex", "org" },
-  }
-
+  require('lspconfig').grammarly.setup({
+    filetypes = { 'markdown', 'text', 'html', 'latex', 'org' },
+  })
 end
 return M

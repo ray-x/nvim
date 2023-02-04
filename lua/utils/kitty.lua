@@ -8,12 +8,12 @@
 local config = {}
 local kitty = {}
 local pid = vim.fn.getpid()
-local ns = vim.api.nvim_create_namespace("user-kitty")
+local ns = vim.api.nvim_create_namespace('user-kitty')
 
-local group = vim.api.nvim_create_augroup("user-kitty", { clear = true })
+local group = vim.api.nvim_create_augroup('user-kitty', { clear = true })
 
 local function has_support()
-  if os.getenv("TERM_PROGRAM"):find("kitty") or os.getenv("TERM"):find("kitty") then
+  if os.getenv('TERM_PROGRAM'):find('kitty') or os.getenv('TERM'):find('kitty') then
     return true
   end
   -- return vim.fn.executable("kitty") and vim.fn.system("kitty @ ls > /dev/null && printf 'ok'") == "ok"
@@ -45,7 +45,7 @@ end
 
 ---@return KittyState
 local function kitty_get_state()
-  local txt = vim.fn.system("kitty @ ls")
+  local txt = vim.fn.system('kitty @ ls')
 
   if txt == nil then
     return
@@ -57,7 +57,7 @@ end
 ---@param opts {}
 ---@return string[]
 local function kitty_get_text(id, opts)
-  return vim.fn.systemlist("kitty @ get-text --match id:" .. id)
+  return vim.fn.systemlist('kitty @ get-text --match id:' .. id)
 end
 
 local function callback()
@@ -71,7 +71,7 @@ local function callback()
       local lines = kitty_get_text(window.id, {})
 
       for _, line in ipairs(lines) do
-        local pattern = "(%S+%.%S+):(%d+):(%d+):"
+        local pattern = '(%S+%.%S+):(%d+):(%d+):'
         local path, lnum, col = string.match(line, pattern)
 
         if path then
@@ -79,9 +79,9 @@ local function callback()
 
           if bufnr then
             vim.api.nvim_buf_set_extmark(bufnr, ns, tonumber(lnum) - 1, tonumber(col) - 1, {
-              hl_group = "Search",
-              virt_text = { { "🐱", "Search" } },
-              virt_text_pos = "eol",
+              hl_group = 'Search',
+              virt_text = { { '🐱', 'Search' } },
+              virt_text_pos = 'eol',
               strict = false,
             })
           end
@@ -94,13 +94,15 @@ end
 local function init()
   if not has_support() then
     -- vim.notify("Kitty remote control is not enabled or supported, hint: check the output of `kitty @ ls`")
-    lprint("Kitty remote control is not enabled or supported, hint: check the output of `kitty @ ls`")
+    lprint(
+      'Kitty remote control is not enabled or supported, hint: check the output of `kitty @ ls`'
+    )
     return
   end
 
-  vim.api.nvim_create_autocmd({ "BufEnter" }, {
+  vim.api.nvim_create_autocmd({ 'BufEnter' }, {
     -- Tweak the pattern to enable whatever filetypes you want to support
-    pattern = { "*.lua" },
+    pattern = { '*.lua' },
     group = group,
     callback = callback,
   })
@@ -113,7 +115,7 @@ local split = function(str)
   if not str then
     return
   end
-  for s in string.gmatch(str, "%S+") do
+  for s in string.gmatch(str, '%S+') do
     table.insert(tokens, s)
   end
 
@@ -122,10 +124,10 @@ end
 
 kitty.get_kitty_background = function(opts)
   local color
-  vim.fn.jobstart({ "kitty", "@", "get-colors" }, {
-    cwd = "/usr/bin/",
+  vim.fn.jobstart({ 'kitty', '@', 'get-colors' }, {
+    cwd = '/usr/bin/',
     on_exit = function(j, data, event)
-      lprint("kitty get color on exit", code, data, event)
+      lprint('kitty get color on exit', code, data, event)
       if opts then
         opts.callback(opts.color)
       end
@@ -135,7 +137,7 @@ kitty.get_kitty_background = function(opts)
         return
       end
       local color = split(data[4])[2]
-      lprint("kitty get color on stdout", color)
+      lprint('kitty get color on stdout', color)
       vim.g.ORIGINAL_KITTY_BG_COLOR = color
     end,
   })
@@ -148,10 +150,10 @@ end
 local autocmd = vim.api.nvim_create_autocmd
 local autogroup = vim.api.nvim_create_augroup
 local change_background = function(color)
-  lprint("change_background", color)
-  if color and color ~= "NONE" then
+  lprint('change_background', color)
+  if color and color ~= 'NONE' then
     local arg = 'background="' .. color .. '"'
-    local command = "kitty @ set-colors " .. arg
+    local command = 'kitty @ set-colors ' .. arg
     local handle = io.popen(command)
     if handle ~= nil then
       handle:close()
@@ -159,14 +161,14 @@ local change_background = function(color)
   end
 end
 local function on_leave(color)
-  autocmd("VimLeavePre", {
+  autocmd('VimLeavePre', {
     callback = function()
       local cl = color or vim.g.ORIGINAL_KITTY_BG_COLOR
       if cl then
         change_background(cl)
       end
     end,
-    group = autogroup("BackgroundRestore", { clear = true }),
+    group = autogroup('BackgroundRestore', { clear = true }),
   })
 end
 
@@ -182,12 +184,13 @@ end
 
 local pid
 kitty.set_title_on_active = function(title)
-  local win_id = vim.fn.expand("$KITTY_WINDOW_ID") -- environ()['KITTY_WINDOW_ID']
+  local win_id = vim.fn.expand('$KITTY_WINDOW_ID') -- environ()['KITTY_WINDOW_ID']
   pid = tostring(vim.loop.os_getppid())
 
-  local jq = "kitty @ls | jq '.[0].tabs.[] | select (.is_focused).windows[].foreground_processes[].pid'"
+  local jq =
+    "kitty @ls | jq '.[0].tabs.[] | select (.is_focused).windows[].foreground_processes[].pid'"
   local function on_event(job_id, data, event)
-    if event == "exit" then
+    if event == 'exit' then
       -- lprint("get active win exit", data, event)
       return
     end
@@ -210,16 +213,16 @@ end
 
 kitty.set_title = function(title)
   -- lprint('set_title', title)
-  local cmd = { "kitty", "@", "set-window-title"}
+  local cmd = { 'kitty', '@', 'set-window-title' }
   if title then
     table.insert(cmd, title)
   end
   vim.fn.jobstart(cmd, { on_exit = function(_, _) end })
 end
 
-vim.api.nvim_create_user_command("SetKittyBg", function(opts)
+vim.api.nvim_create_user_command('SetKittyBg', function(opts)
   kitty.get_kitty_background()
-  local color = get_color("Normal", "bg")
+  local color = get_color('Normal', 'bg')
   if opts.fargs ~= nil then
     color = opts.fargs[1]
   end
@@ -227,19 +230,19 @@ vim.api.nvim_create_user_command("SetKittyBg", function(opts)
     return
   end
   kitty.change_background(color)
-  autocmd("VimLeavePre", {
+  autocmd('VimLeavePre', {
     callback = function()
       if vim.g.ORIGINAL_KITTY_BG_COLOR ~= nil then
         kitty.change_background(vim.g.ORIGINAL_KITTY_BG_COLOR)
       end
     end,
-    group = autogroup("BackgroundRestore", { clear = true }),
+    group = autogroup('BackgroundRestore', { clear = true }),
   })
-end, { nargs = "*" })
+end, { nargs = '*' })
 
-vim.api.nvim_create_user_command("KittyBg", function(opts)
+vim.api.nvim_create_user_command('KittyBg', function(opts)
   kitty.change_bg(opts.fargs[1])
-end, { nargs = "*" })
+end, { nargs = '*' })
 
 -- kitty @ get-colors | grep -w "background" | sed "s/   */:/g" | cut -d : -f 2
 return kitty

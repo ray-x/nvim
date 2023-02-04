@@ -1,13 +1,13 @@
-local bind = require("keymap.bind")
+local bind = require('keymap.bind')
 local map_cmd = bind.map_cmd
 local map_func = bind.map_func
 local map_plug = bind.map_plug
 local map_cu = bind.map_cu
-local loader = require("packer").loader
+local loader = require('packer').loader
 local K = {}
 local function check_back_space()
-  local col = vim.fn.col(".") - 1
-  if col == 0 or vim.fn.getline("."):sub(col, col):match("%s") then
+  local col = vim.fn.col('.') - 1
+  if col == 0 or vim.fn.getline('.'):sub(col, col):match('%s') then
     return true
   else
     return false
@@ -224,7 +224,7 @@ vim.cmd([[inoremap  <D-v>  <CTRL-r>*]])
 _G.run_or_test = function(debug)
   -- local function rot()
   local ft = vim.bo.filetype
-  local fn = vim.fn.expand("%")
+  local fn = vim.fn.expand('%')
   fn = string.lower(fn)
   -- if fn == "[nvim-lua]" then
   --   if not packer_plugins["nvim-luadev"].loaded then
@@ -232,99 +232,99 @@ _G.run_or_test = function(debug)
   --   end
   --   return [[<Plug>Luadev-Run]]
   -- end
-  if ft == "lua" then
-    local f = string.find(fn, "spec")
+  if ft == 'lua' then
+    local f = string.find(fn, 'spec')
     if f == nil then
       -- let run lua test
-      return "<CMD>luafile %<CR>"
+      return '<CMD>luafile %<CR>'
     end
-    return "<Plug>PlenaryTestFile"
+    return '<Plug>PlenaryTestFile'
   end
-  if ft == "go" then
-    local f = string.find(fn, "test.go")
+  if ft == 'go' then
+    local f = string.find(fn, 'test.go')
     if f == nil then
       -- let run lua test
       if debug then
-        return "<CMD>GoDebug <CR>"
+        return '<CMD>GoDebug <CR>'
       else
-        return "<CMD>GoRun<CR>"
+        return '<CMD>GoRun<CR>'
       end
     end
 
     if debug then
-      return "<CMD>GoDebug -t<CR>"
+      return '<CMD>GoDebug -t<CR>'
     else
-      return "<CMD>GoTestFunc -F<CR>"
+      return '<CMD>GoTestFunc -F<CR>'
     end
   end
 
-  if ft == "hurl" then
-    return "<CMD>HurlRun<CR>"
+  if ft == 'hurl' then
+    return '<CMD>HurlRun<CR>'
   end
 
-  if ft == "rest" then
-    return "<CMD>RestRun<CR>"
+  if ft == 'rest' then
+    return '<CMD>RestRun<CR>'
   end
   local m = vim.fn.mode()
-  if m == "n" or m == "i" then
-    require("sniprun").run()
+  if m == 'n' or m == 'i' then
+    require('sniprun').run()
   else
-    require("sniprun").run("v")
+    require('sniprun').run('v')
   end
 end
 
 _G.hop1 = function(ac)
-  if packer_plugins["hop"].loaded ~= true then
-    loader("hop")
+  if packer_plugins['hop'].loaded ~= true then
+    loader('hop')
   end
-  if vim.fn.mode() == "s" then
+  if vim.fn.mode() == 's' then
     -- print(vim.fn.mode(), vim.fn.mode() == 's')
     return vim.cmd('exe "normal! i s"')
   end
 
   if ac == 1 then
-    require("hop").hint_char1({ direction = require("hop.hint").HintDirection.AFTER_CURSOR })
+    require('hop').hint_char1({ direction = require('hop.hint').HintDirection.AFTER_CURSOR })
   else
-    require("hop").hint_char1({ direction = require("hop.hint").HintDirection.BEFORE_CURSOR })
+    require('hop').hint_char1({ direction = require('hop.hint').HintDirection.BEFORE_CURSOR })
   end
 end
 
 _G.Line_ft = function(a)
-  if packer_plugins["hop"].loaded ~= true then
-    loader("hop")
+  if packer_plugins['hop'].loaded ~= true then
+    loader('hop')
   end
-  if vim.fn.mode() == "s" then
+  if vim.fn.mode() == 's' then
     return vim.fn.input(a)
   end
   -- check and load hop
-  local loaded, hop = pcall(require, "hop")
+  local loaded, hop = pcall(require, 'hop')
   if not loaded or not hop.initialized then
-    require("packer").loader("hop")
-    loaded, hop = pcall(require, "hop")
+    require('packer').loader('hop')
+    loaded, hop = pcall(require, 'hop')
   end
-  if a == "f" then
-    require("hop").hint_char1({
-      direction = require("hop.hint").HintDirection.AFTER_CURSOR,
+  if a == 'f' then
+    require('hop').hint_char1({
+      direction = require('hop.hint').HintDirection.AFTER_CURSOR,
       current_line_only = true,
     })
   end
-  if a == "F" then
-    require("hop").hint_char1({
-      direction = require("hop.hint").HintDirection.BEFORE_CURSOR,
+  if a == 'F' then
+    require('hop').hint_char1({
+      direction = require('hop.hint').HintDirection.BEFORE_CURSOR,
       current_line_only = true,
     })
   end
 
-  if a == "t" then
-    require("hop").hint_char1({
-      direction = require("hop.hint").HintDirection.AFTER_CURSOR,
+  if a == 't' then
+    require('hop').hint_char1({
+      direction = require('hop.hint').HintDirection.AFTER_CURSOR,
       current_line_only = true,
       hint_offset = -1,
     })
   end
-  if a == "T" then
-    require("hop").hint_char1({
-      direction = require("hop.hint").HintDirection.BEFORE_CURSOR,
+  if a == 'T' then
+    require('hop').hint_char1({
+      direction = require('hop.hint').HintDirection.BEFORE_CURSOR,
       current_line_only = true,
       hint_offset = 1,
     })
@@ -335,17 +335,17 @@ vim.cmd([[command! -nargs=*  DebugOpen lua require"modules.lang.dap".prepare()]]
 vim.cmd([[command! -nargs=*  Format lua vim.lsp.buf.format({async=true}) ]])
 vim.cmd([[command! -nargs=*  HpoonClear lua require"harpoon.mark".clear_all()]])
 
-local plugmap = require("keymap").map
-local merged = vim.tbl_extend("force", plugmap, keys)
+local plugmap = require('keymap').map
+local merged = vim.tbl_extend('force', plugmap, keys)
 
 bind.nvim_load_mapping(merged)
 local key_maps = bind.all_keys
 
 K.get_keymaps = function()
-  local ListView = require("guihua.listview")
+  local ListView = require('guihua.listview')
   local win = ListView:new({
-    loc = "top_center",
-    border = "none",
+    loc = 'top_center',
+    border = 'none',
     prompt = true,
     enter = true,
     rect = { height = 20, width = 90 },
@@ -353,49 +353,52 @@ K.get_keymaps = function()
   })
 end
 
-vim.api.nvim_create_user_command("Keymaps", function()
-  require("overwrite.mapping").get_keymaps()
+vim.api.nvim_create_user_command('Keymaps', function()
+  require('overwrite.mapping').get_keymaps()
 end, {})
 
-vim.api.nvim_create_user_command("Jsonfmt", function(opts)
-  if vim.fn.executable("jq") == 0 then
-    lprint("jq not found")
+vim.api.nvim_create_user_command('Jsonfmt', function(opts)
+  if vim.fn.executable('jq') == 0 then
+    lprint('jq not found')
     return vim.cmd([[%!python -m json.tool]])
   end
-  vim.cmd("%!jq")
-end, { nargs = "*" })
+  vim.cmd('%!jq')
+end, { nargs = '*' })
 
 -- with file name or bang
-vim.api.nvim_create_user_command("NewOrg", function(opts)
+vim.api.nvim_create_user_command('NewOrg', function(opts)
   local fn
   if vim.fn.empty(opts.fargs) == 0 then
     fn = opts.fargs[1]
   end
-  local path = "~/Desktop/logseq"
+  local path = '~/Desktop/logseq'
   local j = opts.bang or fn
   if j then
     -- this is a page
-    path = path .. "/pages/"
+    path = path .. '/pages/'
   else
-    path = path .. "/journals/"
-    fn = vim.fn.strftime("%Y_%m_%d") .. ".org"
+    path = path .. '/journals/'
+    fn = vim.fn.strftime('%Y_%m_%d') .. '.org'
   end
-  vim.cmd("e " .. path .. fn)
+  vim.cmd('e ' .. path .. fn)
   if j then
-    vim.api.nvim_buf_set_lines(0, 0, 1, false, { "* TODO" })
+    vim.api.nvim_buf_set_lines(0, 0, 1, false, { '* TODO' })
   else
     vim.api.nvim_buf_set_lines(
-      0, 0, 6, false,
-      { "#+TITLE: ", "#+AUTHER: Ray", "#+Date: " .. vim.fn.strftime("%c"), "", "* 1st", "* 2nd" }
+      0,
+      0,
+      6,
+      false,
+      { '#+TITLE: ', '#+AUTHER: Ray', '#+Date: ' .. vim.fn.strftime('%c'), '', '* 1st', '* 2nd' }
     )
   end
-end, { nargs = "*", bang = true })
+end, { nargs = '*', bang = true })
 
-vim.api.nvim_create_user_command("Flg", "Flog -date=short", { nargs = "*" })
-vim.api.nvim_create_user_command("Flgs", "Flogsplit -date=short", {})
+vim.api.nvim_create_user_command('Flg', 'Flog -date=short', { nargs = '*' })
+vim.api.nvim_create_user_command('Flgs', 'Flogsplit -date=short', {})
 
-vim.api.nvim_create_user_command("ResetWorkspace", function(opts)
-  local folder = opts.fargs[1] or vim.fn.expand("%:p:h")
+vim.api.nvim_create_user_command('ResetWorkspace', function(opts)
+  local folder = opts.fargs[1] or vim.fn.expand('%:p:h')
   local workspaces = vim.lsp.buf.list_workspace_folders()
   for _, v in ipairs(workspaces) do
     if v ~= folder then
@@ -403,7 +406,7 @@ vim.api.nvim_create_user_command("ResetWorkspace", function(opts)
       return
     end
   end
-end, { nargs = "*", bang = true })
+end, { nargs = '*', bang = true })
 
 -- Use `git ls-files` for git files, use `find ./ *` for all files under work directory.
 --

@@ -29,28 +29,28 @@ local t = termcodes
 
 _G.tab_complete = function()
   if vim.fn.pumvisible() == 1 then
-    return t "<C-n>"
+    return t('<C-n>')
     -- elseif vim.fn.call("vsnip#available", {1}) == 1 then
     --   return t "<Plug>(vsnip-expand-or-jump)"
   elseif check_back_space() then
-    return t "<Tab>"
+    return t('<Tab>')
   elseif prequire('luasnip') and require('luasnip').expand_or_jumpable() then
-    return t("<Plug>luasnip-expand-or-jump")
+    return t('<Plug>luasnip-expand-or-jump')
   elseif prequire('cmp') and require('cmp').visible() then
     return require('cmp').mapping.select_next_item()
   end
-  return t "<Tab>"
+  return t('<Tab>')
 end
 
 _G.s_tab_complete = function()
   if vim.fn.pumvisible() == 1 then
-    return t "<C-p>"
+    return t('<C-p>')
   elseif prequire('luasnip') and prequire('luasnip').jumpable(-1) then
-    return t("<Plug>luasnip-jump-prev")
+    return t('<Plug>luasnip-jump-prev')
   elseif prequire('cmp') and require('cmp').visible() then
     return require('cmp').mapping.select_prev_item()
   end
-  return t "<S-Tab>"
+  return t('<S-Tab>')
 end
 
 _G.ctrl_k = function()
@@ -60,7 +60,7 @@ end
 
 _G.word_motion_move = function(key)
   if not packer_plugins['vim-wordmotion'] or not packer_plugins['vim-wordmotion'].loaded then
-    require'packer'.loader("vim-wordmotion")
+    require('packer').loader('vim-wordmotion')
     -- vim.cmd [[packadd vim-wordmotion]]
   end
   local map = key == 'w' and '<Plug>(WordMotion_w)' or '<Plug>(WordMotion_b)'

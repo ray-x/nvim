@@ -1,5 +1,5 @@
 -- https://github.com/ziontee113/luasnip-tutorial/blob/main/snippets/lua.lua
-local ls = require("luasnip") --{{{
+local ls = require('luasnip') --{{{
 local s = ls.s --> snippet
 local i = ls.i --> insert node
 local t = ls.t --> text node
@@ -9,7 +9,7 @@ local c = ls.choice_node
 local f = ls.function_node
 -- local sn = ls.snippet_node
 
-local fmt = require("luasnip.extras.fmt").fmt
+local fmt = require('luasnip.extras.fmt').fmt
 -- local rep = require("luasnip.extras").rep
 
 -- local snippets, autosnippets = {}, {} --}}}
@@ -19,12 +19,12 @@ local fmt = require("luasnip.extras.fmt").fmt
 -- local utils = require("snippets.utils")
 
 local function last_lua_module_section(args) --{{{
-  local text = args[1][1] or ""
-  local split = vim.split(text, ".", { plain = true })
+  local text = args[1][1] or ''
+  local split = vim.split(text, '.', { plain = true })
 
   local options = {}
   for len = 0, #split - 1 do
-    local node = ls.t(table.concat(vim.list_slice(split, #split - len, #split), "_"))
+    local node = ls.t(table.concat(vim.list_slice(split, #split - len, #split), '_'))
     table.insert(options, node)
   end
 
@@ -33,20 +33,20 @@ local function last_lua_module_section(args) --{{{
   })
 end --}}}
 
-lprint("add_snip")
-ls.add_snippets("lua", {
+lprint('add_snip')
+ls.add_snippets('lua', {
   s( -- Ignore stylua {{{
-    { trig = "ignore", name = "Ignore Stylua" },
-    fmt("-- stylua: ignore {}\n{}", {
+    { trig = 'ignore', name = 'Ignore Stylua' },
+    fmt('-- stylua: ignore {}\n{}', {
       ls.c(1, {
-        ls.t("start"),
-        ls.t("end"),
+        ls.t('start'),
+        ls.t('end'),
       }),
       ls.i(0),
     })
   ), --}}}
   s( -- Function {{{
-    { trig = "fn", dsce = "create a function" },
+    { trig = 'fn', dsce = 'create a function' },
     fmt(
       [[
       {} {}({})
@@ -55,8 +55,8 @@ ls.add_snippets("lua", {
     ]],
       {
         ls.c(1, {
-          ls.t("function"),
-          ls.t("local function"),
+          ls.t('function'),
+          ls.t('local function'),
         }),
         ls.i(2),
         ls.i(3),
@@ -66,7 +66,7 @@ ls.add_snippets("lua", {
   ), --}}}
 
   s( -- Require Module {{{
-    { trig = "req", name = "Require", dscr = "Choices are on the variable name" },
+    { trig = 'req', name = 'Require', dscr = 'Choices are on the variable name' },
     fmt([[local {} = require("{}")]], {
       d(2, last_lua_module_section, { 1 }),
       ls.i(1),
@@ -74,14 +74,14 @@ ls.add_snippets("lua", {
   ), --}}}
 
   -- Start Refactoring --
-  s("CMD", { -- [CMD] multiline vim.cmd{{{
-    t({ "vim.cmd[[", "  " }),
-    i(1, ""),
-    t({ "", "]]" }),
+  s('CMD', { -- [CMD] multiline vim.cmd{{{
+    t({ 'vim.cmd[[', '  ' }),
+    i(1, ''),
+    t({ '', ']]' }),
   }), --}}}
-  s("cmd", fmt("vim.cmd[[{}]]", { i(1, "") })), -- single line vim.cmd
+  s('cmd', fmt('vim.cmd[[{}]]', { i(1, '') })), -- single line vim.cmd
   s({ -- github import for packer{{{
-    trig = "https://github%.com/([%w-%._]+)/([%w-%._]+)!",
+    trig = 'https://github%.com/([%w-%._]+)/([%w-%._]+)!',
     regTrig = true,
     hidden = true,
   }, {
@@ -89,15 +89,15 @@ ls.add_snippets("lua", {
     f(function(_, snip)
       return snip.captures[1]
     end),
-    t("/"),
+    t('/'),
     f(function(_, snip)
       return snip.captures[2]
     end),
-    t({ [["]], "" }),
-    i(1, ""),
+    t({ [["]], '' }),
+    i(1, ''),
   }), --}}}
   s( -- {regexSnippet} LuaSnippet{{{
-    "regexSnippet",
+    'regexSnippet',
     fmt(
       [=[
 cs( -- {}
@@ -108,15 +108,15 @@ cs( -- {}
 }}))
       ]=],
       {
-        i(1, "Description"),
-        i(2, ""),
-        i(3, ""),
-        i(4, ""),
+        i(1, 'Description'),
+        i(2, ''),
+        i(3, ''),
+        i(4, ''),
       }
     )
   ), --}}}
   s( -- [luaSnippet] LuaSnippet{{{
-    "luaSnippet",
+    'luaSnippet',
     fmt(
       [=[
 cs("{}", fmt( -- {}
@@ -127,33 +127,33 @@ cs("{}", fmt( -- {}
   }}){})
     ]=],
       {
-        i(1, ""),
-        i(2, "Description"),
-        i(3, ""),
-        i(4, ""),
+        i(1, ''),
+        i(2, 'Description'),
+        i(3, ''),
+        i(4, ''),
         c(5, {
-          t(""),
-          fmt([[, "{}"]], { i(1, "keymap") }),
-          fmt([[, {{ pattern = "{}", {} }}]], { i(1, "*/snippets/*.lua"), i(2, "keymap") }),
+          t(''),
+          fmt([[, "{}"]], { i(1, 'keymap') }),
+          fmt([[, {{ pattern = "{}", {} }}]], { i(1, '*/snippets/*.lua'), i(2, 'keymap') }),
         }),
       }
     )
   ), --}}}
 
   s( -- choice_node_snippet luaSnip choice node{{{
-    "choice_node_snippet",
+    'choice_node_snippet',
     fmt(
       [[
 c({}, {{ {} }}),
 ]],
       {
-        i(1, ""),
-        i(2, ""),
+        i(1, ''),
+        i(2, ''),
       }
     )
   ), --}}}
   s( -- [function] Lua function snippet{{{
-    "function",
+    'function',
     fmt(
       [[
 function {}({})
@@ -161,14 +161,14 @@ function {}({})
 end
 ]],
       {
-        i(1, ""),
-        i(2, ""),
-        i(3, ""),
+        i(1, ''),
+        i(2, ''),
+        i(3, ''),
       }
     )
   ), --}}}
   s( -- [local_function] Lua function snippet{{{
-    "local_function",
+    'local_function',
     fmt(
       [[
 local function {}({})
@@ -176,22 +176,22 @@ local function {}({})
 end
 ]],
       {
-        i(1, ""),
-        i(2, ""),
-        i(3, ""),
+        i(1, ''),
+        i(2, ''),
+        i(3, ''),
       }
     ),
-    "jlf"
+    'jlf'
   ), --}}}
   s( -- [local] Lua local variable snippet{{{
-    "local",
+    'local',
     fmt(
       [[
 local {} = {}
   ]],
-      { i(1, ""), i(2, "") }
+      { i(1, ''), i(2, '') }
     ),
-    "jj"
+    'jj'
   ), --}}}
 })
 -- End Refactoring --

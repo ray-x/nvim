@@ -34,10 +34,16 @@ return {
         extra_filetypes = { 'txt', 'text', 'org' },
         command = 'proselint',
       }),
-      actions.proselint.with({ filetypes = { 'markdown', 'tex' }, command = 'proselint', args = { '--json' } }),
+      actions.proselint.with({
+        filetypes = { 'markdown', 'tex' },
+        command = 'proselint',
+        args = { '--json' },
+      }),
     }
 
-    local function exist(bin) return vim.fn.exepath(bin) ~= '' end
+    local function exist(bin)
+      return vim.fn.exepath(bin) ~= ''
+    end
 
     table.insert(
       sources,
@@ -54,22 +60,38 @@ return {
       table.insert(sources, null_ls.builtins.diagnostics.shellcheck)
     end
 
-    if exist('shfmt') then table.insert(sources, null_ls.builtins.formatting.shfmt) end
+    if exist('shfmt') then
+      table.insert(sources, null_ls.builtins.formatting.shfmt)
+    end
 
     -- golang
-    if exist('golangci-lint') then table.insert(sources, null_ls.builtins.diagnostics.golangci_lint) end
+    if exist('golangci-lint') then
+      table.insert(sources, null_ls.builtins.diagnostics.golangci_lint)
+    end
 
-    if exist('revive') then table.insert(sources, null_ls.builtins.diagnostics.revive) end
+    if exist('revive') then
+      table.insert(sources, null_ls.builtins.diagnostics.revive)
+    end
 
     -- docker
-    if exist('hadolint') then table.insert(sources, null_ls.builtins.diagnostics.hadolint) end
+    if exist('hadolint') then
+      table.insert(sources, null_ls.builtins.diagnostics.hadolint)
+    end
 
-    if exist('codespell') then table.insert(sources, null_ls.builtins.diagnostics.codespell) end
-    if exist('eslint_d') then table.insert(sources, null_ls.builtins.diagnostics.eslint_d) end
+    if exist('codespell') then
+      table.insert(sources, null_ls.builtins.diagnostics.codespell)
+    end
+    if exist('eslint_d') then
+      table.insert(sources, null_ls.builtins.diagnostics.eslint_d)
+    end
     -- js, ts
-    if exist('prettierd') then table.insert(sources, null_ls.builtins.formatting.prettierd) end
+    if exist('prettierd') then
+      table.insert(sources, null_ls.builtins.formatting.prettierd)
+    end
     -- lua
-    if exist('selene') then table.insert(sources, null_ls.builtins.diagnostics.selene) end
+    if exist('selene') then
+      table.insert(sources, null_ls.builtins.diagnostics.selene)
+    end
     if exist('stylua') then
       table.insert(
         sources,
@@ -105,7 +127,10 @@ return {
           to_stdin = false,
           format = 'raw',
           from_stderr = true,
-          on_output = require('null-ls.helpers').diagnostics.from_errorformat([[%f:%l: %trror: %m]], 'java'),
+          on_output = require('null-ls.helpers').diagnostics.from_errorformat(
+            [[%f:%l: %trror: %m]],
+            'java'
+          ),
         },
         factory = require('null-ls.helpers').generator_factory,
       })
@@ -172,14 +197,23 @@ return {
       debounce = 1000,
       default_timeout = 5000,
       fallback_severity = vim.diagnostic.severity.WARN,
-      root_dir = require('lspconfig').util.root_pattern('.null-ls-root', 'Makefile', '.git', 'go.mod', 'package.json', 'tsconfig.json'),
+      root_dir = require('lspconfig').util.root_pattern(
+        '.null-ls-root',
+        'Makefile',
+        '.git',
+        'go.mod',
+        'package.json',
+        'tsconfig.json'
+      ),
       on_init = function(new_client, _)
         if vim.tbl_contains({ 'h', 'cpp', 'c' }, vim.o.ft) then
           new_client.offset_encoding = 'utf-16' -- , "utf-32" for ccls
         end
       end,
       on_attach = function(client)
-        if client.server_capabilities.documentFormatting then vim.cmd('autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()') end
+        if client.server_capabilities.documentFormatting then
+          vim.cmd('autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()')
+        end
       end,
     }
 

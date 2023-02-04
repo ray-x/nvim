@@ -4,9 +4,9 @@ local options = setmetatable({}, { __index = { global_local = {}, window_local =
 local function bind_option(opts)
   for k, v in pairs(opts) do
     if v == true or v == false then
-      vim.cmd("set " .. k)
+      vim.cmd('set ' .. k)
     else
-      vim.cmd("set " .. k .. "=" .. v)
+      vim.cmd('set ' .. k .. '=' .. v)
     end
   end
 end
@@ -15,7 +15,7 @@ function options:load_options()
   self.global_local = {}
   self.window_local = {}
   if vim.wo.diff then
-    self.global_local = { foldmethod = "diff", diffopt = "context:0", foldlevel = 10, mouse = "a" }
+    self.global_local = { foldmethod = 'diff', diffopt = 'context:0', foldlevel = 10, mouse = 'a' }
     self.window_local = {
       -- foldmethod = "expr",
       cursorline = false,
@@ -26,7 +26,7 @@ function options:load_options()
     self.global_local = {}
 
     self.window_local = {
-      foldmethod = "expr",
+      foldmethod = 'expr',
       relativenumber = true,
       number = true,
       foldenable = true,
@@ -41,17 +41,17 @@ function options:load_options()
     vim.wo[name] = value
   end
 
-  vim.cmd("imap <M-V> <C-R>+") -- mac
-  vim.cmd("imap <C-V> <C-R>*")
+  vim.cmd('imap <M-V> <C-R>+') -- mac
+  vim.cmd('imap <C-V> <C-R>*')
   vim.cmd('vmap <LeftRelease> "*ygv')
-  vim.cmd("unlet loaded_matchparen")
+  vim.cmd('unlet loaded_matchparen')
 
-  local global = require("core.global")
+  local global = require('core.global')
   local win = global.is_windows
   if not win then
-    vim.g.python3_host_prog = "/usr/bin/python3"
+    vim.g.python3_host_prog = '/usr/bin/python3'
   else
-    vim.notify("please setup python3")
+    vim.notify('please setup python3')
   end
   -- vim.g.python_host_prog = ""
 end

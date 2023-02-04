@@ -1,8 +1,8 @@
 M = {}
 local parse_changes = function()
-  local status = vim.fn.system "git status --porcelain"
+  local status = vim.fn.system('git status --porcelain')
 
-  local changes = vim.split(vim.trim(status), "\n")
+  local changes = vim.split(vim.trim(status), '\n')
 
   return changes
 end
@@ -19,12 +19,12 @@ M.qf_add = function(type)
     local change_type = vim.trim(change:sub(1, 1))
     local file_path = vim.trim(change:sub(3))
 
-    if type == "all" then
+    if type == 'all' then
       local bufnr = vim.fn.bufadd(file_path)
-      table.insert(qflist_what, {bufnr = bufnr, lnum = 0, col = 0})
+      table.insert(qflist_what, { bufnr = bufnr, lnum = 0, col = 0 })
     elseif change_type == type then
       local bufnr = vim.fn.bufadd(file_path)
-      table.insert(qflist_what, {bufnr = bufnr, lnum = 0, col = 0})
+      table.insert(qflist_what, { bufnr = bufnr, lnum = 0, col = 0 })
     end
   end
 
@@ -34,6 +34,6 @@ M.qf_add = function(type)
 
   vim.fn.setqflist(qflist_what)
 
-  vim.cmd [[copen]]
+  vim.cmd([[copen]])
 end
 return M

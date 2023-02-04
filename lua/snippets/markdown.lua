@@ -1,14 +1,14 @@
-local ls = require("luasnip")
-local fmt = require("luasnip.extras.fmt").fmt
+local ls = require('luasnip')
+local fmt = require('luasnip.extras.fmt').fmt
 
-ls.add_snippets("markdown", {
+ls.add_snippets('markdown', {
   ls.s( -- Link {{{
     {
-      trig = "link",
-      name = "markdown_link",
-      dscr = "Create markdown link [txt](url).\nSelect link, press C-s, type link.",
+      trig = 'link',
+      name = 'markdown_link',
+      dscr = 'Create markdown link [txt](url).\nSelect link, press C-s, type link.',
     },
-    fmt("[{}]({})\n{}", {
+    fmt('[{}]({})\n{}', {
       ls.i(1),
       ls.f(function(_, snip)
         return snip.env.TM_SELECTED_TEXT[1] or {}
@@ -19,12 +19,12 @@ ls.add_snippets("markdown", {
 
   ls.s( -- Codeblock {{{
     {
-      trig = "codeblock",
-      name = "Make code block",
-      dscr = "Select text, press <C-s>, type codeblock.",
+      trig = 'codeblock',
+      name = 'Make code block',
+      dscr = 'Select text, press <C-s>, type codeblock.',
     },
-    fmt("```{}\n{}\n```\n{}", {
-      ls.i(1, "Language"),
+    fmt('```{}\n{}\n```\n{}', {
+      ls.i(1, 'Language'),
       ls.f(function(_, snip)
         local tmp = snip.env.TM_SELECTED_TEXT
         tmp[0] = nil

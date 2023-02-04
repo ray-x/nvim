@@ -1,4 +1,4 @@
-local global = require("core.global")
+local global = require('core.global')
 local vim = vim
 
 local disable_distribution_plugins = function()
@@ -23,41 +23,41 @@ local disable_distribution_plugins = function()
 end
 
 local load_core = function()
-  require("core.helper")
+  require('core.helper')
 
-  local pack = require("core.pack")
+  local pack = require('core.pack')
 
   -- print(vim.inspect(debug.traceback()))
 
   disable_distribution_plugins()
-  vim.g.mapleader = "\\"
+  vim.g.mapleader = '\\'
   local installed = pack.ensure_plugins()
 
   -- override default colorscheme
-  vim.api.nvim_set_hl(0, "StatusLine", { bg = "None" })
-  vim.api.nvim_set_hl(0, "StatusLineNC", { bg = "None" })
-  vim.api.nvim_set_hl(0, "Normal", { bg = "None" })
-  vim.api.nvim_set_hl(0, "Pmenu", { bg = "None" })
-  vim.api.nvim_set_hl(0, "SignColumn", { bg = "None" })
-  vim.api.nvim_set_hl(0, "FoldColumn", { bg = "None" })
-  require("core.options")
-  require("core.mapping")
+  vim.api.nvim_set_hl(0, 'StatusLine', { bg = 'None' })
+  vim.api.nvim_set_hl(0, 'StatusLineNC', { bg = 'None' })
+  vim.api.nvim_set_hl(0, 'Normal', { bg = 'None' })
+  vim.api.nvim_set_hl(0, 'Pmenu', { bg = 'None' })
+  vim.api.nvim_set_hl(0, 'SignColumn', { bg = 'None' })
+  vim.api.nvim_set_hl(0, 'FoldColumn', { bg = 'None' })
+  require('core.options')
+  require('core.mapping')
   -- require("core.dot_repeat")
-  require("keymap")
-  require("core.event")
-  _G.lprint = require("utils.log").lprint
+  require('keymap')
+  require('core.event')
+  _G.lprint = require('utils.log').lprint
   vim.defer_fn(function()
-    lprint("load compiled and lazy")
+    lprint('load compiled and lazy')
     if pack.load_compile() then
-      require("core.colorscheme").load_colorscheme()
-      require("core.lazy")
+      require('core.colorscheme').load_colorscheme()
+      require('core.lazy')
     else
-      require("core.colorscheme").load_colorscheme("galaxy")
+      require('core.colorscheme').load_colorscheme('galaxy')
       vim.defer_fn(function()
         -- print("precompile_existed")
         pack.load_compile()
-        require("packer_compiled")
-        return require("core.lazy")
+        require('packer_compiled')
+        return require('core.lazy')
       end, 1500) -- 1.5s is a hacky way to wait for packer to finish compiling
     end
   end, 5)

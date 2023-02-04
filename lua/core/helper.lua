@@ -1,6 +1,6 @@
 _G = _G or {}
 
-local home = os.getenv("HOME")
+local home = os.getenv('HOME')
 
 local function exists(file)
   local ok, _, code = os.rename(file, file)
@@ -15,7 +15,7 @@ local helper = {
   init = function()
     -- https://www.reddit.com/r/neovim/comments/sg919r/diff_with_clipboard/
     _G.compare_to_clipboard = function()
-      local ftype = vim.api.nvim_eval("&filetype")
+      local ftype = vim.api.nvim_eval('&filetype')
       vim.cmd(string.format(
         [[
           vsplit
@@ -36,8 +36,8 @@ local helper = {
       if Plugin_debug ~= nil then
         return Plugin_debug
       end
-      local host = os.getenv("HOST_NAME")
-      if host and host:lower():find("ray") then
+      local host = os.getenv('HOST_NAME')
+      if host and host:lower():find('ray') then
         Plugin_debug = true -- enable debug here, will be slow
       else
         Plugin_debug = false
@@ -48,28 +48,32 @@ local helper = {
     -- convert word to Snake case
     _G.Snake = function(s)
       if s == nil then
-        s = vim.fn.expand("<cword>")
+        s = vim.fn.expand('<cword>')
       end
-      lprint("replace: ", s)
-      local n =
-        s:gsub("%f[^%l]%u", "_%1"):gsub("%f[^%a]%d", "_%1"):gsub("%f[^%d]%a", "_%1"):gsub("(%u)(%u%l)", "%1_%2"):lower()
-      vim.fn.setreg("s", n)
+      lprint('replace: ', s)
+      local n = s
+        :gsub('%f[^%l]%u', '_%1')
+        :gsub('%f[^%a]%d', '_%1')
+        :gsub('%f[^%d]%a', '_%1')
+        :gsub('(%u)(%u%l)', '%1_%2')
+        :lower()
+      vim.fn.setreg('s', n)
       vim.cmd([[exe "norm! ciw\<C-R>s"]])
-      lprint("newstr", n)
+      lprint('newstr', n)
     end
 
     -- convert to camel case
     _G.Camel = function()
       local s
       if s == nil then
-        s = vim.fn.expand("<cword>")
+        s = vim.fn.expand('<cword>')
       end
-      local n = string.gsub(s, "_%a+", function(word)
+      local n = string.gsub(s, '_%a+', function(word)
         local first = string.sub(word, 2, 2)
         local rest = string.sub(word, 3)
         return string.upper(first) .. rest
       end)
-      vim.fn.setreg("s", n)
+      vim.fn.setreg('s', n)
       vim.cmd([[exe "norm! ciw\<C-R>s"]])
     end
 
@@ -89,23 +93,23 @@ local helper = {
       end
     end
   end,
-  path_sep = package.config:sub(1, 1) == "\\" and "\\" or "/",
+  path_sep = package.config:sub(1, 1) == '\\' and '\\' or '/',
   get_config_path = function()
-    local config = os.getenv("XDG_CONFIG_DIR")
+    local config = os.getenv('XDG_CONFIG_DIR')
     if not config then
-      return home .. "/.config/nvim"
+      return home .. '/.config/nvim'
     end
     return config
   end,
   get_data_path = function()
-    local data = os.getenv("XDG_DATA_DIR")
+    local data = os.getenv('XDG_DATA_DIR')
     if not data then
-      return home .. "/.local/share/nvim"
+      return home .. '/.local/share/nvim'
     end
     return data
   end,
   isdir = function(path)
-    return exists(path .. "/")
+    return exists(path .. '/')
   end,
 }
 
@@ -129,8 +133,8 @@ _G.plugin_folder = function()
   if Plugin_folder then
     return Plugin_folder
   end
-  local host = os.getenv("HOST_NAME")
-  if host and host:lower():find("ray") then
+  local host = os.getenv('HOST_NAME')
+  if host and host:lower():find('ray') then
     Plugin_folder = [[~/github/ray-x/]] -- vim.fn.expand("$HOME") .. '/github/'
   else
     Plugin_folder = [[ray-x/]]
