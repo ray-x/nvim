@@ -69,7 +69,7 @@ local function load_options()
     completeopt = "menuone,noselect,noinsert", -- Show popup menu, even if there is one entry  menuone?
     jumpoptions    = "stack";
     showmode       = false;
-    shortmess      = "aotTIcF";
+    shortmess      = "aotTIcFC";
     scrolloff      = 2;
     sidescrolloff  = 5;
     foldlevel      = 99;
@@ -115,8 +115,9 @@ local function load_options()
     colorcolumn    = "110";
     foldenable     = true;
     signcolumn     = "auto:1";  --auto auto:2  "number"
-    cursorline     = true;
+    cursorline     = false;
     number         = true;
+    splitkeep      = "screen";
   }
 
   local bw_local  = {
@@ -164,6 +165,49 @@ local function load_options()
   for name, value in pairs(bw_local) do
     vim.bo[name] = value
   end
+end
+
+
+local function get_signs()
+  local buf = vim.api.nvim_win_get_buf(vim.g.statusline_winid)
+  return vim.tbl_map(function(sign)
+    return vim.fn.sign_getdefined(sign.name)[1]
+  end, vim.fn.sign_getplaced(buf, { group = "*", lnum = vim.v.lnum })[1].signs)
+end
+
+function _G.column()
+  local sign, git_sign
+  for _, s in ipairs(get_signs()) do
+    if s.name:find("GitSign") then
+      git_sign = s
+    else
+      sign = s
+    end
+  end
+
+  local nu = ""
+
+  local number = vim.api.nvim_win_get_option(vim.g.statusline_winid, "number")
+  if number and vim.wo.relativenumber and vim.v.virtnum == 0 then
+    nu = vim.v.relnum == 0 and vim.v.lnum or vim.v.relnum
+  end
+  local gs = git_sign and git_sign.text and ("%#" .. (git_sign.texthl or '') .. "#" .. git_sign.text .. "%*") or ""
+  local diag = sign and sign.text and ("%#" .. (sign.texthl or '') .. "#" .. sign.text .. "%*") or ""
+  local pad = ' '
+  if gs ~= '' or diag ~= '' then
+    pad = ''
+  end
+  local components = {
+    gs,
+    diag,
+    [[%=]],
+    nu .. pad,
+  }
+  return table.concat(components, "")
+end
+
+if vim.fn.has("nvim-0.9.0") == 1 then
+  vim.opt.statuscolumn = [[%!v:lua.column()]]
 end
 
 -- stylua: ignore end

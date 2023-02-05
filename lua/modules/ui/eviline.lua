@@ -143,7 +143,7 @@ local current_function = function(width)
   local path = fn.fnamemodify(fn.expand('%'), ':~:.')
   local title = path
   if ts and #ts > 1 then
-    title = title .. '>' .. ts
+    title = title .. ' -> ' .. ts
   end
 
   if not state.disable_title_update and running % 5 == 1 then

@@ -209,7 +209,9 @@ return function(ui)
     opt = true,
     event = { 'CursorMoved', 'CursorMovedI', 'ModeChanged' },
     config = function()
-      require('modicator').setup()
+      if vim.o.cursorline then
+        require('modicator').setup({ show_warnings = false })
+      end
     end,
   })
 end
