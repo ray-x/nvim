@@ -100,8 +100,6 @@ function config.navigator()
 
   local single = { '╭', '─', '╮', '│', '╯', '─', '╰', '│' }
 
-  local efm_cfg = require('modules.lang.efm').efm
-
   -- loader('aerial.nvim')
   local nav_cfg = {
     debug = plugin_debug(),
@@ -184,11 +182,7 @@ function config.navigator()
     end
   end
 
-  if use_efm() then
-    nav_cfg.lsp.efm = require('modules.lang.efm').efm
-  else
-    table.insert(nav_cfg.lsp.disable_lsp, 'efm')
-  end
+  table.insert(nav_cfg.lsp.disable_lsp, 'efm')
 
   vim.lsp.set_log_level('error') -- error debug info
   -- require"navigator".setup(nav_cfg)

@@ -106,13 +106,6 @@ return function(lang)
     end,
   })
 
-  -- lang { "gcmt/wildfire.vim",
-  --   setup = function()
-  --     vim.cmd([[nmap <leader>s <Plug>(wildfire-quick-select)]])
-  --   end,
-  --   fn = {'<Plug>(wildfire-fuel)', '<Plug>(wildfire-water)', '<Plug>(wildfire-quick-select)'}
-  -- }
-
   lang({
     'nvim-treesitter/playground',
     -- after = "nvim-treesitter",
@@ -121,11 +114,6 @@ return function(lang)
     config = conf.playground,
   })
 
-  -- lang { "stevearc/aerial.nvim",
-  --   opt = true,
-  --   cmd = { "AerialToggle" },
-  --   config = conf.aerial,
-  -- }
   lang({
     'simrat39/symbols-outline.nvim',
     opt = true,
@@ -146,7 +134,6 @@ return function(lang)
 
   lang({
     'rcarriga/nvim-dap-ui',
-    version = '2.6.0',
     -- requires = {"mfussenegger/nvim-dap"},
     config = conf.dapui,
     opt = true,
@@ -281,16 +268,6 @@ return function(lang)
       })
     end,
     module = 'lspconfig',
-  })
-
-  lang({
-    'smjonas/inc-rename.nvim',
-    opt = true,
-    cmd = { 'IncRename' },
-    module = { 'inc_rename' },
-    config = function()
-      require('inc_rename').setup()
-    end,
   })
 
   -- structural search and replace

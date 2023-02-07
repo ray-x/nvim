@@ -28,85 +28,6 @@ function config.session()
   require('auto-session').setup(opts)
 end
 
-function config.vgit()
-  -- use this as a diff tool (faster than Diffview)
-  -- there are overlaps with gitgutter. following are nice features
-
-  -- local Command = require('vgit.Command')
-  -- local command = Command()
-  -- local function command_list(...)
-  --   return command:list(...)
-  -- end
-  --
-  -- local function execute_command(...)
-  --   command:execute(...)
-  -- end
-  --
-  -- local function help()
-  --   vim.cmd('h vgit')
-  -- end
-  --
-  -- local function setup_commands()
-  --   vim.cmd(
-  --     string.format(
-  --       'command! -nargs=* -range %s %s',
-  --       '-complete=customlist,v:lua.package.loaded.vgit.command_list',
-  --       'VGit lua _G.package.loaded.vgit.execute_command(<f-args>)'
-  --     )
-  --   )
-  -- end
-  -- if true then
-  --   -- skip vgit setup as it conflict with gitsigns
-  --   return
-  -- end
-  --
-  -- require('vgit').setup({
-  --   keymaps = {},
-  --   settings = {
-  --     live_gutter = {
-  --       enabled = false,
-  --       edge_navigation = false, -- This allows users to navigate within a hunk
-  --     },
-  --     live_blame = {
-  --       enabled = false,
-  --     },
-  --     authorship_code_lens = {
-  --       enabled = false,
-  --     },
-  --     scene = {
-  --       diff_preference = 'unified',
-  --     },
-  --     diff_preview = {
-  --       keymaps = {
-  --         buffer_stage = 'S',
-  --         buffer_unstage = 'U',
-  --         buffer_hunk_stage = 's',
-  --         buffer_hunk_unstage = 'u',
-  --         toggle_view = 't',
-  --       },
-  --     },
-  --     signs = {
-  --       enabled = false,
-  --       priority = 4,
-  --       definitions = {
-  --         GitSignsAdd = {
-  --           texthl = 'GitSignsAdd',
-  --           text = '',
-  --         },
-  --         -- GitSignsDelete = {
-  --         --   texthl = "GitSignsDelete",
-  --         --   text = "d",
-  --         -- },
-  --         GitSignsChange = {
-  --           texthl = 'GitSignsChange',
-  --           text = '',
-  --         },
-  --       },
-  --     },
-  --   },
-  -- })
-end
-
 local function load_dbs()
   local env_contents = load_env_file()
   local dbs = {}
@@ -206,26 +127,6 @@ function config.vim_dadbod_ui()
   vim.g.db_ui_winwidth = 35
   vim.g.db_ui_save_location = require('core.global').home .. '/.cache/vim/db_ui_queries'
   vim.g.dbs = load_dbs()
-end
-
-function config.vim_vista()
-  vim.g['vista#renderer#enable_icon'] = 1
-  vim.g.vista_disable_statusline = 1
-
-  vim.g.vista_default_executive = 'nvim_lsp' -- ctag
-  vim.g.vista_echo_cursor_strategy = 'floating_win'
-  vim.g.vista_vimwiki_executive = 'markdown'
-  vim.g.vista_executive_for = {
-    vimwiki = 'markdown',
-    pandoc = 'markdown',
-    markdown = 'toc',
-    typescript = 'nvim_lsp',
-    typescriptreact = 'nvim_lsp',
-    go = 'nvim_lsp',
-    lua = 'nvim_lsp',
-  }
-
-  -- vim.g['vista#renderer#icons'] = {['function'] = "", ['method'] = "ℱ", variable = "כֿ"}
 end
 
 function config.clap()

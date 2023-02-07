@@ -40,6 +40,16 @@ return function(editor)
     end,
     opt = true,
   })
+  editor({
+    'tpope/vim-repeat',
+    event = { 'CmdlineEnter' },
+    keys = { '<Plug>(RepeatDot)', '<Plug>(RepeatUndo)', '<Plug>(RepeatRedo)' },
+    fn = { 'repeat#set()' },
+    setup = function()
+      -- use default mapping
+    end,
+    opt = true,
+  })
 
   -- I like this plugin, but 1) offscreen context is slow
   -- 2) it not friendly to lazyload and treesitter startup
@@ -327,8 +337,6 @@ return function(editor)
     ft = { 'org', 'norg', 'md' },
     config = conf.headline,
   })
-
-  editor({ 'hrsh7th/vim-searchx', event = { 'CmdwinEnter', 'CmdlineEnter' }, conf = conf.searchx })
 
   editor({
     'wellle/targets.vim',

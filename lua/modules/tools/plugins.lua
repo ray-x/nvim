@@ -90,7 +90,6 @@ return function(tools)
   })
 
   tools({ 'TimUntersberger/neogit', cmd = { 'Neogit' }, config = conf.neogit })
-  tools({ 'liuchengxu/vista.vim', cmd = 'Vista', setup = conf.vim_vista, opt = true })
 
   tools({
     'kamykn/spelunker.vim',
@@ -125,14 +124,6 @@ return function(tools)
     opt = true,
   })
 
-  --     browser-sync https://github.com/BrowserSync/browser-sync
-  tools({
-    'turbio/bracey.vim',
-    ft = { 'html', 'javascript', 'typescript' },
-    cmd = { 'Bracey', 'BraceyEval' },
-    run = 'sh -c "npm install --prefix server"',
-    opt = true,
-  })
 
   tools({
     'kazhala/close-buffers.nvim',
@@ -234,17 +225,6 @@ return function(tools)
     end,
   })
 
-  -- early stage...
-  tools({
-    'tanvirtin/vgit.nvim', -- gitsign has similar features
-    -- setup = function()
-    --   vim.o.updatetime = 500
-    -- end,
-    -- cmd = { 'VGit' },
-    -- after = {"telescope.nvim"},
-    opt = true,
-    config = conf.vgit,
-  })
 
   tools({
     'akinsho/git-conflict.nvim',
@@ -267,6 +247,7 @@ return function(tools)
     requires = {
       'tpope/vim-fugitive',
       cmd = { 'Gvsplit', 'G', 'Gread', 'Git', 'Gedit', 'Gstatus', 'Gdiffsplit', 'Gvdiffsplit' },
+      event = { 'CmdwinEnter', 'CmdlineEnter' },
       fn = { 'FugitiveIsGitDir' },
       opt = true,
     },

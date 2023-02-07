@@ -54,7 +54,6 @@ local plug_map = {
   ['n|<Space>wl'] = map_func(function()
     print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
   end):with_desc('list workspace folder'),
-  -- ["n|<Leader>e"]      = map_cmd('NvimTreeToggle'):with_noremap():with_silent(),
   -- ["n|<Leader>F"] = map_cmd('NvimTreeFindFile'):with_noremap():with_silent(),
   -- Plugin MarkdownPreview
   ['n|<Leader>om'] = map_cmd('MarkdownPreview'):with_noremap():with_silent(),
@@ -80,6 +79,9 @@ local plug_map = {
   end):with_desc('grep_string_cursor_raw'),
   ['in|<d-F>'] = map_func(function()
     require('utils.telescope').grep_string_cursor()
+  end):with_desc('grep_string_cursor'),
+  ['ixn|<d-s>'] = map_func(function()
+    vim.cmd('w')
   end):with_desc('grep_string_cursor'),
   ['ixn|<m-f>'] = map_func(function()
     local w = require('utils.helper').getword()
@@ -110,7 +112,8 @@ local plug_map = {
 
   -- Plugin QuickRun
   -- Plugin Vista
-  ['n|<Leader>v'] = map_cmd('TSymbols'):with_noremap():with_silent(),
+  ['n|<Leader>V'] = map_cmd('TSymbols'):with_noremap():with_silent(),
+  ['n|<Leader>v'] = map_cmd('LspSymbols'):with_noremap():with_silent(),
   ['n|<F8>'] = map_cmd('LspSymbols'):with_silent(),
 
   ['x|<Leader>c<Space>'] = map_key('gc'),

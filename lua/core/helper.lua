@@ -113,12 +113,6 @@ local helper = {
   end,
 }
 
-_G.load_coq = function()
-  return false
-  -- if vim.o.ft == 'lua' or vim.o.ft == 'sql' or vim.o.ft == 'vim' then return false end
-  -- return true
-end
-
 _G.use_nulls = function()
   return true
   -- return true

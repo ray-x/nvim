@@ -137,10 +137,6 @@ function Lazyload()
     loader('null-ls.nvim')
   end
 
-  if load_lsp and use_efm() then
-    loader('efm.nvim')
-  end
-
   loader('bufferline.nvim')
   -- lprint("LoadLazyPlugin finished", os.clock())
 
@@ -194,6 +190,7 @@ vim.defer_fn(function()
     print('file not find, please update path setup', vim.g.python3_host_prog)
   end
   lprint('lazy2 loaded', vim.loop.now() - start)
+  require('core.ab')
 end, lazy_timer + 30)
 
 if plugin_folder() == [[~/github/ray-x/]] then

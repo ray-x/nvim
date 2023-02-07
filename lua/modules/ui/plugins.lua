@@ -59,21 +59,24 @@ return function(ui)
     config = conf.nvim_tree,
   })
 
-  ui({
-    'sidebar-nvim/sidebar.nvim',
-    cmd = { 'SidebarNvimToggle', 'SidebarNvimOpen' },
-    -- requires = {'kyazdani42/nvim-web-devicons'},
-    config = conf.sidebar,
-  })
-
-  ui({
-    'nvim-neo-tree/neo-tree.nvim',
-    cmd = { 'Neotree' },
-    requires = { 'MunifTanjim/nui.nvim', opt = true, module = 'nui' },
-    module = 'neo-tree',
-    -- requires = {'kyazdani42/nvim-web-devicons'},
-    config = conf.neo_tree,
-  })
+  -- this plugin can be extended with API, good idea
+  -- but it not been updated after 6 monthes
+  -- ui({
+  --   'sidebar-nvim/sidebar.nvim',
+  --   cmd = { 'SidebarNvimToggle', 'SidebarNvimOpen' },
+  --   -- requires = {'kyazdani42/nvim-web-devicons'},
+  --   config = conf.sidebar,
+  -- })
+  --
+  -- ui({
+  --   'nvim-neo-tree/neo-tree.nvim',
+  --   branch = "v2.x",
+  --   cmd = { 'Neotree' },
+  --   requires = { 'MunifTanjim/nui.nvim', opt = true, module = 'nui' },
+  --   module = 'neo-tree',
+  --   -- requires = {'kyazdani42/nvim-web-devicons'},
+  --   config = conf.neotree,
+  -- })
 
   ui({
     'gorbit99/codewindow.nvim',

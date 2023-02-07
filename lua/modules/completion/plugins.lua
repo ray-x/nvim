@@ -26,48 +26,6 @@ local filetypes = {
 }
 return function(use)
   use({ 'neovim/nvim-lspconfig', config = conf.nvim_lsp, module = 'lspconfig', opt = true })
-  if load_coq() then
-    use({
-      'ms-jpq/coq_nvim',
-      -- opt = true,
-      -- event = "InsertCharPre",
-      after = { 'coq.artifacts' },
-      branch = 'coq',
-      setup = function()
-        vim.g.coq_settings = { auto_start = false }
-      end,
-      config = function()
-        vim.g.coq_settings = {
-          auto_start = false,
-          ['display.icons.mode'] = 'short',
-          ['display.pum.kind_context'] = { '', '' },
-          ['display.pum.source_context'] = { '', '' },
-          ['display.icons.spacing'] = 0,
-        } -- ['display.pum.fast_close'] = false,
-        if not load_coq() then
-          return
-        end
-        vim.cmd([[COQnow]])
-      end,
-    })
-    use({
-      'ms-jpq/coq.thirdparty',
-      after = { 'coq_nvim' },
-      -- event = "InsertEnter",
-      branch = '3p',
-      config = function()
-        require('coq_3p')({ { src = 'nvimlua', short_name = '', conf_only = true } })
-      end,
-    })
-
-    use({
-      'ms-jpq/coq.artifacts',
-      -- opt = true,
-      event = 'InsertEnter',
-      branch = 'artifacts',
-    })
-  end
-
   -- loading sequence LuaSnip -> nvim-cmp -> cmp_luasnip -> cmp-nvim-lua -> cmp-nvim-lsp ->cmp-buffer -> friendly-snippets
   use({
     'hrsh7th/nvim-cmp',

@@ -41,11 +41,6 @@ function config.nvim_cmp()
   end
   local luasnip = require('luasnip')
 
-  if load_coq() then
-    local sources = {}
-    cmp.setup.buffer({ completion = { autocomplete = false } })
-    return
-  end
   -- print("cmp setup")
   local comp_kind
   local t = function(str)

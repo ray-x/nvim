@@ -61,8 +61,8 @@ local keys = {
   ["n|Cr"] = map_plug("abolish-coerce-word"):with_noremap():with_silent():with_desc('s:snake, c:Camel'),
 
   ["n|<F13>"] = map_cmd("NvimTreeToggle"),
-  ["n|hW"] = map_cmd("HopWordBC"),
-  ["n|hw"] = map_cmd("HopWordAC"),
+  -- ["n|hW"] = map_cmd("HopWordBC"),
+  -- ["n|hw"] = map_cmd("HopWordAC"),
   ["n|hl"] = map_cmd("HopLineStartAC"),
   ["n|hL"] = map_cmd("HopLineStartBC"),
 
@@ -73,8 +73,8 @@ local keys = {
   ["nx|s"] = map_cmd("lua hop1(1)"):with_silent(),
   ["nx|S"] = map_cmd("lua hop1()"):with_silent(),
 
-  ["nxo|<M-s>"] = map_plug("leap-forward-to"):with_silent(),
-  ["nxo|<M-S>"] = map_plug("leap-backward-to"):with_silent(),
+  ["inxo|<F3>"] = map_plug("leap-forward-to"):with_silent(),
+  ["inxo|<F15>"] = map_plug("leap-backward-to"):with_silent(),
   ["nxo|gs"] = map_plug("leap-forward-to"):with_silent(),
   ["nxo|gS"] = map_plug("leap-cross-window"):with_silent(),
   ["nxo|<Leader>T"] = map_func(function()require("leap-ast").leap()
