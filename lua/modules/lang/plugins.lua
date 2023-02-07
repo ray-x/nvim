@@ -222,7 +222,8 @@ return function(lang)
   })
 
   lang({
-    'p00f/nvim-ts-rainbow',
+    -- 'p00f/nvim-ts-rainbow',
+    'HiPhish/nvim-ts-rainbow2',
     opt = true,
     -- after = "nvim-treesitter",
     event = { 'CursorHold', 'CursorHoldI' },

@@ -265,6 +265,10 @@ _G.run_or_test = function(debug)
   if ft == 'rest' then
     return '<CMD>RestRun<CR>'
   end
+
+  if ft == 'python' then
+    return '<CMD>!python %<CR>'
+  end
   local m = vim.fn.mode()
   if m == 'n' or m == 'i' then
     require('sniprun').run()

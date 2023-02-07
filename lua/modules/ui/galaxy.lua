@@ -48,6 +48,7 @@ local c = {
   red_two = '#FF91A4',
   red_three = '#D82B26',
   red_four = '#FB4934',
+  dark_red = '#400024',
 
   pink = '#D57780',
   pink_one = '#AF95A3',
@@ -182,10 +183,10 @@ local Usual = {
     TelescopeResultsBorder = { fg = c.line },
   },
   Diff = {
-    DiffAdd = { fg = c.green_two, bold = true, undercurl = true, sp = '#2284a1' },
-    DiffChange = { fg = c.purple_two, bold = true, underdotted = true, sp = '#269616' },
-    DiffText = { fg = c.white, bold = true, undercurl = true, sp = '#269616' },
-    DiffDelete = { fg = c.red_two, bold = true, strikethrough = true, sp = c.white },
+    DiffAdd = { fg = c.green_two, bg=c.dark_red, bold = true, underdotted = true, sp = '#2284a1' },
+    DiffChange = { fg = c.purple_two, bg=c.background_three, bold = true, underdotted = true, sp = '#269616' },
+    DiffText = { fg = c.white, bg=c.background_three, bold = true, undercurl = true, sp = '#269616' },
+    DiffDelete = { fg = c.red_two, bg=c.black, bold = true, strikethrough = true, sp = c.white },
   },
   Git = {
     -- GitSignsAdd = { fg = c.red }, -- diff mode: Added line |diff.txt|
