@@ -77,8 +77,12 @@ function autocmd.load_autocmds()
       -- Equalize window dimensions when resizing vim window
       { 'VimResized', '*', [[tabdo wincmd =]] },
       -- Force write shada on leaving nvim
-      -- { "VimLeave", "*", [[if has('nvim') | wshada! | else | wviminfo! | endif]] },
-      { 'VimLeavePre', '*', 'set winwidth=30 | set winminwidth=10' },
+      { "VimLeave", "*", [[if has('nvim') | wshada! | else | wviminfo! | endif]] },
+      -- { 'VimLeavePre', '*', 'set winwidth=30 | set winminwidth=10' },
+      { 'VimLeavePre', '*', function() 
+        require('close_buffers').delete({ type = 'hidden', force = true })
+        require('close_buffers').wipe({ type = 'nameless', force = true }) 
+      end},
 
       -- Check if file changed when its window is focus, more eager than 'autoread'
       { 'FocusGained', '*', 'checktime' },
