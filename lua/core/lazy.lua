@@ -2,7 +2,7 @@ local loader = require('packer').loader
 local api = vim.api
 
 lprint('lazy')
-
+local loader = require('utils.helper').loader
 local start = vim.loop.now()
 local fsize = vim.fn.getfsize(vim.fn.expand('%:p:f'))
 if fsize == nil or fsize < 0 then
