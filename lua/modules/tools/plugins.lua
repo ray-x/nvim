@@ -124,7 +124,6 @@ return function(tools)
     opt = true,
   })
 
-
   tools({
     'kazhala/close-buffers.nvim',
     cmd = { 'Kwbd', 'BDelete', 'BWipeout' },
@@ -224,7 +223,6 @@ return function(tools)
       })
     end,
   })
-
 
   tools({
     'akinsho/git-conflict.nvim',

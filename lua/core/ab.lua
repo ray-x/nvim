@@ -13,4 +13,3 @@ if vim.o.ft == 'go' then
   vim.cmd('ab tf GoTestFunc')
   vim.cmd('ab at GoAddTest')
 end
-
