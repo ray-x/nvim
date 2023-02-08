@@ -135,12 +135,6 @@ function plugins.compile_loader()
 end
 
 function plugins.precompile_existed()
-  -- return vim.fn.filereadable(packer_compiled) == 1
-  local fs, err = vim.loop.fs_stat(packer_compiled)
-  -- print(packer_compiled, fs, err)
-  if not fs or err then
-    return false
-  end
   return true
 end
 
@@ -148,24 +142,6 @@ function plugins.precompile_file()
   return packer_compiled
 end
 function plugins.load_compile()
-  vim.cmd([[command! PackerCompile lua require('core.pack').compile_notify()]])
-  vim.cmd([[command! PackerInstall lua require('core.pack').install()]])
-  vim.cmd([[command! PackerUpdate lua require('core.pack').update()]])
-  vim.cmd([[command! PackerSync lua require('core.pack').sync()]])
-  vim.cmd([[command! PackerClean lua require('core.pack').clean()]])
-  vim.cmd([[autocmd User PackerComplete lua require('core.pack').compile()]])
-
-  if vim.fn.filereadable(packer_compiled) == 1 then
-    require('packer_compiled')
-    return true
-  else
-    print('compile')
-    assert('Missing packer compile file Run PackerCompile Or PackerInstall to fix')
-    vim.cmd('packadd packer.nvim')
-    plugins.compile()
-    vim.notify('compile finished successfully wrote to ' .. packer_compiled)
-    return false
-  end
 end
 
 return plugins

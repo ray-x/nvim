@@ -35,9 +35,6 @@ end
 
 function autocmd.load_autocmds()
   local definitions = {
-    packer = {
-      { 'BufWritePost', '*.lua', "lua require('core.pack').auto_compile()" },
-    },
     bufs = {
       -- Reload vim config automatically
       -- { "BufWritePost", [[$VIM_PATH/{*.vim,*.yaml,vimrc} nested source $MYVIMRC | redraw]] },
@@ -60,7 +57,6 @@ function autocmd.load_autocmds()
         '*',
         'if getfsize(expand("%")) > 1000000 | ownsyntax off | endif',
       },
-      { 'BufWritePost', 'plugins.lua', 'PackerCompile' },
       -- {"UIEnter", "*", ":silent! :lua require('modules.lang.config').syntax_folding()"},
       { 'BufReadPre', '*', ":silent! :lua require('modules.lang.config').nvim_treesitter()" },
       -- {"BufWritePre", "*.js,*.rs,*.lua", ":FormatWrite"},
