@@ -206,4 +206,4 @@ vim.defer_fn(function()
       api.nvim_buf_delete(bufnr, { force = true })
     end
   end
-end, 4)
+end, 0)

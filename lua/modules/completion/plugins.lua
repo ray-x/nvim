@@ -57,7 +57,8 @@ return function(use)
   use({
     'L3MON4D3/LuaSnip', -- need to be the first to load
     event = 'InsertEnter',
-    dependencies = { 'rafamadriz/friendly-snippets', event = 'InsertEnter' }, -- , event = "InsertEnter"
+    dependencies = { 'rafamadriz/friendly-snippets', module = false, event = 'InsertEnter' }, -- , event = "InsertEnter"
+    module = true,
     config = function()
       require('modules.completion.luasnip')
     end,

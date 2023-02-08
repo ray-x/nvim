@@ -188,8 +188,10 @@ return {
     }
     -- stylua: ignore end
     table.insert(sources, warn_TODO)
-    table.insert(sources, require('go.null_ls').gotest())
-    table.insert(sources, require('go.null_ls').gotest_action())
+    if vim.o.ft == 'go' then
+      table.insert(sources, require('go.null_ls').gotest())
+      table.insert(sources, require('go.null_ls').gotest_action())
+    end
     local cfg = {
       sources = sources,
       debug = true,
