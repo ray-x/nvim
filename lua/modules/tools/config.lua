@@ -545,7 +545,8 @@ end
 function config.grammcheck()
   -- body
   if
-    not packer_plugins['rhysd/vim-grammarous'] or not packer_plugins['rhysd/vim-grammarous'].loaded
+    not packer_plugins['rhysd/vim-grammarous']
+    or not packer_plugins['rhysd/vim-grammarous'].loaded
   then
     require('packer').loader('vim-grammarous')
   end

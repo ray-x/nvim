@@ -146,7 +146,10 @@ function config.nvim_cmp()
           )
         end
       end,
-      ['<CR>'] = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true }),
+      ['<CR>'] = cmp.mapping.confirm({
+        behavior = cmp.ConfirmBehavior.Replace,
+        select = true,
+      }),
       -- ['<Tab>'] = cmp.mapping(tab, {'i', 's'}),
 
       ['<Tab>'] = cmp.mapping(function(fallback)

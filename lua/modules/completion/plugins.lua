@@ -78,7 +78,6 @@ return function(use)
     'nvim-telescope/telescope.nvim',
     -- cmd = "Telescope",
     config = conf.telescope,
-    -- module = { 'telescope', 'telescope.builtin', 'telescope.actions' },
     init = conf.telescope_preload,
     dependencies = {
       { 'nvim-lua/plenary.nvim', lazy = true },

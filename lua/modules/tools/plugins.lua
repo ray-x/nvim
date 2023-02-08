@@ -122,7 +122,6 @@ return function(tools)
     'kazhala/close-buffers.nvim',
     cmd = { 'Kwbd', 'BDelete', 'BWipeout' },
     config = conf.close_buffers,
-    -- module = 'close-buffers',
   })
 
   -- nvim-toggleterm.lua ?
@@ -137,7 +136,6 @@ return function(tools)
     'NTBBloodbath/rest.nvim',
     lazy = true,
     ft = { 'http', 'rest' },
-    -- module = 'rest-nvim',
     keys = { '<Plug>RestNvim', '<Plug>RestNvimPreview', '<Plug>RestNvimLast' },
     cmd = { 'RestRun', 'RestPreview', 'RestLast' },
     config = conf.rest,
@@ -196,7 +194,6 @@ return function(tools)
     dev = true,
     lazy = true,
     cmd = { 'Ga', 'Gaa', 'Gd', 'Glo', 'Gs', 'Gc', 'Gpl', 'Gps' },
-    -- module = 'forgit',
     event = { 'CmdwinEnter', 'CmdlineEnter' },
     config = function()
       require('forgit').setup({
@@ -241,7 +238,16 @@ return function(tools)
     fn = { 'flog#cmd#Flog', 'flog#cmd#Flogsplit' },
     dependencies = {
       'tpope/vim-fugitive',
-      cmd = { 'Gvsplit', 'G', 'Gread', 'Git', 'Gedit', 'Gstatus', 'Gdiffsplit', 'Gvdiffsplit' },
+      cmd = {
+        'Gvsplit',
+        'G',
+        'Gread',
+        'Git',
+        'Gedit',
+        'Gstatus',
+        'Gdiffsplit',
+        'Gvdiffsplit',
+      },
       event = { 'CmdwinEnter', 'CmdlineEnter' },
       fn = { 'FugitiveIsGitDir' },
       lazy = true,
@@ -298,7 +304,9 @@ return function(tools)
     dependencies = { 'kkharji/sqlite.lua' },
     config = function()
       require('utils.telescope')
-      require('neoclip').setup({ db_path = vim.fn.stdpath('data') .. '/databases/neoclip.sqlite3' })
+      require('neoclip').setup({
+        db_path = vim.fn.stdpath('data') .. '/databases/neoclip.sqlite3',
+      })
       require('telescope').load_extension('neoclip')
     end,
   })
@@ -367,7 +375,6 @@ return function(tools)
   tools({
     'ibhagwan/fzf-lua',
     lazy = true,
-    -- module = { 'fzf-lua' },
     cmd = { 'FzfLua' },
     config = function()
       require('fzf-lua').setup({

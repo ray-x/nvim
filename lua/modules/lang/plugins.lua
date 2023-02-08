@@ -66,7 +66,6 @@ return function(lang)
     dev = true,
     lazy = true,
     event = { 'CmdwinEnter', 'CmdlineEnter' },
-    -- module = { 'go' },
     config = conf.go,
   })
 
@@ -83,7 +82,6 @@ return function(lang)
     dev = true,
     ft = { 'html', 'javascript', 'hurl', 'http' },
     cmd = { 'HurlRun', 'BrowserOpen' },
-    -- module = { 'web-tools' },
     lazy = true,
     config = function()
       require('web-tools').setup({ debug = true })
@@ -158,7 +156,6 @@ return function(lang)
     'michaelb/sniprun',
     build = 'bash install.sh',
     lazy = true,
-    -- module = { 'sniprun' },
     cmd = { 'SnipRun', 'SnipReset' },
     config = function()
       require('sniprun').setup({
@@ -191,7 +188,6 @@ return function(lang)
   lang({
     'folke/neodev.nvim',
     lazy = true,
-    -- module = 'neodev',
     -- ft = {'lua'},
     config = conf.neodev,
   })
@@ -270,7 +266,6 @@ return function(lang)
         },
       })
     end,
-    -- module = 'lspconfig',
   })
 
   -- structural search and replace
@@ -281,7 +276,6 @@ return function(lang)
     'p00f/clangd_extensions.nvim',
     lazy = true,
     ft = { 'c', 'cpp', 'objc', 'objcpp', 'h', 'hpp' },
-    -- module = "clangd_extensions",
     config = conf.clangd,
   })
 end

@@ -13,8 +13,7 @@ end
 
 local day = daylight()
 
-function config.windline()
-end
+function config.windline() end
 
 function config.notify()
   require('notify').setup({

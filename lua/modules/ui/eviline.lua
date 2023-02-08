@@ -553,7 +553,11 @@ basic.scrollbar_right = {
   },
   text = function(_, winnr, width, is_float)
     if width > breakpoint_width or is_float then
-      return { { b_components.progress_lua, '' }, { ' ', '' }, { scrollbar_instance(), 'blue' } }
+      return {
+        { b_components.progress_lua, '' },
+        { ' ', '' },
+        { scrollbar_instance(), 'blue' },
+      }
     end
   end,
 }

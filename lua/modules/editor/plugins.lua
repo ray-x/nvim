@@ -83,13 +83,11 @@ return function(editor)
     'ggandor/leap.nvim',
     keys = { '<Plug>(leap-forward-to)', '<Plug>(leap-backward-to)' },
     lazy = true,
-    -- module = 'leap',
     config = require('modules.editor.leap').setup,
     dependencies = {
       {
         'ggandor/leap-ast.nvim',
         lazy = true,
-        -- module = { 'leap', 'leap-ast' },
         config = require('modules.editor.leap').ast,
       },
       -- { "ggandor/flit.nvim", lazy = true, module = {"flit", "leap"}, require("modules.editor.leap").flit },
@@ -163,7 +161,6 @@ return function(editor)
     editor({
       'kevinhwang91/nvim-hlslens',
       keys = { '/', '?', '*', '#' }, --'n', 'N', '*', '#', 'g'
-      -- module = { 'hlslens' },
       lazy = true,
       config = conf.hlslens,
     })
@@ -205,7 +202,6 @@ return function(editor)
   editor({
     'phaazon/hop.nvim',
     name = 'hop',
-    -- module = { 'hop', 'tsht' },
     cmd = {
       'HopWord',
       'HopWordMW',
@@ -229,7 +225,9 @@ return function(editor)
     },
     config = function()
       -- you can configure Hop the way you like here; see :h hop-config
-      require('hop').setup({ keys = 'adghklqwertyuiopzxcvbnmfjADHKLWERTYUIOPZXCVBNMFJ1234567890' })
+      require('hop').setup({
+        keys = 'adghklqwertyuiopzxcvbnmfjADHKLWERTYUIOPZXCVBNMFJ1234567890',
+      })
       -- vim.api.nvim_set_keymap('n', '$', "<cmd>lua require'hop'.hint_words()<cr>", {})
     end,
   })
@@ -250,7 +248,6 @@ return function(editor)
       '<Plug>(YankyGPutBefore)',
       '<Plug>(YankyGPutAfter)',
     },
-    -- module = 'yanky',
     lazy = true,
     config = conf.yanky,
   })
@@ -287,7 +284,6 @@ return function(editor)
     lazy = true,
     cmd = { 'TSJToggle', 'TSJJoin', 'TSJSplit' },
     keys = { '<space>j' },
-    -- module = 'treesj',
     config = function()
       require('treesj').setup({
         use_default_keymaps = false,
@@ -348,7 +344,7 @@ return function(editor)
   editor({
     'AndrewRadev/switch.vim',
     lazy = true,
-    cmd = { 'Switch', 'SwitchCase' }, --'Switch!' , 'Switch?', 
+    cmd = { 'Switch', 'SwitchCase' }, --'Switch!' , 'Switch?',
     fn = { 'switch#Switch' },
     keys = { '<Plug>(Switch)' },
     init = function()

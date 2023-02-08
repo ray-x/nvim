@@ -37,7 +37,7 @@ return function(ui)
     'folke/noice.nvim',
     lazy = true,
     -- event = "User LoadLazyPlugin",
-    dependencies = {'MunifTanjim/nui.nvim', lazy = true},
+    dependencies = { 'MunifTanjim/nui.nvim', lazy = true },
     config = conf.noice,
   })
 
@@ -58,7 +58,7 @@ return function(ui)
     config = conf.nvim_tree,
   })
 
-  ui ({ 'MunifTanjim/nui.nvim', lazy = true })
+  ui({ 'MunifTanjim/nui.nvim', lazy = true })
   ui({
     'gorbit99/codewindow.nvim',
     cmd = { 'Minimap' },

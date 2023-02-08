@@ -20,7 +20,13 @@ function config.autopairs()
     autopairs = { enable = true },
     ignored_next_char = string.gsub([[ [%w%%%'%[%"%.] ]], '%s+', ''), -- "[%w%.+-"']",
     enable_check_bracket_line = false,
-    html_break_line_filetype = { 'html', 'vue', 'typescriptreact', 'svelte', 'javascriptreact' },
+    html_break_line_filetype = {
+      'html',
+      'vue',
+      'typescriptreact',
+      'svelte',
+      'javascriptreact',
+    },
     check_ts = true,
     ts_config = {
       lua = { 'string' }, -- it will not add pair on that treesitter node
@@ -199,7 +205,7 @@ function config.comment()
     post_hook = function(ctx)
       -- lprint(ctx)
       if ctx.range.scol == -1 then
-        -- do something with the current line
+      -- do something with the current line
       else
         -- print(vim.inspect(ctx), ctx.range.srow, ctx.range.erow, ctx.range.scol, ctx.range.ecol)
         if ctx.range.ecol > 400 then
