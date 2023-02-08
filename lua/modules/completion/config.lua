@@ -181,7 +181,7 @@ function config.nvim_cmp()
 
     experimental = { ghost_text = true },
   })
-  require('packer').loader('nvim-autopairs')
+  require('utils.helper').loader('nvim-autopairs')
   local cmp_autopairs = require('nvim-autopairs.completion.cmp')
   cmp.event:on('confirm_done', cmp_autopairs.on_confirm_done({ map_char = { tex = '' } }))
 
@@ -201,9 +201,9 @@ function config.vim_vsnip()
 end
 
 function config.telescope_preload()
-  if not packer_plugins['plenary.nvim'].loaded then
-    require('packer').loader('plenary.nvim')
-  end
+  -- if not packer_plugins['plenary.nvim'].loaded then
+  --   require('packer').loader('plenary.nvim')
+  -- end
   -- if not packer_plugins["telescope-fzy-native.nvim"].loaded then
   --   require"packer".loader("telescope-fzy-native.nvim")
   -- end

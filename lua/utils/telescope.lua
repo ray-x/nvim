@@ -1,9 +1,7 @@
 local a = vim.api
 
-local loader = require('packer').loader
-if not packer_plugins['telescope.nvim'].loaded then
-  loader('telescope.nvim')
-end
+local loader = require('utils.helper').loader
+
 local telescope = require('telescope')
 local actions = require('telescope.actions')
 local conf = require('telescope.config').values

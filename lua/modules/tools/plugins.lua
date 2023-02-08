@@ -11,8 +11,8 @@ return function(tools)
       'DB',
     },
     config = conf.vim_dadbod_ui,
-    requires = { 'tpope/vim-dadbod', ft = { 'sql' } },
-    opt = true,
+    dependencies = { 'tpope/vim-dadbod', ft = { 'sql' } },
+    lazy = true,
     setup = function()
       vim.g.dbs = {
         eraser = 'postgres://postgres:password@localhost:5432/eraser_local',
@@ -21,14 +21,13 @@ return function(tools)
       }
     end,
   })
-  tools({ 'mattn/webapi-vim', opt = true })
-
+  tools({ 'mattn/webapi-vim', lazy = true })
+  tools({ 'nvim-lua/plenary.nvim', lazy = true })
   tools({
     'edluffy/hologram.nvim',
     config = conf.hologram,
-    opt = true,
+    lazy = true,
     ft = { 'markdown', 'md', 'norg', 'org' },
-    requires = { 'nvim-lua/plenary.nvim' },
   })
 
   tools({
@@ -39,29 +38,24 @@ return function(tools)
 
   tools({
     'nvim-neotest/neotest',
-    requires = {
-      { 'nvim-lua/plenary.nvim', module = 'plenary' },
+    lazy = true,
+    dependencies = {
       {
         'haydenmeade/neotest-jest',
-        module = {
-          'neotest-jest',
-          'neotest',
-        },
         config = conf.neotest_jest,
       },
-      { 'nvim-neotest/neotest-plenary', module = { 'neotest-plenary', 'neotest' } },
-      { 'nvim-neotest/neotest-python', module = { 'neotest-python', 'neotest' } },
+      -- { 'nvim-neotest/neotest-plenary', module = { 'neotest-plenary', 'neotest' } },
+      -- { 'nvim-neotest/neotest-python', module = { 'neotest-python', 'neotest' } },
     },
-    module = { 'neotest-jest', 'neotest' },
     config = conf.neotest,
   })
 
-  tools({ 'nvim-neotest/neotest-plenary', module = { 'neotest-plenary', 'neotest' } })
+  tools({ 'nvim-neotest/neotest-plenary' })
   tools({ 'will133/vim-dirdiff', cmd = { 'DirDiff' } })
 
   tools({
     'editorconfig/editorconfig-vim',
-    opt = true,
+    lazy = true,
     cmd = { 'EditorConfigReload' },
     -- ft = { 'go','typescript','javascript','vim','rust','zig','c','cpp' }
   })
@@ -74,7 +68,7 @@ return function(tools)
 
   tools({
     'ThePrimeagen/harpoon',
-    opt = true,
+    lazy = true,
     config = function()
       require('harpoon').setup({
         global_settings = {
@@ -93,14 +87,14 @@ return function(tools)
 
   tools({
     'kamykn/spelunker.vim',
-    opt = true,
+    lazy = true,
     fn = { 'spelunker#check' },
     setup = conf.spelunker,
     config = conf.spellcheck,
   })
   tools({
     'rhysd/vim-grammarous',
-    opt = true,
+    lazy = true,
     cmd = { 'GrammarousCheck' },
     ft = { 'markdown', 'txt' },
     setup = conf.grammarous,
@@ -109,10 +103,10 @@ return function(tools)
   tools({
     'plasticboy/vim-markdown',
     ft = 'markdown',
-    requires = { 'godlygeek/tabular' },
+    dependencies = { 'godlygeek/tabular' },
     cmd = { 'Toc' },
     setup = conf.markdown,
-    opt = true,
+    lazy = true,
   })
 
   tools({
@@ -120,15 +114,15 @@ return function(tools)
     ft = { 'markdown', 'pandoc.markdown', 'rmd' },
     cmd = { 'MarkdownPreview' },
     setup = conf.mkdp,
-    run = [[sh -c "cd app && yarn install"]],
-    opt = true,
+    build = [[sh -c "cd app && yarn install"]],
+    lazy = true,
   })
 
   tools({
     'kazhala/close-buffers.nvim',
     cmd = { 'Kwbd', 'BDelete', 'BWipeout' },
     config = conf.close_buffers,
-    module = 'close-buffers',
+    -- module = 'close-buffers',
   })
 
   -- nvim-toggleterm.lua ?
@@ -141,9 +135,9 @@ return function(tools)
 
   tools({
     'NTBBloodbath/rest.nvim',
-    opt = true,
+    lazy = true,
     ft = { 'http', 'rest' },
-    module = 'rest-nvim',
+    -- module = 'rest-nvim',
     keys = { '<Plug>RestNvim', '<Plug>RestNvimPreview', '<Plug>RestNvimLast' },
     cmd = { 'RestRun', 'RestPreview', 'RestLast' },
     config = conf.rest,
@@ -154,7 +148,7 @@ return function(tools)
   tools({
     'liuchengxu/vim-clap',
     cmd = { 'Clap' },
-    run = function()
+    build = function()
       vim.fn['clap#installer#download_binary']()
     end,
     setup = conf.clap,
@@ -177,14 +171,15 @@ return function(tools)
     'lewis6991/gitsigns.nvim',
     config = conf.gitsigns,
     -- keys = {']c', '[c'},  -- load by lazy.lua
-    opt = true,
+    lazy = true,
   })
 
   local path = plugin_folder()
   tools({
-    path .. 'sad.nvim',
+    'ray-x/sad.nvim',
+    dev = true,
     cmd = { 'Sad' },
-    opt = true,
+    lazy = true,
     config = function()
       require('sad').setup({
         debug = true,
@@ -197,10 +192,11 @@ return function(tools)
   })
 
   tools({
-    path .. 'forgit.nvim',
-    opt = true,
+    'ray-x/forgit.nvim',
+    dev = true,
+    lazy = true,
     cmd = { 'Ga', 'Gaa', 'Gd', 'Glo', 'Gs', 'Gc', 'Gpl', 'Gps' },
-    module = 'forgit',
+    -- module = 'forgit',
     event = { 'CmdwinEnter', 'CmdlineEnter' },
     config = function()
       require('forgit').setup({
@@ -213,9 +209,10 @@ return function(tools)
   })
 
   tools({
-    path .. 'viewdoc.nvim',
+    'ray-x/viewdoc.nvim',
+    dev = true,
     cmd = { 'Viewdoc' },
-    opt = true,
+    lazy = true,
     config = function()
       require('viewdoc').setup({
         debug = true,
@@ -233,29 +230,29 @@ return function(tools)
       'GitConflictChooseBoth',
       'GitConflictNextConflict',
     },
-    opt = true,
+    lazy = true,
     config = conf.git_conflict,
   })
 
   tools({
     'rbong/vim-flog',
     cmd = { 'Flog', 'Flogsplit', 'Flg', 'Flgs' },
-    opt = true,
+    lazy = true,
     fn = { 'flog#cmd#Flog', 'flog#cmd#Flogsplit' },
-    requires = {
+    dependencies = {
       'tpope/vim-fugitive',
       cmd = { 'Gvsplit', 'G', 'Gread', 'Git', 'Gedit', 'Gstatus', 'Gdiffsplit', 'Gvdiffsplit' },
       event = { 'CmdwinEnter', 'CmdlineEnter' },
       fn = { 'FugitiveIsGitDir' },
-      opt = true,
+      lazy = true,
     },
   })
 
-  tools({ 'rmagatti/auto-session', config = conf.session, opt = true })
+  tools({ 'rmagatti/auto-session', config = conf.session, lazy = true })
 
   tools({
     'rmagatti/session-lens',
-    opt = true,
+    lazy = true,
     -- cmd = "SearchSession",
     -- after = { "telescope.nvim" },
     config = function()
@@ -271,7 +268,7 @@ return function(tools)
 
   tools({
     'kevinhwang91/nvim-bqf',
-    opt = true,
+    lazy = true,
     event = { 'CmdlineEnter', 'QuickfixCmdPre' },
     config = conf.bqf,
   })
@@ -279,14 +276,14 @@ return function(tools)
   -- lua require'telescope'.extensions.project.project{ display_type = 'full' }
   tools({
     'ahmedkhalf/project.nvim',
-    opt = true,
+    lazy = true,
     after = { 'telescope.nvim' },
     config = conf.project,
   })
 
   tools({
     'jvgrootveld/telescope-zoxide',
-    opt = true,
+    lazy = true,
     after = { 'telescope.nvim' },
     config = function()
       require('utils.telescope')
@@ -296,9 +293,9 @@ return function(tools)
 
   tools({
     'AckslD/nvim-neoclip.lua',
-    opt = true,
+    lazy = true,
     -- after = { "telescope.nvim" }, -- manul load
-    requires = { 'kkharji/sqlite.lua', module = 'sqlite' },
+    dependencies = { 'kkharji/sqlite.lua' },
     config = function()
       require('utils.telescope')
       require('neoclip').setup({ db_path = vim.fn.stdpath('data') .. '/databases/neoclip.sqlite3' })
@@ -310,8 +307,8 @@ return function(tools)
     'nvim-telescope/telescope-frecency.nvim',
     -- after = { "telescope.nvim" },  -- manual load
     -- cmd = {'Telescope'},
-    requires = { 'kkharji/sqlite.lua', module = 'sqlite', opt = true },
-    opt = true,
+    dependencies = { 'kkharji/sqlite.lua', lazy = true },
+    lazy = true,
     config = function()
       local telescope = require('telescope')
       telescope.load_extension('frecency')
@@ -338,7 +335,7 @@ return function(tools)
 
   tools({
     'voldikss/vim-translator',
-    opt = true,
+    lazy = true,
     keys = { '<Plug>TranslateW', '<Plug>TranslateWV' },
     setup = function()
       vim.api.nvim_set_keymap(
@@ -357,21 +354,20 @@ return function(tools)
   })
   tools({
     'joaomsa/telescope-orgmode.nvim',
-    opt = true,
+    lazy = true,
   })
   --The linediff plugin provides a simple command, :Linediff, which is used to diff two separate blocks of text.
   tools({
     'pfeiferj/nvim-hurl',
-    opt = true,
-    module = 'nvim-hurl',
-    cmd = { 'HurlRun', "'<,'>HurlRun" },
+    lazy = true,
+    cmd = { 'HurlRun' }, --, "'<,'>HurlRun"
     ft = { 'hurl', 'http' },
   })
-  tools({ 'AndrewRadev/linediff.vim', opt = true, cmd = { 'Linediff', "'<,'>Linediff" } })
+  tools({ 'AndrewRadev/linediff.vim', lazy = true, cmd = { 'Linediff' } }) -- , "'<,'>Linediff"
   tools({
     'ibhagwan/fzf-lua',
-    opt = true,
-    module = { 'fzf-lua' },
+    lazy = true,
+    -- module = { 'fzf-lua' },
     cmd = { 'FzfLua' },
     config = function()
       require('fzf-lua').setup({

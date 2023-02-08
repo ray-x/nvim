@@ -4,30 +4,30 @@ local conf = require('modules.ui.config')
 --   return vim.api.nvim_call_function("winwidth", { 0 })
 -- end
 return function(ui)
-  ui({ 'kyazdani42/nvim-web-devicons' })
+  ui({ 'kyazdani42/nvim-web-devicons', lazy = true })
 
   ui({
     'windwp/windline.nvim',
     -- event = "UIEntwindlineer",
     config = conf.windline,
-    -- requires = {'kyazdani42/nvim-web-devicons'},
-    opt = true,
+    -- dependencies = {'kyazdani42/nvim-web-devicons'},
+    lazy = true,
   })
 
   ui({ 'lambdalisue/glyph-palette.vim' })
   ui({
     'rcarriga/nvim-notify',
-    opt = true,
+    lazy = true,
     -- event = "User LoadLazyPlugin",
     config = conf.notify,
   })
 
   ui({
     'luukvbaal/statuscol.nvim',
-    opt = true,
+    lazy = true,
     -- event = "User LoadLazyPlugin",
     config = function()
-      -- require("statuscol").setup({ setopt = true })
+      -- require("statuscol").setup({ setlazy = true })
       require('statuscol').setup()
     end,
   })
@@ -35,49 +35,30 @@ return function(ui)
   -- feel a bit laggy
   ui({
     'folke/noice.nvim',
-    opt = true,
-    module = 'noice',
+    lazy = true,
     -- event = "User LoadLazyPlugin",
+    dependencies = {'MunifTanjim/nui.nvim', lazy = true},
     config = conf.noice,
   })
 
   ui({
     'akinsho/bufferline.nvim',
     config = conf.nvim_bufferline,
-    module = 'bufferline',
     diagnostics_update_in_insert = false,
     -- after = {"aurora"}
-    -- requires = {'kyazdani42/nvim-web-devicons'}
-    opt = true,
+    -- dependencies = {'kyazdani42/nvim-web-devicons'}
+    lazy = true,
   })
 
   ui({
     'kyazdani42/nvim-tree.lua',
     cmd = { 'NvimTreeToggle', 'NvimTreeOpen' },
-    -- requires = {'kyazdani42/nvim-web-devicons'},
-    setup = conf.nvim_tree_setup,
+    -- dependencies = {'kyazdani42/nvim-web-devicons'},
+    init = conf.nvim_tree_setup,
     config = conf.nvim_tree,
   })
 
-  -- this plugin can be extended with API, good idea
-  -- but it not been updated after 6 monthes
-  -- ui({
-  --   'sidebar-nvim/sidebar.nvim',
-  --   cmd = { 'SidebarNvimToggle', 'SidebarNvimOpen' },
-  --   -- requires = {'kyazdani42/nvim-web-devicons'},
-  --   config = conf.sidebar,
-  -- })
-  --
-  -- ui({
-  --   'nvim-neo-tree/neo-tree.nvim',
-  --   branch = "v2.x",
-  --   cmd = { 'Neotree' },
-  --   requires = { 'MunifTanjim/nui.nvim', opt = true, module = 'nui' },
-  --   module = 'neo-tree',
-  --   -- requires = {'kyazdani42/nvim-web-devicons'},
-  --   config = conf.neotree,
-  -- })
-
+  ui ({ 'MunifTanjim/nui.nvim', lazy = true })
   ui({
     'gorbit99/codewindow.nvim',
     cmd = { 'Minimap' },
@@ -91,7 +72,7 @@ return function(ui)
   -- Tint inactive windows in Neovim using window-local highlight namespaces.
   ui({
     'levouh/tint.nvim',
-    opt = true,
+    lazy = true,
     config = function()
       require('tint').setup({
         bg = true, -- Tint background portions of highlight groups
@@ -116,12 +97,12 @@ return function(ui)
     event = { 'CmdwinEnter', 'CmdlineEnter' },
   })
 
-  ui({ 'lukas-reineke/indent-blankline.nvim', opt = true, config = conf.blankline }) -- after="nvim-treesitter",
+  ui({ 'lukas-reineke/indent-blankline.nvim', lazy = true, config = conf.blankline }) -- after="nvim-treesitter",
 
   -- disabled does not work with muliti split
   -- ui({
   --   "lukas-reineke/virt-column.nvim",
-  --   opt = true,
+  --   lazy = true,
   --   -- event = {"CursorMoved", "CursorMovedI"},
   --   config = function()
   --     -- vim.cmd("highlight clear ColorColumn")
@@ -133,9 +114,9 @@ return function(ui)
   -- disabled does not work with muliti split
   ui({
     'xiyaowong/virtcolumn.nvim',
-    opt = true,
+    lazy = true,
     event = { 'CursorMoved', 'CursorMovedI' },
-    setup = function()
+    init = function()
       vim.g.virtcolumn_char = '▕' -- char to display the line
       vim.g.virtcolumn_priority = 10 -- priority of extmark
     end,
@@ -148,8 +129,9 @@ return function(ui)
   })
 
   ui({
-    plugin_folder() .. 'aurora',
-    opt = true,
+    'ray-x/aurora',
+    dev = true,
+    lazy = true,
     setup = function()
       vim.g.aurora_italic = 1
       vim.g.aurora_transparent = 1
@@ -159,33 +141,35 @@ return function(ui)
   })
   ui({
     'folke/tokyonight.nvim',
-    opt = true,
+    lazy = true,
     config = conf.tokyonight,
   })
-  ui({ 'bluz71/vim-nightfly-colors', opt = true, config = conf.nightfly })
+  ui({ 'bluz71/vim-nightfly-colors', lazy = true, config = conf.nightfly })
 
-  ui({ 'projekt0n/github-nvim-theme', opt = true, config = conf.gh_theme })
+  ui({ 'projekt0n/github-nvim-theme', lazy = true, config = conf.gh_theme })
 
-  ui({ 'sainnhe/sonokai', opt = true, config = conf.sonokai })
-  ui({ 'sainnhe/gruvbox-material', opt = true, config = conf.gruvbox })
-  ui({ 'catppuccin/nvim', opt = true, as = 'catppuccin', config = conf.cat })
+  ui({ 'sainnhe/sonokai', lazy = true, config = conf.sonokai })
+  ui({ 'sainnhe/gruvbox-material', lazy = true, config = conf.gruvbox })
+  ui({ 'catppuccin/nvim', lazy = true, name = 'catppuccin', config = conf.cat })
 
   ui({
-    plugin_folder() .. 'starry.nvim',
-    opt = true,
-    setup = conf.starry,
+    'ray-x/starry.nvim',
+    dev = true,
+    lazy = true,
+    init = conf.starry,
     config = conf.starry_conf,
   })
 
   -- really good one, only issue is dependency ...
+  ui({ 'romgrk/fzy-lua-native', lazy = true })
   ui({
     'gelguy/wilder.nvim',
-    requires = {
+    dependencies = {
       { 'romgrk/fzy-lua-native' },
       -- {'nixprime/cpsm', run='UpdateRemotePlugins'}
     },
-    opt = true,
-    run = function()
+    lazy = true,
+    build = function()
       vim.cmd([[packadd wilder.nvim]])
       vim.cmd([[silent UpdateRemotePlugins]])
     end,
@@ -193,10 +177,10 @@ return function(ui)
     config = conf.wilder,
   })
 
-  ui({ 'stevearc/dressing.nvim', opt = true, module = { 'dressing' } })
+  ui({ 'stevearc/dressing.nvim', lazy = true })
   ui({
     'beauwilliams/focus.nvim',
-    opt = true,
+    lazy = true,
     -- event = { "FocusGained", "CursorMoved", "ModeChanged" },
     -- cmd ={ "FocusToggle", "FocusEnable", "FocusSplitNicely" },
     config = function()
@@ -209,7 +193,7 @@ return function(ui)
   })
   ui({
     'mawkler/modicator.nvim',
-    opt = true,
+    lazy = true,
     event = { 'CursorMoved', 'CursorMovedI', 'ModeChanged' },
     config = function()
       if vim.o.cursorline then

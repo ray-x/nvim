@@ -1,4 +1,4 @@
-local loader = require('packer').loader
+-- local loader = require('packer').loader
 local api = vim.api
 
 lprint('lazy')
@@ -144,9 +144,6 @@ function Lazyload()
 end
 
 local lazy_timer = 15
-if _G.packer_plugins == nil or _G.packer_plugins['packer.nvim'] == nil then
-  return print('need packer recompile')
-end
 
 vim.defer_fn(function()
   Lazyload()

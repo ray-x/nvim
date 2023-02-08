@@ -47,7 +47,7 @@ local function load_colorscheme(theme)
   if theme == 'galaxy' then
     require('modules.ui.galaxy').shine()
   else
-    require('packer').loader(theme)
+    require('utils.helper').loader(theme)
   end
 end
 

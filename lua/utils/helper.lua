@@ -5,6 +5,9 @@
 local M = {
   log_path = vim.lsp.get_log_path(),
 }
+function M.loader(module_dir)
+  lprint('loading ', module_dir)
+end
 function M.get_data_from_file(filename, startLine)
   local displayLine
   if startLine < 3 then

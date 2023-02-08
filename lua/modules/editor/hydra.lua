@@ -1,5 +1,4 @@
 local Hydra = require('hydra')
-local loader = require('packer').loader
 
 local function hydra_git()
   local function diffmaster()
@@ -32,7 +31,6 @@ local function hydra_git()
       vim.cmd('DiffviewOpen ' .. branch)
     end
   end
-  loader('keymap-layer.nvim gitsigns.nvim')
   local hint = [[
  _d_iffView   _s_tage hunk     diff_M_aster    file_H_istory _S_tageBufr
  hunkq_f_     _u_nstage hunk   _p_ view hunk   _B_lameFull   _l_og

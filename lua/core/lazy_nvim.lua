@@ -4,48 +4,59 @@ local helper = require('core.helper')
 local pack = {}
 pack.__index = pack
 
+function pack.add(repo)
+  if not pack.plug then
+    pack.plug = {}
+  end
+  if repo.lazy == nil then repo.lazy = true end
+  table.insert(pack.plug, repo)
+end
+
 function pack:load_modules_packages()
-  local modules_dir = helper.get_config_path() .. '/lua/modules'
-  self.repos = {}
+ local modules_dir = helper.get_config_path() .. '/lua/modules'
+ self.repos = {}
 
-  local list = vim.fs.find('plugins.lua', { path = modules_dir, type = 'file', limit = 10 })
-  if #list == 0 then
-    return
-  end
+ local list = vim.fs.find('plugins.lua', { path = modules_dir, type = 'file', limit = 10 })
+ if #list == 0 then
+   return
+ end
 
-  local disable_modules = {}
+ local disable_modules = {}
 
-  if fn.exists('g:disable_modules') == 1 then
-    disable_modules = vim.split(vim.g.disable_modules, ',')
-  end
+ if fn.exists('g:disable_modules') == 1 then
+   disable_modules = vim.split(vim.g.disable_modules, ',')
+ end
 
-  for _, f in pairs(list) do
-    local _, pos = f:find(modules_dir)
-    f = f:sub(pos - 6, #f - 4)
-    if not vim.tbl_contains(disable_modules, f) then
-      require(f)
-    end
-  end
+ for _, f in pairs(list) do
+   local _, pos = f:find(modules_dir)
+   f = f:sub(pos - 6, #f - 4)
+   lprint(f) -- modules/completion/plugins ...
+   if not vim.tbl_contains(disable_modules, f) then
+     local plugins = require(f)
+     plugins(pack.add)
+   end
+ end
 end
 
 -- function pack:load_modules_packages()
 --   local modules_dir = helper.get_config_path() .. "/lua/modules"
 --   self.plug = {}
---
+
+--   -- TODO: hard code instead of fs.find? 
 --   local list = vim.fs.find("plugins.lua", { path = modules_dir, type = "file", limit = 10 })
 --   if #list == 0 then
 --     return
 --   end
---
+
 --   local disable_modules = {}
---
+
 --   if fn.exists("g:disable_modules") == 1 then
 --     disable_modules = vim.split(vim.g.disable_modules, ",")
 --   end
 --   if self.plug == nil then
 --     self.plug = {}
 --   end
---
+
 --   for _, f in pairs(list) do
 --     local _, pos = f:find(modules_dir)
 --     f = f:sub(pos - 6, #f - 4)
@@ -67,7 +78,7 @@ function pack:boot_strap()
   local state = uv.fs_stat(lazy_path)
   if not state then
     local cmd = '!git clone https://github.com/folke/lazy.nvim ' .. lazy_path
-    api.nvim_command(cmd)
+    vim.cmd(cmd)
   end
   vim.opt.runtimepath:prepend(lazy_path)
   local lazy = require('lazy')
@@ -79,11 +90,6 @@ function pack:boot_strap()
   lazy.setup(self.plug, opts)
 end
 
-function pack.plug_add(repo)
-  if not pack.plug then
-    pack.plug = {}
-  end
-  table.insert(pack.plug, repo)
-end
+
 
 return pack

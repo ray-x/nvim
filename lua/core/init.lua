@@ -50,7 +50,7 @@ local leader_map = function()
 end
 
 local load_core = function()
-  require('core.helper')
+  require('core.helper').init()
 
   local pack = require('core.pack')
 
@@ -75,19 +75,10 @@ local load_core = function()
   _G.lprint = require('utils.log').lprint
   vim.defer_fn(function()
     lprint('load compiled and lazy')
-    if pack.load_compile() then
-      require('core.colorscheme').load_colorscheme()
-      require('core.lazy')
-    else
-      require('core.colorscheme').load_colorscheme('galaxy')
-      vim.defer_fn(function()
-        -- print("precompile_existed")
-        pack.load_compile()
-        require('packer_compiled')
-        return require('core.lazy')
-      end, 1500) -- 1.5s is a hacky way to wait for packer to finish compiling
-    end
-  end, 5)
+    require('core.lazy_nvim'):boot_strap()
+    require('core.colorscheme').load_colorscheme()
+    require('core.lazy')
+ end, 5)
 end
 
 load_core()

@@ -74,7 +74,7 @@ local esc = function(cmd)
 end
 
 function config.hydra()
-  local hydra = require('modules.editor.hydra')
+  --require('modules.editor.hydra')
 end
 function config.hexokinase()
   vim.g.Hexokinase_optInPatterns = {

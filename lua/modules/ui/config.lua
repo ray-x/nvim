@@ -14,10 +14,6 @@ end
 local day = daylight()
 
 function config.windline()
-  if not packer_plugins['nvim-web-devicons'].loaded then
-    packer_plugins['nvim-web-devicons'].loaded = true
-    require('packer').loader('nvim-web-devicons')
-  end
 end
 
 function config.notify()
@@ -99,10 +95,6 @@ local winwidth = function()
 end
 
 function config.nvim_bufferline()
-  if not packer_plugins['nvim-web-devicons'].loaded then
-    packer_plugins['nvim-web-devicons'].loaded = true
-    vim.cmd([[packadd nvim-web-devicons]])
-  end
   require('bufferline').setup({
     options = {
       view = 'multiwindow',

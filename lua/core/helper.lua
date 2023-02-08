@@ -101,7 +101,7 @@ local helper = {
     return config
   end,
   get_data_path = function()
-    local data = os.getenv('XDG_DATA_DIR')
+    local data = os.getenv('XDG_fDATA_DIR')
     if not data then
       return home .. '/.local/share/nvim'
     end

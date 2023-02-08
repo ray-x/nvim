@@ -12,43 +12,43 @@ return function(editor)
     -- event = "InsertEnter",  --InsertCharPre
     -- after = "hrsh7th/nvim-compe",
     config = conf.autopairs,
-    opt = true,
+    lazy = true,
   })
 
   editor({
     'anuvyklack/hydra.nvim',
-    requires = 'anuvyklack/keymap-layer.nvim',
+    dependencies = 'anuvyklack/keymap-layer.nvim',
     -- event = { "CmdwinEnter", "CmdlineEnter", "CursorMoved" },
     config = conf.hydra,
-    opt = true,
+    lazy = true,
   })
 
   editor({
     'gbprod/substitute.nvim',
     event = { 'CmdlineEnter', 'TextYankPost' },
     config = conf.substitute,
-    opt = true,
+    lazy = true,
   })
 
   editor({
     'tpope/vim-abolish',
     event = { 'CmdlineEnter' },
     keys = { '<Plug>(abolish-coerce-word)' },
-    setup = function()
+    init = function()
       -- use default mapping
       vim.g.abolish_no_mappings = true
     end,
-    opt = true,
+    lazy = true,
   })
   editor({
     'tpope/vim-repeat',
     event = { 'CmdlineEnter' },
     keys = { '<Plug>(RepeatDot)', '<Plug>(RepeatUndo)', '<Plug>(RepeatRedo)' },
     fn = { 'repeat#set()' },
-    setup = function()
+    init = function()
       -- use default mapping
     end,
-    opt = true,
+    lazy = true,
   })
 
   -- I like this plugin, but 1) offscreen context is slow
@@ -57,9 +57,9 @@ return function(editor)
   --  text objects i% and a%
   editor({
     'andymass/vim-matchup',
-    opt = true,
+    lazy = true,
     event = { 'CursorHold', 'CursorHoldI' },
-    cmd = { 'MatchupWhereAmI?' },
+    cmd = { 'MatchupWhereAmI' }, -- ?
     config = function()
       local fsize = vim.fn.getfsize(vim.fn.expand('%:p:f'))
       if fsize == nil or fsize < 0 then
@@ -82,33 +82,33 @@ return function(editor)
   editor({
     'ggandor/leap.nvim',
     keys = { '<Plug>(leap-forward-to)', '<Plug>(leap-backward-to)' },
-    opt = true,
-    module = 'leap',
+    lazy = true,
+    -- module = 'leap',
     config = require('modules.editor.leap').setup,
-    requires = {
+    dependencies = {
       {
         'ggandor/leap-ast.nvim',
-        opt = true,
-        module = { 'leap', 'leap-ast' },
+        lazy = true,
+        -- module = { 'leap', 'leap-ast' },
         config = require('modules.editor.leap').ast,
       },
-      -- { "ggandor/flit.nvim", opt = true, module = {"flit", "leap"}, require("modules.editor.leap").flit },
+      -- { "ggandor/flit.nvim", lazy = true, module = {"flit", "leap"}, require("modules.editor.leap").flit },
     },
   })
 
   editor({
     'machakann/vim-sandwich',
-    opt = true,
+    lazy = true,
     event = { 'CursorMoved', 'CursorMovedI' },
     cmd = { 'Sandwith' },
-    setup = function()
+    init = function()
       vim.g.sandwich_no_default_key_mappings = 1
     end,
   })
 
   editor({
     'kylechui/nvim-surround',
-    opt = true,
+    lazy = true,
     -- opt for sandwitch for now until some issue been addressed
     -- event = { "CursorMoved", "CursorMovedI" },
     config = function()
@@ -132,15 +132,15 @@ return function(editor)
     'rrethy/vim-hexokinase',
     -- ft = { 'html','css','sass','vim','typescript','typescriptreact'},
     config = conf.hexokinase,
-    run = 'make hexokinase',
-    opt = true,
+    build = 'make hexokinase',
+    lazy = true,
     cmd = { 'HexokinaseTurnOn', 'HexokinaseToggle' },
   })
 
   editor({
     'chrisbra/Colorizer',
     ft = { 'log', 'txt', 'text' },
-    opt = true,
+    lazy = true,
     cmd = { 'ColorHighlight', 'ColorUnhighlight' },
   })
 
@@ -163,15 +163,15 @@ return function(editor)
     editor({
       'kevinhwang91/nvim-hlslens',
       keys = { '/', '?', '*', '#' }, --'n', 'N', '*', '#', 'g'
-      module = { 'hlslens' },
-      opt = true,
+      -- module = { 'hlslens' },
+      lazy = true,
       config = conf.hlslens,
     })
 
   editor({
     'kevinhwang91/nvim-ufo',
-    opt = true,
-    requires = { 'kevinhwang91/promise-async' },
+    lazy = true,
+    dependencies = { 'kevinhwang91/promise-async' },
     config = conf.ufo,
   })
 
@@ -195,17 +195,17 @@ return function(editor)
       '<M-LeftMouse>',
       '<M-C-RightMouse>',
     },
-    opt = true,
-    setup = conf.vmulti,
+    lazy = true,
+    init = conf.vmulti,
   })
 
-  editor({ 'indianboy42/hop-extensions', after = 'hop', opt = true })
+  editor({ 'indianboy42/hop-extensions', after = 'hop', lazy = true })
 
   -- EasyMotion in lua. -- maybe replace sneak
   editor({
     'phaazon/hop.nvim',
-    as = 'hop',
-    module = { 'hop', 'tsht' },
+    name = 'hop',
+    -- module = { 'hop', 'tsht' },
     cmd = {
       'HopWord',
       'HopWordMW',
@@ -250,8 +250,8 @@ return function(editor)
       '<Plug>(YankyGPutBefore)',
       '<Plug>(YankyGPutAfter)',
     },
-    module = 'yanky',
-    opt = true,
+    -- module = 'yanky',
+    lazy = true,
     config = conf.yanky,
   })
 
@@ -260,7 +260,7 @@ return function(editor)
   -- fix terminal color
   editor({
     'norcalli/nvim-terminal.lua',
-    opt = true,
+    lazy = true,
     ft = { 'log', 'terminal' },
     config = function()
       require('terminal').setup()
@@ -269,25 +269,25 @@ return function(editor)
 
   editor({
     'simnalamburt/vim-mundo',
-    opt = true,
+    lazy = true,
     cmd = { 'MundoToggle', 'MundoShow', 'MundoHide' },
-    run = function()
+    build = function()
       vim.cmd([[packadd vim-mundo]])
       vim.cmd([[UpdateRemotePlugins]])
     end,
-    setup = function()
+    init = function()
       -- body
       vim.g.mundo_prefer_python3 = 1
     end,
   })
-  editor({ 'mbbill/undotree', opt = true, cmd = { 'UndotreeToggle' } })
+  editor({ 'mbbill/undotree', lazy = true, cmd = { 'UndotreeToggle' } })
 
   editor({
     'Wansmer/treesj',
-    opt = true,
+    lazy = true,
     cmd = { 'TSJToggle', 'TSJJoin', 'TSJSplit' },
     keys = { '<space>j' },
-    module = 'treesj',
+    -- module = 'treesj',
     config = function()
       require('treesj').setup({
         use_default_keymaps = false,
@@ -297,14 +297,14 @@ return function(editor)
 
   editor({
     'chaoren/vim-wordmotion',
-    opt = true,
+    lazy = true,
     keys = { '<Plug>WordMotion_w', '<Plug>WordMotion_b' },
     -- keys = {'w','W', 'gE', 'aW'}
   })
 
   editor({
     'Pocco81/true-zen.nvim',
-    opt = true,
+    lazy = true,
     cmd = { 'TZAtaraxis', 'TZMinimalist', 'TZNarrow', 'TZFocus' },
     config = function()
       require('true-zen').setup({})
@@ -313,20 +313,20 @@ return function(editor)
 
   editor({
     'nvim-neorg/neorg',
-    opt = true,
+    lazy = true,
     config = conf.neorg,
     ft = 'norg',
-    requires = { 'nvim-neorg/neorg-telescope', ft = { 'norg' } },
+    dependencies = { 'nvim-neorg/neorg-telescope', ft = { 'norg' } },
   })
 
   editor({
     'nvim-orgmode/orgmode',
-    opt = true,
+    lazy = true,
     config = conf.orgmode,
     ft = 'org',
-    requires = {
+    dependencies = {
       'akinsho/org-bullets.nvim',
-      opt = true,
+      lazy = true,
       config = function()
         require('org-bullets').setup()
       end,
@@ -340,24 +340,24 @@ return function(editor)
 
   editor({
     'wellle/targets.vim',
-    opt = true,
+    lazy = true,
     event = { 'CursorHold', 'CursorHoldI', 'CursorMoved', 'CursorMovedI' },
-    setup = function() end,
+    init = function() end,
   })
 
   editor({
     'AndrewRadev/switch.vim',
-    opt = true,
-    cmd = { 'Switch', 'Switch!', 'Switch?', 'SwitchCase', 'SwitchCase!' },
+    lazy = true,
+    cmd = { 'Switch', 'SwitchCase' }, --'Switch!' , 'Switch?', 
     fn = { 'switch#Switch' },
     keys = { '<Plug>(Switch)' },
-    setup = function()
+    init = function()
       vim.g.switch_mapping = '<Space>t'
     end,
   })
   editor({
     'mizlan/iswap.nvim',
-    opt = true,
+    lazy = true,
     cmd = { 'ISwap', 'ISwapWith', 'ISwapNode', 'ISwapNodeWith' },
     config = function()
       require('iswap').setup({})
