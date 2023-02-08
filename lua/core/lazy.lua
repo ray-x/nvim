@@ -1,4 +1,4 @@
--- local loader = require('packer').loader
+-- local loader = require('utils.helper').loader
 local api = vim.api
 
 lprint('lazy')

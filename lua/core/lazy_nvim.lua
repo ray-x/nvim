@@ -1,18 +1,18 @@
 local uv, api, fn = vim.loop, vim.api, vim.fn
 local helper = require('core.helper')
 
-local pack = {}
-pack.__index = pack
+local lazy = {}
+lazy.__index = lazy
 
-function pack.add(repo)
-  if not pack.plug then
-    pack.plug = {}
+function lazy.add(repo)
+  if not lazy.plug then
+    lazy.plug = {}
   end
   if repo.lazy == nil then repo.lazy = true end
-  table.insert(pack.plug, repo)
+  table.insert(lazy.plug, repo)
 end
 
-function pack:load_modules_packages()
+function lazy:load_modules_lazyages()
  local modules_dir = helper.get_config_path() .. '/lua/modules'
  self.repos = {}
 
@@ -33,47 +33,12 @@ function pack:load_modules_packages()
    lprint(f) -- modules/completion/plugins ...
    if not vim.tbl_contains(disable_modules, f) then
      local plugins = require(f)
-     plugins(pack.add)
+     plugins(lazy.add)
    end
  end
 end
 
--- function pack:load_modules_packages()
---   local modules_dir = helper.get_config_path() .. "/lua/modules"
---   self.plug = {}
-
---   -- TODO: hard code instead of fs.find? 
---   local list = vim.fs.find("plugins.lua", { path = modules_dir, type = "file", limit = 10 })
---   if #list == 0 then
---     return
---   end
-
---   local disable_modules = {}
-
---   if fn.exists("g:disable_modules") == 1 then
---     disable_modules = vim.split(vim.g.disable_modules, ",")
---   end
---   if self.plug == nil then
---     self.plug = {}
---   end
-
---   for _, f in pairs(list) do
---     local _, pos = f:find(modules_dir)
---     f = f:sub(pos - 6, #f - 4)
---     if not vim.tbl_contains(disable_modules, f) then
---       local modules = require(f)
---       for k, repo in pairs(modules) do
---         if k:find("ray") then
---           table.insert(self.plug, { dir = k, unpack(repo) })
---         else
---           table.insert(self.plug, { k, unpack(repo) })
---         end
---       end
---     end
---   end
--- end
-
-function pack:boot_strap()
+function lazy:boot_strap()
   local lazy_path = string.format('%s/lazy/lazy.nvim', helper.get_data_path())
   local state = uv.fs_stat(lazy_path)
   if not state then
@@ -81,15 +46,15 @@ function pack:boot_strap()
     vim.cmd(cmd)
   end
   vim.opt.runtimepath:prepend(lazy_path)
-  local lazy = require('lazy')
+  local lz = require('lazy')
   local opts = {
     lockfile = helper.get_data_path() .. '/lazy-lock.json',
     dev = { path = '~/github/ray-x' },
   }
-  self:load_modules_packages()
-  lazy.setup(self.plug, opts)
+  self:load_modules_lazyages()
+  lz.setup(self.plug, opts)
 end
 
 
 
-return pack
+return lazy

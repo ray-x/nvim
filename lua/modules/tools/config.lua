@@ -118,9 +118,7 @@ function config.diffview()
 end
 
 function config.vim_dadbod_ui()
-  if packer_plugins['vim-dadbod'] and not packer_plugins['vim-dadbod'].loaded then
-    require('packer').loader('vim-dadbod')
-  end
+  require('utils.helper').loader('vim-dadbod')
   vim.g.db_ui_show_help = 0
   vim.g.db_ui_win_position = 'left'
   vim.g.db_ui_use_nerd_fonts = 1
@@ -152,9 +150,7 @@ function config.clap()
 end
 
 function config.clap_after()
-  if not packer_plugins['nvim-cmp'].loaded then
-    require('packer').loader('nvim-cmp')
-  end
+  require('utils.helper').loader('nvim-cmp')
 end
 
 function config.project()
@@ -172,7 +168,7 @@ function config.project()
 end
 
 function config.neogit()
-  local loader = require('packer').loader
+  local loader = require('utils.helper').loader
   loader('diffview.nvim')
   require('neogit').setup({
     signs = {
@@ -544,12 +540,7 @@ end
 
 function config.grammcheck()
   -- body
-  if
-    not packer_plugins['rhysd/vim-grammarous']
-    or not packer_plugins['rhysd/vim-grammarous'].loaded
-  then
-    require('packer').loader('vim-grammarous')
-  end
+  require('utils.helper').loader('vim-grammarous')
   vim.cmd([[GrammarousCheck]])
 end
 function config.vim_test()

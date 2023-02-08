@@ -154,12 +154,6 @@ local current_function = function(width)
 end
 
 local current_signature = function(width)
-  if
-    not packer_plugins['lsp_signature.nvim']
-    or packer_plugins['lsp_signature.nvim'].loaded == false
-  then
-    return ''
-  end
   local sig = require('lsp_signature').status_line(width)
   signature_length = #sig.label
   sig.label = sig.label:gsub('[\n\r]+', ' ')

@@ -5,7 +5,7 @@ function config.autopairs()
   if not has_autopairs then
     print('autopairs not loaded')
 
-    local loader = require('packer').loader
+    local loader = require('utils.helper').loader
     loader('nvim-autopairs')
     has_autopairs, autopairs = pcall(require, 'nvim-autopairs')
     if not has_autopairs then
@@ -278,10 +278,8 @@ function config.ufo()
 end
 
 function config.orgmode()
-  local loader = require('packer').loader
-  if not packer_plugins['nvim-treesitter'].loaded then
-    loader('nvim-treesitter')
-  end
+  local loader = require('utils.helper').loader
+  loader('nvim-treesitter')
   vim.cmd('set foldlevel=2')
 
   require('orgmode').setup_ts_grammar()
@@ -392,14 +390,9 @@ function config.orgmode()
   vim.cmd('set foldlevel=2')
 end
 function config.neorg()
-  local loader = require('packer').loader
-  if not packer_plugins['nvim-treesitter'].loaded then
+  local loader = require('utils.helper').loader
     loader('nvim-treesitter')
-  end
-  if not packer_plugins['neorg-telescope'].loaded then
-    loader('telescope.nvim')
     loader('neorg-telescope')
-  end
 
   require('neorg').setup({
     -- Tell Neorg what modules to load

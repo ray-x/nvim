@@ -187,7 +187,24 @@ local function tshopper()
 end
 
 local treesitter_context = function(width)
-  if not packer_plugins['nvim-treesitter'] or packer_plugins['nvim-treesitter'].loaded == false then
+  local ok, ts = pcall(require, 'nvim-treesitter')
+  if not ok or not ts then
+    return ' '
+  end
+
+  local disable_ft = {
+    'NvimTree',
+    'guihua',
+    'packer',
+    'guihua_rust',
+    'clap_input',
+    'clap_spinner',
+    'TelescopePrompt',
+    'csv',
+    'txt',
+    'defx',
+  }
+  if vim.tbl_contains(disable_ft, vim.o.ft)  then
     return ' '
   end
   local type_patterns = {
@@ -221,12 +238,6 @@ local treesitter_context = function(width)
 
   return ' ' .. context
 end
-local definitions = {
-  ft = {
-    { 'FileType', '*', "lua require('core.pack').auto_compile()" },
-  },
-}
-
 vim.api.nvim_create_autocmd({ 'FileType' }, {
   group = vim.api.nvim_create_augroup('SyntaxFtAuGroup', {}),
   callback = function()

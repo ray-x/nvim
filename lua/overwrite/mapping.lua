@@ -226,12 +226,6 @@ _G.run_or_test = function(debug)
   local ft = vim.bo.filetype
   local fn = vim.fn.expand('%')
   fn = string.lower(fn)
-  -- if fn == "[nvim-lua]" then
-  --   if not packer_plugins["nvim-luadev"].loaded then
-  --     loader("nvim-luadev")
-  --   end
-  --   return [[<Plug>Luadev-Run]]
-  -- end
   if ft == 'lua' then
     local f = string.find(fn, 'spec')
     if f == nil then

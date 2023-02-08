@@ -262,7 +262,7 @@ return function(tools)
     -- cmd = "SearchSession",
     -- after = { "telescope.nvim" },
     config = function()
-      require('packer').loader('telescope.nvim')
+      require('utils.helper').loader('telescope.nvim')
       require('telescope').load_extension('session-lens')
       require('session-lens').setup({
         path_display = { 'shorten' },
