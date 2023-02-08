@@ -1,14 +1,12 @@
 -- https://github.com/ziontee113/luasnip-tutorial/
 local ls = require('luasnip') --{{{
 
--- require("luasnip.loaders.from_vscode").lazy_load()
 require('luasnip.loaders.from_lua').load({
   paths = { '~/.config/nvim/lua/snippets/' },
 })
 
 vim.cmd([[command! LuaSnipEdit :lua require("luasnip.loaders.from_lua").edit_snippet_files()]]) --}}}
 
-require('luasnip.loaders.from_vscode').load({})
 -- vim.api.nvim_set_keymap("i", "<C-E>", "luasnip#choice_active() ? <Plug>luasnip-next-choice", {})
 -- vim.api.nvim_set_keymap("s", "<C-E>", "luasnip#choice_active() ? <Plug>luasnip-next-choice", {})
 
@@ -108,7 +106,7 @@ vim.keymap.set('n', '<Leader><CR>', '<cmd>LuaSnipEdit<cr>', { silent = true, nor
 -- ls.add_snippets("markdown", require("snippets.markdown"))
 
 vim.schedule(function()
-  require('luasnip.loaders.from_vscode').load()
+  require('luasnip.loaders.from_vscode').lazy_load()
 end)
 
 ls.config.set_config({ --{{{
