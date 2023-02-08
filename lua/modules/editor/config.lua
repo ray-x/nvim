@@ -391,8 +391,8 @@ function config.orgmode()
 end
 function config.neorg()
   local loader = require('utils.helper').loader
-    loader('nvim-treesitter')
-    loader('neorg-telescope')
+  loader('nvim-treesitter')
+  loader('neorg-telescope')
 
   require('neorg').setup({
     -- Tell Neorg what modules to load

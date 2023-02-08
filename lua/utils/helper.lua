@@ -12,7 +12,7 @@ function M.loader(modules)
   if type(modules) == 'string' then
     modules = vim.fn.split(modules, ' ')
   end
-  lazy.load({plugins = modules})
+  lazy.load({ plugins = modules })
 end
 function M.get_data_from_file(filename, startLine)
   local displayLine

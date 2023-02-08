@@ -204,8 +204,7 @@ function config.vim_vsnip()
 end
 
 function config.telescope_preload()
-    require('utils.helper').loader('plenary.nvim')
-    require"packer".loader("telescope-fzy-native.nvim")
+  require('utils.helper').loader({ 'plenary.nvim', 'telescope-fzy-native.nvim' })
 end
 
 function config.telescope()

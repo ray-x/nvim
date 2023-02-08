@@ -31,7 +31,7 @@ return function(use)
     'hrsh7th/nvim-cmp',
     module = false,
     -- lazy = true,
-    event = "InsertEnter", -- InsertCharPre
+    event = 'InsertEnter', -- InsertCharPre
     -- ft = {'lua', 'markdown',  'yaml', 'json', 'sql', 'vim', 'sh', 'sql', 'vim', 'sh'},
     after = { 'LuaSnip' },
     dependencies = {
@@ -77,7 +77,7 @@ return function(use)
 
   use({
     'nvim-telescope/telescope.nvim',
-    cmd = "Telescope",
+    cmd = 'Telescope',
     config = conf.telescope,
     init = conf.telescope_preload,
     dependencies = {

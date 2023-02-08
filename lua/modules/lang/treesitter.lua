@@ -204,7 +204,7 @@ local treesitter_context = function(width)
     'txt',
     'defx',
   }
-  if vim.tbl_contains(disable_ft, vim.o.ft)  then
+  if vim.tbl_contains(disable_ft, vim.o.ft) then
     return ' '
   end
   local type_patterns = {

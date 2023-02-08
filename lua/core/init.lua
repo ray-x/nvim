@@ -52,7 +52,6 @@ end
 local load_core = function()
   require('core.helper').init()
 
-
   -- print(vim.inspect(debug.traceback()))
 
   createdir()
@@ -77,7 +76,7 @@ local load_core = function()
     require('core.lazy_nvim'):boot_strap()
     require('core.colorscheme').load_colorscheme()
     require('core.lazy')
- end, 5)
+  end, 5)
 end
 
 load_core()
