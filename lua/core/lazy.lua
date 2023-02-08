@@ -1,8 +1,8 @@
-local loader = require('packer').loader
+-- local loader = require('utils.helper').loader
 local api = vim.api
 
 lprint('lazy')
-
+local loader = require('utils.helper').loader
 local start = vim.loop.now()
 local fsize = vim.fn.getfsize(vim.fn.expand('%:p:f'))
 if fsize == nil or fsize < 0 then
@@ -58,7 +58,7 @@ function Lazyload()
   vim.cmd([[packadd nvim-treesitter]])
   vim.cmd([[packadd nvim-lspconfig]])
   require('core.helper').init()
-  loader('impatient.nvim')
+  -- loader('impatient.nvim')
   createdir()
   lprint('I am lazy')
   local disable_ft = {
@@ -143,10 +143,7 @@ function Lazyload()
   lprint('lazy colorscheme loaded', vim.loop.now() - start)
 end
 
-local lazy_timer = 15
-if _G.packer_plugins == nil or _G.packer_plugins['packer.nvim'] == nil then
-  return print('need packer recompile')
-end
+local lazy_timer = 5
 
 vim.defer_fn(function()
   Lazyload()
@@ -164,7 +161,7 @@ vim.defer_fn(function()
   loader('windline.nvim')
   require('modules.ui.eviline')
   lprint('lazy wlfloat loaded', vim.loop.now() - start)
-end, lazy_timer + 10)
+end, lazy_timer + 5)
 --
 vim.defer_fn(function()
   require('overwrite')
@@ -191,7 +188,7 @@ vim.defer_fn(function()
   end
   lprint('lazy2 loaded', vim.loop.now() - start)
   require('core.ab')
-end, lazy_timer + 30)
+end, lazy_timer + 10)
 
 if plugin_folder() == [[~/github/ray-x/]] then
   -- it is my own box, setup fish
@@ -209,4 +206,4 @@ vim.defer_fn(function()
       api.nvim_buf_delete(bufnr, { force = true })
     end
   end
-end, 4)
+end, 0)

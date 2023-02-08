@@ -35,9 +35,6 @@ end
 
 function autocmd.load_autocmds()
   local definitions = {
-    packer = {
-      { 'BufWritePost', '*.lua', "lua require('core.pack').auto_compile()" },
-    },
     bufs = {
       -- Reload vim config automatically
       -- { "BufWritePost", [[$VIM_PATH/{*.vim,*.yaml,vimrc} nested source $MYVIMRC | redraw]] },
@@ -60,7 +57,6 @@ function autocmd.load_autocmds()
         '*',
         'if getfsize(expand("%")) > 1000000 | ownsyntax off | endif',
       },
-      { 'BufWritePost', 'plugins.lua', 'PackerCompile' },
       -- {"UIEnter", "*", ":silent! :lua require('modules.lang.config').syntax_folding()"},
       { 'BufReadPre', '*', ":silent! :lua require('modules.lang.config').nvim_treesitter()" },
       -- {"BufWritePre", "*.js,*.rs,*.lua", ":FormatWrite"},
@@ -77,12 +73,16 @@ function autocmd.load_autocmds()
       -- Equalize window dimensions when resizing vim window
       { 'VimResized', '*', [[tabdo wincmd =]] },
       -- Force write shada on leaving nvim
-      { "VimLeave", "*", [[if has('nvim') | wshada! | else | wviminfo! | endif]] },
+      { 'VimLeave', '*', [[if has('nvim') | wshada! | else | wviminfo! | endif]] },
       -- { 'VimLeavePre', '*', 'set winwidth=30 | set winminwidth=10' },
-      { 'VimLeavePre', '*', function() 
-        require('close_buffers').delete({ type = 'hidden', force = true })
-        require('close_buffers').wipe({ type = 'nameless', force = true }) 
-      end},
+      {
+        'VimLeavePre',
+        '*',
+        function()
+          require('close_buffers').delete({ type = 'hidden', force = true })
+          require('close_buffers').wipe({ type = 'nameless', force = true })
+        end,
+      },
 
       -- Check if file changed when its window is focus, more eager than 'autoread'
       { 'FocusGained', '*', 'checktime' },

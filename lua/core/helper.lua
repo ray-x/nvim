@@ -51,8 +51,7 @@ local helper = {
         s = vim.fn.expand('<cword>')
       end
       lprint('replace: ', s)
-      local n = s
-        :gsub('%f[^%l]%u', '_%1')
+      local n = s:gsub('%f[^%l]%u', '_%1')
         :gsub('%f[^%a]%d', '_%1')
         :gsub('%f[^%d]%a', '_%1')
         :gsub('(%u)(%u%l)', '%1_%2')
@@ -102,7 +101,7 @@ local helper = {
     return config
   end,
   get_data_path = function()
-    local data = os.getenv('XDG_DATA_DIR')
+    local data = os.getenv('XDG_fDATA_DIR')
     if not data then
       return home .. '/.local/share/nvim'
     end

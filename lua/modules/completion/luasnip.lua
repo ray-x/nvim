@@ -100,7 +100,6 @@ end) --}}}
 vim.keymap.set('n', '<Leader><CR>', '<cmd>LuaSnipEdit<cr>', { silent = true, noremap = true })
 
 -- ls.add_snippets("all", require("snippets.all"))
--- -- ls.add_snippets("go", require("snippets.go"))
 -- require("snippets.lua")
 -- ls.add_snippets("gitcommit", require("snippets.gitcommit"))
 -- ls.add_snippets("markdown", require("snippets.markdown"))

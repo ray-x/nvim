@@ -1,6 +1,5 @@
 local config = {}
 math.randomseed(os.time())
-packer_plugins = packer_plugins or {} -- supress warning
 
 function daylight()
   local h = tonumber(os.date('%H'))
@@ -13,12 +12,7 @@ end
 
 local day = daylight()
 
-function config.windline()
-  if not packer_plugins['nvim-web-devicons'].loaded then
-    packer_plugins['nvim-web-devicons'].loaded = true
-    require('packer').loader('nvim-web-devicons')
-  end
-end
+function config.windline() end
 
 function config.notify()
   require('notify').setup({
@@ -99,10 +93,6 @@ local winwidth = function()
 end
 
 function config.nvim_bufferline()
-  if not packer_plugins['nvim-web-devicons'].loaded then
-    packer_plugins['nvim-web-devicons'].loaded = true
-    vim.cmd([[packadd nvim-web-devicons]])
-  end
   require('bufferline').setup({
     options = {
       view = 'multiwindow',
@@ -164,110 +154,6 @@ function config.nvim_tree()
   })
 end
 -- '▋''▘'
-
--- function config.neotree()
---   require('neo-tree').setup({
---     popup_border_style = 'rounded',
---     enable_diagnostics = false,
---     default_component_configs = {
---       indent = {
---         padding = 0,
---         with_expanders = false,
---       },
---       icon = {
---         folder_closed = '',
---         folder_open = '',
---         folder_empty = '',
---         default = '',
---       },
---       git_status = {
---         symbols = {
---           added = '',
---           deleted = '',
---           modified = '',
---           renamed = '➜',
---           untracked = '★',
---           ignored = '◌',
---           unstaged = '✗',
---           staged = '✓',
---           conflict = '',
---         },
---       },
---     },
---     window = {
---       width = 25,
---       mappings = {
---         ['o'] = 'open',
---       },
---     },
---     filesystem = {
---       filtered_items = {
---         visible = false,
---         hide_dotfiles = true,
---         hide_gitignored = false,
---         hide_by_name = {
---           '.DS_Store',
---           'thumbs.db',
---           'node_modules',
---           '__pycache__',
---         },
---       },
---       follow_current_file = true,
---       hijack_netrw_behavior = 'open_current',
---       use_libuv_file_watcher = true,
---     },
---     git_status = {
---       window = {
---         position = 'float',
---       },
---     },
---     event_handlers = {
---       {
---         event = 'vim_buffer_enter',
---         handler = function(_)
---           if vim.bo.filetype == 'neo-tree' then
---             vim.wo.signcolumn = 'auto'
---           end
---         end,
---       },
---     },
---   })
--- end
-
--- function config.sidebar()
---   if not packer_plugins['neogit'].loaded then
---     require('packer').loader('neogit')
---   end
---   require('sidebar-nvim').setup({
---     open = false,
---     side = 'left',
---     initial_width = 32,
---     hide_statusline = false,
---     bindings = {
---       ['q'] = function(a, b)
---         -- print(a, b)
---       end,
---     },
---     update_interval = 1000,
---     section_separator = { '────────────────' },
---     sections = { 'files', 'git', 'symbols', 'containers' },
---
---     git = {
---       icon = '',
---     },
---     symbols = {
---       icon = 'ƒ',
---     },
---     containers = {
---       icon = '',
---       attach_shell = '/bin/sh',
---       show_all = true,
---       interval = 5000,
---     },
---     datetime = { format = '%a%b%d|%H:%M', clocks = { { name = 'local' } } },
---     todos = { ignored_paths = { '~' } },
---   })
--- end
 
 function config.scrollbar()
   if vim.wo.diff then

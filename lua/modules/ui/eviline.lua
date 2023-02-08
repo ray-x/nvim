@@ -154,12 +154,6 @@ local current_function = function(width)
 end
 
 local current_signature = function(width)
-  if
-    not packer_plugins['lsp_signature.nvim']
-    or packer_plugins['lsp_signature.nvim'].loaded == false
-  then
-    return ''
-  end
   local sig = require('lsp_signature').status_line(width)
   signature_length = #sig.label
   sig.label = sig.label:gsub('[\n\r]+', ' ')
@@ -553,7 +547,11 @@ basic.scrollbar_right = {
   },
   text = function(_, winnr, width, is_float)
     if width > breakpoint_width or is_float then
-      return { { b_components.progress_lua, '' }, { ' ', '' }, { scrollbar_instance(), 'blue' } }
+      return {
+        { b_components.progress_lua, '' },
+        { ' ', '' },
+        { scrollbar_instance(), 'blue' },
+      }
     end
   end,
 }

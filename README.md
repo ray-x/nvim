@@ -2,15 +2,12 @@
 
 ## 🏎 🏎 🏎 Need for speed! 🏎 🏎 🏎
 
-This neovim configure file is highly optimized for the impatient. Packer lazy loading + After syntax highlight rendering. Maybe the
-only nvim setup in github that can render multiple files with treesitter in less than 80ms with ~110 plugins installed
-(e.g. Open both util.lua(1686 loc) and lsp.lua(1538 loc) from neovim source code in 80.6ms)
+This neovim configure file is highly optimized for the impatient. Super lazy loading + After syntax highlight rendering. Maybe the
+only nvim setup in github that can render multiple files with treesitter in less than 45ms with ~170 plugins installed
+(e.g. Open both util.lua(1686 loc) and lsp.lua(1538 loc) from neovim source code in 58.6ms)
+The setup set all plugins to be lazy loaded and trigger when it needed.
 
-The `Plug` config is located in branch [Plug branch](https://github.com/ray-x/dotfiles/tree/zprezto-plug)
-
-- nvim+kitty configured with pop menu:
-
-  ![nvim + kitty](https://user-images.githubusercontent.com/1681295/214219496-1ac36e2a-4550-4fa2-9703-9caa2abeefd9.jpg)
+The `Packer` config locats in branch [Packer branch](https://github.com/ray-x/nvim/tree/packer)
 
 - nvim Telescope preview:
   ![telescope](https://user-images.githubusercontent.com/1681295/214219526-dfb3cd22-7b67-475b-9294-914590d2913b.jpg)
@@ -41,21 +38,14 @@ About 150 plugins and 14000 lines of lua and vim code.
 There are lots of amazing plugins,
 I used following plugin a lots
 
-- `Plug` -> `Dein` -> `Lua-Packer`
-  Change to Lua-Packer does not
-  decrease startup time as Plug -> Dein. But still about 80ms faster for Golang codes loading.
-  If you interested in Dein version, Please refer to [Dein](https://github.com/ray-x/dotfiles/tree/nvim-comple).
-  This was the last Dein/Packer dual supports version I have (init.vim has a flag to choose).
-  ATM, minium support for vim. Most plugins only works under neovim 0.5.1+.
+- `Plug` -> `Dein` -> `Lua-Packer` -> [lazy.nvim](https://github.com/folke/lazy.nvim)
 
-  I followed Raphael(a.k.a glepnir) https://github.com/glepnir/nvim dotfiles when I start this repo. He provides a great wrapper for
-  Packer. There is a `overwrite` folder which will override the settings. Also, lots of changes in modules/plugins.
-  setup
-  A.T.M. nvim-compe/cmp as a completion engine with LSP, LSP saga. vim-multi-cursor, clap/telescope. treesitter,
+  I followed Glepnir https://github.com/glepnir/nvim dotfiles when I start this repo. 
+  A.T.M. nvim-cmp as a completion engine with LSP, LSP saga. vim-multi-cursor, clap/telescope. treesitter,
   lazy load vim-go. So, other than module folder, I could copy/paste everything else from glepnir's configure file,
   which make my life easier.
 
-- Telescope + Vim-Clap
+- Telescope + Vim-Clap + fzf
 
   One of the best plugin for search anything. I used it to replace fzf, leaderF, leaderP, defx, Ag/Ack/Rg, yank(ring), project management. undolist and many more. Telescope is awesome, only issue is performance.
 
@@ -76,7 +66,7 @@ I used following plugin a lots
 Lint and format moved to null-ls.
 
 - Programming support:
-  Treesitter, nvim-lsp and [navigator.lua](https://github.com/ray-x/navigator.lua), for golang, [go.nvim](https://github.com/ray-x/go.nvim)
+  Treesitter, nvim-lsp and [navigator.lua](https://github.com/ray-x/navigator.lua), for go, [go.nvim](https://github.com/ray-x/go.nvim)
 
 - Debug:
 

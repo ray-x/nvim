@@ -62,7 +62,7 @@ local function keybind()
   bind.nvim_load_mapping(dap_keys)
 end
 
-local loader = require('packer').loader
+local loader = require('utils.helper').loader
 
 -- if ft == 'go' then
 --   require('modules.lang.dap.go')

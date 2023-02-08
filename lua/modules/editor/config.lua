@@ -5,7 +5,7 @@ function config.autopairs()
   if not has_autopairs then
     print('autopairs not loaded')
 
-    local loader = require('packer').loader
+    local loader = require('utils.helper').loader
     loader('nvim-autopairs')
     has_autopairs, autopairs = pcall(require, 'nvim-autopairs')
     if not has_autopairs then
@@ -20,7 +20,13 @@ function config.autopairs()
     autopairs = { enable = true },
     ignored_next_char = string.gsub([[ [%w%%%'%[%"%.] ]], '%s+', ''), -- "[%w%.+-"']",
     enable_check_bracket_line = false,
-    html_break_line_filetype = { 'html', 'vue', 'typescriptreact', 'svelte', 'javascriptreact' },
+    html_break_line_filetype = {
+      'html',
+      'vue',
+      'typescriptreact',
+      'svelte',
+      'javascriptreact',
+    },
     check_ts = true,
     ts_config = {
       lua = { 'string' }, -- it will not add pair on that treesitter node
@@ -74,7 +80,7 @@ local esc = function(cmd)
 end
 
 function config.hydra()
-  local hydra = require('modules.editor.hydra')
+  --require('modules.editor.hydra')
 end
 function config.hexokinase()
   vim.g.Hexokinase_optInPatterns = {
@@ -199,7 +205,7 @@ function config.comment()
     post_hook = function(ctx)
       -- lprint(ctx)
       if ctx.range.scol == -1 then
-        -- do something with the current line
+      -- do something with the current line
       else
         -- print(vim.inspect(ctx), ctx.range.srow, ctx.range.erow, ctx.range.scol, ctx.range.ecol)
         if ctx.range.ecol > 400 then
@@ -272,10 +278,8 @@ function config.ufo()
 end
 
 function config.orgmode()
-  local loader = require('packer').loader
-  if not packer_plugins['nvim-treesitter'].loaded then
-    loader('nvim-treesitter')
-  end
+  local loader = require('utils.helper').loader
+  loader('nvim-treesitter')
   vim.cmd('set foldlevel=2')
 
   require('orgmode').setup_ts_grammar()
@@ -386,14 +390,9 @@ function config.orgmode()
   vim.cmd('set foldlevel=2')
 end
 function config.neorg()
-  local loader = require('packer').loader
-  if not packer_plugins['nvim-treesitter'].loaded then
-    loader('nvim-treesitter')
-  end
-  if not packer_plugins['neorg-telescope'].loaded then
-    loader('telescope.nvim')
-    loader('neorg-telescope')
-  end
+  local loader = require('utils.helper').loader
+  loader('nvim-treesitter')
+  loader('neorg-telescope')
 
   require('neorg').setup({
     -- Tell Neorg what modules to load

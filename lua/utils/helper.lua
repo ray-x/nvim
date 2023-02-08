@@ -5,6 +5,15 @@
 local M = {
   log_path = vim.lsp.get_log_path(),
 }
+function M.loader(modules)
+  -- lazy loading
+  -- assuming lazy.nvim is used
+  local lazy = require('lazy')
+  if type(modules) == 'string' then
+    modules = vim.fn.split(modules, ' ')
+  end
+  lazy.load({ plugins = modules })
+end
 function M.get_data_from_file(filename, startLine)
   local displayLine
   if startLine < 3 then

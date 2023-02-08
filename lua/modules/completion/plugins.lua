@@ -25,30 +25,31 @@ local filetypes = {
   'sh',
 }
 return function(use)
-  use({ 'neovim/nvim-lspconfig', config = conf.nvim_lsp, module = 'lspconfig', opt = true })
+  use({ 'neovim/nvim-lspconfig', config = conf.nvim_lsp, lazy = true })
   -- loading sequence LuaSnip -> nvim-cmp -> cmp_luasnip -> cmp-nvim-lua -> cmp-nvim-lsp ->cmp-buffer -> friendly-snippets
   use({
     'hrsh7th/nvim-cmp',
-    -- opt = true,
-    -- event = "InsertEnter", -- InsertCharPre
+    module = false,
+    -- lazy = true,
+    event = 'InsertEnter', -- InsertCharPre
     -- ft = {'lua', 'markdown',  'yaml', 'json', 'sql', 'vim', 'sh', 'sql', 'vim', 'sh'},
     after = { 'LuaSnip' },
-    requires = {
-      { 'hrsh7th/cmp-buffer', after = 'nvim-cmp', opt = true },
-      { 'hrsh7th/cmp-nvim-lua', after = 'nvim-cmp', opt = true },
-      { 'hrsh7th/cmp-calc', after = 'nvim-cmp', opt = true },
-      { 'hrsh7th/cmp-path', after = 'nvim-cmp', opt = true },
-      { 'hrsh7th/cmp-cmdline', after = 'nvim-cmp', opt = true },
-      -- { "tzachar/cmp-tabnine", after = "nvim-cmp", run = "./install.sh", opt = true, config = conf.tabnine},
-      { 'hrsh7th/cmp-copilot', after = 'nvim-cmp', opt = true },
-      { 'hrsh7th/cmp-emoji', after = 'nvim-cmp', opt = true },
-      { plugin_folder() .. 'cmp-treesitter', after = 'nvim-cmp', opt = true },
-      { 'hrsh7th/cmp-nvim-lsp', after = 'nvim-cmp', opt = true },
-      { 'f3fora/cmp-spell', after = 'nvim-cmp', opt = true },
-      { 'octaltree/cmp-look', after = 'nvim-cmp', opt = true },
+    dependencies = {
+      { 'hrsh7th/cmp-buffer', after = 'nvim-cmp', lazy = true },
+      { 'hrsh7th/cmp-nvim-lua', after = 'nvim-cmp', lazy = true },
+      { 'hrsh7th/cmp-calc', after = 'nvim-cmp', lazy = true },
+      { 'hrsh7th/cmp-path', after = 'nvim-cmp', lazy = true },
+      { 'hrsh7th/cmp-cmdline', after = 'nvim-cmp', lazy = true },
+      -- { "tzachar/cmp-tabnine", after = "nvim-cmp", build = "./install.sh", lazy = true, config = conf.tabnine},
+      { 'hrsh7th/cmp-copilot', after = 'nvim-cmp', lazy = true },
+      { 'hrsh7th/cmp-emoji', after = 'nvim-cmp', lazy = true },
+      { 'ray-x/cmp-treesitter', dev = true, after = 'nvim-cmp', lazy = true },
+      { 'hrsh7th/cmp-nvim-lsp', after = 'nvim-cmp', lazy = true },
+      { 'f3fora/cmp-spell', after = 'nvim-cmp', lazy = true },
+      { 'octaltree/cmp-look', after = 'nvim-cmp', lazy = true },
       -- {"quangnguyen30192/cmp-nvim-ultisnips", event = "InsertCharPre", after = "nvim-cmp", opt=true },
       { 'saadparwaiz1/cmp_luasnip', after = { 'nvim-cmp', 'LuaSnip' } },
-      -- {"tzachar/cmp-tabnine", opt = true}
+      -- {"tzachar/cmp-tabnine", lazy = true}
     },
     config = conf.nvim_cmp,
   })
@@ -57,7 +58,8 @@ return function(use)
   use({
     'L3MON4D3/LuaSnip', -- need to be the first to load
     event = 'InsertEnter',
-    requires = { 'rafamadriz/friendly-snippets', event = 'InsertEnter' }, -- , event = "InsertEnter"
+    dependencies = { 'rafamadriz/friendly-snippets', module = false, event = 'InsertEnter' }, -- , event = "InsertEnter"
+    module = true,
     config = function()
       require('modules.completion.luasnip')
     end,
@@ -66,7 +68,7 @@ return function(use)
     'kristijanhusak/vim-dadbod-completion',
     event = 'InsertEnter',
     ft = { 'sql' },
-    setup = function()
+    init = function()
       vim.cmd([[autocmd FileType sql setlocal omnifunc=vim_dadbod_completion#omni]])
       -- vim.cmd([[autocmd FileType sql,mysql,plsql lua require('cmp').setup.buffer({ sources = {{ name = 'vim-dadbod-use' }} })]])
       -- body
@@ -75,17 +77,16 @@ return function(use)
 
   use({
     'nvim-telescope/telescope.nvim',
-    -- cmd = "Telescope",
+    cmd = 'Telescope',
     config = conf.telescope,
-    module = { 'telescope', 'telescope.builtin', 'telescope.actions' },
-    setup = conf.telescope_preload,
-    requires = {
-      { 'nvim-lua/plenary.nvim', opt = true },
-      { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make', opt = true },
-      { 'nvim-telescope/telescope-live-grep-args.nvim', opt = true },
-      { 'nvim-telescope/telescope-file-browser.nvim', opt = true },
+    init = conf.telescope_preload,
+    dependencies = {
+      { 'nvim-lua/plenary.nvim', lazy = true },
+      { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make', lazy = true },
+      { 'nvim-telescope/telescope-live-grep-args.nvim', lazy = true },
+      { 'nvim-telescope/telescope-file-browser.nvim', lazy = true },
     },
-    opt = true,
+    lazy = true,
   })
 
   use({
@@ -106,13 +107,14 @@ return function(use)
       'haml',
       'elm',
     },
-    setup = conf.emmet,
+    init = conf.emmet,
   })
 
   -- note: part of the code is used in navigator
   use({
-    plugin_folder() .. 'lsp_signature.nvim',
-    opt = true,
+    'ray-x/lsp_signature.nvim',
+    dev = true,
+    lazy = true,
     config = function()
       require('lsp_signature').setup({
         bind = true,
@@ -142,9 +144,9 @@ return function(use)
 
   use({
     'github/copilot.vim',
-    opt = true,
+    lazy = true,
     event = 'InsertEnter',
-    setup = function()
+    init = function()
       -- vim.api.nvim_set_keymap("n", "<C-=>", [[copilot#Accept("\<CR>")]], { silent = true, script = true, expr = true })
       -- vim.api.nvim_set_keymap("i", "<C-=>", [[copilot#Accept("\<CR>")]], { silent = true, script = true, expr = true })
 
@@ -163,7 +165,7 @@ return function(use)
   })
   use({
     'Exafunction/codeium.vim',
-    opt = true,
+    lazy = true,
     -- event = 'InsertEnter',
   })
 end

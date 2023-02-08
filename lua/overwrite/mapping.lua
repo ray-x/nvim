@@ -3,7 +3,7 @@ local map_cmd = bind.map_cmd
 local map_func = bind.map_func
 local map_plug = bind.map_plug
 local map_cu = bind.map_cu
-local loader = require('packer').loader
+
 local K = {}
 local function check_back_space()
   local col = vim.fn.col('.') - 1
@@ -226,12 +226,6 @@ _G.run_or_test = function(debug)
   local ft = vim.bo.filetype
   local fn = vim.fn.expand('%')
   fn = string.lower(fn)
-  -- if fn == "[nvim-lua]" then
-  --   if not packer_plugins["nvim-luadev"].loaded then
-  --     loader("nvim-luadev")
-  --   end
-  --   return [[<Plug>Luadev-Run]]
-  -- end
   if ft == 'lua' then
     local f = string.find(fn, 'spec')
     if f == nil then
@@ -278,9 +272,6 @@ _G.run_or_test = function(debug)
 end
 
 _G.hop1 = function(ac)
-  if packer_plugins['hop'].loaded ~= true then
-    loader('hop')
-  end
   if vim.fn.mode() == 's' then
     -- print(vim.fn.mode(), vim.fn.mode() == 's')
     return vim.cmd('exe "normal! i s"')
@@ -294,16 +285,12 @@ _G.hop1 = function(ac)
 end
 
 _G.Line_ft = function(a)
-  if packer_plugins['hop'].loaded ~= true then
-    loader('hop')
-  end
   if vim.fn.mode() == 's' then
     return vim.fn.input(a)
   end
   -- check and load hop
   local loaded, hop = pcall(require, 'hop')
   if not loaded or not hop.initialized then
-    require('packer').loader('hop')
     loaded, hop = pcall(require, 'hop')
   end
   if a == 'f' then
