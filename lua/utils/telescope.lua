@@ -171,7 +171,7 @@ end
 
 function M.installed_plugins()
   require('telescope.builtin').find_files({
-    cwd = vim.fn.stdpath('data') .. '/site/pack/packer/start/',
+    cwd = vim.fn.stdpath('data') .. '/lazy/',
   })
 end
 
