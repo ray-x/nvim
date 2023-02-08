@@ -106,7 +106,7 @@ vim.keymap.set('n', '<Leader><CR>', '<cmd>LuaSnipEdit<cr>', { silent = true, nor
 -- ls.add_snippets("markdown", require("snippets.markdown"))
 
 vim.schedule(function()
-  require('luasnip.loaders.from_vscode').load()
+  require('luasnip.loaders.from_vscode').lazy_load()
 end)
 
 ls.config.set_config({ --{{{
