@@ -8,7 +8,6 @@ require('luasnip.loaders.from_lua').load({
 
 vim.cmd([[command! LuaSnipEdit :lua require("luasnip.loaders.from_lua").edit_snippet_files()]]) --}}}
 
-require('luasnip.loaders.from_vscode').load({})
 -- vim.api.nvim_set_keymap("i", "<C-E>", "luasnip#choice_active() ? <Plug>luasnip-next-choice", {})
 -- vim.api.nvim_set_keymap("s", "<C-E>", "luasnip#choice_active() ? <Plug>luasnip-next-choice", {})
 
