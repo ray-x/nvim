@@ -278,4 +278,11 @@ return function(lang)
     ft = { 'c', 'cpp', 'objc', 'objcpp', 'h', 'hpp' },
     config = conf.clangd,
   })
+
+  lang({
+    'HiPhish/awk-ward.nvim',
+    ft = 'awk',
+    lazy = true,
+    cmd = { 'AwkWard' },
+  })
 end
