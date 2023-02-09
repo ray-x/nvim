@@ -13,7 +13,7 @@ return function(tools)
     config = conf.vim_dadbod_ui,
     dependencies = { 'tpope/vim-dadbod', ft = { 'sql' } },
     lazy = true,
-    setup = function()
+    init =function()
       vim.g.dbs = {
         eraser = 'postgres://postgres:password@localhost:5432/eraser_local',
         staging = 'postgres://postgres:password@localhost:5432/my-staging-db',
@@ -33,7 +33,7 @@ return function(tools)
   tools({
     'vim-test/vim-test',
     cmd = { 'TestNearest', 'TestFile', 'TestSuite' },
-    setup = conf.vim_test,
+    init =conf.vim_test,
   })
 
   tools({
@@ -89,7 +89,7 @@ return function(tools)
     'kamykn/spelunker.vim',
     lazy = true,
     fn = { 'spelunker#check' },
-    setup = conf.spelunker,
+    init =conf.spelunker,
     config = conf.spellcheck,
   })
   tools({
@@ -97,7 +97,7 @@ return function(tools)
     lazy = true,
     cmd = { 'GrammarousCheck' },
     ft = { 'markdown', 'txt' },
-    setup = conf.grammarous,
+    init =conf.grammarous,
   })
 
   tools({
@@ -105,7 +105,7 @@ return function(tools)
     ft = 'markdown',
     dependencies = { 'godlygeek/tabular' },
     cmd = { 'Toc' },
-    setup = conf.markdown,
+    init =conf.markdown,
     lazy = true,
   })
 
@@ -113,7 +113,7 @@ return function(tools)
     'iamcco/markdown-preview.nvim',
     ft = { 'markdown', 'pandoc.markdown', 'rmd' },
     cmd = { 'MarkdownPreview' },
-    setup = conf.mkdp,
+    init =conf.mkdp,
     build = [[sh -c "cd app && yarn install"]],
     lazy = true,
   })
@@ -149,7 +149,7 @@ return function(tools)
     build = function()
       vim.fn['clap#installer#download_binary']()
     end,
-    setup = conf.clap,
+    init =conf.clap,
     config = conf.clap_after,
   })
 
@@ -345,7 +345,7 @@ return function(tools)
     'voldikss/vim-translator',
     lazy = true,
     keys = { '<Plug>TranslateW', '<Plug>TranslateWV' },
-    setup = function()
+    init =function()
       vim.api.nvim_set_keymap(
         'n',
         '<Leader>ts',

@@ -132,7 +132,7 @@ return function(ui)
     'ray-x/aurora',
     dev = true,
     lazy = true,
-    setup = function()
+    init =function()
       vim.g.aurora_italic = 1
       vim.g.aurora_transparent = 1
       vim.g.aurora_bold = 1
