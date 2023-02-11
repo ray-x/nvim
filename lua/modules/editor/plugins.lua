@@ -95,31 +95,26 @@ return function(editor)
   })
 
   editor({
-    'machakann/vim-sandwich',
-    lazy = true,
-    event = { 'CursorMoved', 'CursorMovedI' },
-    cmd = { 'Sandwith' },
-    init = function()
-      vim.g.sandwich_no_default_key_mappings = 1
-    end,
-  })
-
-  editor({
     'kylechui/nvim-surround',
     lazy = true,
     -- opt for sandwitch for now until some issue been addressed
-    -- event = { "CursorMoved", "CursorMovedI" },
+    event = { 'CursorMoved', 'CursorMovedI' },
     config = function()
       require('nvim-surround').setup({
         -- Configuration here, or leave empty to use defaults
         -- sournd  cs, ds, yss
         keymaps = {
           -- default
-          -- [insert] = "ys",
-          -- insert_line = "yss",
-          visual = '<Leader>cr',
-          -- delete = "ds",
-          -- change = "cs",
+          insert = '<C-g>s',
+          insert_line = '<C-g>S',
+          normal = 'ca',
+          normal_cur = 'cas',
+          normal_line = 'cA',
+          normal_cur_line = 'cAa',
+          visual = 'cs',
+          visual_line = 'cS',
+          delete = 'cd',
+          change = 'cs',
         },
       })
     end,
@@ -155,16 +150,14 @@ return function(editor)
     config = conf.move,
   })
 
-  -- Great plugin.
-  ft =
-    { 'c' },
-    editor({
-      'kevinhwang91/nvim-hlslens',
-      keys = { '/', '?', '*', '#' }, --'n', 'N', '*', '#', 'g'
-      lazy = true,
-      config = conf.hlslens,
-    })
+  editor({
+    'kevinhwang91/nvim-hlslens',
+    keys = { '/', '?', '*', '#' }, --'n', 'N', '*', '#', 'g'
+    lazy = true,
+    config = conf.hlslens,
+  })
 
+  -- not working well with navigator
   editor({
     'kevinhwang91/nvim-ufo',
     lazy = true,

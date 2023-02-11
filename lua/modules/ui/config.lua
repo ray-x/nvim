@@ -155,27 +155,6 @@ function config.nvim_tree()
 end
 -- '▋''▘'
 
-function config.scrollbar()
-  if vim.wo.diff then
-    return
-  end
-  local w = vim.api.nvim_call_function('winwidth', { 0 })
-  if w < 70 then
-    return
-  end
-  local vimcmd = vim.api.nvim_command
-  vimcmd('augroup ' .. 'ScrollbarInit')
-  vimcmd('autocmd!')
-  vimcmd("autocmd CursorMoved,VimResized,QuitPre * silent! lua require('scrollbar').show()")
-  vimcmd("autocmd WinEnter,FocusGained           * silent! lua require('scrollbar').show()")
-  vimcmd("autocmd WinLeave,FocusLost,BufLeave    * silent! lua require('scrollbar').clear()")
-  vimcmd('autocmd WinLeave,BufLeave    * silent! DiffviewClose')
-  vimcmd('augroup end')
-  vimcmd('highlight link Scrollbar Comment')
-  vim.g.sb_default_behavior = 'never'
-  vim.g.sb_bar_style = 'solid'
-end
-
 function config.scrollview()
   if vim.wo.diff then
     return
@@ -184,8 +163,12 @@ function config.scrollview()
   if w < 70 then
     return
   end
-
+  -- vim.api.nvim_set_hl(0, 'ScrollView', { fg = '#8343a3', bg = '#8343a3' })
   vim.g.scrollview_column = 1
+  require('scrollview').setup({
+    column = 1,
+    blend = 50,
+  })
 end
 
 function config.default()

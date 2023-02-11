@@ -13,7 +13,7 @@ return function(tools)
     config = conf.vim_dadbod_ui,
     dependencies = { 'tpope/vim-dadbod', ft = { 'sql' } },
     lazy = true,
-    init =function()
+    init = function()
       vim.g.dbs = {
         eraser = 'postgres://postgres:password@localhost:5432/eraser_local',
         staging = 'postgres://postgres:password@localhost:5432/my-staging-db',
@@ -33,7 +33,52 @@ return function(tools)
   tools({
     'vim-test/vim-test',
     cmd = { 'TestNearest', 'TestFile', 'TestSuite' },
-    init =conf.vim_test,
+    init = conf.vim_test,
+  })
+  tools({
+    'folke/which-key.nvim',
+    cmd = { 'WhichKey' },
+    module = false,
+    config = function()
+      vim.o.timeout = true
+      vim.o.timeoutlen = 500
+      require('which-key').setup({
+        key_labels = {
+          ['<space>'] = '󱁐',
+          ['telescope'] = ' ',
+          ['Telescope'] = ' ',
+          ['operator'] = '',
+        },
+        window = {
+          margin = { 0, 0, 0, 0 }, -- extra window margin [top, right, bottom, left]
+          padding = { 0, 0, 0, 0 }, -- extra window padding etop, right, bottom, lefte
+          winblend = 20,
+        },
+        layout = {
+          height = { min = 1, max = 4 }, -- min and max height of the columns
+          spacing = 3, -- spacing between columns
+          width = { min = 12, max = 40 }, -- min and max width of the columns
+          align = 'left', -- align columns left, center or right
+        },
+        hidden = {
+          '<silent>',
+          '<cmd>',
+          '<Cmd>',
+          '<CR>',
+          'call',
+          'lua',
+          '^:',
+          '^ ',
+          'require',
+          'escope',
+          'erator',
+          '"',
+        }, --
+        -- your configuration comes here
+        -- or leave it empty to use the default settings
+        -- refer to the configuration section below
+      })
+    end,
   })
 
   tools({
@@ -89,7 +134,7 @@ return function(tools)
     'kamykn/spelunker.vim',
     lazy = true,
     fn = { 'spelunker#check' },
-    init =conf.spelunker,
+    init = conf.spelunker,
     config = conf.spellcheck,
   })
   tools({
@@ -97,7 +142,7 @@ return function(tools)
     lazy = true,
     cmd = { 'GrammarousCheck' },
     ft = { 'markdown', 'txt' },
-    init =conf.grammarous,
+    init = conf.grammarous,
   })
 
   tools({
@@ -105,7 +150,7 @@ return function(tools)
     ft = 'markdown',
     dependencies = { 'godlygeek/tabular' },
     cmd = { 'Toc' },
-    init =conf.markdown,
+    init = conf.markdown,
     lazy = true,
   })
 
@@ -113,7 +158,7 @@ return function(tools)
     'iamcco/markdown-preview.nvim',
     ft = { 'markdown', 'pandoc.markdown', 'rmd' },
     cmd = { 'MarkdownPreview' },
-    init =conf.mkdp,
+    init = conf.mkdp,
     build = [[sh -c "cd app && yarn install"]],
     lazy = true,
   })
@@ -146,10 +191,8 @@ return function(tools)
   tools({
     'liuchengxu/vim-clap',
     cmd = { 'Clap' },
-    build = function()
-      vim.fn['clap#installer#download_binary']()
-    end,
-    init =conf.clap,
+    build = 'bash install.sh',
+    init = conf.clap,
     config = conf.clap_after,
   })
 
@@ -345,7 +388,7 @@ return function(tools)
     'voldikss/vim-translator',
     lazy = true,
     keys = { '<Plug>TranslateW', '<Plug>TranslateWV' },
-    init =function()
+    init = function()
       vim.api.nvim_set_keymap(
         'n',
         '<Leader>ts',

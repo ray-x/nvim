@@ -228,6 +228,10 @@ return function(lang)
     -- Highlight also non-parentheses delimiters, boolean or table: lang -> boolean
     -- cmd = "Rainbow",
     config = function()
+      local fsize = vim.fn.getfsize(vim.fn.expand('%:p:f'))
+      if fsize > 200000 then
+        return
+      end
       require('nvim-treesitter.configs').setup({
         rainbow = { enable = true, extended_mode = true },
       })

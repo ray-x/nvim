@@ -3,6 +3,12 @@ local map_cmd = bind.map_cmd
 local map_func = bind.map_func
 local map_plug = bind.map_plug
 local map_cu = bind.map_cu
+local mx = function(feedkeys)
+    return function()
+        local keys = vim.api.nvim_replace_termcodes(feedkeys, true, false, true)
+        vim.api.nvim_feedkeys(keys, "m", false)
+    end
+end
 
 local K = {}
 local function check_back_space()
@@ -170,16 +176,16 @@ local keys = {
   ["n|<A-l>"] = {options = { desc = "move lines right" }},
 
   -- Sandwich
-  ['nox|ca'] = map_plug('sandwich-add'):with_desc('sandwich-add'),
-  ['nx|cd'] = map_plug('sandwich-delete'):with_desc('sandwich-delete'),
-  ['nx|cda'] = map_plug('sandwich-delete-auto'):with_desc('sandwich-delete-auto'),
-
-  ['nx|cr'] = map_plug('sandwich-replace'):with_desc('sandwich-replace'),
-  ['nx|cra'] = map_plug('sandwich-replace-replace'):with_desc('sandwich-replace-replace'),
-  ['ox|ib'] = map_plug('textobject-sandwich-i'),
-  ['ox|ab'] = map_plug('textobject-sandwich-a'),
-  ['ox|is'] = map_plug('textobject-sandwich-query-i'),
-  ['ox|as'] = map_plug('textobject-sandwich-query-a'),
+  -- ['nox|ca'] = map_plug('sandwich-add'):with_desc('sandwich-add'),
+  -- ['nx|cd'] = map_plug('sandwich-delete'):with_desc('sandwich-delete'),
+  -- ['nx|cda'] = map_plug('sandwich-delete-auto'):with_desc('sandwich-delete-auto'),
+  --
+  -- ['nx|cr'] = map_plug('sandwich-replace'):with_desc('sandwich-replace'),
+  -- ['nx|cra'] = map_plug('sandwich-replace-replace'):with_desc('sandwich-replace-replace'),
+  -- ['ox|ib'] = map_plug('textobject-sandwich-i'),
+  -- ['ox|ab'] = map_plug('textobject-sandwich-a'),
+  -- ['ox|is'] = map_plug('textobject-sandwich-query-i'),
+  -- ['ox|as'] = map_plug('textobject-sandwich-query-a'),
 
 
   -- git signs

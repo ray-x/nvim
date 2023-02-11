@@ -170,6 +170,32 @@ Hydra({
   },
 })
 
+-- local window_hint = [[
+--  ^^^^^^^^^^^^     Move      ^^    Size   ^^   ^^     Split
+--  ^^^^^^^^^^^^-------------  ^^-----------^^   ^^---------------
+--  ^ ^ _k_ ^ ^  ^ ^ _K_ ^ ^   ^   _<C-k>_   ^   _s_: horizontally
+--  _h_ ^ ^ _l_  _H_ ^ ^ _L_   _<C-h>_ _<C-l>_   _v_: vertically
+--  ^ ^ _j_ ^ ^  ^ ^ _J_ ^ ^   ^   _<C-j>_   ^   _q_, _c_: close
+--  focus^^^^^^  window^^^^^^  ^_=_: equalize^   _z_: maximize
+--  ^ ^ ^ ^ ^ ^  ^ ^ ^ ^ ^ ^   ^^ ^          ^   _o_: remain only
+--  _b_: choose buffer
+-- ]]
+-- local cmd = require('hydra.keymap-util').cmd
+-- local pcmd = require('hydra.keymap-util').pcmd
+--
+Hydra({
+  name = 'resize',
+  mode = 'n',
+  body = '<C-w>',
+  heads = {
+    { '=', '<C-w>+', { desc = 'equalize' } },
+    { '+', '<C-w>+', { desc = 'res +1' } },
+    { '-', '<C-w>-', { desc = 'res -1' } },
+    { '>', '<C-w>>', { desc = 'vres +1' } },
+    { '<', '<C-w><', { desc = 'res -1' } },
+  },
+})
+
 -- stylua: ignore end
 return {
   hydra_git = hydra_git,

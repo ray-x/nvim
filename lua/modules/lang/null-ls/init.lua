@@ -57,7 +57,12 @@ return {
 
     -- stylua: ignore
     if exist('shellcheck') then
-      table.insert(sources, null_ls.builtins.diagnostics.shellcheck)
+      table.insert(sources, null_ls.builtins.diagnostics.shellcheck.with({args = {"run",
+            "--fix=false",
+            "--out-format=json",
+            "--path-prefix",
+            "$ROOT",
+            "$FILENAME"}}))
     end
 
     if exist('shfmt') then
