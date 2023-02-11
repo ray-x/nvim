@@ -4,6 +4,8 @@ local helper = require('core.helper')
 local lazy = {}
 lazy.__index = lazy
 
+local sep = require('core.global').path_sep
+
 function lazy.add(repo)
   if not lazy.plug then
     lazy.plug = {}
@@ -15,7 +17,7 @@ function lazy.add(repo)
 end
 
 function lazy:load_modules_lazyages()
-  local modules_dir = helper.get_config_path() .. '/lua/modules'
+  local modules_dir = helper.get_config_path() .. sep .. 'lua' .. sep .. 'modules'
   self.repos = {}
 
   local list = vim.fs.find('plugins.lua', { path = modules_dir, type = 'file', limit = 10 })
@@ -41,7 +43,7 @@ function lazy:load_modules_lazyages()
 end
 
 function lazy:boot_strap()
-  local lazy_path = string.format('%s/lazy/lazy.nvim', helper.get_data_path())
+  local lazy_path = string.format('%s%slazy%slazy.nvim', helper.get_data_path(), sep, sep)
   local state = uv.fs_stat(lazy_path)
   if not state then
     local cmd = '!git clone https://github.com/folke/lazy.nvim ' .. lazy_path
@@ -50,7 +52,7 @@ function lazy:boot_strap()
   vim.opt.runtimepath:prepend(lazy_path)
   local lz = require('lazy')
   local opts = {
-    lockfile = helper.get_data_path() .. '/lazy-lock.json',
+    lockfile = helper.get_data_path() .. sep .. 'lazy-lock.json',
     dev = { path = '~/github/ray-x' },
   }
   self:load_modules_lazyages()
