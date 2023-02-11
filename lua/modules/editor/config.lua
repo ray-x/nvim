@@ -493,6 +493,10 @@ function config.vmulti()
   ]])
 end
 
+config.mini = function()
+  require('modules.editor.mini').setup()
+end
+
 config.headline = function()
   vim.cmd([[highlight Headline1 guibg=#042030]])
   vim.cmd([[highlight Headline2 guibg=#141030]])

@@ -209,6 +209,9 @@ local keys = {
     options = { noremap = true, silent = true, desc = "toggle concelcursor" },
   },
 
+  ['n|<Leader>nf'] = map_func(function()
+    require('neogen').generate()
+  end):with_desc('neogen'):with_noremap():with_silent()
   --
   -- -- Add selection to search then replace
   -- vim.keymap.set('x', '<Leader>j', [[let @/=substitute(escape(@", '/'), '\n', '\\n', 'g')"_cgn]])

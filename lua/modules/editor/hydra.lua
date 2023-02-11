@@ -193,6 +193,14 @@ Hydra({
     { '-', '<C-w>-', { desc = 'res -1' } },
     { '>', '<C-w>>', { desc = 'vres +1' } },
     { '<', '<C-w><', { desc = 'res -1' } },
+    { 's', '<C-w>s', { desc = 'res -1' } },
+    { 'v', '<C-w>v', { desc = 'res -1' } },
+    { '=', '<C-w>=', { desc = 'equalize' } },
+    { 'q', '<cmd>close<CR>', { desc = 'close' } },
+    { 'o', '<cmd>only<CR>', { desc = 'only' } },
+    { '_', '<C-w>_', { desc = 'expand vertically ' } },
+    { '|', '<C-w>|', { desc = 'expand horiz' } },
+    { '<Esc>', nil, { exit = true, desc = false } },
   },
 })
 

@@ -24,7 +24,7 @@ return function(lang)
     'danymat/neogen',
     lazy = true,
     config = function()
-      require('neogen').setup({ enabled = true })
+      require('neogen').setup({ snippet_engine = 'luasnip' })
     end,
   })
 

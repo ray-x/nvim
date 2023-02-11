@@ -326,13 +326,14 @@ return function(editor)
     ft = { 'org', 'norg', 'md' },
     config = conf.headline,
   })
-
-  editor({
-    'wellle/targets.vim',
-    lazy = true,
-    event = { 'CursorHold', 'CursorHoldI', 'CursorMoved', 'CursorMovedI' },
-    init = function() end,
-  })
+  editor(
+    {
+      'echasnovski/mini.nvim',
+      version = false,
+      event = { 'CursorHold', 'CursorHoldI', 'CursorMoved', 'CursorMovedI', 'ModeChanged' },
+      config = conf.mini,
+    } -- mini.ai to replace targets
+  )
 
   editor({
     'AndrewRadev/switch.vim',
