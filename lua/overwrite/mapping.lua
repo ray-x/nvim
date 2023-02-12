@@ -229,6 +229,11 @@ vim.cmd([[nnoremap  <D-c>  *+yg_]])
 vim.cmd([[inoremap  <D-c>  *+yg_]])
 vim.cmd([[inoremap  <D-v>  <CTRL-r>*]])
 --
+vim.cmd('imap <M-V> <C-R>+') -- mac
+vim.cmd('imap <C-V> <C-R>*')
+vim.cmd('vmap <LeftRelease> "*ygv')
+vim.cmd('unlet loaded_matchparen')
+
 
 _G.run_or_test = function(debug)
   -- local function rot()

@@ -222,7 +222,6 @@ function config.neodev()
 end
 
 function config.go()
-  vim.defer_fn(function()
     require('go').setup({
       verbose = plugin_debug(),
       -- goimport = 'goimports', -- 'gopls'
@@ -242,6 +241,7 @@ function config.go()
       -- test_efm = true, -- errorfomat for quickfix, default mix mode, set to true will be efm only
     })
 
+  vim.defer_fn(function()
     vim.cmd('augroup go')
     vim.cmd('autocmd!')
     vim.cmd('autocmd FileType go nmap <leader>gb  :GoBuild')
@@ -259,7 +259,10 @@ function config.go()
     vim.cmd('au FileType go command! Gtn :TestNearest -v -tags=integration')
     vim.cmd('au FileType go command! Gts :TestSuite -v -tags=integration')
     vim.cmd('augroup END')
-  end, 22)
+    vim.cmd('ab dt GoDebug -t')
+    vim.cmd('ab tf GoTestFunc')
+    vim.cmd('ab tfl GoTestFile')
+  end, 1)
 end
 
 function config.ssr()

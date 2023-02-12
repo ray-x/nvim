@@ -10,7 +10,6 @@ return function(editor)
     -- keys = {{'i'}},
     after = { 'nvim-cmp' }, -- "nvim-treesitter", nvim-cmp "nvim-treesitter", coq_nvim
     -- event = "InsertEnter",  --InsertCharPre
-    -- after = "hrsh7th/nvim-compe",
     config = conf.autopairs,
     lazy = true,
   })
@@ -221,7 +220,6 @@ return function(editor)
       require('hop').setup({
         keys = 'adghklqwertyuiopzxcvbnmfjADHKLWERTYUIOPZXCVBNMFJ1234567890',
       })
-      -- vim.api.nvim_set_keymap('n', '$', "<cmd>lua require'hop'.hint_words()<cr>", {})
     end,
   })
 

@@ -41,11 +41,6 @@ function options:load_options()
     vim.wo[name] = value
   end
 
-  vim.cmd('imap <M-V> <C-R>+') -- mac
-  vim.cmd('imap <C-V> <C-R>*')
-  vim.cmd('vmap <LeftRelease> "*ygv')
-  vim.cmd('unlet loaded_matchparen')
-
   local global = require('core.global')
   local win = global.is_windows
   if not win then
