@@ -134,7 +134,7 @@ The packages and data will be install to
 
 Please backup this folder if necessary
 
-The setup should work with nvim0.5.1+ or nvim0.6+. A patched nerd font is needed. Also if you start nvim from terminal,
+The setup needs nvim0.8+. For earlier release, please check packer branch. A patched nerd font is needed. Also if you start nvim from terminal,
 make sure it support nerdfont and emoji
 
 ### missing sqlite, libsqlite3
