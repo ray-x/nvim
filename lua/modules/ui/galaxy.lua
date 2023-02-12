@@ -7,6 +7,15 @@ end
 -- TODO:
 -- https://github.com/nvim-treesitter/nvim-treesitter/blob/master/doc/nvim-treesitter.txt#L450
 
+local underdouble = 'underdouble'
+local underdot = 'underdotted'
+local underdash = 'underdashed'
+if vim.fn.has('nvim_0.8') == 0 then
+  underdouble = 'undercurl'
+  underdot = 'underdot'
+  underdash = 'underdash'
+end
+
 local c = {
   black = '#101010',
   black_two = '#282828',
@@ -126,8 +135,8 @@ local Usual = {
     Cursor = { bg = c.orange_one },
     SpecialKey = { fg = c.green_five },
     SpellBad = { fg = c.orange, bold = true, undercurl = true },
-    SpellCap = { fg = c.yellow, underdotted = true },
-    SpellRare = { fg = c.white, underdotted = true },
+    SpellCap = { fg = c.yellow, [underdot] = true },
+    SpellRare = { fg = c.white, [underdot] = true },
     Search = { reverse = true, bold = true },
     IncSearch = { reverse = true, bold = true },
     -- Search = { fg = c.black_two, bg = c.yellow_one, bold = true },
@@ -183,10 +192,22 @@ local Usual = {
     TelescopeResultsBorder = { fg = c.line },
   },
   Diff = {
-    DiffAdd = { fg = c.green_two, bg=c.dark_red, bold = true, underdotted = true, sp = '#2284a1' },
-    DiffChange = { fg = c.purple_two, bg=c.background_three, bold = true, underdotted = true, sp = '#269616' },
-    DiffText = { fg = c.white, bg=c.background_three, bold = true, undercurl = true, sp = '#269616' },
-    DiffDelete = { fg = c.red_two, bg=c.black, bold = true, strikethrough = true, sp = c.white },
+    DiffAdd = { fg = c.green_two, bg = c.dark_red, bold = true, [underdot] = true, sp = '#2284a1' },
+    DiffChange = {
+      fg = c.purple_two,
+      bg = c.background_three,
+      bold = true,
+      [underdot] = true,
+      sp = '#269616',
+    },
+    DiffText = {
+      fg = c.white,
+      bg = c.background_three,
+      bold = true,
+      undercurl = true,
+      sp = '#269616',
+    },
+    DiffDelete = { fg = c.red_two, bg = c.black, bold = true, strikethrough = true, sp = c.white },
   },
   Git = {
     -- GitSignsAdd = { fg = c.red }, -- diff mode: Added line |diff.txt|
@@ -207,9 +228,9 @@ local Usual = {
     GitGutterAdd = { link = 'GitSignsAdd' },
     GitGutterChange = { link = 'GitSignsChange' },
 
-    GitSignsAddInline = { underdotted = true, sp = c.green }, -- diff mode: Deleted line |diff.txt|
+    GitSignsAddInline = { [underdot] = true, sp = c.green }, -- diff mode: Deleted line |diff.txt|
     GitSignsDeleteInline = { link = 'DiffDelete' }, -- diff mode: Deleted line |diff.txt|
-    GitSignsChangeInline = { underdotted = true, sp = c.blue_two }, -- diff mode: Deleted line |diff.txt|
+    GitSignsChangeInline = { [underdot] = true, sp = c.blue_two }, -- diff mode: Deleted line |diff.txt|
   },
   TSHighlights = {
     NodeNumber = { fg = c.blue_five },
@@ -259,7 +280,7 @@ local Usual = {
       fg = c.green_four,
       bold = true,
       italic = true,
-      underdashed = true,
+      [underdash] = true,
       sp = 'lime',
     }, -- used for highlighting "read" references
     LspReferenceWrite = {
@@ -267,7 +288,7 @@ local Usual = {
       bg = c.background_one,
       bold = true,
       italic = true,
-      underdouble = true,
+      [underdouble] = true,
       sp = c.red_four,
     }, -- used for highlighting "write" references
     LspSignatureActiveParameter = {
@@ -275,7 +296,7 @@ local Usual = {
       bg = c.background_four,
       bold = true,
       italic = true,
-      underdouble = true,
+      [underdouble] = true,
       sp = 'violet',
     },
   },
@@ -430,7 +451,11 @@ function M.shine(reset)
   end
 
   -- local bg = back or "none"
-  vim.api.nvim_set_hl_ns(ns)
+  if vim.fn.has('nvim-0.8') == 1 then
+    vim.api.nvim_set_hl_ns(ns)
+  else
+    vim.api.nvim__set_hl_ns(ns)
+  end
 end
 
 _G.colors = {

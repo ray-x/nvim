@@ -69,7 +69,7 @@ local function load_options()
     completeopt = "menuone,noselect,noinsert", -- Show popup menu, even if there is one entry  menuone?
     jumpoptions    = "stack";
     showmode       = false;
-    shortmess      = "aotTIcFC";
+    shortmess      = "aotTIcF";
     scrolloff      = 2;
     sidescrolloff  = 5;
     foldlevel      = 99;
@@ -117,7 +117,7 @@ local function load_options()
     signcolumn     = "auto:1";  --auto auto:2  "number"
     cursorline     = false;
     number         = true;
-    splitkeep      = "screen";
+    -- splitkeep      = "screen";
   }
 
   local bw_local  = {
