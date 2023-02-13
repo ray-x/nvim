@@ -141,7 +141,7 @@ function config.nvim_bufferline()
 end
 
 function config.nvim_tree_setup()
-  vim.cmd([[autocmd Filetype NvimTree set cursorline]])
+  vim.cmd([[autocmd Filetype NvimTree set cursorline | set statuscolumn=]])
 end
 
 function config.nvim_tree()

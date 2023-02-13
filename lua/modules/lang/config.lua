@@ -125,6 +125,7 @@ function config.navigator()
         'gopls',
         'jsonls',
         'sumneko_lua',
+        'lua_ls',
         'tflint',
         'terraform_lsp',
         'terraformls',
@@ -134,7 +135,7 @@ function config.navigator()
       disply_diagnostic_qf = false, -- update diagnostic in quickfix window
       denols = { filetypes = {} },
       rename = { style = 'floating-preview' },
-      sumneko_lua = {
+      lua_ls = {
         before_init = require('neodev.lsp').before_init,
       },
       tsserver = {
@@ -222,24 +223,24 @@ function config.neodev()
 end
 
 function config.go()
-    require('go').setup({
-      verbose = plugin_debug(),
-      -- goimport = 'goimports', -- 'gopls'
-      fillstruct = 'gopls',
-      log_path = vim.fn.expand('$HOME') .. '/tmp/gonvim.log',
-      lsp_codelens = false, -- use navigator
-      dap_debug = true,
-      goimport = 'gopls',
-      dap_debug_vt = true,
-      dap_debug_gui = true,
-      test_runner = 'go', -- richgo, go test, richgo, dlv, ginkgo
-      -- run_in_floaterm = true, -- set to true to run in float window.
-      lsp_document_formatting = false,
-      luasnip = true,
-      -- lsp_on_attach = require("navigator.lspclient.attach").on_attach,
-      -- lsp_cfg = true,
-      -- test_efm = true, -- errorfomat for quickfix, default mix mode, set to true will be efm only
-    })
+  require('go').setup({
+    verbose = plugin_debug(),
+    -- goimport = 'goimports', -- 'gopls'
+    fillstruct = 'gopls',
+    log_path = vim.fn.expand('$HOME') .. '/tmp/gonvim.log',
+    lsp_codelens = false, -- use navigator
+    dap_debug = true,
+    goimport = 'gopls',
+    dap_debug_vt = true,
+    dap_debug_gui = true,
+    test_runner = 'go', -- richgo, go test, richgo, dlv, ginkgo
+    -- run_in_floaterm = true, -- set to true to run in float window.
+    lsp_document_formatting = false,
+    luasnip = true,
+    -- lsp_on_attach = require("navigator.lspclient.attach").on_attach,
+    -- lsp_cfg = true,
+    -- test_efm = true, -- errorfomat for quickfix, default mix mode, set to true will be efm only
+  })
 
   vim.defer_fn(function()
     vim.cmd('augroup go')

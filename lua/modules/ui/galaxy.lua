@@ -58,9 +58,10 @@ local c = {
   orange_one = '#FE6019',
   orange_two = '#FE9059',
 
-  background_one = '#1f233f',
-  background_two = '#10203f',
-  background_three = '#202935',
+  background = '#121825',
+  background_one = '#1d2e38',
+  background_two = '#2e2f3f',
+  background_three = '#323e43',
   background_four = '#445462',
 
   lime = '#98EE64',
@@ -110,7 +111,7 @@ local Usual = {
     NonText = { fg = c.blue_five },
     LineNr = { fg = c.gray_two },
     SignColumn = { bg = 'None' },
-    CursorLine = { fg = c.gray_one, bg = c.background_two },
+    CursorLine = { fg = c.gray_one, bg = c.background_one },
     CursorColumn = { bg = c.purple_four },
     CursorLineNr = { fg = c.yellow_one, bold = true, underline = true },
     StatusLine = { fg = c.white_two, bg = c.background_three },
@@ -133,8 +134,8 @@ local Usual = {
     -- Search = { fg = c.black_two, bg = c.yellow_one, bold = true },
     -- IncSearch = { fg = c.black_two, bg = c.orange_one, bold = true },
     Folded = { fg = c.blue_seven, bold = true, italic = true },
-    Visual = { bg = c.background_one, bold = true },
-    VisualNOS = { bg = c.background_two },
+    Visual = { bg = c.background_two, bold = true },
+    VisualNOS = { bg = c.background_one },
     EndOfBuffer = { bg = back },
     Comment = { fg = c.gray_two, italic = true },
     preProc = { fg = c.blue_four },
@@ -455,6 +456,10 @@ function M.shine(reset)
 
   -- local bg = back or "none"
   vim.api.nvim_set_hl_ns(ns)
+
+  vim.defer_fn(function()
+    require('utils.kitty').change_bg(c.background)
+  end, 1)
 end
 
 _G.colors = {
