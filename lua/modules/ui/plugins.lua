@@ -4,7 +4,7 @@ local conf = require('modules.ui.config')
 --   return vim.api.nvim_call_function("winwidth", { 0 })
 -- end
 return function(ui)
-  ui({ 'kyazdani42/nvim-web-devicons', lazy = true })
+  ui({ 'nvim-tree/nvim-web-devicons', lazy = true })
 
   ui({
     'windwp/windline.nvim',
@@ -51,13 +51,19 @@ return function(ui)
   })
 
   ui({
-    'kyazdani42/nvim-tree.lua',
+    'nvim-tree/nvim-tree.lua',
     cmd = { 'NvimTreeToggle', 'NvimTreeOpen' },
     -- dependencies = {'kyazdani42/nvim-web-devicons'},
     init = conf.nvim_tree_setup,
     config = conf.nvim_tree,
   })
 
+  ui({
+    'nvim-neo-tree/neo-tree.nvim',
+    branch = 'v2.x',
+    cmd = { 'Neotree' },
+    config = conf.neotree,
+  })
   ui({ 'MunifTanjim/nui.nvim', lazy = true })
   ui({
     'gorbit99/codewindow.nvim',
@@ -99,19 +105,7 @@ return function(ui)
 
   ui({ 'lukas-reineke/indent-blankline.nvim', lazy = true, config = conf.blankline }) -- after="nvim-treesitter",
 
-  -- disabled does not work with muliti split
-  -- ui({
-  --   "lukas-reineke/virt-column.nvim",
-  --   lazy = true,
-  --   -- event = {"CursorMoved", "CursorMovedI"},
-  --   config = function()
-  --     -- vim.cmd("highlight clear ColorColumn")
-  --     require("virt-column").setup()
-  --     -- vim.cmd("highlight VirtColumn guifg=#43488F")
-  --   end,
-  -- })
-
-  -- disabled does not work with muliti split
+  -- high performance version of "lukas-reineke/virt-column.nvim",
   ui({
     'xiyaowong/virtcolumn.nvim',
     lazy = true,
@@ -132,7 +126,7 @@ return function(ui)
     'ray-x/aurora',
     dev = true,
     lazy = true,
-    init =function()
+    init = function()
       vim.g.aurora_italic = 1
       vim.g.aurora_transparent = 1
       vim.g.aurora_bold = 1
@@ -178,19 +172,20 @@ return function(ui)
   })
 
   ui({ 'stevearc/dressing.nvim', lazy = true })
-  ui({
-    'beauwilliams/focus.nvim',
-    lazy = true,
-    -- event = { "FocusGained", "CursorMoved", "ModeChanged" },
-    -- cmd ={ "FocusToggle", "FocusEnable", "FocusSplitNicely" },
-    config = function()
-      require('focus').setup({
-        cursorline = false,
-        -- minwidth = 80,
-        -- minheight = 16,
-      })
-    end,
-  })
+  -- disable for now as a blacking issue with session
+  -- ui({
+  --   'beauwilliams/focus.nvim',
+  --   lazy = true,
+  --   -- event = { "FocusGained", "CursorMoved", "ModeChanged" },
+  --   -- cmd ={ "FocusToggle", "FocusEnable", "FocusSplitNicely" },
+  --   config = function()
+  --     require('focus').setup({
+  --       cursorline = false,
+  --       -- minwidth = 80,
+  --       -- minheight = 16,
+  --     })
+  --   end,
+  -- })
   ui({
     'mawkler/modicator.nvim',
     lazy = true,
