@@ -194,6 +194,7 @@ local treesitter_context = function(width)
 
   local disable_ft = {
     'NvimTree',
+    'neo-tree',
     'guihua',
     'packer',
     'guihua_rust',

@@ -61,7 +61,8 @@ return function(ui)
   ui({
     'nvim-neo-tree/neo-tree.nvim',
     branch = 'v2.x',
-    cmd = { 'Neotree' },
+    cmd = { 'Neotree', 'NeoTreeShowToggle', 'NeoTreeFocusToggle', 'NeoTreeRevealToggle', 'NeoTreeFloat',
+      'NeoTreeFloatToggle' },
     config = conf.neotree,
   })
   ui({ 'MunifTanjim/nui.nvim', lazy = true })

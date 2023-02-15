@@ -66,7 +66,7 @@ local keys = {
   -- abolish
   ["n|Cr"] = map_plug("abolish-coerce-word"):with_noremap():with_silent():with_desc('s:snake, c:Camel'),
 
-  ["n|<F13>"] = map_cmd("NeoTreeShowToggle"),
+  ["n|<F13>"] = map_cmd("NeoTreeRevealToggle"),
   -- ["n|hW"] = map_cmd("HopWordBC"),
   -- ["n|hw"] = map_cmd("HopWordAC"),
   ["n|hl"] = map_cmd("HopLineStartAC"),

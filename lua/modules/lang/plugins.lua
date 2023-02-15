@@ -168,7 +168,8 @@ return function(lang)
     end,
   })
   -- JqxList and JqxQuery json browsing, format
-  -- lang { "gennaro-tedesco/nvim-jqx",lazy = true, cmd = {"JqxList", "JqxQuery"}}
+  lang({ 'gennaro-tedesco/nvim-jqx', lazy = true, cmd = { 'JqxList', 'JqxQuery' } })
+  lang({ 'bfrg/vim-jqplay', ft = 'jq', cmd = { 'Jqplay', 'JqplayScratch', 'JqplayScratchNoInput' } })
 
   lang({
     'windwp/nvim-ts-autotag',
@@ -287,6 +288,6 @@ return function(lang)
     'HiPhish/awk-ward.nvim',
     ft = 'awk',
     lazy = true,
-    cmd = { 'AwkWard' },
+    -- cmd = { 'AwkWard' },
   })
 end

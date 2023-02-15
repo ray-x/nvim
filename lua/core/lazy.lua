@@ -1,6 +1,17 @@
 -- local loader = require('utils.helper').loader
 local api = vim.api
-
+local argc = vim.fn.argc() or 0
+if argc > 0 then
+  local arg = vim.fn.argv()
+  for i = 1, argc do
+    if arg[i] == '--headless' then
+      return
+    end
+  end
+  if vim.fn.isdirectory(arg[1]) == 1 then
+    vim.cmd('NeoTreeFloat')
+  end
+end
 lprint('lazy')
 local loader = require('utils.helper').loader
 local start = vim.loop.now()
@@ -64,6 +75,7 @@ function Lazyload()
   local disable_ft = {
     'NvimTree',
     'guihua',
+    'neo-tree',
     'packer',
     'guihua_rust',
     'clap_input',

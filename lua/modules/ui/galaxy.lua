@@ -304,6 +304,10 @@ local Usual = {
       sp = 'violet',
     },
   },
+  UI = {
+    NeoTreeFloatTitle =  {link = 'Title'},
+    NeoTreeTitleBar = { link = 'TelescopePreviewTitle' }
+  },
   Packer = { packerStatusSuccess = { fg = c.blue_three }, packerString = { fg = c.blue_three } },
 }
 
