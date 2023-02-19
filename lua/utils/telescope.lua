@@ -28,32 +28,53 @@ end
 
 local M = {}
 
-M.find_dots = function(opts)
-  opts = opts or {}
+-- M.find_dots = function(opts)
+--   opts = opts or {}
+--
+--   opts.cwd = require('core.global').home
+--   -- By creating the entry maker after the cwd options,
+--   -- we ensure the maker uses the cwd options when being created.
+--   opts.entry_maker = opts.entry_maker or make_entry.gen_from_file(opts)
+--
+--   pickers
+--     .new(opts, {
+--       prompt_title = '~~ Dotfiles ~~',
+--       finder = finders.new_oneshot_job({
+--         'git',
+--         '--git-dir=' .. require('core.global').home .. '/.dots/',
+--         '--work-tree=' .. require('core.global').home,
+--         'ls-tree',
+--         '--full-tree',
+--         '-r',
+--         '--name-only',
+--         'HEAD',
+--       }, opts),
+--       previewer = previewers.cat.new(opts),
+--       sorter = conf.file_sorter(opts),
+--     })
+--     :find()
+-- end
 
-  opts.cwd = require('core.global').home
-  -- By creating the entry maker after the cwd options,
-  -- we ensure the maker uses the cwd options when being created.
-  opts.entry_maker = opts.entry_maker or make_entry.gen_from_file(opts)
-
-  pickers
-    .new(opts, {
-      prompt_title = '~~ Dotfiles ~~',
-      finder = finders.new_oneshot_job({
-        'git',
-        '--git-dir=' .. require('core.global').home .. '/.dots/',
-        '--work-tree=' .. require('core.global').home,
-        'ls-tree',
-        '--full-tree',
-        '-r',
-        '--name-only',
-        'HEAD',
-      }, opts),
-      previewer = previewers.cat.new(opts),
-      sorter = conf.file_sorter(opts),
-    })
-    :find()
-end
+-- M.find_go_ref = function(opts)
+--   opts = opts or {}
+--   --   "go": {
+--   --     "variable": [
+--   --         "\\s*\\bJJJ\\s*=[^=\\n]+",
+--   --         "\\s*\\bJJJ\\s*:=\\s*"
+--   --     ],
+--   --     "function": [
+--   --         "func\\s+\\\\([^\\\\)]*\\\\)\\s+JJJ\\s*\\\\(",
+--   --         "func\\s+JJJ\\s*\\\\("
+--   --     ],
+--   --     "type": [
+--   --         "type\\s+JJJ\\s+struct\\s+\\\\{"
+--   --     ]
+--   -- },
+--   local var = string.format('\\s*\\b%s\\s*=[^=\\n]+|\\s*\\b%s\\s*:=\\s*', opts.args)
+--   var = var .. string.format('|func\\s+\\\\([^\\\\)]*\\\\)\\s+%s\\s*\\\\(', opts.args)
+--   var = var .. string.format('|func\\s+%s\\s*\\\\(', opts.args)
+--   var = var .. string.format("type\\s+%s\\s+struct\\s+\\\\{", opts.args)
+-- end
 
 -- Looks for git files, but falls back to normal files
 M.git_files = function(opts)
@@ -90,12 +111,12 @@ end
 -- nnoremap <Leader>o <Cmd>lua require'telescope_config'.files{}<CR>
 -- nnoremap <Leader>d <Cmd>lua require'telescope_config'.find_dots{}<CR>
 
-vim.api.nvim_command([[ command! -nargs=1 Rg call luaeval('require("telescope.builtin").grep_string(
-        require("config.telescope").theme({
-            search = _A
-        })
-    )', expand('<args>'))
-    ]])
+-- vim.api.nvim_command([[ command! -nargs=1 Rg call luaeval('require("telescope.builtin").grep_string(
+--         require("config.telescope").theme({
+--             search = _A
+--         })
+--     )', expand('<args>'))
+--     ]])
 
 vim.api.nvim_create_user_command('Rg', function(opts)
   local w = vim.fn.expand('<cword>')
@@ -109,6 +130,31 @@ vim.api.nvim_create_user_command('Rg', function(opts)
     default_text = "'" .. w .. "'" .. ' ' .. pwd,
   })
 end, { nargs = '*', desc = 'Search for word under cursor' })
+
+
+vim.api.nvim_create_user_command('GoRg', function(opts)
+  local w = vim.fn.expand('<cword>')
+  local pwd = vim.fn.expand('%:h')
+  if opts.fargs ~= nil and opts.fargs[1] then
+    w = opts.fargs[1]
+  end
+
+  lprint(w)
+  local var = ''
+  -- local var = string.format('\\s*\\b%s\\s*=[^=\\n]+|\\s*\\b%s\\s*:=\\s*', w, w)
+  -- var = var .. string.format('func\\s+\\([^\\)]*\\)\\s+%s\\s*\\(', w)
+  var = var .. string.format('func\\s+')
+  -- var = var .. string.format('|func\\s+%s\\s*\\\\(', w)
+  -- var = var .. string.format("type\\s+%s\\s+struct\\s+\\\\{", w)
+  lprint(var)
+  pwd = pwd .. ' --type ' .. vim.o.ft .. ' '
+  vim.fn.setreg('p', pwd)
+  require('telescope.builtin').grep_string({
+    -- default_text = "'" .. var .. "'" .. ' ' .. pwd,
+    search = var
+  })
+end, { nargs = '*', desc = 'Search for word under cursor' })
+
 
 --[[
     +-------------------------------------+
@@ -251,15 +297,17 @@ function M.load_dotfiles()
 
     local results = {}
     local dotfiles = require('core.global').home .. '/.dotfiles'
-    for file in io.popen('find "' .. dotfiles .. '" -type f'):lines() do
+
+    local p = io.popen('rg --files --hidden ' .. dir)
+    for file in p:lines() do
       if not file:find('fonts') then
         table.insert(results, file)
       end
     end
 
-    local global = require('core.global')
-    for file in io.popen('find "' .. global.vim_path .. '" -type f'):lines() do
-      table.insert(results, file)
+    local nvim_conf = io.popen('rg --files ' .. global.home .. '/.config/nvim')
+    for file in nvim_conf:lines() do
+      table.insert(list, file)
     end
 
     builtin.dotfiles = function(opts)
@@ -267,6 +315,7 @@ function M.load_dotfiles()
       pickers
         .new(opts, {
           prompt = 'dotfiles',
+          results_title = 'Dotfiles',
           finder = finders.new_table({ results = results }),
           previewer = previewers.cat.new(opts),
           sorter = sorters.get_generic_fuzzy_sorter(),
@@ -492,8 +541,10 @@ M.setup = function(_)
   local global = require('core.global')
   local win = global.is_windows
   vim.defer_fn(function() -- defer loading
-    loader('telescope-live-grep-args.nvim telescope-file-browser.nvim')
-    loader('project.nvim telescope-zoxide')
+    loader('telescope-live-grep-args.nvim')
+    loader('telescope-file-browser.nvim')
+    loader('project.nvim')
+    loader('telescope-zoxide')
 
     local ext = {
       file_browser = {
@@ -510,9 +561,9 @@ M.setup = function(_)
     }
 
     if not win then
-      loader('sqlite.lua')
-      loader('telescope-fzf-native.nvim')
-      loader('telescope-frecency.nvim nvim-neoclip.lua')
+      -- loader('sqlite.lua')
+      -- loader('telescope-fzf-native.nvim')
+      -- loader('telescope-frecency.nvim nvim-neoclip.lua')
       ext.fzf = {
         fuzzy = true, -- false will only do exact matching
         override_generic_sorter = true, -- override the generic sorter
@@ -530,6 +581,8 @@ M.setup = function(_)
 
     telescope.load_extension('dotfiles')
     telescope.load_extension('gosource')
+    -- telescope.load_extension('smart_history')
+    telescope.load_extension('dumb_jump')
 
     if vim.o.ft == 'org' then
       loader('telescope-orgmode.nvim')

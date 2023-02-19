@@ -128,29 +128,29 @@ function config.vim_dadbod_ui()
 end
 
 function config.clap()
-  vim.g.clap_preview_size = 10
-  vim.g.airline_powerline_fonts = 1
-  vim.g.clap_layout = { width = '80%', row = '8%', col = '10%', height = '34%' } -- height = "40%", row = "17%", relative = "editor",
-  -- vim.g.clap_popup_border = "rounded"
-  vim.g.clap_selected_sign = { text = '', texthl = 'ClapSelectedSign', linehl = 'ClapSelected' }
-  vim.g.clap_current_selection_sign = {
-    text = '',
-    texthl = 'ClapCurrentSelectionSign',
-    linehl = 'ClapCurrentSelection',
-  }
-  -- vim.g.clap_always_open_preview = true
-  vim.g.clap_preview_direction = 'UD'
-  -- if vim.g.colors_name == 'zephyr' then
-  vim.g.clap_theme = 'material_design_dark'
-  vim.api.nvim_command(
-    "autocmd FileType clap_input lua require'cmp'.setup.buffer { completion = {autocomplete = false} }"
-  )
+  -- vim.g.clap_preview_size = 10
+  -- vim.g.airline_powerline_fonts = 1
+  -- vim.g.clap_layout = { width = '80%', row = '8%', col = '10%', height = '34%' } -- height = "40%", row = "17%", relative = "editor",
+  -- -- vim.g.clap_popup_border = "rounded"
+  -- vim.g.clap_selected_sign = { text = '', texthl = 'ClapSelectedSign', linehl = 'ClapSelected' }
+  -- vim.g.clap_current_selection_sign = {
+  --   text = '',
+  --   texthl = 'ClapCurrentSelectionSign',
+  --   linehl = 'ClapCurrentSelection',
+  -- }
+  -- -- vim.g.clap_always_open_preview = true
+  -- vim.g.clap_preview_direction = 'UD'
+  -- -- if vim.g.colors_name == 'zephyr' then
+  -- vim.g.clap_theme = 'material_design_dark'
+  -- vim.api.nvim_command(
+  --   "autocmd FileType clap_input lua require'cmp'.setup.buffer { completion = {autocomplete = false} }"
+  -- )
   -- end
   -- vim.api.nvim_command("autocmd FileType clap_input call compe#setup({ 'enabled': v:false }, 0)")
 end
 
 function config.clap_after()
-  require('utils.helper').loader('nvim-cmp')
+  -- require('utils.helper').loader('nvim-cmp')
 end
 
 function config.project()

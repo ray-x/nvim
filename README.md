@@ -41,11 +41,11 @@ I used following plugin a lots
 - `Plug` -> `Dein` -> `Lua-Packer` -> [lazy.nvim](https://github.com/folke/lazy.nvim)
 
   I followed Glepnir https://github.com/glepnir/nvim dotfiles when I start this repo. 
-  A.T.M. nvim-cmp as a completion engine with LSP, LSP saga. vim-multi-cursor, clap/telescope. treesitter,
+  A.T.M. nvim-cmp as a completion engine with LSP, LSP saga. vim-multi-cursor, telescope. treesitter,
   lazy load vim-go. So, other than module folder, I could copy/paste everything else from glepnir's configure file,
   which make my life easier.
 
-- Telescope + Vim-Clap + fzf
+- Telescope + fzf
 
   One of the best plugin for search anything. I used it to replace fzf, leaderF, leaderP, defx, Ag/Ack/Rg, yank(ring), project management. undolist and many more. Telescope is awesome, only issue is performance.
 
@@ -188,6 +188,7 @@ These tools are good, but due to confliction, less use, or, not suite to my work
 - vim/gvim
 - YCM you complete me
 - easymotion
+- vim-clap
 - oh-my-zh, iterm2
 - zpreztor
 - defx
