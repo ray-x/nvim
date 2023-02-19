@@ -49,8 +49,8 @@ local regex_js = function(word)
   var = var .. string.format('|class\\s+%s\\s*\\{', word)
   var = var .. string.format('|class\\s+%s\\s+extends', word)
   var = var .. string.format('|function\\s+%s\\s*\\(', word)
-  var = var .. string.format('\\b%s\\s*:\\s*function\\s*\\(', word)
-  var = var .. string.format('\\b%s\\s*\\([^()]*\\)\\s*[{]', word)
+  var = var .. string.format('|\\b%s\\s*:\\s*function\\s*\\(', word)
+  var = var .. string.format('|\\b%s\\s*\\([^()]*\\)\\s*[{]', word)
   return var
 end
 
