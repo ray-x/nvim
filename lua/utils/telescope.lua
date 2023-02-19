@@ -28,53 +28,6 @@ end
 
 local M = {}
 
--- M.find_dots = function(opts)
---   opts = opts or {}
---
---   opts.cwd = require('core.global').home
---   -- By creating the entry maker after the cwd options,
---   -- we ensure the maker uses the cwd options when being created.
---   opts.entry_maker = opts.entry_maker or make_entry.gen_from_file(opts)
---
---   pickers
---     .new(opts, {
---       prompt_title = '~~ Dotfiles ~~',
---       finder = finders.new_oneshot_job({
---         'git',
---         '--git-dir=' .. require('core.global').home .. '/.dots/',
---         '--work-tree=' .. require('core.global').home,
---         'ls-tree',
---         '--full-tree',
---         '-r',
---         '--name-only',
---         'HEAD',
---       }, opts),
---       previewer = previewers.cat.new(opts),
---       sorter = conf.file_sorter(opts),
---     })
---     :find()
--- end
-
--- M.find_go_ref = function(opts)
---   opts = opts or {}
---   --   "go": {
---   --     "variable": [
---   --         "\\s*\\bJJJ\\s*=[^=\\n]+",
---   --         "\\s*\\bJJJ\\s*:=\\s*"
---   --     ],
---   --     "function": [
---   --         "func\\s+\\\\([^\\\\)]*\\\\)\\s+JJJ\\s*\\\\(",
---   --         "func\\s+JJJ\\s*\\\\("
---   --     ],
---   --     "type": [
---   --         "type\\s+JJJ\\s+struct\\s+\\\\{"
---   --     ]
---   -- },
---   local var = string.format('\\s*\\b%s\\s*=[^=\\n]+|\\s*\\b%s\\s*:=\\s*', opts.args)
---   var = var .. string.format('|func\\s+\\\\([^\\\\)]*\\\\)\\s+%s\\s*\\\\(', opts.args)
---   var = var .. string.format('|func\\s+%s\\s*\\\\(', opts.args)
---   var = var .. string.format("type\\s+%s\\s+struct\\s+\\\\{", opts.args)
--- end
 
 -- Looks for git files, but falls back to normal files
 M.git_files = function(opts)
@@ -108,15 +61,6 @@ M.git_files = function(opts)
     :find()
 end
 
--- nnoremap <Leader>o <Cmd>lua require'telescope_config'.files{}<CR>
--- nnoremap <Leader>d <Cmd>lua require'telescope_config'.find_dots{}<CR>
-
--- vim.api.nvim_command([[ command! -nargs=1 Rg call luaeval('require("telescope.builtin").grep_string(
---         require("config.telescope").theme({
---             search = _A
---         })
---     )', expand('<args>'))
---     ]])
 
 vim.api.nvim_create_user_command('Rg', function(opts)
   local w = vim.fn.expand('<cword>')
