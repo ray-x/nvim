@@ -82,7 +82,8 @@ local function load_options()
     pumheight      = 15;
     helpheight     = 12;
     previewheight  = 12;
-    showcmd        = false;
+    showcmd        = true;
+    showcmdloc     = 'statusline';
     cmdwinheight   = 5;
     equalalways    = false;
     laststatus     = 3;

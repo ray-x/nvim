@@ -19,7 +19,7 @@ return function(ui)
     'rcarriga/nvim-notify',
     lazy = true,
     -- event = "User LoadLazyPlugin",
-    config = conf.notify,
+    -- config = conf.notify,
   })
 
   ui({

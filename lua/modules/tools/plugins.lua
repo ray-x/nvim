@@ -133,7 +133,7 @@ return function(tools)
   tools({
     'kamykn/spelunker.vim',
     lazy = true,
-    fn = { 'spelunker#check' },
+    cmd = { 'Spell' },
     init = conf.spelunker,
     config = conf.spellcheck,
   })

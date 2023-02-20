@@ -1,24 +1,25 @@
-local enable = false
 local langtree = false
 -- stylua: ignore start
 local ts_ensure_installed = { "go", "css", "html", "javascript", "typescript", "jsdoc", "json", "c", "java", "toml", "tsx", "lua", "cpp", "python", "rust", "jsonc", "yaml", "sql", "vue", "vim", "org"}
 -- stylua: ignore end
 
 local treesitter = function()
+
+  local enable = false
   local has_ts = pcall(require, 'nvim-treesitter.configs')
   if not has_ts then
     vim.notify('ts not installed')
     return
   end
   local lines = vim.fn.line('$')
-  if lines > 30000 then -- skip some settings for large file
+  if lines > 20000 then -- skip some settings for large file
     vim.cmd([[syntax manual]])
     print('skip treesitter')
     return
   end
 
   if lines > 10000 then
-    enable = false
+    enable = true
     langtree = false
     vim.cmd([[syntax on]])
     lprint('ts disabled')
@@ -41,15 +42,19 @@ end
 
 local treesitter_obj = function()
   local lines = vim.fn.line('$')
-  if lines > 30000 then -- skip some settings for large file
+  if lines > 8000 then -- skip some settings for large file
     print('skip treesitter obj')
     return
   end
 
+  local enable = true
+  if lines > 4000 then
+    enable = false
+  end
   require('nvim-treesitter.configs').setup({
 
-    indent = { enable = true },
-    context_commentstring = { enable = true, enable_autocmd = false },
+    indent = { enable = enable },
+    context_commentstring = { enable = enable, enable_autocmd = false },
     incremental_selection = {
       enable = false, -- use textobjects
       -- disable = {"elm"},
@@ -104,9 +109,12 @@ local treesitter_obj = function()
 end
 
 local treesitter_ref = function()
-  if vim.fn.line('$') > 7000 then -- skip for large file
+  local enable
+  if vim.fn.line('$') > 5000 then -- skip for large file
     lprint('skip treesitter')
     enable = false
+  else
+    enable = true
   end
 
   -- print('load treesitter refactor', vim.fn.line('$'))
@@ -133,11 +141,11 @@ local treesitter_ref = function()
       },
     },
     matchup = {
-      enable = true, -- mandatory, false will disable the whole extension
+      enable = enable, -- mandatory, false will disable the whole extension
       disable = { 'ruby' }, -- optional, list of language that will be disabled
     },
-    autopairs = { enable = true },
-    autotag = { enable = true },
+    autopairs = { enable = enable },
+    autotag = { enable = enable },
   })
   local parser_config = require('nvim-treesitter.parsers').get_parser_configs()
   parser_config.sql = {
@@ -167,11 +175,18 @@ local treesitter_ref = function()
 end
 
 function textsubjects()
+
+ local enable = false
+  local en_subjects = true
+  if vim.fn.line('$') > 5000 then -- skip for large file
+    lprint('skip treesitter')
+    enable = false
+  end
   lprint('txt subjects')
   require('nvim-treesitter.configs').setup({
 
     textsubjects = {
-      enable = true,
+      enable = enable,
       prev_selection = ',',
       keymaps = {
         ['.'] = 'textsubjects-smart',
@@ -191,7 +206,12 @@ local treesitter_context = function(width)
   if not ok or not ts then
     return ' '
   end
+  local en_context = true
 
+  if vim.fn.line('$') > 5000 then -- skip for large file
+    -- lprint('skip treesitter')
+    return ' '
+  end
   local disable_ft = {
     'NvimTree',
     'neo-tree',
@@ -224,6 +244,9 @@ local treesitter_context = function(width)
 
   if vim.o.ft == 'json' then
     type_patterns = { 'object', 'pair' }
+  end
+  if not en_context then
+    return ' '
   end
 
   local f = require('nvim-treesitter').statusline({

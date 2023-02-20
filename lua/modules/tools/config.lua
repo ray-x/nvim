@@ -529,12 +529,17 @@ function config.spelunker()
   -- vim.cmd("highlight SpelunkerComplexOrCompoundWord cterm=underline gui=undercurl guisp=#EF3050")
   vim.cmd('highlight def link SpelunkerSpellBad SpellBad')
   vim.cmd('highlight def link SpelunkerComplexOrCompoundWord Rare')
+      vim.fn["spelunker#check"] = function(...)
+        vim.fn["spelunker#check"] = nil
+        require("lazy").load({ plugins = { 'spelunker.vim' } })
+        return vim.fn["spelunker#check"](...)
+      end
 end
 
 function config.spellcheck()
   vim.cmd('highlight def link SpelunkerSpellBad SpellBad')
   vim.cmd('highlight def link SpelunkerComplexOrCompoundWord Rare')
-
+  vim.cmd('command! Spell call spelunker#check()')
   vim.fn['spelunker#check']()
 end
 

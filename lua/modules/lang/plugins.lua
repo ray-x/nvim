@@ -225,16 +225,23 @@ return function(lang)
     'HiPhish/nvim-ts-rainbow2',
     lazy = true,
     -- after = "nvim-treesitter",
-    event = { 'CursorHold', 'CursorHoldI' },
+    -- slow... disable it for now
+    event = { 'CursorHold' },
     -- Highlight also non-parentheses delimiters, boolean or table: lang -> boolean
     -- cmd = "Rainbow",
     config = function()
       local fsize = vim.fn.getfsize(vim.fn.expand('%:p:f'))
-      if fsize > 200000 then
+      if fsize > 300000 then
         return
       end
+
+      local enable = false
+      if vim.fn.line('$') < 3000 then -- skip for large file
+        lprint('enable rainbow')
+        enable = true
+      end
       require('nvim-treesitter.configs').setup({
-        rainbow = { enable = true, extended_mode = true },
+        rainbow = { enable = enable, extended_mode = true },
       })
     end,
   })

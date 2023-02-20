@@ -66,9 +66,11 @@ local colorscheme
 
 -- load module but not init/config it
 function Lazyload()
-  vim.cmd([[packadd nvim-treesitter]])
-  vim.cmd([[packadd nvim-lspconfig]])
+  -- vim.cmd([[packadd nvim-treesitter]])
+  -- vim.cmd([[packadd nvim-lspconfig]])
   require('core.helper').init()
+
+  lprint('lazy core plugins start', vim.loop.now() - start)
   -- loader('impatient.nvim')
   createdir()
   lprint('I am lazy')
@@ -97,7 +99,7 @@ function Lazyload()
   end
 
   -- local fname = vim.fn.expand("%:p:f")
-  if fsize > 6 * 1024 * 1024 then
+  if fsize > 2 * 1024 * 1024 then
     lprint('syntax off')
     load_lsp = false
     load_ts_plugins = false
@@ -105,9 +107,12 @@ function Lazyload()
   end
   if load_ts_plugins then
     lprint('loading treesitter')
-    loader('nvim-treesitter')
+    vim.defer_fn(function()
+      loader('nvim-treesitter')
+    end, 10)
   end
 
+  lprint('lazy core ts plugins loaded', vim.loop.now() - start)
   local plugins = 'plenary.nvim'
   loader('plenary.nvim')
 
@@ -127,6 +132,7 @@ function Lazyload()
     loader('navigator.lua')
   end
 
+  lprint('lazy core lsp plugins loaded', vim.loop.now() - start)
   if load_ts_plugins then
     lprint('loading treesitter related plugins')
     plugins =
@@ -163,12 +169,12 @@ vim.defer_fn(function()
 end, lazy_timer)
 
 vim.defer_fn(function()
+  lprint('lazy telescope start', vim.loop.now() - start)
   vim.cmd('tabdo windo set relativenumber')
   vim.cmd('highlight clear ColorColumn')
   loader('virtcolumn.nvim')
   require('vscripts.tools')
   vim.cmd("command! Gram lua require'modules.tools.config'.grammcheck()")
-  vim.cmd('command! Spell call spelunker#check()')
 
   loader('windline.nvim')
   require('modules.ui.eviline')
@@ -181,8 +187,9 @@ vim.defer_fn(function()
   -- load from
   -- loader("telescope-zoxide project.nvim nvim-neoclip.lua")
   loader('harpoon')
-  loader('nvim-notify')
-  vim.notify = require('notify')
+  -- loader('nvim-notify')
+  require('modules.ui.notify').setup()
+  -- vim.notify = require('notify')
   -- require("vscripts.cursorhold")
 
   local gitrepo = vim.fn.isdirectory('.git/index')
@@ -198,7 +205,7 @@ vim.defer_fn(function()
   if vim.fn.executable(vim.g.python3_host_prog) == 0 then
     print('file not find, please update path setup', vim.g.python3_host_prog)
   end
-  lprint('lazy2 loaded', vim.loop.now() - start)
+  lprint('lazy telescope loaded', vim.loop.now() - start)
   require('core.ab')
 end, lazy_timer + 10)
 
@@ -218,4 +225,5 @@ vim.defer_fn(function()
       api.nvim_buf_delete(bufnr, { force = true })
     end
   end
+  lprint('auto-session loaded', vim.loop.now() - start)
 end, 0)
