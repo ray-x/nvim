@@ -14,6 +14,7 @@ function global:load_variables()
     path_sep = '\\'
     home = os.getenv('HOMEDRIVE') or 'C:'
     home = home .. (os.getenv('HOMEPATH') or '\\')
+    -- shellescape("%HOMEDRIVE%%HOMEPATH%)
   end
 
   self.cache_dir = home .. path_sep .. '.cache' .. path_sep .. 'nvim' .. path_sep

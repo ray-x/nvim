@@ -1,6 +1,8 @@
 _G = _G or {}
+fn = vim.fn
 
-local home = os.getenv('HOME')
+local global = require('core.global')
+local home = global.home
 
 local function exists(file)
   local ok, _, code = os.rename(file, file)
@@ -94,17 +96,19 @@ local helper = {
   end,
   path_sep = package.config:sub(1, 1) == '\\' and '\\' or '/',
   get_config_path = function()
-    local config = os.getenv('XDG_CONFIG_DIR')
+    local config = os.getenv('XDG_CONFIG_DIR') or fn.stdpath('config')
+
     if not config then
       return home .. '/.config/nvim'
     end
     return config
   end,
   get_data_path = function()
-    local data = os.getenv('XDG_fDATA_DIR')
+    local data = fn.stdpath('data') or os.getenv('XDG_DATA_DIRS')
     if not data then
       return home .. '/.local/share/nvim'
     end
+    data = vim.split(data, ':')[1]
     return data
   end,
   isdir = function(path)
