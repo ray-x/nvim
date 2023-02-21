@@ -126,7 +126,7 @@ end
 local hint_telescope = [[
  _g_itfiles   _r_eg       _j_umps      _b_uffers       _y_ neo
  _z_ Z        _p_roject    _w_ grep     _/_ searchhist  _d_umbjump
- _C_lap 👏    co_m_mands   buf_l_ines   _s_ colo🌈      _c_mdhist
+ _P_rojects 👏    co_m_mands   buf_l_ines   _s_ colo🌈      _c_mdhist
  _o_ldfiles   _k_eymaps🔑  _f_older📁   _h_arpoon
                _<Enter>_🔭              _q_uit
 ]]
@@ -159,10 +159,10 @@ Hydra({
     { 'o', ':Telescope oldfiles<CR>', { exit = true } },
     { 'k', ':Telescope keymaps<CR>', { exit = true } },
     { 'h', ':Telescope harpoon marks<CR>', { exit = true } },
-    { 'd', ':Clap dumb_jump<CR>', { exit = true } },
-    { 'l', ':Clap blines<CR>', { exit = true } },
-    { 's', ':Clap colors<CR>', { exit = true } },
-    { 'C', ':Clap<CR>', { exit = true } },
+    { 'd', ':Telescope dumb_jump<CR>', { exit = true } },
+    { 'l', require('telescope.builtin').current_buffer_fuzzy_find, { exit = true } },
+    { 's', ':Telescope colorscheme<CR>', { exit = true } },
+    { 'P', ':Telescope projects', { exit = true } },
     { 'o', ':Telescope oldfiles<CR>', { exit = true } },
     { 'y', ':Telescope neoclip<CR>', { exit = true } },
     { '<Enter>', '<cmd>Telescope<CR>', { exit = true } },
