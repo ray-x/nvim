@@ -111,6 +111,10 @@ end
 
 local function notify(msg, level, opts, no_cache)
   level = level or vim.log.levels.INFO
+  if type(level) == 'string' then
+    -- an idiot put the level in string
+    level = vim.log.levels[level:upper()] or vim.log.levels.INFO
+  end
   opts = opts or {}
   if level >= config.min_level then
     StatusModule.push('nvim', { mandat = msg, title = opts.title, icon = opts.icon })
