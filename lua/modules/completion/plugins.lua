@@ -43,7 +43,7 @@ return function(use)
       -- { "tzachar/cmp-tabnine", after = "nvim-cmp", build = "./install.sh", lazy = true, config = conf.tabnine},
       { 'hrsh7th/cmp-copilot', after = 'nvim-cmp', lazy = true },
       { 'hrsh7th/cmp-emoji', after = 'nvim-cmp', lazy = true },
-      { 'ray-x/cmp-treesitter', dev = true, after = 'nvim-cmp', lazy = true },
+      { 'ray-x/cmp-treesitter', dev = (plugin_folder():find('github') ~= nil), after = 'nvim-cmp', lazy = true },
       { 'hrsh7th/cmp-nvim-lsp', after = 'nvim-cmp', lazy = true },
       { 'f3fora/cmp-spell', after = 'nvim-cmp', lazy = true },
       { 'octaltree/cmp-look', after = 'nvim-cmp', lazy = true },
@@ -113,7 +113,7 @@ return function(use)
   -- note: part of the code is used in navigator
   use({
     'ray-x/lsp_signature.nvim',
-    dev = true,
+    dev = (plugin_folder():find('github') ~= nil),
     lazy = true,
     config = function()
       require('lsp_signature').setup({

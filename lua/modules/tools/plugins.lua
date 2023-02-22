@@ -89,8 +89,8 @@ return function(tools)
         'haydenmeade/neotest-jest',
         config = conf.neotest_jest,
       },
-      -- { 'nvim-neotest/neotest-plenary', module = { 'neotest-plenary', 'neotest' } },
-      -- { 'nvim-neotest/neotest-python', module = { 'neotest-python', 'neotest' } },
+      { 'nvim-neotest/neotest-plenary'},
+      { 'nvim-neotest/neotest-python'},
     },
     config = conf.neotest,
   })
@@ -215,10 +215,9 @@ return function(tools)
     lazy = true,
   })
 
-  local path = plugin_folder()
   tools({
     'ray-x/sad.nvim',
-    dev = true,
+    dev = (plugin_folder():find('github') ~= nil),
     cmd = { 'Sad' },
     lazy = true,
     config = function()
@@ -234,7 +233,7 @@ return function(tools)
 
   tools({
     'ray-x/forgit.nvim',
-    dev = true,
+    dev = (plugin_folder():find('github') ~= nil),
     lazy = true,
     cmd = { 'Ga', 'Gaa', 'Gd', 'Glo', 'Gs', 'Gc', 'Gpl', 'Gps' },
     event = { 'CmdwinEnter', 'CmdlineEnter' },
@@ -250,7 +249,7 @@ return function(tools)
 
   tools({
     'ray-x/viewdoc.nvim',
-    dev = true,
+    dev = (plugin_folder():find('github') ~= nil),
     cmd = { 'Viewdoc' },
     lazy = true,
     config = function()

@@ -63,23 +63,23 @@ return function(lang)
 
   lang({
     'ray-x/go.nvim',
-    dev = true,
+    dev = (plugin_folder():find('github') ~= nil),
     lazy = true,
     event = { 'CmdwinEnter', 'CmdlineEnter' },
     config = conf.go,
   })
 
-  lang({ 'ray-x/guihua.lua', build = 'cd lua/fzy && make', dev = true })
+  lang({ 'ray-x/guihua.lua', build = 'cd lua/fzy && make', dev = (plugin_folder():find('github') ~= nil) })
   lang({
     'ray-x/navigator.lua',
-    dev = true,
+    dev = (plugin_folder():find('github') ~= nil),
     config = conf.navigator,
     lazy = true,
   })
 
   lang({
     'ray-x/web-tools.nvim',
-    dev = true,
+    dev = (plugin_folder():find('github') ~= nil),
     ft = { 'html', 'javascript', 'hurl', 'http' },
     cmd = { 'HurlRun', 'BrowserOpen' },
     lazy = true,

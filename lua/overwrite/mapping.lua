@@ -40,16 +40,16 @@ local keys = {
   ["n|<M-h>"] = map_cmd("Clap history"):with_noremap():with_silent(),
 
   ["n|<F5>"] = map_func(function()
-      return _G.run_or_test(true)
+      return _G.test_or_run(true)
     end)
     :with_expr()
     :with_desc("run or test"),
-  ["n|<Leader>r"] = map_func(function() return _G.run_or_test() end):with_expr():with_desc("run or test"),
+  ["n|<Leader>r"] = map_func(function() return _G.test_or_run() end):with_expr():with_desc("run or test"),
 
-  ["v|<Leader>r"] = map_func(function() _G.run_or_test() end):with_expr():with_desc("run or test"),
+  ["v|<Leader>r"] = map_func(function() _G.test_or_run() end):with_expr():with_desc("run or test"),
 
-  ["n|<Leader>R"] = map_func(function() _G.run_or_test(true) end):with_expr():with_desc("run or test"),
-  ["v|<Leader>R"] = map_func(function() _G.run_or_test(true) end):with_expr():with_desc("run or test"),
+  ["n|<Leader>R"] = map_func(function() _G.test_or_run(true) end):with_expr():with_desc("run or test"),
+  ["v|<Leader>R"] = map_func(function() _G.test_or_run(true) end):with_expr():with_desc("run or test"),
 
   ["n|<Leader>bp"] = map_cmd("BufferLinePick"):with_noremap():with_silent(),
 
@@ -235,7 +235,7 @@ vim.cmd('vmap <LeftRelease> "*ygv')
 vim.cmd('unlet loaded_matchparen')
 
 
-_G.run_or_test = function(debug)
+_G.test_or_run = function(debug)
   -- local function rot()
   local ft = vim.bo.filetype
   local fn = vim.fn.expand('%')

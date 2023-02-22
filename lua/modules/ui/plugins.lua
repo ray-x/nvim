@@ -61,8 +61,14 @@ return function(ui)
   ui({
     'nvim-neo-tree/neo-tree.nvim',
     branch = 'v2.x',
-    cmd = { 'Neotree', 'NeoTreeShowToggle', 'NeoTreeFocusToggle', 'NeoTreeRevealToggle', 'NeoTreeFloat',
-      'NeoTreeFloatToggle' },
+    cmd = {
+      'Neotree',
+      'NeoTreeShowToggle',
+      'NeoTreeFocusToggle',
+      'NeoTreeRevealToggle',
+      'NeoTreeFloat',
+      'NeoTreeFloatToggle',
+    },
     config = conf.neotree,
   })
   ui({ 'MunifTanjim/nui.nvim', lazy = true })
@@ -125,7 +131,7 @@ return function(ui)
 
   ui({
     'ray-x/aurora',
-    dev = true,
+    dev = (plugin_folder():find('github') ~= nil),
     lazy = true,
     init = function()
       vim.g.aurora_italic = 1
@@ -149,7 +155,7 @@ return function(ui)
 
   ui({
     'ray-x/starry.nvim',
-    dev = true,
+    dev = (plugin_folder():find('github') ~= nil),
     lazy = true,
     init = conf.starry,
     config = conf.starry_conf,

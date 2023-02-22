@@ -123,7 +123,13 @@ local function notify(msg, level, opts, no_cache)
     end
   end
   if level > vim.log.levels.WARN then
-    require('notify').notify(msg, level, opts)
+    if vim.in_fast_event() then
+      vim.schedule(function()
+        require('notify').notify(msg, level, opts)
+      end)
+    else
+      require('notify').notify(msg, level, opts)
+    end
   else
     printInfo(level, msg)
   end
