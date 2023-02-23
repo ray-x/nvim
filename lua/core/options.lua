@@ -150,9 +150,18 @@ local function load_options()
     vim.g.python3_host_prog = '/usr/bin/python3'
   else
     -- windows
-    vim.g.python3_host_prog = 'C:\\Python310\\python.exe'
+    vim.g.python3_host_prog = 'C:\\Python311\\python.exe'
     if vim.fn.executable(vim.g.python3_host_prog)  == 0 then
-      vim.g.python3_host_prog = vim.fn.system('where python')
+      local p = vim.fn.system('where python')
+      if p ~= '' then
+        p = vim.fn.split(p, '\n')[1]
+        if p ~= '' then
+          vim.g.python3_host_prog = vim.trim(p)
+        else
+          print('could not find python install path')
+        end
+      end
+
       print('please setup python path in options.lua')
     end
   end
