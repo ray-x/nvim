@@ -1,6 +1,6 @@
 local langtree = false
 -- stylua: ignore start
-local ts_ensure_installed = { "go", "css", "html", "javascript", "typescript", "jsdoc", "json", "c", "java", "toml", "tsx", "lua", "cpp", "python", "rust", "jsonc", "yaml", "sql", "vue", "vim", "org"}
+local ts_ensure_installed = { "go", "css", "html", "javascript", "typescript", "json", "c", "java", "toml", "tsx", "lua", "cpp", "python", "rust", "yaml", "vue", "vim", "org"}
 -- stylua: ignore end
 
 local treesitter = function()
@@ -148,23 +148,6 @@ local treesitter_ref = function()
     autotag = { enable = enable },
   })
   local parser_config = require('nvim-treesitter.parsers').get_parser_configs()
-  parser_config.sql = {
-    install_info = {
-      url = vim.fn.expand('$HOME') .. '/github/nvim-treesitter/tree-sitter-sql', -- local path or git repo
-      files = { 'src/parser.c' },
-    },
-    filetype = 'sql', -- if filetype does not agrees with parser name
-    used_by = { 'psql', 'pgsql' }, -- additional filetypes that use this parser
-  }
-  parser_config.proto = {
-    install_info = {
-      url = vim.fn.expand('$HOME') .. '/github/nvim-treesitter/tree-sitter-proto', -- local path or git repo
-      files = { 'src/parser.c' },
-    },
-    filetype = 'proto', -- if filetype does not agrees with parser name
-    used_by = { 'proto' }, -- additional filetypes that use this parser
-  }
-
   parser_config.norg = {
     install_info = {
       url = 'https://github.com/nvim-neorg/tree-sitter-norg',

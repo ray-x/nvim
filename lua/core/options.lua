@@ -146,8 +146,15 @@ local function load_options()
       cache_enabled = 0
     }
     vim.g.python3_host_prog = '/usr/local/bin/python3'
-  else
+  elseif global.is_linux then
     vim.g.python3_host_prog = '/usr/bin/python3'
+  else
+    -- windows
+    vim.g.python3_host_prog = 'C:\\Python310\\python.exe'
+    if vim.fn.executable(vim.g.python3_host_prog)  == 0 then
+      vim.g.python3_host_prog = vim.fn.system('where python')
+      print('please setup python path in options.lua')
+    end
   end
   for name, value in pairs(global_local) do
     vim.o[name] = value
