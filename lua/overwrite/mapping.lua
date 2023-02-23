@@ -221,12 +221,10 @@ local keys = {
 --
 vim.cmd([[vnoremap  <leader>y  "+y]])
 vim.cmd([[nnoremap  <leader>Y  "+yg_]])
--- vim.cmd([[vnoremap  <M-c>  "+y]])
--- vim.cmd([[nnoremap  <M-c>  "+yg_]])
-
-vim.cmd([[vnoremap  <D-c>  *+y]])
-vim.cmd([[nnoremap  <D-c>  *+yg_]])
-vim.cmd([[inoremap  <D-c>  *+yg_]])
+vim.cmd([[vnoremap  <M-c>  "+y]])
+vim.cmd([[nnoremap  <M-c>  "+yg_]])
+vim.cmd([[inoremap  <M-c>  "+yg_]])
+vim.cmd([[inoremap  <M-v>  <CTRL-r>*]])
 vim.cmd([[inoremap  <D-v>  <CTRL-r>*]])
 --
 vim.cmd('imap <M-V> <C-R>+') -- mac
