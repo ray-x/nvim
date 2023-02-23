@@ -14,7 +14,7 @@ local group = vim.api.nvim_create_augroup('user-kitty', { clear = true })
 
 local has_kitty
 local function has_support()
-  if has_kitty == nil then
+  if has_kitty ~= nil then
     return has_kitty
   end
   local kitty_str = os.getenv('TERM_PROGRAM') or os.getenv('TERM') or 'term'

@@ -14,7 +14,7 @@ local log = function(...)
     if type(v) == 'table' then
       str = str .. ' |' .. tostring(i) .. ': ' .. vim.inspect(v) .. '\n'
     else
-      str = str .. ' |' .. tostring(i) .. ': ' .. tostring(v)
+      str = str .. ' |' .. tostring(i) .. ': ' .. tostring(v or 'nil')
     end
   end
   if #str > 2 then
