@@ -12,15 +12,29 @@ local ns = vim.api.nvim_create_namespace('user-kitty')
 
 local group = vim.api.nvim_create_augroup('user-kitty', { clear = true })
 
+local has_kitty
 local function has_support()
-  if os.getenv('TERM_PROGRAM'):find('kitty') or os.getenv('TERM'):find('kitty') then
+  if has_kitty == nil then
+    return has_kitty
+  end
+  local kitty_str = os.getenv('TERM_PROGRAM') or os.getenv('TERM') or 'term'
+  if kitty_str:find('kitty') then
+    has_kitty = true
     return true
   end
-  -- return vim.fn.executable("kitty") and vim.fn.system("kitty @ ls > /dev/null && printf 'ok'") == "ok"
+  if require('core.global').is_windows then
+    has_kitty = false
+    return false
+  end
+  has_kitty = (vim.fn.executable('kitty') == 1) -- return vim.fn.executable("kitty") and vim.fn.system("kitty @ ls > /dev/null && printf 'ok'") == "ok"
+  return has_kitty
 end
 
 ---@param window KittyWindow
 local function kitty_is_current_window(window)
+  if not has_support() then
+    return false
+  end
   for _, ps in ipairs(window.foreground_processes) do
     if ps.pid == pid then
       return true
@@ -32,6 +46,9 @@ end
 ---@param state KittyState
 ---@return KittyTab
 local function kitty_get_current_tab(state)
+  if not has_support() then
+    return ''
+  end
   for _, wm in ipairs(state) do
     for _, tab in ipairs(wm.tabs) do
       for _, window in ipairs(tab.windows) do
@@ -45,6 +62,9 @@ end
 
 ---@return KittyState
 local function kitty_get_state()
+  if not has_support() then
+    return ''
+  end
   local txt = vim.fn.system('kitty @ ls')
 
   if txt == nil then
@@ -57,10 +77,16 @@ end
 ---@param opts {}
 ---@return string[]
 local function kitty_get_text(id, opts)
+  if not has_support() then
+    return ''
+  end
   return vim.fn.systemlist('kitty @ get-text --match id:' .. id)
 end
 
 local function callback()
+  if not has_support() then
+    return ''
+  end
   vim.api.nvim_buf_clear_namespace(0, ns, 0, -1)
 
   local state = kitty_get_state()
@@ -123,6 +149,9 @@ local split = function(str)
 end
 
 kitty.get_kitty_background = function(opts)
+  if not has_support() then
+    return ''
+  end
   local color
   vim.fn.jobstart({ 'kitty', '@', 'get-colors' }, {
     cwd = '/usr/bin/',
@@ -150,6 +179,9 @@ end
 local autocmd = vim.api.nvim_create_autocmd
 local autogroup = vim.api.nvim_create_augroup
 local change_background = function(color)
+  if not has_support() then
+    return ''
+  end
   lprint('change_background', color)
   if color and color ~= 'NONE' then
     local arg = 'background="' .. color .. '"'
@@ -184,6 +216,9 @@ end
 
 local pid
 kitty.set_title_on_active = function(title)
+  if not has_support() then
+    return ''
+  end
   local win_id = vim.fn.expand('$KITTY_WINDOW_ID') -- environ()['KITTY_WINDOW_ID']
   pid = tostring(vim.loop.os_getppid())
 
@@ -212,6 +247,9 @@ kitty.set_title_on_active = function(title)
 end
 
 kitty.set_title = function(title)
+  if not has_support() then
+    return ''
+  end
   -- lprint('set_title', title)
   local cmd = { 'kitty', '@', 'set-window-title' }
   if title then
@@ -221,6 +259,9 @@ kitty.set_title = function(title)
 end
 
 vim.api.nvim_create_user_command('SetKittyBg', function(opts)
+  if not has_support() then
+    return ''
+  end
   kitty.get_kitty_background()
   local color = get_color('Normal', 'bg')
   if opts.fargs ~= nil then

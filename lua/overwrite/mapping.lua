@@ -37,7 +37,8 @@ local keys = {
   -- ["n|F24"]  = map_cmd("<S-F12>"),
   --
   --
-  ["n|<M-h>"] = map_cmd("Clap history"):with_noremap():with_silent(),
+  -- ["n|<M-h>"] = map_cmd("Clap history"):with_noremap():with_silent(),
+  ["n|<M-w>"] = map_cmd("wqa!"):with_noremap():with_silent(),
 
   ["n|<F5>"] = map_func(function()
       return _G.test_or_run(true)
@@ -63,8 +64,9 @@ local keys = {
   -- ["n|<Leader>v"] = map_cu("Vista!!"):with_noremap():with_silent(),
   -- Plugin SplitJoin
   ['n|<Space>j'] = map_func(function() require("treesj").toggle() end ):with_desc("SplitJoinToggle"),
-  -- abolish
-  ["n|Cr"] = map_plug("abolish-coerce-word"):with_noremap():with_silent():with_desc('s:snake, c:Camel'),
+  -- abolish , e.g. Crs: snake case, Crc: Camel case, Crm: mix case, Cru: upper case, Cr-: dash case, Cr.: dot case, Cr<Space>: space case, Crt: titlecase
+  ["n|Cr"] = map_plug("abolish-coerce-word"):with_noremap():with_silent():with_desc('s:snake, c:Camel,m:mix,u:upper,-:dash,.:dot,<Spc>:space case, t:titlecase'),
+  ["v|Cr"] = map_plug("abolish-coerce"):with_noremap():with_silent():with_desc('s:snake, c:Camel,m:mix,u:upper,-:dash,.:dot,<Spc>:space case, t:titlecase'),
 
   ["n|<F13>"] = map_cmd("NeoTreeRevealToggle"),
   -- ["n|hW"] = map_cmd("HopWordBC"),
@@ -226,6 +228,23 @@ vim.cmd([[nnoremap  <M-c>  "+yg_]])
 vim.cmd([[inoremap  <M-c>  "+yg_]])
 vim.cmd([[inoremap  <M-v>  <CTRL-r>*]])
 vim.cmd([[inoremap  <D-v>  <CTRL-r>*]])
+-- yank whole file and reset cursor back
+
+vim.cmd([[map <C-a><C-c> gg"*yG``
+imap <C-a><C-c> <ESC>gg"*yGgi
+nmap <C-Insert> "*yy
+imap <C-Insert> <ESC>"*yygi
+nmap <S-Insert> "*p
+imap <S-Insert> <C-R>*
+" Capitalize inner word
+map <M-c> guiw~w
+" UPPERCASE inner word
+map <M-u> gUiww
+" lowercase inner word
+map <M-l> guiww
+" just one space on the line, preserving indent
+map <M-Space> m`:s/\S\+\zs \+/ /g<CR>``:nohl<CR>
+]])
 --
 vim.cmd('imap <M-V> <C-R>+') -- mac
 vim.cmd('imap <C-V> <C-R>*')

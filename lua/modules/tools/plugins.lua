@@ -93,6 +93,7 @@ return function(tools)
       { 'nvim-neotest/neotest-python'},
     },
     config = conf.neotest,
+    cmd = { 'Neotest', 'NeotestFile', 'NeoResult' },
   })
 
   tools({ 'nvim-neotest/neotest-plenary' })

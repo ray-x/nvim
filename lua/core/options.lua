@@ -69,7 +69,7 @@ local function load_options()
     completeopt = "menuone,noselect,noinsert", -- Show popup menu, even if there is one entry  menuone?
     jumpoptions    = "stack";
     showmode       = false;
-    shortmess      = "aotTIcFC";
+    shortmess      = "aotTIcF";
     scrolloff      = 2;
     sidescrolloff  = 5;
     foldlevel      = 99;
@@ -208,6 +208,7 @@ function _G.column()
 end
 
 if vim.fn.has("nvim-0.9.0") == 1 then
+  vim.opt.shortmess = "aotTIcFC";
   vim.opt.statuscolumn = [[%!v:lua.column()]]
 end
 

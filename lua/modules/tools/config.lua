@@ -586,7 +586,22 @@ function config.neotest()
         end,
       }),
     },
+    quickfix = {
+      enable = true,
+      open = function()
+        vim.cmd('Trouble quickfix')
+      end,
+    },
   })
+  vim.api.nvim_create_user_command('Neotest', function()
+    require('neotest').run.run()
+  end, { nargs = '*' })
+  vim.api.nvim_create_user_command('NeotestFile', function()
+    require('neotest').run.run(vim.fn.expand('%'))
+  end, { nargs = '*' })
+  vim.api.nvim_create_user_command('NeoResult', function()
+    require("neotest").output_panel.toggle() 
+  end, { nargs = '*' })
 end
 
 function config.mkdp()

@@ -100,7 +100,10 @@ local function printInfo(level, msg)
     msgs = {}
   end
 
-  vim.cmd(string.format([[echomsg '  %s']], msg))
+  if type(msg) ~= 'string' then
+    msg = vim.inspect(msg)
+  end
+  vim.cmd(string.format([[echomsg '  %s']], vim.inspect(msg)))
 
   vim.cmd('echohl String')
   for _, m in ipairs(msgs) do

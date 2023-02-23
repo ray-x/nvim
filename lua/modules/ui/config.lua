@@ -14,8 +14,8 @@ local day = daylight()
 
 function config.windline() end
 
+vim.api.nvim_set_hl(0, 'NotifyBackground', { fg = '#8fafef', bg = '#101118' })
 function config.notify()
-  vim.api.nvim_set_hl(0, 'NotifyBackground', { fg = '#8fafef', bg = 'None' })
   --   require('notify').setup({
   --     -- Animation style (see below for details)
   --     stages = 'fade_in_slide_out', -- "slide",
