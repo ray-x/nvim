@@ -406,7 +406,11 @@ return function(editor)
     },
     cmd = 'Registers',
     config = function()
-      require('registers').setup({})
+      require('registers').setup({
+        show = '*"%01234abcpwy:',
+        -- Show a line at the bottom with registers that aren't filled
+        show_empty = false,
+      })
     end,
   })
 end

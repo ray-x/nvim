@@ -236,24 +236,24 @@ function config.ufo()
     local targetWidth = width - sufWidth
     local curWidth = 0
     for _, chunk in ipairs(virtText) do
-      local chunkText = chunk[1]
-      local chunkWidth = vim.fn.strdisplaywidth(chunkText)
-      if targetWidth > curWidth + chunkWidth then
-        table.insert(newVirtText, chunk)
-      else
-        chunkText = truncate(chunkText, targetWidth - curWidth)
-        local hlGroup = chunk[2]
-        table.insert(newVirtText, { chunkText, hlGroup })
-        chunkWidth = vim.fn.strdisplaywidth(chunkText)
-        -- str width returned from truncate() may less than 2nd argument, need padding
-        if curWidth + chunkWidth < targetWidth then
-          suffix = suffix .. (' '):rep(targetWidth - curWidth - chunkWidth)
+        local chunkText = chunk[1]
+        local chunkWidth = vim.fn.strdisplaywidth(chunkText)
+        if targetWidth > curWidth + chunkWidth then
+            table.insert(newVirtText, chunk)
+        else
+            chunkText = truncate(chunkText, targetWidth - curWidth)
+            local hlGroup = chunk[2]
+            table.insert(newVirtText, {chunkText, hlGroup})
+            chunkWidth = vim.fn.strdisplaywidth(chunkText)
+            -- str width returned from truncate() may less than 2nd argument, need padding
+            if curWidth + chunkWidth < targetWidth then
+                suffix = suffix .. (' '):rep(targetWidth - curWidth - chunkWidth)
+            end
+            break
         end
-        break
-      end
-      curWidth = curWidth + chunkWidth
+        curWidth = curWidth + chunkWidth
     end
-    table.insert(newVirtText, { suffix, 'MoreMsg' })
+    table.insert(newVirtText, {suffix, 'MoreMsg'})
     return newVirtText
   end
   local whitelist = {
@@ -273,7 +273,7 @@ function config.ufo()
   local bufnr = vim.api.nvim_get_current_buf()
   local ft = vim.o.ft
   if whitelist[ft] then
-    require('ufo').setVirtTextHandler(bufnr, handler)
+    require('ufo').setFoldVirtTextHandler(bufnr, handler)
   end
 end
 
