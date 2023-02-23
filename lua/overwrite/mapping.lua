@@ -4,10 +4,10 @@ local map_func = bind.map_func
 local map_plug = bind.map_plug
 local map_cu = bind.map_cu
 local mx = function(feedkeys)
-    return function()
-        local keys = vim.api.nvim_replace_termcodes(feedkeys, true, false, true)
-        vim.api.nvim_feedkeys(keys, "m", false)
-    end
+  return function()
+    local keys = vim.api.nvim_replace_termcodes(feedkeys, true, false, true)
+    vim.api.nvim_feedkeys(keys, 'm', false)
+  end
 end
 
 local K = {}
@@ -234,7 +234,6 @@ vim.cmd('imap <C-V> <C-R>*')
 vim.cmd('vmap <LeftRelease> "*ygv')
 vim.cmd('unlet loaded_matchparen')
 
-
 _G.test_or_run = function(debug)
   -- local function rot()
   local ft = vim.bo.filetype
@@ -274,11 +273,14 @@ _G.test_or_run = function(debug)
     return '<CMD>RestRun<CR>'
   end
 
-  if ft == 'python' then
-    return '<CMD>!python %<CR>'
+  if fn:find('test') or fn:find('spec') then
+    return require('neotest').run.run()
   end
   local m = vim.fn.mode()
   if m == 'n' or m == 'i' then
+    if ft == 'python' then
+      return '<CMD>!python %<CR>'
+    end
     require('sniprun').run()
   else
     require('sniprun').run('v')

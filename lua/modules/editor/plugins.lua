@@ -388,4 +388,25 @@ return function(editor)
       require('iswap').setup({})
     end,
   })
+  editor({
+    'chentoast/marks.nvim',
+    lazy = true,
+    cmd = { 'MarksToggleSigns' },
+    config = function()
+      require('marks').setup({})
+    end,
+    keys = { 'm', '<Plug>(Marks-set)', '<Plug>(Marks-toggle)' },
+  })
+  editor({
+    'tversteeg/registers.nvim',
+    name = 'registers',
+    keys = {
+      { '"', mode = { 'n', 'v' } },
+      { '<C-R>', mode = 'i' },
+    },
+    cmd = 'Registers',
+    config = function()
+      require('registers').setup({})
+    end,
+  })
 end

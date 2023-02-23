@@ -80,6 +80,8 @@ function autocmd.load_autocmds()
         '*',
         function()
           require('close_buffers').delete({ type = 'hidden', force = true })
+          require('close_buffers').delete({ regex = 'fugitive' })
+          require('close_buffers').delete({ regex = 'neogit', force = true })
           require('close_buffers').wipe({ type = 'nameless', force = true })
         end,
       },

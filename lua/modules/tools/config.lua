@@ -24,6 +24,13 @@ function config.session()
     auto_session_enabled = true,
     auto_save_enabled = true,
     auto_restore_enabled = true,
+    bypass_session_save_file_types = {
+      'dashboard',
+      'startify',
+      'NeogitStatus',
+      'NvimTree',
+      'fugitive',
+    },
   }
   require('auto-session').setup(opts)
 end
@@ -529,11 +536,11 @@ function config.spelunker()
   -- vim.cmd("highlight SpelunkerComplexOrCompoundWord cterm=underline gui=undercurl guisp=#EF3050")
   vim.cmd('highlight def link SpelunkerSpellBad SpellBad')
   vim.cmd('highlight def link SpelunkerComplexOrCompoundWord Rare')
-      vim.fn["spelunker#check"] = function(...)
-        vim.fn["spelunker#check"] = nil
-        require("lazy").load({ plugins = { 'spelunker.vim' } })
-        return vim.fn["spelunker#check"](...)
-      end
+  vim.fn['spelunker#check'] = function(...)
+    vim.fn['spelunker#check'] = nil
+    require('lazy').load({ plugins = { 'spelunker.vim' } })
+    return vim.fn['spelunker#check'](...)
+  end
 end
 
 function config.spellcheck()
