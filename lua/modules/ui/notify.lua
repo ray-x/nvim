@@ -112,6 +112,8 @@ local function printInfo(level, msg)
   vim.cmd('echohl None')
 end
 
+vim.api.nvim_set_hl(0, 'NotifyBackground', { fg = '#8fafef', bg = '#101118' })
+
 local function notify(msg, level, opts, no_cache)
   level = level or vim.log.levels.INFO
   if type(level) == 'string' then

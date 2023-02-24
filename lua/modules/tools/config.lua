@@ -572,6 +572,7 @@ function config.neotest()
     adapters = {
       require('neotest-python')({
         dap = { justMyCode = false },
+        runner = "pytest",
       }),
       require('neotest-plenary'),
       -- require("neotest-vim-test")({

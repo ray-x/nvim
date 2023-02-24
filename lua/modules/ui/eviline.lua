@@ -709,7 +709,7 @@ local default = {
     { lsp_comps.lsp_name(), { 'magenta', 'NormalBg' }, breakpoint_width },
     basic.git,
     basic.folder,
-    basic.job_spinner,
+    -- basic.job_spinner,
     { ' ', hl_list.NormalBg },
     basic.square_mode,
   },

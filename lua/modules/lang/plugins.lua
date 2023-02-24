@@ -69,7 +69,11 @@ return function(lang)
     config = conf.go,
   })
 
-  lang({ 'ray-x/guihua.lua', build = 'cd lua/fzy && make', dev = (plugin_folder():find('github') ~= nil) })
+  lang({
+    'ray-x/guihua.lua',
+    build = 'cd lua/fzy && make',
+    dev = (plugin_folder():find('github') ~= nil),
+  })
   lang({
     'ray-x/navigator.lua',
     dev = (plugin_folder():find('github') ~= nil),
@@ -169,7 +173,11 @@ return function(lang)
   })
   -- JqxList and JqxQuery json browsing, format
   lang({ 'gennaro-tedesco/nvim-jqx', lazy = true, cmd = { 'JqxList', 'JqxQuery' } })
-  lang({ 'bfrg/vim-jqplay', ft = 'jq', cmd = { 'Jqplay', 'JqplayScratch', 'JqplayScratchNoInput'} })
+  lang({
+    'bfrg/vim-jqplay',
+    ft = 'jq',
+    cmd = { 'Jqplay', 'JqplayScratch', 'JqplayScratchNoInput' },
+  })
 
   lang({
     'windwp/nvim-ts-autotag',
@@ -296,5 +304,11 @@ return function(lang)
     ft = 'awk',
     lazy = true,
     -- cmd = { 'AwkWard' },
+  })
+  lang({
+    'mechatroner/rainbow_csv',
+    ft = { 'csv', 'tsv', 'dat' },
+    lazy = true,
+    cmd = { 'RainbowDelim', 'RainbowMultiDelim', 'Select', 'CSVLint' },
   })
 end

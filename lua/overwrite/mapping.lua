@@ -251,59 +251,6 @@ vim.cmd('imap <C-V> <C-R>*')
 vim.cmd('vmap <LeftRelease> "*ygv')
 vim.cmd('unlet loaded_matchparen')
 
-_G.test_or_run = function(debug)
-  -- local function rot()
-  local ft = vim.bo.filetype
-  local fn = vim.fn.expand('%')
-  fn = string.lower(fn)
-  if ft == 'lua' then
-    local f = string.find(fn, 'spec')
-    if f == nil then
-      -- let run lua test
-      return '<CMD>luafile %<CR>'
-    end
-    return '<Plug>PlenaryTestFile'
-  end
-  if ft == 'go' then
-    local f = string.find(fn, 'test.go')
-    if f == nil then
-      -- let run lua test
-      if debug then
-        return '<CMD>GoDebug <CR>'
-      else
-        return '<CMD>GoRun<CR>'
-      end
-    end
-
-    if debug then
-      return '<CMD>GoDebug -t<CR>'
-    else
-      return '<CMD>GoTestFunc -F<CR>'
-    end
-  end
-
-  if ft == 'hurl' then
-    return '<CMD>HurlRun<CR>'
-  end
-
-  if ft == 'rest' then
-    return '<CMD>RestRun<CR>'
-  end
-
-  if fn:find('test') or fn:find('spec') then
-    return require('neotest').run.run()
-  end
-  local m = vim.fn.mode()
-  if m == 'n' or m == 'i' then
-    if ft == 'python' then
-      return '<CMD>!python %<CR>'
-    end
-    require('sniprun').run()
-  else
-    require('sniprun').run('v')
-  end
-end
-
 _G.hop1 = function(ac)
   if vim.fn.mode() == 's' then
     -- print(vim.fn.mode(), vim.fn.mode() == 's')

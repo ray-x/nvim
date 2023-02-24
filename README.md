@@ -2,12 +2,11 @@
 
 ## 🏎 🏎 🏎 Need for speed! 🏎 🏎 🏎
 
-This neovim configure file is highly optimized for the impatient. Super lazy loading + After syntax highlight rendering. Maybe the
-only nvim setup in github that can render multiple files with treesitter in less than 45ms with ~170 plugins installed
+This neovim configure file is highly optimized for the impatient. Super lazy loading + After syntax highlight rendering. Render multiple files with treesitter in less than 45ms with ~170 plugins installed
 (e.g. Open both util.lua(1686 loc) and lsp.lua(1538 loc) from neovim source code in 58.6ms)
 The setup set all plugins to be lazy loaded and trigger when it needed.
 
-The `Packer` config locats in branch [Packer branch](https://github.com/ray-x/nvim/tree/packer)
+The `Packer` config locates in branch [Packer branch](https://github.com/ray-x/nvim/tree/packer)
 
 - nvim Telescope preview:
   ![telescope](https://user-images.githubusercontent.com/1681295/214219526-dfb3cd22-7b67-475b-9294-914590d2913b.jpg)
