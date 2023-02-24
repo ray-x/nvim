@@ -96,7 +96,7 @@ local helper = {
   end,
   path_sep = package.config:sub(1, 1) == '\\' and '\\' or '/',
   get_config_path = function()
-    local config = os.getenv('XDG_CONFIG_DIR') or fn.stdpath('config')
+    local config = fn.stdpath('config')
 
     if not config then
       return home .. '/.config/nvim'
@@ -104,7 +104,7 @@ local helper = {
     return config
   end,
   get_data_path = function()
-    local data = fn.stdpath('data') or os.getenv('XDG_DATA_DIRS')
+    local data = fn.stdpath('data')
     if not data then
       return home .. '/.local/share/nvim'
     end
