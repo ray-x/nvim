@@ -8,7 +8,6 @@ return function(editor)
     'windwp/nvim-autopairs',
     -- keys = {{'i', '('}},
     -- keys = {{'i'}},
-    after = { 'nvim-cmp' }, -- "nvim-treesitter", nvim-cmp "nvim-treesitter", coq_nvim
     -- event = "InsertEnter",  --InsertCharPre
     config = conf.autopairs,
     lazy = true,
@@ -43,9 +42,14 @@ return function(editor)
     'tpope/vim-repeat',
     event = { 'CmdlineEnter' },
     keys = { '<Plug>(RepeatDot)', '<Plug>(RepeatUndo)', '<Plug>(RepeatRedo)' },
-    fn = { 'repeat#set()' },
+
+    -- fn = { 'repeat#set()' },
     init = function()
-      -- use default mapping
+      vim.fn["repeat#set"] = function(...)
+        vim.fn["repeat#set"] = nil
+        require("lazy").load({ plugins = { 'vim-repeat' }})
+        return vim.fn["repeat#set"](...)
+      end
     end,
     lazy = true,
   })
@@ -189,7 +193,7 @@ return function(editor)
     init = conf.vmulti,
   })
 
-  editor({ 'indianboy42/hop-extensions', after = 'hop', lazy = true })
+  editor({ 'indianboy42/hop-extensions', lazy = true })
 
   -- EasyMotion in lua. -- maybe replace sneak
   editor({
@@ -374,10 +378,15 @@ return function(editor)
     'AndrewRadev/switch.vim',
     lazy = true,
     cmd = { 'Switch', 'SwitchCase' }, --'Switch!' , 'Switch?',
-    fn = { 'switch#Switch' },
     keys = { '<Plug>(Switch)' },
+    event = { 'FuncUndefined' },
     init = function()
       vim.g.switch_mapping = '<Space>t'
+      vim.fn['switch#Switch'] = function(...)
+        vim.fn['switch#Swtich'] = nil
+        require('lazy').load({ plugins = { 'switch.vim' } })
+        return vim.fn['switch#Switch'](...)
+      end
     end,
   })
   editor({

@@ -1,5 +1,6 @@
 local conf = require('modules.tools.config')
 return function(tools)
+  local is_win = require('core.global').is_windows
   tools({
     'kristijanhusak/vim-dadbod-ui',
     cmd = {
@@ -89,8 +90,8 @@ return function(tools)
         'haydenmeade/neotest-jest',
         config = conf.neotest_jest,
       },
-      { 'nvim-neotest/neotest-plenary'},
-      { 'nvim-neotest/neotest-python'},
+      { 'nvim-neotest/neotest-plenary' },
+      { 'nvim-neotest/neotest-python' },
     },
     config = conf.neotest,
     cmd = { 'Neotest', 'NeotestFile', 'NeoResult' },
@@ -155,12 +156,17 @@ return function(tools)
     lazy = true,
   })
 
+  local cmd = [[sh -c "cd app && yarn install"]]
+  if is_win then
+    cmd = 'cd app && yarn install'
+  end
+
   tools({
     'iamcco/markdown-preview.nvim',
     ft = { 'markdown', 'pandoc.markdown', 'rmd' },
     cmd = { 'MarkdownPreview' },
     init = conf.mkdp,
-    build = [[sh -c "cd app && yarn install"]],
+    build = cmd,
     lazy = true,
   })
 
@@ -189,10 +195,14 @@ return function(tools)
   --
   tools({ 'nanotee/zoxide.vim', cmd = { 'Z', 'Lz', 'Zi' } })
 
+  cmd = 'bash install.sh'
+  if is_win then
+    cmd = ':Clap install-binary'
+  end
   tools({
     'liuchengxu/vim-clap',
     cmd = { 'Clap' },
-    build = 'bash install.sh',
+    build = cmd,
     init = conf.clap,
     config = conf.clap_after,
   })
@@ -278,7 +288,7 @@ return function(tools)
     'rbong/vim-flog',
     cmd = { 'Flog', 'Flogsplit', 'Flg', 'Flgs' },
     lazy = true,
-    fn = { 'flog#cmd#Flog', 'flog#cmd#Flogsplit' },
+    event = { 'FuncUndefined' },
     dependencies = {
       'tpope/vim-fugitive',
       cmd = {
@@ -292,7 +302,7 @@ return function(tools)
         'Gvdiffsplit',
       },
       event = { 'CmdwinEnter', 'CmdlineEnter' },
-      fn = { 'FugitiveIsGitDir' },
+      -- fn = { 'FugitiveIsGitDir' },
       lazy = true,
     },
   })
@@ -326,14 +336,12 @@ return function(tools)
   tools({
     'ahmedkhalf/project.nvim',
     lazy = true,
-    after = { 'telescope.nvim' },
     config = conf.project,
   })
 
   tools({
     'jvgrootveld/telescope-zoxide',
     lazy = true,
-    after = { 'telescope.nvim' },
     config = function()
       require('utils.telescope')
       require('telescope').load_extension('zoxide')
@@ -343,7 +351,6 @@ return function(tools)
   tools({
     'AckslD/nvim-neoclip.lua',
     lazy = true,
-    -- after = { "telescope.nvim" }, -- manul load
     dependencies = { 'kkharji/sqlite.lua' },
     config = function()
       require('utils.telescope')
@@ -356,7 +363,6 @@ return function(tools)
 
   tools({
     'nvim-telescope/telescope-frecency.nvim',
-    -- after = { "telescope.nvim" },  -- manual load
     -- cmd = {'Telescope'},
     dependencies = { 'kkharji/sqlite.lua', lazy = true },
     lazy = true,

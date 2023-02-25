@@ -44,7 +44,6 @@ return function(ui)
   ui({
     'akinsho/bufferline.nvim',
     config = conf.nvim_bufferline,
-    diagnostics_update_in_insert = false,
     -- after = {"aurora"}
     -- dependencies = {'kyazdani42/nvim-web-devicons'}
     lazy = true,

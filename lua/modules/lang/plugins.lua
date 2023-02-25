@@ -32,7 +32,6 @@ return function(lang)
 
   lang({
     'nvim-treesitter/nvim-treesitter-refactor',
-    after = 'nvim-treesitter-textobjects', -- manual loading
     config = ts.treesitter_ref, -- let the last loaded config treesitter
     lazy = true,
   })
@@ -47,7 +46,6 @@ return function(lang)
   lang({
     'simrat39/rust-tools.nvim',
     ft = { 'rust' },
-    after = { 'nvim-lspconfig' },
     config = function()
       vim.defer_fn(function()
         require('rust-tools').setup({
@@ -112,7 +110,6 @@ return function(lang)
 
   lang({
     'nvim-treesitter/playground',
-    -- after = "nvim-treesitter",
     lazy = true,
     cmd = 'TSPlaygroundToggle',
     config = conf.playground,
@@ -128,7 +125,6 @@ return function(lang)
   lang({
     'rafcamlet/nvim-luapad',
     lazy = true,
-    model = 'luapad',
     cmd = { 'Lua', 'Luapad' },
     config = conf.luapad,
   })
@@ -155,10 +151,15 @@ return function(lang)
   lang({ 'mfussenegger/nvim-dap-python', ft = { 'python' } })
 
   lang({ 'mtdl9/vim-log-highlighting', ft = { 'text', 'txt', 'log' } })
-
+  local cmd = 'bash install.sh'
+  if require('core.global').is_windows then
+    if vim.fn.executable('bash') == 0 then
+      cmd = [[echo 'failed to install sniprun, bash is not installed']]
+    end
+  end
   lang({
     'michaelb/sniprun',
-    build = 'bash install.sh',
+    build = cmd,
     lazy = true,
     cmd = { 'SnipRun', 'SnipReset' },
     config = function()
@@ -182,7 +183,6 @@ return function(lang)
   lang({
     'windwp/nvim-ts-autotag',
     lazy = true,
-    -- after = "nvim-treesitter",
     -- config = function() require"nvim-treesitter.configs".setup {autotag = {enable = true}} end
   })
   -- highlight your args with Treesitter
@@ -232,7 +232,6 @@ return function(lang)
     -- 'p00f/nvim-ts-rainbow',
     'HiPhish/nvim-ts-rainbow2',
     lazy = true,
-    -- after = "nvim-treesitter",
     -- slow... disable it for now
     event = { 'CursorHold' },
     -- Highlight also non-parentheses delimiters, boolean or table: lang -> boolean
