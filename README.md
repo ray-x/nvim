@@ -7,6 +7,8 @@ This neovim configure file is highly optimized for the impatient. Super lazy loa
 The setup set all plugins to be lazy loaded and trigger when it needed.
 
 The `Packer` config locates in branch [Packer branch](https://github.com/ray-x/nvim/tree/packer)
+It serves as my personal nvim setup. I am using it as my daily driver. But it is not a setup for everyone
+especially if you are not familiar with lua and neovim.
 
 - nvim Telescope preview:
   ![telescope](https://user-images.githubusercontent.com/1681295/214219526-dfb3cd22-7b67-475b-9294-914590d2913b.jpg)

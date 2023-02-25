@@ -15,7 +15,11 @@ function global:load_variables()
     home = os.getenv('HOMEDRIVE') or 'C:'
     home = home .. (os.getenv('HOMEPATH') or '\\')
     if home == 'C:\\' then
-      home = vim.fn.expand('$HOME') -- home
+      local win_home = vim.fn.expand('$HOME') -- home
+      if win_home ~= '$HOME' then
+        print('the windows environment variable HOMEDRIVE and HOMEPATH are not set, using $HOME instead')
+        home = win_home
+      end
     end
     self.home = home
     -- shellescape("%HOMEDRIVE%%HOMEPATH%)
