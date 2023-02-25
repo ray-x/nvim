@@ -2,7 +2,6 @@ _G = _G or {}
 fn = vim.fn
 
 local global = require('core.global')
-local home = global.home
 
 local function exists(file)
   local ok, _, code = os.rename(file, file)
@@ -96,20 +95,10 @@ local helper = {
   end,
   path_sep = package.config:sub(1, 1) == '\\' and '\\' or '/',
   get_config_path = function()
-    local config = fn.stdpath('config')
-
-    if not config then
-      return home .. '/.config/nvim'
-    end
-    return config
+    return fn.stdpath('config')
   end,
   get_data_path = function()
-    local data = fn.stdpath('data')
-    if not data then
-      return home .. '/.local/share/nvim'
-    end
-    data = vim.split(data, ':')[1]
-    return data
+    return global.data_dir
   end,
   isdir = function(path)
     return exists(path .. '/')
