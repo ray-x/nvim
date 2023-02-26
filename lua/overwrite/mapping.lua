@@ -104,7 +104,12 @@ local keys = {
   ["n|<d-C>"] = map_cmd("Clap | startinsert"),
   ["i|<d-C>"] = map_cmd("Clap | startinsert"):with_noremap():with_silent(),
   ["n|<Leader>df"] = map_cmd("Clap dumb_jump ++query=<cword> | startinsert"),
-  ["n|<F9>"] = map_cmd("GoBreakToggle"),
+  ["n|<F9>"] = map_func(function()
+    if vim.o.ft == 'go' then 
+      return vim.cmd('GoBreakToggle')
+    end
+    require('dap').toggle_breakpoint()
+  end),
 
   -- swap
   ["n|<leader>a"] = map_cmd("ISwapWith"),

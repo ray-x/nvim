@@ -125,6 +125,10 @@ function config.nvim_bufferline()
       buffer_selected = {
         bold = true,
         italic = true,
+        sp = '#ef8f8f',
+      },
+      tab_selected = {
+        sp = '#af6faf',
       },
     },
   })

@@ -112,7 +112,7 @@ local run = function(cmd, opts)
         lprint(locopts, lines)
         if #lines > 0 then
           vim.schedule(function()
-            vim.fn.setloclist(0, {}, ' ', locopts)
+            vim.fn.setloclist(0, {}, 'r', locopts)
           end)
         end
       end

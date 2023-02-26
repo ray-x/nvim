@@ -147,6 +147,7 @@ function config.yanky()
     },
   })
 
+  vim.ui.select = require('guihua.gui').select
   -- vim.api.nvim_set_hl(0, "YankyPut", { link = "Search" })
   -- vim.api.nvim_set_hl(0, "YankyYanked", { link = "Search" })
 end
@@ -236,24 +237,24 @@ function config.ufo()
     local targetWidth = width - sufWidth
     local curWidth = 0
     for _, chunk in ipairs(virtText) do
-        local chunkText = chunk[1]
-        local chunkWidth = vim.fn.strdisplaywidth(chunkText)
-        if targetWidth > curWidth + chunkWidth then
-            table.insert(newVirtText, chunk)
-        else
-            chunkText = truncate(chunkText, targetWidth - curWidth)
-            local hlGroup = chunk[2]
-            table.insert(newVirtText, {chunkText, hlGroup})
-            chunkWidth = vim.fn.strdisplaywidth(chunkText)
-            -- str width returned from truncate() may less than 2nd argument, need padding
-            if curWidth + chunkWidth < targetWidth then
-                suffix = suffix .. (' '):rep(targetWidth - curWidth - chunkWidth)
-            end
-            break
+      local chunkText = chunk[1]
+      local chunkWidth = vim.fn.strdisplaywidth(chunkText)
+      if targetWidth > curWidth + chunkWidth then
+        table.insert(newVirtText, chunk)
+      else
+        chunkText = truncate(chunkText, targetWidth - curWidth)
+        local hlGroup = chunk[2]
+        table.insert(newVirtText, { chunkText, hlGroup })
+        chunkWidth = vim.fn.strdisplaywidth(chunkText)
+        -- str width returned from truncate() may less than 2nd argument, need padding
+        if curWidth + chunkWidth < targetWidth then
+          suffix = suffix .. (' '):rep(targetWidth - curWidth - chunkWidth)
         end
-        curWidth = curWidth + chunkWidth
+        break
+      end
+      curWidth = curWidth + chunkWidth
     end
-    table.insert(newVirtText, {suffix, 'MoreMsg'})
+    table.insert(newVirtText, { suffix, 'MoreMsg' })
     return newVirtText
   end
   local whitelist = {

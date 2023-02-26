@@ -1,12 +1,22 @@
 local conf = require('modules.lang.config')
 local ts = require('modules.lang.treesitter')
 return function(lang)
-  lang({ 'nvim-treesitter/nvim-treesitter', lazy = true, config = ts.treesitter })
+  lang({ 'nvim-treesitter/nvim-treesitter', lazy = true, config = ts.treesitter, module = false })
 
-  lang({ 'nvim-treesitter/nvim-treesitter-textobjects', config = ts.treesitter_obj, lazy = true })
+  lang({
+    'nvim-treesitter/nvim-treesitter-textobjects',
+    config = ts.treesitter_obj,
+    module = false,
+    lazy = true,
+  })
 
-  lang({ 'RRethy/nvim-treesitter-textsubjects', lazy = true, config = ts.textsubjects })
-  lang({ 'mfussenegger/nvim-treehopper', lazy = true, config = ts.tshopper })
+  lang({
+    'RRethy/nvim-treesitter-textsubjects',
+    lazy = true,
+    config = ts.textsubjects,
+    module = false,
+  })
+  lang({ 'mfussenegger/nvim-treehopper', lazy = true, config = ts.tshopper, module = false })
 
   -- lang['ziontee113/syntax-tree-surfer'] = {
   --   lazy = true,
@@ -63,7 +73,20 @@ return function(lang)
     'ray-x/go.nvim',
     dev = (plugin_folder():find('github') ~= nil),
     lazy = true,
-    event = { 'CmdwinEnter', 'CmdlineEnter' },
+    cmd = {
+      'Go',
+      'GoRun',
+      'GoInstall',
+      'GoTest',
+      'GoTestFunc',
+      'GoTestCompile',
+      'GoCoverage',
+      'GoCoverageToggle',
+      'GoCoverag',
+      'GoGet',
+      'GoModifyTags',
+    },
+    -- event = { 'CmdwinEnter', 'CmdlineEnter' },
     config = conf.go,
   })
 
@@ -148,7 +171,11 @@ return function(lang)
     lazy = true,
   })
 
-  lang({ 'mfussenegger/nvim-dap-python', ft = { 'python' } })
+  lang({
+    'mfussenegger/nvim-dap-python',
+    ft = { 'python' },
+    config = require('modules.lang.dap.py').config,
+  })
 
   lang({ 'mtdl9/vim-log-highlighting', ft = { 'text', 'txt', 'log' } })
   local cmd = 'bash install.sh'
@@ -204,7 +231,8 @@ return function(lang)
   lang({
     'nvim-treesitter/nvim-treesitter-context',
     lazy = true,
-    event = { 'CursorHold', 'WinScrolled' },
+    -- event = { 'CursorHold', 'WinScrolled' },
+    module = false,
     config = function()
       require('treesitter-context').setup({
         enable = true, -- Enable this plugin (Can be enabled/disabled later via commands)
@@ -233,22 +261,21 @@ return function(lang)
     'HiPhish/nvim-ts-rainbow2',
     lazy = true,
     -- slow... disable it for now
-    event = { 'CursorHold' },
     -- Highlight also non-parentheses delimiters, boolean or table: lang -> boolean
     -- cmd = "Rainbow",
+    module = false,
     config = function()
       local fsize = vim.fn.getfsize(vim.fn.expand('%:p:f'))
-      if fsize > 300000 then
+
+      local enable = true
+      if vim.fn.line('$') > 3000 or fsize > 100000 then
+        lprint(' rainbow disabled', fsize)
+        enable = false
         return
       end
 
-      local enable = false
-      if vim.fn.line('$') < 3000 then -- skip for large file
-        lprint('enable rainbow')
-        enable = true
-      end
       require('nvim-treesitter.configs').setup({
-        rainbow = { enable = enable, extended_mode = true },
+        rainbow = { enable = enable, extended_mode = enable },
       })
     end,
   })

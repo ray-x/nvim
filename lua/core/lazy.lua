@@ -136,13 +136,17 @@ function Lazyload()
   if load_ts_plugins then
     lprint('loading treesitter related plugins')
     plugins =
-      'nvim-treesitter-textobjects nvim-ts-autotag nvim-ts-context-commentstring nvim-treesitter-textsubjects nvim-treehopper'
+      'nvim-treesitter-textobjects nvim-ts-autotag nvim-ts-context-commentstring nvim-treesitter-textsubjects nvim-treehopper, nvim-treesitter-context'
     loader(plugins)
     -- lprint(plugins .. " loaded", os.clock())
     loader('neogen')
     loader('refactoring.nvim')
     loader('indent-blankline.nvim')
     loader('hlargs.nvim')
+    if vim.fn.line('$') < 3000 then
+      loader('nvim-ts-rainbow2')
+    end
+  
     lprint('ts loaded')
   end
 

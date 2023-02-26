@@ -93,21 +93,24 @@ local function printInfo(level, msg)
 
   vim.cmd(string.format('echohl %s', hl))
   local msgs = vim.split(msg, '\n')
-  if #msgs > 1 then
-    msg = msgs[1]
-    table.remove(msgs, 1)
-  else
-    msgs = {}
-  end
+  -- if #msgs > 1 then
+  --   msg = msgs[1]
+  --   table.remove(msgs, 1)
+  -- else
+  --   msgs = {}
+  -- end
 
-  if type(msg) ~= 'string' then
-    msg = vim.inspect(msg)
-  end
-  vim.cmd(string.format([[echomsg '  %s']], vim.inspect(msg)))
+  -- if type(msg) ~= 'string' then
+  --   msg = vim.inspect(msg)
+  -- end
 
-  vim.cmd('echohl String')
+  -- lprint(msg)
+  vim.cmd('echohl ' .. hl)
   for _, m in ipairs(msgs) do
-    vim.cmd(string.format([[echomsg '%s']], m))
+    m = vim.inspect(m)
+    m = string.gsub(m, [[']], '"')
+    -- lprint(m)
+    vim.cmd(string.format([[echomsg '%s  %s']], icon, m))
   end
   vim.cmd('echohl None')
 end

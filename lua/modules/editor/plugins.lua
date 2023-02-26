@@ -43,12 +43,11 @@ return function(editor)
     event = { 'CmdlineEnter' },
     keys = { '<Plug>(RepeatDot)', '<Plug>(RepeatUndo)', '<Plug>(RepeatRedo)' },
 
-    -- fn = { 'repeat#set()' },
     init = function()
-      vim.fn["repeat#set"] = function(...)
-        vim.fn["repeat#set"] = nil
-        require("lazy").load({ plugins = { 'vim-repeat' }})
-        return vim.fn["repeat#set"](...)
+      vim.fn['repeat#set'] = function(...)
+        vim.fn['repeat#set'] = nil
+        require('lazy').load({ plugins = { 'vim-repeat' } })
+        return vim.fn['repeat#set'](...)
       end
     end,
     lazy = true,
