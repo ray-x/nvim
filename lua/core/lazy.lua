@@ -101,16 +101,17 @@ function Lazyload()
   -- local fname = vim.fn.expand("%:p:f")
   if fsize > 2 * 1024 * 1024 then
     lprint('syntax off')
+    print('syntax off, enable it by :setlocal syntax=on')
     load_lsp = false
     load_ts_plugins = false
     vim.cmd([[syntax off]])
   end
-  if load_ts_plugins then
-    lprint('loading treesitter')
-    vim.defer_fn(function()
-      loader('nvim-treesitter')
-    end, 10)
-  end
+  -- if load_ts_plugins then
+  --   lprint('loading treesitter')
+  --   vim.defer_fn(function()
+  --     loader('nvim-treesitter')
+  --   end, 10)
+  -- end
 
   lprint('lazy core ts plugins loaded', vim.loop.now() - start)
   local plugins = 'plenary.nvim'
@@ -129,6 +130,7 @@ function Lazyload()
 
   loader('guihua.lua')
   if load_lsp or load_ts_plugins then
+    loader('nvim-treesitter')
     loader('navigator.lua')
   end
 
@@ -136,7 +138,7 @@ function Lazyload()
   if load_ts_plugins then
     lprint('loading treesitter related plugins')
     plugins =
-      'nvim-treesitter-textobjects nvim-ts-autotag nvim-ts-context-commentstring nvim-treesitter-textsubjects nvim-treehopper, nvim-treesitter-context'
+      'nvim-treesitter-textobjects nvim-ts-autotag nvim-ts-context-commentstring nvim-treesitter-textsubjects nvim-treehopper nvim-treesitter-context'
     loader(plugins)
     -- lprint(plugins .. " loaded", os.clock())
     loader('neogen')

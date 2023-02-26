@@ -267,4 +267,5 @@ return {
   textsubjects = textsubjects,
   context = treesitter_context,
   installed = ts_ensure_installed,
+  tshopper = tshopper,
 }
