@@ -1,9 +1,10 @@
 local uv, api = vim.loop, vim.api
 -- run command with loop
 local run = function(cmd, opts)
-
   _G.lprint = require('utils.log').lprint
   opts = opts or {}
+
+  lprint = lprint or require('utils.log').lprint
   lprint(cmd, opts)
   if type(cmd) == 'string' then
     local split_pattern = '%s+'
@@ -51,7 +52,7 @@ local run = function(cmd, opts)
       if opts.efm then
         locopts.efm = opts.efm
       end
-      lprint(locopts)
+      -- lprint(locopts)
       vim.schedule(function()
         vim.fn.setloclist(0, {}, ' ', locopts)
         vim.notify('run lopen to see output', vim.lprint.levels.INFO)
@@ -76,7 +77,7 @@ local run = function(cmd, opts)
       stderr:close()
 
       handle:close()
-      lprint("spawn finished", code, signal)
+      lprint('spawn finished', code, signal)
 
       if output_stderr ~= '' then
         vim.schedule(function()
@@ -95,7 +96,6 @@ local run = function(cmd, opts)
         print('failed to run' .. tostring(code) .. vim.inspect(output_buf))
 
         output_buf = output_buf or ''
-
       end
       if output_buf ~= '' or output_stderr ~= '' then
         local lines = (output_buf or '') .. '\n' .. (output_stderr or '')
@@ -119,7 +119,6 @@ local run = function(cmd, opts)
     end
   )
 
-
   uv.read_start(stderr, function(err, data)
     if err then
       vim.notify('error ' .. tostring(err) .. tostring(data or ''), vim.lprint.levels.WARN)
@@ -132,7 +131,6 @@ local run = function(cmd, opts)
   stdout:read_start(update_chunk)
   return stdin, stdout, stderr
 end
-
 
 _G.test_or_run = function(debug)
   -- local function rot()

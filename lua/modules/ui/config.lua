@@ -678,6 +678,7 @@ function config.neotree()
       width = 28, -- applies to left and right positions
     },
     filesystem = {
+      follow_current_file = true,
       filtered_items = {
         visible = true, -- when true, they will just be displayed differently than normal items
         force_visible_in_empty_folder = false, -- when true, hidden files will be shown if the root folder is otherwise empty
@@ -691,21 +692,22 @@ function config.neotree()
           'vendor',
         },
         hide_by_pattern = { -- uses glob style patterns
-          --"*.meta",
-          --"*/src/*/tsconfig.json"
+          "*.meta",
+          "*/src/*/tsconfig.json",
+          "*/vendor/*"
         },
         always_show = { -- remains visible even if other settings would normally hide it
           --".gitignored",
         },
         never_show = { -- remains hidden even if visible is toggled to true, this overrides always_show
-          --".DS_Store",
-          --"thumbs.db"
+          ".DS_Store",
+          "thumbs.db"
         },
         never_show_by_pattern = { -- uses glob style patterns
-          --".null-ls_*",
+          ".null-ls_*", "vendor"
         },
       },
-      use_libuv_file_watcher = false,
+      use_libuv_file_watcher = true,
     },
   })
 end
