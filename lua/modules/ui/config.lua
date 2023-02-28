@@ -679,12 +679,15 @@ function config.neotree()
     },
     filesystem = {
       follow_current_file = true,
+      async_directory_scan = 'always',
+      use_libuv_file_watcher = true,
+      bind_to_cwd = true, -- sync neo-tree and vim's cwd.
       filtered_items = {
         visible = true, -- when true, they will just be displayed differently than normal items
         force_visible_in_empty_folder = false, -- when true, hidden files will be shown if the root folder is otherwise empty
         show_hidden_count = true, -- when true, the number of hidden items in each folder will be shown as the last entry
-        hide_dotfiles = false,
-        hide_gitignored = true,
+        hide_dotfiles = true,
+        hide_gitignored = false,
         hide_by_name = {
           '.DS_Store',
           'thumbs.db',
@@ -692,22 +695,25 @@ function config.neotree()
           'vendor',
         },
         hide_by_pattern = { -- uses glob style patterns
-          "*.meta",
-          "*/src/*/tsconfig.json",
-          "*/vendor/*"
+          '*.meta',
+          '*/src/*/tsconfig.json',
+          '*/.git/*',
+          '*/vendor/*',
         },
         always_show = { -- remains visible even if other settings would normally hide it
           --".gitignored",
         },
         never_show = { -- remains hidden even if visible is toggled to true, this overrides always_show
-          ".DS_Store",
-          "thumbs.db"
+          '.DS_Store',
+          'thumbs.db',
+          '*/.git/*',
         },
         never_show_by_pattern = { -- uses glob style patterns
-          ".null-ls_*", "vendor"
+          '.null-ls_*',
+          '*/.git/*',
+          'vendor',
         },
       },
-      use_libuv_file_watcher = true,
     },
   })
 end

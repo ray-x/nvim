@@ -217,7 +217,9 @@ return function(lang)
     'm-demare/hlargs.nvim',
     lazy = true,
     config = function()
-      require('hlargs').setup()
+      require('hlargs').setup({
+        excluded_filetype = { 'TelescopePrompt', 'guihua', 'guihua_rust', 'clap_input' },
+      })
     end,
   })
 
