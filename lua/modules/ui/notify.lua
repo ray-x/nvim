@@ -93,6 +93,7 @@ local function printInfo(level, msg)
 
   vim.cmd(string.format('echohl %s', hl))
   local msgs = vim.split(msg, '\n')
+  msg = vim.fn.join(msgs, ' ')
   -- if #msgs > 1 then
   --   msg = msgs[1]
   --   table.remove(msgs, 1)
@@ -106,12 +107,14 @@ local function printInfo(level, msg)
 
   -- lprint(msg)
   vim.cmd('echohl ' .. hl)
-  for _, m in ipairs(msgs) do
-    m = vim.inspect(m)
-    m = string.gsub(m, [[']], '"')
-    -- lprint(m)
-    vim.cmd(string.format([[echomsg '%s  %s']], icon, m))
-  end
+
+  vim.cmd(string.format([[echomsg '%s  %s']], icon, msg))
+  -- for _, m in ipairs(msgs) do
+  --   m = vim.inspect(m)
+  --   m = string.gsub(m, [[']], '"')
+  --   -- lprint(m)
+  --   vim.cmd(string.format([[echomsg '%s  %s']], icon, m))
+  -- end
   vim.cmd('echohl None')
 end
 
@@ -139,7 +142,13 @@ local function notify(msg, level, opts, no_cache)
       require('notify').notify(msg, level, opts)
     end
   else
-    printInfo(level, msg)
+    if vim.in_fast_event() then
+      vim.schedule(function()
+        printInfo(level, msg)
+      end)
+    else
+      printInfo(level, msg)
+    end
   end
 end
 

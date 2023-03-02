@@ -172,7 +172,7 @@ return function(tools)
 
   tools({
     'kazhala/close-buffers.nvim',
-    cmd = { 'Kwbd', 'BDelete', 'BWipeout' },
+    cmd = { 'Kwbd', 'BDelete', 'BWipeout', 'Bd' },
     config = conf.close_buffers,
   })
 

@@ -19,7 +19,7 @@ end
 function config.session()
   local opts = {
     log_level = 'error',
-    -- auto_session_enable_last_session = false, -- this is default reload last session regardless pwd
+    -- auto_session_enable_last_session = true, -- this is default reload last session regardless pwd
     -- auto_session_root_dir = vim.fn.stdpath("data") .. "/sessions/", -- this is default
     auto_session_enabled = true,
     auto_save_enabled = true,
@@ -32,7 +32,10 @@ function config.session()
       'fugitive',
     },
   }
+  lprint('session start')
   require('auto-session').setup(opts)
+
+  lprint('session stop')
 end
 
 local function load_dbs()
@@ -378,9 +381,22 @@ function config.close_buffers()
       end
     end,
   })
-  vim.api.nvim_create_user_command('Kwbd', function()
-    require('close_buffers').delete({ type = 'this' })
-  end, { range = true })
+  vim.api.nvim_create_user_command('Kwbd', function(opts)
+    local arg = opts.fargs[1] or ''
+    print('using Bd instead')
+    vim.cmd('Bd ' .. arg)
+  end, { range = true, nargs = '*' })
+
+  vim.api.nvim_create_user_command('Bd', function(opts)
+    local arg = opts.fargs[1] or ''
+    if arg == 'a' then
+      require('close_buffers').delete({ type = 'all' })
+    elseif arg == 'o' then
+      require('close_buffers').delete({ type = 'other' })
+    else
+      require('close_buffers').delete({ type = 'this' })
+    end
+  end, { range = true, nargs = '*' })
 end
 
 function config.floaterm()
@@ -572,7 +588,7 @@ function config.neotest()
     adapters = {
       require('neotest-python')({
         dap = { justMyCode = false },
-        runner = "pytest",
+        runner = 'pytest',
       }),
       require('neotest-plenary'),
       -- require("neotest-vim-test")({
@@ -601,7 +617,7 @@ function config.neotest()
     require('neotest').run.run(vim.fn.expand('%'))
   end, { nargs = '*' })
   vim.api.nvim_create_user_command('NeoResult', function()
-    require("neotest").output_panel.toggle() 
+    require('neotest').output_panel.toggle()
   end, { nargs = '*' })
 end
 

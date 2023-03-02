@@ -29,7 +29,7 @@ About 150 plugins and 14000 lines of lua and vim code.
 - FZF: fzf
 - Spell: spell check
 - Gram: Grammar check
-- Kwdb: better `bdelete`
+- Bd: better `bdelete`
 - Gd: gitdiff(with fzf and delta)
 - Rg: ripgrep with telescope
 

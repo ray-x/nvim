@@ -218,7 +218,22 @@ return function(lang)
     lazy = true,
     config = function()
       require('hlargs').setup({
-        excluded_filetype = { 'TelescopePrompt', 'guihua', 'guihua_rust', 'clap_input' },
+        disable = function()
+          excluded_filetype = { 'TelescopePrompt', 'guihua', 'guihua_rust', 'clap_input' }
+          if vim.tbl_contains(excluded_filetype, vim.bo.filetype) then
+            return true
+          end
+
+          local bufnr = vim.api.nvim_get_current_buf()
+          local filetype = vim.fn.getbufvar(bufnr, '&filetype')
+          if filetype == '' then
+            return true
+          end
+          local parsers = require('nvim-treesitter.parsers')
+          local buflang = parsers.ft_to_lang(filetype)
+          -- lprint(buflang, filetype,  vim.tbl_contains(excluded_filetype, buflang))
+          return vim.tbl_contains(excluded_filetype, buflang)
+        end,
       })
     end,
   })
