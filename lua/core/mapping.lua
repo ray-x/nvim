@@ -6,7 +6,7 @@ local map_cmd = bind.map_cmd
 -- default map
 local def_map = {
   -- Vim map
-  ['n|<C-x>k'] = map_cmd('Bdelete'):with_noremap():with_silent(),
+  ['n|<C-x>k'] = map_cmd('Bd'):with_noremap():with_silent(),
   ['n|<C-y>'] = map_cmd('%y +'), -- yank file
   ['n|]b'] = map_cmd('bp'):with_noremap(),
   ['n|[b'] = map_cmd('bn'):with_noremap(),
