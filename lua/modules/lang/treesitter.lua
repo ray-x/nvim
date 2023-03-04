@@ -4,7 +4,6 @@ local ts_ensure_installed = { "go", "css", "html", "javascript", "typescript", "
 -- stylua: ignore end
 
 local treesitter = function()
-
   local enable = false
   local has_ts = pcall(require, 'nvim-treesitter.configs')
   if not has_ts then
@@ -105,7 +104,7 @@ local treesitter_obj = function()
     ensure_installed = ts_ensure_installed,
   })
 
-  lprint('loading ts')
+  lprint('loading ts obj')
 end
 
 local treesitter_ref = function()
@@ -158,23 +157,20 @@ local treesitter_ref = function()
 end
 
 function textsubjects()
-
- local enable = false
-  local en_subjects = true
+  local enable = true
   if vim.fn.line('$') > 5000 then -- skip for large file
     lprint('skip treesitter')
     enable = false
   end
   lprint('txt subjects')
   require('nvim-treesitter.configs').setup({
-
     textsubjects = {
       enable = enable,
       prev_selection = ',',
       keymaps = {
         ['.'] = 'textsubjects-smart',
-        -- [";"] = "textsubjects-container-outer",
-        -- ["i;"] = "textsubjects-container-inner",
+        [';'] = 'textsubjects-container-outer',
+        ['i;'] = 'textsubjects-container-inner',
       },
     },
   })

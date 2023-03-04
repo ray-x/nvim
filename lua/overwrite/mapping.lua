@@ -60,8 +60,6 @@ local keys = {
   ['xon|<Space>['] = map_func(function() require('tsht').move({side = "start"})end):with_desc('tree hopper'),
   -- Plugin QuickRun
   -- ["n|<Leader>r"]     = map_cmd("<cmd> lua require'selfunc'.run_command()"):with_noremap():with_silent(),
-  -- Plugin Vista
-  -- ["n|<Leader>v"] = map_cu("Vista!!"):with_noremap():with_silent(),
   -- Plugin SplitJoin
   ['n|<Space>j'] = map_func(function() require("treesj").toggle() end ):with_desc("SplitJoinToggle"),
   -- abolish , e.g. Crs: snake case, Crc: Camel case, Crm: mix case, Cru: upper case, Cr-: dash case, Cr.: dot case, Cr<Space>: space case, Crt: titlecase
@@ -74,10 +72,10 @@ local keys = {
   ["n|hl"] = map_cmd("HopLineStartAC"),
   ["n|hL"] = map_cmd("HopLineStartBC"),
 
-  ["xon|f"] = map_cmd("lua  Line_ft('f')"),
-  ["xon|F"] = map_cmd("lua  Line_ft('F')"),
-  ["xon|t"] = map_cmd("lua  Line_ft('t')"),
-  ["xon|T"] = map_cmd("lua  Line_ft('T')"),
+  ["xon|f"] = map_cmd("lua Line_ft('f')"),
+  ["xon|F"] = map_cmd("lua Line_ft('F')"),
+  ["xon|t"] = map_cmd("lua Line_ft('t')"),
+  ["xon|T"] = map_cmd("lua Line_ft('T')"),
   ["nx|s"] = map_cmd("lua hop1(1)"):with_silent(),
   ["nx|S"] = map_cmd("lua hop1()"):with_silent(),
 

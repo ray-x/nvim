@@ -155,7 +155,7 @@ kitty.get_kitty_background = function(opts)
   local color
   vim.fn.jobstart({ 'kitty', '@', 'get-colors' }, {
     cwd = '/usr/bin/',
-    on_exit = function(j, data, event)
+    on_exit = function(code, data, event)
       lprint('kitty get color on exit', code, data, event)
       if opts then
         opts.callback(opts.color)
@@ -182,16 +182,22 @@ local change_background = function(color)
   if not has_support() then
     return ''
   end
-  lprint('change_background', color)
-  if color and color ~= 'NONE' then
-    local arg = 'background="' .. color .. '"'
-    local command = 'kitty @ set-colors ' .. arg
-    local handle = io.popen(command)
-    if handle ~= nil then
-      handle:close()
-    end
-  end
+
+  vim.fn.jobstart(
+    { 'kitty', '@', 'set-colors', '--background="' .. color .. '"' },
+    {
+      cwd = '/usr/bin/',
+      on_exit = function(code, data, event)
+        lprint('kitty set color on exit', code, data, event)
+      end,
+      on_stdout = function(code, data, event)
+        lprint('kitty set color on stdout', code, data, event)
+      end,
+    }
+
+  )
 end
+
 local function on_leave(color)
   autocmd('VimLeavePre', {
     callback = function()

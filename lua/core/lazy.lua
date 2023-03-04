@@ -148,7 +148,7 @@ function Lazyload()
     if vim.fn.line('$') < 3000 then
       loader('nvim-ts-rainbow2')
     end
-  
+
     lprint('ts loaded')
   end
 
@@ -223,6 +223,19 @@ end
 require('core.colorscheme')
 vim.defer_fn(function()
   loader('auto-session')
+  -- require('mini.sessions').setup({
+  -- autoread = true,
+  -- Whether to write current session before quitting Neovim
+  -- autowrite = true,
+  -- })
+  -- MiniSessions.on_vimenter()
+
+  vim.cmd('set runtimepath+=/usr/share/vim/vimfiles')
+  vim.cmd('runtime! plugin/fzf.vim')
+end, 0)
+
+vim.defer_fn(function()
+  local start = vim.loop.now()
   if vim.fn.empty(vim.fn.expand('%')) == 1 then
     local bufnr = vim.fn.bufnr()
     require('auto-session').RestoreSession()
@@ -232,4 +245,4 @@ vim.defer_fn(function()
     end
   end
   lprint('auto-session loaded', vim.loop.now() - start)
-end, 0)
+end, 30)
