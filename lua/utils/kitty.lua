@@ -184,14 +184,14 @@ local change_background = function(color)
   end
 
   vim.fn.jobstart(
-    { 'kitty', '@', 'set-colors', '--background="' .. color .. '"' },
+    { 'kitty', '@', 'set-colors', 'background=' .. color },
     {
       cwd = '/usr/bin/',
       on_exit = function(code, data, event)
-        lprint('kitty set color on exit', code, data, event)
+        lprint('kitty set color on exit', code, data, event, color)
       end,
       on_stdout = function(code, data, event)
-        lprint('kitty set color on stdout', code, data, event)
+        lprint('kitty set color on stdout', code, data, event, color)
       end,
     }
 
