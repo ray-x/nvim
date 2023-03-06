@@ -69,8 +69,8 @@ local keys = {
   ["n|<F13>"] = map_cmd("NeoTreeRevealToggle"),
   -- ["n|hW"] = map_cmd("HopWordBC"),
   -- ["n|hw"] = map_cmd("HopWordAC"),
-  ["n|hl"] = map_cmd("HopLineStartAC"),
-  ["n|hL"] = map_cmd("HopLineStartBC"),
+  ["n|<Space>hl"] = map_cmd("HopLineStartAC"),
+  ["n|<Space>hL"] = map_cmd("HopLineStartBC"),
 
   ["xon|f"] = map_cmd("lua Line_ft('f')"),
   ["xon|F"] = map_cmd("lua Line_ft('F')"),
@@ -179,19 +179,6 @@ local keys = {
   ["n|<A-j>"] = {options = { desc = "move lines down" }},
   ["n|<A-h>"] = {options = { desc = "move lines left" }},
   ["n|<A-l>"] = {options = { desc = "move lines right" }},
-
-  -- Sandwich
-  -- ['nox|ca'] = map_plug('sandwich-add'):with_desc('sandwich-add'),
-  -- ['nx|cd'] = map_plug('sandwich-delete'):with_desc('sandwich-delete'),
-  -- ['nx|cda'] = map_plug('sandwich-delete-auto'):with_desc('sandwich-delete-auto'),
-  --
-  -- ['nx|cr'] = map_plug('sandwich-replace'):with_desc('sandwich-replace'),
-  -- ['nx|cra'] = map_plug('sandwich-replace-replace'):with_desc('sandwich-replace-replace'),
-  -- ['ox|ib'] = map_plug('textobject-sandwich-i'),
-  -- ['ox|ab'] = map_plug('textobject-sandwich-a'),
-  -- ['ox|is'] = map_plug('textobject-sandwich-query-i'),
-  -- ['ox|as'] = map_plug('textobject-sandwich-query-a'),
-
 
   -- git signs
   ['nv|<Leader>hs'] = map_cmd('GitSigns stage_hunk'),

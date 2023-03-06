@@ -421,4 +421,27 @@ return function(editor)
       })
     end,
   })
+
+  editor({
+    'rainbowhxch/accelerated-jk.nvim',
+    keys = { 'j', 'k', 'h', 'l', '<Up>', '<Down>', '<Left>', '<Right>' },
+    config = function()
+      require('accelerated-jk').setup({
+        mode = 'time_driven',
+        acceleration_motions = { 'h', 'l', 'e', 'b' },
+        acceleration_limit = 150,
+        acceleration_table = { 7, 12, 17, 21, 24, 26, 28, 30 },
+        enable_deceleration = false,
+        deceleration_table = { { 150, 9999 } },
+      })
+      vim.keymap.set('n', '<Down>', '<Plug>(accelerated_jk_j)', {})
+      vim.keymap.set('n', '<Up>', '<Plug>(accelerated_jk_k)', {})
+      vim.keymap.set('n', '<Left>', function()
+        require('accelerated-jk').move_to('h')
+      end, {})
+      vim.keymap.set('n', '<Right>', function()
+        require('accelerated-jk').move_to('l')
+      end, {})
+    end,
+  })
 end

@@ -75,6 +75,8 @@ return function(lang)
     lazy = true,
     cmd = {
       'Go',
+      'GoBreakToggle',
+      'GoImpl',
       'GoRun',
       'GoInstall',
       'GoTest',
