@@ -340,7 +340,7 @@ function M.ts_map()
 
   -- Misc {{{
   hl('@comment', { link = 'Comment' })
-  -- hl('@error', {link = 'Error'})
+  hl('@error', {link = 'Error'})
   hl('@none', { bg = 'NONE', fg = 'NONE' })
   hl('@preproc', { link = 'PreProc' })
   hl('@define', { link = 'Define' })

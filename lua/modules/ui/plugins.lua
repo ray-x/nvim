@@ -144,6 +144,17 @@ return function(ui)
     lazy = true,
     config = conf.tokyonight,
   })
+  ui({
+    'EdenEast/nightfox.nvim',
+    lazy = true,
+    config = conf.nightfox,
+  })
+
+  ui({
+    'rebelot/kanagawa.nvim',
+    lazy = true,
+    config = conf.kanagawa,
+  })
   ui({ 'bluz71/vim-nightfly-colors', lazy = true, config = conf.nightfly })
 
   ui({ 'projekt0n/github-nvim-theme', lazy = true, config = conf.gh_theme })
@@ -201,5 +212,12 @@ return function(ui)
         require('modicator').setup({ show_warnings = false })
       end
     end,
+  })
+  ui({
+    'rainbowhxch/beacon.nvim',
+    config = function()
+      require('beacon').setup({})
+    end,
+    event = {'CursorMoved', 'CursorMovedI'}
   })
 end

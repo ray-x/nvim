@@ -419,6 +419,68 @@ function config.tokyonight()
   vim.cmd([[colorscheme tokyonight]])
 end
 
+function config.nightfox()
+  require('nightfox').setup({
+    options = {
+      -- Compiled file's destination location
+      compile_path = vim.fn.stdpath('cache') .. '/nightfox',
+      compile_file_suffix = '_compiled', -- Compiled file suffix
+      transparent = true, -- Disable setting background
+      terminal_colors = true, -- Set terminal colors (vim.g.terminal_color_*) used in `:terminal`
+      module_default = true, -- Default enable value for modules
+    },
+  })
+
+  -- 'nordfox'
+  local opt = { 'carbonfox', 'nightfox', 'duskfox', 'terafox' }
+  math.randomseed(os.time())
+  local v = math.random(1, #opt)
+  v = opt[v] or 'carbonfox'
+  lprint(v)
+  vim.cmd('colorscheme ' .. v)
+  if v == 'nightfox' then
+    require('utils.kitty').change_bg('#131a24')
+  elseif v == 'carbonfox' then
+    require('utils.kitty').change_bg('#202020')
+  elseif v == 'duskfox' then
+    require('utils.kitty').change_bg('#191726')
+  elseif v == 'terafox' then
+    require('utils.kitty').change_bg('#101c1e')
+  elseif v == 'nordfox' then
+    require('utils.kitty').change_bg('#23273e')
+  else
+    require('utils.kitty').change_bg('#1a1b26')
+  end
+end
+
+function config.kanagawa()
+  local opt = { 'wave', 'dragon' }
+  math.randomseed(os.time())
+
+  local v = math.random(1, #opt)
+  lprint(v)
+  v = opt[v]
+  require('kanagawa').setup({
+    -- compile = true, -- enable compiling the colorscheme
+    undercurl = true, -- enable undercurls
+    -- keywordStyle = { italic = true, bold = true },
+    statementStyle = { bold = true },
+    transparent = true, -- do not set background color
+    terminalColors = true, -- define vim.g.terminal_color_{0,17}
+    theme = v, -- Load "wave" theme when 'background' option is not set
+    background = { -- map the value of 'background' option to a theme
+      dark = v, -- try "dragon" !
+    },
+  })
+
+  if v == 'wave' then
+    require('utils.kitty').change_bg('#1a1a22')
+  else
+    require('utils.kitty').change_bg('#18161c')
+  end
+  vim.cmd([[colorscheme kanagawa]])
+end
+
 function config.nightfly()
   vim.g.nightflyCursorColor = true
   vim.g.nightflyUnderlineMatchParen = true
