@@ -94,31 +94,17 @@ local function printInfo(level, msg)
   vim.cmd(string.format('echohl %s', hl))
   local msgs = vim.split(msg, '\n')
   msg = vim.fn.join(msgs, ' ')
-  -- if #msgs > 1 then
-  --   msg = msgs[1]
-  --   table.remove(msgs, 1)
-  -- else
-  --   msgs = {}
-  -- end
-
-  -- if type(msg) ~= 'string' then
-  --   msg = vim.inspect(msg)
-  -- end
-
   -- lprint(msg)
   vim.cmd('echohl ' .. hl)
 
-  vim.cmd(string.format([[echomsg '%s  %s']], icon, msg))
-  -- for _, m in ipairs(msgs) do
-  --   m = vim.inspect(m)
-  --   m = string.gsub(m, [[']], '"')
-  --   -- lprint(m)
-  --   vim.cmd(string.format([[echomsg '%s  %s']], icon, m))
-  -- end
+  local m = string.gsub(msg, [["]], [[']])
+  vim.cmd(string.format([[echomsg "%s  %s"]], icon, m))
   vim.cmd('echohl None')
 end
 
 vim.api.nvim_set_hl(0, 'NotifyBackground', { fg = '#8fafef', bg = '#101118' })
+-- local msg = [[go test -run \'^TestFetchEntityRisks$\' ./internal/store/risk succeed ]]
+-- printInfo( 2, msg)
 
 local function notify(msg, level, opts, no_cache)
   level = level or vim.log.levels.INFO
@@ -133,6 +119,7 @@ local function notify(msg, level, opts, no_cache)
       table.insert(notify_msg_cache, { msg = msg, level = level, opts = opts })
     end
   end
+  -- lprint(msg, level, opts)
   if level > vim.log.levels.WARN then
     if vim.in_fast_event() then
       vim.schedule(function()
