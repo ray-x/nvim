@@ -214,10 +214,14 @@ return function(ui)
     end,
   })
   ui({
+    --use {'edluffy/specs.nvim'} see also this
     'rainbowhxch/beacon.nvim',
     config = function()
-      require('beacon').setup({})
+      require('beacon').setup({
+        size = 15,
+        timeout = 100,
+      })
     end,
-    event = {'CursorMoved', 'CursorMovedI'}
+    event = { 'CursorMoved', 'CursorMovedI' },
   })
 end
