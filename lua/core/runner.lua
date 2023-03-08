@@ -55,7 +55,7 @@ local run = function(cmd, opts)
       -- lprint(locopts)
       vim.schedule(function()
         vim.fn.setloclist(0, {}, ' ', locopts)
-        vim.notify('run lopen to see output', vim.lprint.levels.INFO)
+        vim.notify('run lopen to see output', vim.log.levels.INFO)
       end)
     end
     return lines
