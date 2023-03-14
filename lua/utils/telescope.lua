@@ -367,7 +367,7 @@ M.setup = function(_)
     defaults = {
       prompt_prefix = '🙊',
       layout_strategy = 'flex',
-      file_ignore_patterns = { 'node_modules', 'vendor' },
+      file_ignore_patterns = { 'node_modules', 'vendor', 'site-packages' },
       buffer_previewer_maker = new_maker,
       -- path_display = { "smart" },
       path_display = { shorten = { len = 3, exclude = { 1, -1, -2 } } },

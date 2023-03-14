@@ -166,20 +166,31 @@ function config.navigator()
       servers = { 'terraform_lsp', 'vuels' },
     },
   }
-  if plugin_folder() == [[~/github/ray-x/]] then
-    if vim.o.ft == 'go' or vim.o.ft == 'mod' then
-      nav_cfg.lsp.gopls = function()
-        local go = pcall(require, 'go')
-        if go then
-          local cfg = require('go.lsp').config()
-          cfg.on_attach = function(client)
-            client.server_capabilities.documentFormattingProvider = false -- efm/null-ls
-          end
-          return cfg
-        else
-          return {}
+  nav_cfg.lsp.gopls = function()
+    local go = pcall(require, 'go')
+    if go then
+      local cfg = require('go.lsp').config()
+      cfg.on_attach = function(client, bufnr)
+        print('gopls on_attach')
+        client.server_capabilities.documentFormattingProvider = false -- efm/null-ls
+        if
+          vim.fn.has('nvim-0.8.3') == 1 and not client.server_capabilities.semanticTokensProvider
+        then
+          print('semanticTokensProvider not supported')
+          local semantic = client.config.capabilities.textDocument.semanticTokens
+          client.server_capabilities.semanticTokensProvider = {
+            full = true,
+            legend = {
+              tokenModifiers = semantic.tokenModifiers,
+              tokenTypes = semantic.tokenTypes,
+            },
+            range = true,
+          }
         end
       end
+      return cfg
+    else
+      return {}
     end
   end
 

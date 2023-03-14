@@ -224,7 +224,18 @@ return function(lang)
     config = function()
       require('hlargs').setup({
         disable = function()
-          excluded_filetype = { 'TelescopePrompt', 'guihua', 'guihua_rust', 'clap_input' }
+          excluded_filetype = {
+            'TelescopePrompt',
+            'guihua',
+            'guihua_rust',
+            'clap_input',
+            'lua',
+            'rust',
+            'typescript',
+            'typescriptreact',
+            'javascript',
+            'javascriptreact',
+          }
           if vim.tbl_contains(excluded_filetype, vim.bo.filetype) then
             return true
           end

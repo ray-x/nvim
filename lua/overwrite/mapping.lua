@@ -72,10 +72,10 @@ local keys = {
   ["n|<Space>hl"] = map_cmd("HopLineStartAC"),
   ["n|<Space>hL"] = map_cmd("HopLineStartBC"),
 
-  ["xon|f"] = map_cmd("lua Line_ft('f')"),
-  ["xon|F"] = map_cmd("lua Line_ft('F')"),
-  ["xon|t"] = map_cmd("lua Line_ft('t')"),
-  ["xon|T"] = map_cmd("lua Line_ft('T')"),
+  ["xon|f"] = map_cmd("lua Line_ft('f')"):with_noremap(),
+  ["xon|F"] = map_cmd("lua Line_ft('F')"):with_noremap(),
+  ["xon|t"] = map_cmd("lua Line_ft('t')"):with_noremap(),
+  ["xon|T"] = map_cmd("lua Line_ft('T')"):with_noremap(),
   ["nx|s"] = map_cmd("lua hop1(1)"):with_silent(),
   ["nx|S"] = map_cmd("lua hop1()"):with_silent(),
 
@@ -103,7 +103,7 @@ local keys = {
   ["i|<d-C>"] = map_cmd("Clap | startinsert"):with_noremap():with_silent(),
   ["n|<Leader>df"] = map_cmd("Clap dumb_jump ++query=<cword> | startinsert"),
   ["n|<F9>"] = map_func(function()
-    if vim.o.ft == 'go' then 
+    if vim.o.ft == 'go' then
       return vim.cmd('GoBreakToggle')
     end
     require('dap').toggle_breakpoint()
@@ -257,6 +257,9 @@ end
 _G.Line_ft = function(a)
   if vim.fn.mode() == 's' then
     return vim.fn.input(a)
+  end
+  if vim.fn.empty(vim.fn.reg_recording()) == 0 then
+    return vim.api.nvim_feedkeys(a, 'n', true)
   end
   -- check and load hop
   local loaded, hop = pcall(require, 'hop')

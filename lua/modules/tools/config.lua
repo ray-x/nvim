@@ -32,10 +32,8 @@ function config.session()
       'fugitive',
     },
   }
-  lprint('session start')
+  lprint('loading session start')
   require('auto-session').setup(opts)
-
-  lprint('session stop')
 end
 
 local function load_dbs()

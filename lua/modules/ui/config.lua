@@ -776,6 +776,19 @@ function config.neotree()
           'vendor',
         },
       },
+      find_command = "fd", -- this is determined automatically, you probably don't need to set it
+      find_args = { -- you can specify extra args to pass to the find command.
+        fd = {
+          '--exclude',
+          '.git',
+          '--exclude',
+          'node_modules',
+          '--exclude',
+          'site-packages',
+          '--exclude',
+          'vendor',
+        },
+      },
     },
   })
 end

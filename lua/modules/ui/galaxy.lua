@@ -36,6 +36,7 @@ local c = {
 
   purple_one = '#95179C',
   purple_two = '#D9ACF4',
+  purple_three = '#A98CD4',
   purple_four = '#755799',
 
   yellow = '#ECE683',
@@ -116,7 +117,7 @@ local Usual = {
     CursorLineNr = { fg = c.yellow_one, bold = true, underline = true },
     StatusLine = { fg = c.white_two, bg = c.background_three },
     StatusLineNC = { fg = c.white_two, bg = c.background_four },
-    Structure = { fg = c.purple_one },
+    Structure = { fg = c.purple_three },
     ModeMsg = { fg = c.green },
     Question = { fg = c.blue },
     Function = { fg = c.blue_one, bold = true },
@@ -141,6 +142,8 @@ local Usual = {
     preProc = { fg = c.blue_four },
     MatchParen = { underline = true, bold = true, bg = c.background_three },
     Pmenu = { fg = c.white_two, bg = c.background_two },
+    PmenuKind = { fg = c.green_five, bg = c.background_two },
+    PmenuExtra = { fg = c.blue_three, bg = c.background_two },
     Pmenusel = { fg = c.white, bg = c.background_four, bold = true },
     PmenuThumb = { fg = c.blue, bg = 'Grey', bold = true, italic = true },
     VertSplit = { fg = c.background_four },
@@ -305,8 +308,8 @@ local Usual = {
     },
   },
   UI = {
-    NeoTreeFloatTitle =  {link = 'Title'},
-    NeoTreeTitleBar = { link = 'TelescopePreviewTitle' }
+    NeoTreeFloatTitle = { link = 'Title' },
+    NeoTreeTitleBar = { link = 'TelescopePreviewTitle' },
   },
   Packer = { packerStatusSuccess = { fg = c.blue_three }, packerString = { fg = c.blue_three } },
 }
@@ -333,14 +336,9 @@ function M.Lang_high(ft)
 end
 
 function M.ts_map()
-  local hl = function(group, opts)
-    opts.default = true
-    vim.api.nvim_set_hl(0, group, opts)
-  end
-
   -- Misc {{{
   hl('@comment', { link = 'Comment' })
-  hl('@error', {link = 'Error'})
+  hl('@error', { link = 'Error' })
   hl('@none', { bg = 'NONE', fg = 'NONE' })
   hl('@preproc', { link = 'PreProc' })
   hl('@define', { link = 'Define' })
@@ -377,12 +375,12 @@ function M.ts_map()
   hl('@method.call', { link = 'Function' })
 
   hl('@constructor', { link = 'Special' })
-  hl('@parameter', { link = 'Identifier' })
+  hl('@parameter', { link = 'Marco' })
   -- }}}
 
   -- Keywords {{{
   hl('@keyword', { link = 'Keyword' })
-  hl('@keyword.function', { link = 'Keyword' })
+  hl('@keyword.function', { link = 'Function' })
   hl('@keyword.operator', { link = 'Keyword' })
   hl('@keyword.return', { link = 'Keyword' })
 
@@ -426,6 +424,8 @@ function M.ts_map()
   hl('@text.strike', { strikethrough = true })
   hl('@text.title', { link = 'Title' })
   hl('@text.literal', { link = 'String' })
+  hl('@text.literal.markdown', { link = 'Normal' })
+  hl('@text.literal.markdown_inline', { link = 'Special' })
   hl('@text.uri', { link = 'Underlined' })
   hl('@text.math', { link = 'Special' })
   hl('@text.environment', { link = 'Macro' })
@@ -433,6 +433,8 @@ function M.ts_map()
   hl('@text.reference', { link = 'Constant' })
 
   hl('@text.todo', { link = 'Todo' })
+  hl('@text.todo.unchecked', { link = 'Todo' })
+  hl('@text.todo.checked', { link = 'Comment' })
   hl('@text.note', { link = 'SpecialComment' })
   hl('@text.warning', { link = 'WarningMsg' })
   hl('@text.danger', { link = 'ErrorMsg' })
@@ -443,6 +445,21 @@ function M.ts_map()
   hl('@tag.attribute', { link = 'Identifier' })
   hl('@tag.delimiter', { link = 'Delimiter' })
   -- }}}
+end
+
+function M.lsp_map()
+  local hl = function(group, opts)
+    opts.default = true
+    vim.api.nvim_set_hl(0, group, opts)
+  end
+  hl('@lsp.type.enum', { link = '@type' })
+  hl('@lsp.type.keyword', { link = '@keyword' })
+  hl('@lsp.type.interface', { link = 'Identifier' })
+  hl('@lsp.type.namespace', { link = '@namespace' })
+  hl('@lsp.type.parameter', { link = '@parameter' })
+  hl('@lsp.type.property', { link = '@property' })
+  hl('@lsp.type.variable', { link = '@variable' })
+  hl('@lsp.typemod.function.defaultLibrary', { link = 'Special' })
 end
 
 function M.shine(reset)
@@ -493,133 +510,5 @@ _G.colors = {
   baby_pink = '#DE878F',
   darker_black = '#2A303C',
 }
--- vim.api.nvim_set_hl_ns(ns)
---
--- local result = vim.loop.now()
--- vim.cmd("colorscheme aurora")
--- vim.cmd("colorscheme aurora")
--- vim.cmd("colorscheme aurora")
--- vim.cmd("colorscheme aurora")
--- vim.cmd("colorscheme aurora")
--- vim.cmd("colorscheme aurora")
--- vim.cmd("colorscheme aurora")
--- vim.cmd("colorscheme aurora")
--- vim.cmd("colorscheme aurora")
--- vim.cmd("colorscheme aurora")
--- vim.cmd("colorscheme aurora")
--- vim.cmd("colorscheme aurora")
--- vim.cmd("colorscheme aurora")
--- vim.cmd("colorscheme aurora")
--- vim.cmd("colorscheme aurora")
--- vim.cmd("colorscheme aurora")
--- vim.cmd("colorscheme aurora")
--- vim.cmd("colorscheme aurora")
--- vim.cmd("colorscheme aurora")
--- vim.cmd("colorscheme aurora")
--- result = result - vim.loop.now()
--- print(result)
 
 return M
--- comment
-
--- vim.cmd([[packadd c.nvim]])
--- local start = vim.loop.now()
-
--- M.shine()
-
--- bench test
-
--- local result = vim.loop.now() - start
--- vim.cmd("colorscheme starry")
--- vim.cmd("colorscheme limestone")
--- vim.cmd("colorscheme earlysummer")
--- vim.cmd("colorscheme starry")
--- vim.cmd("colorscheme limestone")
--- vim.cmd("colorscheme earlysummer")
--- vim.cmd("colorscheme starry")
--- vim.cmd("colorscheme limestone")
--- vim.cmd("colorscheme earlysummer")
--- vim.cmd("colorscheme starry")
--- vim.cmd("colorscheme limestone")
--- vim.cmd("colorscheme earlysummer")
--- result = result - vim.loop.now()
--- print(result)
-
--- vim.cmd("hi Normal guifg=" .. colors.foreground .. " guibg=" .. colors.black)
--- hl("NormalFloat", { fg = colors.foreground, bg = colors.black })
--- hl("FloatBorder", { fg = colors.lightbg })
--- hl("Bold", { bold = true })
--- hl("Debug", { fg = colors.pink })
--- hl("Directory", { fg = colors.blue })
--- hl("Error", { fg = colors.black, bg = colors.pink })
--- hl("ErrorMsg", { fg = colors.pink, bg = colors.black })
--- hl("Exception", { fg = colors.pink })
--- hl("FoldColumn", { fg = colors.teal, bg = colors.lightbg })
--- hl("Folded", { fg = colors.one_bg3, bg = colors.lightbg })
--- hl("IncSearch", { fg = colors.blue })
--- hl("Macro", { fg = colors.pink })
--- hl("MatchParen", { bg = colors.lightbg })
--- hl("ModeMsg", { fg = colors.green })
--- hl("MoreMsg", { fg = colors.green })
--- hl("Question", { fg = colors.blue })
--- hl("Search", { fg = colors.blue })
--- hl("Substitute", { fg = colors.lightbg, bg = colors.yellow })
--- hl("SpecialKey", { fg = colors.one_bg3 })
--- hl("TooLong", { fg = colors.pink })
--- hl("Underlined", { fg = colors.pink })
--- hl("Visual", { bg = colors.one_bg2 })
--- hl("VisualNOS", { fg = colors.pink })
--- hl("WarningMsg", { fg = colors.pink })
--- hl("WildMenu", { fg = colors.pink, bg = colors.yellow })
--- hl("Title", { fg = colors.blue })
--- hl("Conceal", { fg = colors.blue, bg = colors.black })
--- hl("Cursor", { fg = colors.black, bg = colors.white })
--- hl("NonText", { fg = colors.one_bg3 })
--- hl("LineNr", { fg = colors.grey })
--- hl("SignColumn", { fg = colors.one_bg3 })
--- hl("StatusLineNC", { fg = colors.one_bg3, underline = true })
--- hl("StatusLine", { fg = colors.one_bg2, underline = true })
--- hl("VertSplit", { fg = colors.one_bg2 })
--- hl("ColorColumn", { bg = colors.lightbg })
--- hl("CursorColumn", { bg = colors.lightbg })
--- hl("CursorLine", { bg = colors.lightbg })
--- hl("CursorLinenr", { fg = colors.white, bg = colors.black })
--- hl("QuickFixLine", { bg = colors.lightbg })
--- hl("Pmenu", { fg = colors.one_bg })
--- hl("PmenuSbar", { fg = colors.one_bg2 })
--- hl("PmenuSel", { fg = colors.green })
--- hl("PmenuThumb", { fg = colors.blue })
--- hl("TabLine", { fg = colors.one_bg3, bg = colors.lightbg })
--- hl("TabLineFill", { fg = colors.one_bg3, bg = colors.lightbg })
--- hl("TabLineSel", { fg = colors.green, bg = colors.lightbg })
---
--- -- Standard syntax highlighting
--- hl("Boolean", { fg = colors.orange })
--- hl("Character", { fg = colors.pink })
--- hl("Comment", { fg = colors.grey_fg, italic = true })
--- hl("Conditional", { fg = colors.green })
--- hl("Constant", { fg = colors.cyan })
--- hl("Define", { fg = colors.dark_purple })
--- hl("Delimiter", { fg = colors.dark_purple })
--- hl("Float", { fg = colors.orange })
--- hl("Function", { fg = colors.yellow })
--- hl("Identifier", { fg = colors.teal })
--- hl("Include", { fg = colors.blue })
--- hl("Keyword", { fg = colors.green })
--- hl("Label", { fg = colors.yellow })
--- hl("Number", { fg = colors.orange })
--- hl("Operator", { fg = colors.white })
--- hl("PreProc", { fg = colors.yellow })
--- hl("Repeat", { fg = colors.cyan })
--- hl("Special", { fg = colors.orange })
--- hl("SpecialChar", { fg = colors.dark_purple })
--- hl("Statement", { fg = colors.green })
--- hl("StorageClass", { fg = colors.yellow })
--- hl("String", { fg = colors.pink })
--- hl("Structure", { fg = colors.dark_purple })
--- hl("Tag", { fg = colors.yellow })
--- hl("Todo", { fg = colors.yellow, bg = colors.lightbg })
--- hl("Type", { fg = colors.yellow })
--- hl("Typedef", { fg = colors.yellow })
---
--- -- Diff highlighting

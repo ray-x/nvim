@@ -183,6 +183,7 @@ return function(editor)
       '<M-Down>',
       '<C-d>',
       '<C-Down>',
+      '<C-Up>',
       '<S-Right>',
       '<C-LeftMouse>',
       '<M-LeftMouse>',
