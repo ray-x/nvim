@@ -307,6 +307,10 @@ local Usual = {
       sp = 'violet',
     },
   },
+  Cmp = {
+    CmpItemAbbrMatch = { link = 'IncSearch' },
+    CmpItemAbbrMatchFuzzy = { link = 'IncSearch' },
+  },
   UI = {
     NeoTreeFloatTitle = { link = 'Title' },
     NeoTreeTitleBar = { link = 'TelescopePreviewTitle' },
