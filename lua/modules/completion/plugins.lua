@@ -34,11 +34,13 @@ return function(use)
     event = 'InsertEnter', -- InsertCharPre
     -- ft = {'lua', 'markdown',  'yaml', 'json', 'sql', 'vim', 'sh', 'sql', 'vim', 'sh'},
     dependencies = {
-      { 'hrsh7th/cmp-buffer',  lazy = true },
-      { 'hrsh7th/cmp-nvim-lua',  lazy = true },
+      { 'hrsh7th/cmp-buffer', lazy = true },
+      { 'hrsh7th/cmp-nvim-lua', lazy = true },
       { 'hrsh7th/cmp-calc', lazy = true },
       { 'hrsh7th/cmp-path', lazy = true },
       { 'hrsh7th/cmp-cmdline', lazy = true },
+      { 'lukas-reineke/cmp-rg', lazy = true },
+      { 'dmitmel/cmp-cmdline-history', lazy = true },
       -- { "tzachar/cmp-tabnine", build = "./install.sh", lazy = true, config = conf.tabnine},
       { 'hrsh7th/cmp-copilot', lazy = true },
       { 'hrsh7th/cmp-emoji', lazy = true },
@@ -47,7 +49,7 @@ return function(use)
       { 'f3fora/cmp-spell', lazy = true },
       { 'octaltree/cmp-look', lazy = true },
       -- {"quangnguyen30192/cmp-nvim-ultisnips", event = "InsertCharPre", after = "nvim-cmp", opt=true },
-      { 'saadparwaiz1/cmp_luasnip', lazy = true  },
+      { 'saadparwaiz1/cmp_luasnip', lazy = true },
     },
     config = conf.nvim_cmp,
   })

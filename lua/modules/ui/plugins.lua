@@ -174,7 +174,7 @@ return function(ui)
   -- really good one, only issue is dependency ...
   ui({ 'romgrk/fzy-lua-native', lazy = true })
   ui({
-    'gelguy/wilder.nvim',
+    'gelguy/wilder.nvim', -- I need to decommitions this
     dependencies = {
       { 'romgrk/fzy-lua-native' },
       -- {'nixprime/cpsm', run='UpdateRemotePlugins'}
@@ -184,7 +184,7 @@ return function(ui)
       vim.cmd([[packadd wilder.nvim]])
       vim.cmd([[silent UpdateRemotePlugins]])
     end,
-    event = { 'CmdwinEnter', 'CmdlineEnter' },
+    -- event = { 'CmdwinEnter', 'CmdlineEnter' },
     config = conf.wilder,
   })
 

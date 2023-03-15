@@ -133,11 +133,11 @@ function config.nvim_cmp()
         if cmp.visible() then
           cmp.abort()
           cmp.close()
-          vim.api.nvim_feedkeys(
-            vim.api.nvim_replace_termcodes('<C-y>', true, true, true),
-            'n',
-            true
-          )
+          -- vim.api.nvim_feedkeys(
+          --   vim.api.nvim_replace_termcodes('<C-e>', true, true, true),
+          --   'n',
+          --   true
+          -- )
         else
           vim.api.nvim_feedkeys(
             vim.api.nvim_replace_termcodes('<End>', true, true, true),
@@ -188,7 +188,31 @@ function config.nvim_cmp()
   local cmp_autopairs = require('nvim-autopairs.completion.cmp')
   cmp.event:on('confirm_done', cmp_autopairs.on_confirm_done({ map_char = { tex = '' } }))
 
+  -- using wilder
   -- require'cmp'.setup.cmdline(':', {sources = {{name = 'cmdline'}}})
+  cmp.setup.cmdline(':', {
+    mapping = cmp.mapping.preset.cmdline(),
+    sources = cmp.config.sources({
+      { name = 'path' },
+    }, {
+      { name = 'cmdline_history' },
+      {
+        name = 'cmdline',
+        option = {
+          ignore_cmds = { 'Man', '!' },
+        },
+      },
+    }),
+  })
+  cmp.setup.cmdline('/', {
+    mapping = cmp.mapping.preset.cmdline(),
+    sources = {
+      -- { name = 'buffer' },
+      { name = 'cmdline_history' },
+      { name = 'rg' },
+    },
+  })
+
   if vim.o.ft == 'clap_input' or vim.o.ft == 'guihua' or vim.o.ft == 'guihua_rust' then
     require('cmp').setup.buffer({ completion = { enable = false } })
   end
