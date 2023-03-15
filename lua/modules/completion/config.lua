@@ -75,13 +75,14 @@ function config.nvim_cmp()
     table.insert(sources, { name = 'spell' })
     table.insert(sources, { name = 'look' })
   end
-  if vim.o.ft == 'markdown' or vim.o.ft == 'txt' or vim.o.ft == 'html' then
+  if vim.o.ft == 'markdown' or vim.o.ft == 'txt' or vim.o.ft == 'html' or vim.o.ft == 'gitcommit' then
     table.insert(sources, { name = 'spell' })
     table.insert(sources, { name = 'look' })
   end
   if vim.o.ft == 'lua' then
     table.insert(sources, { name = 'nvim_lua' })
   end
+
   if vim.o.ft == 'zsh' or vim.o.ft == 'sh' or vim.o.ft == 'fish' or vim.o.ft == 'proto' then
     table.insert(sources, { name = 'buffer', keyword_length = 3 })
     table.insert(sources, { name = 'calc' })

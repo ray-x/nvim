@@ -31,7 +31,7 @@ return function(use)
     'hrsh7th/nvim-cmp',
     module = false,
     -- lazy = true,
-    event = 'InsertEnter', -- InsertCharPre
+    event = {'InsertEnter', 'CmdlineEnter'}, -- InsertCharPre
     -- ft = {'lua', 'markdown',  'yaml', 'json', 'sql', 'vim', 'sh', 'sql', 'vim', 'sh'},
     dependencies = {
       { 'hrsh7th/cmp-buffer', lazy = true },
