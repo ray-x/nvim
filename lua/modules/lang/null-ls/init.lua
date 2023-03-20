@@ -71,9 +71,27 @@ return {
     end
 
     if exist('revive') then
-      table.insert(sources, null_ls.builtins.diagnostics.revive)
+      -- revivie null default setup is ridiculous
+      local revive_conf = vim.fn.findfile(os.getenv('HOME') .. '/.config/revive.toml')
+      local revive_args = { '-formatter', 'json', './...' }
+      if revive_conf then
+        revive_args = { '-formatter', 'json', '-config', revive_conf, './...' }
+      end
+      table.insert(
+        sources,
+        null_ls.builtins.diagnostics.revive.with({
+          -- args = { '-config', vim.fn.expand('$HOME') ..'/.config/revive.toml' },
+          args = revive_args,
+          diagnostics_postprocess = function(d)
+            d.severity = vim.diagnostic.severity.INFO
+            d.end_col = d.col
+            d.end_row = d.row
+            d.end_lnum = d.lnum
+          end,
+        })
+      )
     end
-
+    --
     -- docker
     if exist('hadolint') then
       table.insert(sources, null_ls.builtins.diagnostics.hadolint)
@@ -166,8 +184,8 @@ return {
             if line then
               local f = vim.fn.matchstrpos(line, '\\v(todo)|(fixme)|(xxx)|(\\<fix\\>)|(hack)')
               local col, end_col = f[2], f[3]
-              if col and end_col >= 0 then
-                lprint('found', col, end_col)
+              if col and end_col >= 0 and not line:find('context') then
+                -- lprint('found', col, end_col)
                 -- null-ls fills in undefined positions
                 -- and converts source diagnostics into the required format
                 table.insert(diag, {
@@ -198,7 +216,7 @@ return {
       log_level = 'info',
       debounce = 1000,
       default_timeout = 5000,
-      fallback_severity = vim.diagnostic.severity.WARN,
+      fallback_severity = vim.diagnostic.severity.INFO,
       root_dir = require('lspconfig').util.root_pattern(
         '.null-ls-root',
         'Makefile',
