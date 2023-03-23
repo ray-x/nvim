@@ -80,7 +80,9 @@ local keys = {
   ["nx|S"] = map_cmd("lua hop1()"):with_silent(),
 
   ["inxo|<F3>"] = map_plug("leap-forward-to"):with_silent(),
+  ["inxo|<C-s>"] = map_plug("leap-forward-to"):with_silent(),
   ["inxo|<F15>"] = map_plug("leap-backward-to"):with_silent(),
+  ["inxo|<C-S-S>"] = map_plug("leap-backward-to"):with_silent(),
   ["nxo|gs"] = map_plug("leap-forward-to"):with_silent(),
   ["nxo|gS"] = map_plug("leap-cross-window"):with_silent(),
   ["nxo|<Leader>T"] = map_func(function()require("leap-ast").leap()

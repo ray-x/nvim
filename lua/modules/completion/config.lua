@@ -75,7 +75,12 @@ function config.nvim_cmp()
     table.insert(sources, { name = 'spell' })
     table.insert(sources, { name = 'look' })
   end
-  if vim.o.ft == 'markdown' or vim.o.ft == 'txt' or vim.o.ft == 'html' or vim.o.ft == 'gitcommit' then
+  if
+    vim.o.ft == 'markdown'
+    or vim.o.ft == 'txt'
+    or vim.o.ft == 'html'
+    or vim.o.ft == 'gitcommit'
+  then
     table.insert(sources, { name = 'spell' })
     table.insert(sources, { name = 'look' })
   end
@@ -210,7 +215,25 @@ function config.nvim_cmp()
     sources = {
       -- { name = 'buffer' },
       { name = 'cmdline_history' },
-      { name = 'rg' },
+      { name = 'rg', keyword_length = 3 },
+      { name = 'fuzzy_buffer' },
+    },
+  })
+
+  cmp.setup({
+    sorting = {
+      priority_weight = 2,
+      comparators = {
+        require('cmp_fuzzy_buffer.compare'),
+        compare.offset,
+        compare.exact,
+        compare.score,
+        compare.recently_used,
+        compare.kind,
+        compare.sort_text,
+        compare.length,
+        compare.order,
+      },
     },
   })
 

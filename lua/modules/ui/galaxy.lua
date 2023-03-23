@@ -269,19 +269,18 @@ local Usual = {
     TSTitle = { fg = c.green_one, bold = true },
     TSEnvironment = { fg = c.red_two },
   },
-
+  Hop = {
+    LeapBackdrop = { link = 'Comment' },
+  },
   LspRelated = {
-    DiagnosticsDefaultError = { bg = back, fg = c.red_four },
-    DiagnosticsDefaultHint = { bg = back, fg = c.pink },
-    DiagnosticsDefaultWarning = { bg = back, fg = c.orange_one },
-    DiagnosticsDefaultInformation = { bg = back, fg = c.yellow_one },
-
     DiagnosticError = { fg = c.red_one, bold = true }, -- used to underline "Error" diagnostics.
     DiagnosticWarn = { fg = c.orange_one, bold = true }, -- used to underline "Error" diagnostics.
     DiagnosticInfo = { fg = c.green_one }, -- used to underline "Error" diagnostics.
+    DiagnosticHint = { fg = c.gray_two }, -- used to underline "Error" diagnostics.
     DiagnosticUnderlineError = { bold = true, undercurl = true, sp = c.red }, -- used to underline "Error" diagnostics.
-    DiagnosticUnderlineWarn = { bold = true, undercurl = true, sp = c.orange_one }, -- used to underline "Error" diagnostics.
-    DiagnosticUnderlineInfo = { bold = true, undercurl = true, sp = c.yellow }, -- used to underline "Error" diagnostics.
+    DiagnosticUnderlineWarn = { bold = true, underline = true, sp = c.orange_one }, -- used to underline "Error" diagnostics.
+    DiagnosticUnderlineInfo = { bold = true, underdashed = true, sp = c.blue_five }, -- used to underline "Error" diagnostics.
+    DiagnosticUnderlineHint = { bold = true, underdotted = true, sp = c.gray_two }, -- used to underline "Error" diagnostics.
     LspReferenceText = { bold = true, italic = true, undercurl = true, sp = 'yellow' }, -- used for highlighting "text" references
     LspReferenceRead = {
       fg = c.green_four,
