@@ -154,6 +154,14 @@ local treesitter_ref = function()
       branch = 'main',
     },
   }
+  parser_config.sql = {
+    install_info = {
+      url = 'https://github.com/m-novikov/tree-sitter-sql',
+      files = { 'src/parser.c' },
+      branch = 'main',
+    },
+    filetype = {'sql', 'psql'},
+  }
 end
 
 function textsubjects()

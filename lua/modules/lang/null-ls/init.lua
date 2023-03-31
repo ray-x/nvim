@@ -223,6 +223,7 @@ return {
         '.git',
         'go.mod',
         'package.json',
+        'requirements.txt',
         'tsconfig.json'
       ),
       on_init = function(new_client, _)

@@ -59,7 +59,7 @@ return function(ui)
 
   ui({
     'nvim-neo-tree/neo-tree.nvim',
-    branch = 'v2.x',
+    branch = 'main',
     cmd = {
       'Neotree',
       'NeoTreeShowToggle',

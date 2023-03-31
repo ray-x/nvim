@@ -33,7 +33,7 @@ local createdir = function()
   local global = require('core.global')
   local data_dir = {
     global.cache_dir .. 'backup',
-    global.cache_dir .. 'session',
+    global.cache_dir .. 'sessions',
     global.cache_dir .. 'swap',
     global.cache_dir .. 'tags',
     global.cache_dir .. 'undo',
@@ -144,7 +144,7 @@ function Lazyload()
     loader('neogen')
     loader('refactoring.nvim')
     loader('indent-blankline.nvim')
-    loader('hlargs.nvim')
+    -- loader('hlargs.nvim')
     if vim.fn.line('$') < 3000 then
       loader('nvim-ts-rainbow2')
     end
@@ -235,6 +235,7 @@ vim.defer_fn(function()
 end, 0)
 
 vim.defer_fn(function()
+  -- vim.cmd('source /home/ray/.local/share/nvim/sessions/nvim.vim')
   local start = vim.loop.now()
   if vim.fn.empty(vim.fn.expand('%')) == 1 then
     local bufnr = vim.fn.bufnr()
@@ -244,5 +245,8 @@ vim.defer_fn(function()
       api.nvim_buf_delete(bufnr, { force = true })
     end
   end
+  -- local sessionfile =
+  --   [[/home/ray/.local/share/nvim/sessions/%home%ray%.local%share%nvim%lazy%auto-session.vim]]
+  -- vim.cmd('silent! source ' .. sessionfile)
   lprint('auto-session loaded', vim.loop.now() - start)
 end, 30)

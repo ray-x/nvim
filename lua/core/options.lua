@@ -63,7 +63,7 @@ local function load_options()
     whichwrap      = "h,l,<,>,[,],~";
     splitbelow     = true;
     splitright     = true;
-    switchbuf      = "useopen";
+    switchbuf      = "useopen,usetab";
     backspace      = "indent,eol,start";
     diffopt        = "filler,iwhite,internal,algorithm:patience";
     completeopt    = "menuone,noselect,noinsert", -- Show popup menu, even if there is one entry  menuone?
@@ -94,10 +94,11 @@ local function load_options()
     winblend       = 10;
     syntax         = "off";
     title          = true;
+
     background     = "dark";
---------------------------------------
+-- --------------------------------------
     ttyfast        = true, -- Indicate fast terminal conn for faster redraw
-    fileencoding   = "utf-8", -- fenc
+    fileencoding   = "utf-8",
     mouse          = "a",
     textwidth      = 120, -- wrap lines at 120 chars. 80 is somewaht antiquated with nowadays displays.
     hlsearch       = true, -- Highlight found searches
