@@ -110,7 +110,7 @@ local lsp_label1, lsp_label2 = '', ''
 local treesitter_context = require('modules.lang.treesitter').context
 local ts = ''
 
-local job_utils = require('wlanimation.components.job')
+-- local job_utils = require('wlanimation.components.job')
 
 local current_function = function(width)
   -- local wwidth = winwidth()
@@ -362,6 +362,9 @@ basic.job_interval = {
   -- end),
 }
 
+local job_utils = {
+  loading = function(...) end,
+}
 basic.job_spinner = {
   name = 'job_spinner',
   hl_colors = {

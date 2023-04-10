@@ -24,6 +24,7 @@ local c = {
   green_four = '#9ABB26',
   green_five = '#59DE73',
   green_six = '#3AF8B7',
+  green_seven = '#105017',
 
   blue = '#4572E5',
   blue_one = '#5582E5',
@@ -275,7 +276,7 @@ local Usual = {
   LspRelated = {
     DiagnosticError = { fg = c.red_one, bold = true }, -- used to underline "Error" diagnostics.
     DiagnosticWarn = { fg = c.orange_one, bold = true }, -- used to underline "Error" diagnostics.
-    DiagnosticInfo = { fg = c.green_one }, -- used to underline "Error" diagnostics.
+    DiagnosticInfo = { fg = c.green_seven }, -- used to underline "Error" diagnostics.
     DiagnosticHint = { fg = c.gray_two }, -- used to underline "Error" diagnostics.
     DiagnosticUnderlineError = { bold = true, undercurl = true, sp = c.red }, -- used to underline "Error" diagnostics.
     DiagnosticUnderlineWarn = { bold = true, underline = true, sp = c.orange_one }, -- used to underline "Error" diagnostics.
