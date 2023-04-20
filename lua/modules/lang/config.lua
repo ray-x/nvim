@@ -170,23 +170,11 @@ function config.navigator()
     local go = pcall(require, 'go')
     if go then
       local cfg = require('go.lsp').config()
+      local att = cfg.on_attach
       cfg.on_attach = function(client, bufnr)
         print('gopls on_attach')
         client.server_capabilities.documentFormattingProvider = false -- efm/null-ls
-        if
-          vim.fn.has('nvim-0.8.3') == 1 and not client.server_capabilities.semanticTokensProvider
-        then
-          print('semanticTokensProvider not supported')
-          local semantic = client.config.capabilities.textDocument.semanticTokens
-          client.server_capabilities.semanticTokensProvider = {
-            full = true,
-            legend = {
-              tokenModifiers = semantic.tokenModifiers,
-              tokenTypes = semantic.tokenTypes,
-            },
-            range = true,
-          }
-        end
+        att(client, bufnr)
       end
       return cfg
     else
