@@ -1,6 +1,6 @@
 local uv, api, fn = vim.loop, vim.api, vim.fn
 local helper = require('core.helper')
-
+local win = require('core.global').is_windows
 local lazy = {}
 lazy.__index = lazy
 
@@ -32,6 +32,9 @@ function lazy:load_modules_lazyages()
   end
 
   for _, f in pairs(list) do
+    if win then
+      f = string.gsub(f, '/', '\\')
+    end
     local _, pos = f:find(modules_dir)
     f = f:sub(pos - 6, #f - 4)
     lprint(f) -- modules/completion/plugins ...
