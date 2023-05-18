@@ -1,6 +1,7 @@
 local bind = require('keymap.bind')
 local map_cmd = bind.map_cmd
 local map_func = bind.map_func
+local win = require('core.global').is_windows
 -- local map_func = bind.map_func
 local map_key = bind.map_key
 require('keymap.config')
@@ -69,7 +70,7 @@ local plug_map = {
   end):with_silent(),
 
   ['in|<d-p>'] = map_cmd('Telescope find_files'):with_noremap():with_silent(),
-  ['in|<M-p>'] = map_cmd('FzfLua files'):with_noremap():with_silent(),
+  ['in|<M-p>'] = win and map_cmd('Telescope find_files'):with_noremap():with_silent() or map_cmd('FzfLua files'):with_noremap():with_silent(),
   -- ["in|<d-T>"] = map_cu("Telescope"):with_noremap():with_silent(),
   ['inx|<d-f>'] = map_func(function()
     require('utils.telescope').grep_string_cursor_raw()
@@ -84,6 +85,9 @@ local plug_map = {
     vim.cmd('w')
   end):with_desc('grep_string_cursor'),
   ['ixn|<m-f>'] = map_func(function()
+    if win then
+      return require('utils.telescope').grep_string_cursor_raw()
+    end
     local w = require('utils.helper').getword()
     require('fzf-lua').live_grep_native({ search = w })
   end):with_desc('grep_string_cursor'),

@@ -37,7 +37,7 @@ local helper = {
       if Plugin_debug ~= nil then
         return Plugin_debug
       end
-      local host = os.getenv('HOST_NAME')
+      local host = os.getenv('HOST_NAME') or vim.fn.hostname()
       if host and host:lower():find('ray') then
         Plugin_debug = true -- enable debug here, will be slow
       else
