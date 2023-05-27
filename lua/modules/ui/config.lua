@@ -62,8 +62,8 @@ end
 function config.noice()
   require('noice').setup({
     cmdline = {
-      enabled = false,
-      -- view = "cmdline",
+      enabled = true,
+      view = 'cmdline',
       -- opts = { buf_options = { filetype = "vim" } }, -- enable syntax highlighting in the cmdline
       -- icons = {
       --   ["/"] = { icon = " ", hl_group = "DiagnosticWarn" },
@@ -74,16 +74,17 @@ function config.noice()
     messages = {
       enabled = false,
     },
-    lsp_progress = {
-      enabled = true,
-      -- Lsp Progress is formatted using the builtins for lsp_progress. See config.format.builtin
-      -- See the section on formatting for more details on how to customize.
-      --- @type NoiceFormat|string
-      format = 'lsp_progress',
-      --- @type NoiceFormat|string
-      format_done = 'lsp_progress_done',
-      throttle = 1000 / 30, -- frequency to update lsp progress message
-      view = 'mini',
+    popupmenu = { enabled = false },
+    notify = { enabled = false },
+
+    lsp = {
+      progress = {
+        enabled = false,
+      },
+      hover = {enabled = false},
+      signature = {
+        enabled = false,
+      },
     },
   })
 end
@@ -342,6 +343,7 @@ function config.starry()
   math.randomseed(os.time())
   local v = math.random(1, #opt)
   vim.g.starry_style = opt[v]
+  vim.g.starry_bold = false
   vim.g.starry_italic_comments = true
   vim.g.starry_italic_keywords = false
   vim.g.starry_italic_functions = false
@@ -776,7 +778,7 @@ function config.neotree()
           'vendor',
         },
       },
-      find_command = "fd", -- this is determined automatically, you probably don't need to set it
+      find_command = 'fd', -- this is determined automatically, you probably don't need to set it
       find_args = { -- you can specify extra args to pass to the find command.
         fd = {
           '--exclude',

@@ -1,4 +1,5 @@
 local conf = require('modules.lang.config')
+local dev = plugin_folder():find('github') ~= nil or plugin_folder():find('ray') ~= nil
 local ts = require('modules.lang.treesitter')
 return function(lang)
   lang({ 'nvim-treesitter/nvim-treesitter', lazy = true, config = ts.treesitter, module = false })
@@ -38,6 +39,13 @@ return function(lang)
     end,
   })
 
+  lang( {
+    'haringsrob/nvim_context_vt',
+    lazy = true,
+    event = { 'CursorHold', 'WinScrolled', 'CursorMoved' },
+    config = config.context_vt
+
+  } )
   lang({ 'ThePrimeagen/refactoring.nvim', lazy = true, config = conf.refactor })
 
   lang({
@@ -71,7 +79,7 @@ return function(lang)
 
   lang({
     'ray-x/go.nvim',
-    dev = (plugin_folder():find('github') ~= nil),
+    dev = dev,
     lazy = true,
     cmd = {
       'Go',
@@ -98,18 +106,18 @@ return function(lang)
   lang({
     'ray-x/guihua.lua',
     build = 'cd lua/fzy && make',
-    dev = (plugin_folder():find('github') ~= nil),
+    dev = dev,
   })
   lang({
     'ray-x/navigator.lua',
-    dev = (plugin_folder():find('github') ~= nil),
+    dev = dev,
     config = conf.navigator,
     lazy = true,
   })
 
   lang({
     'ray-x/web-tools.nvim',
-    dev = (plugin_folder():find('github') ~= nil),
+    dev = dev,
     ft = { 'html', 'javascript', 'hurl', 'http' },
     cmd = { 'HurlRun', 'BrowserOpen' },
     lazy = true,

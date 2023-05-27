@@ -110,7 +110,7 @@ local lsp_label1, lsp_label2 = '', ''
 local treesitter_context = require('modules.lang.treesitter').context
 local ts = ''
 
--- local job_utils = require('wlanimation.components.job')
+local job_utils = require('wlanimation.components.loading')
 
 local current_function = function(width)
   -- local wwidth = winwidth()
@@ -341,61 +341,16 @@ basic.lsp_diagnos = {
 }
 
 vim.g.tmp_job_state = 'loading'
-
-basic.job_event = {
-  hl_colors = { 'blue', 'black_light' },
-  -- text = job_utils.job_event('sleep 10', 'BufEnter', 'job_sleep', function(data)
-  --   if data.is_load then
-  --     return 'event ' .. data.loading_text
-  --   end
-  --   return 'bufenter done ' .. (data.data or '')
-  -- end),
-}
-
-basic.job_interval = {
-  hl_colors = { 'green', 'black_light' },
-  -- text = job_utils.job_interval('sleep 10', 7000, 'job_inerval', function(data)
-  --   if data.is_load then
-  --     return 'interval ' .. data.loading_text
-  --   end
-  --   return 'interval done ' .. (data.data or '')
-  -- end),
-}
-
-local job_utils = {
-  loading = function(...) end,
-}
+local loading = require('wlanimation.components.loading').create_loading()
 basic.job_spinner = {
   name = 'job_spinner',
   hl_colors = {
     yellow = { 'yellow', 'black_light' },
     red = { 'red', 'black_light' },
   },
-  text = job_utils.loading({
-    spin_tbl = true,
-    state = function()
-      if vim.g.tmp_job_state == 'loading' then
-        return job_utils.LOADING_STATE.SPINNER -- 1
-      elseif vim.g.tmp_job_state == 'remove' then
-        -- it will complete remove that components out of statusline
-        return job_utils.LOADING_STATE.REMOVE -- 3
-      end
-      return job_utils.LOADING_STATE.RESULT --2
-    end,
-    result = function()
-      return {
-        { 'result :', 'red' },
-        { vim.g.tmp_job_state or '', 'yellow' },
-      }
-    end,
-    loading = function(spinner_text)
-      return {
-        { 'loading', 'red' },
-        { spinner_text, 'yellow' },
-      }
-    end,
-    comp_remove = { name = 'job_spinner', filetype = 'default' },
-  }),
+  text = function()
+    return loading(vim.g.tmp_job_state == 'loading')
+  end,
 }
 
 local winbar = {
@@ -712,7 +667,7 @@ local default = {
     { lsp_comps.lsp_name(), { 'magenta', 'NormalBg' }, breakpoint_width },
     basic.git,
     basic.folder,
-    -- basic.job_spinner,
+    basic.job_spinner,
     { ' ', hl_list.NormalBg },
     basic.square_mode,
   },

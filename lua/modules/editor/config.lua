@@ -259,7 +259,6 @@ function config.ufo()
   end
   local whitelist = {
     ['gotmpl'] = 'indent',
-    ['python'] = 'lsp',
     ['html'] = 'indent',
   }
   require('ufo').setup({

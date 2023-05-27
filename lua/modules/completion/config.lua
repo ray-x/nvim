@@ -215,7 +215,7 @@ function config.nvim_cmp()
     sources = {
       { name = 'buffer' },
       -- { name = 'cmdline_history' },
-      { name = 'rg', keyword_length = 4 },
+      -- { name = 'rg', keyword_length = 4 },  -- slow
       {
         name = 'fuzzy_buffer',
         option = { max_matches = 5, max_buffer_lines = 4000, min_match_length = 4 },

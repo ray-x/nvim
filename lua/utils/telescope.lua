@@ -28,7 +28,6 @@ end
 
 local M = {}
 
-
 -- Looks for git files, but falls back to normal files
 M.git_files = function(opts)
   opts = opts or {}
@@ -61,7 +60,6 @@ M.git_files = function(opts)
     :find()
 end
 
-
 vim.api.nvim_create_user_command('Rg', function(opts)
   local w = vim.fn.expand('<cword>')
   local pwd = vim.fn.expand('%:h')
@@ -74,7 +72,6 @@ vim.api.nvim_create_user_command('Rg', function(opts)
     default_text = "'" .. w .. "'" .. ' ' .. pwd,
   })
 end, { nargs = '*', desc = 'Search for word under cursor' })
-
 
 vim.api.nvim_create_user_command('GoRg', function(opts)
   local w = vim.fn.expand('<cword>')
@@ -95,10 +92,9 @@ vim.api.nvim_create_user_command('GoRg', function(opts)
   vim.fn.setreg('p', pwd)
   require('telescope.builtin').grep_string({
     -- default_text = "'" .. var .. "'" .. ' ' .. pwd,
-    search = var
+    search = var,
   })
 end, { nargs = '*', desc = 'Search for word under cursor' })
-
 
 --[[
     +-------------------------------------+
@@ -561,8 +557,10 @@ end
 
 M.grep_string_cursor_raw = function()
   local w = vim.fn.expand('<cword>')
-  local pwd = vim.fn.expand('%:h')
-  pwd = ' --type ' .. vim.o.ft .. ' ' .. pwd
+  local pwd = ' ' .. vim.fn.expand('%:h') .. ' '
+  local ext = vim.fn.expand('%:e')
+  local type = ' --type ' .. ext .. ' '
+  vim.fn.setreg('t', type)
   vim.fn.setreg('p', pwd)
   require('telescope').extensions.live_grep_args.live_grep_args({
     default_text = "'" .. w .. "'",
