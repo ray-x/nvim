@@ -83,6 +83,7 @@ function autocmd.load_autocmds()
           require('close_buffers').delete({ regex = 'fugitive' })
           require('close_buffers').delete({ regex = 'neogit', force = true })
           require('close_buffers').wipe({ type = 'nameless', force = true })
+          -- MiniSessions.write('session.vim')
         end,
       },
 

@@ -56,7 +56,7 @@ function lazy:boot_strap()
   local lz = require('lazy')
   local opts = {
     lockfile = helper.get_data_path() .. sep .. 'lazy-lock.json',
-    dev = { path = '~/github/ray-x' },
+    dev = { path = win and vim.fn.expand('$HOME') .. '\\github\\ray-x' or '~/github/ray-x' },
   }
   self:load_modules_lazyages()
   lz.setup(self.plug, opts)

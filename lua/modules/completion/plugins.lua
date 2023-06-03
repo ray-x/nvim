@@ -123,6 +123,7 @@ return function(use)
         floating_window = true,
         floating_window_above_cur_line = true,
         hint_enable = true,
+        hint_inline = function() return true end,
         fix_pos = false,
         -- floating_window_above_first = true,
         log_path = vim.fn.expand('$HOME') .. '/tmp/sig.log',
