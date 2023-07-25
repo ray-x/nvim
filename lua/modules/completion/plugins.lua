@@ -123,7 +123,6 @@ return function(use)
         floating_window = true,
         floating_window_above_cur_line = true,
         hint_enable = true,
-        hint_inline = function() return true end,
         fix_pos = false,
         -- floating_window_above_first = true,
         log_path = vim.fn.expand('$HOME') .. '/tmp/sig.log',
@@ -136,6 +135,7 @@ return function(use)
         handler_opts = {
           border = 'rounded', -- "shadow", --{"╭", "─" ,"╮", "│", "╯", "─", "╰", "│" },
         },
+        hint_inline= function() return true end,
         max_height = 4,
         toggle_key = [[<M-x>]], -- toggle signature on and off in insert mode,  e.g. '<M-x>'
         -- select_signature_key = [[<M-n>]], -- toggle signature on and off in insert mode,  e.g. '<M-x>'

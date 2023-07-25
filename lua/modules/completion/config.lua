@@ -111,16 +111,16 @@ function config.nvim_cmp()
         end
         vim_item.kind = cmp_kind(vim_item.kind)
         vim_item.menu = ({
-          buffer = ' ﬘',
+          buffer = '',
           nvim_lsp = ' ',
           luasnip = ' 🐍',
           treesitter = ' ',
           nvim_lua = ' ',
           spell = ' 暈',
-          emoji = 'ﲃ',
-          -- copilot = "🤖",
+          emoji = '󰞅',
+          copilot = "🤖",
           cmp_tabnine = '🤖',
-          look = '﬜',
+          look = '',
         })[entry.source.name]
         return vim_item
       end,

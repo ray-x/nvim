@@ -43,7 +43,7 @@ return function(lang)
     'haringsrob/nvim_context_vt',
     lazy = true,
     event = { 'CursorHold', 'WinScrolled', 'CursorMoved' },
-    config = config.context_vt
+    config = conf.context_vt
 
   } )
   lang({ 'ThePrimeagen/refactoring.nvim', lazy = true, config = conf.refactor })
