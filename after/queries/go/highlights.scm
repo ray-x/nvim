@@ -1,13 +1,13 @@
 ;; extends
 ;; Keywords
-(("return"   @keyword) (#set! conceal ""))
+(("return"   @keyword) (#set! conceal "󰌑"))
 (("var"      @keyword) (#set! conceal  "ν"))
 ;; (("if"       @keyword) (#set! conceal "? "))
 ;; (("else"     @keyword) (#set! conceal "! "))
 (("func"     @keyword) (#set! conceal ""))
 (("for"      @keyword) (#set! conceal ""))
 (("switch"   @keyword) (#set! conceal "🎮"))
-(("default"  @keyword) (#set! conceal  ""))
+(("default"  @keyword) (#set! conceal  "󰫱"))
 (("break"    @keyword.return) (#set! conceal  "⏹️"))
 (("case"     @keyword) (#set! conceal  ""))
 (("import"   @keyword) (#set! conceal  ""))
@@ -33,7 +33,7 @@
 ;; fmt.*
 (((selector_expression) @error (#eq? @error "fmt.Println"     )) (#set! conceal ""))
 (((selector_expression) @error (#eq? @error "fmt.Printf"     )) (#set! conceal "狼"))
-(((selector_expression) @field (#eq? @field "fmt.Sprintf"     )) (#set! conceal ""))
+(((selector_expression) @field (#eq? @field "fmt.Sprintf"     )) (#set! conceal "󰹜"))
 ;; type
 (((qualified_type) @type (#eq? @type "testing.T")) (#set! conceal "τ"))
 ;; identifiers
