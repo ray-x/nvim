@@ -283,7 +283,7 @@ local mode = function()
   if mod == 'n' or mod == 'no' or mod == 'nov' then
     return { '  ', state.mode[2] }
   elseif mod == 'i' or mod == 'ic' or mod == 'ix' then
-    return { '  ', state.mode[2] }
+    return { ' ', state.mode[2] }
   elseif mod == 'V' or mod == 'v' or mod == 'vs' or mod == 'Vs' or mod == 'cv' then
     return { '  ', state.mode[2] }
   elseif mod == 'c' or mod == 'ce' then
