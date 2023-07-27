@@ -281,19 +281,19 @@ local mode = function()
   local mod = vim.fn.mode()
   -- print(state.mode[2])
   if mod == 'n' or mod == 'no' or mod == 'nov' then
-    return { '  ', state.mode[2] }
+    return { ' ', state.mode[2] }
   elseif mod == 'i' or mod == 'ic' or mod == 'ix' then
-    return { ' ', state.mode[2] }
+    return { '', state.mode[2] }
   elseif mod == 'V' or mod == 'v' or mod == 'vs' or mod == 'Vs' or mod == 'cv' then
-    return { '  ', state.mode[2] }
+    return { ' ', state.mode[2] }
   elseif mod == 'c' or mod == 'ce' then
-    return { ' ﴣ ', state.mode[2] }
+    return { ' ', state.mode[2] }
   elseif mod == 'r' or mod == 'rm' or mod == 'r?' then
     return { mod .. '  ', state.mode[2] } -- 
   elseif mod == 's' then
-    return { mod .. '  ', state.mode[2] }
+    return { mod .. ' ', state.mode[2] }
   elseif mod == 'R' or mod == 'Rc' or mod == 'Rv' or mod == 'Rv' then
-    return { mod .. '  ', state.mode[2] }
+    return { mod .. ' ', state.mode[2] }
   end
 
   return { mod .. '  ', state.mode[2] }
@@ -588,7 +588,7 @@ basic.git = {
         { ' ', '' },
         { git_comps.diff_added({ format = ' %s', show_zero = true }), 'green' },
         { git_comps.diff_removed({ format = '  %s', show_zero = true }), 'red' },
-        { git_comps.diff_changed({ format = ' 柳%s', show_zero = true }), 'blue' },
+        { git_comps.diff_changed({ format = '  %s', show_zero = true }), 'blue' },
       }
     end
     return ''
