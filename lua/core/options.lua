@@ -88,7 +88,7 @@ local function load_options()
     equalalways    = false;
     laststatus     = 3;
     display        = "lastline";
-    showbreak      = "﬌  ";
+    showbreak      = "󱞩";
     listchars      = "tab:┊ ,nbsp:+,trail:·,extends:→,precedes:←"; -- tab:»·,
     pumblend       = 10;
     winblend       = 10;
