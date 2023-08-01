@@ -10,9 +10,9 @@
 (("default"  @keyword) (#set! conceal  "󰫱"))
 (("break"    @keyword.return) (#set! conceal  "⏹️"))
 (("case"     @keyword) (#set! conceal  ""))
-(("import"   @keyword) (#set! conceal  ""))
+(("import"   @keyword) (#set! conceal  "󰶮"))
 (("package"  @keyword) (#set! conceal  ""))
-(("range"    @keyword) (#set! conceal ""))
+(("range"    @keyword) (#set! conceal ""))
 (("chan"     @keyword) (#set! conceal ""))
 (("continue" @keyword) (#set! conceal "↙"))
 (("struct"   @keyword) (#set! conceal ""))
@@ -32,8 +32,8 @@
 (((true) @type (#set! conceal "")))
 ;; fmt.*
 (((selector_expression) @error (#eq? @error "fmt.Println"     )) (#set! conceal ""))
-(((selector_expression) @error (#eq? @error "fmt.Printf"     )) (#set! conceal "狼"))
-(((selector_expression) @field (#eq? @field "fmt.Sprintf"     )) (#set! conceal "󰹜"))
+(((selector_expression) @error (#eq? @error "fmt.Printf"     )) (#set! conceal "󰹜"))
+(((selector_expression) @field (#eq? @field "fmt.Sprintf"     )) (#set! conceal "󱢸"))
 ;; type
 (((qualified_type) @type (#eq? @type "testing.T")) (#set! conceal "τ"))
 ;; identifiers
