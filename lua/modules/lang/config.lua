@@ -315,7 +315,7 @@ function config.clangd()
         end,
       },
     })
-  end, 1000)
+  end, 100)
 end
 
 function config.context_vt()
@@ -345,47 +345,21 @@ function config.context_vt()
 
     -- How many lines required after starting position to show virtual text
     -- Default: 1 (equals two lines total)
-    min_rows = 10,
+    min_rows = 5,
 
     -- Same as above but only for spesific filetypes
     -- Default: {}
     min_rows_ft = {},
-
-    -- Custom virtual text node parser callback
-    -- Default: nil
     custom_parser = function(node, ft, opts)
       local utils = require('nvim_context_vt.utils')
 
-      -- If you return `nil`, no virtual text will be displayed.
-      if node:type() == 'function' then
-        return nil
-      end
-
       -- This is the standard text
-      return '-> ' .. utils.get_node_text(node)[1]
-    end,
-
-    -- Custom node validator callback
-    -- Default: nil
-    custom_validator = function(node, ft, opts)
-      -- Internally a node is matched against min_rows and configured targets
-      local default_validator = require('nvim_context_vt.utils').default_validator
-      if default_validator(node, ft) then
-        -- Custom behaviour after using the internal validator
-        if node:type() == 'function' then
-          return false
-        end
-      end
-
-      return true
+      local start_row, _, end_row, _ = vim.treesitter.get_node_range(node)
+      return string.format('-><%d:%d> %s', start_row + 1, end_row + 1, utils.get_node_text(node)[1])
     end,
 
     -- Custom node virtual text resolver callback
     -- Default: nil
-    custom_resolver = function(nodes, ft, opts)
-      -- By default the last node is used
-      return nodes[#nodes]
-    end,
   })
 end
 
