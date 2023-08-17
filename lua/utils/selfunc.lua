@@ -55,8 +55,8 @@ function M.float_terminal(command)
   local cmd = command or ''
 
   -- get dimensions
-  local width = api.nvim_get_option('columns')
-  local height = api.nvim_get_option('lines')
+  local width = api.nvim_get_option_value('columns', {})
+  local height = api.nvim_get_option_value('lines', {})
 
   -- calculate our floating window size
   local win_height = math.ceil(height * 0.8)

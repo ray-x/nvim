@@ -7,7 +7,7 @@ vim.api.nvim_set_hl(0, 'WinBarSigActParm', { fg = '#dedede', bg = '#9f3838' })
 local treesitter_context = require('modules.lang.treesitter').context
 
 function M.eval()
-  local columns = vim.api.nvim_get_option('columns')
+  local columns = vim.api.nvim_get_option_value('columns', {})
   if not pcall(require, 'lsp_signature') then
     return treesitter_context(columns)
   end
