@@ -16,7 +16,7 @@
 (("then"     @keyword) (#set! conceal "↙"))
 (("do"       @keyword) (#set! conceal ""))
 
-(("comment_start"    @comment) (#set! conceal "󰡡"))
+;; (("comment_start"    @comment) (#set! conceal "󰡡"))
 
 ;; Function names
 ((function_call name: (identifier) @TSFuncMacro (#eq? @TSFuncMacro "require")) (#set! conceal "󰫿"))
@@ -41,5 +41,4 @@
 (((dot_index_expression) @field (#eq? @field "vim.o"       )) (#set! conceal "O"))
 (((dot_index_expression) @field (#eq? @field "vim.bo"      )) (#set! conceal ""))
 (((dot_index_expression) @field (#eq? @field "vim.wo"      )) (#set! conceal ""))
-
 (((dot_index_expression) @field (#eq? @field "vim.keymap.set")) (#set! conceal ""))
