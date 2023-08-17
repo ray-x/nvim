@@ -296,7 +296,7 @@ local mode = function()
     return { mod .. ' ', state.mode[2] }
   end
 
-  return { mod .. '  ', state.mode[2] }
+  return { mod .. ' ', state.mode[2] }
 end
 
 local checkwidth = function()
@@ -378,7 +378,7 @@ local winbar = {
 }
 
 local function get_offset()
-  return ':' .. fn.line2byte(fn.line('.')) + fn.col('.') - 1
+  return '󰃕:' .. fn.line2byte(fn.line('.')) + fn.col('.') - 1
 end
 
 function scrollbar_instance(scrollbar_chars)
