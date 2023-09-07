@@ -66,7 +66,8 @@ local keys = {
   ["n|Cr"] = map_plug("abolish-coerce-word"):with_noremap():with_silent():with_desc('s:snake, c:Camel,m:mix,u:upper,-:dash,.:dot,<Spc>:space case, t:titlecase'),
   ["v|Cr"] = map_plug("abolish-coerce"):with_noremap():with_silent():with_desc('s:snake, c:Camel,m:mix,u:upper,-:dash,.:dot,<Spc>:space case, t:titlecase'),
 
-  ["n|<F13>"] = map_cmd("NeoTreeRevealToggle"),
+  ["n|<F13>"] = map_cmd("Neotree action=show source=buffers position=left toggle=true"),
+  ["n|<S-F1>"] = map_cmd("Neotree action=show source=buffers position=left toggle=true"),
   -- ["n|hW"] = map_cmd("HopWordBC"),
   -- ["n|hw"] = map_cmd("HopWordAC"),
   ["n|<Space>hl"] = map_cmd("HopLineStartAC"),
