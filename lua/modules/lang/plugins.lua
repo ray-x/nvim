@@ -17,13 +17,21 @@ return function(lang)
     config = ts.textsubjects,
     module = false,
   })
-  lang({ 'mfussenegger/nvim-treehopper', lazy = true, config = ts.tshopper, module = false })
+  -- lang({ 'mfussenegger/nvim-treehopper', lazy = true, config = ts.tshopper, module = false })
 
   -- lang['ziontee113/syntax-tree-surfer'] = {
   --   lazy = true,
   --   config = conf.surfer,
   -- }
 
+  lang({
+    'jose-elias-alvarez/typescript.nvim',
+    lazy = true,
+    ft = { 'typescript', 'typescriptreact', 'javascript', 'javascriptreact' },
+    config = function()
+      require('typescript').setup({})
+    end,
+  })
   lang({
     'bennypowers/nvim-regexplainer',
     lazy = true,
@@ -39,13 +47,12 @@ return function(lang)
     end,
   })
 
-  lang( {
+  lang({
     'haringsrob/nvim_context_vt',
     lazy = true,
     event = { 'CursorHold', 'WinScrolled', 'CursorMoved' },
-    config = conf.context_vt
-
-  } )
+    config = conf.context_vt,
+  })
   lang({ 'ThePrimeagen/refactoring.nvim', lazy = true, config = conf.refactor })
 
   lang({
@@ -54,6 +61,11 @@ return function(lang)
     lazy = true,
   })
 
+  lang({
+    'chrisgrieser/nvim-puppeteer',
+    lazy = true,
+  })
+  lang({'dccsillag/magma-nvim', lazy = true, build = 'UpdateRemotePlugins'})
   lang({ 'yardnsm/vim-import-cost', cmd = 'ImportCost', lazy = true })
 
   -- lang['scalameta/nvim-metals'] = {dependencies = {"nvim-lua/plenary.nvim"}}
@@ -223,7 +235,9 @@ return function(lang)
   lang({
     'windwp/nvim-ts-autotag',
     lazy = true,
-    -- config = function() require"nvim-treesitter.configs".setup {autotag = {enable = true}} end
+    config = function()
+      require('nvim-treesitter.configs').setup({ autotag = { enable = true } })
+    end,
   })
   -- highlight your args with Treesitter
   lang({

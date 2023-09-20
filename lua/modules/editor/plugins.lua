@@ -81,18 +81,32 @@ return function(editor)
   })
 
   -- Feel more comfortale with hop
+  -- editor({
+  --   'ggandor/leap.nvim',
+  --   keys = { '<Plug>(leap-forward-to)', '<Plug>(leap-backward-to)' },
+  --   lazy = true,
+  --   config = require('modules.editor.leap').setup,
+  --   dependencies = {
+  --     {
+  --       'ggandor/leap-ast.nvim',
+  --       lazy = true,
+  --       config = require('modules.editor.leap').ast,
+  --     },
+  --     -- { "ggandor/flit.nvim", lazy = true, module = {"flit", "leap"}, require("modules.editor.leap").flit },
+  --   },
+  -- })
   editor({
-    'ggandor/leap.nvim',
-    keys = { '<Plug>(leap-forward-to)', '<Plug>(leap-backward-to)' },
-    lazy = true,
-    config = require('modules.editor.leap').setup,
-    dependencies = {
-      {
-        'ggandor/leap-ast.nvim',
-        lazy = true,
-        config = require('modules.editor.leap').ast,
-      },
-      -- { "ggandor/flit.nvim", lazy = true, module = {"flit", "leap"}, require("modules.editor.leap").flit },
+    'folke/flash.nvim',
+    event = 'VeryLazy',
+    ---@type Flash.Config
+    opts = {},
+  -- stylua: ignore
+    keys = {
+      { "s", mode = { "n", "o", "x" }, function() require("flash").jump() end, desc = "Flash" },
+      { "S", mode = { "n", "o", "x" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
+      -- { "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
+      -- { "R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
+      -- { "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
     },
   })
 

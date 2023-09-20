@@ -12,7 +12,7 @@ end
 vim.opt.rtp:prepend(lazypath)
 require('lazy').setup({
   'liuchengxu/vim-clap',
-  cmd = { 'Clap' },
+  -- cmd = { 'Clap' },
   lazy = true,
   build = 'bash install.sh',
 })

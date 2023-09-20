@@ -5,7 +5,6 @@ local helper = require('windline.helpers')
 local b_components = require('windline.components.basic')
 local sep = helper.separators
 local state = _G.WindLine.state
-
 state.disable_title_update = false
 
 local function set_title(str)
@@ -109,6 +108,7 @@ local signature_length = 0
 local lsp_label1, lsp_label2 = '', ''
 local treesitter_context = require('modules.lang.treesitter').context
 local ts = ''
+local err
 
 local job_utils = require('wlanimation.components.loading')
 
@@ -135,7 +135,10 @@ local current_function = function(width)
     width = math.max(width / 2, 60)
   end
   if running % 5 == 1 and not state.disable_title_update then
-    ts = treesitter_context(400)
+    ts, err = pcall(treesitter_context, 400)
+    if err then
+      ts = ''
+    end
   end
 
   if ts and string.len(ts) < 3 then

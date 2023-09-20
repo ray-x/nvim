@@ -196,17 +196,17 @@ return function(tools)
   tools({ 'nanotee/zoxide.vim', cmd = { 'Z', 'Lz', 'Zi' } })
 
   cmd = 'bash install.sh'
-  if is_win then
-    cmd = ':Clap install-binary'
-  end
-  tools({
-    'liuchengxu/vim-clap',
-    cmd = { 'Clap' },
-    build = cmd,
-    init = conf.clap,
-    config = conf.clap_after,
-  })
-
+  -- if is_win then
+  --   cmd = ':Clap install-binary'
+  -- end
+  -- tools({
+  --   'liuchengxu/vim-clap',
+  --   cmd = { 'Clap' },
+  --   build = cmd,
+  --   init = conf.clap,
+  --   config = conf.clap_after,
+  -- })
+  --
   tools({
     'sindrets/diffview.nvim',
     cmd = {

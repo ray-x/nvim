@@ -18,7 +18,7 @@
 (("struct"   @keyword) (#set! conceal ""))
 (("type"     @keyword) (#set! conceal ""))
 (("interface"       @keyword) (#set! conceal "🦆"))
-(("*"       @keyword) (#set! conceal "✳️"))
+(("*"       @keyword) (#set! conceal "󰛄"))
 
 ;; Function names
 ((call_expression function: (identifier) @function (#eq? @function "append"  )) (#set! conceal "匿"))  ;;  

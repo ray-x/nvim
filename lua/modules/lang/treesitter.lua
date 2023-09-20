@@ -184,10 +184,6 @@ function textsubjects()
   })
 end
 
-local function tshopper()
-  -- keymaps
-end
-
 local treesitter_context = function(width)
   local ok, ts = pcall(require, 'nvim-treesitter')
   if not ok or not ts then
@@ -271,5 +267,4 @@ return {
   textsubjects = textsubjects,
   context = treesitter_context,
   installed = ts_ensure_installed,
-  tshopper = tshopper,
 }

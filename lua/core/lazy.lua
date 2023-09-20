@@ -138,7 +138,7 @@ function Lazyload()
   if load_ts_plugins then
     lprint('loading treesitter related plugins')
     plugins =
-      'nvim-treesitter-textobjects nvim-ts-autotag nvim-ts-context-commentstring nvim-treesitter-textsubjects nvim-treehopper nvim-treesitter-context'
+      'nvim-treesitter-textobjects nvim-ts-autotag nvim-ts-context-commentstring nvim-treesitter-textsubjects nvim-treesitter-context'
     loader(plugins)
     -- lprint(plugins .. " loaded", os.clock())
     loader('neogen')

@@ -55,9 +55,6 @@ local keys = {
   ["n|<Leader>bp"] = map_cmd("BufferLinePick"):with_noremap():with_silent(),
 
   ["n|<C-k>"] = map_cmd("v:lua.ctrl_k()"):with_silent():with_expr(),
-  ['xon|<Space>.'] = map_func(function() require('tsht').nodes()end):with_desc('tree hopper'),
-  ['xon|<Sapce>]'] = map_func(function() require('tsht').move({side = "end"})end):with_desc('tree hopper'),
-  ['xon|<Space>['] = map_func(function() require('tsht').move({side = "start"})end):with_desc('tree hopper'),
   -- Plugin QuickRun
   -- ["n|<Leader>r"]     = map_cmd("<cmd> lua require'selfunc'.run_command()"):with_noremap():with_silent(),
   -- Plugin SplitJoin
@@ -66,19 +63,21 @@ local keys = {
   ["n|Cr"] = map_plug("abolish-coerce-word"):with_noremap():with_silent():with_desc('s:snake, c:Camel,m:mix,u:upper,-:dash,.:dot,<Spc>:space case, t:titlecase'),
   ["v|Cr"] = map_plug("abolish-coerce"):with_noremap():with_silent():with_desc('s:snake, c:Camel,m:mix,u:upper,-:dash,.:dot,<Spc>:space case, t:titlecase'),
 
-  ["n|<F13>"] = map_cmd("Neotree action=show source=buffers position=left toggle=true"),
-  ["n|<S-F1>"] = map_cmd("Neotree action=show source=buffers position=left toggle=true"),
+  ["n|<F13>"] = map_cmd("NvimTreeToggle"),
+  ["n|<S-F1>"] = map_cmd("NvimTreeToggle"),
+  -- ["n|<F13>"] = map_cmd("Neotree action=show source=buffers position=left toggle=true"),
+  -- ["n|<S-F1>"] = map_cmd("Neotree action=show source=buffers position=left toggle=true"),
   -- ["n|hW"] = map_cmd("HopWordBC"),
   -- ["n|hw"] = map_cmd("HopWordAC"),
-  ["n|<Space>hl"] = map_cmd("HopLineStartAC"),
-  ["n|<Space>hL"] = map_cmd("HopLineStartBC"),
+  -- ["n|<Space>hl"] = map_cmd("HopLineStartAC"),
+  -- ["n|<Space>hL"] = map_cmd("HopLineStartBC"),
 
-  ["xon|f"] = map_cmd("lua Line_ft('f')"):with_noremap(),
-  ["xon|F"] = map_cmd("lua Line_ft('F')"):with_noremap(),
-  ["xon|t"] = map_cmd("lua Line_ft('t')"):with_noremap(),
-  ["xon|T"] = map_cmd("lua Line_ft('T')"):with_noremap(),
-  ["nx|s"] = map_cmd("lua hop1(1)"):with_silent(),
-  ["nx|S"] = map_cmd("lua hop1()"):with_silent(),
+  -- ["xon|f"] = map_cmd("lua Line_ft('f')"):with_noremap(),
+  -- ["xon|F"] = map_cmd("lua Line_ft('F')"):with_noremap(),
+  -- ["xon|t"] = map_cmd("lua Line_ft('t')"):with_noremap(),
+  -- ["xon|T"] = map_cmd("lua Line_ft('T')"):with_noremap(),
+  -- ["nx|s"] = map_cmd("lua hop1(1)"):with_silent(),
+  -- ["nx|S"] = map_cmd("lua hop1()"):with_silent(),
 
   ["inxo|<F3>"] = map_plug("leap-forward-to"):with_silent(),
   ["inxo|<C-s>"] = map_plug("leap-forward-to"):with_silent(),
@@ -94,17 +93,18 @@ local keys = {
   -- ["x|S"] = map_cmd("lua hop1()"):with_silent(),
   -- ["v|<M-s>"] = map_cmd("lua require'hop'.hint_char1()"):with_silent():with_expr(),
   -- ["n|<Space>s"] = map_cmd("HopChar2"),
+  ["n|<Leader>s"] = map_func(function() require("flash").toggle(true) end),
   -- ["n|<M-s>"] = map_cmd("HopChar2AC"),
   -- ["n|<M-S>"] = map_cmd("HopChar2BC"),
   -- ["xv|<M-s>"] = map_cmd("HopChar2AC"):with_silent(),
   -- ["xv|<M-S>"] = map_cmd("HopChar2BC"):with_silent(),
-  ["n|<Space>F"] = map_cmd("HopPattern"),
+  -- ["n|<Space>F"] = map_cmd("HopPattern"),
   -- ["n|<Space>]"] = map_cmd("HopChar1MW"),
   -- ["n|<Space>]"] = map_cmd("HopChar2MW"),
   -- clap --
-  ["n|<d-C>"] = map_cmd("Clap | startinsert"),
-  ["i|<d-C>"] = map_cmd("Clap | startinsert"):with_noremap():with_silent(),
-  ["n|<Leader>df"] = map_cmd("Clap dumb_jump ++query=<cword> | startinsert"),
+  -- ["n|<d-C>"] = map_cmd("Clap | startinsert"),
+  -- ["i|<d-C>"] = map_cmd("Clap | startinsert"):with_noremap():with_silent(),
+  -- ["n|<Leader>df"] = map_cmd("Clap dumb_jump ++query=<cword> | startinsert"),
   ["n|<F9>"] = map_func(function()
     if vim.o.ft == 'go' then
       return vim.cmd('GoBreakToggle')
@@ -257,47 +257,47 @@ _G.hop1 = function(ac)
   end
 end
 
-_G.Line_ft = function(a)
-  if vim.fn.mode() == 's' then
-    return vim.fn.input(a)
-  end
-  if vim.fn.empty(vim.fn.reg_recording()) == 0 then
-    return vim.api.nvim_feedkeys(a, 'n', true)
-  end
-  -- check and load hop
-  local loaded, hop = pcall(require, 'hop')
-  if not loaded or not hop.initialized then
-    loaded, hop = pcall(require, 'hop')
-  end
-  if a == 'f' then
-    require('hop').hint_char1({
-      direction = require('hop.hint').HintDirection.AFTER_CURSOR,
-      current_line_only = true,
-    })
-  end
-  if a == 'F' then
-    require('hop').hint_char1({
-      direction = require('hop.hint').HintDirection.BEFORE_CURSOR,
-      current_line_only = true,
-    })
-  end
-
-  if a == 't' then
-    require('hop').hint_char1({
-      direction = require('hop.hint').HintDirection.AFTER_CURSOR,
-      current_line_only = true,
-      hint_offset = -1,
-    })
-  end
-  if a == 'T' then
-    require('hop').hint_char1({
-      direction = require('hop.hint').HintDirection.BEFORE_CURSOR,
-      current_line_only = true,
-      hint_offset = 1,
-    })
-  end
-end
-
+-- _G.Line_ft = function(a)
+--   if vim.fn.mode() == 's' then
+--     return vim.fn.input(a)
+--   end
+--   if vim.fn.empty(vim.fn.reg_recording()) == 0 then
+--     return vim.api.nvim_feedkeys(a, 'n', true)
+--   end
+--   -- check and load hop
+--   local loaded, hop = pcall(require, 'hop')
+--   if not loaded or not hop.initialized then
+--     loaded, hop = pcall(require, 'hop')
+--   end
+--   if a == 'f' then
+--     require('hop').hint_char1({
+--       direction = require('hop.hint').HintDirection.AFTER_CURSOR,
+--       current_line_only = true,
+--     })
+--   end
+--   if a == 'F' then
+--     require('hop').hint_char1({
+--       direction = require('hop.hint').HintDirection.BEFORE_CURSOR,
+--       current_line_only = true,
+--     })
+--   end
+--
+--   if a == 't' then
+--     require('hop').hint_char1({
+--       direction = require('hop.hint').HintDirection.AFTER_CURSOR,
+--       current_line_only = true,
+--       hint_offset = -1,
+--     })
+--   end
+--   if a == 'T' then
+--     require('hop').hint_char1({
+--       direction = require('hop.hint').HintDirection.BEFORE_CURSOR,
+--       current_line_only = true,
+--       hint_offset = 1,
+--     })
+--   end
+-- end
+--
 vim.cmd([[command! -nargs=*  DebugOpen lua require"modules.lang.dap".prepare()]])
 vim.cmd([[command! -nargs=*  Format lua vim.lsp.buf.format({async=true}) ]])
 vim.cmd([[command! -nargs=*  HpoonClear lua require"harpoon.mark".clear_all()]])
