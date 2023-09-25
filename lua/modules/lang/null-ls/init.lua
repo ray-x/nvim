@@ -5,8 +5,9 @@ return {
     local diagnostics = null_ls.builtins.diagnostics
     local actions = null_ls.builtins.code_actions
     local sources = {
-      null_ls.builtins.formatting.autopep8,
+      -- null_ls.builtins.formatting.autopep8,
       null_ls.builtins.formatting.black,
+      null_ls.builtins.formatting.isort,
       null_ls.builtins.formatting.rustfmt,
       null_ls.builtins.diagnostics.yamllint,
       null_ls.builtins.code_actions.gitsigns,
@@ -233,7 +234,7 @@ return {
       end,
       on_attach = function(client)
         if client.server_capabilities.documentFormatting then
-          vim.cmd('autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()')
+          vim.cmd('autocmd BufWritePost <buffer> lua vim.lsp.buf.formatting_sync()')
         end
       end,
     }

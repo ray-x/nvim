@@ -41,7 +41,7 @@ local function load_options()
     -- smarttab       = true;
     smartindent    = true;
     shiftround     = true;
-    lazyredraw     = true;
+    -- lazyredraw     = true;
     -- timeout        = true;
     -- ttimeout       = true;
     timeoutlen     = 500;
@@ -103,7 +103,7 @@ local function load_options()
     textwidth      = 120, -- wrap lines at 120 chars. 80 is somewaht antiquated with nowadays displays.
     hlsearch       = true, -- Highlight found searches
     -- showcmd     = false;
-    -- cmdheight   = 0,
+    cmdheight   = 0,
     autowrite      = true, -- Automatically save before :next, :make etc.
     autoread       = true, -- Automatically read changed files
     breakindent    = true, -- Make it so that long lines wrap smartly
@@ -149,6 +149,8 @@ local function load_options()
     vim.g.python3_host_prog = '/usr/local/bin/python3'
   elseif global.is_linux then
     vim.g.python3_host_prog = '/usr/bin/python3'
+  elseif global.is_mingw then
+    vim.g.python3_host_prog = 'C:\\msys64\\mingw64\\bin\\python3.exe'
   else
     -- windows
     vim.g.python3_host_prog = 'C:\\Python311\\python.exe'

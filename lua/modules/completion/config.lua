@@ -64,12 +64,6 @@ function config.nvim_cmp()
     table.insert(sources, { name = 'vim-dadbod-completion' })
   end
 
-  if vim.o.ft == 'norg' then
-    table.insert(sources, { name = 'neorg' })
-    table.insert(sources, { name = 'spell' })
-    table.insert(sources, { name = 'look' })
-  end
-
   if vim.o.ft == 'org' then
     table.insert(sources, { name = 'org' })
     table.insert(sources, { name = 'spell' })

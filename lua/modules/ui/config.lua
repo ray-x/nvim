@@ -64,12 +64,27 @@ function config.noice()
     cmdline = {
       enabled = true,
       view = 'cmdline',
-      -- opts = { buf_options = { filetype = "vim" } }, -- enable syntax highlighting in the cmdline
-      -- icons = {
-      --   ["/"] = { icon = " ", hl_group = "DiagnosticWarn" },
-      --   ["?"] = { icon = " ", hl_group = "DiagnosticWarn" },
-      --   [":"] = { icon = " ", hl_group = "DiagnosticInfo", firstc = false },
-      -- },
+      opts = { buf_options = { filetype = 'vim' } }, -- enable syntax highlighting in the cmdline
+      format = {
+        -- conceal = false,
+        -- conceal: (default=true) This will hide the text in the cmdline that matches the pattern.
+        -- view: (default is cmdline view)
+        -- opts: any options passed to the view
+        -- icon_hl_group: optional hl_group for the icon
+        -- title: set to anything or empty string to hide
+        cmdline = { pattern = '^:', icon = '', lang = 'vim' },
+        search_down = { kind = 'search', pattern = '^/', icon = '󰿟󰶹', lang = 'regex' },
+        search_up = { kind = 'search', pattern = '^%?', icon = '󰶼', lang = 'regex' },
+        filter = { pattern = '^:%s*!', icon = '$', lang = 'bash' },
+        lua = {
+          pattern = { '^:%s*lua%s+', '^:%s*lua%s*=%s*', '^:%s*=%s*' },
+          icon = '',
+          lang = 'lua',
+        },
+        help = { pattern = '^:%s*he?l?p?%s+', icon = '' },
+        input = {}, -- Used by input()
+        -- lua = false, -- to disable a format, set to `false`
+      },
     },
     messages = {
       enabled = false,
@@ -81,7 +96,7 @@ function config.noice()
       progress = {
         enabled = false,
       },
-      hover = {enabled = false},
+      hover = { enabled = false },
       signature = {
         enabled = false,
       },

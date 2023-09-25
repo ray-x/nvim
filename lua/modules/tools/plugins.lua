@@ -84,7 +84,6 @@ return function(tools)
 
   tools({
     'nvim-neotest/neotest',
-    lazy = true,
     dependencies = {
       {
         'haydenmeade/neotest-jest',
@@ -97,7 +96,7 @@ return function(tools)
     cmd = { 'Neotest', 'NeotestFile', 'NeoResult' },
   })
 
-  tools({ 'nvim-neotest/neotest-plenary' })
+  tools({ 'nvim-neotest/neotest-plenary', lazy = true })
   tools({ 'will133/vim-dirdiff', cmd = { 'DirDiff' } })
 
   tools({
@@ -109,7 +108,7 @@ return function(tools)
 
   tools({
     'ThePrimeagen/git-worktree.nvim',
-    event = { 'CmdwinEnter', 'CmdlineEnter' },
+    event = {'VeryLazy'},
     config = conf.worktree,
   })
 
@@ -134,14 +133,12 @@ return function(tools)
 
   tools({
     'kamykn/spelunker.vim',
-    lazy = true,
     cmd = { 'Spell' },
     init = conf.spelunker,
     config = conf.spellcheck,
   })
   tools({
     'rhysd/vim-grammarous',
-    lazy = true,
     cmd = { 'GrammarousCheck' },
     ft = { 'markdown', 'txt' },
     init = conf.grammarous,
@@ -153,7 +150,6 @@ return function(tools)
     dependencies = { 'godlygeek/tabular' },
     cmd = { 'Toc' },
     init = conf.markdown,
-    lazy = true,
   })
 
   local cmd = [[sh -c "cd app && yarn install"]]
@@ -167,7 +163,6 @@ return function(tools)
     cmd = { 'MarkdownPreview' },
     init = conf.mkdp,
     build = cmd,
-    lazy = true,
   })
 
   tools({
@@ -307,7 +302,7 @@ return function(tools)
     },
   })
 
-  tools({ 'rmagatti/auto-session', config = conf.session, lazy = true })
+  tools({ 'rmagatti/auto-session', config = conf.session, event= 'VeryLazy' })
 
   tools({
     'rmagatti/session-lens',

@@ -40,14 +40,6 @@ function options:load_options()
   for name, value in pairs(self.window_local) do
     vim.wo[name] = value
   end
-
-  local global = require('core.global')
-  local win = global.is_windows
-  if not win then
-    vim.g.python3_host_prog = '/usr/bin/python3'
-  else
-    vim.notify('please setup python3')
-  end
   -- vim.g.python_host_prog = ""
 end
 

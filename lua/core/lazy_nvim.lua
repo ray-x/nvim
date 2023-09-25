@@ -16,7 +16,7 @@ function lazy.add(repo)
   table.insert(lazy.plug, repo)
 end
 
-function lazy:load_modules_lazyages()
+function lazy:load_modules_lazy()
   local modules_dir = helper.get_config_path() .. sep .. 'lua' .. sep .. 'modules'
   self.repos = {}
 
@@ -36,7 +36,9 @@ function lazy:load_modules_lazyages()
       f = string.gsub(f, '/', '\\')
     end
     local _, pos = f:find(modules_dir)
-    f = f:sub(pos - 6, #f - 4)
+    if pos then
+      f = f:sub(pos - 6, #f - 4)
+    end
     lprint(f) -- modules/completion/plugins ...
     if not vim.tbl_contains(disable_modules, f) then
       local plugins = require(f)
@@ -58,7 +60,7 @@ function lazy:boot_strap()
     lockfile = helper.get_data_path() .. sep .. 'lazy-lock.json',
     dev = { path = win and vim.fn.expand('$HOME') .. '\\github\\ray-x' or '~/github/ray-x' },
   }
-  self:load_modules_lazyages()
+  self:load_modules_lazy()
   lz.setup(self.plug, opts)
 end
 

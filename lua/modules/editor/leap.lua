@@ -19,7 +19,7 @@ local function get_line_starts(winid)
     end
   end
   -- Sort them by vertical screen distance from cursor.
-  local cur_screen_row = vim.fn.screenpos(winid, cur_line, 1)['row']
+  local cur_srreen_row = vim.fn.screenpos(winid, cur_line, 1)['row']
   local function screen_rows_from_cur(t)
     local t_screen_row = vim.fn.screenpos(winid, t.pos[1], t.pos[2])['row']
     return math.abs(cur_screen_row - t_screen_row)

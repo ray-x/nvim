@@ -65,7 +65,53 @@ return function(lang)
     'chrisgrieser/nvim-puppeteer',
     lazy = true,
   })
-  lang({'dccsillag/magma-nvim', lazy = true, build = 'UpdateRemotePlugins'})
+  -- ipython
+  lang({
+    'dccsillag/magma-nvim',
+    ft = 'python',
+    build = 'UpdateRemotePlugins',
+    lazy = false,
+    cmd = {
+      'MagmaRun',
+      'MagmaRunCell',
+      'MagmaRunCellAndMove',
+      'MagmaRunCellAndStay',
+      'MagmaRunCellAndInsert',
+      'MagmaRunCel',
+      'MagmaInit',
+    },
+    keys = {
+      {
+        '<leader>mi',
+        '<cmd>MagmaInit python3<CR>',
+        desc = 'This command initializes a runtime for the current buffer.',
+      },
+      {
+        '<leader>mo',
+        '<cmd>MagmaEvaluateOperator<CR>',
+        desc = 'Evaluate the text given by some operator.',
+      },
+      { '<leader>ml', '<cmd>MagmaEvaluateLine<CR>', desc = 'Evaluate the current line.' },
+      { '<leader>mv', '<cmd>MagmaEvaluateVisual<CR>', desc = 'Evaluate the selected text.' },
+      {
+        '<leader>mc',
+        '<cmd>MagmaEvaluateOperator<CR>',
+        desc = 'Reevaluate the currently selected cell.',
+      },
+      {
+        '<leader>mr',
+        '<cmd>MagmaRestart!<CR>',
+        desc = 'Shuts down and restarts the current kernel.',
+      },
+      {
+        '<leader>mx',
+        '<cmd>MagmaInterrupt<CR>',
+        desc = 'Interrupts the currently running cell and does nothing if not cell is running.',
+      },
+    },
+  })
+  lang({ 'metakirby5/codi.vim', ft = { 'python', 'javascript' }, cmd = { 'Codi', 'CodiNew' } })
+  lang({ 'Vigemus/iron.nvim', ft = 'python', config = conf.iron })
   lang({ 'yardnsm/vim-import-cost', cmd = 'ImportCost', lazy = true })
 
   -- lang['scalameta/nvim-metals'] = {dependencies = {"nvim-lua/plenary.nvim"}}
@@ -319,20 +365,20 @@ return function(lang)
     -- Highlight also non-parentheses delimiters, boolean or table: lang -> boolean
     -- cmd = "Rainbow",
     module = false,
-    config = function()
-      local fsize = vim.fn.getfsize(vim.fn.expand('%:p:f'))
-
-      local enable = true
-      if vim.fn.line('$') > 3000 or fsize > 100000 then
-        lprint(' rainbow disabled', fsize)
-        enable = false
-        return
-      end
-
-      require('nvim-treesitter.configs').setup({
-        rainbow = { enable = enable, extended_mode = enable },
-      })
-    end,
+    -- config = function()
+    --   local fsize = vim.fn.getfsize(vim.fn.expand('%:p:f'))
+    --
+    --   local enable = true
+    --   if vim.fn.line('$') > 3000 or fsize > 100000 then
+    --     lprint(' rainbow disabled', fsize)
+    --     enable = false
+    --     return
+    --   end
+    --
+    --   require('nvim-treesitter.configs').setup({
+    --     rainbow = { enable = enable, extended_mode = enable },
+    --   })
+    -- end,
   })
 
   lang({

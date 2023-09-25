@@ -71,7 +71,6 @@ function Lazyload()
   require('core.helper').init()
 
   lprint('lazy core plugins start', vim.loop.now() - start)
-  -- loader('impatient.nvim')
   createdir()
   lprint('I am lazy')
   local disable_ft = {
@@ -178,21 +177,19 @@ vim.defer_fn(function()
   lprint('lazy telescope start', vim.loop.now() - start)
   vim.cmd('tabdo windo set relativenumber')
   vim.cmd('highlight clear ColorColumn')
-  loader('virtcolumn.nvim')
   require('vscripts.tools')
   vim.cmd("command! Gram lua require'modules.tools.config'.grammcheck()")
 
-  loader('windline.nvim')
   require('modules.ui.eviline')
   lprint('lazy wlfloat loaded', vim.loop.now() - start)
 end, lazy_timer + 5)
 --
 vim.defer_fn(function()
   require('overwrite')
-  loader('telescope.nvim')
+  -- loader('telescope.nvim')
   -- load from
   -- loader("telescope-zoxide project.nvim nvim-neoclip.lua")
-  loader('harpoon')
+  -- loader('harpoon')
   -- loader('nvim-notify')
   require('modules.ui.notify').setup()
   -- vim.notify = require('notify')
@@ -206,7 +203,7 @@ vim.defer_fn(function()
     require('modules.editor.hydra').hydra_git()
   end
 
-  loader('statuscol.nvim')
+  -- loader('statuscol.nvim')
   -- lprint("all done", os.clock())
   if vim.fn.executable(vim.g.python3_host_prog) == 0 then
     print('file not find, please update path setup', vim.g.python3_host_prog)
@@ -222,7 +219,6 @@ if plugin_folder() == [[~/github/ray-x/]] then
 end
 require('core.colorscheme')
 vim.defer_fn(function()
-  loader('auto-session')
   -- require('mini.sessions').setup({
   -- autoread = true,
   -- Whether to write current session before quitting Neovim

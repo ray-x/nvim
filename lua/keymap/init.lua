@@ -76,7 +76,7 @@ local plug_map = {
     require('utils.telescope').grep_string_cursor_raw()
   end):with_desc('grep_string_cursor_raw'),
   ['in|<M-F>'] = map_func(function()
-    vim.cmd('Clap dumb_jump ++query=<cword> | startinsert')
+    -- vim.cmd('Clap dumb_jump ++query=<cword> | startinsert')
   end):with_desc('grep_string_cursor_raw'),
   ['in|<d-F>'] = map_func(function()
     require('utils.telescope').grep_string_cursor()

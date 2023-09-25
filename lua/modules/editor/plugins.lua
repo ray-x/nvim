@@ -358,14 +358,6 @@ return function(editor)
   })
 
   editor({
-    'nvim-neorg/neorg',
-    lazy = true,
-    config = conf.neorg,
-    ft = 'norg',
-    dependencies = { 'nvim-neorg/neorg-telescope', ft = { 'norg' } },
-  })
-
-  editor({
     'nvim-orgmode/orgmode',
     lazy = true,
     config = conf.orgmode,

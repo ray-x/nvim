@@ -9,6 +9,7 @@ return function(ui)
   ui({
     'windwp/windline.nvim',
     -- event = "UIEntwindlineer",
+    event = 'VeryLazy',
     config = conf.windline,
     -- dependencies = {'kyazdani42/nvim-web-devicons'},
     lazy = true,
@@ -17,14 +18,14 @@ return function(ui)
   ui({ 'lambdalisue/glyph-palette.vim' })
   ui({
     'rcarriga/nvim-notify',
-    lazy = true,
+    event = 'VeryLazy',
     -- event = "User LoadLazyPlugin",
     -- config = conf.notify,
   })
 
   ui({
     'luukvbaal/statuscol.nvim',
-    lazy = true,
+    event = 'VeryLazy',
     -- event = "User LoadLazyPlugin",
     config = function()
       -- require("statuscol").setup({ setlazy = true })
@@ -33,20 +34,20 @@ return function(ui)
   })
 
   -- feel a bit laggy
-  ui({
-    'folke/noice.nvim',
-    lazy = true,
-    -- event = "User LoadLazyPlugin",
-    dependencies = { 'MunifTanjim/nui.nvim', lazy = true },
-    config = conf.noice,
-  })
+  -- ui({
+  --   'folke/noice.nvim',
+  --   event = 'VeryLazy',
+  --   -- event = "User LoadLazyPlugin",
+  --   dependencies = { 'MunifTanjim/nui.nvim', lazy = true },
+  --   config = conf.noice,
+  -- })
 
   ui({
     'akinsho/bufferline.nvim',
     config = conf.nvim_bufferline,
+    event = 'VeryLazy',
     -- after = {"aurora"}
     -- dependencies = {'kyazdani42/nvim-web-devicons'}
-    lazy = true,
   })
 
   ui({
@@ -84,7 +85,7 @@ return function(ui)
   -- Tint inactive windows in Neovim using window-local highlight namespaces.
   ui({
     'levouh/tint.nvim',
-    lazy = true,
+    event = 'VeryLazy',
     config = function()
       require('tint').setup({
         bg = true, -- Tint background portions of highlight groups
@@ -114,7 +115,6 @@ return function(ui)
   -- high performance version of "lukas-reineke/virt-column.nvim",
   ui({
     'xiyaowong/virtcolumn.nvim',
-    lazy = true,
     event = { 'CursorMoved', 'CursorMovedI' },
     init = function()
       vim.g.virtcolumn_char = '▕' -- char to display the line
@@ -173,20 +173,20 @@ return function(ui)
 
   -- really good one, only issue is dependency ...
   ui({ 'romgrk/fzy-lua-native', lazy = true })
-  ui({
-    'gelguy/wilder.nvim', -- I need to decommitions this
-    dependencies = {
-      { 'romgrk/fzy-lua-native' },
-      -- {'nixprime/cpsm', run='UpdateRemotePlugins'}
-    },
-    lazy = true,
-    build = function()
-      vim.cmd([[packadd wilder.nvim]])
-      vim.cmd([[silent UpdateRemotePlugins]])
-    end,
-    -- event = { 'CmdwinEnter', 'CmdlineEnter' },
-    config = conf.wilder,
-  })
+  -- ui({
+  --   'gelguy/wilder.nvim', -- I need to decommitions this
+  --   dependencies = {
+  --     { 'romgrk/fzy-lua-native' },
+  --     -- {'nixprime/cpsm', run='UpdateRemotePlugins'}
+  --   },
+  --   lazy = true,
+  --   build = function()
+  --     vim.cmd([[packadd wilder.nvim]])
+  --     vim.cmd([[silent UpdateRemotePlugins]])
+  --   end,
+  --   -- event = { 'CmdwinEnter', 'CmdlineEnter' },
+  --   config = conf.wilder,
+  -- })
 
   ui({ 'stevearc/dressing.nvim', lazy = true })
   -- disable for now as a blacking issue with session

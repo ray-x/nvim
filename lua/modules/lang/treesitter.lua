@@ -147,13 +147,6 @@ local treesitter_ref = function()
     autotag = { enable = enable },
   })
   local parser_config = require('nvim-treesitter.parsers').get_parser_configs()
-  parser_config.norg = {
-    install_info = {
-      url = 'https://github.com/nvim-neorg/tree-sitter-norg',
-      files = { 'src/parser.c', 'src/scanner.cc' },
-      branch = 'main',
-    },
-  }
   parser_config.sql = {
     install_info = {
       url = 'https://github.com/m-novikov/tree-sitter-sql',
