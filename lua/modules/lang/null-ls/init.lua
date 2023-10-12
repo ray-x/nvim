@@ -73,7 +73,7 @@ return {
 
     if exist('revive') then
       -- revivie null default setup is ridiculous
-      local revive_conf = vim.fn.findfile(os.getenv('HOME') .. '/.config/revive.toml')
+      local revive_conf = vim.fn.findfile(os.getenv('HOME') or os.getenv('userprofile') .. '/.config/revive.toml')
       local revive_args = { '-formatter', 'json', './...' }
       if revive_conf then
         revive_args = { '-formatter', 'json', '-config', revive_conf, './...' }

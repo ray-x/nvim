@@ -1,4 +1,5 @@
 local global = require('core.global')
+local sep = require('core.global').path_sep
 
 local function bind_option(options)
   for k, v in pairs(options) do
@@ -30,11 +31,11 @@ local function load_options()
     writebackup    = true;
     undofile       = true;
     swapfile       = false;
-    directory      = global.cache_dir .. "swag/";
-    undodir        = global.cache_dir .. "undo/";
-    backupdir      = global.cache_dir .. "backup/";
-    viewdir        = global.cache_dir .. "view/";
-    spellfile      = global.cache_dir .. "spell/en.uft-8.add";
+    directory      = global.cache_dir .. sep .. "swag" .. sep;
+    undodir        = global.cache_dir .. sep .. "undo" .. sep;
+    backupdir      = global.cache_dir .. sep .. "backup" .. sep;
+    viewdir        = global.cache_dir .. sep .. "view" .. sep;
+    -- spellfile      = global.cache_dir .. sep .. "spell" .. sep .. "en.uft-8.add";
     history        = 4000;
     shada          = "!,'300,<50,@100,s10,h";
     backupskip     = "/tmp/*,$TMPDIR/*,$TMP/*,$TEMP/*,*/shm/*,/private/var/*,.vault.vim";
@@ -153,7 +154,7 @@ local function load_options()
     vim.g.python3_host_prog = 'C:\\msys64\\mingw64\\bin\\python3.exe'
   else
     -- windows
-    vim.g.python3_host_prog = 'C:\\Python311\\python.exe'
+    vim.g.python3_host_prog = 'C:\\Python312\\python.exe'
     if vim.fn.executable(vim.g.python3_host_prog)  == 0 then
       local p = vim.fn.system('where python')
       if p ~= '' then

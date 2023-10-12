@@ -119,7 +119,7 @@ _G.plugin_folder = function()
   if Plugin_folder then
     return Plugin_folder
   end
-  local host = os.getenv('HOST_NAME')
+  local host = os.getenv('HOST_NAME') or vim.fn.hostname()
   if host and host:lower():find('ray') then
     Plugin_folder = [[~/github/ray-x/]] -- vim.fn.expand("$HOME") .. '/github/'
   else
