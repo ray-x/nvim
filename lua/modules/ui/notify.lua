@@ -107,13 +107,15 @@ vim.api.nvim_set_hl(0, 'NotifyBackground', { fg = '#8fafef', bg = '#101118' })
 -- printInfo( 2, msg)
 
 local function notify(msg, level, opts, no_cache)
-  level = level or vim.log.levels.INFO
+  if level == vim.NIL or level == nil then
+    level = vim.log.levels.INFO
+  end
   if type(level) == 'string' then
     -- an idiot put the level in string
     level = vim.log.levels[level:upper()] or vim.log.levels.INFO
   end
   opts = opts or {}
-  if level >= config.min_level then
+  if level >= (config.min_level or vim.log.levels.INFO) then
     StatusModule.push('nvim', { mandat = msg, title = opts.title, icon = opts.icon })
     if not no_cache then
       table.insert(notify_msg_cache, { msg = msg, level = level, opts = opts })

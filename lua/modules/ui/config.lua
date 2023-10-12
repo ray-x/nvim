@@ -15,48 +15,27 @@ local day = daylight()
 function config.windline() end
 
 function config.notify()
-  --   require('notify').setup({
-  --     -- Animation style (see below for details)
-  --     stages = 'fade_in_slide_out', -- "slide",
-  --
-  --     -- Function called when a new window is opened, use for changing win settings/config
-  --     on_open = nil,
-  --
-  --     -- Function called when a window is closed
-  --     on_close = nil,
-  --
-  --     -- Render function for notifications. See notify-render()
-  --     render = 'default',
-  --
-  --     -- Default timeout for notifications
-  --     timeout = 5000,
-  --
-  --     -- For stages that change opacity this is treated as the highlight behind the window
-  --     -- Set this to either a highlight group or an RGB hex value e.g. "#000000"
-  --     background_colour = function()
-  --       local group_bg = vim.fn.synIDattr(vim.fn.synIDtrans(vim.fn.hlID('Normal')), 'bg#')
-  --       if group_bg == '' or group_bg == 'none' then
-  --         group_bg = vim.fn.synIDattr(vim.fn.synIDtrans(vim.fn.hlID('Float')), 'bg#')
-  --         if group_bg == '' or group_bg == 'none' then
-  --           return '#000000'
-  --         end
-  --       end
-  --       return group_bg
-  --     end,
-  --
-  --     -- Minimum width for notification windows
-  --     minimum_width = 50,
-  --
-  --     -- Icons for the different levels
-  --     icons = {
-  --       ERROR = '',
-  --       WARN = '',
-  --       INFO = '',
-  --       DEBUG = '',
-  --       TRACE = '✎',
-  --     },
-  --   })
-  --   require('telescope').load_extension('notify')
+  require('notify').setup({
+    background_colour = function()
+      local group_bg = vim.fn.synIDattr(vim.fn.synIDtrans(vim.fn.hlID('Normal')), 'bg#')
+      if group_bg == '' or group_bg == 'none' then
+        group_bg = vim.fn.synIDattr(vim.fn.synIDtrans(vim.fn.hlID('Float')), 'bg#')
+        if group_bg == '' or group_bg == 'none' then
+          return '#000000'
+        end
+      end
+      return group_bg
+    end,
+    level = vim.log.levels.WARN,
+    stages = 'fade_in_slide_out', -- "slide",
+    icons = {
+      ERROR = '',
+      WARN = '',
+      INFO = '',
+      DEBUG = '',
+      TRACE = '✎',
+    },
+  })
 end
 
 function config.noice()
@@ -550,70 +529,66 @@ end
 
 function config.blankline()
   vim.opt.termguicolors = true
-  vim.cmd([[highlight default IndentBlanklineIndent1 guifg=#E06C75 gui=nocombine]])
-  vim.cmd([[highlight default IndentBlanklineIndent2 guifg=#E5C07B gui=nocombine]])
-  vim.cmd([[highlight default IndentBlanklineIndent3 guifg=#98C379 gui=nocombine]])
-  vim.cmd([[highlight default IndentBlanklineIndent4 guifg=#56B6C2 gui=nocombine]])
-  vim.cmd([[highlight default IndentBlanklineIndent5 guifg=#61AFEF gui=nocombine]])
-  vim.cmd([[highlight default IndentBlanklineIndent6 guifg=#C678DD gui=nocombine]])
-  -- vim.opt.list = true
-  require('indent_blankline').setup({
-    enabled = true,
-    -- char = "|",
-    char_list = { '', '┊', '┆', '¦', '|', '¦', '┆', '┊', '' },
-    filetype_exclude = {
-      'help',
-      'startify',
-      'dashboard',
-      'packer',
-      'guihua',
-      'NvimTree',
-      'sidekick',
+  local highlight = {
+    'RainbowRed',
+    'RainbowOrange',
+    'RainbowYellow',
+    'RainbowGreen',
+    'RainbowViolet',
+    'RainbowBlue',
+    'RainbowCyan',
+  }
+  local hooks = require('ibl.hooks')
+  -- create the highlight groups in the highlight setup hook, so they are reset
+  -- every time the colorscheme changes
+  hooks.register(hooks.type.HIGHLIGHT_SETUP, function()
+    vim.api.nvim_set_hl(0, 'RainbowRed', { fg = '#D05C75' })
+    vim.api.nvim_set_hl(0, 'RainbowOrange', { fg = '#F1AA06' })
+    vim.api.nvim_set_hl(0, 'RainbowYellow', { fg = '#C5C01B' })
+    vim.api.nvim_set_hl(0, 'RainbowGreen', { fg = '#98C379' })
+    vim.api.nvim_set_hl(0, 'RainbowBlue', { fg = '#61AFEF' })
+    vim.api.nvim_set_hl(0, 'RainbowViolet', { fg = '#C678DD' })
+    vim.api.nvim_set_hl(0, 'RainbowCyan', { fg = '#56B6C2' })
+  end)
+
+  hooks.register(hooks.type.WHITESPACE, function(_, _, _, whitespace_tbl)
+    local indent = require('ibl.indent')
+    if whitespace_tbl[1] == indent.whitespace.INDENT then
+      whitespace_tbl[1] = indent.whitespace.SPACE
+    end
+    if
+      whitespace_tbl[1] == indent.whitespace.TAB_START
+      or whitespace_tbl[1] == indent.whitespace.TAB_START_SINGLE
+    then
+      whitespace_tbl[1] = indent.whitespace.TAB_FILL
+    end
+    return whitespace_tbl
+  end)
+  require('ibl').setup({
+    indent = {
+      highlight = highlight,
+      char = { '', '┊', '┆', '¦', '|', '¦', '┆', '┊', '' },
     },
-    show_trailing_blankline_indent = false,
-    show_first_indent_level = false,
-    buftype_exclude = { 'terminal' },
-    space_char_blankline = ' ',
-    use_treesitter = true,
-    show_current_context = true,
-    show_current_context_start = true,
-    char_highlight_list = {
-      'IndentBlanklineIndent1',
-      'IndentBlanklineIndent2',
-      'IndentBlanklineIndent3',
-      'IndentBlanklineIndent4',
-      'IndentBlanklineIndent5',
-      'IndentBlanklineIndent6',
+    whitespace = {
+      remove_blankline_trail = true,
     },
-    context_patterns = {
-      'class',
-      'return',
-      'function',
-      'method',
-      '^if',
-      'if',
-      '^while',
-      'jsx_element',
-      '^for',
-      'for',
-      '^object',
-      '^table',
-      'block',
-      'arguments',
-      'if_statement',
-      'else_clause',
-      'jsx_element',
-      'jsx_self_closing_element',
-      'try_statement',
-      'catch_clause',
-      'import_statement',
-      'operation_type',
+    scope = {
+      enabled = true,
+      char = '┃',
+      show_start = true,
     },
-    bufname_exclude = { 'README.md' },
+    exclude = {
+      buftypes = {
+        'help',
+        'startify',
+        'dashboard',
+        'packer',
+        'guihua',
+        'NvimTree',
+        'sidekick',
+      },
+    },
   })
-  -- useing treesitter instead of char highlight
-  -- vim.g.indent_blankline_char_highlight_list =
-  -- {"WarningMsg", "Identifier", "Delimiter", "Type", "String", "Boolean"}
 end
 
 function config.indentguides()
