@@ -7,7 +7,7 @@
 (("func"     @keyword) (#set! conceal ""))
 (("for"      @keyword) (#set! conceal ""))
 (("switch"   @keyword) (#set! conceal "🎮"))
-(("default"  @keyword) (#set! conceal  "󰫱"))
+(("default"  @keyword) (#set! conceal  "󰯴"))
 (("break"    @keyword.return) (#set! conceal  "⏹️"))
 (("case"     @keyword) (#set! conceal  ""))
 (("import"   @keyword) (#set! conceal  "󰶮"))
@@ -21,12 +21,12 @@
 (("*"       @keyword) (#set! conceal "󰛄"))
 
 ;; Function names
-((call_expression function: (identifier) @function (#eq? @function "append"  )) (#set! conceal "匿"))  ;;  
+((call_expression function: (identifier) @function (#eq? @function "append"  )) (#set! conceal " "))
 
 ;; type
 (((type_identifier) @type (#eq? @type "string")) (#set! conceal ""))
 (((type_identifier) @type (#eq? @type "error")) (#set! conceal ""))
-(((type_identifier) @type (#eq? @type "int")) (#set! conceal "כֿ"))
+(((type_identifier) @type (#eq? @type "int")) (#set! conceal ""))
 (((type_identifier) @type (#eq? @type "byte")) (#set! conceal ""))
 (((nil) @type (#set! conceal "🈳")))
 (((true) @type (#set! conceal "")))
@@ -39,8 +39,8 @@
 ;; identifiers
 (((identifier) @type (#eq? @type "err"     )) (#set! conceal "ε"))
 (((identifier) @type (#eq? @type "errors"     )) (#set! conceal "é"))
-(((identifier) @type (#eq? @type "request"     )) (#set! conceal "黎"))
-(((identifier) @type (#eq? @type "Request"     )) (#set! conceal "黎"))
+(((identifier) @type (#eq? @type "request"     )) (#set! conceal ""))
+(((identifier) @type (#eq? @type "Request"     )) (#set! conceal ""))
 (((identifier) @type (#eq? @type "response"     )) (#set! conceal ""))
 (((identifier) @type (#eq? @type "Response"     )) (#set! conceal ""))
 (((identifier) @field (#eq? @field "Errorf"     )) (#set! conceal "🥹"))
