@@ -398,7 +398,7 @@ return function(lang)
   })
 
   lang({
-    'jose-elias-alvarez/null-ls.nvim',
+    'nvimtools/none-ls.nvim',
     lazy = true,
     config = require('modules.lang.null-ls').config,
   })

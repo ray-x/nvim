@@ -40,7 +40,7 @@ return function(use)
       { 'hrsh7th/cmp-path', lazy = true },
       { 'hrsh7th/cmp-cmdline', lazy = true },
       -- { 'lukas-reineke/cmp-rg', lazy = true },
-      {'tzachar/cmp-fuzzy-buffer', lazy = true, dev = true, dependencies = {'tzachar/fuzzy.nvim'}},
+      {'tzachar/cmp-fuzzy-buffer', lazy = true, dependencies = {'tzachar/fuzzy.nvim'}},
       { 'dmitmel/cmp-cmdline-history', lazy = true },
       -- { "tzachar/cmp-tabnine", build = "./install.sh", lazy = true, config = conf.tabnine},
       { 'hrsh7th/cmp-copilot', lazy = true },

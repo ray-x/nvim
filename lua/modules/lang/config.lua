@@ -222,7 +222,7 @@ function config.navigator()
         'terraform_lsp',
         'terraformls',
       }, -- a list of lsp not enable auto-format (e.g. if you using efm or vim-codeformat etc)
-      disable_lsp = { 'clangd', 'rust_analyzer', 'tsserver' }, --e.g {denols} , use typescript.nvim
+      disable_lsp = { 'rust_analyzer', 'tsserver' }, --e.g {denols} , use typescript.nvim
       -- code_lens = true,
       disply_diagnostic_qf = false, -- update diagnostic in quickfix window
       denols = { filetypes = {} },
@@ -251,7 +251,7 @@ function config.navigator()
           client.server_capabilities.documentFormattingProvider = false -- efm
         end,
       },
-      ccls = { filetypes = {} }, -- using clangd
+      -- ccls = { filetypes = {} }, -- using clangd
       -- clangd = { filetypes = {} }, -- using clangd
 
       jedi_language_server = { filetypes = {} }, --another way to disable lsp
