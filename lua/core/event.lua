@@ -60,7 +60,7 @@ function autocmd.load_autocmds()
       -- {"UIEnter", "*", ":silent! :lua require('modules.lang.config').syntax_folding()"},
       { 'BufReadPre', '*', ":silent! :lua require('modules.lang.config').nvim_treesitter()" },
       -- {"BufWritePre", "*.js,*.rs,*.lua", ":FormatWrite"},
-      { 'BufWritePost', '*', ":silent! :lua require('harpoon.mark').add_file()" },
+      -- { 'BufWritePost', '*', ":silent! :lua require('harpoon.mark').add_file()" },
     },
 
     wins = {

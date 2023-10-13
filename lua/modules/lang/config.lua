@@ -412,7 +412,7 @@ end
 
 function config.context_vt()
   require('nvim_context_vt').setup({
-    enabled = true,
+    enabled = false,
 
     -- Override default virtual text prefix
     -- Default: '-->'

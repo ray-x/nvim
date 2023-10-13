@@ -144,9 +144,9 @@ function Lazyload()
     loader('refactoring.nvim')
     loader('indent-blankline.nvim')
     -- loader('hlargs.nvim')
-    if vim.fn.line('$') < 3000 then
-      loader('nvim-ts-rainbow2')
-    end
+    -- if vim.fn.line('$') < 3000 then
+    --   loader('nvim-ts-rainbow2')
+    -- end
 
     lprint('ts loaded')
   end

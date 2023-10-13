@@ -19,11 +19,6 @@ return function(lang)
   })
   -- lang({ 'mfussenegger/nvim-treehopper', lazy = true, config = ts.tshopper, module = false })
 
-  -- lang['ziontee113/syntax-tree-surfer'] = {
-  --   lazy = true,
-  --   config = conf.surfer,
-  -- }
-
   lang({
     'jose-elias-alvarez/typescript.nvim',
     lazy = true,
@@ -332,11 +327,11 @@ return function(lang)
   lang({
     'nvim-treesitter/nvim-treesitter-context',
     lazy = true,
-    -- event = { 'CursorHold', 'WinScrolled' },
+    event = { 'CursorHold', 'WinScrolled' },
     module = false,
     config = function()
       require('treesitter-context').setup({
-        enable = true, -- Enable this plugin (Can be enabled/disabled later via commands)
+        enable = false, -- Enable this plugin (Can be enabled/disabled later via commands)
         max_lines = 2, -- How many lines the window should span. Values <= 0 mean no limit.
         trim_scope = 'outer', -- Which context lines to discard if `max_lines` is exceeded. Choices: 'inner', 'outer'
         mode = 'topline', -- Line used to calculate context. Choices: 'cursor', 'topline'
@@ -357,29 +352,28 @@ return function(lang)
     end,
   })
 
-  lang({
-    -- 'p00f/nvim-ts-rainbow',
-    'HiPhish/nvim-ts-rainbow2',
-    lazy = true,
-    -- slow... disable it for now
-    -- Highlight also non-parentheses delimiters, boolean or table: lang -> boolean
-    -- cmd = "Rainbow",
-    module = false,
-    -- config = function()
-    --   local fsize = vim.fn.getfsize(vim.fn.expand('%:p:f'))
-    --
-    --   local enable = true
-    --   if vim.fn.line('$') > 3000 or fsize > 100000 then
-    --     lprint(' rainbow disabled', fsize)
-    --     enable = false
-    --     return
-    --   end
-    --
-    --   require('nvim-treesitter.configs').setup({
-    --     rainbow = { enable = enable, extended_mode = enable },
-    --   })
-    -- end,
-  })
+  -- lang({
+  --   'HiPhish/nvim-ts-rainbow2',
+  --   lazy = true,
+  --   -- slow... disable it for now
+  --   -- Highlight also non-parentheses delimiters, boolean or table: lang -> boolean
+  --   -- cmd = "Rainbow",
+  --   module = false,
+  --   -- config = function()
+  --   --   local fsize = vim.fn.getfsize(vim.fn.expand('%:p:f'))
+  --   --
+  --   --   local enable = true
+  --   --   if vim.fn.line('$') > 3000 or fsize > 100000 then
+  --   --     lprint(' rainbow disabled', fsize)
+  --   --     enable = false
+  --   --     return
+  --   --   end
+  --   --
+  --   --  require('nvim-treesitter.configs').setup({
+  --   --    rainbow = { enable = false, extended_mode = false },
+  --   --  })
+  --   -- end,
+  -- })
 
   lang({
     'folke/trouble.nvim',

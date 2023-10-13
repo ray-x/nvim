@@ -112,22 +112,22 @@ return function(tools)
     config = conf.worktree,
   })
 
-  tools({
-    'ThePrimeagen/harpoon',
-    lazy = true,
-    config = function()
-      require('harpoon').setup({
-        global_settings = {
-          save_on_toggle = false,
-          save_on_change = true,
-          enter_on_sendcmd = false,
-          tmux_autoclose_windows = false,
-          excluded_filetypes = { 'harpoon' },
-        },
-      })
-      require('telescope').load_extension('harpoon')
-    end,
-  })
+  -- tools({
+  --   'ThePrimeagen/harpoon',
+  --   -- lazy = true,
+  --   event = { 'InsertEnter' },
+  --   config = function()
+  --     require('harpoon').setup({
+  --       global_settings = {
+  --         save_on_toggle = false,
+  --         save_on_change = true,
+  --         tmux_autoclose_windows = false,
+  --         excluded_filetypes = { 'harpoon' },
+  --       },
+  --     })
+  --     require('telescope').load_extension('harpoon')
+  --   end,
+  -- })
 
   tools({ 'TimUntersberger/neogit', cmd = { 'Neogit' }, config = conf.neogit })
 
@@ -206,7 +206,7 @@ return function(tools)
     'sindrets/diffview.nvim',
     cmd = {
       'DiffviewOpen',
-      'DiffviewFileHistory',
+      'DiffviewFilepistory',
       'DiffviewFocusFiles',
       'DiffviewToggleFiles',
       'DiffviewRefresh',
