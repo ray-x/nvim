@@ -157,7 +157,7 @@ function Lazyload()
   )
 
   if load_lsp and use_nulls() then
-    loader('null-ls.nvim')
+    loader('none-ls.nvim')
   end
 
   loader('bufferline.nvim')
