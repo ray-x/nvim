@@ -73,7 +73,7 @@ return {
         filetypes = { 'markdown', 'tex' },
         command = 'proselint',
         args = { '--json' },
-      }),
+      }))
     end
     -- stylua: ignore
     if exist('shellcheck') then
