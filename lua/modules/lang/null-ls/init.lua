@@ -13,34 +13,8 @@ return {
       null_ls.builtins.code_actions.gitsigns,
       null_ls.builtins.code_actions.proselint,
       null_ls.builtins.code_actions.refactoring,
-      null_ls.builtins.diagnostics.cspell.with({
-        filetypes = { 'markdown', 'text', 'txt', 'org' },
-      }),
-      null_ls.builtins.code_actions.cspell.with({
-        filetypes = { 'markdown', 'text', 'txt', 'org' },
-      }),
       null_ls.builtins.diagnostics.fish,
       -- hover.dictionary,
-      diagnostics.misspell.with({
-        filetypes = { 'markdown', 'text', 'txt', 'org' },
-        args = { '$FILENAME' },
-      }),
-      diagnostics.write_good.with({
-        filetypes = { 'markdown', 'tex', '', 'org' },
-        extra_filetypes = { 'txt', 'text' },
-        args = { '--text=$TEXT', '--parse' },
-        command = 'write-good',
-      }),
-      diagnostics.proselint.with({
-        filetypes = { 'markdown', 'tex' },
-        extra_filetypes = { 'txt', 'text', 'org' },
-        command = 'proselint',
-      }),
-      actions.proselint.with({
-        filetypes = { 'markdown', 'tex' },
-        command = 'proselint',
-        args = { '--json' },
-      }),
     }
 
     local function exist(bin)
@@ -57,6 +31,50 @@ return {
       })
     )
 
+    if exist('cspell') then
+      table.insert(
+        sources,
+        null_ls.builtins.diagnostics.cspell.with({
+          filetypes = { 'markdown', 'text', 'txt', 'org' },
+        })
+      )
+      table.insert(
+        sources,
+        null_ls.builtins.code_actions.cspell.with({
+          filetypes = { 'markdown', 'text', 'txt', 'org' },
+        })
+      )
+    end
+
+    if exist('misspell') then
+      table.insert(
+        sources,
+        diagnostics.misspell.with({
+          filetypes = { 'markdown', 'text', 'txt', 'org' },
+          args = { '$FILENAME' },
+        })
+      )
+    end
+    if exist('write_good') then
+      table.insert(sources, diagnostics.write_good.with({
+        filetypes = { 'markdown', 'tex', '', 'org' },
+        extra_filetypes = { 'txt', 'text' },
+        args = { '--text=$TEXT', '--parse' },
+        command = 'write-good',
+      }))
+    end
+    if exist('proselint') then
+      table.insert(sources, diagnostics.proselint.with({
+        filetypes = { 'markdown', 'tex' },
+        extra_filetypes = { 'txt', 'text', 'org' },
+        command = 'proselint',
+      }))
+      table.insert(sources, actions.proselint.with({
+        filetypes = { 'markdown', 'tex' },
+        command = 'proselint',
+        args = { '--json' },
+      }),
+    end
     -- stylua: ignore
     if exist('shellcheck') then
       table.insert(sources, null_ls.builtins.diagnostics.shellcheck.with({args = {"run",
@@ -73,7 +91,8 @@ return {
 
     if exist('revive') then
       -- revivie null default setup is ridiculous
-      local revive_conf = vim.fn.findfile(os.getenv('HOME') or os.getenv('userprofile') .. '/.config/revive.toml')
+      local revive_conf =
+        vim.fn.findfile(os.getenv('HOME') or os.getenv('userprofile') .. '/.config/revive.toml')
       local revive_args = { '-formatter', 'json', './...' }
       if revive_conf then
         revive_args = { '-formatter', 'json', '-config', revive_conf, './...' }
