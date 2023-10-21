@@ -1,4 +1,3 @@
-local conf = require('modules.completion.config')
 local filetypes = {
   'html',
   'css',
@@ -25,13 +24,20 @@ local filetypes = {
   'sh',
 }
 return function(use)
-  use({ 'neovim/nvim-lspconfig', config = conf.nvim_lsp, lazy = true })
+  use({
+    'neovim/nvim-lspconfig',
+    config = function()
+      local conf = require('modules.completion.config')
+      conf.nvim_lsp()
+    end,
+    lazy = true,
+  })
   -- loading sequence LuaSnip -> nvim-cmp -> cmp_luasnip -> cmp-nvim-lua -> cmp-nvim-lsp ->cmp-buffer -> friendly-snippets
   use({
     'hrsh7th/nvim-cmp',
     module = false,
     -- lazy = true,
-    event = {'InsertEnter', 'CmdlineEnter'}, -- InsertCharPre
+    event = { 'InsertEnter', 'CmdlineEnter' }, -- InsertCharPre
     -- ft = {'lua', 'markdown',  'yaml', 'json', 'sql', 'vim', 'sh', 'sql', 'vim', 'sh'},
     dependencies = {
       { 'hrsh7th/cmp-buffer', lazy = true },
@@ -40,7 +46,7 @@ return function(use)
       { 'hrsh7th/cmp-path', lazy = true },
       { 'hrsh7th/cmp-cmdline', lazy = true },
       -- { 'lukas-reineke/cmp-rg', lazy = true },
-      {'tzachar/cmp-fuzzy-buffer', lazy = true, dependencies = {'tzachar/fuzzy.nvim'}},
+      { 'tzachar/cmp-fuzzy-buffer', lazy = true, dependencies = { 'tzachar/fuzzy.nvim' } },
       { 'dmitmel/cmp-cmdline-history', lazy = true },
       -- { "tzachar/cmp-tabnine", build = "./install.sh", lazy = true, config = conf.tabnine},
       { 'hrsh7th/cmp-copilot', lazy = true },
@@ -52,7 +58,10 @@ return function(use)
       -- {"quangnguyen30192/cmp-nvim-ultisnips", event = "InsertCharPre", after = "nvim-cmp", opt=true },
       { 'saadparwaiz1/cmp_luasnip', lazy = true },
     },
-    config = conf.nvim_cmp,
+    config = function()
+      local conf = require('modules.completion.config')
+      conf.nvim_cmp()
+    end,
   })
 
   -- can not lazyload, it is also slow...
@@ -79,8 +88,14 @@ return function(use)
   use({
     'nvim-telescope/telescope.nvim',
     cmd = 'Telescope',
-    config = conf.telescope,
-    init = conf.telescope_preload,
+    config = function()
+      local conf = require('modules.completion.config')
+      conf.telescope()
+    end,
+    init = function()
+      local conf = require('modules.completion.config')
+      conf.telescope_preload()
+    end,
     dependencies = {
       { 'nvim-lua/plenary.nvim', lazy = true },
       { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make', lazy = true },
@@ -108,7 +123,10 @@ return function(use)
       'haml',
       'elm',
     },
-    init = conf.emmet,
+    init = function()
+      local conf = require('modules.completion.config')
+      conf.emmet()
+    end,
   })
 
   -- note: part of the code is used in navigator
@@ -135,7 +153,9 @@ return function(use)
         handler_opts = {
           border = 'rounded', -- "shadow", --{"╭", "─" ,"╮", "│", "╯", "─", "╰", "│" },
         },
-        hint_inline= function() return true end,
+        hint_inline = function()
+          return vim.fn.has('nvim-0.10') == 1
+        end,
         max_height = 4,
         toggle_key = [[<M-x>]], -- toggle signature on and off in insert mode,  e.g. '<M-x>'
         -- select_signature_key = [[<M-n>]], -- toggle signature on and off in insert mode,  e.g. '<M-x>'
@@ -168,6 +188,16 @@ return function(use)
   use({
     'Exafunction/codeium.vim',
     lazy = true,
+    ft = {
+      'python',
+      'html',
+      'css',
+      'javascript',
+      'javascriptreact',
+      'vue',
+      'typescript',
+      'typescriptreact',
+    },
     -- event = 'InsertEnter',
   })
 end

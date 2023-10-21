@@ -1,4 +1,3 @@
--- local loader = require('utils.helper').loader
 local api = vim.api
 local argc = vim.fn.argc() or 0
 if argc > 0 then
@@ -32,11 +31,11 @@ end
 local createdir = function()
   local global = require('core.global')
   local data_dir = {
-    global.cache_dir .. 'backup',
-    global.cache_dir .. 'sessions',
-    global.cache_dir .. 'swap',
-    global.cache_dir .. 'tags',
-    global.cache_dir .. 'undo',
+    global.cache_dir .. global.path_sep .. 'backup',
+    global.cache_dir .. global.path_sep .. 'sessions',
+    global.cache_dir .. global.path_sep .. 'swap',
+    global.cache_dir .. global.path_sep .. 'tags',
+    global.cache_dir .. global.path_sep .. 'undo',
   }
   -- There only check once that If cache_dir exists
   -- Then I don't want to check subs dir exists
@@ -53,7 +52,7 @@ end
 if vim.wo.diff then
   -- loader(plugins)
   if load_ts_plugins then
-    vim.cmd([[packadd nvim-treesitter]])
+    loader('nvim-treesitter')
     require('nvim-treesitter.configs').setup({
       highlight = { enable = true, use_languagetree = false },
     })
@@ -62,12 +61,9 @@ if vim.wo.diff then
   end
   return
 end
-local colorscheme
 
 -- load module but not init/config it
 function Lazyload()
-  -- vim.cmd([[packadd nvim-treesitter]])
-  -- vim.cmd([[packadd nvim-lspconfig]])
   require('core.helper').init()
 
   lprint('lazy core plugins start', vim.loop.now() - start)

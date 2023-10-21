@@ -28,7 +28,6 @@ function global:load_variables()
   --   -- shellescape("%HOMEDRIVE%%HOMEPATH%)
   -- end
 
-  self.cache_dir = home .. self.path_sep .. '.cache' .. self.path_sep .. 'nvim' .. self.path_sep
   self.home = home
   self.data_dir = vim.fn.stdpath('data')
   self.cache_dir = vim.fn.stdpath('cache')

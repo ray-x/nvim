@@ -2,6 +2,7 @@ local conf = require('modules.lang.config')
 local dev = plugin_folder():find('github') ~= nil or plugin_folder():find('ray') ~= nil
 local ts = require('modules.lang.treesitter')
 return function(lang)
+
   lang({ 'nvim-treesitter/nvim-treesitter', lazy = true, config = ts.treesitter, module = false })
 
   lang({
@@ -17,7 +18,6 @@ return function(lang)
     config = ts.textsubjects,
     module = false,
   })
-  -- lang({ 'mfussenegger/nvim-treehopper', lazy = true, config = ts.tshopper, module = false })
 
   lang({
     'jose-elias-alvarez/typescript.nvim',
@@ -40,6 +40,7 @@ return function(lang)
     config = function()
       require('neogen').setup({ snippet_engine = 'luasnip' })
     end,
+    ft = { 'norg' },
   })
 
   lang({
@@ -107,7 +108,7 @@ return function(lang)
   })
   lang({ 'metakirby5/codi.vim', ft = { 'python', 'javascript' }, cmd = { 'Codi', 'CodiNew' } })
   lang({ 'Vigemus/iron.nvim', ft = 'python', config = conf.iron })
-  lang({ 'yardnsm/vim-import-cost', cmd = 'ImportCost', lazy = true })
+  lang({ 'yardnsm/vim-import-cost', ft = { 'javascript' }, cmd = 'ImportCost', lazy = true })
 
   -- lang['scalameta/nvim-metals'] = {dependencies = {"nvim-lua/plenary.nvim"}}
   -- lang { "lifepillar/pgsql.vim",ft = {"sql", "pgsql"}}
@@ -152,7 +153,7 @@ return function(lang)
       'GoGet',
       'GoModifyTags',
     },
-    -- event = { 'CmdwinEnter', 'CmdlineEnter' },
+    ft = { 'go', 'gomod' },
     config = conf.go,
   })
 
@@ -166,6 +167,7 @@ return function(lang)
     dev = dev,
     config = conf.navigator,
     lazy = true,
+    event = {'VeryLazy'}
   })
 
   lang({
@@ -352,28 +354,7 @@ return function(lang)
     end,
   })
 
-  -- lang({
   --   'HiPhish/nvim-ts-rainbow2',
-  --   lazy = true,
-  --   -- slow... disable it for now
-  --   -- Highlight also non-parentheses delimiters, boolean or table: lang -> boolean
-  --   -- cmd = "Rainbow",
-  --   module = false,
-  --   -- config = function()
-  --   --   local fsize = vim.fn.getfsize(vim.fn.expand('%:p:f'))
-  --   --
-  --   --   local enable = true
-  --   --   if vim.fn.line('$') > 3000 or fsize > 100000 then
-  --   --     lprint(' rainbow disabled', fsize)
-  --   --     enable = false
-  --   --     return
-  --   --   end
-  --   --
-  --   --  require('nvim-treesitter.configs').setup({
-  --   --    rainbow = { enable = false, extended_mode = false },
-  --   --  })
-  --   -- end,
-  -- })
 
   lang({
     'folke/trouble.nvim',
@@ -432,4 +413,5 @@ return function(lang)
     lazy = true,
     cmd = { 'RainbowDelim', 'RainbowMultiDelim', 'Select', 'CSVLint' },
   })
+
 end

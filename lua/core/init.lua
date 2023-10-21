@@ -1,26 +1,6 @@
 local global = require('core.global')
 local vim = vim
 
--- Create cache dir and subs dir
-local createdir = function()
-  local data_dir = {
-    global.cache_dir .. 'backup',
-    global.cache_dir .. 'session',
-    global.cache_dir .. 'swap',
-    global.cache_dir .. 'tags',
-    global.cache_dir .. 'undo',
-  }
-  -- There only check once that If cache_dir exists
-  -- Then I don't want to check subs dir exists
-  if vim.fn.isdirectory(global.cache_dir) == 0 then
-    os.execute('mkdir -p ' .. global.cache_dir)
-    for _, v in pairs(data_dir) do
-      if vim.fn.isdirectory(v) == 0 then
-        os.execute('mkdir -p ' .. v)
-      end
-    end
-  end
-end
 
 local disable_distribution_plugins = function()
   vim.g.loaded_gzip = 1
@@ -54,7 +34,6 @@ local load_core = function()
 
   -- print(vim.inspect(debug.traceback()))
 
-  createdir()
   disable_distribution_plugins()
   leader_map()
 
@@ -73,8 +52,8 @@ local load_core = function()
   require('core.event')
   _G.lprint = require('utils.log').lprint
   require('core.lazy_nvim'):boot_strap()
-  require('core.commands')
   vim.defer_fn(function()
+    require('core.commands')
     lprint('load compiled and lazy')
     require('core.colorscheme').load_colorscheme()
     require('core.lazy')

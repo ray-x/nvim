@@ -1,10 +1,11 @@
-local uv, api, fn = vim.loop, vim.api, vim.fn
+local uv, api, fn = vim.uv, vim.api, vim.fn
 local helper = require('core.helper')
-local win = require('core.global').is_windows
+local global = require('core.global')
+local win = global.is_windows
 local lazy = {}
 lazy.__index = lazy
 
-local sep = require('core.global').path_sep
+local sep = global.path_sep
 
 function lazy.add(repo)
   if not lazy.plug then
@@ -20,10 +21,13 @@ function lazy:load_modules_lazy()
   local modules_dir = helper.get_config_path() .. sep .. 'lua' .. sep .. 'modules'
   self.repos = {}
 
-  local list = vim.fs.find('plugins.lua', { path = modules_dir, type = 'file', limit = 10 })
-  if #list == 0 then
-    return
-  end
+  local plugins_list = {
+    modules_dir .. sep .. 'lang' .. sep .. 'plugins.lua',
+    modules_dir .. sep .. 'completion' .. sep .. 'plugins.lua',
+    modules_dir .. sep .. 'ui' .. sep .. 'plugins.lua',
+    modules_dir .. sep .. 'editor' .. sep .. 'plugins.lua',
+    modules_dir .. sep .. 'tools' .. sep .. 'plugins.lua',
+  }
 
   local disable_modules = {}
 
@@ -31,7 +35,7 @@ function lazy:load_modules_lazy()
     disable_modules = vim.split(vim.g.disable_modules, ',')
   end
 
-  for _, f in pairs(list) do
+  for _, f in pairs(plugins_list) do
     if win then
       f = string.gsub(f, '/', '\\')
     end
@@ -42,7 +46,9 @@ function lazy:load_modules_lazy()
     lprint(f) -- modules/completion/plugins ...
     if not vim.tbl_contains(disable_modules, f) then
       local plugins = require(f)
+      local start = vim.uv.now()
       plugins(lazy.add)
+      lprint('loaded ' .. f, vim.uv.now() - start)
     end
   end
 end
@@ -58,7 +64,7 @@ function lazy:boot_strap()
   local lz = require('lazy')
   local opts = {
     lockfile = helper.get_data_path() .. sep .. 'lazy-lock.json',
-    dev = { path = win and vim.fn.expand('$HOME') .. '\\github\\ray-x' or '~/github/ray-x' },
+    dev = { path = win and global.home .. '\\github\\ray-x' or '~/github/ray-x' },
   }
   self:load_modules_lazy()
   lz.setup(self.plug, opts)

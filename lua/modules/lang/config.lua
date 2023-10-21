@@ -182,10 +182,10 @@ end
 
 -- https://gist.github.com/folke/fe5d28423ea5380929c3f7ce674c41d8
 
-local path = vim.split(package.path, ';')
-
-table.insert(path, 'lua/?.lua')
-table.insert(path, 'lua/?/init.lua')
+-- local path = vim.split(package.path, ';')
+--
+-- table.insert(path, 'lua/?.lua')
+-- table.insert(path, 'lua/?/init.lua')
 
 function config.navigator()
   -- local capabilities = vim.lsp.protocol.make_client_capabilities()
