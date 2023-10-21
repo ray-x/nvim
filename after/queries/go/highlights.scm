@@ -19,9 +19,28 @@
 (("type"     @keyword) (#set! conceal ""))
 (("interface"       @keyword) (#set! conceal "🦆"))
 (("*"       @keyword) (#set! conceal "󰛄"))
+(("defer"   @keyword) (#set! conceal ""))
+(("go"      @keyword) (#set! conceal ""))
+(("fallthrough" @keyword) (#set! conceal ""))
+(("default" @keyword) (#set! conceal "󰯴"))
+(("const"   @keyword) (#set! conceal ""))
+(("case"    @keyword) (#set! conceal ""))
+(("defer"   @keyword) (#set! conceal ""))
+(("go"      @keyword) (#set! conceal ""))
+(("fallthrough" @keyword) (#set! conceal ""))
+(("default" @keyword) (#set! conceal "󰯴"))
 
 ;; Function names
 ((call_expression function: (identifier) @function (#eq? @function "append"  )) (#set! conceal " "))
+((call_expression function: (identifier) @function (#eq? @function "println"  )) (#set! conceal ""))
+((call_expression function: (identifier) @function (#eq? @function "len"  )) (#set! conceal ""))
+((call_expression function: (identifier) @function (#eq? @function "make"  )) (#set! conceal "󰙴"))
+((call_expression function: (identifier) @function (#eq? @function "copy"  )) (#set! conceal ""))
+((call_expression function: (identifier) @function (#eq? @function "close"  )) (#set! conceal "󰘪"))
+((call_expression function: (identifier) @function (#eq? @function "panic"  )) (#set! conceal ""))
+((call_expression function: (identifier) @function (#eq? @function "recover"  )) (#set! conceal "󰑋"))
+((call_expression function: (identifier) @function (#eq? @function "new"  )) (#set! conceal "󰎔"))
+((call_expression function: (identifier) @function (#eq? @function "delete"  )) (#set! conceal ""))
 
 ;; type
 (((type_identifier) @type (#eq? @type "string")) (#set! conceal ""))
