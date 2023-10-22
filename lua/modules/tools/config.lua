@@ -1,7 +1,7 @@
 local config = {}
 
 local function load_env_file()
-  local env_file = require('core.global').home .. '/.env'
+  local env_file = require('core.global').home .. require('core.global').path_sep .. '.env'
   local env_contents = {}
   if vim.fn.filereadable(env_file) ~= 1 then
     print('.env file does not exist')
