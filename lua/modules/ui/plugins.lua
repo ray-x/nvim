@@ -10,7 +10,7 @@ return function(ui)
     'windwp/windline.nvim',
     -- event = "UIEntwindlineer",
     event = 'VeryLazy',
-    config = conf.windline,
+    config = function() require('modules.ui.eviline') end,
     -- dependencies = {'kyazdani42/nvim-web-devicons'},
     lazy = true,
   })

@@ -43,6 +43,7 @@ local load_core = function()
   vim.api.nvim_set_hl(0, 'Pmenu', { bg = 'None' })
   vim.api.nvim_set_hl(0, 'SignColumn', { bg = 'None' })
   vim.api.nvim_set_hl(0, 'FoldColumn', { bg = 'None' })
+
   require('core.options')
   require('core.mapping')
   require('core.runner')
@@ -50,10 +51,12 @@ local load_core = function()
   require('keymap')
   require('core.event')
   _G.lprint = require('utils.log').lprint
+
   require('core.lazy_nvim'):boot_strap()
+  require('core.colorscheme').load_colorscheme()
   require('core.commands')
   lprint('load compiled and lazy')
-  require('core.colorscheme').load_colorscheme()
+
   require('core.lazy')
   lprint("lazy done", vim.uv.now() - start)
 end

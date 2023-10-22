@@ -1,6 +1,7 @@
 local conf = require('modules.tools.config')
 return function(tools)
   local is_win = require('core.global').is_windows
+  local gitrepo = vim.fn.isdirectory('.git/index')
   tools({
     'nvim-telescope/telescope.nvim',
     cmd = 'Telescope',
@@ -12,9 +13,9 @@ return function(tools)
     end,
     dependencies = {
       { 'nvim-lua/plenary.nvim', lazy = true },
-      { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make', lazy = true },
-      { 'nvim-telescope/telescope-live-grep-args.nvim', lazy = true },
-      { 'nvim-telescope/telescope-file-browser.nvim', lazy = true },
+      { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make', lazy = true, event = { 'CmdlineEnter', 'CursorHold' },},
+      { 'nvim-telescope/telescope-live-grep-args.nvim', lazy = true, event = { 'CmdlineEnter', 'CursorHold' }, },
+      { 'nvim-telescope/telescope-file-browser.nvim', lazy = true, event = { 'CmdlineEnter', 'CursorHold' }, },
     },
     lazy = true,
   })
@@ -123,12 +124,6 @@ return function(tools)
     -- ft = { 'go','typescript','javascript','vim','rust','zig','c','cpp' }
   })
 
-  tools({
-    'ThePrimeagen/git-worktree.nvim',
-    event = {'VeryLazy'},
-    config = conf.worktree,
-  })
-
   -- tools({
   --   'ThePrimeagen/harpoon',
   --   -- lazy = true,
@@ -145,8 +140,6 @@ return function(tools)
   --     require('telescope').load_extension('harpoon')
   --   end,
   -- })
-
-  tools({ 'TimUntersberger/neogit', cmd = { 'Neogit' }, config = conf.neogit })
 
   tools({
     'kamykn/spelunker.vim',
@@ -231,12 +224,6 @@ return function(tools)
     config = conf.diffview,
   })
 
-  tools({
-    'lewis6991/gitsigns.nvim',
-    config = conf.gitsigns,
-    -- keys = {']c', '[c'},  -- load by lazy.lua
-    lazy = true,
-  })
 
   tools({
     'ray-x/sad.nvim',
@@ -253,23 +240,37 @@ return function(tools)
       })
     end,
   })
+  if gitrepo then
+    tools({
+      'lewis6991/gitsigns.nvim',
+      config = conf.gitsigns,
+      -- keys = {']c', '[c'},  -- load by lazy.lua
+      lazy = true,
+    })
 
-  tools({
-    'ray-x/forgit.nvim',
-    dev = (plugin_folder():find('github') ~= nil),
-    lazy = true,
-    cmd = { 'Ga', 'Gaa', 'Gd', 'Glo', 'Gs', 'Gc', 'Gpl', 'Gps' },
-    event = { 'CmdwinEnter', 'CmdlineEnter' },
-    config = function()
-      require('forgit').setup({
-        debug = true,
-        log_path = vim.fn.expand('$HOME') .. '/.cache/nvim/nvim_debug.log',
-        vsplit = false,
-        height_ratio = 0.8,
-      })
-    end,
-  })
+    tools({ 'TimUntersberger/neogit', cmd = { 'Neogit' }, config = conf.neogit })
 
+    tools({
+      'ThePrimeagen/git-worktree.nvim',
+      event = {'VeryLazy'},
+      config = conf.worktree,
+    })
+    tools({
+      'ray-x/forgit.nvim',
+      dev = (plugin_folder():find('github') ~= nil),
+      lazy = true,
+      cmd = { 'Ga', 'Gaa', 'Gd', 'Glo', 'Gs', 'Gc', 'Gpl', 'Gps' },
+      event = { 'CmdwinEnter', 'CmdlineEnter' },
+      config = function()
+        require('forgit').setup({
+          debug = true,
+          log_path = vim.fn.expand('$HOME') .. '/.cache/nvim/nvim_debug.log',
+          vsplit = false,
+          height_ratio = 0.8,
+        })
+      end,
+    })
+  end
   tools({
     'ray-x/viewdoc.nvim',
     dev = (plugin_folder():find('github') ~= nil),
@@ -282,43 +283,44 @@ return function(tools)
       })
     end,
   })
-
-  tools({
-    'akinsho/git-conflict.nvim',
-    cmd = {
-      'GitConflictListQf',
-      'GitConflictChooseOurs',
-      'GitConflictChooseTheirs',
-      'GitConflictChooseBoth',
-      'GitConflictNextConflict',
-    },
-    lazy = true,
-    config = conf.git_conflict,
-  })
-
-  tools({
-    'rbong/vim-flog',
-    cmd = { 'Flog', 'Flogsplit', 'Flg', 'Flgs' },
-    lazy = true,
-    event = { 'FuncUndefined' },
-    dependencies = {
-      'tpope/vim-fugitive',
+  if gitrepo then
+    tools({
+      'akinsho/git-conflict.nvim',
       cmd = {
-        'Gvsplit',
-        'G',
-        'Gread',
-        'Git',
-        'Gedit',
-        'Gstatus',
-        'Gdiffsplit',
-        'Gvdiffsplit',
+        'GitConflictListQf',
+        'GitConflictChooseOurs',
+        'GitConflictChooseTheirs',
+        'GitConflictChooseBoth',
+        'GitConflictNextConflict',
       },
-      event = { 'CmdwinEnter', 'CmdlineEnter' },
-      -- fn = { 'FugitiveIsGitDir' },
       lazy = true,
-    },
-  })
+      config = conf.git_conflict,
+    })
 
+
+    tools({
+      'rbong/vim-flog',
+      cmd = { 'Flog', 'Flogsplit', 'Flg', 'Flgs' },
+      lazy = true,
+      event = { 'FuncUndefined' },
+      dependencies = {
+        'tpope/vim-fugitive',
+        cmd = {
+          'Gvsplit',
+          'G',
+          'Gread',
+          'Git',
+          'Gedit',
+          'Gstatus',
+          'Gdiffsplit',
+          'Gvdiffsplit',
+        },
+        event = { 'CmdwinEnter', 'CmdlineEnter' },
+        -- fn = { 'FugitiveIsGitDir' },
+        lazy = true,
+      },
+    })
+  end
   tools({ 'rmagatti/auto-session', config = conf.session, lazy = true })
 
   tools({
@@ -349,6 +351,7 @@ return function(tools)
     'ahmedkhalf/project.nvim',
     lazy = true,
     config = conf.project,
+    event = { 'CmdlineEnter' }
   })
 
   tools({
@@ -358,49 +361,54 @@ return function(tools)
       require('utils.telescope')
       require('telescope').load_extension('zoxide')
     end,
+    event = { 'CmdlineEnter', 'CursorHold' },
   })
 
-  tools({
-    'AckslD/nvim-neoclip.lua',
-    lazy = true,
-    dependencies = { 'kkharji/sqlite.lua' },
-    config = function()
-      require('utils.telescope')
-      require('neoclip').setup({
-        db_path = vim.fn.stdpath('data') .. '/databases/neoclip.sqlite3',
-      })
-      require('telescope').load_extension('neoclip')
-    end,
-  })
 
-  tools({
-    'nvim-telescope/telescope-frecency.nvim',
-    -- cmd = {'Telescope'},
-    dependencies = { 'kkharji/sqlite.lua', lazy = true },
-    lazy = true,
-    config = function()
-      local telescope = require('telescope')
-      telescope.load_extension('frecency')
-      telescope.setup({
-        extensions = {
-          frecency = {
-            default_workspace = 'CWD',
-            show_scores = false,
-            show_unindexed = true,
-            ignore_patterns = { '*.git/*', '*/tmp/*' },
-            disable_devicons = false,
-            workspaces = {
-              -- ["conf"] = "/home/my_username/.config",
-              -- ["data"] = "/home/my_username/.local/share",
-              -- ["project"] = "/home/my_username/projects",
-              -- ["wiki"] = "/home/my_username/wiki"
+  if not require('core.global').is_windows then
+    tools({
+      'AckslD/nvim-neoclip.lua',
+      lazy = true,
+      dependencies = { 'kkharji/sqlite.lua' },
+      event = { 'CmdlineEnter' },
+      config = function()
+        require('utils.telescope')
+        require('neoclip').setup({
+          db_path = vim.fn.stdpath('data') .. '/databases/neoclip.sqlite3',
+        })
+        require('telescope').load_extension('neoclip')
+      end,
+    })
+    tools({
+      'nvim-telescope/telescope-frecency.nvim',
+      -- cmd = {'Telescope'},
+      dependencies = { 'kkharji/sqlite.lua', lazy = true },
+      event = { 'CmdlineEnter', 'CursorHold' },
+      lazy = true,
+      config = function()
+        local telescope = require('telescope')
+        telescope.load_extension('frecency')
+        telescope.setup({
+          extensions = {
+            frecency = {
+              default_workspace = 'CWD',
+              show_scores = false,
+              show_unindexed = true,
+              ignore_patterns = { '*.git/*', '*/tmp/*' },
+              disable_devicons = false,
+              workspaces = {
+                -- ["conf"] = "/home/my_username/.config",
+                -- ["data"] = "/home/my_username/.local/share",
+                -- ["project"] = "/home/my_username/projects",
+                -- ["wiki"] = "/home/my_username/wiki"
+              },
             },
           },
-        },
-      })
-      -- vim.api.nvim_set_keymap("n", "<leader><leader>p", "<Cmd>lua require('telescope').extensions.frecency.frecency()<CR>", {noremap = true, silent = true})
-    end,
-  })
+        })
+        -- vim.api.nvim_set_keymap("n", "<leader><leader>p", "<Cmd>lua require('telescope').extensions.frecency.frecency()<CR>", {noremap = true, silent = true})
+      end,
+    })
+  end
 
   tools({
     'voldikss/vim-translator',
@@ -424,14 +432,15 @@ return function(tools)
   tools({
     'joaomsa/telescope-orgmode.nvim',
     lazy = true,
+    event = { 'CmdlineEnter', 'CursorHold' },
   })
   --The linediff plugin provides a simple command, :Linediff, which is used to diff two separate blocks of text.
-  tools({
-    'pfeiferj/nvim-hurl',
-    lazy = true,
-    cmd = { 'HurlRun' }, --, "'<,'>HurlRun"
-    ft = { 'hurl', 'http' },
-  })
+  -- tools({
+  --   'pfeiferj/nvim-hurl',
+  --   lazy = true,
+  --   cmd = { 'HurlRun' }, --, "'<,'>HurlRun"
+  --   ft = { 'hurl', 'http' },
+  -- })
   tools({ 'AndrewRadev/linediff.vim', lazy = true, cmd = { 'Linediff' } }) -- , "'<,'>Linediff"
   tools({
     'ibhagwan/fzf-lua',

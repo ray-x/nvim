@@ -8,15 +8,17 @@ return function(lang)
   lang({
     'nvim-treesitter/nvim-treesitter-textobjects',
     config = ts.treesitter_obj,
-    module = false,
+    module = true,
     lazy = true,
+    event = {'CursorHold', 'CursorMoved' }
   })
 
   lang({
     'RRethy/nvim-treesitter-textsubjects',
     lazy = true,
     config = ts.textsubjects,
-    module = false,
+    module = true,
+    event = {'CursorHold', 'CursorMoved' }
   })
 
   lang({
@@ -56,6 +58,7 @@ return function(lang)
     'nvim-treesitter/nvim-treesitter-refactor',
     config = ts.treesitter_ref, -- let the last loaded config treesitter
     lazy = true,
+    event = {'CursorHold', 'CursorMoved', 'VeryLazy'}
   })
 
   lang({
@@ -171,7 +174,7 @@ return function(lang)
     'ray-x/navigator.lua',
     dev = dev,
     config = conf.navigator,
-    lazy = true,
+    module = true,
     event = { 'VeryLazy' },
   })
 
@@ -225,7 +228,7 @@ return function(lang)
   -- })
   lang({ 'mfussenegger/nvim-dap', config = conf.dap, lazy = true })
 
-  lang({ 'JoosepAlviste/nvim-ts-context-commentstring', lazy = true })
+  lang({ 'JoosepAlviste/nvim-ts-context-commentstring', lazy = true, event = 'VeryLazy' })
 
   lang({
     'rcarriga/nvim-dap-ui',
@@ -287,6 +290,7 @@ return function(lang)
     config = function()
       require('nvim-treesitter.configs').setup({ autotag = { enable = true } })
     end,
+    event = 'VeryLazy'
   })
   -- highlight your args with Treesitter
   lang({
@@ -384,6 +388,7 @@ return function(lang)
     'nvimtools/none-ls.nvim',
     lazy = true,
     config = require('modules.lang.null-ls').config,
+    event = 'VeryLazy'
   })
 
   lang({

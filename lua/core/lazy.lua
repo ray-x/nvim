@@ -101,36 +101,19 @@ function Lazyload()
 
   vim.g.vimsyn_embed = 'lPr'
 
-  if load_lsp then
-    loader('nvim-lspconfig')
-    loader('lsp_signature.nvim')
-  end
+  -- if load_lsp then
+  --   loader('nvim-lspconfig')
+  --   loader('lsp_signature.nvim')
+  -- end
 
-  loader('guihua.lua')
-  if load_lsp or load_ts_plugins then
-    loader('nvim-treesitter')
-    loader('navigator.lua')
-  end
+  -- loader('guihua.lua')
 
   lprint('lazy core lsp plugins loaded', vim.loop.now() - start)
-  if load_ts_plugins then
-    lprint('loading treesitter related plugins')
-    plugins =
-      'nvim-treesitter-textobjects nvim-ts-autotag nvim-ts-context-commentstring nvim-treesitter-textsubjects nvim-treesitter-context'
-    loader(plugins)
-
-    lprint('lazy core ts plugins loaded', vim.loop.now() - start)
-  end
 
   vim.cmd([[autocmd FileType vista,guihua,guihua_rust setlocal syntax=on]])
   vim.cmd(
     [[autocmd FileType * silent! lua if vim.fn.wordcount()['bytes'] > 2048000 then print("syntax off") vim.cmd("setlocal syntax=off") end]]
   )
-
-  if load_lsp and use_nulls() then
-    loader('none-ls.nvim')
-  end
-  -- lprint("LoadLazyPlugin finished", os.clock())
 
   lprint('lazy colorscheme loaded', vim.loop.now() - start)
 end
@@ -138,56 +121,42 @@ end
 local lazy_timer = 5
 Lazyload()
 vim.cmd([[doautocmd User LoadLazyPlugin]])
+vim.cmd('tabdo windo set relativenumber')
+vim.cmd('highlight clear ColorColumn')
+require('vscripts.tools')
+vim.cmd("command! Gram lua require'modules.tools.config'.grammcheck()")
 
-
-vim.defer_fn(function()
-  lprint('lazy telescope start', vim.loop.now() - start)
-  vim.cmd('tabdo windo set relativenumber')
-  vim.cmd('highlight clear ColorColumn')
-  require('vscripts.tools')
-  vim.cmd("command! Gram lua require'modules.tools.config'.grammcheck()")
-
-  require('modules.ui.eviline')
-  lprint('lazy wlfloat loaded', vim.loop.now() - start)
-end, lazy_timer + 10)
 --
-vim.defer_fn(function()
-  require('overwrite')
-  -- loader('telescope.nvim')
-  -- load from
-  -- loader("telescope-zoxide project.nvim nvim-neoclip.lua")
-  -- loader('harpoon')
-  -- loader('nvim-notify')
-  require('modules.ui.notify').setup()
-  -- vim.notify = require('notify')
-  -- require("vscripts.cursorhold")
 
-  local gitrepo = vim.fn.isdirectory('.git/index')
-  loader('hydra.nvim')
-  if gitrepo then
-    loader('gitsigns.nvim') -- neogit
-    loader('git-conflict.nvim')
-    require('modules.editor.hydra').hydra_git()
-  end
+require('overwrite')
+-- loader('telescope.nvim')
+-- load from
+-- loader("telescope-zoxide project.nvim nvim-neoclip.lua")
+-- loader('harpoon')
+-- loader('nvim-notify')
+require('modules.ui.notify').setup()
+-- vim.notify = require('notify')
 
-  -- lprint("all done", os.clock())
-  if vim.fn.executable(vim.g.python3_host_prog) == 0 then
-    print('file not find, please update path setup', vim.g.python3_host_prog)
-  end
-  lprint('lazy telescope loaded', vim.loop.now() - start)
-  require('core.ab')
-end, lazy_timer + 10)
+local gitrepo = vim.fn.isdirectory('.git/index')
+if gitrepo then
+  require('modules.editor.hydra').hydra_git()
+end
+
+-- lprint("all done", os.clock())
+if vim.fn.executable(vim.g.python3_host_prog) == 0 then
+  print('file not find, please update path setup', vim.g.python3_host_prog)
+end
+lprint('lazy telescope loaded', vim.loop.now() - start)
+require('core.ab')
 
 if plugin_folder() == [[~/github/ray-x/]] then
   -- it is my own box, setup fish
   -- vim.cmd([[set shell=/usr/bin/fish]])
   vim.cmd([[command! GD term gd]])
 end
-require('core.colorscheme')
-vim.defer_fn(function()
-  vim.cmd('set runtimepath+=/usr/share/vim/vimfiles')
-  vim.cmd('runtime! plugin/fzf.vim')
-end, 0)
+
+vim.cmd('set runtimepath+=/usr/share/vim/vimfiles')
+vim.cmd('runtime! plugin/fzf.vim')
 
 vim.defer_fn(function()
   -- vim.cmd('source /home/ray/.local/share/nvim/sessions/nvim.vim')
@@ -200,8 +169,5 @@ vim.defer_fn(function()
       api.nvim_buf_delete(bufnr, { force = true })
     end
   end
-  -- local sessionfile =
-  --   [[/home/ray/.local/share/nvim/sessions/%home%ray%.local%share%nvim%lazy%auto-session.vim]]
-  -- vim.cmd('silent! source ' .. sessionfile)
   lprint('auto-session loaded', vim.loop.now() - start)
-end, lazy_timer+20)
+end, lazy_timer)
