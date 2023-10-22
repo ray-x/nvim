@@ -18,6 +18,7 @@ function lazy.add(repo)
 end
 
 function lazy:load_modules_lazy()
+  vim.loader.enable()
   local modules_dir = helper.get_config_path() .. sep .. 'lua' .. sep .. 'modules'
   self.repos = {}
 
@@ -46,7 +47,7 @@ function lazy:load_modules_lazy()
     lprint(f) -- modules/completion/plugins ...
     if not vim.tbl_contains(disable_modules, f) then
       local plugins = require(f)
-      local start = vim.uv.now()
+      local start = uv.now()
       plugins(lazy.add)
       lprint('loaded ' .. f, vim.uv.now() - start)
     end

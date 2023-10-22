@@ -112,13 +112,15 @@ return function(ui)
 
   ui({ 'lukas-reineke/indent-blankline.nvim', lazy = true, config = conf.blankline }) -- after="nvim-treesitter",
 
-  -- high performance version of "lukas-reineke/virt-column.nvim",
   ui({
-    'xiyaowong/virtcolumn.nvim',
+    -- 'xiyaowong/virtcolumn.nvim',
+    'lukas-reineke/virt-column.nvim',
     event = { 'CursorMoved', 'CursorMovedI' },
-    init = function()
-      vim.g.virtcolumn_char = '▕' -- char to display the line
-      vim.g.virtcolumn_priority = 10 -- priority of extmark
+    config = function()
+      require('virt-column').setup({
+        char = '▕',
+        higlight = 'LineNr',
+      }) -- char to display the line
     end,
   })
 
