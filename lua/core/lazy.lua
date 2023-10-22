@@ -63,7 +63,7 @@ if vim.wo.diff then
 end
 
 -- load module but not init/config it
-function Lazyload()
+function setup()
   require('core.helper').init()
 
   lprint('lazy core plugins start', vim.loop.now() - start)
@@ -97,8 +97,6 @@ function Lazyload()
     vim.cmd([[syntax off]])
   end
 
-  lprint('lazy core ts plugins loaded', vim.loop.now() - start)
-
   vim.g.vimsyn_embed = 'lPr'
 
   -- if load_lsp then
@@ -108,30 +106,25 @@ function Lazyload()
 
   -- loader('guihua.lua')
 
-  lprint('lazy core lsp plugins loaded', vim.loop.now() - start)
-
   vim.cmd([[autocmd FileType vista,guihua,guihua_rust setlocal syntax=on]])
   vim.cmd(
     [[autocmd FileType * silent! lua if vim.fn.wordcount()['bytes'] > 2048000 then print("syntax off") vim.cmd("setlocal syntax=off") end]]
   )
-
+  vim.cmd([[doautocmd User LoadLazyPlugin]])
+  vim.cmd('tabdo windo set relativenumber')
+  vim.cmd('highlight clear ColorColumn')
+  require('vscripts.tools')
+  vim.cmd("command! Gram lua require'modules.tools.config'.grammcheck()")
   lprint('lazy colorscheme loaded', vim.loop.now() - start)
 end
 
 local lazy_timer = 5
-Lazyload()
-vim.cmd([[doautocmd User LoadLazyPlugin]])
-vim.cmd('tabdo windo set relativenumber')
-vim.cmd('highlight clear ColorColumn')
-require('vscripts.tools')
-vim.cmd("command! Gram lua require'modules.tools.config'.grammcheck()")
+setup()
 
 --
 
 require('overwrite')
 -- loader('telescope.nvim')
--- load from
--- loader("telescope-zoxide project.nvim nvim-neoclip.lua")
 -- loader('harpoon')
 -- loader('nvim-notify')
 require('modules.ui.notify').setup()
