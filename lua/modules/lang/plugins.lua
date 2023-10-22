@@ -1,9 +1,9 @@
-local conf = require('modules.lang.config')
-local dev = plugin_folder():find('github') ~= nil or plugin_folder():find('ray') ~= nil
-local ts = require('modules.lang.treesitter')
 return function(lang)
+  local conf = require('modules.lang.config')
+  local dev = plugin_folder():find('github') ~= nil or plugin_folder():find('ray') ~= nil
+  local ts = require('modules.lang.treesitter')
 
-  lang({ 'nvim-treesitter/nvim-treesitter', lazy = true, config = ts.treesitter, module = false })
+  lang({ 'nvim-treesitter/nvim-treesitter', lazy = true, config = ts.treesitter, module = true })
 
   lang({
     'nvim-treesitter/nvim-treesitter-textobjects',
@@ -33,15 +33,16 @@ return function(lang)
     cmd = { 'RegexplainerToggle', 'RegexplainerShow' },
     config = conf.regexplainer,
   })
-
-  lang({
-    'danymat/neogen',
-    lazy = true,
-    config = function()
-      require('neogen').setup({ snippet_engine = 'luasnip' })
-    end,
-    ft = { 'norg' },
-  })
+  if vim.tbl_contains({ 'org', 'norg' }, vim.bo.filetype) then
+    lang({
+      'danymat/neogen',
+      lazy = true,
+      config = function()
+        require('neogen').setup({ snippet_engine = 'luasnip' })
+      end,
+      ft = { 'norg' },
+    })
+  end
 
   lang({
     'haringsrob/nvim_context_vt',
@@ -62,53 +63,56 @@ return function(lang)
     lazy = true,
   })
   -- ipython
-  lang({
-    'dccsillag/magma-nvim',
-    ft = 'python',
-    build = 'UpdateRemotePlugins',
-    lazy = false,
-    cmd = {
-      'MagmaRun',
-      'MagmaRunCell',
-      'MagmaRunCellAndMove',
-      'MagmaRunCellAndStay',
-      'MagmaRunCellAndInsert',
-      'MagmaRunCel',
-      'MagmaInit',
-    },
-    keys = {
-      {
-        '<leader>mi',
-        '<cmd>MagmaInit python3<CR>',
-        desc = 'This command initializes a runtime for the current buffer.',
+
+  if vim.tbl_contains({ 'python', 'javascript' }, vim.bo.filetype) then
+    lang({
+      'dccsillag/magma-nvim',
+      ft = 'python',
+      build = 'UpdateRemotePlugins',
+      lazy = false,
+      cmd = {
+        'MagmaRun',
+        'MagmaRunCell',
+        'MagmaRunCellAndMove',
+        'MagmaRunCellAndStay',
+        'MagmaRunCellAndInsert',
+        'MagmaRunCel',
+        'MagmaInit',
       },
-      {
-        '<leader>mo',
-        '<cmd>MagmaEvaluateOperator<CR>',
-        desc = 'Evaluate the text given by some operator.',
+      keys = {
+        {
+          '<leader>mi',
+          '<cmd>MagmaInit python3<CR>',
+          desc = 'This command initializes a runtime for the current buffer.',
+        },
+        {
+          '<leader>mo',
+          '<cmd>MagmaEvaluateOperator<CR>',
+          desc = 'Evaluate the text given by some operator.',
+        },
+        { '<leader>ml', '<cmd>MagmaEvaluateLine<CR>', desc = 'Evaluate the current line.' },
+        { '<leader>mv', '<cmd>MagmaEvaluateVisual<CR>', desc = 'Evaluate the selected text.' },
+        {
+          '<leader>mc',
+          '<cmd>MagmaEvaluateOperator<CR>',
+          desc = 'Reevaluate the currently selected cell.',
+        },
+        {
+          '<leader>mr',
+          '<cmd>MagmaRestart!<CR>',
+          desc = 'Shuts down and restarts the current kernel.',
+        },
+        {
+          '<leader>mx',
+          '<cmd>MagmaInterrupt<CR>',
+          desc = 'Interrupts the currently running cell and does nothing if not cell is running.',
+        },
       },
-      { '<leader>ml', '<cmd>MagmaEvaluateLine<CR>', desc = 'Evaluate the current line.' },
-      { '<leader>mv', '<cmd>MagmaEvaluateVisual<CR>', desc = 'Evaluate the selected text.' },
-      {
-        '<leader>mc',
-        '<cmd>MagmaEvaluateOperator<CR>',
-        desc = 'Reevaluate the currently selected cell.',
-      },
-      {
-        '<leader>mr',
-        '<cmd>MagmaRestart!<CR>',
-        desc = 'Shuts down and restarts the current kernel.',
-      },
-      {
-        '<leader>mx',
-        '<cmd>MagmaInterrupt<CR>',
-        desc = 'Interrupts the currently running cell and does nothing if not cell is running.',
-      },
-    },
-  })
-  lang({ 'metakirby5/codi.vim', ft = { 'python', 'javascript' }, cmd = { 'Codi', 'CodiNew' } })
-  lang({ 'Vigemus/iron.nvim', ft = 'python', config = conf.iron })
-  lang({ 'yardnsm/vim-import-cost', ft = { 'javascript' }, cmd = 'ImportCost', lazy = true })
+    })
+    lang({ 'metakirby5/codi.vim', ft = { 'python', 'javascript' }, cmd = { 'Codi', 'CodiNew' } })
+    lang({ 'Vigemus/iron.nvim', ft = 'python', config = conf.iron })
+    lang({ 'yardnsm/vim-import-cost', ft = { 'javascript' }, cmd = 'ImportCost', lazy = true })
+  end
 
   -- lang['scalameta/nvim-metals'] = {dependencies = {"nvim-lua/plenary.nvim"}}
   -- lang { "lifepillar/pgsql.vim",ft = {"sql", "pgsql"}}
@@ -161,13 +165,14 @@ return function(lang)
     'ray-x/guihua.lua',
     build = 'cd lua/fzy && make',
     dev = dev,
+    module = true,
   })
   lang({
     'ray-x/navigator.lua',
     dev = dev,
     config = conf.navigator,
     lazy = true,
-    event = {'VeryLazy'}
+    event = { 'VeryLazy' },
   })
 
   lang({
@@ -212,13 +217,12 @@ return function(lang)
     cmd = { 'SymbolsOutline', 'SymbolsOutlineOpen' },
     config = conf.outline,
   })
-
-  lang({
-    'rafcamlet/nvim-luapad',
-    lazy = true,
-    cmd = { 'Lua', 'Luapad' },
-    config = conf.luapad,
-  })
+  -- lang({
+  --   'rafcamlet/nvim-luapad',
+  --   lazy = true,
+  --   cmd = { 'Lua', 'Luapad' },
+  --   config = conf.luapad,
+  -- })
   lang({ 'mfussenegger/nvim-dap', config = conf.dap, lazy = true })
 
   lang({ 'JoosepAlviste/nvim-ts-context-commentstring', lazy = true })
@@ -236,22 +240,18 @@ return function(lang)
     'nvim-telescope/telescope-dap.nvim',
     config = conf.dap,
     -- cmd = "Telescope",
-    lazy = true,
+    event = { 'CmdlineEnter' },
   })
 
   lang({
     'mfussenegger/nvim-dap-python',
     ft = { 'python' },
     config = require('modules.lang.dap.py').config,
+    event = { 'CmdlineEnter' },
   })
 
   lang({ 'mtdl9/vim-log-highlighting', ft = { 'text', 'txt', 'log' } })
-  local cmd = 'bash install.sh'
-  if require('core.global').is_windows then
-    if vim.fn.executable('bash') == 0 then
-      cmd = [[echo 'failed to install sniprun, bash is not installed']]
-    end
-  end
+
   lang({
     'michaelb/sniprun',
     build = cmd,
@@ -265,6 +265,12 @@ return function(lang)
         inline_messages = 1, --" inline_message (0/1) is a one-line way to display messages
         --" to workaround sniprun not being able to display anything
       })
+      local cmd = 'bash install.sh'
+      if require('core.global').is_windows then
+        if vim.fn.executable('bash') == 0 then
+          cmd = [[echo 'failed to install sniprun, bash is not installed']]
+        end
+      end
     end,
   })
   -- JqxList and JqxQuery json browsing, format
@@ -286,6 +292,7 @@ return function(lang)
   lang({
     'm-demare/hlargs.nvim',
     lazy = true,
+    event = { 'CursorMoved', 'CursorMovedI' },
     config = function()
       require('hlargs').setup({
         disable = function()
@@ -321,8 +328,9 @@ return function(lang)
 
   lang({
     'folke/neodev.nvim',
-    lazy = true,
-    -- ft = {'lua'},
+    ft = { 'lua' },
+    event = 'VeryLazy',
+    -- module = true,
     config = conf.neodev,
   })
 
@@ -413,5 +421,4 @@ return function(lang)
     lazy = true,
     cmd = { 'RainbowDelim', 'RainbowMultiDelim', 'Select', 'CSVLint' },
   })
-
 end

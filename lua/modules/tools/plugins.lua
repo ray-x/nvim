@@ -2,6 +2,23 @@ local conf = require('modules.tools.config')
 return function(tools)
   local is_win = require('core.global').is_windows
   tools({
+    'nvim-telescope/telescope.nvim',
+    cmd = 'Telescope',
+    config = function()
+      require('utils.telescope').setup()
+    end,
+    init = function()
+      require('utils.helper').loader({ 'plenary.nvim' })
+    end,
+    dependencies = {
+      { 'nvim-lua/plenary.nvim', lazy = true },
+      { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make', lazy = true },
+      { 'nvim-telescope/telescope-live-grep-args.nvim', lazy = true },
+      { 'nvim-telescope/telescope-file-browser.nvim', lazy = true },
+    },
+    lazy = true,
+  })
+  tools({
     'kristijanhusak/vim-dadbod-ui',
     cmd = {
       'DBUIToggle',
@@ -302,7 +319,7 @@ return function(tools)
     },
   })
 
-  tools({ 'rmagatti/auto-session', config = conf.session, event= 'VeryLazy' })
+  tools({ 'rmagatti/auto-session', config = conf.session, lazy = true })
 
   tools({
     'rmagatti/session-lens',

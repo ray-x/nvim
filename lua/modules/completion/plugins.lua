@@ -32,6 +32,7 @@ return function(use)
     end,
     lazy = true,
   })
+
   -- loading sequence LuaSnip -> nvim-cmp -> cmp_luasnip -> cmp-nvim-lua -> cmp-nvim-lsp ->cmp-buffer -> friendly-snippets
   use({
     'hrsh7th/nvim-cmp',
@@ -83,26 +84,6 @@ return function(use)
       -- vim.cmd([[autocmd FileType sql,mysql,plsql lua require('cmp').setup.buffer({ sources = {{ name = 'vim-dadbod-use' }} })]])
       -- body
     end,
-  })
-
-  use({
-    'nvim-telescope/telescope.nvim',
-    cmd = 'Telescope',
-    config = function()
-      local conf = require('modules.completion.config')
-      conf.telescope()
-    end,
-    init = function()
-      local conf = require('modules.completion.config')
-      conf.telescope_preload()
-    end,
-    dependencies = {
-      { 'nvim-lua/plenary.nvim', lazy = true },
-      { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make', lazy = true },
-      { 'nvim-telescope/telescope-live-grep-args.nvim', lazy = true },
-      { 'nvim-telescope/telescope-file-browser.nvim', lazy = true },
-    },
-    lazy = true,
   })
 
   use({
@@ -185,19 +166,19 @@ return function(use)
     ]])
     end,
   })
-  use({
-    'Exafunction/codeium.vim',
-    lazy = true,
-    ft = {
-      'python',
-      'html',
-      'css',
-      'javascript',
-      'javascriptreact',
-      'vue',
-      'typescript',
-      'typescriptreact',
-    },
-    -- event = 'InsertEnter',
-  })
+  -- use({
+  --   'Exafunction/codeium.vim',
+  --   lazy = true,
+  --   ft = {
+  --     'python',
+  --     'html',
+  --     'css',
+  --     'javascript',
+  --     'javascriptreact',
+  --     'vue',
+  --     'typescript',
+  --     'typescriptreact',
+  --   },
+  --   -- event = 'InsertEnter',
+  -- })
 end

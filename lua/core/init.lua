@@ -1,6 +1,6 @@
 local global = require('core.global')
 local vim = vim
-
+local start = vim.uv.now()
 
 local disable_distribution_plugins = function()
   vim.g.loaded_gzip = 1
@@ -33,7 +33,6 @@ local load_core = function()
   require('core.helper').init()
 
   -- print(vim.inspect(debug.traceback()))
-
   disable_distribution_plugins()
   leader_map()
 
@@ -52,12 +51,11 @@ local load_core = function()
   require('core.event')
   _G.lprint = require('utils.log').lprint
   require('core.lazy_nvim'):boot_strap()
-  vim.defer_fn(function()
-    require('core.commands')
-    lprint('load compiled and lazy')
-    require('core.colorscheme').load_colorscheme()
-    require('core.lazy')
-  end, 5)
+  require('core.commands')
+  lprint('load compiled and lazy')
+  require('core.colorscheme').load_colorscheme()
+  require('core.lazy')
+  lprint("lazy done", vim.uv.now() - start)
 end
 
 load_core()

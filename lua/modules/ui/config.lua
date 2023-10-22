@@ -38,50 +38,50 @@ function config.notify()
   })
 end
 
-function config.noice()
-  require('noice').setup({
-    cmdline = {
-      enabled = true,
-      view = 'cmdline',
-      opts = { buf_options = { filetype = 'vim' } }, -- enable syntax highlighting in the cmdline
-      format = {
-        -- conceal = false,
-        -- conceal: (default=true) This will hide the text in the cmdline that matches the pattern.
-        -- view: (default is cmdline view)
-        -- opts: any options passed to the view
-        -- icon_hl_group: optional hl_group for the icon
-        -- title: set to anything or empty string to hide
-        cmdline = { pattern = '^:', icon = '', lang = 'vim' },
-        search_down = { kind = 'search', pattern = '^/', icon = '󰿟󰶹', lang = 'regex' },
-        search_up = { kind = 'search', pattern = '^%?', icon = '󰶼', lang = 'regex' },
-        filter = { pattern = '^:%s*!', icon = '$', lang = 'bash' },
-        lua = {
-          pattern = { '^:%s*lua%s+', '^:%s*lua%s*=%s*', '^:%s*=%s*' },
-          icon = '',
-          lang = 'lua',
-        },
-        help = { pattern = '^:%s*he?l?p?%s+', icon = '' },
-        input = {}, -- Used by input()
-        -- lua = false, -- to disable a format, set to `false`
-      },
-    },
-    messages = {
-      enabled = false,
-    },
-    popupmenu = { enabled = false },
-    notify = { enabled = false },
+-- function config.noice()
+--   require('noice').setup({
+--     cmdline = {
+--       enabled = true,
+--       view = 'cmdline',
+--       opts = { buf_options = { filetype = 'vim' } }, -- enable syntax highlighting in the cmdline
+--       format = {
+--         -- conceal = false,
+--         -- conceal: (default=true) This will hide the text in the cmdline that matches the pattern.
+--         -- view: (default is cmdline view)
+--         -- opts: any options passed to the view
+--         -- icon_hl_group: optional hl_group for the icon
+--         -- title: set to anything or empty string to hide
+--         cmdline = { pattern = '^:', icon = '', lang = 'vim' },
+--         search_down = { kind = 'search', pattern = '^/', icon = '󰿟󰶹', lang = 'regex' },
+--         search_up = { kind = 'search', pattern = '^%?', icon = '󰶼', lang = 'regex' },
+--         filter = { pattern = '^:%s*!', icon = '$', lang = 'bash' },
+--         lua = {
+--           pattern = { '^:%s*lua%s+', '^:%s*lua%s*=%s*', '^:%s*=%s*' },
+--           icon = '',
+--           lang = 'lua',
+--         },
+--         help = { pattern = '^:%s*he?l?p?%s+', icon = '' },
+--         input = {}, -- Used by input()
+--         -- lua = false, -- to disable a format, set to `false`
+--       },
+--     },
+--     messages = {
+--       enabled = false,
+--     },
+--     popupmenu = { enabled = false },
+--     notify = { enabled = false },
 
-    lsp = {
-      progress = {
-        enabled = false,
-      },
-      hover = { enabled = false },
-      signature = {
-        enabled = false,
-      },
-    },
-  })
-end
+--     lsp = {
+--       progress = {
+--         enabled = false,
+--       },
+--       hover = { enabled = false },
+--       signature = {
+--         enabled = false,
+--       },
+--     },
+--   })
+-- end
 
 local winwidth = function()
   return vim.api.nvim_call_function('winwidth', { 0 })
@@ -227,96 +227,96 @@ function config.aurora()
   -- vim.cmd("hi EndOfBuffer guibg=NONE ctermbg=NONE") -- remove background
 end
 
-function config.gh_theme()
-  if day == nil then
-    local h = tonumber(os.date('%H'))
-    if h > 7 and h < 18 then
-      day = 'light'
-    else
-      day = 'dark'
-    end
-  end
-  if day == 'light' then
-    local opt = { 'dimmed' }
-    local v = math.random(1, #opt)
-    v = opt[v]
+-- function config.gh_theme()
+--   if day == nil then
+--     local h = tonumber(os.date('%H'))
+--     if h > 7 and h < 18 then
+--       day = 'light'
+--     else
+--       day = 'dark'
+--     end
+--   end
+--   if day == 'light' then
+--     local opt = { 'dimmed' }
+--     local v = math.random(1, #opt)
+--     v = opt[v]
 
-    lprint('gh theme ', v)
-    require('github-theme').setup({
-      theme_style = v,
-      transparent = true,
-      overrides = function(c)
-        return {
-          StatusLine = { fg = c.black, bg = c.bg_highlight },
-          StatusLineNC = { fg = c.bg, bg = c.bright_white },
-          TSCurrentScope = { bg = c.bg2 },
-          CursorLine = { bg = c.bg2 },
-        }
-      end,
-    })
-  else
-    local opt = { 'dark_colorblind', 'dark_default', 'dark', 'dimmed' }
-    local v = math.random(1, #opt)
-    v = opt[v]
-    lprint('gh theme ', v)
-    require('github-theme').setup({
-      theme_style = v,
+--     lprint('gh theme ', v)
+--     require('github-theme').setup({
+--       theme_style = v,
+--       transparent = true,
+--       overrides = function(c)
+--         return {
+--           StatusLine = { fg = c.black, bg = c.bg_highlight },
+--           StatusLineNC = { fg = c.bg, bg = c.bright_white },
+--           TSCurrentScope = { bg = c.bg2 },
+--           CursorLine = { bg = c.bg2 },
+--         }
+--       end,
+--     })
+--   else
+--     local opt = { 'dark_colorblind', 'dark_default', 'dark', 'dimmed' }
+--     local v = math.random(1, #opt)
+--     v = opt[v]
+--     lprint('gh theme ', v)
+--     require('github-theme').setup({
+--       theme_style = v,
 
-      overrides = function(c)
-        return {
-          StatusLine = { fg = c.bright_write, bg = c.bg_highlight },
-          StatusLineNC = { fg = c.bg, bg = c.bg_highlight },
-          TSCurrentScope = { bg = c.bg2 },
-          CursorLine = { bg = c.bg2 },
-        }
-      end,
-    })
-  end
-end
+--       overrides = function(c)
+--         return {
+--           StatusLine = { fg = c.bright_write, bg = c.bg_highlight },
+--           StatusLineNC = { fg = c.bg, bg = c.bg_highlight },
+--           TSCurrentScope = { bg = c.bg2 },
+--           CursorLine = { bg = c.bg2 },
+--         }
+--       end,
+--     })
+--   end
+-- end
 
-vim.api.nvim_create_user_command('Light', function(opts)
-  vim.cmd('set background=light')
-  if opts.fargs[1] == 'limestone' then
-    vim.cmd('Limestone')
-  end
-  if opts.fargs[1] == 'gruvbox' then
-    vim.cmd('packadd gruvbox-material')
-    vim.g.gruvbox_material_background = 'light'
-    vim.cmd('colorscheme gruvbox-material')
-    vim.cmd('doautocmd ColorScheme')
-    return
-  end
-  if opts.fargs[1] == 'catppuccin' then
-    vim.cmd('packadd catppuccin')
-    vim.g.catppuccin_flavour = 'latte'
-    require('catppuccin').setup({ lsp_trouble = true, neogit = true, hop = true })
-    vim.cmd('colorscheme catppuccin')
-    return
-  end
-  -- default github
-  local opt = { 'light_colorblind', 'light_default', 'light' }
-  local v = math.random(1, #opt)
-  v = opt[v]
+-- vim.api.nvim_create_user_command('Light', function(opts)
+--   vim.cmd('set background=light')
+--   if opts.fargs[1] == 'limestone' then
+--     vim.cmd('Limestone')
+--   end
+--   if opts.fargs[1] == 'gruvbox' then
+--     vim.cmd('packadd gruvbox-material')
+--     vim.g.gruvbox_material_background = 'light'
+--     vim.cmd('colorscheme gruvbox-material')
+--     vim.cmd('doautocmd ColorScheme')
+--     return
+--   end
+--   if opts.fargs[1] == 'catppuccin' then
+--     vim.cmd('packadd catppuccin')
+--     vim.g.catppuccin_flavour = 'latte'
+--     require('catppuccin').setup({ lsp_trouble = true, neogit = true, hop = true })
+--     vim.cmd('colorscheme catppuccin')
+--     return
+--   end
+--   -- default github
+--   local opt = { 'light_colorblind', 'light_default', 'light' }
+--   local v = math.random(1, #opt)
+--   v = opt[v]
 
-  vim.cmd('packadd github-theme')
-  require('github-theme').setup({
-    theme_style = v,
-    transparent = true,
-    overrides = function(c)
-      return {
-        StatusLine = { fg = c.black, bg = c.bg_highlight },
-        StatusLineNC = { fg = c.bg, bg = c.bright_white },
-        TSCurrentScope = { bg = c.bg2 },
-        CursorLine = { bg = c.bg2 },
-      }
-    end,
-  })
-end, {
-  complete = function()
-    return { 'gruvbox', 'github', 'catppuccin', 'limestone' }
-  end,
-  nargs = '*',
-})
+--   vim.cmd('packadd github-theme')
+--   require('github-theme').setup({
+--     theme_style = v,
+--     transparent = true,
+--     overrides = function(c)
+--       return {
+--         StatusLine = { fg = c.black, bg = c.bg_highlight },
+--         StatusLineNC = { fg = c.bg, bg = c.bright_white },
+--         TSCurrentScope = { bg = c.bg2 },
+--         CursorLine = { bg = c.bg2 },
+--       }
+--     end,
+--   })
+-- end, {
+--   complete = function()
+--     return { 'gruvbox', 'github', 'catppuccin', 'limestone' }
+--   end,
+--   nargs = '*',
+-- })
 
 function config.starry()
   local opt = {
@@ -415,117 +415,110 @@ function config.tokyonight()
   vim.cmd([[colorscheme tokyonight]])
 end
 
-function config.nightfox()
-  require('nightfox').setup({
-    options = {
-      -- Compiled file's destination location
-      compile_path = vim.fn.stdpath('cache') .. '/nightfox',
-      compile_file_suffix = '_compiled', -- Compiled file suffix
-      transparent = true, -- Disable setting background
-      terminal_colors = true, -- Set terminal colors (vim.g.terminal_color_*) used in `:terminal`
-      module_default = true, -- Default enable value for modules
-    },
-  })
+-- function config.nightfox()
+--   require('nightfox').setup({
+--     options = {
+--       -- Compiled file's destination location
+--       compile_path = vim.fn.stdpath('cache') .. '/nightfox',
+--       compile_file_suffix = '_compiled', -- Compiled file suffix
+--       transparent = true, -- Disable setting background
+--       terminal_colors = true, -- Set terminal colors (vim.g.terminal_color_*) used in `:terminal`
+--       module_default = true, -- Default enable value for modules
+--     },
+--   })
 
-  -- 'nordfox'
-  local opt = { 'carbonfox', 'nightfox', 'duskfox', 'terafox' }
-  math.randomseed(os.time())
-  local v = math.random(1, #opt)
-  v = opt[v] or 'carbonfox'
-  lprint(v)
-  vim.cmd('colorscheme ' .. v)
-  if v == 'nightfox' then
-    require('utils.kitty').change_bg('#131a24')
-  elseif v == 'carbonfox' then
-    require('utils.kitty').change_bg('#202020')
-  elseif v == 'duskfox' then
-    require('utils.kitty').change_bg('#191726')
-  elseif v == 'terafox' then
-    require('utils.kitty').change_bg('#101c1e')
-  elseif v == 'nordfox' then
-    require('utils.kitty').change_bg('#23273e')
-  else
-    require('utils.kitty').change_bg('#1a1b26')
-  end
-end
+--   -- 'nordfox'
+--   local opt = { 'carbonfox', 'nightfox', 'duskfox', 'terafox' }
+--   math.randomseed(os.time())
+--   local v = math.random(1, #opt)
+--   v = opt[v] or 'carbonfox'
+--   lprint(v)
+--   vim.cmd('colorscheme ' .. v)
+--   if v == 'nightfox' then
+--     require('utils.kitty').change_bg('#131a24')
+--   elseif v == 'carbonfox' then
+--     require('utils.kitty').change_bg('#202020')
+--   elseif v == 'duskfox' then
+--     require('utils.kitty').change_bg('#191726')
+--   elseif v == 'terafox' then
+--     require('utils.kitty').change_bg('#101c1e')
+--   elseif v == 'nordfox' then
+--     require('utils.kitty').change_bg('#23273e')
+--   else
+--     require('utils.kitty').change_bg('#1a1b26')
+--   end
+-- end
 
-function config.kanagawa()
-  local opt = { 'wave', 'dragon' }
-  math.randomseed(os.time())
+-- function config.kanagawa()
+--   local opt = { 'wave', 'dragon' }
+--   math.randomseed(os.time())
 
-  local v = math.random(1, #opt)
-  lprint(v)
-  v = opt[v]
-  require('kanagawa').setup({
-    -- compile = true, -- enable compiling the colorscheme
-    undercurl = true, -- enable undercurls
-    -- keywordStyle = { italic = true, bold = true },
-    statementStyle = { bold = true },
-    transparent = true, -- do not set background color
-    terminalColors = true, -- define vim.g.terminal_color_{0,17}
-    theme = v, -- Load "wave" theme when 'background' option is not set
-    background = { -- map the value of 'background' option to a theme
-      dark = v, -- try "dragon" !
-    },
-  })
+--   local v = math.random(1, #opt)
+--   lprint(v)
+--   v = opt[v]
+--   require('kanagawa').setup({
+--     -- compile = true, -- enable compiling the colorscheme
+--     undercurl = true, -- enable undercurls
+--     -- keywordStyle = { italic = true, bold = true },
+--     statementStyle = { bold = true },
+--     transparent = true, -- do not set background color
+--     terminalColors = true, -- define vim.g.terminal_color_{0,17}
+--     theme = v, -- Load "wave" theme when 'background' option is not set
+--     background = { -- map the value of 'background' option to a theme
+--       dark = v, -- try "dragon" !
+--     },
+--   })
 
-  if v == 'wave' then
-    require('utils.kitty').change_bg('#1a1a22')
-  else
-    require('utils.kitty').change_bg('#18161c')
-  end
-  vim.cmd([[colorscheme kanagawa]])
-end
+--   if v == 'wave' then
+--     require('utils.kitty').change_bg('#1a1a22')
+--   else
+--     require('utils.kitty').change_bg('#18161c')
+--   end
+--   vim.cmd([[colorscheme kanagawa]])
+-- end
 
-function config.nightfly()
-  vim.g.nightflyCursorColor = true
-  vim.g.nightflyUnderlineMatchParen = true
-  vim.g.nightflyUndercurls = true
-  vim.g.nightflyItalics = true
-  vim.g.nightflyNormalFloat = true
-  vim.g.nightflyWinSeparator = 2
-  vim.g.nightflyTransparent = true
+-- function config.nightfly()
+--   vim.g.nightflyCursorColor = true
+--   vim.g.nightflyUnderlineMatchParen = true
+--   vim.g.nightflyUndercurls = true
+--   vim.g.nightflyItalics = true
+--   vim.g.nightflyNormalFloat = true
+--   vim.g.nightflyWinSeparator = 2
+--   vim.g.nightflyTransparent = true
 
-  require('utils.kitty').change_bg('#011627')
-  vim.cmd([[colorscheme nightfly]])
+--   require('utils.kitty').change_bg('#011627')
+--   vim.cmd([[colorscheme nightfly]])
 
-  vim.api.nvim_set_hl(
-    0,
-    'GitSignsAddInline',
-    { underdotted = true, default = false, sp = 'yellow' }
-  ) -- diff mode: Deleted line |diff.txt|
-  vim.api.nvim_set_hl(
-    0,
-    'GitSignsDeleteInline',
-    { strikethrough = true, default = false, sp = 'red' }
-  ) -- diff mode: Deleted line |diff.txt|
-  vim.api.nvim_set_hl(0, 'GitSignsChangeInline', { undercurl = true, default = false, sp = 'red' }) -- diff mode: Deleted line |diff.txt|
-  -- body
-end
---
--- function config.nvcode()
---   vim.g.nvcode_termcolors = 256
---   local opt = { "nvcode", "nord", "aurora", "onedark", "gruvbox", "palenight", "snazzy" }
---   local v = "colorscheme " .. opt[math.random(1, #opt)]
---   vim.cmd(v)
+--   vim.api.nvim_set_hl(
+--     0,
+--     'GitSignsAddInline',
+--     { underdotted = true, default = false, sp = 'yellow' }
+--   ) -- diff mode: Deleted line |diff.txt|
+--   vim.api.nvim_set_hl(
+--     0,
+--     'GitSignsDeleteInline',
+--     { strikethrough = true, default = false, sp = 'red' }
+--   ) -- diff mode: Deleted line |diff.txt|
+--   vim.api.nvim_set_hl(0, 'GitSignsChangeInline', { undercurl = true, default = false, sp = 'red' }) -- diff mode: Deleted line |diff.txt|
 --   -- body
 -- end
 
-function config.sonokai()
-  local opt = { 'andromeda', 'default', 'andromeda', 'shusia', 'maia', 'atlantis' }
-  local v = opt[math.random(1, #opt)]
-  if day == 'light' then
-    v = 'espresso'
-  end
-  vim.g.sonokai_style = v
-  vim.g.sonokai_enable_italic = 1
-  vim.g.sonokai_diagnostic_virtual_text = 'colored'
-  vim.g.sonokai_disable_italic_comment = 1
-  vim.g.sonokai_current_word = 'underline'
-  vim.cmd([[colorscheme sonokai]])
-  vim.cmd([[hi CurrentWord guifg=#E3F467 guibg=#332248 gui=Bold,undercurl]])
-  vim.cmd([[hi TSKeyword gui=Bold]])
-end
+
+-- function config.sonokai()
+--   local opt = { 'andromeda', 'default', 'andromeda', 'shusia', 'maia', 'atlantis' }
+--   local v = opt[math.random(1, #opt)]
+--   if day == 'light' then
+--     v = 'espresso'
+--   end
+--   vim.g.sonokai_style = v
+--   vim.g.sonokai_enable_italic = 1
+--   vim.g.sonokai_diagnostic_virtual_text = 'colored'
+--   vim.g.sonokai_disable_italic_comment = 1
+--   vim.g.sonokai_current_word = 'underline'
+--   vim.cmd([[colorscheme sonokai]])
+--   vim.cmd([[hi CurrentWord guifg=#E3F467 guibg=#332248 gui=Bold,undercurl]])
+--   vim.cmd([[hi TSKeyword gui=Bold]])
+-- end
 
 function config.blankline()
   vim.opt.termguicolors = true
@@ -598,33 +591,33 @@ function config.indentguides()
   })
 end
 
-function config.gruvbox()
-  local opt = { 'soft', 'medium', 'hard' }
-  local palettes = { 'material', 'mix', 'original' }
-  local v = opt[math.random(1, #opt)]
-  local palette = palettes[math.random(1, #palettes)]
-  local h = tonumber(os.date('%H'))
-  if h > 8 and h < 18 then
-    lprint('gruvboxlight')
-    v = 'hard'
-  else
-    lprint('gruvboxdark')
-    vim.cmd('set background=dark')
-  end
+-- function config.gruvbox()
+--   local opt = { 'soft', 'medium', 'hard' }
+--   local palettes = { 'material', 'mix', 'original' }
+--   local v = opt[math.random(1, #opt)]
+--   local palette = palettes[math.random(1, #palettes)]
+--   local h = tonumber(os.date('%H'))
+--   if h > 8 and h < 18 then
+--     lprint('gruvboxlight')
+--     v = 'hard'
+--   else
+--     lprint('gruvboxdark')
+--     vim.cmd('set background=dark')
+--   end
 
-  vim.g.gruvbox_material_invert_selection = 0
-  vim.g.gruvbox_material_enable_italic = 1
-  -- vim.g.gruvbox_material_invert_signs = 1
-  vim.g.gruvbox_material_improved_strings = 1
-  vim.g.gruvbox_material_improved_warnings = 1
-  -- vim.g.gruvbox_material_contrast_dark=v
-  vim.g.gruvbox_material_background = 'dark'
-  vim.g.gruvbox_material_forground = palette
-  vim.g.gruvbox_material_enable_bold = 1
-  vim.g.gruvbox_material_palette = palette
-  vim.cmd('colorscheme gruvbox-material')
-  vim.cmd('doautocmd ColorScheme')
-end
+--   vim.g.gruvbox_material_invert_selection = 0
+--   vim.g.gruvbox_material_enable_italic = 1
+--   -- vim.g.gruvbox_material_invert_signs = 1
+--   vim.g.gruvbox_material_improved_strings = 1
+--   vim.g.gruvbox_material_improved_warnings = 1
+--   -- vim.g.gruvbox_material_contrast_dark=v
+--   vim.g.gruvbox_material_background = 'dark'
+--   vim.g.gruvbox_material_forground = palette
+--   vim.g.gruvbox_material_enable_bold = 1
+--   vim.g.gruvbox_material_palette = palette
+--   vim.cmd('colorscheme gruvbox-material')
+--   vim.cmd('doautocmd ColorScheme')
+-- end
 
 function config.minimap()
   vim.cmd([[nmap <F14> :MinimapToggle<CR>]])
@@ -638,85 +631,6 @@ function config.minimap()
   else
     vim.g.minimap_width = 2
   end
-end
-
--- deprecated?
-function config.wilder()
-  -- not sure why nneed to do this from time to tome
-  -- vim.cmd([[UpdateRemotePlugins]])
-  local wilder = require('wilder')
-  wilder.setup({ modes = { ':', '/', '?' } })
-  local gradient = {
-    '#f4468f',
-    '#fd4a85',
-    '#ff507a',
-    '#ff566f',
-    '#ff5e63',
-    '#ff6658',
-    '#ff704e',
-    '#ff7a45',
-    '#ff843d',
-    '#ff9036',
-    '#f89b31',
-    '#efa72f',
-    '#e6b32e',
-    '#dcbe30',
-    '#d2c934',
-    '#c8d43a',
-    '#bfde43',
-    '#b6e84e',
-    '#aff05b',
-  }
-
-  for i, fg in ipairs(gradient) do
-    gradient[i] =
-      wilder.make_hl('WilderGradient' .. i, 'Pmenu', { { a = 1 }, { a = 1 }, { foreground = fg } })
-  end
-
-  wilder.set_option('pipeline', {
-    wilder.branch(
-      wilder.cmdline_pipeline({
-        language = 'python',
-        fuzzy = 2,
-      }),
-      wilder.python_file_finder_pipeline({
-        -- to use ripgrep : {'rg', '--files'}
-        -- to use fd      : {'fd', '-tf'}
-        file_command = { 'rg', '--files' }, --  { "find", ".", "-type", "f", "-printf", "%P\n" },
-        -- to use fd      : {'fd', '-td'}
-        dir_command = { 'fd', '-tf' }, -- { "find", ".", "-type", "d", "-printf", "%P\n" },
-        -- use {'cpsm_filter'} for performance, requires cpsm vim plugin
-        -- found at https://github.com/nixprime/cpsm
-        filters = { 'fuzzy_filter', 'difflib_sorter' },
-      }),
-      --
-      wilder.python_search_pipeline({
-        pattern = wilder.python_fuzzy_pattern(), --python_fuzzy_delimiter_pattern()
-        sorter = wilder.python_difflib_sorter(),
-        engine = 're',
-      })
-    ),
-  })
-  local highlighters = {
-    wilder.highlighter_with_gradient({
-      wilder.basic_highlighter(), -- or wilder.lua_fzy_highlighter(),
-    }),
-    wilder.basic_highlighter(),
-  }
-  wilder.set_option(
-    'renderer',
-    wilder.renderer_mux({
-      [':'] = wilder.popupmenu_renderer({
-        highlights = { gradient = gradient },
-        min_height = '5%',
-        max_height = '35%',
-        highlighter = highlighters,
-      }),
-      ['/'] = wilder.wildmenu_renderer({
-        highlighter = highlighters,
-      }),
-    })
-  )
 end
 
 function config.neotree()

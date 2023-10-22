@@ -223,14 +223,6 @@ function config.vim_vsnip()
   vim.g.vsnip_snippet_dir = global.home .. '/.config/nvim/snippets'
 end
 
-function config.telescope_preload()
-  require('utils.helper').loader({ 'plenary.nvim' })
-end
-
-function config.telescope()
-  require('utils.telescope').setup()
-end
-
 function config.emmet()
   vim.g.user_emmet_complete_tag = 1
   -- vim.g.user_emmet_install_global = 1

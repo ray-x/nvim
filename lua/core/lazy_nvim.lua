@@ -18,13 +18,15 @@ function lazy.add(repo)
 end
 
 function lazy:load_modules_lazy()
-  vim.loader.enable()
+  if not win then
+    vim.loader.enable()
+  end
   local modules_dir = helper.get_config_path() .. sep .. 'lua' .. sep .. 'modules'
   self.repos = {}
 
   local plugins_list = {
-    modules_dir .. sep .. 'lang' .. sep .. 'plugins.lua',
     modules_dir .. sep .. 'completion' .. sep .. 'plugins.lua',
+    modules_dir .. sep .. 'lang' .. sep .. 'plugins.lua',
     modules_dir .. sep .. 'ui' .. sep .. 'plugins.lua',
     modules_dir .. sep .. 'editor' .. sep .. 'plugins.lua',
     modules_dir .. sep .. 'tools' .. sep .. 'plugins.lua',
@@ -35,6 +37,7 @@ function lazy:load_modules_lazy()
   if fn.exists('g:disable_modules') == 1 then
     disable_modules = vim.split(vim.g.disable_modules, ',')
   end
+  local start = uv.now()
 
   for _, f in pairs(plugins_list) do
     if win then
@@ -47,7 +50,6 @@ function lazy:load_modules_lazy()
     lprint(f) -- modules/completion/plugins ...
     if not vim.tbl_contains(disable_modules, f) then
       local plugins = require(f)
-      local start = uv.now()
       plugins(lazy.add)
       lprint('loaded ' .. f, vim.uv.now() - start)
     end
@@ -55,6 +57,7 @@ function lazy:load_modules_lazy()
 end
 
 function lazy:boot_strap()
+  local start = uv.now()
   local lazy_path = string.format('%s%slazy%slazy.nvim', helper.get_data_path(), sep, sep)
   local state = uv.fs_stat(lazy_path)
   if not state then
@@ -69,6 +72,7 @@ function lazy:boot_strap()
   }
   self:load_modules_lazy()
   lz.setup(self.plug, opts)
+  lprint(' lazy setup ', vim.uv.now() - start)
 end
 
 return lazy

@@ -88,11 +88,6 @@ function Lazyload()
     vim.cmd([[syntax manual]])
   end
 
-  local load_go = vim.tbl_contains({ 'go', 'gomod' }, vim.bo.filetype)
-  if load_go then
-    loader('go.nvim')
-  end
-
   -- local fname = vim.fn.expand("%:p:f")
   if fsize > 2 * 1024 * 1024 then
     lprint('syntax off')
@@ -101,20 +96,8 @@ function Lazyload()
     load_ts_plugins = false
     vim.cmd([[syntax off]])
   end
-  -- if load_ts_plugins then
-  --   lprint('loading treesitter')
-  --   vim.defer_fn(function()
-  --     loader('nvim-treesitter')
-  --   end, 10)
-  -- end
 
   lprint('lazy core ts plugins loaded', vim.loop.now() - start)
-  local plugins = 'plenary.nvim'
-  loader('plenary.nvim')
-
-  if vim.bo.filetype == 'lua' then
-    loader('neodev.nvim')
-  end
 
   vim.g.vimsyn_embed = 'lPr'
 
@@ -135,16 +118,8 @@ function Lazyload()
     plugins =
       'nvim-treesitter-textobjects nvim-ts-autotag nvim-ts-context-commentstring nvim-treesitter-textsubjects nvim-treesitter-context'
     loader(plugins)
-    -- lprint(plugins .. " loaded", os.clock())
-    loader('neogen')
-    loader('refactoring.nvim')
-    loader('indent-blankline.nvim')
-    -- loader('hlargs.nvim')
-    -- if vim.fn.line('$') < 3000 then
-    --   loader('nvim-ts-rainbow2')
-    -- end
 
-    lprint('ts loaded')
+    lprint('lazy core ts plugins loaded', vim.loop.now() - start)
   end
 
   vim.cmd([[autocmd FileType vista,guihua,guihua_rust setlocal syntax=on]])
@@ -155,19 +130,15 @@ function Lazyload()
   if load_lsp and use_nulls() then
     loader('none-ls.nvim')
   end
-
-  loader('bufferline.nvim')
   -- lprint("LoadLazyPlugin finished", os.clock())
 
   lprint('lazy colorscheme loaded', vim.loop.now() - start)
 end
 
 local lazy_timer = 5
+Lazyload()
+vim.cmd([[doautocmd User LoadLazyPlugin]])
 
-vim.defer_fn(function()
-  Lazyload()
-  vim.cmd([[doautocmd User LoadLazyPlugin]])
-end, lazy_timer)
 
 vim.defer_fn(function()
   lprint('lazy telescope start', vim.loop.now() - start)
@@ -178,7 +149,7 @@ vim.defer_fn(function()
 
   require('modules.ui.eviline')
   lprint('lazy wlfloat loaded', vim.loop.now() - start)
-end, lazy_timer + 5)
+end, lazy_timer + 10)
 --
 vim.defer_fn(function()
   require('overwrite')
@@ -199,7 +170,6 @@ vim.defer_fn(function()
     require('modules.editor.hydra').hydra_git()
   end
 
-  -- loader('statuscol.nvim')
   -- lprint("all done", os.clock())
   if vim.fn.executable(vim.g.python3_host_prog) == 0 then
     print('file not find, please update path setup', vim.g.python3_host_prog)
@@ -215,13 +185,6 @@ if plugin_folder() == [[~/github/ray-x/]] then
 end
 require('core.colorscheme')
 vim.defer_fn(function()
-  -- require('mini.sessions').setup({
-  -- autoread = true,
-  -- Whether to write current session before quitting Neovim
-  -- autowrite = true,
-  -- })
-  -- MiniSessions.on_vimenter()
-
   vim.cmd('set runtimepath+=/usr/share/vim/vimfiles')
   vim.cmd('runtime! plugin/fzf.vim')
 end, 0)
@@ -241,4 +204,4 @@ vim.defer_fn(function()
   --   [[/home/ray/.local/share/nvim/sessions/%home%ray%.local%share%nvim%lazy%auto-session.vim]]
   -- vim.cmd('silent! source ' .. sessionfile)
   lprint('auto-session loaded', vim.loop.now() - start)
-end, 30)
+end, lazy_timer+20)

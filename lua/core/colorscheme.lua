@@ -14,25 +14,21 @@ local function randomscheme()
   local themes = {
     'starry.nvim',
     'aurora',
-    'tokyonight.nvim',
     'starry.nvim',
     'aurora',
-    'gruvbox-material',
-    'sonokai',
     'catppuccin',
-    'github-nvim-theme',
-    'vim-nightfly-colors',
     'galaxy',
   }
   local style = daylight()
 
   if style == 'light' then
     -- vim.o.background = "light"
-    themes = { 'starry.nvim', 'catppuccin', 'gruvbox-material', 'sonokai' }
+    themes = { 'starry.nvim', 'catppuccin' }
   end
 
-  -- themes = { "vim-nightfly-colors", "starry.nvim", "starry.nvim", "aurora", "galaxy", "catppuccin", "tokyonight.nvim" }
-  themes = { 'vim-nightfly-colors', 'starry.nvim', 'aurora', 'galaxy' }
+  -- themes = { "starry.nvim", "starry.nvim", "aurora", "galaxy", "catppuccin", "tokyonight.nvim" }
+  themes = { 'starry.nvim', 'aurora', 'galaxy' }
+  -- themes = { 'galaxy' }
   local v = math.random(1, #themes)
 
   loading_theme = themes[v]

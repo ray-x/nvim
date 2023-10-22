@@ -1,9 +1,9 @@
-local conf = require('modules.ui.config')
 --
 -- local winwidth = function()
 --   return vim.api.nvim_call_function("winwidth", { 0 })
 -- end
 return function(ui)
+  local conf = require('modules.ui.config')
   ui({ 'nvim-tree/nvim-web-devicons', lazy = true })
 
   ui({
@@ -23,23 +23,14 @@ return function(ui)
     config = conf.notify,
   })
 
-  ui({
-    'luukvbaal/statuscol.nvim',
-    event = 'VeryLazy',
-    -- event = "User LoadLazyPlugin",
-    config = function()
-      -- require("statuscol").setup({ setlazy = true })
-      require('statuscol').setup()
-    end,
-  })
-
-  -- feel a bit laggy
   -- ui({
-  --   'folke/noice.nvim',
+  --   'luukvbaal/statuscol.nvim',
   --   event = 'VeryLazy',
   --   -- event = "User LoadLazyPlugin",
-  --   dependencies = { 'MunifTanjim/nui.nvim', lazy = true },
-  --   config = conf.noice,
+  --   config = function()
+  --     -- require("statuscol").setup({ setlazy = true })
+  --     require('statuscol').setup()
+  --   end,
   -- })
 
   ui({
@@ -58,34 +49,24 @@ return function(ui)
     config = conf.nvim_tree,
   })
 
-  ui({
-    'nvim-neo-tree/neo-tree.nvim',
-    branch = 'main',
-    cmd = {
-      'Neotree',
-      'NeoTreeShowToggle',
-      'NeoTreeFocusToggle',
-      'NeoTreeRevealToggle',
-      'NeoTreeFloat',
-      'NeoTreeFloatToggle',
-    },
-    config = conf.neotree,
-  })
+  -- ui({
+  --   'nvim-neo-tree/neo-tree.nvim',
+  --   branch = 'main',
+  --   cmd = {
+  --     'Neotree',
+  --     'NeoTreeShowToggle',
+  --     'NeoTreeFocusToggle',
+  --     'NeoTreeRevealToggle',
+  --     'NeoTreeFloat',
+  --     'NeoTreeFloatToggle',
+  --   },
+  --   event = 'VeryLazy',
+  --   lazy = true,
+  --   config = conf.neotree,
+  -- })
   ui({ 'MunifTanjim/nui.nvim', lazy = true })
   ui({
-    'gorbit99/codewindow.nvim',
-    cmd = { 'Minimap' },
-    config = function()
-      local codewindow = require('codewindow')
-      codewindow.setup()
-      codewindow.apply_default_keybinds()
-      vim.cmd('command! -nargs=0 Minimap :lua require("codewindow").toggle_minimap()')
-    end,
-  })
-  -- Tint inactive windows in Neovim using window-local highlight namespaces.
-  ui({
     'levouh/tint.nvim',
-    event = 'VeryLazy',
     config = function()
       require('tint').setup({
         bg = true, -- Tint background portions of highlight groups
@@ -110,7 +91,12 @@ return function(ui)
     event = { 'CmdwinEnter', 'CmdlineEnter' },
   })
 
-  ui({ 'lukas-reineke/indent-blankline.nvim', lazy = true, config = conf.blankline }) -- after="nvim-treesitter",
+  ui({
+    'lukas-reineke/indent-blankline.nvim',
+    lazy = true,
+    event = { 'CursorMoved', 'CursorMovedI' },
+    config = conf.blankline,
+  }) -- after="nvim-treesitter",
 
   ui({
     -- 'xiyaowong/virtcolumn.nvim',
@@ -146,23 +132,7 @@ return function(ui)
     lazy = true,
     config = conf.tokyonight,
   })
-  ui({
-    'EdenEast/nightfox.nvim',
-    lazy = true,
-    config = conf.nightfox,
-  })
 
-  ui({
-    'rebelot/kanagawa.nvim',
-    lazy = true,
-    config = conf.kanagawa,
-  })
-  ui({ 'bluz71/vim-nightfly-colors', lazy = true, config = conf.nightfly })
-
-  ui({ 'projekt0n/github-nvim-theme', lazy = true, config = conf.gh_theme })
-
-  ui({ 'sainnhe/sonokai', lazy = true, config = conf.sonokai })
-  ui({ 'sainnhe/gruvbox-material', lazy = true, config = conf.gruvbox })
   ui({ 'catppuccin/nvim', lazy = true, name = 'catppuccin', config = conf.cat })
 
   ui({
@@ -175,55 +145,61 @@ return function(ui)
 
   -- really good one, only issue is dependency ...
   ui({ 'romgrk/fzy-lua-native', lazy = true })
-  -- ui({
-  --   'gelguy/wilder.nvim', -- I need to decommitions this
-  --   dependencies = {
-  --     { 'romgrk/fzy-lua-native' },
-  --     -- {'nixprime/cpsm', run='UpdateRemotePlugins'}
-  --   },
-  --   lazy = true,
-  --   build = function()
-  --     vim.cmd([[packadd wilder.nvim]])
-  --     vim.cmd([[silent UpdateRemotePlugins]])
-  --   end,
-  --   -- event = { 'CmdwinEnter', 'CmdlineEnter' },
-  --   config = conf.wilder,
-  -- })
 
   ui({ 'stevearc/dressing.nvim', lazy = true })
-  -- disable for now as a blacking issue with session
-  -- ui({
-  --   'beauwilliams/focus.nvim',
-  --   lazy = true,
-  --   -- event = { "FocusGained", "CursorMoved", "ModeChanged" },
-  --   -- cmd ={ "FocusToggle", "FocusEnable", "FocusSplitNicely" },
-  --   config = function()
-  --     require('focus').setup({
-  --       cursorline = false,
-  --       -- minwidth = 80,
-  --       -- minheight = 16,
-  --     })
-  --   end,
-  -- })
-  ui({
-    'mawkler/modicator.nvim',
-    lazy = true,
-    event = { 'CursorMoved', 'CursorMovedI', 'ModeChanged' },
-    config = function()
-      if vim.o.cursorline then
-        require('modicator').setup({ show_warnings = false })
-      end
-    end,
-  })
-  ui({
-    --use {'edluffy/specs.nvim'} see also this
-    'rainbowhxch/beacon.nvim',
-    config = function()
-      require('beacon').setup({
-        size = 15,
-        timeout = 100,
-      })
-    end,
-    event = { 'CursorMoved', 'CursorMovedI' },
-  })
 end
+
+-- ui({
+--   'gorbit99/codewindow.nvim',
+--   cmd = { 'Minimap' },
+--   config = function()
+--     local codewindow = require('codewindow')
+--     codewindow.setup()
+--     codewindow.apply_default_keybinds()
+--     vim.cmd('command! -nargs=0 Minimap :lua require("codewindow").toggle_minimap()')
+--   end,
+-- })
+-- feel a bit laggy
+-- ui({
+--   'folke/noice.nvim',
+--   event = 'VeryLazy',
+--   -- event = "User LoadLazyPlugin",
+--   dependencies = { 'MunifTanjim/nui.nvim', lazy = true },
+--   config = conf.noice,
+-- })
+-- Tint inactive windows in Neovim using window-local highlight namespaces.
+-- disable for now as a blacking issue with session
+-- ui({
+--   'beauwilliams/focus.nvim',
+--   lazy = true,
+--   -- event = { "FocusGained", "CursorMoved", "ModeChanged" },
+--   -- cmd ={ "FocusToggle", "FocusEnable", "FocusSplitNicely" },
+--   config = function()
+--     require('focus').setup({
+--       cursorline = false,
+--       -- minwidth = 80,
+--       -- minheight = 16,
+--     })
+--   end,
+-- })
+-- ui({
+--   'mawkler/modicator.nvim',
+--   lazy = true,
+--   event = { 'CursorMoved', 'CursorMovedI', 'ModeChanged' },
+--   config = function()
+--     if vim.o.cursorline then
+--       require('modicator').setup({ show_warnings = false })
+--     end
+--   end,
+-- })
+-- ui({
+--   --use {'edluffy/specs.nvim'} see also this
+--   'rainbowhxch/beacon.nvim',
+--   config = function()
+--     require('beacon').setup({
+--       size = 15,
+--       timeout = 100,
+--     })
+--   end,
+--   event = { 'CursorMoved', 'CursorMovedI' },
+-- })
