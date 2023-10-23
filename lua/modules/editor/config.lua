@@ -81,6 +81,10 @@ end
 
 function config.hydra()
   --require('modules.editor.hydra')
+  local gitrepo = vim.fn.isdirectory('.git/index')
+  if gitrepo then
+    require('modules.editor.hydra').hydra_git()
+  end
 end
 function config.hexokinase()
   vim.g.Hexokinase_optInPatterns = {

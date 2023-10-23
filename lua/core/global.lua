@@ -32,7 +32,7 @@ function global:load_variables()
   self.data_dir = vim.fn.stdpath('data')
   self.cache_dir = vim.fn.stdpath('cache')
   self.log_dir = self.cache_dir
-
+  self.start = vim.uv.now()
   self.log_path = string.format('%s%s%s', self.log_dir, self.path_sep, 'nvim_debug.log')
 end
 

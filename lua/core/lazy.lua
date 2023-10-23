@@ -13,7 +13,7 @@ if argc > 0 then
 end
 lprint('lazy')
 local loader = require('utils.helper').loader
-local start = vim.loop.now()
+
 local fsize = vim.fn.getfsize(vim.fn.expand('%:p:f'))
 if fsize == nil or fsize < 0 then
   fsize = 1
@@ -65,6 +65,7 @@ end
 -- load module but not init/config it
 function setup()
   require('core.helper').init()
+  local start = require('core.global').start
 
   lprint('lazy core plugins start', vim.loop.now() - start)
   createdir()
@@ -130,16 +131,10 @@ require('overwrite')
 require('modules.ui.notify').setup()
 -- vim.notify = require('notify')
 
-local gitrepo = vim.fn.isdirectory('.git/index')
-if gitrepo then
-  require('modules.editor.hydra').hydra_git()
-end
-
 -- lprint("all done", os.clock())
 if vim.fn.executable(vim.g.python3_host_prog) == 0 then
   print('file not find, please update path setup', vim.g.python3_host_prog)
 end
-lprint('lazy telescope loaded', vim.loop.now() - start)
 require('core.ab')
 
 if plugin_folder() == [[~/github/ray-x/]] then

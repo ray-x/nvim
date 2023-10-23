@@ -23,15 +23,15 @@ return function(ui)
     config = conf.notify,
   })
 
-  -- ui({
-  --   'luukvbaal/statuscol.nvim',
-  --   event = 'VeryLazy',
-  --   -- event = "User LoadLazyPlugin",
-  --   config = function()
-  --     -- require("statuscol").setup({ setlazy = true })
-  --     require('statuscol').setup()
-  --   end,
-  -- })
+  ui({
+    -- configured to use with gitsign
+    'luukvbaal/statuscol.nvim',
+    event = 'VeryLazy',
+    config = function()
+      -- require("statuscol").setup({ setlazy = true })
+      require('statuscol').setup()
+    end,
+  })
 
   ui({
     'akinsho/bufferline.nvim',

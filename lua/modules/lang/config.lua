@@ -259,19 +259,22 @@ function config.navigator()
     },
   }
   nav_cfg.lsp.gopls = function()
-    local go = pcall(require, 'go')
-    if go then
-      local cfg = require('go.lsp').config()
-      local att = cfg.on_attach
-      cfg.on_attach = function(client, bufnr)
-        print('gopls on_attach')
-        client.server_capabilities.documentFormattingProvider = false -- efm/null-ls
-        att(client, bufnr)
+    if vim.tbl_contains({'go', 'gomod'}, vim.bo.filetype) then
+      local go = pcall(require, 'go')
+      if go then
+        local cfg = require('go.lsp').config()
+        local att = cfg.on_attach
+        cfg.on_attach = function(client, bufnr)
+          print('gopls on_attach')
+          client.server_capabilities.documentFormattingProvider = false -- efm/null-ls
+          att(client, bufnr)
+        end
+        return cfg
+      else
+        return {}
       end
-      return cfg
-    else
-      return {}
     end
+    return {}
   end
 
   table.insert(nav_cfg.lsp.disable_lsp, 'efm')

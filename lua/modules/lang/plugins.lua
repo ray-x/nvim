@@ -10,7 +10,7 @@ return function(lang)
     config = ts.treesitter_obj,
     module = true,
     lazy = true,
-    event = {'CursorHold', 'CursorMoved' }
+    event = { 'CursorMoved' }
   })
 
   lang({
@@ -18,17 +18,19 @@ return function(lang)
     lazy = true,
     config = ts.textsubjects,
     module = true,
-    event = {'CursorHold', 'CursorMoved' }
+    event = { 'CursorMoved' }
   })
-
-  lang({
-    'jose-elias-alvarez/typescript.nvim',
-    lazy = true,
-    ft = { 'typescript', 'typescriptreact', 'javascript', 'javascriptreact' },
-    config = function()
-      require('typescript').setup({})
-    end,
-  })
+  local jsft = { 'typescript', 'typescriptreact', 'javascript', 'javascriptreact' }
+  if vim.tbl_contains(jsft, vim.bo.filetype) then
+    lang({
+      'jose-elias-alvarez/typescript.nvim',
+      lazy = true,
+      event = 'VeryLazy',
+      config = function()
+        require('typescript').setup({})
+      end,
+    })
+  end
   lang({
     'bennypowers/nvim-regexplainer',
     lazy = true,
@@ -49,7 +51,7 @@ return function(lang)
   lang({
     'haringsrob/nvim_context_vt',
     lazy = true,
-    event = { 'CursorHold', 'WinScrolled', 'CursorMoved' },
+    event = { 'CursorMoved' },
     config = conf.context_vt,
   })
   lang({ 'ThePrimeagen/refactoring.nvim', lazy = true, config = conf.refactor })
@@ -58,9 +60,10 @@ return function(lang)
     'nvim-treesitter/nvim-treesitter-refactor',
     config = ts.treesitter_ref, -- let the last loaded config treesitter
     lazy = true,
-    event = {'CursorHold', 'CursorMoved', 'VeryLazy'}
+    event = {'CursorMoved'}
   })
 
+  -- Automatically convert strings to f-strings or template strings and back
   lang({
     'chrisgrieser/nvim-puppeteer',
     lazy = true,
@@ -115,6 +118,13 @@ return function(lang)
     lang({ 'metakirby5/codi.vim', ft = { 'python', 'javascript' }, cmd = { 'Codi', 'CodiNew' } })
     lang({ 'Vigemus/iron.nvim', ft = 'python', config = conf.iron })
     lang({ 'yardnsm/vim-import-cost', ft = { 'javascript' }, cmd = 'ImportCost', lazy = true })
+    lang({
+      'mfussenegger/nvim-dap-python',
+      event = 'VeryLazy',
+      config = require('modules.lang.dap.py').config,
+      event = { 'CmdlineEnter' },
+    })
+
   end
 
   -- lang['scalameta/nvim-metals'] = {dependencies = {"nvim-lua/plenary.nvim"}}
@@ -170,6 +180,7 @@ return function(lang)
     dev = dev,
     module = true,
   })
+
   lang({
     'ray-x/navigator.lua',
     dev = dev,
@@ -235,21 +246,15 @@ return function(lang)
     -- dependencies = {"mfussenegger/nvim-dap"},
     config = conf.dapui,
     lazy = true,
+    module = true,
   })
 
-  lang({ 'theHamsta/nvim-dap-virtual-text', lazy = true })
+  lang({ 'theHamsta/nvim-dap-virtual-text', lazy = true, module = true })
 
   lang({
     'nvim-telescope/telescope-dap.nvim',
     config = conf.dap,
     -- cmd = "Telescope",
-    event = { 'CmdlineEnter' },
-  })
-
-  lang({
-    'mfussenegger/nvim-dap-python',
-    ft = { 'python' },
-    config = require('modules.lang.dap.py').config,
     event = { 'CmdlineEnter' },
   })
 

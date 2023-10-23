@@ -161,7 +161,9 @@ local current_function = function(width)
 end
 
 local current_signature = function(width)
-  local sig = require('lsp_signature').status_line(width)
+  local ok, lsp_signature = pcall(require, 'lsp_signature')
+  if not ok then return end
+  local sig = lsp_signature.status_line(width)
   signature_length = #sig.label
   sig.label = sig.label:gsub('[\n\r]+', ' ')
   sig.hint = sig.hint:gsub('[\n\r]+', ' ')

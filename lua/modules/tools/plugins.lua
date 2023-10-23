@@ -240,12 +240,26 @@ return function(tools)
       })
     end,
   })
+
+  tools({
+    'ray-x/viewdoc.nvim',
+    dev = (plugin_folder():find('github') ~= nil),
+    cmd = { 'Viewdoc' },
+    lazy = true,
+    config = function()
+      require('viewdoc').setup({
+        debug = true,
+        log_path = vim.fn.expand('$HOME') .. '/.cache/nvim/nvim_debug.log',
+      })
+    end,
+  })
   if gitrepo then
     tools({
       'lewis6991/gitsigns.nvim',
       config = conf.gitsigns,
       -- keys = {']c', '[c'},  -- load by lazy.lua
-      lazy = true,
+      event = {'VeryLazy'},
+      lazy = false,
     })
 
     tools({ 'TimUntersberger/neogit', cmd = { 'Neogit' }, config = conf.neogit })
@@ -270,20 +284,7 @@ return function(tools)
         })
       end,
     })
-  end
-  tools({
-    'ray-x/viewdoc.nvim',
-    dev = (plugin_folder():find('github') ~= nil),
-    cmd = { 'Viewdoc' },
-    lazy = true,
-    config = function()
-      require('viewdoc').setup({
-        debug = true,
-        log_path = vim.fn.expand('$HOME') .. '/.cache/nvim/nvim_debug.log',
-      })
-    end,
-  })
-  if gitrepo then
+
     tools({
       'akinsho/git-conflict.nvim',
       cmd = {
@@ -358,6 +359,8 @@ return function(tools)
     'jvgrootveld/telescope-zoxide',
     lazy = true,
     config = function()
+      local ok, telescope = pcall(require, 'telescope')
+      if not ok then return end
       require('utils.telescope')
       require('telescope').load_extension('zoxide')
     end,

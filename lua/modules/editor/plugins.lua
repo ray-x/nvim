@@ -16,7 +16,7 @@ return function(editor)
   editor({
     'anuvyklack/hydra.nvim',
     dependencies = 'anuvyklack/keymap-layer.nvim',
-    -- event = { "CmdwinEnter", "CmdlineEnter", "CursorMoved" },
+    event = { "CmdwinEnter", "CmdlineEnter", "CursorMoved" },
     config = conf.hydra,
     lazy = true,
   })
@@ -245,6 +245,8 @@ return function(editor)
   editor({
     'numToStr/Comment.nvim',
     keys = { 'g', '<ESC>', 'v', 'V', '<c-v>' },
+    event = { 'ModeChanged' },
+    module = true,
     config = conf.comment,
   })
 

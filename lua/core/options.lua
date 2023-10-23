@@ -97,6 +97,7 @@ local function load_options()
     title          = true;
 
     background     = "dark";
+    mousemodel     = "extend";
 -- --------------------------------------
     ttyfast        = true, -- Indicate fast terminal conn for faster redraw
     fileencoding   = "utf-8",
