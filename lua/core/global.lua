@@ -1,4 +1,7 @@
 local global = {}
+if not vim.uv then
+  vim.uv = vim.loop
+end
 
 function global:load_variables()
   local home = os.getenv('HOME') or vim.fn.expand('$HOME')

@@ -105,15 +105,15 @@ local helper = {
   end,
 }
 
-_G.use_nulls = function()
-  return true
-  -- return true
-end
+-- _G.use_nulls = function()
+--   return true
+--   -- return true
+-- end
 
-_G.use_efm = function()
-  return false
-  -- return true
-end
+-- _G.use_efm = function()
+--   return false
+--   -- return true
+-- end
 
 _G.plugin_folder = function()
   if Plugin_folder then
@@ -126,6 +126,37 @@ _G.plugin_folder = function()
     Plugin_folder = [[ray-x/]]
   end
   return Plugin_folder
+end
+
+_G.FindRoot = function()
+  local root = vim.fn.system('git rev-parse --show-toplevel 2> /dev/null'):sub(1, -3)
+  local list = {'go.mod', 'Makefile', 'CMakefile.txt', 'package.json'}
+
+  if #root == 0 then
+    for _, k in ipairs(list) do
+      root = FindProjectRoot(k)
+      if #root > 0 then
+        return root
+      end
+    end
+  else
+    return root
+  end
+
+  return vim.fn.expand('%:p:h')
+end
+
+_G.FindProjectRoot = function(file)
+  local current_dir = vim.fn.expand('%:p:h')
+  local path = current_dir .. '/' .. file
+  while #current_dir > 0 and vim.fn.isdirectory(current_dir) == 1 do
+    if vim.fn.filereadable(path) == 1 then
+      return current_dir
+    end
+    current_dir = vim.fn.fnamemodify(current_dir, ':h')
+    path = current_dir .. '/' .. file
+  end
+  return ''
 end
 
 return helper

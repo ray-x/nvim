@@ -4,7 +4,7 @@ local global = require('core.global')
 local win = global.is_windows
 local lazy = {}
 lazy.__index = lazy
-
+local start = global.start
 local sep = global.path_sep
 
 function lazy.add(repo)
@@ -37,7 +37,6 @@ function lazy:load_modules_lazy()
   if fn.exists('g:disable_modules') == 1 then
     disable_modules = vim.split(vim.g.disable_modules, ',')
   end
-  local start = uv.now()
 
   for _, f in pairs(plugins_list) do
     if win then
@@ -47,13 +46,14 @@ function lazy:load_modules_lazy()
     if pos then
       f = f:sub(pos - 6, #f - 4)
     end
-    lprint(f) -- modules/completion/plugins ...
+    -- lprint(f) -- modules/completion/plugins ...
     if not vim.tbl_contains(disable_modules, f) then
       local plugins = require(f)
       plugins(lazy.add)
       lprint('loaded ' .. f, vim.uv.now() - start)
     end
   end
+  lprint('lazy modules loaded', vim.loop.now() - start)
 end
 
 function lazy:boot_strap()
@@ -72,7 +72,7 @@ function lazy:boot_strap()
   }
   self:load_modules_lazy()
   lz.setup(self.plug, opts)
-  lprint(' lazy setup ', vim.uv.now() - start)
+  lprint(' lazy boot_strap ', vim.uv.now() - start)
 end
 
 return lazy

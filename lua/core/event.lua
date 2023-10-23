@@ -55,7 +55,7 @@ function autocmd.load_autocmds()
       {
         'BufReadPre',
         '*',
-        'if getfsize(expand("%")) > 1000000 | ownsyntax off | endif',
+        'if getfsize(expand("%")) > 1000000 | set eventignore+=FileType | setlocal noswapfile bufhidden=unload buftype=nowrite undolevels=-1 | else | set eventignore-=FileType | endif',
       },
       -- {"UIEnter", "*", ":silent! :lua require('modules.lang.config').syntax_folding()"},
       { 'BufReadPre', '*', ":silent! :lua require('modules.lang.config').nvim_treesitter()" },

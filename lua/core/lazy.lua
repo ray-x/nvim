@@ -1,5 +1,6 @@
 local api = vim.api
 local argc = vim.fn.argc() or 0
+
 if argc > 0 then
   local arg = vim.fn.argv()
   for i = 1, argc do
@@ -11,7 +12,8 @@ if argc > 0 then
     vim.cmd('NeoTreeFloat')
   end
 end
-lprint('lazy')
+
+lprint('I am lazy begin', vim.loop.now() - require('core.global').start)
 local loader = require('utils.helper').loader
 
 local fsize = vim.fn.getfsize(vim.fn.expand('%:p:f'))
@@ -69,7 +71,7 @@ function setup()
 
   lprint('lazy core plugins start', vim.loop.now() - start)
   createdir()
-  lprint('I am lazy')
+  lprint('I am lazy', vim.loop.now() - start)
   local disable_ft = {
     'NvimTree',
     'guihua',
@@ -85,9 +87,7 @@ function setup()
   }
 
   local syn_on = not vim.tbl_contains(disable_ft, vim.bo.filetype)
-  if not syn_on then
-    vim.cmd([[syntax manual]])
-  end
+
 
   -- local fname = vim.fn.expand("%:p:f")
   if fsize > 2 * 1024 * 1024 then
@@ -96,7 +96,12 @@ function setup()
     load_lsp = false
     load_ts_plugins = false
     vim.cmd([[syntax off]])
+  else
+    if not syn_on then
+      vim.cmd([[syntax manual]])
+    end
   end
+  lprint('syntax', vim.loop.now() - start)
 
   vim.g.vimsyn_embed = 'lPr'
 
@@ -114,7 +119,6 @@ function setup()
   vim.cmd([[doautocmd User LoadLazyPlugin]])
   vim.cmd('tabdo windo set relativenumber')
   vim.cmd('highlight clear ColorColumn')
-  require('vscripts.tools')
   vim.cmd("command! Gram lua require'modules.tools.config'.grammcheck()")
   lprint('lazy colorscheme loaded', vim.loop.now() - start)
 end
