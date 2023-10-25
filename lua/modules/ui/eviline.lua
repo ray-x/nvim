@@ -135,14 +135,10 @@ local current_function = function(width)
     width = math.max(width / 2, 60)
   end
   if running % 5 == 1 and not state.disable_title_update then
-    ts, err = pcall(treesitter_context, 400)
-    if err then
-      ts = ''
+    ok, ts = pcall(treesitter_context, 400)
+    if not ok or not ts or string.len(ts) < 3 then
+      return ' '
     end
-  end
-
-  if ts and string.len(ts) < 3 then
-    return ' '
   end
 
   -- lprint(ts)
@@ -162,7 +158,9 @@ end
 
 local current_signature = function(width)
   local ok, lsp_signature = pcall(require, 'lsp_signature')
-  if not ok then return end
+  if not ok then
+    return
+  end
   local sig = lsp_signature.status_line(width)
   signature_length = #sig.label
   sig.label = sig.label:gsub('[\n\r]+', ' ')
