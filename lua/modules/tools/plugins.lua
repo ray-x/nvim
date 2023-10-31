@@ -5,6 +5,7 @@ return function(tools)
   tools({
     'nvim-telescope/telescope.nvim',
     cmd = 'Telescope',
+    event = { 'CmdlineEnter', 'CursorHold', 'VeryLazy' },
     config = function()
       require('utils.telescope').setup()
     end,
@@ -13,11 +14,31 @@ return function(tools)
     end,
     dependencies = {
       { 'nvim-lua/plenary.nvim', lazy = true },
-      { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make', lazy = true, event = { 'CmdlineEnter', 'CursorHold' },},
-      { 'nvim-telescope/telescope-live-grep-args.nvim', lazy = true, event = { 'CmdlineEnter', 'CursorHold' }, },
-      { 'nvim-telescope/telescope-file-browser.nvim', lazy = true, event = { 'CmdlineEnter', 'CursorHold' }, },
     },
-    lazy = true,
+    module = true,
+  })
+  tools({
+    'nvim-telescope/telescope-fzf-native.nvim',
+    build = 'make',
+    event = { 'CmdlineEnter', 'CursorHold' },
+    dependencies = {
+      { 'nvim-telescope/telescope.nvim' },
+    },
+  })
+
+  tools({
+    'nvim-telescope/telescope-live-grep-args.nvim',
+    dependencies = {
+      { 'nvim-telescope/telescope.nvim' },
+    },
+    event = { 'CmdlineEnter', 'CursorHold' },
+  })
+  tools({
+    'nvim-telescope/telescope-file-browser.nvim',
+    dependencies = {
+      { 'nvim-telescope/telescope.nvim' },
+    },
+    event = { 'CmdlineEnter', 'CursorHold' },
   })
   tools({
     'kristijanhusak/vim-dadbod-ui',
@@ -40,8 +61,8 @@ return function(tools)
       }
     end,
   })
-  tools({ 'mattn/webapi-vim', lazy = true })
-  tools({ 'nvim-lua/plenary.nvim', lazy = true })
+  -- tools({ 'mattn/webapi-vim', lazy = true })
+  tools({ 'nvim-lua/plenary.nvim', lazy = true, module = true })
   tools({
     'edluffy/hologram.nvim',
     config = conf.hologram,
@@ -114,7 +135,6 @@ return function(tools)
     cmd = { 'Neotest', 'NeotestFile', 'NeoResult' },
   })
 
-  tools({ 'nvim-neotest/neotest-plenary', lazy = true })
   tools({ 'will133/vim-dirdiff', cmd = { 'DirDiff' } })
 
   tools({
@@ -224,7 +244,6 @@ return function(tools)
     config = conf.diffview,
   })
 
-
   tools({
     'ray-x/sad.nvim',
     dev = (plugin_folder():find('github') ~= nil),
@@ -258,7 +277,7 @@ return function(tools)
       'lewis6991/gitsigns.nvim',
       config = conf.gitsigns,
       -- keys = {']c', '[c'},  -- load by lazy.lua
-      event = {'VeryLazy'},
+      event = { 'VeryLazy' },
       lazy = false,
     })
 
@@ -266,7 +285,7 @@ return function(tools)
 
     tools({
       'ThePrimeagen/git-worktree.nvim',
-      event = {'VeryLazy'},
+      event = { 'VeryLazy' },
       config = conf.worktree,
     })
     tools({
@@ -297,7 +316,6 @@ return function(tools)
       lazy = true,
       config = conf.git_conflict,
     })
-
 
     tools({
       'rbong/vim-flog',
@@ -352,7 +370,7 @@ return function(tools)
     'ahmedkhalf/project.nvim',
     lazy = true,
     config = conf.project,
-    event = { 'CmdlineEnter' }
+    event = { 'CmdlineEnter' },
   })
 
   tools({
@@ -360,13 +378,13 @@ return function(tools)
     lazy = true,
     config = function()
       local ok, telescope = pcall(require, 'telescope')
-      if not ok then return end
-      require('utils.telescope')
+      if not ok then
+        return
+      end
       require('telescope').load_extension('zoxide')
     end,
     event = { 'CmdlineEnter', 'CursorHold' },
   })
-
 
   if not require('core.global').is_windows then
     tools({
@@ -375,7 +393,6 @@ return function(tools)
       dependencies = { 'kkharji/sqlite.lua' },
       event = { 'CmdlineEnter' },
       config = function()
-        require('utils.telescope')
         require('neoclip').setup({
           db_path = vim.fn.stdpath('data') .. '/databases/neoclip.sqlite3',
         })
@@ -438,12 +455,6 @@ return function(tools)
     event = { 'CmdlineEnter', 'CursorHold' },
   })
   --The linediff plugin provides a simple command, :Linediff, which is used to diff two separate blocks of text.
-  -- tools({
-  --   'pfeiferj/nvim-hurl',
-  --   lazy = true,
-  --   cmd = { 'HurlRun' }, --, "'<,'>HurlRun"
-  --   ft = { 'hurl', 'http' },
-  -- })
   tools({ 'AndrewRadev/linediff.vim', lazy = true, cmd = { 'Linediff' } }) -- , "'<,'>Linediff"
   tools({
     'ibhagwan/fzf-lua',

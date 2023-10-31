@@ -8,8 +8,10 @@ if argc > 0 then
       return
     end
   end
-  if vim.fn.isdirectory(arg[1]) == 1 then
-    vim.cmd('NeoTreeFloat')
+  if arg[1] and vim.fn.isdirectory(arg[1]) == 1 then
+    vim.defer_fn(function()
+      require('telescope').extensions.file_browser.file_browser()
+    end, 200)
   end
 end
 
@@ -88,7 +90,6 @@ function setup()
 
   local syn_on = not vim.tbl_contains(disable_ft, vim.bo.filetype)
 
-
   -- local fname = vim.fn.expand("%:p:f")
   if fsize > 2 * 1024 * 1024 then
     lprint('syntax off')
@@ -135,6 +136,10 @@ require('overwrite')
 require('modules.ui.notify').setup()
 -- vim.notify = require('notify')
 
+if vim.fn.isdirectory(arg[1]) == 1 then
+  loader('telescope.nvim')
+  loader('telescope-file-browser.nvim')
+end
 -- lprint("all done", os.clock())
 if vim.fn.executable(vim.g.python3_host_prog) == 0 then
   print('file not find, please update path setup', vim.g.python3_host_prog)

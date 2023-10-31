@@ -171,7 +171,6 @@ function config.project()
     -- or leave it empty to use the default settings
     -- refer to the configuration section below
   })
-  require('utils.telescope')
   require('telescope').load_extension('projects')
 end
 

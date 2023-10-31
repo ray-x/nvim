@@ -19,6 +19,7 @@ local function load_options()
     visualbell     = true;
     hidden         = true;
     fileformats    = "unix,mac,dos";
+    -- fileformat    = "unix";
     -- magic          = true; -- already default
     virtualedit    = "onemore";
     encoding       = "utf-8";

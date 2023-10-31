@@ -184,7 +184,7 @@ local treesitter_context = function(width)
   end
   local en_context = true
 
-  if vim.fn.line('$') > 5000 then -- skip for large file
+  if vim.fn.line('$') > 10000 then -- skip for large file
     -- lprint('skip treesitter')
     return ' '
   end

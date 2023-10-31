@@ -80,3 +80,15 @@ vim.api.nvim_create_user_command('Opsort', function()
   vim.fn.feedkeys(":call <SID>Opsort()<CR>")
 
 end, { nargs = '+', complete = 'dir' })
+
+vim.api.nvim_create_user_command('IndentEnable', function()
+   require("ibl").setup_buffer(0, {
+    enabled = true,
+})
+end, {})
+
+vim.api.nvim_create_user_command('IndentToggle', function()
+   require("ibl").setup_buffer(0, {
+    enabled = not require("ibl.config").get_config(0).enabled,
+})
+end, {})

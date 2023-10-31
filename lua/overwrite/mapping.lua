@@ -3,22 +3,22 @@ local map_cmd = bind.map_cmd
 local map_func = bind.map_func
 local map_plug = bind.map_plug
 local map_cu = bind.map_cu
-local mx = function(feedkeys)
-  return function()
-    local keys = vim.api.nvim_replace_termcodes(feedkeys, true, false, true)
-    vim.api.nvim_feedkeys(keys, 'm', false)
-  end
-end
+-- local mx = function(feedkeys)
+--   return function()
+--     local keys = vim.api.nvim_replace_termcodes(feedkeys, true, false, true)
+--     vim.api.nvim_feedkeys(keys, 'm', false)
+--   end
+-- end
 
 local K = {}
-local function check_back_space()
-  local col = vim.fn.col('.') - 1
-  if col == 0 or vim.fn.getline('.'):sub(col, col):match('%s') then
-    return true
-  else
-    return false
-  end
-end
+-- local function check_back_space()
+--   local col = vim.fn.col('.') - 1
+--   if col == 0 or vim.fn.getline('.'):sub(col, col):match('%s') then
+--     return true
+--   else
+--     return false
+--   end
+-- end
 
 -- stylua: ignore start
 
@@ -48,7 +48,6 @@ local keys = {
   ["n|<Leader>r"] = map_func(function() return _G.test_or_run() end):with_expr():with_desc("run or test"),
 
   ["v|<Leader>r"] = map_func(function() _G.test_or_run() end):with_expr():with_desc("run or test"),
-
   ["n|<Leader>R"] = map_func(function() _G.test_or_run(true) end):with_expr():with_desc("run or test"),
   ["v|<Leader>R"] = map_func(function() _G.test_or_run(true) end):with_expr():with_desc("run or test"),
 
@@ -62,7 +61,7 @@ local keys = {
   -- abolish , e.g. Crs: snake case, Crc: Camel case, Crm: mix case, Cru: upper case, Cr-: dash case, Cr.: dot case, Cr<Space>: space case, Crt: titlecase
   ["n|Cr"] = map_plug("abolish-coerce-word"):with_noremap():with_silent():with_desc('s:snake, c:Camel,m:mix,u:upper,-:dash,.:dot,<Spc>:space case, t:titlecase'),
   ["v|Cr"] = map_plug("abolish-coerce"):with_noremap():with_silent():with_desc('s:snake, c:Camel,m:mix,u:upper,-:dash,.:dot,<Spc>:space case, t:titlecase'),
-
+  --
   ["n|<F13>"] = map_cmd("NvimTreeToggle"),
   ["n|<S-F1>"] = map_cmd("NvimTreeToggle"),
   -- ["n|<F13>"] = map_cmd("Neotree action=show source=buffers position=left toggle=true"),
@@ -79,14 +78,14 @@ local keys = {
   -- ["nx|s"] = map_cmd("lua hop1(1)"):with_silent(),
   -- ["nx|S"] = map_cmd("lua hop1()"):with_silent(),
 
-  ["inxo|<F3>"] = map_plug("leap-forward-to"):with_silent(),
-  ["inxo|<C-s>"] = map_plug("leap-forward-to"):with_silent(),
-  ["inxo|<F15>"] = map_plug("leap-backward-to"):with_silent(),
-  ["inxo|<C-S-S>"] = map_plug("leap-backward-to"):with_silent(),
-  ["nxo|gs"] = map_plug("leap-forward-to"):with_silent(),
-  ["nxo|gS"] = map_plug("leap-cross-window"):with_silent(),
-  ["nxo|<Leader>T"] = map_func(function()require("leap-ast").leap()
-  end),
+  -- ["inxo|<F3>"] = map_plug("leap-forward-to"):with_silent(),
+  -- ["inxo|<C-s>"] = map_plug("leap-forward-to"):with_silent(),
+  -- ["inxo|<F15>"] = map_plug("leap-backward-to"):with_silent(),
+  -- ["inxo|<C-S-S>"] = map_plug("leap-backward-to"):with_silent(),
+  -- ["nxo|gs"] = map_plug("leap-forward-to"):with_silent(),
+  -- ["nxo|gS"] = map_plug("leap-cross-window"):with_silent(),
+  -- ["nxo|<Leader>T"] = map_func(function()require("leap-ast").leap()
+  -- end),
   -- ["xo|x"] = map_plug("leap-forward-until"):with_silent(),
   -- ["xo|X"] = map_plug("leap-backward-until"):with_silent(),
   -- ["x|s"] = map_cmd("lua hop1(1)"):with_silent(),
@@ -94,17 +93,6 @@ local keys = {
   -- ["v|<M-s>"] = map_cmd("lua require'hop'.hint_char1()"):with_silent():with_expr(),
   -- ["n|<Space>s"] = map_cmd("HopChar2"),
   ["n|<Leader>s"] = map_func(function() require("flash").toggle(true) end),
-  -- ["n|<M-s>"] = map_cmd("HopChar2AC"),
-  -- ["n|<M-S>"] = map_cmd("HopChar2BC"),
-  -- ["xv|<M-s>"] = map_cmd("HopChar2AC"):with_silent(),
-  -- ["xv|<M-S>"] = map_cmd("HopChar2BC"):with_silent(),
-  -- ["n|<Space>F"] = map_cmd("HopPattern"),
-  -- ["n|<Space>]"] = map_cmd("HopChar1MW"),
-  -- ["n|<Space>]"] = map_cmd("HopChar2MW"),
-  -- clap --
-  -- ["n|<d-C>"] = map_cmd("Clap | startinsert"),
-  -- ["i|<d-C>"] = map_cmd("Clap | startinsert"):with_noremap():with_silent(),
-  -- ["n|<Leader>df"] = map_cmd("Clap dumb_jump ++query=<cword> | startinsert"),
   ["n|<F9>"] = map_func(function()
     if vim.o.ft == 'go' then
       return vim.cmd('GoBreakToggle')
@@ -120,18 +108,14 @@ local keys = {
   -- ["n|<Leader>sl"] = map_cu('SessionLoad'):with_noremap(),
 
   ["n|<Leader>bd"] = map_cmd([[lua require("close_buffers").delete({type='this'})]]),
-  ["n|<Space>M"] = map_cmd([[lua require("harpoon.mark").toggle_file()]]),
-  ["n|<Space>n"] = map_cmd([[lua require("harpoon.ui").nav_next()]]),
-  ["n|<Space>p"] = map_cmd([[lua require("harpoon.ui").nav_prev()]]),
-  -- ["n|<Space>m1"] = map_cmd([[lua require("harpoon.ui").nav_file(1)]]),
-  ["n|<Space>m"] = map_cmd([[Telescope harpoon marks ]]),
+  -- ["n|<Space>M"] = map_cmd([[lua require("harpoon.mark").toggle_file()]]),
+  -- ["n|<Space>n"] = map_cmd([[lua require("harpoon.ui").nav_next()]]),
+  -- ["n|<Space>p"] = map_cmd([[lua require("harpoon.ui").nav_prev()]]),
+  -- ["n|<Space>m"] = map_cmd([[Telescope harpoon marks ]]),
   ["n|<Leader>N"] = map_func(function()
     require('close_buffers').wipe({ type = 'nameless', force = true })
     vim.cmd([[nohl]])
   end),
-  ["v|<Leader>re"] = map_cmd("<esc>lua require('refactoring').refactor('Extract Function')"),
-  ["v|<Leader>rf"] = map_cmd("<esc>lua require('refactoring').refactor('Extract Function To File')"),
-  ["v|<Leader>rt"] = map_cmd("<esc>lua require('refactoring').refactor()"),
 
   ["v|<Leader>gs"] = map_cmd("lua require('utils.git').qf_add()"),
 
@@ -244,7 +228,7 @@ vim.cmd('imap <C-V> <C-R>*')
 vim.cmd('vmap <LeftRelease> "*ygv')
 vim.cmd('unlet loaded_matchparen')
 
-_G.hop1 = function(ac)
+--[[_G.hop1 = function(ac)
   if vim.fn.mode() == 's' then
     -- print(vim.fn.mode(), vim.fn.mode() == 's')
     return vim.cmd('exe "normal! i s"')
@@ -255,7 +239,7 @@ _G.hop1 = function(ac)
   else
     require('hop').hint_char1({ direction = require('hop.hint').HintDirection.BEFORE_CURSOR })
   end
-end
+end ]]
 
 -- _G.Line_ft = function(a)
 --   if vim.fn.mode() == 's' then
@@ -306,6 +290,7 @@ local plugmap = require('keymap').map
 local merged = vim.tbl_extend('force', plugmap, keys)
 
 bind.nvim_load_mapping(merged)
+-- bind.nvim_load_mapping(plugmap)
 local key_maps = bind.all_keys
 
 K.get_keymaps = function()

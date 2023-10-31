@@ -163,8 +163,9 @@ function config.scrollview()
   -- vim.api.nvim_set_hl(0, 'ScrollView', { fg = '#8343a3', bg = '#8343a3' })
   vim.g.scrollview_column = 1
   require('scrollview').setup({
-    column = 1,
+    -- column = 0,
     blend = 50,
+    signs_on_startup = {} -- {'all'}
   })
 end
 

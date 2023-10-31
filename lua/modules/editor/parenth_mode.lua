@@ -115,7 +115,7 @@ for name, spec in pairs(config) do
 end
 --
 local function auto_hint_generate()
-    container = {}
+    local container = {}
     for x, y in pairs(config.parenth_mode) do
         local mapping = x
         if type(y[1]) == "function" then
@@ -129,39 +129,40 @@ local function auto_hint_generate()
     -- sort container by mapping alphabetically
     -- P(container)
     -- sort alphabetically and any
-    sorted = {}
+    local sorted = {}
     for k, v in pairs(container) do
         table.insert(sorted, k)
     end
     table.sort(sorted)
 
-    bracket = { "(", ")", "[", "]", "{", "}" }
+    local bracket = { "(", ")", "[", "]", "{", "}" }
     -- Single characters - non Capital to Capital then to double characters then brackets
-    single = {}
+    local single = {}
     for _, v in pairs(sorted) do
         if string.len(v) == 1 and not vim.tbl_contains(bracket, v) then
             table.insert(single, v)
         end
     end
     table.sort(single)
-    douible = {}
+    local double = {}
     for _, v in pairs(sorted) do
         if string.len(v) == 2 and not vim.tbl_contains(bracket, v) then
-            table.insert(douible, v)
+            table.insert(double, v)
         end
     end
-    table.sort(douible)
+    table.sort(double)
 
-    core_table = {}
+    local core_table = {}
 
     make_core_table(core_table, single)
-    make_core_table(core_table, douible)
+    make_core_table(core_table, double)
     make_core_table(core_table, bracket)
 
-    hint_table = {}
-    string_val = "^ ^ Parenth ^ ^\n\n"
+    local hint_table = {}
+    local string_val = "^ ^ Parenth ^ ^\n\n"
     string_val = string_val .. "^ ^▔▔▔▔▔▔▔▔^ ^\n"
 
+    local hint
     for _, v in pairs(core_table) do
         if v == "\n" then
             hint = "\n"

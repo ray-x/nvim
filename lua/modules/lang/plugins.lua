@@ -10,7 +10,7 @@ return function(lang)
     config = ts.treesitter_obj,
     module = true,
     lazy = true,
-    event = { 'CursorMoved' }
+    event = { 'CursorMoved' },
   })
 
   lang({
@@ -18,7 +18,7 @@ return function(lang)
     lazy = true,
     config = ts.textsubjects,
     module = true,
-    event = { 'CursorMoved' }
+    event = { 'CursorMoved' },
   })
   local jsft = { 'typescript', 'typescriptreact', 'javascript', 'javascriptreact' }
   if vim.tbl_contains(jsft, vim.bo.filetype) then
@@ -54,20 +54,20 @@ return function(lang)
     event = { 'CursorMoved' },
     config = conf.context_vt,
   })
-  lang({ 'ThePrimeagen/refactoring.nvim', lazy = true, config = conf.refactor })
+  -- lang({ 'ThePrimeagen/refactoring.nvim', lazy = true, config = conf.refactor })
 
   lang({
     'nvim-treesitter/nvim-treesitter-refactor',
     config = ts.treesitter_ref, -- let the last loaded config treesitter
     lazy = true,
-    event = {'CursorMoved'}
+    event = { 'CursorMoved' },
   })
 
   -- Automatically convert strings to f-strings or template strings and back
-  lang({
-    'chrisgrieser/nvim-puppeteer',
-    lazy = true,
-  })
+  -- lang({
+  --   'chrisgrieser/nvim-puppeteer',
+  --   lazy = true,
+  -- })
   -- ipython
 
   if vim.tbl_contains({ 'python', 'javascript' }, vim.bo.filetype) then
@@ -120,11 +120,9 @@ return function(lang)
     lang({ 'yardnsm/vim-import-cost', ft = { 'javascript' }, cmd = 'ImportCost', lazy = true })
     lang({
       'mfussenegger/nvim-dap-python',
-      event = 'VeryLazy',
       config = require('modules.lang.dap.py').config,
       event = { 'CmdlineEnter' },
     })
-
   end
 
   -- lang['scalameta/nvim-metals'] = {dependencies = {"nvim-lua/plenary.nvim"}}
@@ -262,8 +260,7 @@ return function(lang)
 
   lang({
     'michaelb/sniprun',
-    build = cmd,
-    lazy = true,
+    build = 'bash install.sh',
     cmd = { 'SnipRun', 'SnipReset' },
     config = function()
       require('sniprun').setup({
@@ -273,7 +270,6 @@ return function(lang)
         inline_messages = 1, --" inline_message (0/1) is a one-line way to display messages
         --" to workaround sniprun not being able to display anything
       })
-      local cmd = 'bash install.sh'
       if require('core.global').is_windows then
         if vim.fn.executable('bash') == 0 then
           cmd = [[echo 'failed to install sniprun, bash is not installed']]
@@ -295,7 +291,7 @@ return function(lang)
     config = function()
       require('nvim-treesitter.configs').setup({ autotag = { enable = true } })
     end,
-    event = 'VeryLazy'
+    event = 'VeryLazy',
   })
   -- highlight your args with Treesitter
   lang({
@@ -334,14 +330,15 @@ return function(lang)
       })
     end,
   })
-
-  lang({
-    'folke/neodev.nvim',
-    ft = { 'lua' },
-    event = 'VeryLazy',
-    -- module = true,
-    config = conf.neodev,
-  })
+  if vim.tbl_contains({ 'python', 'javascript' }, vim.bo.filetype) then
+    lang({
+      'folke/neodev.nvim',
+      ft = { 'lua' },
+      event = 'VeryLazy',
+      -- module = true,
+      config = conf.neodev,
+    })
+  end
 
   lang({
     'nvim-treesitter/nvim-treesitter-context',
@@ -372,6 +369,32 @@ return function(lang)
   })
 
   --   'HiPhish/nvim-ts-rainbow2',
+  lang({
+    'hiphish/rainbow-delimiters.nvim',
+    event = 'VeryLazy',
+    config = function()
+local rainbow_delimiters = require 'rainbow-delimiters'
+      require('rainbow-delimiters.setup').setup({
+        strategy = {
+          [''] = rainbow_delimiters.strategy['global'],
+          vim = rainbow_delimiters.strategy['local'],
+        },
+        query = {
+          [''] = 'rainbow-delimiters',
+          lua = 'rainbow-blocks',
+        },
+        highlight = {
+          'RainbowDelimiterRed',
+          'RainbowDelimiterYellow',
+          'RainbowDelimiterBlue',
+          'RainbowDelimiterOrange',
+          'RainbowDelimiterGreen',
+          'RainbowDelimiterViolet',
+          'RainbowDelimiterCyan',
+        },
+      })
+    end,
+  })
 
   lang({
     'folke/trouble.nvim',
@@ -393,19 +416,7 @@ return function(lang)
     'nvimtools/none-ls.nvim',
     lazy = true,
     config = require('modules.lang.null-ls').config,
-    event = 'VeryLazy'
-  })
-
-  lang({
-    'j-hui/fidget.nvim',
-    lazy = true,
-    config = function()
-      require('fidget').setup({
-        sources = {
-          ['null-ls'] = { ignore = true },
-        },
-      })
-    end,
+    event = 'VeryLazy',
   })
 
   -- structural search and replace

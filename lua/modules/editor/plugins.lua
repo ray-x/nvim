@@ -1,22 +1,11 @@
 local conf = require('modules.editor.config')
 
--- alternatives: steelsojka/pears.nvim
--- windwp/nvim-ts-autotag  'html', 'javascript', 'javascriptreact', 'typescriptreact', 'svelte', 'vue'
--- windwp/nvim-autopairs
 return function(editor)
-  editor({
-    'windwp/nvim-autopairs',
-    -- keys = {{'i', '('}},
-    -- keys = {{'i'}},
-    -- event = "InsertEnter",  --InsertCharPre
-    config = conf.autopairs,
-    lazy = true,
-  })
 
   editor({
     'anuvyklack/hydra.nvim',
     dependencies = 'anuvyklack/keymap-layer.nvim',
-    event = { "CmdwinEnter", "CmdlineEnter", "CursorMoved" },
+    event = { 'CmdwinEnter', 'CmdlineEnter', 'CursorMoved' },
     config = conf.hydra,
     lazy = true,
   })
@@ -59,15 +48,15 @@ return function(editor)
   --  text objects i% and a%
   editor({
     'andymass/vim-matchup',
-    lazy = true,
-    event = { 'CursorHold', 'CursorHoldI' },
-    cmd = { 'MatchupWhereAmI' }, -- ?
-    config = function()
+    -- event = { 'CursorHold', 'CursorHoldI' },
+    key = { '<Plug>()' },
+    cmd = { 'MatchupWhereAmI' }, --
+    setup = function()
       local fsize = vim.fn.getfsize(vim.fn.expand('%:p:f'))
       if fsize == nil or fsize < 0 then
         fsize = 1
       end
-      local enabled = 1
+      local enabled = 0
       if fsize > 500000 then
         enabled = 0
       end
@@ -80,27 +69,12 @@ return function(editor)
     end,
   })
 
-  -- Feel more comfortale with hop
-  -- editor({
-  --   'ggandor/leap.nvim',
-  --   keys = { '<Plug>(leap-forward-to)', '<Plug>(leap-backward-to)' },
-  --   lazy = true,
-  --   config = require('modules.editor.leap').setup,
-  --   dependencies = {
-  --     {
-  --       'ggandor/leap-ast.nvim',
-  --       lazy = true,
-  --       config = require('modules.editor.leap').ast,
-  --     },
-  --     -- { "ggandor/flit.nvim", lazy = true, module = {"flit", "leap"}, require("modules.editor.leap").flit },
-  --   },
-  -- })
   editor({
     'folke/flash.nvim',
     event = 'VeryLazy',
     ---@type Flash.Config
     opts = {},
-  -- stylua: ignore
+    -- stylua: ignore
     keys = {
       { "s", mode = { "n", "o", "x" }, function() require("flash").jump() end, desc = "Flash" },
       { "S", mode = { "n", "o", "x" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
@@ -149,22 +123,9 @@ return function(editor)
 
   editor({
     'chrisbra/Colorizer',
-    ft = { 'log', 'txt', 'text' },
+    ft = { 'log', 'txt', 'text', 'css' },
     lazy = true,
     cmd = { 'ColorHighlight', 'ColorUnhighlight' },
-  })
-
-  -- booperlv/nvim-gomove
-  -- <A-k>   Move current line/selection up
-  -- <A-j>   Move current line/selection down
-  -- <A-h>   Move current character/selection left
-  -- <A-l>   Move current character/selection right
-
-  editor({
-    'booperlv/nvim-gomove',
-    -- event = { "CursorMoved", "CursorMovedI" },
-    keys = { 'v', 'V', '<c-v>', '<c-V>' },
-    config = conf.move,
   })
 
   editor({
@@ -184,62 +145,13 @@ return function(editor)
 
   editor({
     'mg979/vim-visual-multi',
-    keys = {
-      '<C-n>',
-      '<C-N>',
-      '<M-n>',
-      '<S-Down>',
-      '<S-Up>',
-      '<M-Left>',
-      '<M-i>',
-      '<M-Right>',
-      '<M-D>',
-      '<M-Down>',
-      '<C-d>',
-      '<C-Down>',
-      '<C-Up>',
-      '<S-Right>',
-      '<C-LeftMouse>',
-      '<M-LeftMouse>',
-      '<M-C-RightMouse>',
+    -- stylua: ignore
+    keys = { '<C-n>', '<C-N>', '<M-n>', '<S-Down>', '<S-Up>', '<M-Left>',
+      '<M-i>', '<M-Right>', '<M-D>', '<M-Down>', '<C-d>', '<C-Down>',
+      '<C-Up>', '<S-Right>', '<C-LeftMouse>', '<M-LeftMouse>', '<M-C-RightMouse>',
     },
     lazy = true,
     init = conf.vmulti,
-  })
-
-  editor({ 'indianboy42/hop-extensions', lazy = true })
-
-  -- EasyMotion in lua. -- maybe replace sneak
-  editor({
-    'phaazon/hop.nvim',
-    name = 'hop',
-    cmd = {
-      'HopWord',
-      'HopWordMW',
-      'HopWordAC',
-      'HopWordBC',
-      'HopLine',
-      'HopChar1',
-      'HopChar1MW',
-      'HopChar1AC',
-      'HopChar1BC',
-      'HopChar2',
-      'HopChar2MW',
-      'HopChar2AC',
-      'HopChar2BC',
-      'HopPattern',
-      'HopPatternAC',
-      'HopPatternBC',
-      'HopChar1CurrentLineAC',
-      'HopChar1CurrentLineBC',
-      'HopChar1CurrentLine',
-    },
-    config = function()
-      -- you can configure Hop the way you like here; see :h hop-config
-      require('hop').setup({
-        keys = 'adghklqwertyuiopzxcvbnmfjADHKLWERTYUIOPZXCVBNMFJ1234567890',
-      })
-    end,
   })
 
   editor({
@@ -253,7 +165,7 @@ return function(editor)
   -- copy paste failed in block mode when clipboard = unnameplus"
   editor({
     'gbprod/yanky.nvim',
-    event = { 'CursorMoved', 'TextYankPost' },
+    -- event = { 'CursorMoved', 'TextYankPost' },
     keys = {
       '<Plug>(YankyPutAfter)',
       '<Plug>(YankyPutBefore)',
@@ -295,7 +207,7 @@ return function(editor)
     'Wansmer/treesj',
     lazy = true,
     cmd = { 'TSJToggle', 'TSJJoin', 'TSJSplit' },
-    keys = { '<space>j' },
+    keys = { '<space>j', '<space>s' },
     config = function()
       require('treesj').setup({
         use_default_keymaps = false,
@@ -308,44 +220,10 @@ return function(editor)
     lazy = true,
     keys = { '<Plug>WordMotion_w', '<Plug>WordMotion_b' },
     init = function()
-      vim.g.wordmotion_spaces = {
-        '-',
-        '_',
-        '/',
-        '.',
-        ':',
-        "'",
-        '"',
-        '=',
-        '#',
-        ',',
-        '.',
-        ';',
-        '<',
-        '>',
-        '(',
-        ')',
-        '{',
-        '}',
-      }
-      vim.g.wordmotion_uppercase_spaces = {
-        '/',
-        '.',
-        ':',
-        "'",
-        '"',
-        '=',
-        '#',
-        ',',
-        '.',
-        ';',
-        '<',
-        '>',
-        '(',
-        ')',
-        '{',
-        '}',
-      }
+      -- stylua: ignore
+      vim.g.wordmotion_spaces = { '-', '_', '/', '.', ':', "'", '"', '=', '#', ',', '.', ';', '<', '>', '(', ')', '{', '}' }
+      vim.g.wordmotion_uppercase_spaces =
+        { '/', '.', ':', "'", '"', '=', '#', ',', '.', ';', '<', '>', '(', ')', '{', '}' }
     end,
     -- keys = {'w','W', 'gE', 'aW'}
   })
@@ -418,43 +296,43 @@ return function(editor)
     end,
     keys = { 'm', '<Plug>(Marks-set)', '<Plug>(Marks-toggle)' },
   })
-  editor({
-    'tversteeg/registers.nvim',
-    name = 'registers',
-    keys = {
-      { '"', mode = { 'n', 'v' } },
-      { '<C-R>', mode = 'i' },
-    },
-    cmd = 'Registers',
-    config = function()
-      require('registers').setup({
-        show = '*"%01234abcpwy:',
-        -- Show a line at the bottom with registers that aren't filled
-        show_empty = false,
-      })
-    end,
-  })
+  -- editor({
+  --   'tversteeg/registers.nvim',
+  --   name = 'registers',
+  --   keys = {
+  --     { '"', mode = { 'n', 'v' } },
+  --     { '<C-R>', mode = 'i' },
+  --   },
+  --   cmd = 'Registers',
+  --   config = function()
+  --     require('registers').setup({
+  --       show = '*"%01234abcpwy:',
+  --       -- Show a line at the bottom with registers that aren't filled
+  --       show_empty = false,
+  --     })
+  --   end,
+  -- })
 
-  editor({
-    'rainbowhxch/accelerated-jk.nvim',
-    keys = { 'j', 'k', 'h', 'l', '<Up>', '<Down>', '<Left>', '<Right>' },
-    config = function()
-      require('accelerated-jk').setup({
-        mode = 'time_driven',
-        acceleration_motions = { 'h', 'l', 'e', 'b' },
-        acceleration_limit = 150,
-        acceleration_table = { 7, 12, 17, 21, 24, 26, 28, 30 },
-        enable_deceleration = false,
-        deceleration_table = { { 150, 9999 } },
-      })
-      vim.keymap.set('n', '<Down>', '<Plug>(accelerated_jk_j)', {})
-      vim.keymap.set('n', '<Up>', '<Plug>(accelerated_jk_k)', {})
-      vim.keymap.set('n', '<Left>', function()
-        require('accelerated-jk').move_to('h')
-      end, {})
-      vim.keymap.set('n', '<Right>', function()
-        require('accelerated-jk').move_to('l')
-      end, {})
-    end,
-  })
+  -- editor({
+  --   'rainbowhxch/accelerated-jk.nvim',
+  --   keys = { 'j', 'k', 'h', 'l', '<Up>', '<Down>', '<Left>', '<Right>' },
+  --   config = function()
+  --     require('accelerated-jk').setup({
+  --       mode = 'time_driven',
+  --       acceleration_motions = { 'h', 'l', 'e', 'b' },
+  --       acceleration_limit = 150,
+  --       acceleration_table = { 7, 12, 17, 21, 24, 26, 28, 30 },
+  --       enable_deceleration = false,
+  --       deceleration_table = { { 150, 9999 } },
+  --     })
+  --     vim.keymap.set('n', '<Down>', '<Plug>(accelerated_jk_j)', {})
+  --     vim.keymap.set('n', '<Up>', '<Plug>(accelerated_jk_k)', {})
+  --     vim.keymap.set('n', '<Left>', function()
+  --       require('accelerated-jk').move_to('h')
+  --     end, {})
+  --     vim.keymap.set('n', '<Right>', function()
+  --       require('accelerated-jk').move_to('l')
+  --     end, {})
+  --   end,
+  -- })
 end

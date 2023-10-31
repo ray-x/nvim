@@ -151,9 +151,8 @@ local Usual = {
     Underlined = { fg = c.blue, underline = true, sp = c.blue }, -- text that stands out, HTML links
     ErrorMsg = { fg = c.pink_one, bold = true },
 
-    ColorColumn = { link = 'VertSplit' },
+    ColorColumn = { link = 'WinSeparator' },
 
-    VirtColumn = { link = 'VertSplit' },
     Conceal = { link = 'Keyword' },
   },
   Vim = {

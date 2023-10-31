@@ -1,28 +1,8 @@
-local filetypes = {
-  'html',
-  'css',
-  'javascript',
-  'java',
-  'javascriptreact',
-  'vue',
-  'typescript',
-  'typescriptreact',
-  'go',
-  'lua',
-  'cpp',
-  'c',
-  'markdown',
-  'makefile',
-  'python',
-  'bash',
-  'sh',
-  'php',
-  'yaml',
-  'json',
-  'sql',
-  'vim',
-  'sh',
+-- stylua: ignore start
+local filetypes = { 'html', 'css', 'javascript', 'java', 'javascriptreact', 'vue', 'typescript', 'typescriptreact', 'go', 'lua', 'cpp', 'c', 'markdown', 'makefile', 'python', 'bash', 'sh', 'php', 'yaml', 'json', 'sql', 'vim', 'sh',
 }
+-- stylua: ignore end
+
 return function(use)
   use({
     'neovim/nvim-lspconfig',
@@ -36,29 +16,28 @@ return function(use)
   -- loading sequence LuaSnip -> nvim-cmp -> cmp_luasnip -> cmp-nvim-lua -> cmp-nvim-lsp ->cmp-buffer -> friendly-snippets
   use({
     'hrsh7th/nvim-cmp',
-    module = false,
+    module = true,
     -- lazy = true,
     event = { 'InsertEnter', 'CmdlineEnter' }, -- InsertCharPre
     -- ft = {'lua', 'markdown',  'yaml', 'json', 'sql', 'vim', 'sh', 'sql', 'vim', 'sh'},
+    -- stylua: ignore start
     dependencies = {
       { 'hrsh7th/cmp-buffer', lazy = true },
       { 'hrsh7th/cmp-nvim-lua', lazy = true },
-      { 'hrsh7th/cmp-calc', lazy = true },
+      -- { 'hrsh7th/cmp-calc', lazy = true },
       { 'hrsh7th/cmp-path', lazy = true },
       { 'hrsh7th/cmp-cmdline', lazy = true },
-      -- { 'lukas-reineke/cmp-rg', lazy = true },
       { 'tzachar/cmp-fuzzy-buffer', lazy = true, dependencies = { 'tzachar/fuzzy.nvim' } },
       { 'dmitmel/cmp-cmdline-history', lazy = true },
-      -- { "tzachar/cmp-tabnine", build = "./install.sh", lazy = true, config = conf.tabnine},
       { 'hrsh7th/cmp-copilot', lazy = true },
-      { 'hrsh7th/cmp-emoji', lazy = true },
+      -- { 'hrsh7th/cmp-emoji', lazy = true },
       { 'ray-x/cmp-treesitter', dev = (plugin_folder():find('github') ~= nil), lazy = true },
       { 'hrsh7th/cmp-nvim-lsp', lazy = true },
-      { 'f3fora/cmp-spell', lazy = true },
-      { 'octaltree/cmp-look', lazy = true },
-      -- {"quangnguyen30192/cmp-nvim-ultisnips", event = "InsertCharPre", after = "nvim-cmp", opt=true },
+      -- { 'f3fora/cmp-spell', lazy = true },
       { 'saadparwaiz1/cmp_luasnip', lazy = true },
+      { 'windwp/nvim-autopairs', event = 'InsertEnter', config = function()  require('modules.completion.config').autopairs() end },
     },
+    -- stylua: ignore end
     config = function()
       local conf = require('modules.completion.config')
       conf.nvim_cmp()
@@ -77,7 +56,7 @@ return function(use)
   })
   use({
     'kristijanhusak/vim-dadbod-completion',
-    event = 'InsertEnter',
+    -- event = 'InsertEnter',
     ft = { 'sql' },
     init = function()
       vim.cmd([[autocmd FileType sql setlocal omnifunc=vim_dadbod_completion#omni]])
@@ -89,21 +68,10 @@ return function(use)
   use({
     'mattn/emmet-vim',
     event = 'InsertEnter',
-    ft = {
-      'html',
-      'css',
-      'javascript',
-      'javascriptreact',
-      'vue',
-      'typescript',
-      'typescriptreact',
-      'scss',
-      'sass',
-      'less',
-      'jade',
-      'haml',
-      'elm',
-    },
+    -- stylua: ignore start
+    ft = { 'html', 'css', 'javascript', 'javascriptreact', 'vue', 'typescript', 'typescriptreact', 
+      'scss', 'sass', 'less', 'jade', 'haml', 'elm', },
+    -- stylua: ignore end
     init = function()
       local conf = require('modules.completion.config')
       conf.emmet()
@@ -114,7 +82,7 @@ return function(use)
   use({
     'ray-x/lsp_signature.nvim',
     dev = (plugin_folder():find('github') ~= nil),
-    lazy = true,
+    event = { 'InsertEnter' },
     config = function()
       require('lsp_signature').setup({
         bind = true,
@@ -166,19 +134,4 @@ return function(use)
     ]])
     end,
   })
-  -- use({
-  --   'Exafunction/codeium.vim',
-  --   lazy = true,
-  --   ft = {
-  --     'python',
-  --     'html',
-  --     'css',
-  --     'javascript',
-  --     'javascriptreact',
-  --     'vue',
-  --     'typescript',
-  --     'typescriptreact',
-  --   },
-  --   -- event = 'InsertEnter',
-  -- })
 end

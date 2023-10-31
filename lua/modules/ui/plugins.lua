@@ -10,7 +10,9 @@ return function(ui)
     'windwp/windline.nvim',
     -- event = "UIEntwindlineer",
     event = 'VeryLazy',
-    config = function() require('modules.ui.eviline') end,
+    config = function()
+      require('modules.ui.eviline')
+    end,
     -- dependencies = {'kyazdani42/nvim-web-devicons'},
     lazy = true,
   })
@@ -19,6 +21,7 @@ return function(ui)
   ui({
     'rcarriga/nvim-notify',
     event = 'VeryLazy',
+    module = true,
     -- event = "User LoadLazyPlugin",
     config = conf.notify,
   })
@@ -94,7 +97,9 @@ return function(ui)
   ui({
     'lukas-reineke/indent-blankline.nvim',
     lazy = true,
-    event = { 'CursorMoved', 'CursorMovedI' },
+    -- event = { 'CursorMoved', 'CursorMovedI' },
+    cmd = { 'IndentToggle', 'IndentEnable' },
+    module = true,
     config = conf.blankline,
   }) -- after="nvim-treesitter",
 
@@ -112,7 +117,8 @@ return function(ui)
 
   ui({
     'dstein64/nvim-scrollview',
-    event = { 'CursorMoved', 'CursorMovedI' },
+    cmd = { 'ScrollViewEnable', 'ScrollViewToggle' },
+    -- event = { 'CursorMoved', 'CursorMovedI' },
     config = conf.scrollview,
   })
 
@@ -144,7 +150,7 @@ return function(ui)
   })
 
   -- really good one, only issue is dependency ...
-  ui({ 'romgrk/fzy-lua-native', lazy = true })
+  -- ui({ 'romgrk/fzy-lua-native', lazy = true })
 
   ui({ 'stevearc/dressing.nvim', lazy = true })
 end
@@ -191,15 +197,4 @@ end
 --       require('modicator').setup({ show_warnings = false })
 --     end
 --   end,
--- })
--- ui({
---   --use {'edluffy/specs.nvim'} see also this
---   'rainbowhxch/beacon.nvim',
---   config = function()
---     require('beacon').setup({
---       size = 15,
---       timeout = 100,
---     })
---   end,
---   event = { 'CursorMoved', 'CursorMovedI' },
 -- })
