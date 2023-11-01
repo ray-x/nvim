@@ -272,7 +272,7 @@ local Usual = {
   Hop = {
     LeapBackdrop = { link = 'Comment' },
     FlashBackdrop = { link = 'SpecialComment' },
-    FlashLabel = { link = 'Keyword' },
+    FlashLabel = { link = 'DiffAdd' },
   },
   LspRelated = {
     DiagnosticError = { fg = c.red_one, bold = true }, -- used to underline "Error" diagnostics.

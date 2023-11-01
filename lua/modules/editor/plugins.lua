@@ -1,7 +1,6 @@
 local conf = require('modules.editor.config')
 
 return function(editor)
-
   editor({
     'anuvyklack/hydra.nvim',
     dependencies = 'anuvyklack/keymap-layer.nvim',
@@ -72,8 +71,51 @@ return function(editor)
   editor({
     'folke/flash.nvim',
     event = 'VeryLazy',
+    config = true,
     ---@type Flash.Config
-    opts = {},
+    opts = {
+
+      -- labels = "abcdefghijklmnopqrstuvwxyz",
+      labels = 'asdfghjklqwertyuiopzxcvbnm0123456789ASDFGHJKLQWERTYUIOPZXCVBNM',
+      -- `f`, `F`, `t`, `T`, `;` and `,` motions
+      modes = {
+        char = {
+          enabled = true,
+          -- dynamic configuration for ftFT motions
+          config = function(opts)
+            -- autohide flash when in operator-pending mode
+            opts.autohide = opts.autohide
+              or (vim.fn.mode(true):find('no') and vim.v.operator == 'y')
+
+            -- disable jump labels when not enabled, when using a count,
+            -- or when recording/executing registers
+            opts.jump_labels = opts.jump_labels
+              and vim.v.count == 0
+              and vim.fn.reg_executing() == ''
+              and vim.fn.reg_recording() == ''
+
+            -- Show jump labels only in operator-pending mode
+            -- opts.jump_labels = vim.v.count == 0 and vim.fn.mode(true):find("o")
+          end,
+          autohide = true,
+          jump_labels = true,
+          multi_line = false,
+          char_actions = function(motion)
+            return {
+              -- ['<C-n>'] = 'next', -- set to `right` to always go right
+              -- ['<C-p>'] = 'prev', -- set to `left` to always go left
+              -- clever-f style
+              [motion:lower()] = 'next',
+              [motion:upper()] = 'prev',
+              -- jump2d style: same case goes next, opposite case goes prev
+              -- [motion] = "next",
+              -- [motion:match("%l") and motion:upper() or motion:lower()] = "prev",
+            }
+          end,
+          -- hide after jump when not usi
+        },
+      },
+    },
     -- stylua: ignore
     keys = {
       { "s", mode = { "n", "o", "x" }, function() require("flash").jump() end, desc = "Flash" },
