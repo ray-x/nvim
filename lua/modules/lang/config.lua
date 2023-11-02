@@ -123,12 +123,6 @@ function config.iron()
   vim.keymap.set('n', '<space>rh', '<cmd>IronHide<cr>')
 end
 
-function config.outline()
-  require('symbols-outline').setup({})
-end
-
-function config.sqls() end
-
 function config.syntax_folding()
   local fname = vim.fn.expand('%:p:f')
   local fsize = vim.fn.getfsize(fname)
@@ -182,11 +176,6 @@ end
 
 -- https://gist.github.com/folke/fe5d28423ea5380929c3f7ce674c41d8
 
--- local path = vim.split(package.path, ';')
---
--- table.insert(path, 'lua/?.lua')
--- table.insert(path, 'lua/?/init.lua')
-
 function config.navigator()
   -- local capabilities = vim.lsp.protocol.make_client_capabilities()
 
@@ -230,7 +219,10 @@ function config.navigator()
       denols = { filetypes = {} },
       rename = { style = 'floating-preview' },
       lua_ls = {
-        before_init = function() require('neodev.lsp').before_init() end,
+        before_init = function()
+          require('neodev').setup{}
+          require('neodev.lsp').before_init( {}, {settings={Lua={}}})
+        end,
       },
       tsserver = {
         filetypes = {
@@ -326,10 +318,6 @@ function config.luapad()
     },
   })
 end
-function config.neodev()
-  require('neodev').setup({})
-end
-
 function config.go()
   require('go').setup({
     verbose = plugin_debug(),

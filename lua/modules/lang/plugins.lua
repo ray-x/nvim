@@ -3,7 +3,7 @@ return function(lang)
   local dev = plugin_folder():find('github') ~= nil or plugin_folder():find('ray') ~= nil
   local ts = require('modules.lang.treesitter')
 
-  lang({ 'nvim-treesitter/nvim-treesitter', lazy = true, config = ts.treesitter, module = true })
+  lang({ 'nvim-treesitter/nvim-treesitter', config = ts.treesitter, module = true })
 
   lang({
     'nvim-treesitter/nvim-treesitter-textobjects',
@@ -21,7 +21,7 @@ return function(lang)
     event = { 'CursorMoved' },
   })
   local jsft = { 'typescript', 'typescriptreact', 'javascript', 'javascriptreact' }
-  if vim.tbl_contains(jsft, vim.bo.filetype) then
+  if vim.tbl_contains(jsft, vim.bo.filetype) or vim.fn.argc() == 0 then
     lang({
       'jose-elias-alvarez/typescript.nvim',
       lazy = true,
@@ -54,7 +54,7 @@ return function(lang)
     event = { 'CursorMoved' },
     config = conf.context_vt,
   })
-  -- lang({ 'ThePrimeagen/refactoring.nvim', lazy = true, config = conf.refactor })
+  -- lang({ 'ThePrimeagen/refactoring.nvim', config = conf.refactor })
 
   lang({
     'nvim-treesitter/nvim-treesitter-refactor',
@@ -70,7 +70,7 @@ return function(lang)
   -- })
   -- ipython
 
-  if vim.tbl_contains({ 'python', 'javascript' }, vim.bo.filetype) then
+  if vim.tbl_contains({ 'python', 'javascript' }, vim.bo.filetype) or vim.fn.argc() == 0 then
     lang({
       'dccsillag/magma-nvim',
       ft = 'python',
@@ -117,7 +117,7 @@ return function(lang)
     })
     lang({ 'metakirby5/codi.vim', ft = { 'python', 'javascript' }, cmd = { 'Codi', 'CodiNew' } })
     lang({ 'Vigemus/iron.nvim', ft = 'python', config = conf.iron })
-    lang({ 'yardnsm/vim-import-cost', ft = { 'javascript' }, cmd = 'ImportCost', lazy = true })
+    lang({ 'yardnsm/vim-import-cost', ft = { 'javascript' }, cmd = 'ImportCost' })
     lang({
       'mfussenegger/nvim-dap-python',
       config = require('modules.lang.dap.py').config,
@@ -128,7 +128,7 @@ return function(lang)
   -- lang['scalameta/nvim-metals'] = {dependencies = {"nvim-lua/plenary.nvim"}}
   -- lang { "lifepillar/pgsql.vim",ft = {"sql", "pgsql"}}
 
-  lang({ 'nanotee/sqls.nvim', ft = { 'sql', 'pgsql' }, init = conf.sqls, lazy = true })
+  lang({ 'nanotee/sqls.nvim', ft = { 'sql', 'pgsql' }, opts = {} })
 
   lang({
     'simrat39/rust-tools.nvim',
@@ -227,7 +227,7 @@ return function(lang)
     'simrat39/symbols-outline.nvim',
     lazy = true,
     cmd = { 'SymbolsOutline', 'SymbolsOutlineOpen' },
-    config = conf.outline,
+    opts = {}
   })
   -- lang({
   --   'rafcamlet/nvim-luapad',
@@ -235,9 +235,9 @@ return function(lang)
   --   cmd = { 'Lua', 'Luapad' },
   --   config = conf.luapad,
   -- })
-  lang({ 'mfussenegger/nvim-dap', config = conf.dap, lazy = true })
+  lang({ 'mfussenegger/nvim-dap', config = conf.dap })
 
-  lang({ 'JoosepAlviste/nvim-ts-context-commentstring', lazy = true, event = 'VeryLazy' })
+  lang({ 'JoosepAlviste/nvim-ts-context-commentstring', event = 'VeryLazy' })
 
   lang({
     'rcarriga/nvim-dap-ui',
@@ -247,7 +247,7 @@ return function(lang)
     module = true,
   })
 
-  lang({ 'theHamsta/nvim-dap-virtual-text', lazy = true, module = true })
+  lang({ 'theHamsta/nvim-dap-virtual-text', module = true })
 
   lang({
     'nvim-telescope/telescope-dap.nvim',
@@ -278,7 +278,7 @@ return function(lang)
     end,
   })
   -- JqxList and JqxQuery json browsing, format
-  lang({ 'gennaro-tedesco/nvim-jqx', lazy = true, cmd = { 'JqxList', 'JqxQuery' } })
+  lang({ 'gennaro-tedesco/nvim-jqx', cmd = { 'JqxList', 'JqxQuery' } })
   lang({
     'bfrg/vim-jqplay',
     ft = 'jq',
@@ -330,13 +330,13 @@ return function(lang)
       })
     end,
   })
-  if vim.tbl_contains({ 'python', 'javascript' }, vim.bo.filetype) then
+  if vim.tbl_contains({ 'lua' }, vim.bo.filetype) or vim.fn.argc() == 0 then
     lang({
       'folke/neodev.nvim',
       ft = { 'lua' },
       event = 'VeryLazy',
-      -- module = true,
-      config = conf.neodev,
+      module = true,
+      opts = {}
     })
   end
 

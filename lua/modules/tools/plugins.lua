@@ -31,6 +31,7 @@ return function(tools)
     dependencies = {
       { 'nvim-telescope/telescope.nvim' },
     },
+
     event = { 'CmdlineEnter', 'CursorHold' },
   })
   tools({
@@ -460,16 +461,19 @@ return function(tools)
     'ibhagwan/fzf-lua',
     lazy = true,
     cmd = { 'FzfLua' },
+    dependencies = {
+      { 'junegunn/fzf', build = './install --bin' },
+    },
     config = function()
       require('fzf-lua').setup({
-        winopts = {
-          preview = {
-            default = 'bat_native',
-          },
-          on_create = function()
-            vim.opt_local.buflisted = false
-          end,
-        },
+        -- winopts = {
+        --   preview = {
+        --     default = 'bat_native',
+        --   },
+        --   on_create = function()
+        --     vim.opt_local.buflisted = false
+        --   end,
+        -- },
       })
     end,
   })
