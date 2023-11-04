@@ -33,4 +33,4 @@ local log = function(...)
   end
 end
 
-return { lprint = log }
+return { lprint = log, log = log }

@@ -272,7 +272,7 @@ return function(lang)
       })
       if require('core.global').is_windows then
         if vim.fn.executable('bash') == 0 then
-          cmd = [[echo 'failed to install sniprun, bash is not installed']]
+          vim.notify ('failed to install sniprun, bash is not installed')
         end
       end
     end,

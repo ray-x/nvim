@@ -41,6 +41,20 @@ return function(tools)
     },
     event = { 'CmdlineEnter', 'CursorHold' },
   })
+
+  tools({
+    'ray-x/telescope-ast-grep.nvim',
+    dev = (plugin_folder():find('github') ~= nil),
+    dependencies = {
+      { 'nvim-telescope/telescope.nvim' },
+    },
+    event = { 'CmdlineEnter'},
+    -- config = function()
+    --   local t = require('telescope')
+    --   t.load_extension('ast_grep')
+    --   t.load_extension('dumb_jump')
+    -- end,
+  })
   tools({
     'kristijanhusak/vim-dadbod-ui',
     cmd = {

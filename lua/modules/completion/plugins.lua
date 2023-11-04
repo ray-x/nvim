@@ -35,7 +35,7 @@ return function(use)
       { 'hrsh7th/cmp-nvim-lsp', lazy = true },
       -- { 'f3fora/cmp-spell', lazy = true },
       { 'saadparwaiz1/cmp_luasnip', lazy = true },
-      { 'windwp/nvim-autopairs', event = 'InsertEnter', config = function()  require('modules.completion.config').autopairs() end },
+      { 'windwp/nvim-autopairs', event = 'InsertEnter', module = true, config = function()  require('modules.completion.config').autopairs() end },
     },
     -- stylua: ignore end
     config = function()

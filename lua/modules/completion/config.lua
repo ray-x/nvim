@@ -17,7 +17,6 @@ function config.nvim_cmp()
   local luasnip = require('luasnip')
 
   -- print("cmp setup")
-  local comp_kind
   local t = function(str)
     return vim.api.nvim_replace_termcodes(str, true, true, true)
   end
@@ -87,8 +86,8 @@ function config.nvim_cmp()
           nvim_lua = ' ',
           spell = ' 暈',
           emoji = '󰞅',
-          copilot = "🤖",
-          cmp_tabnine = '🤖',
+          copilot = '🤖',
+          -- cmp_tabnine = '🤖',
           look = '',
         })[entry.source.name]
         return vim_item
@@ -159,9 +158,6 @@ function config.nvim_cmp()
 
     experimental = { ghost_text = true },
   })
-  require('utils.helper').loader('nvim-autopairs')
-  local cmp_autopairs = require('nvim-autopairs.completion.cmp')
-  cmp.event:on('confirm_done', cmp_autopairs.on_confirm_done({ map_char = { tex = '' } }))
 
   -- using wilder
   -- require'cmp'.setup.cmdline(':', {sources = {{name = 'cmdline'}}})

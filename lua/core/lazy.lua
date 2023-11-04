@@ -32,8 +32,8 @@ if fsize > 1024 * 1024 then
 end
 
 -- Create cache dir and subs dir
+local global = require('core.global')
 local createdir = function()
-  local global = require('core.global')
   local data_dir = {
     global.cache_dir .. global.path_sep .. 'backup',
     global.cache_dir .. global.path_sep .. 'sessions',
@@ -43,12 +43,9 @@ local createdir = function()
   }
   -- There only check once that If cache_dir exists
   -- Then I don't want to check subs dir exists
-  if vim.fn.isdirectory(global.cache_dir) == 0 then
-    os.execute('mkdir -p ' .. global.cache_dir)
-    for _, v in pairs(data_dir) do
-      if vim.fn.isdirectory(v) == 0 then
-        os.execute('mkdir -p ' .. v)
-      end
+  for _, v in pairs(data_dir) do
+    if vim.fn.isdirectory(v) == 0 then
+      os.execute('mkdir -p ' .. v)
     end
   end
 end
@@ -148,8 +145,17 @@ require('core.ab')
 
 if plugin_folder() == [[~/github/ray-x/]] then
   -- it is my own box, setup fish
+  if vim.o.shell ~= fish and vim.fn.executable('fish') == 1 then
+    if global.is_mac then
+      vim.cmd([[set shell=/usr/local/bin/fish]])
+    elseif global.is_linux then
+      vim.cmd([[set shell=/usr/bin/fish]])
+    else
+      vim.cmd([[set shell=fish ]])
+    end
+    vim.cmd([[command! GD term gd]])
+  end
   -- vim.cmd([[set shell=/usr/bin/fish]])
-  vim.cmd([[command! GD term gd]])
 end
 
 vim.cmd('set runtimepath+=/usr/share/vim/vimfiles')

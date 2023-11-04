@@ -34,8 +34,9 @@ local function hydra_git()
   local hint = [[
  _d_iffView   _s_tage hunk     diff_M_aster    file_H_istory _S_tageBufr
  hunkq_f_     _u_nstage hunk   _p_ view hunk   _B_lameFull   _l_og
- buff_D_iff   _g_ diff staged  _m_erge        _x_ show del﯊ _c_onflict
- _/_ show base resetHun_k_     _r_eset buffer   _<Enter>_ Neo  _q_uit
+ buff_D_iff   _g_ diff staged  _m_erge        _x_ show del _c_onflict
+ _/_ show base resetHun_k_     _r_eset buffer
+                 _<Enter>_ Neo  _q_uit
 ]]
   --  _b_uf gutter _F_iff buf       _U_stage        _G_staged
   local gitsigns = require('gitsigns')
@@ -76,6 +77,7 @@ local function hydra_git()
       { 's', gitsigns.stage_hunk, { silent = true } },
       { 'u', gitsigns.undo_stage_hunk, { exit = true } },
       { 'r', gitsigns.reset_buffer, { exit = true } },
+      { 'l', 'G log<CR', { exit = true } },
       { 'k', gitsigns.reset_hunk, { exit = true } },
       { 'S', gitsigns.stage_buffer, { exit = true } },
       { 'p', gitsigns.preview_hunk, { exit = true } },
@@ -125,12 +127,11 @@ local function hydra_git()
 end
 
 local hint_telescope = [[
- _g_itfiles   _r_eg       _j_umps      _b_uffers       _y_ neo
- _z_ Z        _p_roject    _w_ grep     _/_ searchhisy
-    co_m_mands   buf_l_ines   _s_ colo🌈      _c_mdhist
-    _k_eys 🔑    _f_ 📁       _h_arpoon       _M_marks
-               _<Enter>_🔭              _q_uit
-]]
+ _g_itfiles   _r_eg       _j_umps      _b_uf       _y_󰰔 
+ _z_ Z        _p_roject    _w_ grep     _/_ searchhisy  _F_olders📂
+  c_m_ds     _l_ines     _s_colo🌈    _c_mdhist        cmt_R_ange
+ _k_eys🔑    _f_iles📄    f_i_les      _M_arks󱉭         _B_commit
+               _<Enter>_🔭              _q_ 󰩈 ]]
 
 local telescope = require('telescope')
 Hydra({
@@ -152,15 +153,19 @@ Hydra({
     { 'j', ":lua require'utils.telescope'.jump()<CR>", { exit = true } },
     { 'z', telescope.extensions.zoxide.list },
     { 'p', telescope.extensions.projects.projects },
-    { 'f', ":lua require'utils.telescope'.folder_search()<CR>", { exit = true } },
+    { 'F', ":lua require'utils.telescope'.folder_search()<CR>", { exit = true } },
+    { 'f', ":Telescope files<CR>", { exit = true } },
     { 'w', ':Telescope grep_string<CR>', { exit = true } },
     { '/', ':Telescope search_history<CR>', { exit = true } },
     { 'c', ':Telescope command_history<CR>', { exit = true } },
     -- { 'C', ':Telescope<CR>', { exit = true } },
     { 'm', ':Telescope commands<CR>', { exit = true } },
     { 'o', ':Telescope oldfiles<CR>', { exit = true } },
+    { 'i', ':Telescope git_files<CR>', { exit = true } },
+    { 'B', ':Telescope git_bcommits<CR>', { exit = true } },
+    { 'R', ':Telescope git_bcommits_range<CR>', { exit = true } },
     { 'k', ':Telescope keymaps<CR>', { exit = true } },
-    { 'h', ':Telescope harpoon marks<CR>', { exit = true } },
+    { 'j', ':Telescope jumplist<CR>', { exit = true } },
     -- { 'd', ':Clap dumb_jump<CR>', { exit = true } },
     { 'l', require('telescope.builtin').current_buffer_fuzzy_find, { exit = true } },
     { 's', ':Telescope colorscheme<CR>', { exit = true } },
