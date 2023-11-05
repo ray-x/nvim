@@ -121,7 +121,7 @@ function setup()
   lprint('lazy colorscheme loaded', vim.loop.now() - start)
 end
 
-local lazy_timer = 5
+local lazy_timer = 20
 setup()
 
 --
