@@ -208,7 +208,7 @@ return function(editor)
   -- copy paste failed in block mode when clipboard = unnameplus"
   editor({
     'gbprod/yanky.nvim',
-    event = { 'CursorMoved', 'TextYankPost' },
+    event = { 'TextYankPost' },
     keys = {
       '<Plug>(YankyPutAfter)',
       '<Plug>(YankyPutBefore)',

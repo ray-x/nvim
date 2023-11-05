@@ -3,28 +3,38 @@ return function(lang)
   local dev = plugin_folder():find('github') ~= nil or plugin_folder():find('ray') ~= nil
   local ts = require('modules.lang.treesitter')
 
-  lang({ 'nvim-treesitter/nvim-treesitter', config = ts.treesitter, module = true })
+  lang({ 'nvim-treesitter/nvim-treesitter', config = ts.treesitter, event = 'CursorHold' })
 
   lang({
     'nvim-treesitter/nvim-treesitter-textobjects',
     config = ts.treesitter_obj,
-    module = true,
-    lazy = true,
-    event = { 'CursorMoved' },
+    -- module = true,
+    event = { 'CursorHold' },
   })
 
   lang({
     'RRethy/nvim-treesitter-textsubjects',
-    lazy = true,
     config = ts.textsubjects,
-    module = true,
-    event = { 'CursorMoved' },
+    -- module = true,
+    event = { 'CursorHold' },
   })
+
+  lang({
+    'haringsrob/nvim_context_vt',
+    event = { 'CursorHold' },
+    config = conf.context_vt,
+  })
+
+  lang({
+    'nvim-treesitter/nvim-treesitter-refactor',
+    config = ts.treesitter_ref, -- let the last loaded config treesitter
+    event = { 'CursorHold' },
+  })
+
   local jsft = { 'typescript', 'typescriptreact', 'javascript', 'javascriptreact' }
   if vim.tbl_contains(jsft, vim.bo.filetype) or vim.fn.argc() == 0 then
     lang({
       'jose-elias-alvarez/typescript.nvim',
-      lazy = true,
       event = 'VeryLazy',
       config = function()
         require('typescript').setup({})
@@ -48,20 +58,7 @@ return function(lang)
     })
   end
 
-  lang({
-    'haringsrob/nvim_context_vt',
-    lazy = true,
-    event = { 'CursorMoved' },
-    config = conf.context_vt,
-  })
   -- lang({ 'ThePrimeagen/refactoring.nvim', config = conf.refactor })
-
-  lang({
-    'nvim-treesitter/nvim-treesitter-refactor',
-    config = ts.treesitter_ref, -- let the last loaded config treesitter
-    lazy = true,
-    event = { 'CursorMoved' },
-  })
 
   -- Automatically convert strings to f-strings or template strings and back
   -- lang({
@@ -241,7 +238,7 @@ return function(lang)
   -- })
   lang({ 'mfussenegger/nvim-dap', config = conf.dap })
 
-  lang({ 'JoosepAlviste/nvim-ts-context-commentstring', event = 'VeryLazy' })
+  lang({ 'JoosepAlviste/nvim-ts-context-commentstring', event = 'CursorHold' })
 
   lang({
     'rcarriga/nvim-dap-ui',
@@ -291,11 +288,13 @@ return function(lang)
 
   lang({
     'windwp/nvim-ts-autotag',
-    lazy = true,
     config = function()
-      require('nvim-treesitter.configs').setup({ autotag = { enable = true } })
+      require('nvim-ts-autotag').setup({
+        filetypes = { 'html', 'javascript' },
+      })
     end,
-    event = 'VeryLazy',
+    -- event = 'VeryLazy',
+    ft = { 'javascript', 'html' },
   })
   -- highlight your args with Treesitter
   lang({
@@ -411,16 +410,14 @@ return function(lang)
   lang({
     'hashivim/vim-terraform',
     ft = { 'terraform' },
-    lazy = true,
     cmd = { 'Terraform', 'TerraformToggle' },
     -- config = conf.terraform,
   })
 
   lang({
     'nvimtools/none-ls.nvim',
-    lazy = true,
     config = require('modules.lang.null-ls').config,
-    event = 'VeryLazy',
+    event = 'BufWritePre',
   })
 
   -- structural search and replace
@@ -429,7 +426,6 @@ return function(lang)
 
   lang({
     'p00f/clangd_extensions.nvim',
-    lazy = true,
     ft = { 'c', 'cpp', 'objc', 'objcpp', 'h', 'hpp' },
     config = conf.clangd,
   })
@@ -437,13 +433,11 @@ return function(lang)
   lang({
     'HiPhish/awk-ward.nvim',
     ft = 'awk',
-    lazy = true,
     -- cmd = { 'AwkWard' },
   })
   lang({
     'mechatroner/rainbow_csv',
     ft = { 'csv', 'tsv', 'dat' },
-    lazy = true,
     cmd = { 'RainbowDelim', 'RainbowMultiDelim', 'Select', 'CSVLint' },
   })
 end
