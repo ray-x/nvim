@@ -3,7 +3,7 @@ return function(lang)
   local dev = plugin_folder():find('github') ~= nil or plugin_folder():find('ray') ~= nil
   local ts = require('modules.lang.treesitter')
 
-  lang({ 'nvim-treesitter/nvim-treesitter', config = ts.treesitter, event = 'CursorHold' })
+  lang({ 'nvim-treesitter/nvim-treesitter', config = ts.treesitter, module = true })
 
   lang({
     'nvim-treesitter/nvim-treesitter-textobjects',
