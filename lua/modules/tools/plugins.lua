@@ -31,8 +31,7 @@ return function(tools)
     dependencies = {
       { 'nvim-telescope/telescope.nvim' },
     },
-
-    event = { 'CmdlineEnter', 'CursorHold' },
+    module = true,
   })
   tools({
     'nvim-telescope/telescope-file-browser.nvim',
@@ -48,7 +47,7 @@ return function(tools)
     dependencies = {
       { 'nvim-telescope/telescope.nvim' },
     },
-    event = { 'CmdlineEnter'},
+    event = { 'CmdlineEnter' },
     -- config = function()
     --   local t = require('telescope')
     --   t.load_extension('ast_grep')
@@ -70,8 +69,8 @@ return function(tools)
     lazy = true,
     init = function()
       vim.g.dbs = {
-        eraser = 'postgres://postgres:password@localhost:5432/eraser_local',
-        staging = 'postgres://postgres:password@localhost:5432/my-staging-db',
+        -- eraser = 'postgres://postgres:password@localhost:5432/eraser_local',
+        -- staging = 'postgres://postgres:password@localhost:5432/my-staging-db',
         wp = 'mysql://root@localhost/wp_awesome',
       }
     end,
@@ -159,23 +158,6 @@ return function(tools)
     -- ft = { 'go','typescript','javascript','vim','rust','zig','c','cpp' }
   })
 
-  -- tools({
-  --   'ThePrimeagen/harpoon',
-  --   -- lazy = true,
-  --   event = { 'InsertEnter' },
-  --   config = function()
-  --     require('harpoon').setup({
-  --       global_settings = {
-  --         save_on_toggle = false,
-  --         save_on_change = true,
-  --         tmux_autoclose_windows = false,
-  --         excluded_filetypes = { 'harpoon' },
-  --       },
-  --     })
-  --     require('telescope').load_extension('harpoon')
-  --   end,
-  -- })
-
   tools({
     'kamykn/spelunker.vim',
     cmd = { 'Spell' },
@@ -224,16 +206,16 @@ return function(tools)
     config = conf.floaterm,
   })
 
-  tools({
-    'NTBBloodbath/rest.nvim',
-    lazy = true,
-    ft = { 'http', 'rest' },
-    keys = { '<Plug>RestNvim', '<Plug>RestNvimPreview', '<Plug>RestNvimLast' },
-    cmd = { 'RestRun', 'RestPreview', 'RestLast' },
-    config = conf.rest,
-  })
+  -- tools({
+  --   'NTBBloodbath/rest.nvim',
+  --   lazy = true,
+  --   ft = { 'http', 'rest' },
+  --   keys = { '<Plug>RestNvim', '<Plug>RestNvimPreview', '<Plug>RestNvimLast' },
+  --   cmd = { 'RestRun', 'RestPreview', 'RestLast' },
+  --   config = conf.rest,
+  -- })
   --
-  tools({ 'nanotee/zoxide.vim', cmd = { 'Z', 'Lz', 'Zi' } })
+  -- tools({ 'nanotee/zoxide.vim', cmd = { 'Z', 'Lz', 'Zi' } })
 
   cmd = 'bash install.sh'
   -- if is_win then
@@ -309,6 +291,9 @@ return function(tools)
       lazy = true,
       cmd = { 'Ga', 'Gaa', 'Gd', 'Glo', 'Gs', 'Gc', 'Gpl', 'Gps' },
       event = { 'CmdwinEnter', 'CmdlineEnter' },
+      dependencies = {
+        { 'junegunn/fzf', build = './install --bin' },
+      },
       config = function()
         require('forgit').setup({
           debug = true,
@@ -388,18 +373,18 @@ return function(tools)
     event = { 'CmdlineEnter' },
   })
 
-  tools({
-    'jvgrootveld/telescope-zoxide',
-    lazy = true,
-    config = function()
-      local ok, telescope = pcall(require, 'telescope')
-      if not ok then
-        return
-      end
-      require('telescope').load_extension('zoxide')
-    end,
-    event = { 'CmdlineEnter', 'CursorHold' },
-  })
+  -- tools({
+  --   'jvgrootveld/telescope-zoxide',
+  --   lazy = true,
+  --   config = function()
+  --     local ok, telescope = pcall(require, 'telescope')
+  --     if not ok then
+  --       return
+  --     end
+  --     require('telescope').load_extension('zoxide')
+  --   end,
+  --   event = { 'CmdlineEnter', 'CursorHold' },
+  -- })
 
   if not require('core.global').is_windows then
     tools({
@@ -471,24 +456,28 @@ return function(tools)
   })
   --The linediff plugin provides a simple command, :Linediff, which is used to diff two separate blocks of text.
   tools({ 'AndrewRadev/linediff.vim', lazy = true, cmd = { 'Linediff' } }) -- , "'<,'>Linediff"
-  tools({
-    'ibhagwan/fzf-lua',
-    lazy = true,
-    cmd = { 'FzfLua' },
-    dependencies = {
-      { 'junegunn/fzf', build = './install --bin' },
-    },
-    config = function()
-      require('fzf-lua').setup({
-        -- winopts = {
-        --   preview = {
-        --     default = 'bat_native',
-        --   },
-        --   on_create = function()
-        --     vim.opt_local.buflisted = false
-        --   end,
-        -- },
-      })
-    end,
-  })
+  --
+
+  if not require('core.global').is_windows then
+    tools({
+      'ibhagwan/fzf-lua',
+      lazy = true,
+      cmd = { 'FzfLua' },
+      dependencies = {
+        { 'junegunn/fzf', build = './install --bin' },
+      },
+      config = function()
+        require('fzf-lua').setup({
+          -- winopts = {
+          --   preview = {
+          --     default = 'bat_native',
+          --   },
+          --   on_create = function()
+          --     vim.opt_local.buflisted = false
+          --   end,
+          -- },
+        })
+      end,
+    })
+  end
 end

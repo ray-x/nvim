@@ -142,6 +142,8 @@ local treesitter_ref = function()
     matchup = {
       enable = enable, -- mandatory, false will disable the whole extension
       disable = { 'ruby' }, -- optional, list of language that will be disabled
+      disable_virtual_text = { 'python' },
+      include_match_words = true,
     },
     autopairs = { enable = enable },
     autotag = { enable = enable },

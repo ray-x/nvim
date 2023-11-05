@@ -1,8 +1,5 @@
 local config = {}
 
-local esc = function(cmd)
-  return vim.api.nvim_replace_termcodes(cmd, true, false, true)
-end
 
 function config.hydra()
   --require('modules.editor.hydra')
@@ -76,9 +73,8 @@ function config.yanky()
     },
   })
 
-  vim.ui.select = require('guihua.gui').select
-  -- vim.api.nvim_set_hl(0, "YankyPut", { link = "Search" })
-  -- vim.api.nvim_set_hl(0, "YankyYanked", { link = "Search" })
+  vim.api.nvim_set_hl(0, "YankyPut", { link = "Search" })
+  vim.api.nvim_set_hl(0, "YankyYanked", { link = "Search" })
 end
 
 -- <Space>siw replace word

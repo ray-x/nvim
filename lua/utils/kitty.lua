@@ -29,6 +29,11 @@ local function has_support()
   has_kitty = (vim.fn.executable('kitty') == 1) -- return vim.fn.executable("kitty") and vim.fn.system("kitty @ ls > /dev/null && printf 'ok'") == "ok"
   return has_kitty
 end
+if has_kitty == nil then
+  if has_support() == false then
+    return { change_bg = function(...) end }
+  end
+end
 
 ---@param window KittyWindow
 local function kitty_is_current_window(window)
@@ -183,19 +188,16 @@ local change_background = function(color)
     return ''
   end
 
-  vim.fn.jobstart(
-    { 'kitty', '@', 'set-colors', 'background=' .. color },
-    {
-      cwd = '/usr/bin/',
-      on_exit = function(code, data, event)
-        lprint('kitty set color on exit', code, data, event, color)
-      end,
-      on_stdout = function(code, data, event)
-        lprint('kitty set color on stdout', code, data, event, color)
-      end,
-    }
-
-  )
+  vim.fn.jobstart({ 'kitty', '@', 'set-colors', 'background=' .. color }, {
+    cwd = '/usr/bin/',
+    on_exit = function(code, data, event)
+      lprint('kitty set color on exit', code, data, event, color)
+    end,
+    on_stdout = function(code, data, event)
+      lprint('kitty set color on stdout', code, data, event, color)
+    end,
+  }
+)
 end
 
 local function on_leave(color)

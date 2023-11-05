@@ -405,7 +405,7 @@ end
 
 function config.context_vt()
   require('nvim_context_vt').setup({
-    enabled = false,
+    enabled = true,
 
     -- Override default virtual text prefix
     -- Default: '-->'
@@ -422,7 +422,7 @@ function config.context_vt()
 
     -- Disable display of virtual text below blocks for indentation based languages like Python
     -- Default: false
-    disable_virtual_lines = false,
+    -- disable_virtual_lines = false,
 
     -- Same as above but only for spesific filetypes
     -- Default: {}

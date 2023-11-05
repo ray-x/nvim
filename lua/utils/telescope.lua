@@ -363,7 +363,6 @@ M.setup = function(_)
   loader('telescope-live-grep-args.nvim')
   loader('telescope-file-browser.nvim')
   loader('project.nvim')
-  loader('telescope-zoxide')
 
   local ext = {
     file_browser = {
@@ -379,18 +378,15 @@ M.setup = function(_)
     },
   }
 
-  if not win then
-    -- loader('sqlite.lua')
-    -- loader('telescope-fzf-native.nvim')
-    -- loader('telescope-frecency.nvim nvim-neoclip.lua')
-    ext.fzf = {
-      fuzzy = true, -- false will only do exact matching
-      override_generic_sorter = true, -- override the generic sorter
-      override_file_sorter = true, -- override the file sorter
-      case_mode = 'smart_case', -- or "ignore_case" or "respect_case"
-      -- the default case_mode is "smart_case"
-    }
-  end
+  -- loader('sqlite.lua')
+  -- loader('telescope-frecency.nvim nvim-neoclip.lua')
+  ext.fzf = {
+    fuzzy = true, -- false will only do exact matching
+    override_generic_sorter = true, -- override the generic sorter
+    override_file_sorter = true, -- override the file sorter
+    case_mode = 'smart_case', -- or "ignore_case" or "respect_case"
+    -- the default case_mode is "smart_case"
+  }
 
   telescope.setup({
     defaults = {
@@ -417,7 +413,7 @@ M.setup = function(_)
           local height = vim.api.nvim_win_get_height(opts.winid) * 3 / 2
           local lines = vim.split(path:head(height), '[\r]?\n')
           vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, lines)
-          vim.api.nvim_buf_set_option(bufnr, 'ft', opts.ft)
+          -- vim.api.nvim_buf_set_option(bufnr, 'ft', opts.ft)
         end,
       },
       layout_config = {
@@ -511,7 +507,6 @@ M.setup = function(_)
   })
 
   -- telescope.load_extension("notify")
-
 
   if not win then
     telescope.load_extension('fzf')

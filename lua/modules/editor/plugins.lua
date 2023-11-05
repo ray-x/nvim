@@ -48,21 +48,22 @@ return function(editor)
   editor({
     'andymass/vim-matchup',
     -- event = { 'CursorHold', 'CursorHoldI' },
-    key = { '<Plug>()' },
+    key = { '<Plug>(matchup-%)', '<Plug>(matchup-g%)' },
     cmd = { 'MatchupWhereAmI' }, --
     setup = function()
       local fsize = vim.fn.getfsize(vim.fn.expand('%:p:f'))
       if fsize == nil or fsize < 0 then
         fsize = 1
       end
-      local enabled = 0
+      local enabled = 1
       if fsize > 500000 then
         enabled = 0
       end
       vim.g.matchup_enabled = enabled
-      vim.g.matchup_surround_enabled = enabled
-      -- vim.g.matchup_transmute_enabled = 1
-      vim.g.matchup_matchparen_deferred = enabled
+      vim.g.matchup_surround_enabled = 0
+      vim.g.matchup_transmute_enabled = 0
+      vim.g.matchup_matchparen_deferred = 1
+      vim.g.matchup_matchparen_hi_surround_always = 1
       vim.g.matchup_matchparen_offscreen = { method = 'popup' }
       vim.cmd([[nnoremap <c-s-k> :<c-u>MatchupWhereAmI?<cr>]])
     end,
@@ -130,7 +131,7 @@ return function(editor)
     'kylechui/nvim-surround',
     lazy = true,
     -- opt for sandwitch for now until some issue been addressed
-    event = { 'CursorMoved', 'CursorMovedI' },
+    event = { 'CursorMoved', 'CursorMovedI', 'CursorHold' },
     config = function()
       require('nvim-surround').setup({
         -- Configuration here, or leave empty to use defaults
@@ -139,7 +140,7 @@ return function(editor)
           -- default
           insert = '<C-g>s',
           insert_line = '<C-g>S',
-          normal = 'ca',
+          normal = 'ca',   -- e.g. caiw"
           normal_cur = 'cas',
           normal_line = 'cA',
           normal_cur_line = 'cAl',
@@ -178,12 +179,12 @@ return function(editor)
   })
 
   -- not working well with navigator
-  editor({
-    'kevinhwang91/nvim-ufo',
-    lazy = true,
-    dependencies = { 'kevinhwang91/promise-async' },
-    config = conf.ufo,
-  })
+  -- editor({
+  --   'kevinhwang91/nvim-ufo',
+  --   lazy = true,
+  --   dependencies = { 'kevinhwang91/promise-async' },
+  --   config = conf.ufo,
+  -- })
 
   editor({
     'mg979/vim-visual-multi',
@@ -207,7 +208,7 @@ return function(editor)
   -- copy paste failed in block mode when clipboard = unnameplus"
   editor({
     'gbprod/yanky.nvim',
-    -- event = { 'CursorMoved', 'TextYankPost' },
+    event = { 'CursorMoved', 'TextYankPost' },
     keys = {
       '<Plug>(YankyPutAfter)',
       '<Plug>(YankyPutBefore)',
@@ -338,22 +339,22 @@ return function(editor)
     end,
     keys = { 'm', '<Plug>(Marks-set)', '<Plug>(Marks-toggle)' },
   })
-  -- editor({
-  --   'tversteeg/registers.nvim',
-  --   name = 'registers',
-  --   keys = {
-  --     { '"', mode = { 'n', 'v' } },
-  --     { '<C-R>', mode = 'i' },
-  --   },
-  --   cmd = 'Registers',
-  --   config = function()
-  --     require('registers').setup({
-  --       show = '*"%01234abcpwy:',
-  --       -- Show a line at the bottom with registers that aren't filled
-  --       show_empty = false,
-  --     })
-  --   end,
-  -- })
+  editor({
+    'tversteeg/registers.nvim',
+    name = 'registers',
+    keys = {
+      { '"', mode = { 'n', 'v' } },
+      { '<C-R>', mode = 'i' },
+    },
+    cmd = 'Registers',
+    config = function()
+      require('registers').setup({
+        show = '*"%01234abcpwy:',
+        -- Show a line at the bottom with registers that aren't filled
+        show_empty = false,
+      })
+    end,
+  })
 
   -- editor({
   --   'rainbowhxch/accelerated-jk.nvim',

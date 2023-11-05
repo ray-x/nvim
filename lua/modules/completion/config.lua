@@ -181,10 +181,10 @@ function config.nvim_cmp()
       { name = 'buffer' },
       -- { name = 'cmdline_history' },
       -- { name = 'rg', keyword_length = 4 },  -- slow
-      {
-        name = 'fuzzy_buffer',
-        option = { max_matches = 5, max_buffer_lines = 4000, min_match_length = 4 },
-      },
+      -- {
+      --   name = 'fuzzy_buffer',
+      --   option = { max_matches = 5, max_buffer_lines = 4000, min_match_length = 4 },
+      -- },
     },
   })
 
@@ -192,7 +192,7 @@ function config.nvim_cmp()
     sorting = {
       priority_weight = 2,
       comparators = {
-        require('cmp_fuzzy_buffer.compare'),
+        -- require('cmp_fuzzy_buffer.compare'),
         compare.offset,
         compare.exact,
         compare.score,

@@ -177,6 +177,10 @@ return function(lang)
     build = 'cd lua/fzy && make',
     dev = dev,
     module = true,
+    config = function()
+      vim.ui.select = require('guihua.gui').select
+      vim.ui.input = require('guihua.gui').input
+    end,
   })
 
   lang({
@@ -227,7 +231,7 @@ return function(lang)
     'simrat39/symbols-outline.nvim',
     lazy = true,
     cmd = { 'SymbolsOutline', 'SymbolsOutlineOpen' },
-    opts = {}
+    opts = {},
   })
   -- lang({
   --   'rafcamlet/nvim-luapad',
@@ -272,7 +276,7 @@ return function(lang)
       })
       if require('core.global').is_windows then
         if vim.fn.executable('bash') == 0 then
-          vim.notify ('failed to install sniprun, bash is not installed')
+          vim.notify('failed to install sniprun, bash is not installed')
         end
       end
     end,
@@ -336,7 +340,7 @@ return function(lang)
       ft = { 'lua' },
       event = 'VeryLazy',
       module = true,
-      opts = {}
+      opts = {},
     })
   end
 
@@ -373,7 +377,7 @@ return function(lang)
     'hiphish/rainbow-delimiters.nvim',
     event = 'VeryLazy',
     config = function()
-local rainbow_delimiters = require 'rainbow-delimiters'
+      local rainbow_delimiters = require('rainbow-delimiters')
       require('rainbow-delimiters.setup').setup({
         strategy = {
           [''] = rainbow_delimiters.strategy['global'],

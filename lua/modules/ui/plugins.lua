@@ -118,7 +118,7 @@ return function(ui)
   ui({
     'dstein64/nvim-scrollview',
     cmd = { 'ScrollViewEnable', 'ScrollViewToggle' },
-    -- event = { 'CursorMoved', 'CursorMovedI' },
+    event = { 'CursorMoved', 'CursorMovedI' },
     config = conf.scrollview,
   })
 
@@ -149,22 +149,10 @@ return function(ui)
     config = conf.starry_conf,
   })
 
-  -- really good one, only issue is dependency ...
-  -- ui({ 'romgrk/fzy-lua-native', lazy = true })
 
   ui({ 'stevearc/dressing.nvim', lazy = true })
 end
 
--- ui({
---   'gorbit99/codewindow.nvim',
---   cmd = { 'Minimap' },
---   config = function()
---     local codewindow = require('codewindow')
---     codewindow.setup()
---     codewindow.apply_default_keybinds()
---     vim.cmd('command! -nargs=0 Minimap :lua require("codewindow").toggle_minimap()')
---   end,
--- })
 -- feel a bit laggy
 -- ui({
 --   'folke/noice.nvim',
@@ -172,29 +160,4 @@ end
 --   -- event = "User LoadLazyPlugin",
 --   dependencies = { 'MunifTanjim/nui.nvim', lazy = true },
 --   config = conf.noice,
--- })
--- Tint inactive windows in Neovim using window-local highlight namespaces.
--- disable for now as a blacking issue with session
--- ui({
---   'beauwilliams/focus.nvim',
---   lazy = true,
---   -- event = { "FocusGained", "CursorMoved", "ModeChanged" },
---   -- cmd ={ "FocusToggle", "FocusEnable", "FocusSplitNicely" },
---   config = function()
---     require('focus').setup({
---       cursorline = false,
---       -- minwidth = 80,
---       -- minheight = 16,
---     })
---   end,
--- })
--- ui({
---   'mawkler/modicator.nvim',
---   lazy = true,
---   event = { 'CursorMoved', 'CursorMovedI', 'ModeChanged' },
---   config = function()
---     if vim.o.cursorline then
---       require('modicator').setup({ show_warnings = false })
---     end
---   end,
 -- })
