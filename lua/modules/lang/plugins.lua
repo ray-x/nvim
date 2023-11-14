@@ -19,11 +19,12 @@ return function(lang)
     event = { 'CursorHold' },
   })
 
-  lang({
-    'haringsrob/nvim_context_vt',
-    event = { 'CursorHold' },
-    config = conf.context_vt,
-  })
+  -- using matchup
+  -- lang({
+  --   'haringsrob/nvim_context_vt',
+  --   event = { 'CursorHold' },
+  --   config = conf.context_vt,
+  -- })
 
   lang({
     'nvim-treesitter/nvim-treesitter-refactor',

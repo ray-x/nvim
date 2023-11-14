@@ -47,7 +47,7 @@ return function(editor)
   --  text objects i% and a%
   editor({
     'andymass/vim-matchup',
-    -- event = { 'CursorHold', 'CursorHoldI' },
+    event = { 'CursorHold', 'CursorHoldI' },
     key = { '<Plug>(matchup-%)', '<Plug>(matchup-g%)' },
     cmd = { 'MatchupWhereAmI' }, --
     setup = function()

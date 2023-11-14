@@ -190,7 +190,9 @@ function config.navigator()
       -- require'aerial'.on_attach(client, bufnr)
     end,
     border = single, -- "single",
-    ts_fold = true, -- "ufo"
+    ts_fold = {
+      enable = true,
+    }, -- "ufo"
     -- external = true, -- true: enable for goneovim multigrid otherwise false
     lsp_signature_help = true,
     combined_attach = 'their', -- both: use both customized attach and navigator default attach, mine: only use my attach defined in vimrc
@@ -403,49 +405,49 @@ function config.clangd()
   end, 100)
 end
 
-function config.context_vt()
-  require('nvim_context_vt').setup({
-    enabled = true,
-
-    -- Override default virtual text prefix
-    -- Default: '-->'
-    -- prefix = '',
-    -- prefix = '->',
-
-    -- Override the internal highlight group name
-    -- Default: 'ContextVt'
-    -- highlight = 'ContextVt',
-
-    -- Disable virtual text for given filetypes
-    -- Default: { 'markdown' }
-    disable_ft = { 'markdown' },
-
-    -- Disable display of virtual text below blocks for indentation based languages like Python
-    -- Default: false
-    -- disable_virtual_lines = false,
-
-    -- Same as above but only for spesific filetypes
-    -- Default: {}
-    -- disable_virtual_lines_ft = { 'yaml' },
-
-    -- How many lines required after starting position to show virtual text
-    -- Default: 1 (equals two lines total)
-    min_rows = 5,
-
-    -- Same as above but only for spesific filetypes
-    -- Default: {}
-    min_rows_ft = {},
-    custom_parser = function(node, ft, opts)
-      local utils = require('nvim_context_vt.utils')
-
-      -- This is the standard text
-      local start_row, _, end_row, _ = vim.treesitter.get_node_range(node)
-      return string.format('-><%d:%d> %s', start_row + 1, end_row + 1, utils.get_node_text(node)[1])
-    end,
-
-    -- Custom node virtual text resolver callback
-    -- Default: nil
-  })
-end
+-- function config.context_vt()
+--   require('nvim_context_vt').setup({
+--     enabled = true,
+--
+--     -- Override default virtual text prefix
+--     -- Default: '-->'
+--     -- prefix = '',
+--     -- prefix = '->',
+--
+--     -- Override the internal highlight group name
+--     -- Default: 'ContextVt'
+--     -- highlight = 'ContextVt',
+--
+--     -- Disable virtual text for given filetypes
+--     -- Default: { 'markdown' }
+--     disable_ft = { 'markdown' },
+--
+--     -- Disable display of virtual text below blocks for indentation based languages like Python
+--     -- Default: false
+--     -- disable_virtual_lines = false,
+--
+--     -- Same as above but only for spesific filetypes
+--     -- Default: {}
+--     -- disable_virtual_lines_ft = { 'yaml' },
+--
+--     -- How many lines required after starting position to show virtual text
+--     -- Default: 1 (equals two lines total)
+--     min_rows = 5,
+--
+--     -- Same as above but only for spesific filetypes
+--     -- Default: {}
+--     min_rows_ft = {},
+--     custom_parser = function(node, ft, opts)
+--       local utils = require('nvim_context_vt.utils')
+--
+--       -- This is the standard text
+--       local start_row, _, end_row, _ = vim.treesitter.get_node_range(node)
+--       return string.format('-><%d:%d> %s', start_row + 1, end_row + 1, utils.get_node_text(node)[1])
+--     end,
+--
+--     -- Custom node virtual text resolver callback
+--     -- Default: nil
+--   })
+-- end
 
 return config
