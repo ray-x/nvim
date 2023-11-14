@@ -146,7 +146,7 @@ if plugin_folder() == [[~/github/ray-x/]] then
   -- it is my own box, setup fish
   if vim.o.shell ~= fish and vim.fn.executable('fish') == 1 then
     if global.is_mac then
-      vim.cmd([[set shell=/usr/local/bin/fish]])
+      vim.cmd([[set shell=/opt/homebrew/bin/fish]])
     elseif global.is_linux then
       vim.cmd([[set shell=/usr/bin/fish]])
     else
