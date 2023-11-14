@@ -149,7 +149,7 @@ local function load_options()
       },
       cache_enabled = 0
     }
-    vim.g.python3_host_prog = '/usr/local/bin/python3'
+    vim.g.python3_host_prog = '/opt/homebrew/bin/python3'
   elseif global.is_linux then
     vim.g.python3_host_prog = '/usr/bin/python3'
   elseif global.is_mingw then
