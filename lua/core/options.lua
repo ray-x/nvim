@@ -182,7 +182,7 @@ local function load_options()
     }
 
   if vim.opt.diff:get() then
-    global_local = vim.tbl_extend('overwrite', global_local, {
+    global_local = vim.tbl_extend('force', global_local, {
       foldmethod = "diff", diffopt = 'context:0', foldlevel = 10, mouse = 'a'
     })
     -- window_local.cursorline = false

@@ -172,7 +172,7 @@ function config.navigator()
 
   -- loader('aerial.nvim')
   local nav_cfg = {
-    -- debug = plugin_debug(), -- uncomment for logs
+    debug = plugin_debug(), -- uncomment for logs
     width = 0.7,
     -- icons = {icons = false}, -- disable all icons
     on_attach = function(client, bufnr)
