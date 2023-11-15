@@ -13,6 +13,9 @@ return function(use)
     lazy = true,
   })
 
+  if vim.wo.diff then
+    return
+  end
   -- loading sequence LuaSnip -> nvim-cmp -> cmp_luasnip -> cmp-nvim-lua -> cmp-nvim-lsp ->cmp-buffer -> friendly-snippets
   use({
     'hrsh7th/nvim-cmp',

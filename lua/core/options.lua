@@ -256,6 +256,10 @@ if vim.fn.has("nvim-0.9.0") == 1 then
   -- vim.opt.statuscolumn = [[%!v:lua.column()]]
 end
 
+if vim.wo.diff then
+  vim.o.cursorline = true
+end
+
 -- stylua: ignore end
 
 vim.cmd([[syntax off]])

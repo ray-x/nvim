@@ -74,7 +74,9 @@ function config.nvim_cmp()
     formatting = {
       format = function(entry, vim_item)
         -- print(vim.inspect(vim_item.kind))
-        if cmp_kind == nil then
+
+        if cmp_kind ~= nil and not vim.wo.diff then
+          cmp_kind = require('navigator.lspclient.lspkind').cmp_kind
           local ok, cmp_kind = pcall(require, 'navigator')
           if ok then
             cmp_kind = require('navigator.lspclient.lspkind').cmp_kind

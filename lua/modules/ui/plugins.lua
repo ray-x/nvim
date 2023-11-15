@@ -52,14 +52,6 @@ return function(ui)
   })
 
   ui({
-    'akinsho/bufferline.nvim',
-    config = conf.nvim_bufferline,
-    event = 'VeryLazy',
-    -- after = {"aurora"}
-    -- dependencies = {'kyazdani42/nvim-web-devicons'}
-  })
-
-  ui({
     'nvim-tree/nvim-tree.lua',
     cmd = { 'NvimTreeToggle', 'NvimTreeOpen' },
     -- dependencies = {'kyazdani42/nvim-web-devicons'},
@@ -82,32 +74,6 @@ return function(ui)
   --   lazy = true,
   --   config = conf.neotree,
   -- })
-  ui({ 'MunifTanjim/nui.nvim', lazy = true })
-  ui({
-    'levouh/tint.nvim',
-    config = function()
-      require('tint').setup({
-        bg = true, -- Tint background portions of highlight groups
-        amt = -30, -- Darken colors, use a positive value to brighten
-        ignore = { 'WinSeparator', 'Status.*' }, -- Highlight group patterns to ignore, see `string.find`
-        ignorefunc = function(winid)
-          local buf = vim.api.nvim_win_get_buf(winid)
-          local buftype
-          vim.api.nvim_buf_get_option(buf, 'buftype')
-
-          if buftype == 'terminal' or buftype == 'guihua' then
-            -- Do not tint `terminal`-type buffers
-            return true
-          end
-
-          -- Tint the window
-          return false
-        end,
-      })
-    end,
-
-    event = { 'CmdwinEnter', 'CmdlineEnter' },
-  })
 
   ui({
     'lukas-reineke/indent-blankline.nvim',
@@ -117,18 +83,6 @@ return function(ui)
     module = true,
     config = conf.blankline,
   }) -- after="nvim-treesitter",
-
-  ui({
-    -- 'xiyaowong/virtcolumn.nvim',
-    'lukas-reineke/virt-column.nvim',
-    event = { 'CursorMoved', 'CursorMovedI' },
-    config = function()
-      require('virt-column').setup({
-        char = '▕',
-        higlight = 'LineNr',
-      }) -- char to display the line
-    end,
-  })
 
   ui({
     'dstein64/nvim-scrollview',
@@ -148,21 +102,68 @@ return function(ui)
     end,
     config = conf.aurora,
   })
-  ui({
-    'folke/tokyonight.nvim',
-    lazy = true,
-    config = conf.tokyonight,
-  })
+  if not vim.wo.diff then
+    ui({
+      'akinsho/bufferline.nvim',
+      config = conf.nvim_bufferline,
+      event = 'VeryLazy',
+      -- after = {"aurora"}
+      -- dependencies = {'kyazdani42/nvim-web-devicons'}
+    })
 
-  ui({ 'catppuccin/nvim', lazy = true, name = 'catppuccin', config = conf.cat })
+    ui({ 'MunifTanjim/nui.nvim', lazy = true })
+    ui({
+      'levouh/tint.nvim',
+      config = function()
+        require('tint').setup({
+          bg = true, -- Tint background portions of highlight groups
+          amt = -30, -- Darken colors, use a positive value to brighten
+          ignore = { 'WinSeparator', 'Status.*' }, -- Highlight group patterns to ignore, see `string.find`
+          ignorefunc = function(winid)
+            local buf = vim.api.nvim_win_get_buf(winid)
+            local buftype
+            vim.api.nvim_buf_get_option(buf, 'buftype')
 
-  ui({
-    'ray-x/starry.nvim',
-    dev = (plugin_folder():find('github') ~= nil),
-    lazy = true,
-    init = conf.starry,
-    config = conf.starry_conf,
-  })
+            if buftype == 'terminal' or buftype == 'guihua' then
+              -- Do not tint `terminal`-type buffers
+              return true
+            end
+
+            -- Tint the window
+            return false
+          end,
+        })
+      end,
+
+      event = { 'CmdwinEnter', 'CmdlineEnter' },
+    })
+    ui({
+      -- 'xiyaowong/virtcolumn.nvim',
+      'lukas-reineke/virt-column.nvim',
+      event = { 'CursorMoved', 'CursorMovedI' },
+      config = function()
+        require('virt-column').setup({
+          char = '▕',
+          higlight = 'LineNr',
+        }) -- char to display the line
+      end,
+    })
+    ui({
+      'folke/tokyonight.nvim',
+      lazy = true,
+      config = conf.tokyonight,
+    })
+
+    ui({ 'catppuccin/nvim', lazy = true, name = 'catppuccin', config = conf.cat })
+
+    ui({
+      'ray-x/starry.nvim',
+      dev = (plugin_folder():find('github') ~= nil),
+      lazy = true,
+      init = conf.starry,
+      config = conf.starry_conf,
+    })
+
 
   ui({ 'stevearc/dressing.nvim', lazy = true })
 end

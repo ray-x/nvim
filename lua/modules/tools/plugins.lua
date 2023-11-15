@@ -16,6 +16,11 @@ return function(tools)
     },
     module = true,
   })
+  -- tools ({
+  --   '3rd/image.nvim',
+  --   ft = { 'markdown', 'md', 'norg', 'org' },
+  --   opts = {}
+  -- })
   tools({
     'nvim-telescope/telescope-fzf-native.nvim',
     build = 'make',

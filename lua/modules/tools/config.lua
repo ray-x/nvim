@@ -228,7 +228,12 @@ function config.gitsigns()
     status_formatter = nil, -- Use default
     debug_mode = false,
     current_line_blame = true,
-    current_line_blame_opts = { delay = 1500 },
+    current_line_blame_opts = {
+      virt_text = true,
+      virt_text_pos = 'right_align', -- 'eol' | 'overlay' | 'right_align'
+      delay = 2000,
+      virt_text_priority = 20,  -- maybe the last thing I would like to see
+    },
     diff_opts = { internal = true },
   })
 

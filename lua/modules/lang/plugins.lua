@@ -18,6 +18,17 @@ return function(lang)
   lang({ 'nvim-treesitter/nvim-treesitter', config = ts.treesitter, module = true })
   --
   lang({
+    'ray-x/guihua.lua',
+    build = 'cd lua/fzy && make',
+    dev = dev,
+    module = true,
+    config = function()
+      vim.ui.select = require('guihua.gui').select
+      vim.ui.input = require('guihua.gui').input
+    end,
+  })
+  if vim.wo.diff then return end
+  lang({
     'nvim-treesitter/nvim-treesitter-textobjects',
     config = ts.treesitter_obj,
     -- module = true,
@@ -184,17 +195,6 @@ return function(lang)
     },
     ft = { 'go', 'gomod' },
     config = conf.go,
-  })
-
-  lang({
-    'ray-x/guihua.lua',
-    build = 'cd lua/fzy && make',
-    dev = dev,
-    module = true,
-    config = function()
-      vim.ui.select = require('guihua.gui').select
-      vim.ui.input = require('guihua.gui').input
-    end,
   })
 
   lang({
