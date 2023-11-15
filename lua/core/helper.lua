@@ -1,7 +1,9 @@
+-- This file includes functions used by core and all other plugins/scripts
 _G = _G or {}
 fn = vim.fn
 
 local global = require('core.global')
+local sep = global.path_sep
 
 local function exists(file)
   local ok, _, code = os.rename(file, file)
@@ -92,6 +94,69 @@ local helper = {
         vim.cmd([[Jsonfmt]]) -- :%!jq .
       end
     end
+
+    _G.plugin_folder = function()
+      if Plugin_folder then
+        return Plugin_folder
+      end
+      local host = os.getenv('HOST_NAME') or vim.fn.hostname()
+      if host and host:lower():find('ray') then
+        Plugin_folder = [[~/github/ray-x/]] -- vim.fn.expand("$HOME") .. '/github/'
+      else
+        Plugin_folder = [[ray-x/]]
+      end
+      return Plugin_folder
+    end
+
+    _G.FindRoot = function()
+      local root = vim.fn.system({ 'git', 'rev-parse', '--show-toplevel' })
+      if root:find('fatal') then
+        root = workspace_folder()
+      end
+
+      -- stylua: ignore start
+      local list = {
+        'go.mod', 'Makefile', 'CMakefile.txt', 'package.json', 'Cargo.toml', 'pom.xml',
+        'docker-compose.yml', 'Dockerfile', '.jsconfig', '.tsconfig', 'requirements.txt',
+      }
+      -- stylua: ignore end
+
+      if #root == 0 then
+        for _, k in ipairs(list) do
+          local r = FindProjectRoot(k)
+          if #r > 0 then
+            return r
+          end
+        end
+      else
+        return root
+      end
+
+      return vim.fn.expand('%:p:h')
+    end
+    _G.workspace_folder = function()
+      -- lsp workspace folder
+      local workspace_folder = vim.lsp.buf.list_workspace_folders()
+      if next(workspace_folder) == nil then
+        return vim.fn.getcwd()
+      end
+      return workspace_folder[#workspace_folder]
+    end
+
+    _G.FindProjectRoot = function(file)
+      local current_dir = vim.fn.expand('%:p:h')
+      local path = current_dir .. sep .. file
+      local l = 10
+      while #current_dir > 0 and vim.fn.isdirectory(current_dir) == 1 and l > 0 do
+        if vim.fn.filereadable(path) == 1 then
+          return current_dir
+        end
+        current_dir = vim.fn.fnamemodify(current_dir, ':h')
+        path = current_dir .. sep .. file
+        l = l - 1
+      end
+      return ''
+    end
   end,
   path_sep = package.config:sub(1, 1) == '\\' and '\\' or '/',
   get_config_path = function()
@@ -101,7 +166,7 @@ local helper = {
     return global.data_dir
   end,
   isdir = function(path)
-    return exists(path .. '/')
+    return exists(path .. sep)
   end,
 }
 
@@ -114,49 +179,5 @@ local helper = {
 --   return false
 --   -- return true
 -- end
-
-_G.plugin_folder = function()
-  if Plugin_folder then
-    return Plugin_folder
-  end
-  local host = os.getenv('HOST_NAME') or vim.fn.hostname()
-  if host and host:lower():find('ray') then
-    Plugin_folder = [[~/github/ray-x/]] -- vim.fn.expand("$HOME") .. '/github/'
-  else
-    Plugin_folder = [[ray-x/]]
-  end
-  return Plugin_folder
-end
-
-_G.FindRoot = function()
-  local root = vim.fn.system('git rev-parse --show-toplevel 2> /dev/null'):sub(1, -3)
-  local list = {'go.mod', 'Makefile', 'CMakefile.txt', 'package.json'}
-
-  if #root == 0 then
-    for _, k in ipairs(list) do
-      root = FindProjectRoot(k)
-      if #root > 0 then
-        return root
-      end
-    end
-  else
-    return root
-  end
-
-  return vim.fn.expand('%:p:h')
-end
-
-_G.FindProjectRoot = function(file)
-  local current_dir = vim.fn.expand('%:p:h')
-  local path = current_dir .. '/' .. file
-  while #current_dir > 0 and vim.fn.isdirectory(current_dir) == 1 do
-    if vim.fn.filereadable(path) == 1 then
-      return current_dir
-    end
-    current_dir = vim.fn.fnamemodify(current_dir, ':h')
-    path = current_dir .. '/' .. file
-  end
-  return ''
-end
 
 return helper

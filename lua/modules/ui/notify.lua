@@ -122,7 +122,7 @@ local function notify(msg, level, opts, no_cache)
     end
   end
   -- lprint(msg, level, opts)
-  if level > vim.log.levels.WARN then
+  if level > vim.log.levels.WARN and not vim.g.vscode then
     if vim.in_fast_event() then
       vim.schedule(function()
         require('notify').notify(msg, level, opts)

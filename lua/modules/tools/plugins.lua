@@ -1,25 +1,25 @@
 local conf = require('modules.tools.config')
+cond = not vim.g.vscode
 return function(tools)
   local is_win = require('core.global').is_windows
   local gitrepo = vim.fn.isdirectory('.git/index')
   tools({
     'nvim-telescope/telescope.nvim',
     cmd = 'Telescope',
-    event = { 'CmdlineEnter', 'CursorHold', 'VeryLazy' },
+    event = { 'CmdlineEnter', 'CursorHold' },
     config = function()
       require('utils.telescope').setup()
     end,
-    init = function()
-      require('utils.helper').loader({ 'plenary.nvim' })
-    end,
+    cond = cond,
     dependencies = {
-      { 'nvim-lua/plenary.nvim', lazy = true },
+      { 'nvim-lua/plenary.nvim', lazy = true, module = true },
     },
     module = true,
   })
   tools({
     'nvim-telescope/telescope-fzf-native.nvim',
     build = 'make',
+    cond = cond,
     event = { 'CmdlineEnter', 'CursorHold' },
     dependencies = {
       { 'nvim-telescope/telescope.nvim' },
@@ -28,6 +28,7 @@ return function(tools)
 
   tools({
     'nvim-telescope/telescope-live-grep-args.nvim',
+    cond = cond,
     dependencies = {
       { 'nvim-telescope/telescope.nvim' },
     },
@@ -35,6 +36,7 @@ return function(tools)
   })
   tools({
     'nvim-telescope/telescope-file-browser.nvim',
+    cond = cond,
     dependencies = {
       { 'nvim-telescope/telescope.nvim' },
     },
@@ -43,6 +45,7 @@ return function(tools)
 
   tools({
     'ray-x/telescope-ast-grep.nvim',
+    cond = cond,
     dev = (plugin_folder():find('github') ~= nil),
     dependencies = {
       { 'nvim-telescope/telescope.nvim' },
@@ -56,6 +59,7 @@ return function(tools)
   })
   tools({
     'kristijanhusak/vim-dadbod-ui',
+    cond = cond,
     cmd = {
       'DBUIToggle',
       'DBUIAddConnection',
@@ -66,7 +70,6 @@ return function(tools)
     },
     config = conf.vim_dadbod_ui,
     dependencies = { 'tpope/vim-dadbod', ft = { 'sql' } },
-    lazy = true,
     init = function()
       vim.g.dbs = {
         -- eraser = 'postgres://postgres:password@localhost:5432/eraser_local',
@@ -76,11 +79,11 @@ return function(tools)
     end,
   })
   -- tools({ 'mattn/webapi-vim', lazy = true })
-  tools({ 'nvim-lua/plenary.nvim', lazy = true, module = true })
+  tools({ 'nvim-lua/plenary.nvim', module = true })
   tools({
+    cond = cond,
     'edluffy/hologram.nvim',
     config = conf.hologram,
-    lazy = true,
     ft = { 'markdown', 'md', 'norg', 'org' },
   })
 
@@ -90,49 +93,11 @@ return function(tools)
     init = conf.vim_test,
   })
   tools({
+    cond = cond,
     'folke/which-key.nvim',
-    cmd = { 'WhichKey' },
+    event = { 'CmdlineEnter', 'ModeChanged', 'TextYankPost' },
     module = false,
-    config = function()
-      vim.o.timeout = true
-      vim.o.timeoutlen = 500
-      require('which-key').setup({
-        key_labels = {
-          ['<space>'] = '󱁐',
-          ['telescope'] = ' ',
-          ['Telescope'] = ' ',
-          ['operator'] = '',
-        },
-        window = {
-          margin = { 0, 0, 0, 0 }, -- extra window margin [top, right, bottom, left]
-          padding = { 0, 0, 0, 0 }, -- extra window padding etop, right, bottom, lefte
-          winblend = 20,
-        },
-        layout = {
-          height = { min = 1, max = 4 }, -- min and max height of the columns
-          spacing = 3, -- spacing between columns
-          width = { min = 12, max = 40 }, -- min and max width of the columns
-          align = 'left', -- align columns left, center or right
-        },
-        hidden = {
-          '<silent>',
-          '<cmd>',
-          '<Cmd>',
-          '<CR>',
-          'call',
-          'lua',
-          '^:',
-          '^ ',
-          'require',
-          'escope',
-          'erator',
-          '"',
-        }, --
-        -- your configuration comes here
-        -- or leave it empty to use the default settings
-        -- refer to the configuration section below
-      })
-    end,
+    config = function() require('modules.tools.which_key').init() end,
   })
 
   tools({
@@ -153,7 +118,6 @@ return function(tools)
 
   tools({
     'editorconfig/editorconfig-vim',
-    lazy = true,
     cmd = { 'EditorConfigReload' },
     -- ft = { 'go','typescript','javascript','vim','rust','zig','c','cpp' }
   })
@@ -174,6 +138,7 @@ return function(tools)
   tools({
     'plasticboy/vim-markdown',
     ft = 'markdown',
+    cond = cond,
     dependencies = { 'godlygeek/tabular' },
     cmd = { 'Toc' },
     init = conf.markdown,
@@ -188,10 +153,24 @@ return function(tools)
     'iamcco/markdown-preview.nvim',
     ft = { 'markdown', 'pandoc.markdown', 'rmd' },
     cmd = { 'MarkdownPreview' },
+    cond = cond,
     init = conf.mkdp,
     build = cmd,
   })
 
+  -- Note mini has similar function but lacking features
+  --[[
+    :BDelete! hidden
+    :BDelete nameless
+    :BDelete this
+    :BDelete 1
+    :BDelete regex='.*[.].md'
+
+    :BWipeout! all
+    :BWipeout other
+    :BWipeout hidden glob=*.lua
+  ]]
+  --
   tools({
     'kazhala/close-buffers.nvim',
     cmd = { 'Kwbd', 'BDelete', 'BWipeout', 'Bd' },
@@ -208,8 +187,7 @@ return function(tools)
 
   -- tools({
   --   'NTBBloodbath/rest.nvim',
-  --   lazy = true,
-  --   ft = { 'http', 'rest' },
+  --     --   ft = { 'http', 'rest' },
   --   keys = { '<Plug>RestNvim', '<Plug>RestNvimPreview', '<Plug>RestNvimLast' },
   --   cmd = { 'RestRun', 'RestPreview', 'RestLast' },
   --   config = conf.rest,
@@ -218,17 +196,6 @@ return function(tools)
   -- tools({ 'nanotee/zoxide.vim', cmd = { 'Z', 'Lz', 'Zi' } })
 
   cmd = 'bash install.sh'
-  -- if is_win then
-  --   cmd = ':Clap install-binary'
-  -- end
-  -- tools({
-  --   'liuchengxu/vim-clap',
-  --   cmd = { 'Clap' },
-  --   build = cmd,
-  --   init = conf.clap,
-  --   config = conf.clap_after,
-  -- })
-  --
   tools({
     'sindrets/diffview.nvim',
     cmd = {
@@ -245,7 +212,6 @@ return function(tools)
     'ray-x/sad.nvim',
     dev = (plugin_folder():find('github') ~= nil),
     cmd = { 'Sad' },
-    lazy = true,
     config = function()
       require('sad').setup({
         debug = true,
@@ -261,7 +227,6 @@ return function(tools)
     'ray-x/viewdoc.nvim',
     dev = (plugin_folder():find('github') ~= nil),
     cmd = { 'Viewdoc' },
-    lazy = true,
     config = function()
       require('viewdoc').setup({
         debug = true,
@@ -272,6 +237,7 @@ return function(tools)
   if gitrepo then
     tools({
       'lewis6991/gitsigns.nvim',
+      cond = cond,
       config = conf.gitsigns,
       -- keys = {']c', '[c'},  -- load by lazy.lua
       event = { 'VeryLazy' },
@@ -288,7 +254,6 @@ return function(tools)
     tools({
       'ray-x/forgit.nvim',
       dev = (plugin_folder():find('github') ~= nil),
-      lazy = true,
       cmd = { 'Ga', 'Gaa', 'Gd', 'Glo', 'Gs', 'Gc', 'Gpl', 'Gps' },
       event = { 'CmdwinEnter', 'CmdlineEnter' },
       dependencies = {
@@ -313,14 +278,12 @@ return function(tools)
         'GitConflictChooseBoth',
         'GitConflictNextConflict',
       },
-      lazy = true,
       config = conf.git_conflict,
     })
 
     tools({
       'rbong/vim-flog',
       cmd = { 'Flog', 'Flogsplit', 'Flg', 'Flgs' },
-      lazy = true,
       event = { 'FuncUndefined' },
       dependencies = {
         'tpope/vim-fugitive',
@@ -336,31 +299,27 @@ return function(tools)
         },
         event = { 'CmdwinEnter', 'CmdlineEnter' },
         -- fn = { 'FugitiveIsGitDir' },
-        lazy = true,
       },
     })
   end
-  tools({ 'rmagatti/auto-session', config = conf.session, lazy = true })
+  -- tools({ 'rmagatti/auto-session', config = conf.session, lazy = true })
 
-  tools({
-    'rmagatti/session-lens',
-    lazy = true,
-    -- cmd = "SearchSession",
-    -- after = { "telescope.nvim" },
-    config = function()
-      require('utils.helper').loader('telescope.nvim')
-      require('telescope').load_extension('session-lens')
-      require('session-lens').setup({
-        path_display = { 'shorten' },
-        theme_conf = { border = true },
-        previewer = true,
-      })
-    end,
-  })
+  -- tools({
+  --   'rmagatti/session-lens',
+  --   cmd = 'SearchSession',
+  --   config = function()
+  --     require('utils.helper').loader('telescope.nvim')
+  --     require('telescope').load_extension('session-lens')
+  --     require('session-lens').setup({
+  --       path_display = { 'shorten' },
+  --       theme_conf = { border = true },
+  --       previewer = true,
+  --     })
+  --   end,
+  -- })
 
   tools({
     'kevinhwang91/nvim-bqf',
-    lazy = true,
     event = { 'CmdlineEnter', 'QuickfixCmdPre' },
     config = conf.bqf,
   })
@@ -368,15 +327,24 @@ return function(tools)
   -- lua require'telescope'.extensions.project.project{ display_type = 'full' }
   tools({
     'ahmedkhalf/project.nvim',
-    lazy = true,
+    cond = cond,
     config = conf.project,
     event = { 'CmdlineEnter' },
   })
 
+  tools({
+    'ThePrimeagen/harpoon',
+    cmd = { 'HarpoonTerm', 'HarpoonSend', 'HarpoonSendLine' },
+    event = { 'CmdlineEnter' },
+    module = true,
+    opts = {
+      excluded_filetypes = { 'harpoon', 'guihua', 'term' },
+    },
+  })
+
   -- tools({
   --   'jvgrootveld/telescope-zoxide',
-  --   lazy = true,
-  --   config = function()
+  --     --   config = function()
   --     local ok, telescope = pcall(require, 'telescope')
   --     if not ok then
   --       return
@@ -385,54 +353,60 @@ return function(tools)
   --   end,
   --   event = { 'CmdlineEnter', 'CursorHold' },
   -- })
-
-  if not require('core.global').is_windows then
-    tools({
-      'AckslD/nvim-neoclip.lua',
-      lazy = true,
-      dependencies = { 'kkharji/sqlite.lua' },
-      event = { 'CmdlineEnter' },
-      config = function()
-        require('neoclip').setup({
-          db_path = vim.fn.stdpath('data') .. '/databases/neoclip.sqlite3',
-        })
-        require('telescope').load_extension('neoclip')
-      end,
-    })
-    tools({
-      'nvim-telescope/telescope-frecency.nvim',
-      -- cmd = {'Telescope'},
-      dependencies = { 'kkharji/sqlite.lua', lazy = true },
-      event = { 'CmdlineEnter', 'CursorHold' },
-      lazy = true,
-      config = function()
-        local telescope = require('telescope')
-        telescope.load_extension('frecency')
-        telescope.setup({
-          extensions = {
-            frecency = {
-              default_workspace = 'CWD',
-              show_scores = false,
-              show_unindexed = true,
-              ignore_patterns = { '*.git/*', '*/tmp/*' },
-              disable_devicons = false,
-              workspaces = {
-                -- ["conf"] = "/home/my_username/.config",
-                -- ["data"] = "/home/my_username/.local/share",
-                -- ["project"] = "/home/my_username/projects",
-                -- ["wiki"] = "/home/my_username/wiki"
-              },
-            },
-          },
-        })
-        -- vim.api.nvim_set_keymap("n", "<leader><leader>p", "<Cmd>lua require('telescope').extensions.frecency.frecency()<CR>", {noremap = true, silent = true})
-      end,
-    })
-  end
+  -- local dep
+  -- if not require('core.global').is_windows then
+  --   dep = { 'kkharji/sqlite.lua' }
+  -- end
+  -- tools({
+  --   'AckslD/nvim-neoclip.lua',
+  --   event = { 'CmdlineEnter' },
+  --   dependencies = dep,
+  --   cond = function()
+  --     return not vim.g.vscode
+  --   end,
+  --   config = function()
+  --     local db
+  --     if not require('core.global').is_windows then
+  --       db = vim.fn.stdpath('data') .. '/databases/neoclip.sqlite3'
+  --     end
+  --     require('neoclip').setup({
+  --       db_path = db,
+  --     })
+  --     require('telescope').load_extension('neoclip')
+  --   end,
+  -- })
+  -- tools({
+  --   'nvim-telescope/telescope-frecency.nvim',
+  --   -- cmd = {'Telescope'},
+  --   cond = cond,
+  --   event = { 'CmdlineEnter', 'CursorHold' },
+  --   config = function()
+  --     local telescope = require('telescope')
+  --     telescope.load_extension('frecency')
+  --     telescope.setup({
+  --       extensions = {
+  --         frecency = {
+  --           default_workspace = 'CWD',
+  --           show_scores = false,
+  --           show_unindexed = true,
+  --           ignore_patterns = { '*.git/*', '*/tmp/*' },
+  --           disable_devicons = false,
+  --           workspaces = {
+  --             -- ["conf"] = "/home/my_username/.config",
+  --             -- ["data"] = "/home/my_username/.local/share",
+  --             -- ["project"] = "/home/my_username/projects",
+  --             -- ["wiki"] = "/home/my_username/wiki"
+  --           },
+  --         },
+  --       },
+  --     })
+  --     -- vim.api.nvim_set_keymap("n", "<leader><leader>p", "<Cmd>lua require('telescope').extensions.frecency.frecency()<CR>", {noremap = true, silent = true})
+  --   end,
+  -- })
+  -- end
 
   tools({
     'voldikss/vim-translator',
-    lazy = true,
     keys = { '<Plug>TranslateW', '<Plug>TranslateWV' },
     init = function()
       vim.api.nvim_set_keymap(
@@ -451,18 +425,18 @@ return function(tools)
   })
   tools({
     'joaomsa/telescope-orgmode.nvim',
-    lazy = true,
+    cond = cond,
     event = { 'CmdlineEnter', 'CursorHold' },
   })
   --The linediff plugin provides a simple command, :Linediff, which is used to diff two separate blocks of text.
-  tools({ 'AndrewRadev/linediff.vim', lazy = true, cmd = { 'Linediff' } }) -- , "'<,'>Linediff"
+  tools({ 'AndrewRadev/linediff.vim', cmd = { 'Linediff' } }) -- , "'<,'>Linediff"
   --
 
   if not require('core.global').is_windows then
     tools({
       'ibhagwan/fzf-lua',
-      lazy = true,
       cmd = { 'FzfLua' },
+      cond = cond,
       dependencies = {
         { 'junegunn/fzf', build = './install --bin' },
       },

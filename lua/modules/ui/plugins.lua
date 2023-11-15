@@ -31,8 +31,23 @@ return function(ui)
     'luukvbaal/statuscol.nvim',
     event = 'VeryLazy',
     config = function()
-      -- require("statuscol").setup({ setlazy = true })
-      require('statuscol').setup()
+      -- https://github.com/neovim/neovim/pull/17446#issuecomment-1407651883
+      local builtin = require("statuscol.builtin")
+      require('statuscol').setup{
+        segments = {
+          { text = { '%s' }, click = 'v:lua.ScSa' },
+          { text = { builtin.lnumfunc }, click = 'v:lua.ScLa' },
+          {
+            text = { ' ', builtin.foldfunc, ' ' },
+            condition = {
+              builtin.not_empty,
+              true,
+              builtin.not_empty,
+            },
+            click = 'v:lua.ScFa',
+          },
+        },
+      }
     end,
   })
 
@@ -148,7 +163,6 @@ return function(ui)
     init = conf.starry,
     config = conf.starry_conf,
   })
-
 
   ui({ 'stevearc/dressing.nvim', lazy = true })
 end

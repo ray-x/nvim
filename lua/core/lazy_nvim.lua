@@ -23,7 +23,7 @@ function lazy:load_modules_lazy()
   end
   local modules_dir = helper.get_config_path() .. sep .. 'lua' .. sep .. 'modules'
   self.repos = {}
-
+  -- stylua: ignore
   local plugins_list = {
     modules_dir .. sep .. 'completion' .. sep .. 'plugins.lua',
     modules_dir .. sep .. 'lang' .. sep .. 'plugins.lua',
@@ -31,6 +31,13 @@ function lazy:load_modules_lazy()
     modules_dir .. sep .. 'editor' .. sep .. 'plugins.lua',
     modules_dir .. sep .. 'tools' .. sep .. 'plugins.lua',
   }
+  if vim.g.vscode then
+  -- stylua: ignore
+    plugins_list = {
+      modules_dir .. sep .. 'editor' .. sep .. 'plugins.lua',
+      modules_dir .. sep .. 'tools' .. sep .. 'plugins.lua',
+    }
+  end
 
   local disable_modules = {}
 

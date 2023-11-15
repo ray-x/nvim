@@ -16,25 +16,17 @@ local function load_env_file()
   return env_contents
 end
 
-function config.session()
-  local opts = {
-    log_level = 'error',
-    -- auto_session_enable_last_session = true, -- this is default reload last session regardless pwd
-    -- auto_session_root_dir = vim.fn.stdpath("data") .. "/sessions/", -- this is default
-    auto_session_enabled = true,
-    auto_save_enabled = true,
-    auto_restore_enabled = true,
-    bypass_session_save_file_types = {
-      'dashboard',
-      'startify',
-      'NeogitStatus',
-      'NvimTree',
-      'fugitive',
-    },
-  }
-  lprint('loading session start')
-  require('auto-session').setup(opts)
-end
+-- function config.session()
+--   local opts = {
+--     bypass_session_save_file_types = {
+--       'dashboard',
+--       'startify',
+--       'NeogitStatus',
+--       'NvimTree',
+--       'fugitive',
+--     },
+--   }
+-- end
 
 local function load_dbs()
   local env_contents = load_env_file()
@@ -133,32 +125,6 @@ function config.vim_dadbod_ui()
   vim.g.db_ui_winwidth = 35
   vim.g.db_ui_save_location = require('core.global').home .. '/.cache/vim/db_ui_queries'
   vim.g.dbs = load_dbs()
-end
-
-function config.clap()
-  -- vim.g.clap_preview_size = 10
-  -- vim.g.airline_powerline_fonts = 1
-  -- vim.g.clap_layout = { width = '80%', row = '8%', col = '10%', height = '34%' } -- height = "40%", row = "17%", relative = "editor",
-  -- -- vim.g.clap_popup_border = "rounded"
-  -- vim.g.clap_selected_sign = { text = '', texthl = 'ClapSelectedSign', linehl = 'ClapSelected' }
-  -- vim.g.clap_current_selection_sign = {
-  --   text = '',
-  --   texthl = 'ClapCurrentSelectionSign',
-  --   linehl = 'ClapCurrentSelection',
-  -- }
-  -- -- vim.g.clap_always_open_preview = true
-  -- vim.g.clap_preview_direction = 'UD'
-  -- -- if vim.g.colors_name == 'zephyr' then
-  -- vim.g.clap_theme = 'material_design_dark'
-  -- vim.api.nvim_command(
-  --   "autocmd FileType clap_input lua require'cmp'.setup.buffer { completion = {autocomplete = false} }"
-  -- )
-  -- end
-  -- vim.api.nvim_command("autocmd FileType clap_input call compe#setup({ 'enabled': v:false }, 0)")
-end
-
-function config.clap_after()
-  -- require('utils.helper').loader('nvim-cmp')
 end
 
 function config.project()
@@ -434,10 +400,17 @@ function config.floaterm()
     },
   })
   local Terminal = require('toggleterm.terminal').Terminal
-  local lazygit = Terminal:new({ cmd = 'lazygit --debug', hidden = true })
+  local lazygit = Terminal:new({ cmd = 'lazygit', hidden = true })
   local lazydocker = Terminal:new({ cmd = 'lazydocker', hidden = true })
 
   local function _lazygit_toggle()
+    if require('core.global').is_windows then
+      return require('guihua.floating').floating_term({
+        cmd = { 'lazygit' },
+        border = 'single',
+        external = false,
+      })
+    end
     lazygit:toggle()
   end
   local function _lazydocker_toggle()
@@ -455,8 +428,16 @@ function config.floaterm()
     if ver == 'a' then
       cmd = 'git diff'
     end
-    local gd = Terminal:new({ cmd = cmd, hidden = true })
-    gd:toggle()
+
+    if require('core.global').is_windows then
+      return require('guihua.floating').floating_term({
+        cmd = { 'git', 'diff' },
+        border = 'single',
+      })
+    else
+      local gd = Terminal:new({ cmd = cmd, hidden = true })
+      gd:toggle()
+    end
     vim.cmd('normal! a')
   end
 

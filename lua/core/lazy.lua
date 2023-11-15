@@ -126,7 +126,6 @@ setup()
 
 --
 
-require('overwrite')
 -- loader('telescope.nvim')
 -- loader('harpoon')
 -- loader('nvim-notify')
@@ -151,7 +150,7 @@ if plugin_folder() == [[~/github/ray-x/]] then
     elseif global.is_linux then
       vim.cmd([[set shell=/usr/bin/fish]])
     else
-      vim.cmd([[set shell=fish ]])
+      vim.cmd([[set shell=sh ]])
     end
     vim.cmd([[command! GD term gd]])
   end
@@ -162,15 +161,19 @@ vim.cmd('set runtimepath+=/usr/share/vim/vimfiles')
 vim.cmd('runtime! plugin/fzf.vim')
 
 vim.defer_fn(function()
-  -- vim.cmd('source /home/ray/.local/share/nvim/sessions/nvim.vim')
-  local start = vim.loop.now()
   if vim.fn.empty(vim.fn.expand('%')) == 1 then
-    local bufnr = vim.fn.bufnr()
-    require('auto-session').RestoreSession()
-    -- close nameless buffers
-    if api.nvim_buf_is_valid(bufnr) then
-      api.nvim_buf_delete(bufnr, { force = true })
+    local folder = vim.fn.getcwd()
+    folder = require('utils.selfunc').convertPathToPercentString(folder) .. '.vim'
+    lprint('auto-session load', folder)
+    local r = require('mini.sessions').read
+    pcall(r, folder)
+
+    folder = vim.v.this_session
+    if vim.fn.empty(folder) == 1 then
+      lprint('no session folder found')
+      folder = require('utils.selfunc').convertPathToPercentString(folder) .. '.vim'
+      lprint('save session to ' .. folder)
+      require('mini.sessions').write(folder)
     end
   end
-  lprint('auto-session loaded', vim.loop.now() - start)
 end, lazy_timer)

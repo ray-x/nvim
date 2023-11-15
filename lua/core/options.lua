@@ -38,13 +38,13 @@ local function load_options()
     viewdir        = global.cache_dir .. sep .. "view" .. sep;
     -- spellfile      = global.cache_dir .. sep .. "spell" .. sep .. "en.uft-8.add";
     history        = 4000;
-    shada          = "!,'300,<50,@100,s10,h";
+    shada          = "!,'1000,f1,<500,@100,/100,:100,s10,h";
     backupskip     = "/tmp/*,$TMPDIR/*,$TMP/*,$TEMP/*,*/shm/*,/private/var/*,.vault.vim";
     -- smarttab       = true;
     smartindent    = true;
     shiftround     = true;
     -- lazyredraw     = true;
-    -- timeout        = true;
+    timeout        = true;
     -- ttimeout       = true;
     timeoutlen     = 500;
     ttimeoutlen    = 10;
@@ -175,11 +175,18 @@ local function load_options()
     vim.o[name] = value
   end
   local window_local = {
-      -- foldmethod = "indent", -- indent? expr?  expr is slow for large files
+      foldmethod = "expr",
       relativenumber = true,
       number = true,
       foldenable = true,
     }
+
+  if vim.opt.diff:get() then
+    global_local = vim.tbl_extend('overwrite', global_local, {
+      foldmethod = "diff", diffopt = 'context:0', foldlevel = 10, mouse = 'a'
+    })
+    -- window_local.cursorline = false
+  end
 
   for name, value in pairs(window_local) do
     vim.wo[name] = value
@@ -187,6 +194,21 @@ local function load_options()
 
   for name, value in pairs(bw_local) do
     vim.bo[name] = value
+  end
+  local opts = {
+    foldmethod = "expr",
+    foldenable = true,
+    foldcolumn = "1",  -- I feel the fold column is distracting
+    -- foldexpr = "v:lua.vim.treesitter.foldexpr()",  -- will be overwrite by navigator
+    -- alternatives = ⣿ ░ ─
+    -- stylua: ignore
+    fillchars = { foldclose = "", foldopen = "", vert = "│", fold = " ", diff = "░", msgsep = "‾", foldsep = "│" , eob = ' '},
+  }
+  if vim.treesitter.foldtext then
+    opts.foldtext = "v:lua.vim.treesitter.foldtext()"
+  end
+  for n, v in pairs(opts) do
+    vim.opt[n] = v
   end
 end
 
@@ -231,12 +253,33 @@ end
 
 if vim.fn.has("nvim-0.9.0") == 1 then
   vim.opt.shortmess = "aotTIcFC";
-  vim.opt.statuscolumn = [[%!v:lua.column()]]
+  -- vim.opt.statuscolumn = [[%!v:lua.column()]]
 end
 
 -- stylua: ignore end
 
 vim.cmd([[syntax off]])
-vim.cmd([[set viminfo-=:42 | set viminfo+=:1000]])
+
+vim.cmd([[autocmd TermOpen * setlocal nospell]])
+vim.cmd([[autocmd TermOpen,BufEnter term://* startinsert]])
+vim.cmd([[tnoremap <Esc>q <C-\><C-n>]])
+if vim.g.neovide then
+  vim.g.neovide_cursor_animation_length = 0.01
+  vim.g.neovide_cursor_trail_length = 0.05
+  vim.g.neovide_cursor_antialiasing = true
+  vim.g.neovide_remember_window_size = true
+  vim.cmd([[set guifont=JetBrainsMono\ Nerd\ Font:h16]])
+end
+
+vim.api.nvim_create_autocmd('TermOpen', {
+  callback = function()
+    vim.opt_local.spell = false
+    vim.opt_local.number = false
+    vim.opt_local.relativenumber = false
+    vim.opt_local.signcolumn = 'no'
+    vim.opt_local.filetype = 'terminal'
+  end,
+  group = vim.api.nvim_create_augroup('terminal_settings', {}),
+})
 
 load_options()

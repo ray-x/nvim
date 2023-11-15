@@ -75,9 +75,12 @@ function config.nvim_cmp()
       format = function(entry, vim_item)
         -- print(vim.inspect(vim_item.kind))
         if cmp_kind == nil then
-          cmp_kind = require('navigator.lspclient.lspkind').cmp_kind
+          local ok, cmp_kind = pcall(require, 'navigator')
+          if ok then
+            cmp_kind = require('navigator.lspclient.lspkind').cmp_kind
+            vim_item.kind = cmp_kind(vim_item.kind)
+          end
         end
-        vim_item.kind = cmp_kind(vim_item.kind)
         vim_item.menu = ({
           buffer = '',
           nvim_lsp = ' ',
@@ -259,9 +262,6 @@ function config.autopairs()
       hightlight = 'Search',
     },
   })
-  local ts_conds = require('nvim-autopairs.ts-conds')
-  -- you need setup cmp first put this after cmp.setup()
-
   npairs.add_rules({
     Rule(' ', ' '):with_pair(function(opts)
       local pair = opts.line:sub(opts.col - 1, opts.col)
@@ -276,10 +276,17 @@ function config.autopairs()
     Rule('[', ']'):with_pair(function(opts)
       return opts.prev_char:match('.%]') ~= nil
     end):use_key(']'),
-    Rule('%', '%', 'lua') -- press % => %% is only inside comment or string
+  })
+
+  local ok, ts_conds = pcall(require, 'nvim-autopairs.ts-conds')
+  if ok then 
+  local ts_conds = require('nvim-autopairs.ts-conds')
+  -- you need setup cmp first put this after cmp.setup()
+    local r = Rule('%', '%', 'lua') -- press % => %% is only inside comment or string
       :with_pair(ts_conds.is_ts_node({ 'string', 'comment' })),
     Rule('$', '$', 'lua'):with_pair(ts_conds.is_not_ts_node({ 'function' })),
-  })
+  npairs.add_rules({ r })
+end
 
   -- If you want insert `(` after select function or method item
   local cmp_autopairs = require('nvim-autopairs.completion.cmp')

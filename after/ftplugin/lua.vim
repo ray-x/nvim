@@ -2,7 +2,7 @@ setlocal autoindent
 setlocal conceallevel=1
 setlocal concealcursor=""
 setlocal expandtab
-setlocal foldmethod=indent
+setlocal foldmethod=expr
 setlocal formatoptions=tcq2l
 setlocal shiftwidth=2
 setlocal softtabstop=2

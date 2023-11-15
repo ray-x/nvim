@@ -78,10 +78,30 @@ local treesitter_obj = function()
           [']m'] = '@function.outer',
           [']['] = '@class.outer',
           [']o'] = '@loop.*',
+          [']s'] = { query = '@scope', query_group = 'locals', desc = 'Next scope' },
         },
         goto_next_end = { [']M'] = '@function.outer', [']]'] = '@class.outer' },
-        goto_previous_start = { ['[m'] = '@function.outer', ['[['] = '@class.outer' },
+        goto_previous_start = {
+          ['[m'] = {query = {'@function.inner', '@function.outer'}},
+          ['[['] = {query = {'@class.inner', '@class.outer'}},
+          ['[o'] = {
+            --stylua: ignore
+            query = {
+              '@conditional.inner', '@conditional.outer',
+              '@loop.inner', '@loop.outer',
+              -- '@block.inner', '@block.outer',
+              '@function.innner', '@function.outer',
+              '@class.innner', '@class.outer',
+            },
+          },
+        },
         goto_previous_end = { ['[M'] = '@function.outer', ['[]'] = '@class.outer' },
+        goto_next = {
+          [']D'] = '@conditional.outer',
+        },
+        goto_previous = {
+          ['[D'] = '@conditional.outer',
+        },
       },
       select = {
         enable = enable,
@@ -124,25 +144,15 @@ local treesitter_ref = function()
       highlight_current_scope = { enable = false }, -- prefer black-line
       smart_rename = {
         enable = false, -- prefer lsp rename
-        -- keymaps = {
-        --   smart_rename = "<Leader>gr", -- mapping to rename reference under cursor
-        -- },
       },
       navigation = {
         enable = false, -- use navigator
-        -- keymaps = {
-        --   goto_definition = "gnd", -- mapping to go to definition of symbol under cursor
-        --   list_definitions = "gnD", -- mapping to list all definitions in current file
-        --   list_definitions_toc = "gO", -- gT navigator
-        --   -- goto_next_usage = "<c->>",
-        --   -- goto_previous_usage = "<c-<>",
-        -- },
       },
     },
     matchup = {
       enable = enable, -- mandatory, false will disable the whole extension
-      disable = { 'ruby' }, -- optional, list of language that will be disabled
-      disable_virtual_text = { 'python' },
+      -- disable = { 'ruby' }, -- optional, list of language that will be disabled
+      -- disable_virtual_text = { 'python' },
       include_match_words = true,
     },
     autopairs = { enable = enable },
@@ -155,29 +165,29 @@ local treesitter_ref = function()
       files = { 'src/parser.c' },
       branch = 'main',
     },
-    filetype = {'sql', 'psql'},
+    filetype = { 'sql', 'psql' },
   }
 end
 
-function textsubjects()
-  local enable = true
-  if vim.fn.line('$') > 5000 then -- skip for large file
-    lprint('skip treesitter')
-    enable = false
-  end
-  lprint('txt subjects')
-  require('nvim-treesitter.configs').setup({
-    textsubjects = {
-      enable = enable,
-      prev_selection = ',',
-      keymaps = {
-        ['.'] = 'textsubjects-smart',
-        [';'] = 'textsubjects-container-outer',
-        ['i;'] = 'textsubjects-container-inner',
-      },
-    },
-  })
-end
+-- function textsubjects()
+--   local enable = true
+--   if vim.fn.line('$') > 5000 then -- skip for large file
+--     lprint('skip treesitter')
+--     enable = false
+--   end
+--   lprint('txt subjects')
+--   require('nvim-treesitter.configs').setup({
+--     textsubjects = {
+--       enable = enable,
+--       prev_selection = ',',
+--       keymaps = {
+--         ['.'] = 'textsubjects-smart',
+--         [';'] = 'textsubjects-container-outer',
+--         ['i;'] = 'textsubjects-container-inner',
+--       },
+--     },
+--   })
+-- end
 
 local treesitter_context = function(width)
   local ok, ts = pcall(require, 'nvim-treesitter')
@@ -259,7 +269,7 @@ return {
   treesitter = treesitter,
   treesitter_obj = treesitter_obj,
   treesitter_ref = treesitter_ref,
-  textsubjects = textsubjects,
+  -- textsubjects = textsubjects,
   context = treesitter_context,
   installed = ts_ensure_installed,
 }

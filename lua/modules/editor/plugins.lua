@@ -1,21 +1,14 @@
 local conf = require('modules.editor.config')
 
 return function(editor)
-  editor({
-    'anuvyklack/hydra.nvim',
-    dependencies = 'anuvyklack/keymap-layer.nvim',
-    event = { 'CmdwinEnter', 'CmdlineEnter', 'CursorMoved' },
-    config = conf.hydra,
-    lazy = true,
-  })
-
+  -- refer to keymap file nmap<Space>s|S   xmap <Leader>x
   editor({
     'gbprod/substitute.nvim',
     event = { 'CmdlineEnter', 'TextYankPost' },
     config = conf.substitute,
     lazy = true,
   })
-
+  -- n|x "Cr"
   editor({
     'tpope/vim-abolish',
     event = { 'CmdlineEnter' },
@@ -47,10 +40,14 @@ return function(editor)
   --  text objects i% and a%
   editor({
     'andymass/vim-matchup',
-    event = { 'CursorHold', 'CursorHoldI' },
-    key = { '<Plug>(matchup-%)', '<Plug>(matchup-g%)' },
+    event = { 'CursorHold', 'CursorHoldI', 'VeryLazy' },
+    keys = { '%', '[' }, -- {, '<Plug>(matchup-%)', '<Plug>(matchup-g%)' },
     cmd = { 'MatchupWhereAmI' }, --
-    setup = function()
+    init = function()
+      vim.g.matchup_matchparen_deferred = 1
+      vim.g.matchup_matchparen_hi_surround_always = 1
+    end,
+    config = function()
       local fsize = vim.fn.getfsize(vim.fn.expand('%:p:f'))
       if fsize == nil or fsize < 0 then
         fsize = 1
@@ -60,10 +57,10 @@ return function(editor)
         enabled = 0
       end
       vim.g.matchup_enabled = enabled
-      vim.g.matchup_surround_enabled = 0
+      vim.g.matchup_surround_enabled = enabled
       vim.g.matchup_transmute_enabled = 0
-      vim.g.matchup_matchparen_deferred = 1
-      vim.g.matchup_matchparen_hi_surround_always = 1
+      vim.g.matchup_matchparen_deferred = enabled
+      vim.g.matchup_matchparen_hi_surround_always = enabled
       vim.g.matchup_matchparen_offscreen = { method = 'popup' }
       vim.cmd([[nnoremap <c-s-k> :<c-u>MatchupWhereAmI?<cr>]])
     end,
@@ -117,12 +114,13 @@ return function(editor)
         },
       },
     },
-    -- stylua: ignore
     keys = {
+
+      -- stylua: ignore start
       { "s", mode = { "n", "o", "x" }, function() require("flash").jump() end, desc = "Flash" },
       { "S", mode = { "n", "o", "x" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
       -- { "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
-      -- { "R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
+      { "R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
       -- { "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
     },
   })
@@ -135,12 +133,12 @@ return function(editor)
     config = function()
       require('nvim-surround').setup({
         -- Configuration here, or leave empty to use defaults
-        -- sournd  cs, ds, yss
+        -- surround  cs, ds, yss
         keymaps = {
           -- default
           insert = '<C-g>s',
           insert_line = '<C-g>S',
-          normal = 'ca',   -- e.g. caiw"
+          normal = 'ca', -- e.g. caiw"
           normal_cur = 'cas',
           normal_line = 'cA',
           normal_cur_line = 'cAl',
@@ -161,6 +159,9 @@ return function(editor)
     config = conf.hexokinase,
     build = 'make hexokinase',
     lazy = true,
+    cond = function()
+      return not vim.g.vscode
+    end,
     cmd = { 'HexokinaseTurnOn', 'HexokinaseToggle' },
   })
 
@@ -168,6 +169,9 @@ return function(editor)
     'chrisbra/Colorizer',
     ft = { 'log', 'txt', 'text', 'css' },
     lazy = true,
+    cond = function()
+      return not vim.g.vscode
+    end,
     cmd = { 'ColorHighlight', 'ColorUnhighlight' },
   })
 
@@ -181,9 +185,9 @@ return function(editor)
   -- not working well with navigator
   -- editor({
   --   'kevinhwang91/nvim-ufo',
-  --   lazy = true,
+  --   event = 'VeryLazy',
   --   dependencies = { 'kevinhwang91/promise-async' },
-  --   config = conf.ufo,
+  --   config = require('modules.editor.ufo').config,
   -- })
 
   editor({
@@ -194,6 +198,9 @@ return function(editor)
       '<C-Up>', '<S-Right>', '<C-LeftMouse>', '<M-LeftMouse>', '<M-C-RightMouse>',
     },
     lazy = true,
+    cond = function()
+      return not vim.g.vscode
+    end,
     init = conf.vmulti,
   })
 
@@ -202,6 +209,9 @@ return function(editor)
     keys = { 'g', '<ESC>', 'v', 'V', '<c-v>' },
     event = { 'ModeChanged' },
     module = true,
+    cond = function()
+      return not vim.g.vscode
+    end,
     config = conf.comment,
   })
 
@@ -295,8 +305,11 @@ return function(editor)
   })
   editor({
     'lukas-reineke/headlines.nvim',
-    ft = { 'org', 'norg', 'md' },
+    ft = { 'org', 'norg', 'markdown' },
     config = conf.headline,
+    cond = function()
+      return not vim.g.vscode
+    end,
   })
   editor(
     {
@@ -307,6 +320,7 @@ return function(editor)
     } -- mini.ai to replace targets
   )
 
+  -- true <-> false <SPC>t
   editor({
     'AndrewRadev/switch.vim',
     lazy = true,
@@ -339,22 +353,23 @@ return function(editor)
     end,
     keys = { 'm', '<Plug>(Marks-set)', '<Plug>(Marks-toggle)' },
   })
-  editor({
-    'tversteeg/registers.nvim',
-    name = 'registers',
-    keys = {
-      { '"', mode = { 'n', 'v' } },
-      { '<C-R>', mode = 'i' },
-    },
-    cmd = 'Registers',
-    config = function()
-      require('registers').setup({
-        show = '*"%01234abcpwy:',
-        -- Show a line at the bottom with registers that aren't filled
-        show_empty = false,
-      })
-    end,
-  })
+  -- opt to which key
+  -- editor({
+  --   'tversteeg/registers.nvim',
+  --   name = 'registers',
+  --   keys = {
+  --     { '"', mode = { 'n', 'v' } },
+  --     { '<C-R>', mode = 'i' },
+  --   },
+  --   cmd = 'Registers',
+  --   config = function()
+  --     require('registers').setup({
+  --       show = '*"%01234abcpwy:',
+  --       -- Show a line at the bottom with registers that aren't filled
+  --       show_empty = false,
+  --     })
+  --   end,
+  -- })
 
   -- editor({
   --   'rainbowhxch/accelerated-jk.nvim',

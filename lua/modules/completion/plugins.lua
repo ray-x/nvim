@@ -69,7 +69,7 @@ return function(use)
     'mattn/emmet-vim',
     event = 'InsertEnter',
     -- stylua: ignore start
-    ft = { 'html', 'css', 'javascript', 'javascriptreact', 'vue', 'typescript', 'typescriptreact', 
+    ft = { 'html', 'css', 'javascript', 'javascriptreact', 'vue', 'typescript', 'typescriptreact',
       'scss', 'sass', 'less', 'jade', 'haml', 'elm', },
     -- stylua: ignore end
     init = function()
@@ -83,34 +83,32 @@ return function(use)
     'ray-x/lsp_signature.nvim',
     dev = (plugin_folder():find('github') ~= nil),
     event = { 'InsertEnter' },
-    config = function()
-      require('lsp_signature').setup({
-        bind = true,
-        -- doc_lines = 4,
-        floating_window = true,
-        floating_window_above_cur_line = true,
-        hint_enable = true,
-        fix_pos = false,
-        -- floating_window_above_first = true,
-        log_path = vim.fn.expand('$HOME') .. '/tmp/sig.log',
-        debug = plugin_debug(),
-        verbose = plugin_debug(),
-        -- hi_parameter = "Search",
-        zindex = 1002,
-        timer_interval = 100,
-        extra_trigger_chars = {},
-        handler_opts = {
-          border = 'rounded', -- "shadow", --{"╭", "─" ,"╮", "│", "╯", "─", "╰", "│" },
-        },
-        hint_inline = function()
-          return vim.fn.has('nvim-0.10') == 1
-        end,
-        max_height = 4,
-        toggle_key = [[<M-x>]], -- toggle signature on and off in insert mode,  e.g. '<M-x>'
-        -- select_signature_key = [[<M-n>]], -- toggle signature on and off in insert mode,  e.g. '<M-x>'
-        select_signature_key = [[<M-c>]], -- toggle signature on and off in insert mode,  e.g. '<M-x>'
-      })
-    end,
+    opts = {
+      debug = plugin_debug(), -- log output
+      verbose = plugin_debug(), -- log verbose
+      bind = true,
+      -- doc_lines = 4,
+      floating_window = true,
+      floating_window_above_cur_line = true,
+      hint_enable = true,
+      fix_pos = false,
+      -- floating_window_above_first = true,
+      log_path = vim.fn.expand('$HOME') .. '/tmp/sig.log',
+      -- hi_parameter = "Search",
+      zindex = 1002,
+      timer_interval = 100,
+      extra_trigger_chars = {},
+      handler_opts = {
+        border = 'rounded', -- "shadow", --{"╭", "─" ,"╮", "│", "╯", "─", "╰", "│" },
+      },
+      hint_inline = function()
+        return vim.fn.has('nvim-0.10') == 1
+      end,
+      max_height = 4,
+      toggle_key = [[<M-x>]], -- toggle signature on and off in insert mode,  e.g. '<M-x>'
+      -- select_signature_key = [[<M-n>]], -- toggle signature on and off in insert mode,  e.g. '<M-x>'
+      select_signature_key = [[<M-c>]], -- toggle signature on and off in insert mode,  e.g. '<M-x>'
+    },
   })
 
   use({
@@ -134,4 +132,9 @@ return function(use)
     ]])
     end,
   })
+  use(
+{
+    "hinell/lsp-timeout.nvim",
+    dependencies={ "neovim/nvim-lspconfig" }}
+  )
 end

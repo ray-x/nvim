@@ -136,6 +136,7 @@ local Usual = {
     -- Search = { fg = c.black_two, bg = c.yellow_one, bold = true },
     -- IncSearch = { fg = c.black_two, bg = c.orange_one, bold = true },
     Folded = { fg = c.blue_seven, bold = true, italic = true },
+    FoldColumn = { fg = c.blue_two },
     Visual = { bg = c.background_two, bold = true },
     VisualNOS = { bg = c.background_one },
     EndOfBuffer = { bg = back },

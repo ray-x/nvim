@@ -8,21 +8,6 @@ fun! <SID>StripTrailingWhitespace()
 endfun
 " autocmd BufWritePre * :call <SID>StripTrailingWhitespace()
 
-" Search in project
-function! FindProjectRoot(lookFor)
-    let s:root=expand('%:p:h')
-    let pathMaker='%:p'
-    while(len(expand(pathMaker))>len(expand(pathMaker.':h')))
-        let pathMaker=pathMaker.':h'
-        let fileToCheck=expand(pathMaker).'/'.a:lookFor
-        if filereadable(fileToCheck)||isdirectory(fileToCheck)
-            let s:root=expand(pathMaker)
-        endif
-    endwhile
-    return s:root
-endfunction
-" 搜索 .git 为项目路径
-
 "https://github.com/sindrets/diffview.nvim/issues/105
 " The last line in the command opens the local cwd for each window if you have
 " a netrw-like explorer. Remove this line if you don't.
@@ -44,25 +29,6 @@ augroup CompareDir
 augroup END
 command Hex :%!xxd
 " command! Jsonf :execute '%!python -c "import json,sys,collections,re; sys.stdout.write(re.sub(r\"\\\u[0-9a-f]{4}\", lambda m:m.group().decode(\"unicode_escape\").encode(\"utf-8\"),json.dumps(json.load(sys.stdin, object_pairs_hook=collections.OrderedDict), indent=2)))"'
-
-function! FindRoot()
-  let s:root = system('git rev-parse --show-toplevel 2> /dev/null')[:-2]
-  let s:list = ['go.mod', 'Makefile', 'CMakefile.txt', 'package.json']
-  if len(s:root) == 0
-    for k in s:list
-      let s:root =  FindProjectRoot(k)
-      if len(s:root) > 0
-        return s:root
-      endif
-    endfor
-  else
-    return s:root
-  endif
-  return expand("%:p:h")
-endfunction
-
-" let g:root_dir = FindRoot() " Note disable root finder, null-ls will do this
-" autocmd BufEnter * silent! lcd g:root_dir  " 设置当前路径为项目路径
 
 
 " Protect large files from sourcing and other overhead.

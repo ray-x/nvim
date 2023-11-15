@@ -25,7 +25,7 @@
 ((function_call name: (identifier) @TSFuncMacro (#eq? @TSFuncMacro "ipairs" )) (#set! conceal ""))
 
 ;; table.
-((dot_index_expression table: (identifier) @keyword  (#eq? @keyword  "math" )) (#set! conceal ""))
+((dot_index_expression table: (identifier) @keyword  (#eq? @keyword  "math" )) (#set! conceal "󱖦"))
 
 ;; break_statement
 (((break_statement) @keyword) (#set! conceal "󱞣"))

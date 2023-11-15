@@ -14,16 +14,17 @@ local day = daylight()
 
 function config.notify()
   require('notify').setup({
-    background_colour = function()
-      local group_bg = vim.fn.synIDattr(vim.fn.synIDtrans(vim.fn.hlID('Normal')), 'bg#')
-      if group_bg == '' or group_bg == 'none' then
-        group_bg = vim.fn.synIDattr(vim.fn.synIDtrans(vim.fn.hlID('Float')), 'bg#')
-        if group_bg == '' or group_bg == 'none' then
-          return '#000000'
-        end
-      end
-      return group_bg
-    end,
+    background_colour = '#000000',
+    -- background_colour = function()
+    --   local group_bg = vim.fn.synIDattr(vim.fn.synIDtrans(vim.fn.hlID('Normal')), 'bg#')
+    --   if group_bg == '' or group_bg == 'none' then
+    --     group_bg = vim.fn.synIDattr(vim.fn.synIDtrans(vim.fn.hlID('Float')), 'bg#')
+    --     if group_bg == '' or group_bg == 'none' then
+    --       return '#000000'
+    --     end
+    --   end
+    --   return group_bg
+    -- end,
     level = vim.log.levels.WARN,
     stages = 'fade_in_slide_out', -- "slide",
     icons = {
@@ -303,8 +304,7 @@ end, { nargs = '*' })
 function config.tokyonight()
   local opt = { 'storm', 'night', 'moon' }
   math.randomseed(os.time())
-  local v = math.random(1, #opt)
-  v = opt[v]
+  local v  = opt[math.random(1, #opt)]
   lprint(v)
   require('tokyonight').setup({
     style = v,

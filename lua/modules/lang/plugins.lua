@@ -1,10 +1,22 @@
+local function typecheck(types)
+  if vim.tbl_contains(types, vim.bo.filetype) or vim.fn.argc() == 0 then
+    return true
+  end
+  -- vim.fn.argv[1]:find('lua')
+  for _, v in ipairs(types) do
+    if vim.fn.argv()[1]:find(v) then
+      return true
+    end
+  end
+end
+
 return function(lang)
   local conf = require('modules.lang.config')
   local dev = plugin_folder():find('github') ~= nil or plugin_folder():find('ray') ~= nil
   local ts = require('modules.lang.treesitter')
 
   lang({ 'nvim-treesitter/nvim-treesitter', config = ts.treesitter, module = true })
-
+  --
   lang({
     'nvim-treesitter/nvim-treesitter-textobjects',
     config = ts.treesitter_obj,
@@ -12,19 +24,19 @@ return function(lang)
     event = { 'CursorHold' },
   })
 
-  lang({
-    'RRethy/nvim-treesitter-textsubjects',
-    config = ts.textsubjects,
-    -- module = true,
-    event = { 'CursorHold' },
-  })
+  -- -- use flash.nvim
+  -- -- lang({
+  -- --   'RRethy/nvim-treesitter-textsubjects',
+  -- --   config = ts.textsubjects,
+  -- --   -- module = true,
+  -- --   event = { 'CursorHold' },
+  -- -- })
 
-  -- using matchup
-  -- lang({
-  --   'haringsrob/nvim_context_vt',
-  --   event = { 'CursorHold' },
-  --   config = conf.context_vt,
-  -- })
+  lang({
+    'andersevenrud/nvim_context_vt',
+    cmd = { 'NvimContextVtToggle', 'NvimContextVtEnable' },
+    config = conf.context_vt,
+  })
 
   lang({
     'nvim-treesitter/nvim-treesitter-refactor',
@@ -32,8 +44,9 @@ return function(lang)
     event = { 'CursorHold' },
   })
 
-  local jsft = { 'typescript', 'typescriptreact', 'javascript', 'javascriptreact' }
-  if vim.tbl_contains(jsft, vim.bo.filetype) or vim.fn.argc() == 0 then
+  local jsft =
+    { 'typescript', 'typescriptreact', 'javascript', 'javascriptreact', 'js', 'jsx', 'ts', 'tsx' }
+  if typecheck(jsft) then
     lang({
       'jose-elias-alvarez/typescript.nvim',
       event = 'VeryLazy',
@@ -48,7 +61,7 @@ return function(lang)
     cmd = { 'RegexplainerToggle', 'RegexplainerShow' },
     config = conf.regexplainer,
   })
-  if vim.tbl_contains({ 'org', 'norg' }, vim.bo.filetype) then
+  if typecheck({ 'md', 'org', 'norg' }) then
     lang({
       'danymat/neogen',
       lazy = true,
@@ -59,16 +72,16 @@ return function(lang)
     })
   end
 
-  -- lang({ 'ThePrimeagen/refactoring.nvim', config = conf.refactor })
+  -- -- lang({ 'ThePrimeagen/refactoring.nvim', config = conf.refactor })
 
-  -- Automatically convert strings to f-strings or template strings and back
-  -- lang({
-  --   'chrisgrieser/nvim-puppeteer',
-  --   lazy = true,
-  -- })
-  -- ipython
+  -- -- Automatically convert strings to f-strings or template strings and back
+  -- -- lang({
+  -- --   'chrisgrieser/nvim-puppeteer',
+  -- --   lazy = true,
+  -- -- })
+  -- -- ipython
 
-  if vim.tbl_contains({ 'python', 'javascript' }, vim.bo.filetype) or vim.fn.argc() == 0 then
+  if typecheck({ 'python', 'javascript', 'py', 'ts', 'tsx', 'js', 'jsx' }) then
     lang({
       'dccsillag/magma-nvim',
       ft = 'python',
@@ -150,6 +163,9 @@ return function(lang)
     lazy = true,
     cmd = {
       'Go',
+      'GoModInit',
+      'GoModTidy',
+      'GoNew',
       'GoFmt',
       'GoBuild',
       'GoAlt',
@@ -199,24 +215,47 @@ return function(lang)
       require('web-tools').setup({ debug = true })
     end,
   })
-
+  -- if vim.fn.has('nvim-0.11') == 1 then
+  --   lang({
+  --     'Bekaboo/dropbar.nvim',
+  --     -- optional, but required for fuzzy finder support
+  --     dependencies = {
+  --       'nvim-telescope/telescope-fzf-native.nvim',
+  --     },
+  --     event = { 'WinScrolled' },
+  --     opts = {
+  --       ---@type boolean|fun(buf: integer, win: integer, info: table?): boolean
+  --       enable = function(buf, win, _)
+  --         return not vim.api.nvim_win_get_config(win).zindex
+  --           and not vim.bo[buf].buftype == ''
+  --           and (not vim.tbl_contains(
+  --             { 'help', 'guihua', 'terminal', 'markdown' },
+  --             vim.bo[buf].buftype
+  --           ))
+  --           and vim.api.nvim_buf_get_name(buf) ~= ''
+  --           and not vim.wo[win].diff
+  --       end,
+  --       attach_events = {
+  --         'OptionSet',
+  --         'BufWinEnter',
+  --         'BufWritePost',
+  --         'WinScrolled',
+  --       },
+  --     },
+  --   })
+  -- end
   lang({
     'glepnir/lspsaga.nvim',
     lazy = true,
     cmd = {
       'Lspsaga',
     },
-    config = function()
-      local saga = require('lspsaga')
-
-      saga.setup({
+    opts = {
         border_style = 'rounded',
         code_action_lightbulb = {
           enable = false,
         },
-      })
-    end,
-  })
+  }})
 
   lang({
     'nvim-treesitter/playground',
@@ -254,7 +293,6 @@ return function(lang)
   lang({
     'nvim-telescope/telescope-dap.nvim',
     config = conf.dap,
-    -- cmd = "Telescope",
     event = { 'CmdlineEnter' },
   })
 
@@ -302,39 +340,37 @@ return function(lang)
     'm-demare/hlargs.nvim',
     lazy = true,
     event = { 'CursorMoved', 'CursorMovedI' },
-    config = function()
-      require('hlargs').setup({
-        disable = function()
-          excluded_filetype = {
-            'TelescopePrompt',
-            'guihua',
-            'guihua_rust',
-            'clap_input',
-            'lua',
-            'rust',
-            'typescript',
-            'typescriptreact',
-            'javascript',
-            'javascriptreact',
-          }
-          if vim.tbl_contains(excluded_filetype, vim.bo.filetype) then
-            return true
-          end
+    opts = {
+      disable = function()
+        local excluded_filetype = {
+          'TelescopePrompt',
+          'guihua',
+          'guihua_rust',
+          'clap_input',
+          'lua',
+          'rust',
+          'typescript',
+          'typescriptreact',
+          'javascript',
+          'javascriptreact',
+        }
+        if vim.tbl_contains(excluded_filetype, vim.bo.filetype) then
+          return true
+        end
 
-          local bufnr = vim.api.nvim_get_current_buf()
-          local filetype = vim.fn.getbufvar(bufnr, '&filetype')
-          if filetype == '' then
-            return true
-          end
-          local parsers = require('nvim-treesitter.parsers')
-          local buflang = parsers.ft_to_lang(filetype)
-          -- lprint(buflang, filetype,  vim.tbl_contains(excluded_filetype, buflang))
-          return vim.tbl_contains(excluded_filetype, buflang)
-        end,
-      })
-    end,
+        local bufnr = vim.api.nvim_get_current_buf()
+        local filetype = vim.fn.getbufvar(bufnr, '&filetype')
+        if filetype == '' then
+          return true
+        end
+        local parsers = require('nvim-treesitter.parsers')
+        local buflang = parsers.ft_to_lang(filetype)
+        -- lprint(buflang, filetype,  vim.tbl_contains(excluded_filetype, buflang))
+        return vim.tbl_contains(excluded_filetype, buflang)
+      end,
+    },
   })
-  if vim.tbl_contains({ 'lua' }, vim.bo.filetype) or vim.fn.argc() == 0 then
+  if typecheck({ 'lua' }) then
     lang({
       'folke/neodev.nvim',
       ft = { 'lua' },
@@ -346,9 +382,8 @@ return function(lang)
 
   lang({
     'nvim-treesitter/nvim-treesitter-context',
-    lazy = true,
-    event = { 'CursorHold', 'WinScrolled' },
-    module = false,
+    dependencies = { 'nvim-treesitter' },
+    event = { 'WinScrolled', 'CmdlineEnter' },
     config = function()
       require('treesitter-context').setup({
         enable = false, -- Enable this plugin (Can be enabled/disabled later via commands)
@@ -365,10 +400,14 @@ return function(lang)
             'while',
             'if',
             'switch',
-            -- 'case',
+            'case',
           },
         },
       })
+
+      vim.keymap.set('n', '[C', function()
+        require('treesitter-context').go_to_context()
+      end, { silent = true })
     end,
   })
 
@@ -418,7 +457,7 @@ return function(lang)
   lang({
     'nvimtools/none-ls.nvim',
     config = require('modules.lang.null-ls').config,
-    event = 'BufWritePre',
+    event = { 'BufWritePre', 'TextChanged', 'TextChangedI', 'CmdlineEnter' },
   })
 
   -- structural search and replace

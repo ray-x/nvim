@@ -36,9 +36,6 @@ end
 function autocmd.load_autocmds()
   local definitions = {
     bufs = {
-      -- Reload vim config automatically
-      -- { "BufWritePost", [[$VIM_PATH/{*.vim,*.yaml,vimrc} nested source $MYVIMRC | redraw]] },
-      -- Reload Vim script automatically if setlocal autoread
       {
         'BufWritePost,FileWritePost',
         '*.vim',
@@ -55,10 +52,10 @@ function autocmd.load_autocmds()
       {
         'BufReadPre',
         '*',
-        'if getfsize(expand("%")) > 1000000 | set eventignore+=FileType | setlocal noswapfile bufhidden=unload buftype=nowrite undolevels=-1 | else | set eventignore-=FileType | endif',
+        'if getfsize(expand("%")) > 1000000 | set eventignore+=FileType | setlocal noswapfile bufhidden=unload buftype=nowrite undolevels=-1 foldmethod=indent | else | set eventignore-=FileType | endif',
       },
       -- {"UIEnter", "*", ":silent! :lua require('modules.lang.config').syntax_folding()"},
-      { 'BufReadPre', '*', ":silent! :lua require('modules.lang.config').nvim_treesitter()" },
+      -- { 'BufReadPre', '*', ":silent! :lua require('modules.lang.config').nvim_treesitter()" },
       -- {"BufWritePre", "*.js,*.rs,*.lua", ":FormatWrite"},
       -- { 'BufWritePost', '*', ":silent! :lua require('harpoon.mark').add_file()" },
     },
@@ -73,23 +70,25 @@ function autocmd.load_autocmds()
       -- Equalize window dimensions when resizing vim window
       { 'VimResized', '*', [[tabdo wincmd =]] },
       -- Force write shada on leaving nvim
-      { 'VimLeave', '*', [[if has('nvim') | wshada! | else | wviminfo! | endif]] },
+      { 'VimLeave', '*', [[if has('nvim') | wshada! | endif]] },
       -- { 'VimLeavePre', '*', 'set winwidth=30 | set winminwidth=10' },
       {
-        'VimLeavePre',
-        '*',
-        function()
+        -- stylua: ignore
+        'VimLeavePre', '*', function()
           require('close_buffers').delete({ type = 'hidden', force = true })
           require('close_buffers').delete({ regex = 'fugitive' })
           require('close_buffers').delete({ regex = 'neogit', force = true })
           require('close_buffers').wipe({ type = 'nameless', force = true })
-          -- MiniSessions.write('session.vim')
+          MiniTrailspace.trim()
+          -- write session
+          -- if vim.v.this_session ~= '' then
+          --   -- MiniSession.write()
+          -- end
         end,
       },
 
       -- Check if file changed when its window is focus, more eager than 'autoread'
       { 'FocusGained', '*', 'checktime' },
-      -- -- {"CmdwinEnter,CmdwinLeave", "*", "lua require'wlfloatline'.toggle()"};
     },
   }
 

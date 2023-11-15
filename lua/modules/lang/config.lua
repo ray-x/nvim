@@ -31,6 +31,7 @@ local config = {}
 --   end
 -- end
 --
+
 function config.iron()
   local view = require('iron.view')
   local iron = require('iron.core')
@@ -123,18 +124,6 @@ function config.iron()
   vim.keymap.set('n', '<space>rh', '<cmd>IronHide<cr>')
 end
 
-function config.syntax_folding()
-  local fname = vim.fn.expand('%:p:f')
-  local fsize = vim.fn.getfsize(fname)
-  if fsize > 1024 * 1024 then
-    print('disable syntax_folding')
-    vim.api.nvim_command('setlocal foldmethod=indent')
-    return
-  end
-  vim.api.nvim_command('setlocal foldmethod=expr')
-  vim.api.nvim_command('setlocal foldexpr=nvim_treesitter#foldexpr()')
-end
-
 function config.regexplainer()
   require('regexplainer').setup({
     -- 'narrative'
@@ -183,7 +172,7 @@ function config.navigator()
 
   -- loader('aerial.nvim')
   local nav_cfg = {
-    debug = plugin_debug(),
+    -- debug = plugin_debug(), -- uncomment for logs
     width = 0.7,
     -- icons = {icons = false}, -- disable all icons
     on_attach = function(client, bufnr)
@@ -191,8 +180,8 @@ function config.navigator()
     end,
     border = single, -- "single",
     ts_fold = {
-      enable = true,
-    }, -- "ufo"
+      enable = true
+    }, -- set to false to use "ufo"
     -- external = true, -- true: enable for goneovim multigrid otherwise false
     lsp_signature_help = true,
     combined_attach = 'their', -- both: use both customized attach and navigator default attach, mine: only use my attach defined in vimrc
@@ -202,7 +191,7 @@ function config.navigator()
     --     keymaps = { { mode = 'i', key = '<M-k>', func = 'signature_help()' },
     -- { key = "<c-i>", func = "signature_help()" } },
     lsp = {
-      diagnostic = {enable = false},
+      diagnostic = { enable = false },
       -- diagnostic_scrollbar_sign = false,
       format_on_save = { disable = { 'vue' } }, -- set to false to disasble lsp code format on save (if you are using prettier/efm/formater etc)
       disable_format_cap = {
@@ -222,8 +211,8 @@ function config.navigator()
       rename = { style = 'floating-preview' },
       lua_ls = {
         before_init = function()
-          require('neodev').setup{}
-          require('neodev.lsp').before_init( {}, {settings={Lua={}}})
+          require('neodev').setup({})
+          require('neodev.lsp').before_init({}, { settings = { Lua = {} } })
         end,
       },
       tsserver = {
@@ -255,7 +244,7 @@ function config.navigator()
     },
   }
   nav_cfg.lsp.gopls = function()
-    if vim.tbl_contains({'go', 'gomod'}, vim.bo.filetype) then
+    if vim.tbl_contains({ 'go', 'gomod' }, vim.bo.filetype) then
       local go = pcall(require, 'go')
       if go then
         local cfg = require('go.lsp').config()
@@ -322,7 +311,7 @@ function config.luapad()
 end
 function config.go()
   require('go').setup({
-    verbose = plugin_debug(),
+    verbose = plugin_debug(), -- enable for debug
     -- goimport = 'goimports', -- 'gopls'
     fillstruct = 'gopls',
     log_path = vim.fn.expand('$HOME') .. '/tmp/gonvim.log',
@@ -405,49 +394,49 @@ function config.clangd()
   end, 100)
 end
 
--- function config.context_vt()
---   require('nvim_context_vt').setup({
---     enabled = true,
---
---     -- Override default virtual text prefix
---     -- Default: '-->'
---     -- prefix = '',
---     -- prefix = '->',
---
---     -- Override the internal highlight group name
---     -- Default: 'ContextVt'
---     -- highlight = 'ContextVt',
---
---     -- Disable virtual text for given filetypes
---     -- Default: { 'markdown' }
---     disable_ft = { 'markdown' },
---
---     -- Disable display of virtual text below blocks for indentation based languages like Python
---     -- Default: false
---     -- disable_virtual_lines = false,
---
---     -- Same as above but only for spesific filetypes
---     -- Default: {}
---     -- disable_virtual_lines_ft = { 'yaml' },
---
---     -- How many lines required after starting position to show virtual text
---     -- Default: 1 (equals two lines total)
---     min_rows = 5,
---
---     -- Same as above but only for spesific filetypes
---     -- Default: {}
---     min_rows_ft = {},
---     custom_parser = function(node, ft, opts)
---       local utils = require('nvim_context_vt.utils')
---
---       -- This is the standard text
---       local start_row, _, end_row, _ = vim.treesitter.get_node_range(node)
---       return string.format('-><%d:%d> %s', start_row + 1, end_row + 1, utils.get_node_text(node)[1])
---     end,
---
---     -- Custom node virtual text resolver callback
---     -- Default: nil
---   })
--- end
+function config.context_vt()
+  require('nvim_context_vt').setup({
+    enabled = false,
+
+    -- Override default virtual text prefix
+    -- Default: '-->'
+    -- prefix = '',
+    -- prefix = '->',
+
+    -- Override the internal highlight group name
+    -- Default: 'ContextVt'
+    -- highlight = 'ContextVt',
+
+    -- Disable virtual text for given filetypes
+    -- Default: { 'markdown' }
+    disable_ft = { 'markdown' },
+
+    -- Disable display of virtual text below blocks for indentation based languages like Python
+    -- Default: false
+    disable_virtual_lines = false,
+
+    -- Same as above but only for spesific filetypes
+    -- Default: {}
+    -- disable_virtual_lines_ft = { 'yaml' },
+
+    -- How many lines required after starting position to show virtual text
+    -- Default: 1 (equals two lines total)
+    min_rows = 2,
+
+    -- Same as above but only for spesific filetypes
+    -- Default: {}
+    min_rows_ft = {},
+    custom_parser = function(node, ft, opts)
+      local utils = require('nvim_context_vt.utils')
+
+      -- This is the standard text
+      local start_row, _, end_row, _ = vim.treesitter.get_node_range(node)
+      return string.format('-><%d:%d> %s', start_row + 1, end_row + 1, utils.get_node_text(node)[1])
+    end,
+
+    -- Custom node virtual text resolver callback
+    -- Default: nil
+  })
+end
 
 return config

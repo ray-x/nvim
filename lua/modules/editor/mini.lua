@@ -123,6 +123,11 @@ return {
 
     require('mini.bufremove').setup({})
     require('mini.trailspace').setup({})
+    require('mini.sessions').setup{
+      force = {
+        read = true, write = true, delete = true,
+      }
+    }
 
     -- booperlv/nvim-gomove
     -- <A-k>   Move current line/selection up

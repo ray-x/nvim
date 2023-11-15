@@ -1,5 +1,4 @@
 local vim, api = vim, vim.api
-local window = require('lspsaga.window')
 local M = {
   go = { 'go run ', 'ginkgo test -v -count=1 -tags=integration ' },
   lua = { 'lua ' },
@@ -51,57 +50,6 @@ function M.load_dbs()
   return dbs
 end
 
-function M.float_terminal(command)
-  local cmd = command or ''
-
-  -- get dimensions
-  local width = api.nvim_get_option_value('columns', {})
-  local height = api.nvim_get_option_value('lines', {})
-
-  -- calculate our floating window size
-  local win_height = math.ceil(height * 0.8)
-  local win_width = math.ceil(width * 0.8)
-
-  -- and its starting position
-  local row = math.ceil((height - win_height) * 0.4)
-  local col = math.ceil((width - win_width) * 0.5)
-
-  -- set some options
-  local opts = {
-    style = 'minimal',
-    relative = 'editor',
-    width = win_width,
-    height = win_height,
-    row = row,
-    col = col,
-  }
-
-  local contents_bufnr, contents_winid, border_bufnr, border_winid =
-    window.create_float_window({}, 'floaterm', 1, true, false, opts)
-  api.nvim_command('terminal ' .. cmd)
-  api.nvim_command('setlocal nobuflisted')
-  api.nvim_command('startinsert!')
-  api.nvim_command('hi LspFloatWinBorder guifg=#c594c5')
-  api.nvim_buf_set_var(
-    contents_bufnr,
-    'float_terminal_win',
-    { contents_winid, border_winid, border_bufnr }
-  )
-end
-
-function M.close_float_terminal()
-  local float_terminal_win = api.nvim_buf_get_var(0, 'float_terminal_win')
-  if
-    float_terminal_win[1] ~= nil
-    and api.nvim_win_is_valid(float_terminal_win[1])
-    and float_terminal_win[2] ~= nil
-    and api.nvim_win_is_valid(float_terminal_win[2])
-  then
-    api.nvim_win_close(float_terminal_win[1], true)
-    api.nvim_win_close(float_terminal_win[2], true)
-  end
-end
-
 function M.blameVirtualText()
   local fname = vim.fn.expand('%')
   if not vim.fn.filereadable(fname) then
@@ -138,6 +86,22 @@ end
 function M.clearBlameVirtualText()
   local ns_id = api.nvim_create_namespace('GitLens')
   api.nvim_buf_clear_namespace(0, ns_id, 0, -1)
+end
+
+function M.convertPathToPercentString(path)
+    -- Check the operating system
+    local isWindows =require('core.global').is_windows
+
+    -- Windows paths
+    if isWindows then
+        path = path:gsub("\\", "%%")
+        path = path:gsub("^([a-zA-Z]):", "%1%%")
+    end
+    path = path:gsub("^/", ""):gsub("/", "%%")
+    -- remove trailing empty line e.g. \n \n\r
+    path = path:gsub("%s*$", "")
+    lprint(path)
+    return path
 end
 
 return M

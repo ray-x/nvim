@@ -1,6 +1,6 @@
-local global = require('core.global')
 local vim = vim
-local start = vim.uv.now()
+local uv = vim.uv or vim.loop
+local start = uv.now()
 
 local disable_distribution_plugins = function()
   vim.g.loaded_gzip = 1
@@ -45,7 +45,7 @@ local load_core = function()
   vim.api.nvim_set_hl(0, 'FoldColumn', { bg = 'None' })
 
   require('core.options')
-  require('core.mapping')
+  -- require('core.mapping')
   require('core.runner')
   require('keymap')
   require('core.event')
@@ -54,10 +54,10 @@ local load_core = function()
   require('core.lazy_nvim'):boot_strap()
   require('core.colorscheme').load_colorscheme()
   require('core.commands')
-  lprint('load compiled and lazy', vim.uv.now() - start)
+  lprint('load compiled and lazy', uv.now() - start)
 
   require('core.lazy')
-  lprint("lazy done", vim.uv.now() - start)
+  lprint("lazy done", uv.now() - start)
 end
 
 load_core()
