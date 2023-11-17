@@ -27,7 +27,9 @@ return function(lang)
       vim.ui.input = require('guihua.gui').input
     end,
   })
-  if vim.wo.diff then return end
+  if vim.wo.diff then
+    return
+  end
   lang({
     'nvim-treesitter/nvim-treesitter-textobjects',
     config = ts.treesitter_obj,
@@ -72,6 +74,13 @@ return function(lang)
     cmd = { 'RegexplainerToggle', 'RegexplainerShow' },
     config = conf.regexplainer,
   })
+
+  lang({
+    'Wansmer/symbol-usage.nvim',
+    event = { 'BufReadPre', 'LspAttach' },
+    config = conf.symbol_count,
+  })
+
   if typecheck({ 'md', 'org', 'norg' }) then
     lang({
       'danymat/neogen',
@@ -149,8 +158,6 @@ return function(lang)
 
   -- lang['scalameta/nvim-metals'] = {dependencies = {"nvim-lua/plenary.nvim"}}
   -- lang { "lifepillar/pgsql.vim",ft = {"sql", "pgsql"}}
-
-  lang({ 'nanotee/sqls.nvim', ft = { 'sql', 'pgsql' }, opts = {} })
 
   lang({
     'simrat39/rust-tools.nvim',
@@ -251,11 +258,12 @@ return function(lang)
       'Lspsaga',
     },
     opts = {
-        border_style = 'rounded',
-        code_action_lightbulb = {
-          enable = false,
-        },
-  }})
+      border_style = 'rounded',
+      code_action_lightbulb = {
+        enable = false,
+      },
+    },
+  })
 
   lang({
     'nvim-treesitter/playground',

@@ -133,20 +133,9 @@ function config.regexplainer()
     auto = false,
 
     -- filetypes (i.e. extensions) in which to run the autocommand
-    filetypes = {
-      'html',
-      'js',
-      'cjs',
-      'mjs',
-      'ts',
-      'jsx',
-      'tsx',
-      'cjsx',
-      'mjsx',
-      'go',
-      'lua',
-      'vim',
-    },
+    -- stylua: ignore
+    filetypes = { 'html', 'js', 'cjs', 'mjs', 'ts', 'jsx',
+      'tsx', 'cjsx', 'mjsx', 'go', 'lua', 'vim' },
 
     mappings = {
       toggle = '<Leader>gR',
@@ -180,7 +169,7 @@ function config.navigator()
     end,
     border = single, -- "single",
     ts_fold = {
-      enable = true
+      enable = true,
     }, -- set to false to use "ufo"
     -- external = true, -- true: enable for goneovim multigrid otherwise false
     lsp_signature_help = true,
@@ -250,7 +239,7 @@ function config.navigator()
         local cfg = require('go.lsp').config()
         local att = cfg.on_attach
         cfg.on_attach = function(client, bufnr)
-          print('gopls on_attach')
+          -- print('gopls on_attach')
           client.server_capabilities.documentFormattingProvider = false -- efm/null-ls
           att(client, bufnr)
         end
@@ -436,6 +425,72 @@ function config.context_vt()
 
     -- Custom node virtual text resolver callback
     -- Default: nil
+  })
+end
+
+function config.symbol_count()
+  local function h(name)
+    return vim.api.nvim_get_hl(0, { name = name })
+  end
+
+  -- hl-groups can have any name
+  vim.api.nvim_set_hl(0, 'SymbolUsageRounding', { fg = h('CursorLine').bg, italic = true })
+  vim.api.nvim_set_hl(
+    0,
+    'SymbolUsageContent',
+    { bg = h('@comment').bg, fg = h('Comment').fg, italic = true }
+  )
+  vim.api.nvim_set_hl(
+    0,
+    'SymbolUsageRef',
+    { fg = h('@comment').fg, bg = h('Comment').bg, italic = true }
+  )
+  vim.api.nvim_set_hl(
+    0,
+    'SymbolUsageDef',
+    { fg = h('@comment').fg, bg = h('Comment').bg, italic = true }
+  )
+  vim.api.nvim_set_hl(
+    0,
+    'SymbolUsageImpl',
+    { fg = h('@comment').fg, bg = h('Comment').bg, italic = true }
+  )
+
+  local function text_format(symbol)
+    local res = {}
+
+
+    if symbol.references then
+      local usage = symbol.references <= 1 and 'usage' or 'usages'
+      local num = symbol.references == 0 and 'no' or symbol.references
+      table.insert(res, { '󰌹 ', 'SymbolUsageRef' })
+      table.insert(res, { ('%s %s'):format(num, usage), 'SymbolUsageContent' })
+    end
+
+    if symbol.definition and symbol.definition > 0 then
+      if #res > 0 then
+        table.insert(res, { ' ', 'NonText' })
+      end
+      table.insert(res, { '󰳽 ', 'SymbolUsageDef' })
+      table.insert(res, { symbol.definition .. ' defs', 'SymbolUsageContent' })
+    end
+
+    if symbol.implementation and symbol.implementation > 0 then
+      if #res > 0 then
+        table.insert(res, { ' ', 'NonText' })
+      end
+      table.insert(res, { '󰡱 ', 'SymbolUsageImpl' })
+      table.insert(res, { symbol.implementation .. ' impls', 'SymbolUsageContent' })
+    end
+
+    return res
+  end
+
+  require('symbol-usage').setup({
+    text_format = text_format,
+    vt_position = 'end_of_line',
+    defination = { enabled = true },
+    implementation = { enabled = true },
   })
 end
 

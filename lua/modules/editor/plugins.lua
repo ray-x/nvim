@@ -78,7 +78,7 @@ return function(editor)
       -- `f`, `F`, `t`, `T`, `;` and `,` motions
       modes = {
         char = {
-          enabled = true,
+          enabled = false, -- turned off when and waiting for #183
           -- dynamic configuration for ftFT motions
           config = function(opts)
             -- autohide flash when in operator-pending mode
@@ -110,7 +110,8 @@ return function(editor)
               -- [motion:match("%l") and motion:upper() or motion:lower()] = "prev",
             }
           end,
-          -- hide after jump when not usi
+          search = { wrap = false },
+          jump = {autojump=true},
         },
       },
     },
