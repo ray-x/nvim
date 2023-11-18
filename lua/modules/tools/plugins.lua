@@ -102,7 +102,9 @@ return function(tools)
     'folke/which-key.nvim',
     event = { 'CmdlineEnter', 'ModeChanged', 'TextYankPost' },
     module = false,
-    config = function() require('modules.tools.which_key').init() end,
+    config = function()
+      require('modules.tools.which_key').init()
+    end,
   })
 
   tools({
@@ -459,4 +461,28 @@ return function(tools)
       end,
     })
   end
+  -- keybindings for chatgpt https://github.com/jackMort/ChatGPT.nvim/tree/main#interactive-popup
+  tools({
+    'jackMort/ChatGPT.nvim',
+    event = { 'CmdlineEnter', 'CursorHold' },
+    opts = {
+      popup_window = { border = {
+        text = {
+          top = 'wisper',
+        },
+      } },
+      openai_params = {
+        model = 'gpt-3.5-turbo',
+      },
+    openai_edit_params = {
+      model = "gpt-3.5-turbo",
+    },
+    },
+
+    dependencies = {
+      'MunifTanjim/nui.nvim',
+      'nvim-lua/plenary.nvim',
+      'nvim-telescope/telescope.nvim',
+    },
+  })
 end

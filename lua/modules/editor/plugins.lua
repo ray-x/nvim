@@ -111,7 +111,7 @@ return function(editor)
             }
           end,
           search = { wrap = false },
-          jump = {autojump=true},
+          jump = { autojump = true },
         },
       },
     },
@@ -323,19 +323,11 @@ return function(editor)
 
   -- true <-> false <SPC>t
   editor({
-    'AndrewRadev/switch.vim',
-    lazy = true,
-    cmd = { 'Switch', 'SwitchCase' }, --'Switch!' , 'Switch?',
-    keys = { '<Plug>(Switch)' },
-    event = { 'FuncUndefined' },
-    init = function()
-      vim.g.switch_mapping = '<Space>t'
-      vim.fn['switch#Switch'] = function(...)
-        vim.fn['switch#Swtich'] = nil
-        require('lazy').load({ plugins = { 'switch.vim' } })
-        return vim.fn['switch#Switch'](...)
-      end
-    end,
+    -- 'AndrewRadev/switch.vim',
+    'CKolkey/ts-node-action',
+    event = { 'FuncUndefined', 'CursorHold' },
+    dependencies = { 'nvim-treesitter' },
+    opts = {}
   })
   editor({
     'mizlan/iswap.nvim',
