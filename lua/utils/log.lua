@@ -8,7 +8,7 @@ local function fs_write(path, data)
       print('Error opening file: ' .. err)
       return err
     end
-    uv.fs_write(fd, data, 0, function(e2, _)
+    uv.fs_write(fd, data, -1, function(e2, _)
       assert(not e2, e2)
       uv.fs_close(fd, function(e3)
         assert(not e3, e3)

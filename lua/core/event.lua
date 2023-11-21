@@ -35,6 +35,7 @@ end
 
 function autocmd.load_autocmds()
   local definitions = {
+    -- stylua: ignore start
     bufs = {
       {
         'BufWritePost,FileWritePost',
@@ -42,22 +43,21 @@ function autocmd.load_autocmds()
         [[ if &l:autoread > 0 | source <afile> | echo 'source ' . bufname('%') | endif]],
       },
       { 'BufWritePost', '*.sum, *.mod', ':silent :GoModTidy' },
-      { 'FileType', 'css,scss', "let b:prettier_exec_cmd = 'prettier-stylelint'" },
+      -- { 'FileType', 'css,scss', "let b:prettier_exec_cmd = 'prettier-stylelint'" }, -- null-ls
       -- {"FileType","lua","nmap <leader><leader>t <Plug>PlenaryTestFile"};
       {
-        'FileType',
-        'markdown',
-        "let b:prettier_exec_cmd = 'prettier' | let g:prettier#exec_cmd_path = '/usr/local/bin/prettier' | let g:spelunker_check_type = 1",
+        'FileType', 'markdown',
+        'let g:spelunker_check_type = 1', -- let b:prettier_exec_cmd = 'prettier' | let g:prettier#exec_cmd_path = '/usr/local/bin/prettier' |
       },
       {
-        'BufReadPre',
-        '*',
+        'BufReadPre', '*',
         'if getfsize(expand("%")) > 1000000 | set eventignore+=FileType | setlocal noswapfile bufhidden=unload buftype=nowrite undolevels=-1 foldmethod=indent | else | set eventignore-=FileType | endif',
       },
       -- {"UIEnter", "*", ":silent! :lua require('modules.lang.config').syntax_folding()"},
       -- { 'BufReadPre', '*', ":silent! :lua require('modules.lang.config').nvim_treesitter()" },
-      -- {"BufWritePre", "*.js,*.rs,*.lua", ":FormatWrite"},
+      { 'BufWritePre', '*', function() MiniTrailspace.trim() end, },
       -- { 'BufWritePost', '*', ":silent! :lua require('harpoon.mark').add_file()" },
+      -- stylua: ignore end
     },
 
     wins = {
@@ -74,12 +74,15 @@ function autocmd.load_autocmds()
       -- { 'VimLeavePre', '*', 'set winwidth=30 | set winminwidth=10' },
       {
         -- stylua: ignore
-        'VimLeavePre', '*', function()
+        'VimLeavePre',
+        '*',
+        function()
           require('close_buffers').delete({ type = 'hidden', force = true })
           require('close_buffers').delete({ regex = 'fugitive' })
           require('close_buffers').delete({ regex = 'neogit', force = true })
           require('close_buffers').wipe({ type = 'nameless', force = true })
           MiniTrailspace.trim()
+
           -- write session
           -- if vim.v.this_session ~= '' then
           --   -- MiniSession.write()

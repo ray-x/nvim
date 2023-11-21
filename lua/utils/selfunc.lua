@@ -38,18 +38,6 @@ local function load_env_file()
   return env_contents
 end
 
-function M.load_dbs()
-  local env_contents = load_env_file()
-  local dbs = {}
-  for key, value in pairs(env_contents) do
-    if vim.fn.stridx(key, 'DB_CONNECTION_') >= 0 then
-      local db_name = vim.fn.split(key, '_')[3]:lower()
-      dbs[db_name] = value
-    end
-  end
-  return dbs
-end
-
 function M.blameVirtualText()
   local fname = vim.fn.expand('%')
   if not vim.fn.filereadable(fname) then

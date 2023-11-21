@@ -74,13 +74,19 @@ return function(tools)
       'DB',
     },
     config = conf.vim_dadbod_ui,
-    dependencies = { 'tpope/vim-dadbod', ft = { 'sql' } },
+    dependencies = { 'tpope/vim-dadbod', ft = { 'sql' }, cmd = { 'DB' } },
     init = function()
-      vim.g.dbs = {
-        -- eraser = 'postgres://postgres:password@localhost:5432/eraser_local',
-        -- staging = 'postgres://postgres:password@localhost:5432/my-staging-db',
-        wp = 'mysql://root@localhost/wp_awesome',
-      }
+      vim.g.dbs = {local_pg = 'postgres://postgres:password@localhost:5432/postgres'}
+
+      -- vim.cmd([[let g:dbs = {
+      -- \ 'eraser': 'postgres://postgres:password@localhost:5432/eraser_local',
+      -- \ 'staging': 'postgres://postgres:password@localhost:5432/my-staging-db',
+      -- \ 'wp': 'mysql://root@localhost/wp_awesome' }]])
+      -- vim.g.dbs = {
+      -- eraser = 'postgres://postgres:password@localhost:5432/eraser_local',
+      -- staging = 'postgres://postgres:password@localhost:5432/my-staging-db',
+      -- wp = 'mysql://root@localhost/wp_awesome',
+      -- }
     end,
   })
   -- tools({ 'mattn/webapi-vim', lazy = true })
@@ -474,9 +480,9 @@ return function(tools)
       openai_params = {
         model = 'gpt-3.5-turbo',
       },
-    openai_edit_params = {
-      model = "gpt-3.5-turbo",
-    },
+      openai_edit_params = {
+        model = 'gpt-3.5-turbo',
+      },
     },
 
     dependencies = {

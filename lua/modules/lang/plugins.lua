@@ -378,7 +378,7 @@ return function(lang)
       end,
     },
   })
-  if typecheck({ 'lua' }) then
+  if typecheck({ 'lua', 'md', 'markdown' }) then
     lang({
       'folke/neodev.nvim',
       ft = { 'lua' },

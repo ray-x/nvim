@@ -167,9 +167,10 @@ return function(ui)
 
     ui({ 'stevearc/dressing.nvim', lazy = true })
   end
-end
 
 -- feel a bit laggy
+end
+
 -- ui({
 --   'folke/noice.nvim',
 --   event = 'VeryLazy',

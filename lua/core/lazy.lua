@@ -144,7 +144,7 @@ require('core.ab')
 
 if plugin_folder() == [[~/github/ray-x/]] then
   -- it is my own box, setup fish
-  if vim.o.shell ~= fish and vim.fn.executable('fish') == 1 then
+  if vim.o.shell ~= 'fish' and vim.fn.executable('fish') == 1 then
     if global.is_mac then
       vim.cmd([[set shell=/opt/homebrew/bin/fish]])
     elseif global.is_linux then
@@ -168,10 +168,9 @@ vim.defer_fn(function()
     local r = require('mini.sessions').read
     pcall(r, folder)
 
-    folder = vim.v.this_session
-    if vim.fn.empty(folder) == 1 then
+    lprint('auto-session loaded', folder, vim.fn.empty(folder))
+    if vim.fn.empty(vim.v.this_session) == 1 then
       lprint('no session folder found')
-      folder = require('utils.selfunc').convertPathToPercentString(folder) .. '.vim'
       lprint('save session to ' .. folder)
       require('mini.sessions').write(folder)
     end

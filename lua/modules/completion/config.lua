@@ -39,7 +39,7 @@ function config.nvim_cmp()
   end
 
   if vim.o.ft == 'org' then
-    table.insert(sources, { name = 'org' })
+    table.insert(sources, { name = 'orgmode' })
     table.insert(sources, { name = 'spell' })
     table.insert(sources, { name = 'look' })
   end

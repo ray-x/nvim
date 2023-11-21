@@ -165,6 +165,8 @@ function config.orgmode()
     },
     ensure_installed = { 'org' }, -- Or run :TSUpdate org
   })
+  local org_path = '~/Library/CloudStorage/Dropbox/Logseq'
+  local logseq_path = org_path
   require('orgmode').setup({
     -- mappings = {
     --   -- global = {
@@ -187,6 +189,8 @@ function config.orgmode()
     --   --   org_note_kill = "Q",
     --   -- },
     -- },
+    org_agenda_files = org_path .. '/journals/**/*',
+    org_default_notes_file = org_path .. '/pages/refile.org',
     org_todo_keywords = {
       'TODO',
       'WIP',
@@ -216,22 +220,22 @@ function config.orgmode()
       },
       m = {
         description = 'Meeting notes',
-        template = '#+TITLE: %?\n#+AUTHER: Ray\n#+TAGS: @metting \n#+DATE: %t\n\n*** %^{PROMPT|Meeting|LOGGING WGM} %U \n - %?\n<%<%Y-%m-%d %a %H:%M>>',
+        template = '#+TITLE: %?\n#+AUTHER: Ray\n#+TAGS: metting \n#+DATE: %t\n\n*** %^{PROMPT|Meeting|LOGGING WGM} %U \n - %?\n<%<%Y-%m-%d %a %H:%M>>',
       },
       r = {
         description = 'ritual',
         template = '* NEXT %?\n%U\n%a\nSCHEDULED: %(format-time-string "%<<%Y-%m-%d %a .+1d/3d>>")\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:END:\n',
-        target = string.format('~/Desktop/logseq/pages/%s.org', vim.fn.strftime('%Y-%m-%d')),
+        target = string.format(logseq_path .. '/pages/%s.org', vim.fn.strftime('%Y-%m-%d')),
       },
       n = {
         description = 'Notes',
         template = '#+TITLE: %?\n#+AUTHER: Ray\n#+TAGS: @note \n#+DATE: %t\n',
-        target = string.format('~/Desktop/logseq/pages/%s.org', vim.fn.strftime('%Y-%m-%d')),
+        target = string.format( logseq_path .. '/pages/%s.org', vim.fn.strftime('%Y-%m-%d')),
       },
       j = {
         description = 'Journal',
         template = '#+TITLE: %?\n#+TAGS: @journal \n#+DATE: %t\n',
-        target = string.format('~/Desktop/logseq/journals/%s.org', vim.fn.strftime('%Y-%m-%d')),
+        target = string.format(logseq_path .. '/journals/%s.org', vim.fn.strftime('%Y-%m-%d')),
       },
     },
     notifications = {
@@ -245,14 +249,13 @@ function config.orgmode()
             string.format('%s %s %s', string.rep('*', task.level), task.todo, task.title)
           local date = string.format('%s: %s', task.type, task.time:to_string())
 
-          if vim.fn.executable('notify-send') then
-            vim.loop.spawn('notify-send', {
-              args = {
-                '--icon=/home/kristijan/.local/share/nvim/lazy/orgmode/assets/orgmode_nvim.png',
-                string.format('%s\n%s\n%s', title, subtitle, date),
-              },
-            })
-          end
+          -- if vim.fn.executable('notify-send') then
+          --   vim.loop.spawn('notify-send', {
+          --     args = {
+          --       string.format('%s\n%s\n%s', title, subtitle, date),
+          --     },
+          --   })
+          -- end
         end
       end,
     },

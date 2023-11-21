@@ -99,7 +99,6 @@ vim.cmd([[command! -nargs=*  HarpoonOpen lua require"harpoon.mark".clear_all()]]
 
 -- bind.nvim_load_mapping(plugmap)
 
-
 vim.api.nvim_create_user_command('Keymaps', function()
   local ListView = require('guihua.listview')
   return ListView:new({
@@ -126,7 +125,7 @@ vim.api.nvim_create_user_command('NewOrg', function(opts)
   if vim.fn.empty(opts.fargs) == 0 then
     fn = opts.fargs[1]
   end
-  local path = '~/Desktop/logseq'
+  local path = '~/Library/CloudStorage/Dropbox/Logseq'
   local j = opts.bang or fn
   if j then
     -- this is a page
@@ -135,7 +134,12 @@ vim.api.nvim_create_user_command('NewOrg', function(opts)
     path = path .. '/journals/'
     fn = vim.fn.strftime('%Y_%m_%d') .. '.org'
   end
+
   vim.cmd('e ' .. path .. fn)
+  -- check if file existed
+  if vim.fn.filereadable(vim.fn.expand(path .. fn)) == 1 then
+    return
+  end
   if j then
     vim.api.nvim_buf_set_lines(0, 0, 1, false, { '* TODO' })
   else
@@ -170,7 +174,7 @@ end, {})
 vim.api.nvim_create_user_command('SessionDelete', function(_)
   local m = require('mini.sessions')
   local folder = require('utils.selfunc').convertPathToPercentString(_G.FindRoot()) .. '.vim'
-  m.delete(folder, {force = true})
+  m.delete(folder, { force = true })
 end, {})
 vim.api.nvim_create_user_command('ResetWorkspace', function(opts)
   local folder = opts.fargs[1] or vim.fn.expand('%:p:h')

@@ -1,10 +1,28 @@
 local config = {}
 
+local function load_env()
+  -- load env from `env` output
+  if vim.fn.executable('env') == 0 then
+    return
+  end
+  print('calling loadenv')
+  local env = vim.fn.systemlist('env')
+  -- find all env contails `DATABASE_URL` e.g. `ACCOUNT_DATABASE_URL`
+  local dbs = {}
+  for _, item in pairs(env) do
+    if vim.fn.stridx(item, 'DATABASE_URL') >= 0 then
+      local db_name = vim.fn.split(item, '_')[1]:lower()
+      print(db_name)
+      dbs[db_name] = vim.fn.split(item, '=')[2]
+    end
+  end
+  return dbs
+end
+
 local function load_env_file()
   local env_file = require('core.global').home .. require('core.global').path_sep .. '.env'
   local env_contents = {}
   if vim.fn.filereadable(env_file) ~= 1 then
-    print('.env file does not exist')
     return
   end
   local contents = vim.fn.readfile(env_file)
@@ -28,16 +46,31 @@ end
 --   }
 -- end
 
+
+-- function M.load_dbs()
+--   local env_contents = load_env_file()
+--   for key, value in pairs(env_contents) do
+--     if vim.fn.stridx(key, 'DB_CONNECTION_') >= 0 then
+--       local db_name = vim.fn.split(key, '_')[3]:lower()
+--       vim.g.dbs[db_name] = value
+--     end
+--   end
+-- end
+
 local function load_dbs()
   local env_contents = load_env_file()
   local dbs = {}
-  for key, value in pairs(env_contents) do
+  for key, value in pairs(env_contents or {}) do
     if vim.fn.stridx(key, 'DB_CONNECTION_') >= 0 then
       local db_name = vim.fn.split(key, '_')[3]:lower()
       dbs[db_name] = value
     end
   end
-  return dbs
+  local env_dbs = load_env() or {}
+  print(vim.inspect(env_dbs),vim.inspect(dbs))
+  dbs = vim.tbl_extend('force', dbs, env_dbs )
+  dbs = vim.tbl_extend('force', vim.g.dbs, dbs )
+  vim.g.dbs = dbs
 end
 
 function config.worktree()
@@ -118,13 +151,19 @@ function config.diffview()
 end
 
 function config.vim_dadbod_ui()
-  require('utils.helper').loader('vim-dadbod')
+  -- require('utils.helper').loader('vim-dadbod')
   vim.g.db_ui_show_help = 0
   vim.g.db_ui_win_position = 'left'
   vim.g.db_ui_use_nerd_fonts = 1
   vim.g.db_ui_winwidth = 35
   vim.g.db_ui_save_location = require('core.global').home .. '/.cache/vim/db_ui_queries'
-  vim.g.dbs = load_dbs()
+  vim.cmd([[
+  set shiftwidth=2
+  set softtabstop=2
+  set tabstop=2
+  set smartindent
+  ]])
+  load_dbs()
 end
 
 function config.project()
@@ -232,7 +271,7 @@ function config.gitsigns()
       virt_text = true,
       virt_text_pos = 'right_align', -- 'eol' | 'overlay' | 'right_align'
       delay = 2000,
-      virt_text_priority = 20,  -- maybe the last thing I would like to see
+      virt_text_priority = 20, -- maybe the last thing I would like to see
     },
     diff_opts = { internal = true },
   })
@@ -275,10 +314,6 @@ function config.bqf()
 end
 
 function config.dapui()
-  vim.cmd([[let g:dbs = {
-  \ 'eraser': 'postgres://postgres:password@localhost:5432/eraser_local',
-  \ 'staging': 'postgres://postgres:password@localhost:5432/my-staging-db',
-  \ 'wp': 'mysql://root@localhost/wp_awesome' }]])
   require('dapui').setup({
     icons = { expanded = '⯆', collapsed = '⯈', circular = '↺' },
 
@@ -357,14 +392,15 @@ function config.close_buffers()
 
   vim.api.nvim_create_user_command('Bd', function(opts)
     local arg = opts.fargs[1] or ''
+    local force = opts.bang or false
     if arg == 'a' then
-      require('close_buffers').delete({ type = 'all' })
+      require('close_buffers').delete({ type = 'all', force = force })
     elseif arg == 'o' then
-      require('close_buffers').delete({ type = 'other' })
+      require('close_buffers').delete({ type = 'other', force = force })
     else
-      require('close_buffers').delete({ type = 'this' })
+      require('close_buffers').delete({ type = 'this', force = force })
     end
-  end, { range = true, nargs = '*' })
+  end, { range = true, nargs = '*', bang = true })
 end
 
 function config.floaterm()
