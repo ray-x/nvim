@@ -50,10 +50,10 @@ local treesitter_obj = function()
   if lines > 4000 then
     enable = false
   end
+
   require('nvim-treesitter.configs').setup({
 
     indent = { enable = enable },
-    context_commentstring = { enable = enable, enable_autocmd = false },
     incremental_selection = {
       enable = false, -- use textobjects
       -- disable = {"elm"},
@@ -82,8 +82,8 @@ local treesitter_obj = function()
         },
         goto_next_end = { [']M'] = '@function.outer', [']]'] = '@class.outer' },
         goto_previous_start = {
-          ['[m'] = {query = {'@function.inner', '@function.outer'}},
-          ['[['] = {query = {'@class.inner', '@class.outer'}},
+          ['[m'] = { query = { '@function.inner', '@function.outer' } },
+          ['[['] = { query = { '@class.inner', '@class.outer' } },
           ['[o'] = {
             --stylua: ignore
             query = {
@@ -125,6 +125,10 @@ local treesitter_obj = function()
   })
 
   lprint('loading ts obj')
+  require('ts_context_commentstring').setup({
+    enable = enable,
+    enable_autocmd = false,
+  })
 end
 
 local treesitter_ref = function()
@@ -159,14 +163,6 @@ local treesitter_ref = function()
     autotag = { enable = enable },
   })
   local parser_config = require('nvim-treesitter.parsers').get_parser_configs()
-  parser_config.sql = {
-    install_info = {
-      url = 'https://github.com/m-novikov/tree-sitter-sql',
-      files = { 'src/parser.c' },
-      branch = 'main',
-    },
-    filetype = { 'sql', 'psql' },
-  }
 end
 
 -- function textsubjects()

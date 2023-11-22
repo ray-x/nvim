@@ -46,17 +46,6 @@ end
 --   }
 -- end
 
-
--- function M.load_dbs()
---   local env_contents = load_env_file()
---   for key, value in pairs(env_contents) do
---     if vim.fn.stridx(key, 'DB_CONNECTION_') >= 0 then
---       local db_name = vim.fn.split(key, '_')[3]:lower()
---       vim.g.dbs[db_name] = value
---     end
---   end
--- end
-
 local function load_dbs()
   local env_contents = load_env_file()
   local dbs = {}
@@ -152,16 +141,19 @@ end
 
 function config.vim_dadbod_ui()
   -- require('utils.helper').loader('vim-dadbod')
+
+  local sep = require('core.global').path_sep
   vim.g.db_ui_show_help = 0
+  vim.g.db_ui_execute_on_save = 0 -- use <leader>S to save
   vim.g.db_ui_win_position = 'left'
   vim.g.db_ui_use_nerd_fonts = 1
   vim.g.db_ui_winwidth = 35
-  vim.g.db_ui_save_location = require('core.global').home .. '/.cache/vim/db_ui_queries'
+  -- vim.g.db_ui_save_location = require('core.global').home .. '/.cache/vim/db_ui_queries'
+  vim.g.db_ui_save_location =  vim.fn.getcwd() .. sep .. 'db'
   vim.cmd([[
   set shiftwidth=2
-  set softtabstop=2
-  set tabstop=2
-  set smartindent
+  " set tabstop=2
+  " set smartindent
   ]])
   load_dbs()
 end
