@@ -4,7 +4,7 @@ return function(editor)
   -- refer to keymap file nmap<Space>s|S   xmap <Leader>x
   editor({
     'gbprod/substitute.nvim',
-    event = { 'CmdlineEnter', 'TextYankPost' },
+    event = { 'CmdlineEnter', 'TextYankPost', 'CursorHold' },
     config = conf.substitute,
     lazy = true,
   })
@@ -261,7 +261,7 @@ return function(editor)
     'Wansmer/treesj',
     lazy = true,
     cmd = { 'TSJToggle', 'TSJJoin', 'TSJSplit' },
-    keys = { '<space>j', '<space>s' },
+    module = true,
     config = function()
       require('treesj').setup({
         use_default_keymaps = false,

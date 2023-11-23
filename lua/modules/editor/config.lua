@@ -83,7 +83,7 @@ end
 -- space-s
 function config.substitute()
   require('substitute').setup({
-    yank_substituted_text = true,
+    -- yank_substituted_text = true,
     range = {
       prefix = 'S',
       prompt_current_text = true,
@@ -101,31 +101,10 @@ function config.comment()
       -- print("ctx", vim.inspect(ctx))
       -- Only update commentstring for tsx filetypes
       if
-        vim.bo.filetype == 'typescriptreact'
-        or vim.bo.filetype == 'typescript'
-        or vim.bo.filetype == 'javascript'
-        or vim.bo.filetype == 'css'
-        or vim.bo.filetype == 'html'
-        or vim.bo.filetype == 'scss'
-        or vim.bo.filetype == 'svelte'
-        or vim.bo.filetype == 'uve'
-        or vim.bo.filetype == 'graphql'
+        vim.tbl_contains({'typescriptreact', 'typescript', 'javascript', 'css', 'html', 'scss', 'svelte', 'uve', 'graphql'}, vim.bo.filetype)
       then
-        local U = require('Comment.utils')
-        -- Determine whether to use linewise or blockwise commentstring
-        local type = ctx.ctype == U.ctype.linewise and '__default' or '__multiline'
-
-        local location = nil
-        if ctx.ctype == U.ctype.block then
-          location = require('ts_context_commentstring.utils').get_cursor_location()
-        elseif ctx.cmotion == U.cmotion.v or ctx.cmotion == U.cmotion.V then
-          location = require('ts_context_commentstring.utils').get_visual_start_location()
-        end
-
-        return require('ts_context_commentstring.internal').calculate_commentstring({
-          key = type,
-          location = location,
-        })
+        local hook = require('ts_context_commentstring.integrations.comment_nvim').create_pre_hook()
+        hook(ctx)
       end
     end,
     post_hook = function(ctx)

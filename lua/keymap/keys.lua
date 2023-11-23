@@ -75,7 +75,7 @@ local jump_ts = function()
       local targets = get_ast_nodes()
       local pos = {}
       state.results = {}
-      for _, target in ipairs(targets) do
+      for _, target in ipairs(targets or {}) do
         -- print(vim.inspect(target))
         local idx = tostring(target.pos[1] * 100 + target.pos[2])
         if not pos[idx] then
@@ -235,7 +235,17 @@ local plug_keys = {
   ['n|<Space>S'] = map_func(function() require('substitute').line() end ):with_desc('operator substitute line'):with_noremap(),
   ['x|<Space>s'] = map_func(function() require('substitute').visual() end ):with_desc('substitute visual'):with_noremap(),
   ['x|<Leader>x'] = map_func(function() require('substitute.exchange').visual() end ):with_desc('substitute exchange two word visual'):with_noremap(),
-  ['xn|<Leader>s'] = map_func(function() require('utils.helper').substitute() end ):with_desc('substitute visual s/xxx/XXX/g  '):with_noremap(),
+  ['xn|<Leader>s'] = map_func(function()
+    vim.api.nvim_feedkeys(require('utils.helper').substitute(), 'mi', true) end
+  ):with_desc('substitute visual s/yanked/yanked_tobereplace/g  '):with_noremap(),
+  ['xn|<Leader>S'] = map_func(function()
+    vim.api.nvim_feedkeys(require('utils.helper').substitute(nil, nil, 'S'), 'mi', true) end
+  ):with_desc('substitute visual with Abolish S/yanked/yanked_tobereplace/g  '):with_noremap(),
+
+  -- substitute range operation is not as useful
+  -- ['x|<Leader>s'] = map_func(function() require('substitute.range').visual() end ):with_desc('substitute visual s/xxx/XXX/g with motion2 e.g. ap'):with_noremap(),
+  -- ['n|<Leader>s'] = map_func(function() require('substitute.range').word() end ):with_desc('substitute motion s/xxx/XXX/g with motion1:ip' ):with_noremap(),
+  -- ['n|<Leader>s'] = map_func(function() require('substitute.range').operator() end ):with_desc('substitute motion s/xxx/XXX/g with motion1:iw and motion2:ap ' ):with_noremap(),
   -- Swap / exchange
   ['n|<Leader>x'] = map_cmd('ISwapWith'):with_desc('Swap exchange two ts node'):with_noremap(),
   ['n|<Leader>X'] = map_cmd('ISwapNodeWith'):with_desc('Swap exchange two Node'):with_noremap(),
@@ -354,7 +364,7 @@ local plug_keys = {
   ['x|<m-/>'] = map_func(blockwise):with_silent(),
 
   -- hop
-  ["inx|[s"] = map_func(jump_ts):with_silent(),
+  -- ["inx|[s"] = map_func(jump_ts):with_silent(),
 }
 
 def_map = vim.tbl_extend('keep', def_map, os_map)
@@ -407,8 +417,6 @@ return { keymap = def_map }
 -- ["n|<Space>n"] = map_cmd([[lua require("harpoon.ui").nav_next()]]),
 -- ["n|<Space>p"] = map_cmd([[lua require("harpoon.ui").nav_prev()]]),
 -- ["n|<Space>m"] = map_cmd([[Telescope harpoon marks ]]),
--- ['x|<Leader>s'] = map_func(function() require('substitute.range').visual() end ):with_desc('substitute visual s/xxx/XXX/g with motion2 e.g. ap'):with_noremap(),
--- ['n|<Leader>s'] = map_func(function() require('substitute.range').operator() end ):with_desc('substitute motion s/xxx/XXX/g with motion1:iw and motion2:ap ' ):with_noremap(),
 -- ["in|<d-T>"] = map_cu("Telescope"):with_noremap():with_silent(),
 -- vim.cmd('Clap dumb_jump ++query=<cword> | startinsert')
 -- ["n|<Leader>F"] = map_cmd('NvimTreeFindFile'):with_noremap():with_silent(),

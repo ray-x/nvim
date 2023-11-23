@@ -286,19 +286,33 @@ function M.calculate_selection(append)
   end
 end
 
+function M.visual_multiline_selected()
+  local s, e = vim.fn.getpos("'<"), vim.fn.getpos("'>")
+  local n = math.abs(e[2] - s[2]) + 1
+  if n > 1 then
+    return math.abs(e[3] - s[3]) > 30 -- single line range
+  else
+    return false
+  end
+end
+
 function M.get_visual_text()
   local s, e = vim.fn.getpos("'<"), vim.fn.getpos("'>")
   local n = math.abs(e[2] - s[2]) + 1
-  -- print(vim.inspect(s), vim.inspect(e), n)
+  -- lprint(vim.inspect(s), vim.inspect(e), n)
+  if n > 1 then
+    return vim.api.nvim_buf_get_lines(0, s[2] - 1, s[2], false)[1], n -- single line range
+  end
   local lines = vim.api.nvim_buf_get_lines(0, s[2] - 1, e[2], false)
+  if not lines or not lines[1] then
+    return '', 1
+  end
   lines[1] = string.sub(lines[1], s[3], -1)
   if n == 1 then
     lines[n] = string.sub(lines[n], 1, e[3] - s[3] + 1)
-  else
-    lines[n] = string.sub(lines[n], 1, e[3])
   end
 
-  return table.concat(lines, '\n'), n
+  return lines[1], n
 end
 
 function M.getword()
@@ -312,35 +326,40 @@ function M.getword()
   return w
 end
 
+-- you can 1. select target by visual mode and select range with vif|vip|vi% etc
+-- 2. yank target and select range with yif|yip|yi% etc
 function M.substitute(from, to, style)
-  from = vim.fn.expand('<cword>')
+  -- check if register 0 is set
+  from = from or vim.fn.getreg('"')
+  if from == '' then
+    from = vim.fn.expand('<cword>')
+  end
   style = style or 's'
   local cmd
 
-  if vim.fn.mode() == 'v' or vim.fn.mode() == 'x' then
+  local m = vim.fn.mode():lower()
+  if m == 'v' or m == 'x' then
     local w, l = M.get_visual_text()
     -- lprint(l)
-    if l == 1 then
+    if l == 1 then -- single line range, it possible selected a word
       from = w
       to = to or from
-      cmd = string.format(':%%%s/%s/%s/g', style, from, to)
-      vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<esc>', true, false, true), 'x', true)
+      cmd = string.format(":%s/%s/%s/g", style, from, to)
     else -- a range specified
       from = vim.fn.getreg('"')
       to = to or from
       lprint(from, to)
-      cmd = string.format(':%%%s/%s/%s/g', style, from, to)
+      cmd = string.format([[:'<,'>%s/%s/%s/]], style, from, to)
     end
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<esc>', true, false, true), 'x', true)
   else
     to = to or from
-    cmd = string.format(':%%%s/%s/%s/', style, from, to)
+    style = [[%s]]
+    cmd = string.format(':%s/%s/%s/', style, from, to)
   end
 
   cmd = vim.api.nvim_replace_termcodes(cmd, true, false, true)
   return cmd
 end
-vim.keymap.set({ 'n', 'x' }, '<leader>s', function()
-  vim.api.nvim_feedkeys(M.substitute(), 'mi', true)
-end, { silent = true, expr = true })
 
 return M

@@ -266,13 +266,6 @@ return function(lang)
   })
 
   lang({
-    'nvim-treesitter/playground',
-    lazy = true,
-    cmd = 'TSPlaygroundToggle',
-    config = conf.playground,
-  })
-
-  lang({
     'simrat39/symbols-outline.nvim',
     lazy = true,
     cmd = { 'SymbolsOutline', 'SymbolsOutlineOpen' },
