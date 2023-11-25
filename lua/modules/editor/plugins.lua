@@ -1,4 +1,7 @@
 local conf = require('modules.editor.config')
+local cond = function()
+  return not vim.g.vscode and not vim.wo.diff
+end
 
 return function(editor)
   -- refer to keymap file nmap<Space>s|S   xmap <Leader>x
@@ -160,9 +163,7 @@ return function(editor)
     config = conf.hexokinase,
     build = 'make hexokinase',
     lazy = true,
-    cond = function()
-      return not vim.g.vscode
-    end,
+    cond = conf,
     cmd = { 'HexokinaseTurnOn', 'HexokinaseToggle' },
   })
 
@@ -170,9 +171,7 @@ return function(editor)
     'chrisbra/Colorizer',
     ft = { 'log', 'txt', 'text', 'css' },
     lazy = true,
-    cond = function()
-      return not vim.g.vscode
-    end,
+    cond = cond,
     cmd = { 'ColorHighlight', 'ColorUnhighlight' },
   })
 
@@ -199,9 +198,7 @@ return function(editor)
       '<C-Up>', '<S-Right>', '<C-LeftMouse>', '<M-LeftMouse>', '<M-C-RightMouse>',
     },
     lazy = true,
-    cond = function()
-      return not vim.g.vscode
-    end,
+    cond = cond,
     init = conf.vmulti,
   })
 
@@ -210,9 +207,7 @@ return function(editor)
     keys = { 'g', '<ESC>', 'v', 'V', '<c-v>' },
     event = { 'ModeChanged' },
     module = true,
-    cond = function()
-      return not vim.g.vscode
-    end,
+    cond = cond,
     config = conf.comment,
   })
 
@@ -286,6 +281,9 @@ return function(editor)
     'Pocco81/true-zen.nvim',
     lazy = true,
     cmd = { 'TZAtaraxis', 'TZMinimalist', 'TZNarrow', 'TZFocus' },
+    cond = function()
+      return not vim.g.vscode and not vim.wo.diff
+    end,
     config = function()
       require('true-zen').setup({})
     end,
@@ -308,9 +306,7 @@ return function(editor)
     'lukas-reineke/headlines.nvim',
     ft = { 'org', 'norg', 'markdown' },
     config = conf.headline,
-    cond = function()
-      return not vim.g.vscode
-    end,
+    cond = cond,
   })
   editor(
     {
@@ -327,7 +323,7 @@ return function(editor)
     'CKolkey/ts-node-action',
     event = { 'FuncUndefined', 'CursorHold' },
     dependencies = { 'nvim-treesitter' },
-    opts = {}
+    opts = {},
   })
   editor({
     'mizlan/iswap.nvim',

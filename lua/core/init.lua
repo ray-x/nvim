@@ -51,9 +51,11 @@ local load_core = function()
   require('keymap')
   require('core.event')
   _G.lprint = require('utils.log').lprint
-
   require('core.lazy_nvim'):boot_strap()
   require('core.colorscheme').load_colorscheme()
+  if vim.wo.diff then
+    return
+  end
   require('core.commands')
   lprint('load compiled and lazy', uv.now() - start)
 

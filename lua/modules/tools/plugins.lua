@@ -1,8 +1,9 @@
 local conf = require('modules.tools.config')
-cond = not vim.g.vscode
+cond = not vim.g.vscode and not vim.wo.diff
 return function(tools)
   local is_win = require('core.global').is_windows
   local gitrepo = vim.fn.isdirectory('.git/index')
+
   tools({
     'nvim-telescope/telescope.nvim',
     cmd = 'Telescope',
@@ -100,6 +101,7 @@ return function(tools)
 
   tools({
     'vim-test/vim-test',
+    cond = cond,
     cmd = { 'TestNearest', 'TestFile', 'TestSuite' },
     init = conf.vim_test,
   })
@@ -115,6 +117,7 @@ return function(tools)
 
   tools({
     'nvim-neotest/neotest',
+    cond = cond,
     dependencies = {
       {
         'haydenmeade/neotest-jest',
@@ -193,6 +196,7 @@ return function(tools)
   -- nvim-toggleterm.lua ?
   tools({
     'akinsho/toggleterm.nvim',
+    cond = cond,
     cmd = { 'ToggleTerm', 'TermExec' },
     event = { 'CmdwinEnter', 'CmdlineEnter' },
     config = conf.floaterm,
@@ -224,6 +228,7 @@ return function(tools)
   tools({
     'ray-x/sad.nvim',
     dev = (plugin_folder():find('github') ~= nil),
+    cond = cond,
     cmd = { 'Sad' },
     config = function()
       require('sad').setup({
@@ -240,6 +245,7 @@ return function(tools)
     'ray-x/viewdoc.nvim',
     dev = (plugin_folder():find('github') ~= nil),
     cmd = { 'Viewdoc' },
+    cond = cond,
     config = function()
       require('viewdoc').setup({
         debug = true,
@@ -262,6 +268,7 @@ return function(tools)
     tools({
       'ThePrimeagen/git-worktree.nvim',
       event = { 'VeryLazy' },
+      cond = cond,
       config = conf.worktree,
     })
     tools({
@@ -315,22 +322,6 @@ return function(tools)
       },
     })
   end
-  -- tools({ 'rmagatti/auto-session', config = conf.session, lazy = true })
-
-  -- tools({
-  --   'rmagatti/session-lens',
-  --   cmd = 'SearchSession',
-  --   config = function()
-  --     require('utils.helper').loader('telescope.nvim')
-  --     require('telescope').load_extension('session-lens')
-  --     require('session-lens').setup({
-  --       path_display = { 'shorten' },
-  --       theme_conf = { border = true },
-  --       previewer = true,
-  --     })
-  --   end,
-  -- })
-
   tools({
     'kevinhwang91/nvim-bqf',
     event = { 'CmdlineEnter', 'QuickfixCmdPre' },
@@ -349,11 +340,104 @@ return function(tools)
     'ThePrimeagen/harpoon',
     cmd = { 'HarpoonTerm', 'HarpoonSend', 'HarpoonSendLine' },
     event = { 'CmdlineEnter' },
+    cond = cond,
     module = true,
     opts = {
       excluded_filetypes = { 'harpoon', 'guihua', 'term' },
     },
   })
+
+  tools({
+    'voldikss/vim-translator',
+    keys = { '<Plug>TranslateW', '<Plug>TranslateWV' },
+    init = function()
+      vim.api.nvim_set_keymap(
+        'n',
+        '<Leader>ts',
+        '<Plug>TranslateW',
+        { noremap = true, silent = true }
+      )
+      vim.api.nvim_set_keymap(
+        'v',
+        '<Leader>ts',
+        '<Plug>TranslateWV',
+        { noremap = true, silent = true }
+      )
+    end,
+  })
+  tools({
+    'joaomsa/telescope-orgmode.nvim',
+    cond = cond,
+    event = { 'CmdlineEnter', 'CursorHold' },
+  })
+  --The linediff plugin provides a simple command, :Linediff, which is used to diff two separate blocks of text.
+  tools({ 'AndrewRadev/linediff.vim', cmd = { 'Linediff' } }) -- , "'<,'>Linediff"
+  --
+
+  if not require('core.global').is_windows then
+    tools({
+      'ibhagwan/fzf-lua',
+      cmd = { 'FzfLua' },
+      cond = cond,
+      dependencies = {
+        { 'junegunn/fzf', build = './install --bin' },
+      },
+      config = function()
+        require('fzf-lua').setup({
+          -- winopts = {
+          --   preview = {
+          --     default = 'bat_native',
+          --   },
+          --   on_create = function()
+          --     vim.opt_local.buflisted = false
+          --   end,
+          -- },
+        })
+      end,
+    })
+  end
+  -- keybindings for chatgpt https://github.com/jackMort/ChatGPT.nvim/tree/main#interactive-popup
+  tools({
+    'jackMort/ChatGPT.nvim',
+    event = { 'CmdlineEnter', 'CursorHold' },
+    cond = cond,
+    opts = {
+      popup_window = { border = {
+        text = {
+          top = 'wisper',
+        },
+      } },
+      openai_params = {
+        model = 'gpt-3.5-turbo',
+      },
+      openai_edit_params = {
+        model = 'gpt-3.5-turbo',
+      },
+    },
+
+    dependencies = {
+      'MunifTanjim/nui.nvim',
+      'nvim-lua/plenary.nvim',
+      'nvim-telescope/telescope.nvim',
+    },
+  })
+end
+
+  -- tools({ 'rmagatti/auto-session', config = conf.session, lazy = true })
+
+  -- tools({
+  --   'rmagatti/session-lens',
+  --   cmd = 'SearchSession',
+  --   config = function()
+  --     require('utils.helper').loader('telescope.nvim')
+  --     require('telescope').load_extension('session-lens')
+  --     require('session-lens').setup({
+  --       path_display = { 'shorten' },
+  --       theme_conf = { border = true },
+  --       previewer = true,
+  --     })
+  --   end,
+  -- })
 
   -- tools({
   --   'jvgrootveld/telescope-zoxide',
@@ -417,78 +501,3 @@ return function(tools)
   --   end,
   -- })
   -- end
-
-  tools({
-    'voldikss/vim-translator',
-    keys = { '<Plug>TranslateW', '<Plug>TranslateWV' },
-    init = function()
-      vim.api.nvim_set_keymap(
-        'n',
-        '<Leader>ts',
-        '<Plug>TranslateW',
-        { noremap = true, silent = true }
-      )
-      vim.api.nvim_set_keymap(
-        'v',
-        '<Leader>ts',
-        '<Plug>TranslateWV',
-        { noremap = true, silent = true }
-      )
-    end,
-  })
-  tools({
-    'joaomsa/telescope-orgmode.nvim',
-    cond = cond,
-    event = { 'CmdlineEnter', 'CursorHold' },
-  })
-  --The linediff plugin provides a simple command, :Linediff, which is used to diff two separate blocks of text.
-  tools({ 'AndrewRadev/linediff.vim', cmd = { 'Linediff' } }) -- , "'<,'>Linediff"
-  --
-
-  if not require('core.global').is_windows then
-    tools({
-      'ibhagwan/fzf-lua',
-      cmd = { 'FzfLua' },
-      cond = cond,
-      dependencies = {
-        { 'junegunn/fzf', build = './install --bin' },
-      },
-      config = function()
-        require('fzf-lua').setup({
-          -- winopts = {
-          --   preview = {
-          --     default = 'bat_native',
-          --   },
-          --   on_create = function()
-          --     vim.opt_local.buflisted = false
-          --   end,
-          -- },
-        })
-      end,
-    })
-  end
-  -- keybindings for chatgpt https://github.com/jackMort/ChatGPT.nvim/tree/main#interactive-popup
-  tools({
-    'jackMort/ChatGPT.nvim',
-    event = { 'CmdlineEnter', 'CursorHold' },
-    opts = {
-      popup_window = { border = {
-        text = {
-          top = 'wisper',
-        },
-      } },
-      openai_params = {
-        model = 'gpt-3.5-turbo',
-      },
-      openai_edit_params = {
-        model = 'gpt-3.5-turbo',
-      },
-    },
-
-    dependencies = {
-      'MunifTanjim/nui.nvim',
-      'nvim-lua/plenary.nvim',
-      'nvim-telescope/telescope.nvim',
-    },
-  })
-end

@@ -117,7 +117,7 @@ function config.scrollview()
   require('scrollview').setup({
     -- column = 0,
     blend = 50,
-    signs_on_startup = {}, -- {'all'}
+    signs_on_startup = { 'marks' }, -- {'all'}
   })
 end
 
@@ -178,7 +178,27 @@ function config.aurora()
   -- vim.cmd("hi EndOfBuffer guibg=NONE ctermbg=NONE") -- remove background
 end
 
-function config.starry()
+function config.starry() end
+-- vim.g.starry_bold = false
+-- vim.g.starry_italic_comments = true
+-- vim.g.starry_italic_keywords = false
+-- vim.g.starry_italic_functions = false
+-- vim.g.starry_italic_variables = false
+-- vim.g.starry_italic_string = false
+-- vim.g.starry_contrast = true
+-- vim.g.starry_borders = true
+-- -- vim.g.starry_deep_black = true --"OLED deep black
+-- vim.g.starry_daylight_switch = true
+-- vim.g.starry_set_hl = true
+-- vim.g.starry_style = "earlysummer" -- 'moonlight' emerald middlenight_blue earlysummer
+-- vim.g.starry_style = "dracula" -- "mariana" --  emerald middlenight_blue earlysummer
+-- vim.g.starry_style = "oceanic" -- 'moonlight' emerald middlenight_blue earlysummer -- vim.g.starry_style = "dark_solar" -- 'moonlight' emerald middlenight_blue earlysummer
+-- vim.g.starry_style = "mariana"
+-- vim.g.starry_style_fix = true
+-- config.default()
+-- vim.g.starry_disable_background = true
+
+function config.starry_conf()
   local opt = {
     'oceanic',
     'darker',
@@ -196,28 +216,20 @@ function config.starry()
   end
   math.randomseed(os.time())
   local v = math.random(1, #opt)
-  vim.g.starry_style = opt[v]
-  vim.g.starry_bold = false
-  vim.g.starry_italic_comments = true
-  vim.g.starry_italic_keywords = false
-  vim.g.starry_italic_functions = false
-  vim.g.starry_italic_variables = false
-  vim.g.starry_italic_string = false
-  vim.g.starry_contrast = true
-  vim.g.starry_borders = true
-  -- vim.g.starry_deep_black = true --"OLED deep black
-  vim.g.starry_daylight_switch = true
-  vim.g.starry_set_hl = true
-  -- vim.g.starry_style = "earlysummer" -- 'moonlight' emerald middlenight_blue earlysummer
-  -- vim.g.starry_style = "dracula" -- "mariana" --  emerald middlenight_blue earlysummer
-  -- vim.g.starry_style = "oceanic" -- 'moonlight' emerald middlenight_blue earlysummer -- vim.g.starry_style = "dark_solar" -- 'moonlight' emerald middlenight_blue earlysummer
-  -- vim.g.starry_style = "mariana"
-  vim.g.starry_style_fix = true
-  -- config.default()
-  vim.g.starry_disable_background = true
+  local starry_style = opt[v]
 
-  if vim.g.starry_style == 'limestone' then
-    vim.g.starry_disable_background = false
+  local disable_bg = true
+  require('starry').setup({
+    disable = {
+      background = disable_bg,
+    },
+    style = {
+      name = 'earlysummer',
+    },
+  })
+
+  if starry_style == 'limestone' then
+    disable_bg = false
   end
 
   vim.api.nvim_create_user_command('Limestone', function(opts)
@@ -225,15 +237,8 @@ function config.starry()
     require('starry').clear()
     require('starry').set('limestone')
   end, { nargs = '*' })
-end
-
-function config.starry_conf()
   require('starry').clear()
-  require('starry').set(vim.g.starry_style)
-  if vim.g.starry_disable_background ~= true then
-    return
-  end
-
+  require('starry').set(starry_style)
   local colors = require('starry.colors').color_table()
   local bg = colors.dark -- dark are set to bg
   lprint('starrybg: ', bg)
@@ -242,10 +247,10 @@ function config.starry_conf()
     return
   end
 
-  if vim.g.starry_style == 'ukraine' then
-    vim.api.nvim_set_hl(0, 'Normal', { bg = bg })
-    return
-  end
+  -- if vim.g.starry_style == 'ukraine' then
+  --   vim.api.nvim_set_hl(0, 'Normal', { bg = bg })
+  --   return
+  -- end
   require('utils.kitty').change_bg(bg)
 end
 

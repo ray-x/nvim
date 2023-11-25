@@ -17,7 +17,25 @@ function lazy.add(repo)
   table.insert(lazy.plug, repo)
 end
 
+local createdir = function()
+  local data_dir = {
+    global.cache_dir .. global.path_sep .. 'backup',
+    global.cache_dir .. global.path_sep .. 'sessions',
+    global.cache_dir .. global.path_sep .. 'swap',
+    global.cache_dir .. global.path_sep .. 'tags',
+    global.cache_dir .. global.path_sep .. 'undo',
+  }
+  -- There only check once that If cache_dir exists
+  -- Then I don't want to check subs dir exists
+  for _, v in pairs(data_dir) do
+    if vim.fn.isdirectory(v) == 0 then
+      os.execute('mkdir -p ' .. v)
+    end
+  end
+end
+
 function lazy:load_modules_lazy()
+  createdir()
   if not win then
     vim.loader.enable()
   end
@@ -31,6 +49,7 @@ function lazy:load_modules_lazy()
     modules_dir .. sep .. 'editor' .. sep .. 'plugins.lua',
     modules_dir .. sep .. 'tools' .. sep .. 'plugins.lua',
   }
+
   if vim.g.vscode then
   -- stylua: ignore
     plugins_list = {

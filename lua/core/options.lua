@@ -185,7 +185,6 @@ local function load_options()
     global_local = vim.tbl_extend('force', global_local, {
       foldmethod = "diff", diffopt = 'context:0', foldlevel = 10, mouse = 'a'
     })
-    -- window_local.cursorline = false
   end
 
   for name, value in pairs(window_local) do
@@ -202,7 +201,7 @@ local function load_options()
     -- foldexpr = "v:lua.vim.treesitter.foldexpr()",  -- will be overwrite by navigator
     -- alternatives = ⣿ ░ ─
     -- stylua: ignore
-    fillchars = { foldclose = "", foldopen = "", vert = "│", fold = " ", diff = "░", msgsep = "‾", foldsep = "│" , eob = ' '},
+    fillchars = { foldclose = "", foldopen = "", vert = "│", fold = " ", diff = "░", msgsep = "", foldsep = "│" , eob = ' '},
   }
   if vim.treesitter.foldtext then
     opts.foldtext = "v:lua.vim.treesitter.foldtext()"

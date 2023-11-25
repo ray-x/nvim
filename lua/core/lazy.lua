@@ -23,53 +23,14 @@ if fsize == nil or fsize < 0 then
   fsize = 1
 end
 
-local load_ts_plugins = true
-local load_lsp = true
-
-if fsize > 1024 * 1024 then
-  load_ts_plugins = false
-  load_lsp = false
-end
-
 -- Create cache dir and subs dir
 local global = require('core.global')
-local createdir = function()
-  local data_dir = {
-    global.cache_dir .. global.path_sep .. 'backup',
-    global.cache_dir .. global.path_sep .. 'sessions',
-    global.cache_dir .. global.path_sep .. 'swap',
-    global.cache_dir .. global.path_sep .. 'tags',
-    global.cache_dir .. global.path_sep .. 'undo',
-  }
-  -- There only check once that If cache_dir exists
-  -- Then I don't want to check subs dir exists
-  for _, v in pairs(data_dir) do
-    if vim.fn.isdirectory(v) == 0 then
-      os.execute('mkdir -p ' .. v)
-    end
-  end
-end
-
-if vim.wo.diff then
-  -- loader(plugins)
-  if load_ts_plugins then
-    loader('nvim-treesitter')
-    require('nvim-treesitter.configs').setup({
-      highlight = { enable = true, use_languagetree = false },
-    })
-  else
-    vim.cmd([[syntax on]])
-  end
-  return
-end
-
 -- load module but not init/config it
 function setup()
   require('core.helper').init()
   local start = require('core.global').start
 
   lprint('lazy core plugins start', vim.loop.now() - start)
-  createdir()
   lprint('I am lazy', vim.loop.now() - start)
   local disable_ft = {
     'NvimTree',
@@ -91,24 +52,15 @@ function setup()
   if fsize > 2 * 1024 * 1024 then
     lprint('syntax off')
     print('syntax off, enable it by :setlocal syntax=on')
-    load_lsp = false
-    load_ts_plugins = false
     vim.cmd([[syntax off]])
   else
     if not syn_on then
       vim.cmd([[syntax manual]])
     end
   end
-  lprint('syntax', vim.loop.now() - start)
+  lprint('syntax', vim.uv.now() - start)
 
   vim.g.vimsyn_embed = 'lPr'
-
-  -- if load_lsp then
-  --   loader('nvim-lspconfig')
-  --   loader('lsp_signature.nvim')
-  -- end
-
-  -- loader('guihua.lua')
 
   vim.cmd([[autocmd FileType vista,guihua,guihua_rust setlocal syntax=on]])
   vim.cmd(
@@ -118,7 +70,7 @@ function setup()
   vim.cmd('tabdo windo set relativenumber')
   vim.cmd('highlight clear ColorColumn')
   vim.cmd("command! Gram lua require'modules.tools.config'.grammcheck()")
-  lprint('lazy colorscheme loaded', vim.loop.now() - start)
+  lprint('lazy colorscheme loaded', vim.uv.now() - start)
 end
 
 local lazy_timer = 20
@@ -126,9 +78,6 @@ setup()
 
 --
 
--- loader('telescope.nvim')
--- loader('harpoon')
--- loader('nvim-notify')
 require('modules.ui.notify').setup()
 -- vim.notify = require('notify')
 
