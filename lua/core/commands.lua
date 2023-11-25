@@ -125,7 +125,7 @@ vim.api.nvim_create_user_command('NewOrg', function(opts)
   if vim.fn.empty(opts.fargs) == 0 then
     fn = opts.fargs[1]
   end
-  local path = '~/Library/CloudStorage/Dropbox/Logseq'
+  local path = vim.fn.expand('~/Library/CloudStorage/Dropbox/Logseq')
   local j = opts.bang or fn
   if j then
     -- this is a page

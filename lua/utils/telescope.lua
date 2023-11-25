@@ -59,6 +59,52 @@ M.git_files = function(opts)
     :find()
 end
 
+-- require('telescope').extensions.orgmode.search_headings
+-- require('telescope').extensions.orgmode.refile_heading
+
+vim.api.nvim_create_user_command('RgHeading', function(opts)
+  require('telescope').extensions.orgmode.search_headings()
+end, { nargs = '*', desc = 'Search org heading' })
+
+vim.api.nvim_create_user_command('RgRefile', function(opts)
+  require('telescope').extensions.orgmode.refile_heading()
+end, { nargs = '*', desc = 'Search fo refile' })
+
+vim.api.nvim_create_user_command('RgHead', function(opts)
+  local w = vim.fn.expand('<cword>')
+  local pwd = vim.fn.expand('~/Library/CloudStorage/Dropbox/Logseq')
+
+  if opts.fargs ~= nil and opts.fargs[1] then
+    w = opts.fargs[1]
+  end
+
+  vim.fn.setreg('p', pwd)
+  -- stylua: ignore
+  require('telescope').extensions.live_grep_args.live_grep_args({
+    default_text = '-i ' .. "'" .. [[^\*+\s+]] .. w .. [[.*]] .. ' ' .. pwd
+  })
+end, { nargs = '*', desc = 'Search for word under cursor' })
+
+vim.api.nvim_create_user_command('RgTag', function(opts)
+  local w = vim.fn.expand('<cword>')
+  local pwd = vim.fn.expand('~/Library/CloudStorage/Dropbox/Logseq')
+
+  if opts.fargs ~= nil and opts.fargs[1] then
+    w = opts.fargs[1]
+  end
+
+  -- "(?:#|\[\[|:tags: |:)[a-zA-Z0-9_@]*ml[a-zA-Z0-9_@]*(?:\]|:|$)"
+  pwd = pwd .. ' --type org' .. ' '
+  vim.fn.setreg('p', pwd)
+  -- (?:#|\[\[|:tags: |:)[a-zA-Z0-9_@]*tagname[a-zA-Z0-9_@]*(?:\]|:|\$)
+  require('telescope').extensions.live_grep_args.live_grep_args({
+    -- stylua: ignore
+    default_text = '-i ' .. "'" .. [[(?:#|\[\[|:tags:\s*|:)[a-zA-Z0-9_@]*]]
+      .. w
+      .. [[[a-zA-Z0-9_@]*(?:\]|:|$)]].. "'" .. ' ' .. pwd,
+  })
+end, { nargs = '*', desc = 'Search for word under cursor' })
+
 vim.api.nvim_create_user_command('Rg', function(opts)
   local w = vim.fn.expand('<cword>')
   local pwd = vim.fn.expand('%:h')

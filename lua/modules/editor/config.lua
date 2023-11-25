@@ -144,7 +144,7 @@ function config.orgmode()
     },
     ensure_installed = { 'org' }, -- Or run :TSUpdate org
   })
-  local org_path = '~/Library/CloudStorage/Dropbox/Logseq'
+  local org_path = vim.fn.expand('~/Library/CloudStorage/Dropbox/Logseq')
   local logseq_path = org_path
   require('orgmode').setup({
     -- mappings = {
