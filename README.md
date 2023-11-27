@@ -1,4 +1,4 @@
-# vim as a programming IDE
+ vim as a programming IDE
 
 ## 🏎 🏎 🏎 Need for speed! 🏎 🏎 🏎
 
@@ -40,7 +40,7 @@ I used following plugin a lots
 
 - `Plug` -> `Dein` -> `Lua-Packer` -> [lazy.nvim](https://github.com/folke/lazy.nvim)
 
-  I followed Glepnir https://github.com/glepnir/nvim dotfiles when I start this repo. 
+  I followed Glepnir https://github.com/glepnir/nvim dotfiles when I start this repo.
   A.T.M. nvim-cmp as a completion engine with LSP, LSP saga. vim-multi-cursor, telescope. treesitter,
   lazy load vim-go. So, other than module folder, I could copy/paste everything else from glepnir's configure file,
   which make my life easier.

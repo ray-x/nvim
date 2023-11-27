@@ -17,11 +17,21 @@ return function(tools)
     },
     module = true,
   })
-  -- tools ({
-  --   '3rd/image.nvim',
-  --   ft = { 'markdown', 'md', 'norg', 'org' },
-  --   opts = {}
-  -- })
+  tools({
+    '3rd/image.nvim',
+    ft = { 'markdown', 'md', 'norg', 'org', 'jupyter' },
+    init = function()
+      -- stylua: ignore
+      package.path = package.path .. ";" .. vim.fn.expand("$HOME") .. "/.luarocks/share/lua/5.1/?/init.lua"
+      package.path = package.path .. ';' .. vim.fn.expand('$HOME') .. '/.luarocks/share/lua/5.1/?.lua'
+    end,
+    opts = {},
+    dependencies = {
+      -- {
+      --   'theHamsta/nvim_rocks', -- not support fish
+      -- },
+    },
+  })
   tools({
     'nvim-telescope/telescope-fzf-native.nvim',
     build = 'make',
@@ -50,6 +60,13 @@ return function(tools)
   })
 
   tools({
+    'stevearc/oil.nvim',
+    opts = {},
+    -- Optional dependencies
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
+    cmd = { 'Oil' },
+  })
+  tools({
     'ray-x/telescope-ast-grep.nvim',
     cond = cond,
     dev = (plugin_folder():find('github') ~= nil),
@@ -77,7 +94,7 @@ return function(tools)
     config = conf.vim_dadbod_ui,
     dependencies = { 'tpope/vim-dadbod', ft = { 'sql' }, cmd = { 'DB' } },
     init = function()
-      vim.g.dbs = {local_pg = 'postgres://postgres:password@localhost:5432/postgres'}
+      vim.g.dbs = { local_pg = 'postgres://postgres:password@localhost:5432/postgres' }
 
       -- vim.cmd([[let g:dbs = {
       -- \ 'eraser': 'postgres://postgres:password@localhost:5432/eraser_local',
@@ -421,83 +438,84 @@ return function(tools)
       'nvim-telescope/telescope.nvim',
     },
   })
+  tools()
 end
 
-  -- tools({ 'rmagatti/auto-session', config = conf.session, lazy = true })
+-- tools({ 'rmagatti/auto-session', config = conf.session, lazy = true })
 
-  -- tools({
-  --   'rmagatti/session-lens',
-  --   cmd = 'SearchSession',
-  --   config = function()
-  --     require('utils.helper').loader('telescope.nvim')
-  --     require('telescope').load_extension('session-lens')
-  --     require('session-lens').setup({
-  --       path_display = { 'shorten' },
-  --       theme_conf = { border = true },
-  --       previewer = true,
-  --     })
-  --   end,
-  -- })
+-- tools({
+--   'rmagatti/session-lens',
+--   cmd = 'SearchSession',
+--   config = function()
+--     require('utils.helper').loader('telescope.nvim')
+--     require('telescope').load_extension('session-lens')
+--     require('session-lens').setup({
+--       path_display = { 'shorten' },
+--       theme_conf = { border = true },
+--       previewer = true,
+--     })
+--   end,
+-- })
 
-  -- tools({
-  --   'jvgrootveld/telescope-zoxide',
-  --     --   config = function()
-  --     local ok, telescope = pcall(require, 'telescope')
-  --     if not ok then
-  --       return
-  --     end
-  --     require('telescope').load_extension('zoxide')
-  --   end,
-  --   event = { 'CmdlineEnter', 'CursorHold' },
-  -- })
-  -- local dep
-  -- if not require('core.global').is_windows then
-  --   dep = { 'kkharji/sqlite.lua' }
-  -- end
-  -- tools({
-  --   'AckslD/nvim-neoclip.lua',
-  --   event = { 'CmdlineEnter' },
-  --   dependencies = dep,
-  --   cond = function()
-  --     return not vim.g.vscode
-  --   end,
-  --   config = function()
-  --     local db
-  --     if not require('core.global').is_windows then
-  --       db = vim.fn.stdpath('data') .. '/databases/neoclip.sqlite3'
-  --     end
-  --     require('neoclip').setup({
-  --       db_path = db,
-  --     })
-  --     require('telescope').load_extension('neoclip')
-  --   end,
-  -- })
-  -- tools({
-  --   'nvim-telescope/telescope-frecency.nvim',
-  --   -- cmd = {'Telescope'},
-  --   cond = cond,
-  --   event = { 'CmdlineEnter', 'CursorHold' },
-  --   config = function()
-  --     local telescope = require('telescope')
-  --     telescope.load_extension('frecency')
-  --     telescope.setup({
-  --       extensions = {
-  --         frecency = {
-  --           default_workspace = 'CWD',
-  --           show_scores = false,
-  --           show_unindexed = true,
-  --           ignore_patterns = { '*.git/*', '*/tmp/*' },
-  --           disable_devicons = false,
-  --           workspaces = {
-  --             -- ["conf"] = "/home/my_username/.config",
-  --             -- ["data"] = "/home/my_username/.local/share",
-  --             -- ["project"] = "/home/my_username/projects",
-  --             -- ["wiki"] = "/home/my_username/wiki"
-  --           },
-  --         },
-  --       },
-  --     })
-  --     -- vim.api.nvim_set_keymap("n", "<leader><leader>p", "<Cmd>lua require('telescope').extensions.frecency.frecency()<CR>", {noremap = true, silent = true})
-  --   end,
-  -- })
-  -- end
+-- tools({
+--   'jvgrootveld/telescope-zoxide',
+--     --   config = function()
+--     local ok, telescope = pcall(require, 'telescope')
+--     if not ok then
+--       return
+--     end
+--     require('telescope').load_extension('zoxide')
+--   end,
+--   event = { 'CmdlineEnter', 'CursorHold' },
+-- })
+-- local dep
+-- if not require('core.global').is_windows then
+--   dep = { 'kkharji/sqlite.lua' }
+-- end
+-- tools({
+--   'AckslD/nvim-neoclip.lua',
+--   event = { 'CmdlineEnter' },
+--   dependencies = dep,
+--   cond = function()
+--     return not vim.g.vscode
+--   end,
+--   config = function()
+--     local db
+--     if not require('core.global').is_windows then
+--       db = vim.fn.stdpath('data') .. '/databases/neoclip.sqlite3'
+--     end
+--     require('neoclip').setup({
+--       db_path = db,
+--     })
+--     require('telescope').load_extension('neoclip')
+--   end,
+-- })
+-- tools({
+--   'nvim-telescope/telescope-frecency.nvim',
+--   -- cmd = {'Telescope'},
+--   cond = cond,
+--   event = { 'CmdlineEnter', 'CursorHold' },
+--   config = function()
+--     local telescope = require('telescope')
+--     telescope.load_extension('frecency')
+--     telescope.setup({
+--       extensions = {
+--         frecency = {
+--           default_workspace = 'CWD',
+--           show_scores = false,
+--           show_unindexed = true,
+--           ignore_patterns = { '*.git/*', '*/tmp/*' },
+--           disable_devicons = false,
+--           workspaces = {
+--             -- ["conf"] = "/home/my_username/.config",
+--             -- ["data"] = "/home/my_username/.local/share",
+--             -- ["project"] = "/home/my_username/projects",
+--             -- ["wiki"] = "/home/my_username/wiki"
+--           },
+--         },
+--       },
+--     })
+--     -- vim.api.nvim_set_keymap("n", "<leader><leader>p", "<Cmd>lua require('telescope').extensions.frecency.frecency()<CR>", {noremap = true, silent = true})
+--   end,
+-- })
+-- end

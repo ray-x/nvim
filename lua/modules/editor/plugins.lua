@@ -80,6 +80,7 @@ return function(editor)
       labels = 'asdfghjklqwertyuiopzxcvbnm0123456789ASDFGHJKLQWERTYUIOPZXCVBNM',
       -- `f`, `F`, `t`, `T`, `;` and `,` motions
       modes = {
+        search = { enabled = false },
         char = {
           enabled = false, -- turned off when and waiting for #183
           -- dynamic configuration for ftFT motions
@@ -138,20 +139,21 @@ return function(editor)
       require('nvim-surround').setup({
         -- Configuration here, or leave empty to use defaults
         -- surround  cs, ds, yss
-        keymaps = {
-          -- default
-          insert = '<C-g>s',
-          insert_line = '<C-g>S',
-          normal = 'ca', -- e.g. caiw"
-          normal_cur = 'cas',
-          normal_line = 'cA',
-          normal_cur_line = 'cAl',
-          visual = 'ca',
-          visual_cur = 'cas',
-          visual_line = 'cA',
-          delete = 'ds',
-          change = 'cs',
-        },
+        -- default
+        -- keymaps = {
+        --   -- default
+        --   insert = '<C-g>s',
+        --   insert_line = '<C-g>S',
+        --   normal = 'ys', -- e.g. ysiw"
+        --   normal_cur = 'yss',
+        --   normal_line = 'yS', -- e.g ySiw"
+        --   normal_cur_line = 'ySS',
+        --   visual = 'ys',
+        --   visual_cur = 'yss',
+        --   visual_line = 'yS',
+        --   delete = 'ds',
+        --   change = 'cs',
+        -- },
       })
     end,
   })
