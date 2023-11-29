@@ -23,7 +23,10 @@ return function(tools)
     init = function()
       -- stylua: ignore
       package.path = package.path .. ";" .. vim.fn.expand("$HOME") .. "/.luarocks/share/lua/5.1/?/init.lua"
-      package.path = package.path .. ';' .. vim.fn.expand('$HOME') .. '/.luarocks/share/lua/5.1/?.lua'
+      package.path = package.path
+        .. ';'
+        .. vim.fn.expand('$HOME')
+        .. '/.luarocks/share/lua/5.1/?.lua'
     end,
     opts = {},
     dependencies = {
@@ -95,16 +98,7 @@ return function(tools)
     dependencies = { 'tpope/vim-dadbod', ft = { 'sql' }, cmd = { 'DB' } },
     init = function()
       vim.g.dbs = { local_pg = 'postgres://postgres:password@localhost:5432/postgres' }
-
-      -- vim.cmd([[let g:dbs = {
-      -- \ 'eraser': 'postgres://postgres:password@localhost:5432/eraser_local',
-      -- \ 'staging': 'postgres://postgres:password@localhost:5432/my-staging-db',
-      -- \ 'wp': 'mysql://root@localhost/wp_awesome' }]])
-      -- vim.g.dbs = {
-      -- eraser = 'postgres://postgres:password@localhost:5432/eraser_local',
-      -- staging = 'postgres://postgres:password@localhost:5432/my-staging-db',
-      -- wp = 'mysql://root@localhost/wp_awesome',
-      -- }
+      vim.g.db_ui_use_nerd_fonts = 1
     end,
   })
   -- tools({ 'mattn/webapi-vim', lazy = true })
@@ -206,7 +200,7 @@ return function(tools)
   --
   tools({
     'kazhala/close-buffers.nvim',
-    cmd = { 'Kwbd', 'BDelete', 'BWipeout', 'Bd' },
+    cmd = { 'BDelete', 'BWipeout', 'Bd' },
     config = conf.close_buffers,
   })
 
@@ -438,6 +432,7 @@ return function(tools)
       'nvim-telescope/telescope.nvim',
     },
   })
+
   tools()
 end
 
@@ -519,3 +514,23 @@ end
 --   end,
 -- })
 -- end
+
+
+-- tools({ -- spend hours but still failed to get it work, can not set sources dynamically, also seems the repo is not maintained for months
+--   'kndndrj/nvim-dbee',
+--   dependencies = {
+--     'MunifTanjim/nui.nvim',
+--   },
+--   event = { 'CmdlineEnter' },
+--   ft = 'sql',
+--   build = function()
+--     require('dbee').install()
+--   end,
+--   config = function()
+--     if vim.fn.empty(vim.g.connections) == 1 then
+--       require('utils.database').load_dbs()
+--     end
+--     vim.env.DBEE_CONNECTIONS = vim.inspect(vim.g.connections)
+--     require('dbee').setup()
+--   end,
+-- })

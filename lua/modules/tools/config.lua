@@ -1,39 +1,4 @@
 local config = {}
-
-local function load_env()
-  -- load env from `env` output
-  if vim.fn.executable('env') == 0 then
-    return
-  end
-  print('calling loadenv')
-  local env = vim.fn.systemlist('env')
-  -- find all env contails `DATABASE_URL` e.g. `ACCOUNT_DATABASE_URL`
-  local dbs = {}
-  for _, item in pairs(env) do
-    if vim.fn.stridx(item, 'DATABASE_URL') >= 0 then
-      local db_name = vim.fn.split(item, '_')[1]:lower()
-      print(db_name)
-      dbs[db_name] = vim.fn.split(item, '=')[2]
-    end
-  end
-  return dbs
-end
-
-local function load_env_file()
-  local env_file = require('core.global').home .. require('core.global').path_sep .. '.env'
-  local env_contents = {}
-  if vim.fn.filereadable(env_file) ~= 1 then
-    return
-  end
-  local contents = vim.fn.readfile(env_file)
-  for _, item in pairs(contents) do
-    local line_content = vim.fn.split(item, '=')
-    env_contents[line_content[1]] = line_content[2]
-  end
-
-  return env_contents
-end
-
 -- function config.session()
 --   local opts = {
 --     bypass_session_save_file_types = {
@@ -45,22 +10,6 @@ end
 --     },
 --   }
 -- end
-
-local function load_dbs()
-  local env_contents = load_env_file()
-  local dbs = {}
-  for key, value in pairs(env_contents or {}) do
-    if vim.fn.stridx(key, 'DB_CONNECTION_') >= 0 then
-      local db_name = vim.fn.split(key, '_')[3]:lower()
-      dbs[db_name] = value
-    end
-  end
-  local env_dbs = load_env() or {}
-  print(vim.inspect(env_dbs),vim.inspect(dbs))
-  dbs = vim.tbl_extend('force', dbs, env_dbs )
-  dbs = vim.tbl_extend('force', vim.g.dbs, dbs )
-  vim.g.dbs = dbs
-end
 
 function config.worktree()
   local function git_worktree(arg)
@@ -155,7 +104,9 @@ function config.vim_dadbod_ui()
   " set tabstop=2
   " set smartindent
   ]])
-  load_dbs()
+  if vim.fn.exists('g:connections') == 0 then
+    require('utils.database').load_dbs()
+  end
 end
 
 function config.project()
@@ -376,11 +327,6 @@ function config.close_buffers()
       end
     end,
   })
-  vim.api.nvim_create_user_command('Kwbd', function(opts)
-    local arg = opts.fargs[1] or ''
-    print('using Bd instead')
-    vim.cmd('Bd ' .. arg)
-  end, { range = true, nargs = '*' })
 
   vim.api.nvim_create_user_command('Bd', function(opts)
     local arg = opts.fargs[1] or ''

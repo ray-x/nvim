@@ -62,9 +62,8 @@ return function(use)
     -- event = 'InsertEnter',
     ft = { 'sql' },
     init = function()
-      vim.cmd([[autocmd FileType sql setlocal omnifunc=vim_dadbod_completion#omni]])
-      -- vim.cmd([[autocmd FileType sql,mysql,plsql lua require('cmp').setup.buffer({ sources = {{ name = 'vim-dadbod-use' }} })]])
-      -- body
+      -- vim.cmd([[autocmd FileType sql setlocal omnifunc=vim_dadbod_completion#omni]])
+      vim.cmd([[autocmd FileType sql,mysql,plsql lua require('cmp').setup.buffer({ sources = {{ name = 'vim-dadbod-use' }} })]])
     end,
   })
 

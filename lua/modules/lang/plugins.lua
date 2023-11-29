@@ -32,6 +32,7 @@ return function(lang)
   end
   lang({
     'nvim-treesitter/nvim-treesitter-textobjects',
+    dependencies = { 'nvim-treesitter' },
     config = ts.treesitter_obj,
     -- module = true,
     event = { 'CursorHold' },
@@ -76,9 +77,9 @@ return function(lang)
   })
 
   lang({
-    'Wansmer/symbol-usage.nvim',
+    'Wansmer/symbol-usage.nvim', -- count symbol usage
     event = { 'BufReadPre', 'LspAttach' },
-    config = conf.symbol_count,
+    config = conf.symbol_usage,
   })
 
   if typecheck({ 'md', 'org', 'norg' }) then
@@ -103,49 +104,54 @@ return function(lang)
 
   if typecheck({ 'python', 'javascript', 'py', 'ts', 'tsx', 'js', 'jsx' }) then
     lang({
-      'dccsillag/magma-nvim',
+      'benlubas/molten-nvim',
       ft = 'python',
-      build = 'UpdateRemotePlugins',
-      lazy = false,
-      cmd = {
-        'MagmaRun',
-        'MagmaRunCell',
-        'MagmaRunCellAndMove',
-        'MagmaRunCellAndStay',
-        'MagmaRunCellAndInsert',
-        'MagmaRunCel',
-        'MagmaInit',
-      },
-      keys = {
-        {
-          '<leader>mi',
-          '<cmd>MagmaInit python3<CR>',
-          desc = 'This command initializes a runtime for the current buffer.',
-        },
-        {
-          '<leader>mo',
-          '<cmd>MagmaEvaluateOperator<CR>',
-          desc = 'Evaluate the text given by some operator.',
-        },
-        { '<leader>ml', '<cmd>MagmaEvaluateLine<CR>', desc = 'Evaluate the current line.' },
-        { '<leader>mv', '<cmd>MagmaEvaluateVisual<CR>', desc = 'Evaluate the selected text.' },
-        {
-          '<leader>mc',
-          '<cmd>MagmaEvaluateOperator<CR>',
-          desc = 'Reevaluate the currently selected cell.',
-        },
-        {
-          '<leader>mr',
-          '<cmd>MagmaRestart!<CR>',
-          desc = 'Shuts down and restarts the current kernel.',
-        },
-        {
-          '<leader>mx',
-          '<cmd>MagmaInterrupt<CR>',
-          desc = 'Interrupts the currently running cell and does nothing if not cell is running.',
-        },
-      },
+      cmd = { 'MoltenLoad', 'MoltenInit', 'MoltenInfo', 'MoltenEvaluateVisual', 'MoltenEvaluateLine', 'MoltenReevaluateCell' }
     })
+    -- lang({
+    --   'dccsillag/magma-nvim',
+    --   ft = 'python',
+    --   build = 'UpdateRemotePlugins',
+    --   lazy = false,
+    --   cmd = {
+    --     'MagmaRun',
+    --     'MagmaRunCell',
+    --     'MagmaRunCellAndMove',
+    --     'MagmaRunCellAndStay',
+    --     'MagmaRunCellAndInsert',
+    --     'MagmaRunCel',
+    --     'MagmaInit',
+    --   },
+    --   keys = {
+    --     {
+    --       '<leader>mi',
+    --       '<cmd>MagmaInit python3<CR>',
+    --       desc = 'This command initializes a runtime for the current buffer.',
+    --     },
+    --     {
+    --       '<leader>mo',
+    --       '<cmd>MagmaEvaluateOperator<CR>',
+    --       desc = 'Evaluate the text given by some operator.',
+    --     },
+    --     { '<leader>ml', '<cmd>MagmaEvaluateLine<CR>', desc = 'Evaluate the current line.' },
+    --     { '<leader>mv', '<cmd>MagmaEvaluateVisual<CR>', desc = 'Evaluate the selected text.' },
+    --     {
+    --       '<leader>mc',
+    --       '<cmd>MagmaEvaluateOperator<CR>',
+    --       desc = 'Reevaluate the currently selected cell.',
+    --     },
+    --     {
+    --       '<leader>mr',
+    --       '<cmd>MagmaRestart!<CR>',
+    --       desc = 'Shuts down and restarts the current kernel.',
+    --     },
+    --     {
+    --       '<leader>mx',
+    --       '<cmd>MagmaInterrupt<CR>',
+    --       desc = 'Interrupts the currently running cell and does nothing if not cell is running.',
+    --     },
+    --   },
+    -- })
     lang({ 'metakirby5/codi.vim', ft = { 'python', 'javascript' }, cmd = { 'Codi', 'CodiNew' } })
     lang({ 'Vigemus/iron.nvim', ft = 'python', config = conf.iron })
     lang({ 'yardnsm/vim-import-cost', ft = { 'javascript' }, cmd = 'ImportCost' })
@@ -158,6 +164,11 @@ return function(lang)
 
   -- lang['scalameta/nvim-metals'] = {dependencies = {"nvim-lua/plenary.nvim"}}
   -- lang { "lifepillar/pgsql.vim",ft = {"sql", "pgsql"}}
+  lang({
+    'nanotee/sqls.nvim',
+    ft = { 'sql', 'pgsql' },
+    module = true,
+  })
 
   lang({
     'simrat39/rust-tools.nvim',

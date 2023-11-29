@@ -220,6 +220,7 @@ function config.navigator()
       },
       flow = { autostart = false },
 
+      sqlls = {},
       sqls = {
         on_attach = function(client)
           client.server_capabilities.documentFormattingProvider = false -- efm
@@ -232,6 +233,22 @@ function config.navigator()
       servers = { 'terraform_lsp', 'vuels', 'tailwindcss' },
     },
   }
+  nav_cfg.lsp.sqlls = function()
+    if vim.fn.exists('g:connections') ~= 1 then
+      require('utils.database').load_dbs()
+    end
+    -- if database not detected
+    if vim.fn.empty(vim.g.connections) == 1 then
+      return {}
+    end
+    local conns = {}
+    return {
+      connections = vim.g.connections,
+      on_attach = function(client, bufnr)
+        require('sqls').on_attach(client, bufnr)
+      end,
+    }
+  end
   nav_cfg.lsp.gopls = function()
     if vim.tbl_contains({ 'go', 'gomod' }, vim.bo.filetype) then
       local go = pcall(require, 'go')
@@ -406,7 +423,7 @@ function config.context_vt()
   })
 end
 
-function config.symbol_count()
+function config.symbol_usage()
   local function h(name)
     return vim.api.nvim_get_hl(0, { name = name })
   end
@@ -416,27 +433,26 @@ function config.symbol_count()
   vim.api.nvim_set_hl(
     0,
     'SymbolUsageContent',
-    { bg = h('@comment').bg, fg = h('Comment').fg, italic = true }
+    { fg = h('Comment').fg, italic = true }
   )
   vim.api.nvim_set_hl(
     0,
     'SymbolUsageRef',
-    { fg = h('@comment').fg, bg = h('Comment').bg, italic = true }
+    { fg = h('Ignore').fg, bg = h('Comment').bg, italic = true }
   )
   vim.api.nvim_set_hl(
     0,
     'SymbolUsageDef',
-    { fg = h('@comment').fg, bg = h('Comment').bg, italic = true }
+    { fg = h('Ignore').fg, bg = h('Comment').bg, italic = true }
   )
   vim.api.nvim_set_hl(
     0,
     'SymbolUsageImpl',
-    { fg = h('@comment').fg, bg = h('Comment').bg, italic = true }
+    { fg = h('Ignore').fg, bg = h('Comment').bg, italic = true }
   )
 
   local function text_format(symbol)
     local res = {}
-
 
     if symbol.references then
       local usage = symbol.references <= 1 and 'usage' or 'usages'

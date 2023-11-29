@@ -41,21 +41,20 @@ end
 
 local treesitter_obj = function()
   local lines = vim.fn.line('$')
+  local enable = true
   if lines > 8000 then -- skip some settings for large file
     print('skip treesitter obj')
     return
   end
 
-  local enable = true
   if lines > 4000 then
     enable = false
   end
-
+  -- lprint('ts obj', enable)
   require('nvim-treesitter.configs').setup({
-
-    indent = { enable = enable },
+    -- indent = { enable = enable },
     incremental_selection = {
-      enable = false, -- use textobjects
+      enable = true, -- use textobjects
       -- disable = {"elm"},
       keymaps = {
         -- mappings for incremental selection (visual mappings)
@@ -82,8 +81,8 @@ local treesitter_obj = function()
         },
         goto_next_end = { [']M'] = '@function.outer', [']]'] = '@class.outer' },
         goto_previous_start = {
-          ['[m'] = { query = { '@function.inner', '@function.outer' } },
-          ['[['] = { query = { '@class.inner', '@class.outer' } },
+          ['[m'] = { query = { '@function.inner', '@function.outer' }, desc = 'previous func' },
+          ['[['] = { query = { '@class.inner', '@class.outer' }, desc = 'class inner/outer' },
           ['[o'] = {
             --stylua: ignore
             query = {
@@ -93,26 +92,37 @@ local treesitter_obj = function()
               '@function.innner', '@function.outer',
               '@class.innner', '@class.outer',
             },
+            desc = 'previous scope',
           },
         },
-        goto_previous_end = { ['[M'] = '@function.outer', ['[]'] = '@class.outer' },
+        goto_previous_end = {
+          ['[M'] = { query = '@function.outer', desc = 'previous func' },
+          ['[]'] = { query = '@class.outer', desc = 'previous class' },
+        },
         goto_next = {
-          [']D'] = '@conditional.outer',
+          [']D'] = { query = '@conditional.outer', desc = 'next conditional' },
         },
         goto_previous = {
-          ['[D'] = '@conditional.outer',
+          ['[D'] = { query = '@conditional.outer', desc = 'previous conditional' },
         },
       },
       select = {
-        enable = enable,
+        enable = true,
         lookahead = true,
         keymaps = {
           -- You can use the capture groups defined in textobjects.scm
-          ['af'] = { '@function.outer', desc = 'select inner class' },
-          ['if'] = { '@function.inner', desc = 'select inner function' },
-          ['ac'] = { '@class.outer', desc = 'select outer class' },
-          ['ic'] = { '@class.inner', desc = 'select inner class' },
+          ['af'] = { query = '@function.outer', desc = 'select inner class' },
+          ['if'] = { query = '@function.inner', desc = 'select inner function' },
+          ['ac'] = { query = '@class.outer', desc = 'select outer class' },
+          ['ic'] = { query = '@class.inner', desc = 'select inner class' },
+          ['as'] = { query = '@scope', query_group = 'locals', desc = 'Select language scope' },
         },
+        selection_modes = {
+          ['@parameter.outer'] = 'v', -- charwise
+          ['@function.outer'] = 'V', -- linewise
+          ['@class.outer'] = '<c-v>', -- blockwise
+        },
+        include_surrounding_whitespace = false,
       },
       swap = { -- use ISWAP
         enable = false,

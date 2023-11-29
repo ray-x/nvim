@@ -54,32 +54,35 @@ return {
     require('mini.ai').setup({
       custom_textobjects = {
         ['b'] = { { '%b()', '%b[]', '%b{}' }, '^.%s*().-()%s*.$' },
-        -- ['a'] = gen_spec.treesitter({ a = '@parameter.outer', i = '@parameter.outer' }),
-        o = gen_spec.treesitter({
-          a = { '@block.outer', '@conditional.outer', '@loop.outer' },
-          i = { '@block.inner', '@conditional.inner', '@loop.inner' },
-        }, {}),
-        --
-        c = gen_spec.treesitter({ a = '@class.outer', i = '@class.inner' }, {}),
+        -- seems not as useful
         x = require('mini.ai').gen_spec.treesitter(
           { a = '@comment.outer', i = '@comment.inner' },
           {}
         ),
-        ['f'] = gen_spec.treesitter({ a = '@function.outer', i = '@function.inner' }),
-        ['L'] = function(type)
-          if vim.api.nvim_get_current_line() == '' then
-            return
-          end
-          vim.cmd.normal({ type == 'i' and '^' or '0', bang = true })
-          local from_line, from_col = unpack(vim.api.nvim_win_get_cursor(0))
-          local from = { line = from_line, col = from_col + 1 }
-          vim.cmd.normal({ type == 'i' and 'g_' or '$', bang = true })
-          local to_line, to_col = unpack(vim.api.nvim_win_get_cursor(0))
-          local to = { line = to_line, col = to_col + 1 }
-          return { from = from, to = to }
-        end,
+        -- ts obj for following
+        -- ['f'] = gen_spec.treesitter({ a = '@function.outer', i = '@function.inner' }), -- using ts
+        -- ['a'] = gen_spec.treesitter({ a = '@parameter.outer', i = '@parameter.outer' }),
+        -- o = gen_spec.treesitter({
+        --   a = { '@block.outer', '@conditional.outer', '@loop.outer' },
+        --   i = { '@block.inner', '@conditional.inner', '@loop.inner' },
+        -- }, {}),
+        --
+        -- c = gen_spec.treesitter({ a = '@class.outer', i = '@class.inner' }, {}),
+        -- line selection
+        -- ['L'] = function(type)
+        --   if vim.api.nvim_get_current_line() == '' then
+        --     return
+        --   end
+        --   vim.cmd.normal({ type == 'i' and '^' or '0', bang = true })
+        --   local from_line, from_col = unpack(vim.api.nvim_win_get_cursor(0))
+        --   local from = { line = from_line, col = from_col + 1 }
+        --   vim.cmd.normal({ type == 'i' and 'g_' or '$', bang = true })
+        --   local to_line, to_col = unpack(vim.api.nvim_win_get_cursor(0))
+        --   local to = { line = to_line, col = to_col + 1 }
+        --   return { from = from, to = to }
+        -- end,
+        -- entire buffer
         e = function(ai_type)
-          -- entire buffer
           if ai_type == 'i' then
             local first_non_blank = vim.fn.nextnonblank(1)
             local final_non_blank = vim.fn.prevnonblank(vim.fn.line('$'))

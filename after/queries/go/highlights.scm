@@ -8,7 +8,7 @@
 (("for"      @keyword) (#set! conceal ""))
 (("switch"   @keyword) (#set! conceal "🎮"))
 (("default"  @keyword) (#set! conceal  "󰯴"))
-(("break"    @keyword.return) (#set! conceal  "⏹️"))
+(("break"    @keyword.return) (#set! conceal  "󱞣"))
 (("case"     @keyword) (#set! conceal  ""))
 (("import"   @keyword) (#set! conceal  "󰶮"))
 (("package"  @keyword) (#set! conceal  ""))

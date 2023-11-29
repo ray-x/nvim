@@ -1,3 +1,4 @@
+-- note: default mapping https://github.com/nvim-telescope/telescope.nvim/blob/master/lua/telescope/mappings.lua
 local a = vim.api
 
 local loader = require('utils.helper').loader
