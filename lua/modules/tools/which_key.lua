@@ -45,33 +45,19 @@ local function config()
       ['operator'] = '',
     },
     window = {
-      margin = { 0, 0, 0, 0 }, -- extra window margin [top, right, bottom, left]
-      padding = { 0, 0, 0, 0 }, -- extra window padding etop, right, bottom, lefte
       winblend = 20,
     },
     layout = {
-      height = { min = 1, max = 4 }, -- min and max height of the columns
-      spacing = 3, -- spacing between columns
-      width = { min = 12, max = 40 }, -- min and max width of the columns
-      align = 'left', -- align columns left, center or right
+      height = { min = 4, max = 20 }, -- min and max height of the columns
+      width = { min = 10, max = 50 }, -- min and max width of the columns
+      spacing = 2, -- spacing between columns
     },
-    hidden = {
-      '<silent>',
-      '<cmd>',
-      '<Cmd>',
-      '<CR>',
-      'call',
-      'lua',
-      '^:',
-      '^ ',
-      'require',
-      'escope',
-      'erator',
-      '"',
-    }, --
-    -- your configuration comes here
-    -- or leave it empty to use the default settings
-    -- refer to the configuration section below
+    -- stylua: ignore
+    hidden = { '<silent>', '<cmd>', '<Cmd>', '<CR>', 'call', 'lua', '^:', '^ ',
+      'require', 'escope', 'erator', '"', }, --
+    --   -- your configuration comes here
+    --   -- or leave it empty to use the default settings
+    --   -- refer to the configuration section below
   })
 end
 

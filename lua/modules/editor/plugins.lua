@@ -5,7 +5,7 @@ end
 
 return function(editor)
   -- refer to keymap file nmap<Space>s|S   xmap <Leader>x
-  editor({
+  editor({ -- save 1~2 key strokes when replace with paste
     'gbprod/substitute.nvim',
     event = { 'CmdlineEnter', 'TextYankPost', 'CursorHold' },
     config = conf.substitute,
@@ -319,7 +319,7 @@ return function(editor)
     } -- mini.ai to replace targets
   )
 
-  -- true <-> false <SPC>t
+  -- true <-> false <SPC>k
   editor({
     -- 'AndrewRadev/switch.vim',
     'CKolkey/ts-node-action',
@@ -335,15 +335,15 @@ return function(editor)
       require('iswap').setup({})
     end,
   })
-  editor({
-    'chentoast/marks.nvim',
-    lazy = true,
-    cmd = { 'MarksToggleSigns' },
-    config = function()
-      require('marks').setup({})
-    end,
-    keys = { 'm', '<Plug>(Marks-set)', '<Plug>(Marks-toggle)' },
-  })
+  -- editor({
+  --   'chentoast/marks.nvim',
+  --   lazy = true,
+  --   cmd = { 'MarksToggleSigns' },
+  --   config = function()
+  --     require('marks').setup({})
+  --   end,
+  --   keys = { 'm', '<Plug>(Marks-set)', '<Plug>(Marks-toggle)' },
+  -- })
   -- opt to which key
   -- editor({
   --   'tversteeg/registers.nvim',

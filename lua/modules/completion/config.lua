@@ -33,6 +33,9 @@ function config.nvim_cmp()
     -- { name = "cmp_tabnine", keyword_length = 0 },
     { name = 'emoji' },
     { name = 'path' },
+    -- { name = 'copilot' },
+    { name = 'orgmode' },
+    { name = 'buffer' },
   }
   if vim.o.ft == 'sql' then
     table.insert(sources, { name = 'vim-dadbod-completion' })
@@ -40,17 +43,17 @@ function config.nvim_cmp()
 
   if vim.o.ft == 'org' then
     table.insert(sources, { name = 'orgmode' })
-    table.insert(sources, { name = 'spell' })
-    table.insert(sources, { name = 'look' })
   end
   if
     vim.o.ft == 'markdown'
     or vim.o.ft == 'txt'
     or vim.o.ft == 'html'
     or vim.o.ft == 'gitcommit'
+    or vim.o.ft == 'org'
   then
     table.insert(sources, { name = 'spell' })
-    table.insert(sources, { name = 'look' })
+    -- table.insert(sources, { name = 'look' })
+    table.insert(sources, { name = 'latex_symbols' })
   end
   if vim.o.ft == 'lua' then
     table.insert(sources, { name = 'nvim_lua' })
@@ -89,9 +92,10 @@ function config.nvim_cmp()
           luasnip = ' 🐍',
           treesitter = ' ',
           nvim_lua = ' ',
-          spell = ' 暈',
+          spell = '󰓆',
           emoji = '󰞅',
-          copilot = '🤖',
+          latex_symbols = '󰿉',
+          -- copilot = '🤖',
           -- cmp_tabnine = '🤖',
           look = '',
         })[entry.source.name]
@@ -105,8 +109,8 @@ function config.nvim_cmp()
     mapping = {
       ['<C-p>'] = cmp.mapping.select_prev_item(),
       ['<C-n>'] = cmp.mapping.select_next_item(),
-      ['<C-d>'] = cmp.mapping.scroll_docs(-4),
-      ['<C-f>'] = cmp.mapping.scroll_docs(4),
+      ['<C-d>'] = cmp.mapping.scroll_docs(4),
+      ['<C-u>'] = cmp.mapping.scroll_docs(-4),
       ['<C-Space>'] = cmp.mapping.complete(),
       ['<C-e>'] = function(_)
         if cmp.visible() then
@@ -281,14 +285,13 @@ function config.autopairs()
   })
 
   local ok, ts_conds = pcall(require, 'nvim-autopairs.ts-conds')
-  if ok then 
-  local ts_conds = require('nvim-autopairs.ts-conds')
-  -- you need setup cmp first put this after cmp.setup()
-    local r = Rule('%', '%', 'lua') -- press % => %% is only inside comment or string
-      :with_pair(ts_conds.is_ts_node({ 'string', 'comment' })),
-    Rule('$', '$', 'lua'):with_pair(ts_conds.is_not_ts_node({ 'function' })),
-  npairs.add_rules({ r })
-end
+  if ok then
+    local ts_conds = require('nvim-autopairs.ts-conds')
+    -- you need setup cmp first put this after cmp.setup()
+    local r =
+      Rule('%', '%', 'lua') -- press % => %% is only inside comment or string
+        :with_pair(ts_conds.is_ts_node({ 'string', 'comment' })), Rule('$', '$', 'lua'):with_pair(ts_conds.is_not_ts_node({ 'function' })), npairs.add_rules({ r })
+  end
 
   -- If you want insert `(` after select function or method item
   local cmp_autopairs = require('nvim-autopairs.completion.cmp')

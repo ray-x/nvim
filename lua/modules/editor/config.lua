@@ -100,9 +100,8 @@ function config.comment()
     pre_hook = function(ctx)
       -- print("ctx", vim.inspect(ctx))
       -- Only update commentstring for tsx filetypes
-      if
-        vim.tbl_contains({'typescriptreact', 'typescript', 'javascript', 'css', 'html', 'scss', 'svelte', 'uve', 'graphql'}, vim.bo.filetype)
-      then
+      -- stylua: ignore
+      if vim.tbl_contains( { 'typescriptreact', 'typescript', 'javascript', 'css', 'html', 'scss', 'svelte', 'uve', 'graphql' }, vim.bo.filetype ) then
         local hook = require('ts_context_commentstring.integrations.comment_nvim').create_pre_hook()
         hook(ctx)
       end
@@ -209,7 +208,7 @@ function config.orgmode()
       n = {
         description = 'Notes',
         template = '#+TITLE: %?\n#+AUTHER: Ray\n#+TAGS: @note \n#+DATE: %t\n',
-        target = string.format( logseq_path .. '/pages/%s.org', vim.fn.strftime('%Y-%m-%d')),
+        target = string.format(logseq_path .. '/pages/%s.org', vim.fn.strftime('%Y-%m-%d')),
       },
       j = {
         description = 'Journal',
@@ -299,12 +298,12 @@ function config.vmulti()
   vim.g.VM_default_mappings = 1
 
   vim.cmd([[
-    let g:VM_maps = {}
-    let g:VM_maps['Select All'] = '<C-M-n>'
-    let g:VM_maps["Add Cursor Down"] = '<M-Down>'
-    let g:VM_maps["Add Cursor Up"] = "<M-Up>"
-    let g:VM_maps["Mouse Cursor"] = "<M-LeftMouse>"
-    let g:VM_maps["Mouse Word"] = "<M-RightMouse>"
+    let g:VM_maps                      = {}
+    let g:VM_maps['Select All']        = '<C-M-n>'
+    let g:VM_maps["Add Cursor Down"]   = '<M-Down>'
+    let g:VM_maps["Add Cursor Up"]     = "<M-Up>"
+    let g:VM_maps["Mouse Cursor"]      = "<M-LeftMouse>"
+    let g:VM_maps["Mouse Word"]        = "<M-RightMouse>"
     let g:VM_maps["Add Cursor At Pos"] = '<M-i>'
   ]])
 end

@@ -226,6 +226,14 @@ function config.starry_conf()
     style = {
       name = 'earlysummer',
     },
+
+    -- add following to make sure those settings wont break
+    -- custom_colors = {
+    --   line_numbers = '#973799',
+    -- },
+    custom_highlights = {
+      LineNr = { fg = '#973797' },
+    },
   })
 
   if starry_style == 'limestone' then

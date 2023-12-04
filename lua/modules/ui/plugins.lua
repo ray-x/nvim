@@ -5,9 +5,7 @@
 return function(ui)
   local conf = require('modules.ui.config')
   ui({ 'nvim-tree/nvim-web-devicons', lazy = true })
-
   ui({ 'lambdalisue/glyph-palette.vim' })
-
   ui({
     'ray-x/aurora',
     dev = (plugin_folder():find('github') ~= nil),
@@ -87,22 +85,6 @@ return function(ui)
     config = conf.nvim_tree,
   })
 
-  -- ui({
-  --   'nvim-neo-tree/neo-tree.nvim',
-  --   branch = 'main',
-  --   cmd = {
-  --     'Neotree',
-  --     'NeoTreeShowToggle',
-  --     'NeoTreeFocusToggle',
-  --     'NeoTreeRevealToggle',
-  --     'NeoTreeFloat',
-  --     'NeoTreeFloatToggle',
-  --   },
-  --   event = 'VeryLazy',
-  --   lazy = true,
-  --   config = conf.neotree,
-  -- })
-
   ui({
     'lukas-reineke/indent-blankline.nvim',
     lazy = true,
@@ -164,13 +146,26 @@ return function(ui)
   })
 
   ui({ 'catppuccin/nvim', lazy = true, name = 'catppuccin', config = conf.cat })
-
-
   ui({ 'stevearc/dressing.nvim', lazy = true })
 
-  -- feel a bit laggy
 end
 
+  -- ui({
+  --   'nvim-neo-tree/neo-tree.nvim',
+  --   branch = 'main',
+  --   cmd = {
+  --     'Neotree',
+  --     'NeoTreeShowToggle',
+  --     'NeoTreeFocusToggle',
+  --     'NeoTreeRevealToggle',
+  --     'NeoTreeFloat',
+  --     'NeoTreeFloatToggle',
+  --   },
+  --   event = 'VeryLazy',
+  --   lazy = true,
+  --   config = conf.neotree,
+  -- })
+-- feel a bit laggy
 -- ui({
 --   'folke/noice.nvim',
 --   event = 'VeryLazy',

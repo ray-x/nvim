@@ -204,6 +204,8 @@ local plug_keys = {
   -- swap
   ["n|<leader>a"] = map_cmd("ISwapWith"),
   ["n|<leader>A"] = map_cmd("ISwapNodeWith"),
+
+  ['n|<Space>k'] = map_func(function() require('ts-node-action').node_action() end):with_desc("switch node act"),
   -- session
   ["n|<Leader>ss"] = map_cu('SessionSave'):with_noremap(),
   ["n|<Leader>sl"] = map_cu('SessionLoad'):with_noremap(),
@@ -370,6 +372,37 @@ local plug_keys = {
 def_map = vim.tbl_extend('keep', def_map, os_map)
 def_map = vim.tbl_extend('keep', def_map, plug_keys)
 bind.nvim_load_mapping(def_map)
+
+-- amend
+local keymap = vim.keymap
+keymap.amend = require('keymap.amend')
+
+keymap.amend('n', '<Esc>', function(original)
+  if vim.v.hlsearch and vim.v.hlsearch == 1 then
+    vim.cmd('nohlsearch')
+  end
+  original()
+end, { desc = 'disable search highlight' })
+
+keymap.amend('n', ']c', function(original)
+  if not vim.wo.diff then
+    vim.schedule(function()
+      local gs = package.loaded.gitsigns
+      gs.next_hunk()
+    end)
+  else
+    original()
+  end
+end, { desc = 'nextdiff/hunk' })
+
+keymap.amend('n', '[c', function()
+  if not vim.wo.diff then
+    vim.schedule(function()
+      local gs = package.loaded.gitsigns
+      gs.prev_hunk()
+    end)
+  end
+end, { desc = 'prevdiff/hunk' })
 
 return { keymap = def_map }
 

@@ -27,17 +27,15 @@ return function(use)
     dependencies = {
       { 'hrsh7th/cmp-buffer', lazy = true },
       { 'hrsh7th/cmp-nvim-lua', lazy = true },
-      -- { 'hrsh7th/cmp-calc', lazy = true },
       { 'hrsh7th/cmp-path', lazy = true },
+      { 'f3fora/cmp-spell', lazy = true },
       { 'hrsh7th/cmp-cmdline', lazy = true },
-      -- { 'tzachar/cmp-fuzzy-buffer', lazy = true, dependencies = { 'tzachar/fuzzy.nvim' } },
       { 'dmitmel/cmp-cmdline-history', lazy = true },
-      { 'hrsh7th/cmp-copilot', lazy = true },
-      -- { 'hrsh7th/cmp-emoji', lazy = true },
+      -- { 'hrsh7th/cmp-copilot', lazy = true },
       { 'ray-x/cmp-treesitter', dev = (plugin_folder():find('github') ~= nil), lazy = true },
       { 'hrsh7th/cmp-nvim-lsp', lazy = true },
-      -- { 'f3fora/cmp-spell', lazy = true },
       { 'saadparwaiz1/cmp_luasnip', lazy = true },
+      { 'kdheepak/cmp-latex-symbols' },
       { 'windwp/nvim-autopairs', event = 'InsertEnter', module = true, config = function()  require('modules.completion.config').autopairs() end },
     },
     -- stylua: ignore end
@@ -63,7 +61,9 @@ return function(use)
     ft = { 'sql' },
     init = function()
       -- vim.cmd([[autocmd FileType sql setlocal omnifunc=vim_dadbod_completion#omni]])
-      vim.cmd([[autocmd FileType sql,mysql,plsql lua require('cmp').setup.buffer({ sources = {{ name = 'vim-dadbod-use' }} })]])
+      vim.cmd(
+        [[autocmd FileType sql,mysql,plsql lua require('cmp').setup.buffer({ sources = {{ name = 'vim-dadbod-use' }} })]]
+      )
     end,
   })
 
@@ -104,7 +104,7 @@ return function(use)
         border = 'rounded', -- "shadow", --{"╭", "─" ,"╮", "│", "╯", "─", "╰", "│" },
       },
       hint_inline = function()
-        return vim.fn.has('nvim-0.10') == 1
+        if vim.fn.has('nvim-0.10') == 1 then return "inline" else return "eol" end
       end,
       max_height = 4,
       toggle_key = [[<M-x>]], -- toggle signature on and off in insert mode,  e.g. '<M-x>'
@@ -126,17 +126,24 @@ return function(use)
         gitcommit = false,
         NeogitCommitMessage = false,
       }
-      vim.cmd([[
-      imap <silent><script><expr> <C-j> copilot#Accept()
-      let g:copilot_no_tab_map = v:true
-      let g:copilot_assume_mapped = v:true
-      let g:copilot_tab_fallback = ""
-    ]])
+      vim.cmd([[imap <silent><script><expr> <C-J> copilot#Accept("\<CR>")]])
+      -- vim.keymap.set('i', '<C-J>', function()
+      --   vim.fn['copilot#Accept']('<CR>')
+      -- end, { desc = 'copilot accept', replace_keycodes = false })
+      -- vim.keymap.set('i', '<C-J>', 'copilot#Accept("\\<CR>")', {
+      --     expr = true,
+      --     replace_keycodes = false
+      --   })
+      vim.g.copilot_no_tab_map = true
     end,
   })
-  use(
-{
-    "hinell/lsp-timeout.nvim",
-    dependencies={ "neovim/nvim-lspconfig" }}
-  )
+  use({
+    'hinell/lsp-timeout.nvim', -- reset lsp from time to time
+    dependencies = { 'neovim/nvim-lspconfig' },
+    event = 'InsertEnter',
+  })
 end
+
+-- { 'hrsh7th/cmp-calc', lazy = true },
+-- { 'hrsh7th/cmp-emoji', lazy = true },
+-- { 'tzachar/cmp-fuzzy-buffer', lazy = true, dependencies = { 'tzachar/fuzzy.nvim' } },

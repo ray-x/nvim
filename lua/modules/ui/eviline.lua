@@ -321,7 +321,19 @@ basic.square_mode = {
     return { { '▊', state.mode[2] } }
   end,
 }
-
+basic.macro_recording = {
+  name = 'macro_recording',
+  hl_colors = {
+    red = { 'red', 'NormalBg' },
+  },
+  text = function()
+    local recording_register = vim.fn.reg_recording()
+    if recording_register == '' then
+      return ''
+    end
+    return 'Recording @' .. recording_register
+  end,
+}
 basic.lsp_diagnos = {
   name = 'diagnostic',
   hl_colors = {
@@ -656,6 +668,7 @@ local default = {
   active = {
     basic.square_mode,
     basic.vi_mode,
+    basic.macro_recording,
     basic.git_branch,
     basic.file,
     { '%S', { 'green', 'NormalBg' } },
