@@ -44,23 +44,24 @@ local load_core = function()
   vim.api.nvim_set_hl(0, 'Pmenu', { bg = 'None' })
   vim.api.nvim_set_hl(0, 'SignColumn', { bg = 'None' })
   vim.api.nvim_set_hl(0, 'FoldColumn', { bg = 'None' })
-
   require('core.options')
   -- require('core.mapping')
   require('core.runner')
   require('keymap')
   require('core.event')
   _G.lprint = require('utils.log').lprint
-  require('core.lazy_nvim'):boot_strap()
-  require('core.colorscheme').load_colorscheme()
+  local fsz = require('core.lazy_nvim'):boot_strap() or 1024
+  if fsz < 10 * 1024 * 1024 then
+    require('core.colorscheme').load_colorscheme()
+  end
   if vim.wo.diff then
     return
   end
   require('core.commands')
   lprint('load compiled and lazy', uv.now() - start)
 
-  require('core.lazy')
-  lprint("lazy done", uv.now() - start)
+  require('core.lazy').setup(fsz)
+  lprint('lazy done', uv.now() - start)
 end
 
 load_core()

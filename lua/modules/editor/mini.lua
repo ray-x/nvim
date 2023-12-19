@@ -60,14 +60,14 @@ return {
           {}
         ),
         -- ts obj for following
-        -- ['f'] = gen_spec.treesitter({ a = '@function.outer', i = '@function.inner' }), -- using ts
-        -- ['a'] = gen_spec.treesitter({ a = '@parameter.outer', i = '@parameter.outer' }),
-        -- o = gen_spec.treesitter({
-        --   a = { '@block.outer', '@conditional.outer', '@loop.outer' },
-        --   i = { '@block.inner', '@conditional.inner', '@loop.inner' },
-        -- }, {}),
+        ['f'] = gen_spec.treesitter({ a = '@function.outer', i = '@function.inner' }), -- using ts
+        ['a'] = gen_spec.treesitter({ a = '@parameter.outer', i = '@parameter.outer' }),
+        o = gen_spec.treesitter({
+          a = { '@block.outer', '@conditional.outer', '@loop.outer' },
+          i = { '@block.inner', '@conditional.inner', '@loop.inner' },
+        }, {}),
         --
-        -- c = gen_spec.treesitter({ a = '@class.outer', i = '@class.inner' }, {}),
+        c = gen_spec.treesitter({ a = '@class.outer', i = '@class.inner' }, {}),
         -- line selection
         -- ['L'] = function(type)
         --   if vim.api.nvim_get_current_line() == '' then
@@ -126,11 +126,13 @@ return {
 
     require('mini.bufremove').setup({})
     require('mini.trailspace').setup({})
-    require('mini.sessions').setup{
+    require('mini.sessions').setup({
       force = {
-        read = true, write = true, delete = true,
-      }
-    }
+        read = true,
+        write = true,
+        delete = true,
+      },
+    })
 
     -- booperlv/nvim-gomove
     -- <A-k>   Move current line/selection up

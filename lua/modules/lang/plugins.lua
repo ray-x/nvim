@@ -35,9 +35,14 @@ return function(lang)
     dependencies = { 'nvim-treesitter' },
     config = ts.treesitter_obj,
     -- module = true,
-    event = { 'CursorHold' },
+    event = { 'CursorHold', 'CursorHoldI' },
   })
 
+  lang({
+    'chrisgrieser/nvim-various-textobjs',
+    event = { 'CursorHold', 'CursorHoldI' },
+    opts = { useDefaultKeymaps = true, disabledKeymaps = {} },
+  })
   -- -- use flash.nvim
   -- -- lang({
   -- --   'RRethy/nvim-treesitter-textsubjects',
@@ -416,85 +421,84 @@ return function(lang)
   })
 end
 
+-- lang({
+--   'rafcamlet/nvim-luapad',
+--   lazy = true,
+--   cmd = { 'Lua', 'Luapad' },
+--   config = conf.luapad,
+-- })
 
-  -- lang({
-  --   'rafcamlet/nvim-luapad',
-  --   lazy = true,
-  --   cmd = { 'Lua', 'Luapad' },
-  --   config = conf.luapad,
-  -- })
+-- if vim.fn.has('nvim-0.11') == 1 then
+--   lang({
+--     'Bekaboo/dropbar.nvim',
+--     -- optional, but required for fuzzy finder support
+--     dependencies = {
+--       'nvim-telescope/telescope-fzf-native.nvim',
+--     },
+--     event = { 'WinScrolled' },
+--     opts = {
+--       ---@type boolean|fun(buf: integer, win: integer, info: table?): boolean
+--       enable = function(buf, win, _)
+--         return not vim.api.nvim_win_get_config(win).zindex
+--           and not vim.bo[buf].buftype == ''
+--           and (not vim.tbl_contains(
+--             { 'help', 'guihua', 'terminal', 'markdown' },
+--             vim.bo[buf].buftype
+--           ))
+--           and vim.api.nvim_buf_get_name(buf) ~= ''
+--           and not vim.wo[win].diff
+--       end,
+--       attach_events = {
+--         'OptionSet',
+--         'BufWinEnter',
+--         'BufWritePost',
+--         'WinScrolled',
+--       },
+--     },
+--   })
+-- end
 
-  -- if vim.fn.has('nvim-0.11') == 1 then
-  --   lang({
-  --     'Bekaboo/dropbar.nvim',
-  --     -- optional, but required for fuzzy finder support
-  --     dependencies = {
-  --       'nvim-telescope/telescope-fzf-native.nvim',
-  --     },
-  --     event = { 'WinScrolled' },
-  --     opts = {
-  --       ---@type boolean|fun(buf: integer, win: integer, info: table?): boolean
-  --       enable = function(buf, win, _)
-  --         return not vim.api.nvim_win_get_config(win).zindex
-  --           and not vim.bo[buf].buftype == ''
-  --           and (not vim.tbl_contains(
-  --             { 'help', 'guihua', 'terminal', 'markdown' },
-  --             vim.bo[buf].buftype
-  --           ))
-  --           and vim.api.nvim_buf_get_name(buf) ~= ''
-  --           and not vim.wo[win].diff
-  --       end,
-  --       attach_events = {
-  --         'OptionSet',
-  --         'BufWinEnter',
-  --         'BufWritePost',
-  --         'WinScrolled',
-  --       },
-  --     },
-  --   })
-  -- end
-
-    -- lang({
-    --   'dccsillag/magma-nvim',
-    --   ft = 'python',
-    --   build = 'UpdateRemotePlugins',
-    --   lazy = false,
-    --   cmd = {
-    --     'MagmaRun',
-    --     'MagmaRunCell',
-    --     'MagmaRunCellAndMove',
-    --     'MagmaRunCellAndStay',
-    --     'MagmaRunCellAndInsert',
-    --     'MagmaRunCel',
-    --     'MagmaInit',
-    --   },
-    --   keys = {
-    --     {
-    --       '<leader>mi',
-    --       '<cmd>MagmaInit python3<CR>',
-    --       desc = 'This command initializes a runtime for the current buffer.',
-    --     },
-    --     {
-    --       '<leader>mo',
-    --       '<cmd>MagmaEvaluateOperator<CR>',
-    --       desc = 'Evaluate the text given by some operator.',
-    --     },
-    --     { '<leader>ml', '<cmd>MagmaEvaluateLine<CR>', desc = 'Evaluate the current line.' },
-    --     { '<leader>mv', '<cmd>MagmaEvaluateVisual<CR>', desc = 'Evaluate the selected text.' },
-    --     {
-    --       '<leader>mc',
-    --       '<cmd>MagmaEvaluateOperator<CR>',
-    --       desc = 'Reevaluate the currently selected cell.',
-    --     },
-    --     {
-    --       '<leader>mr',
-    --       '<cmd>MagmaRestart!<CR>',
-    --       desc = 'Shuts down and restarts the current kernel.',
-    --     },
-    --     {
-    --       '<leader>mx',
-    --       '<cmd>MagmaInterrupt<CR>',
-    --       desc = 'Interrupts the currently running cell and does nothing if not cell is running.',
-    --     },
-    --   },
-    -- })
+-- lang({
+--   'dccsillag/magma-nvim',
+--   ft = 'python',
+--   build = 'UpdateRemotePlugins',
+--   lazy = false,
+--   cmd = {
+--     'MagmaRun',
+--     'MagmaRunCell',
+--     'MagmaRunCellAndMove',
+--     'MagmaRunCellAndStay',
+--     'MagmaRunCellAndInsert',
+--     'MagmaRunCel',
+--     'MagmaInit',
+--   },
+--   keys = {
+--     {
+--       '<leader>mi',
+--       '<cmd>MagmaInit python3<CR>',
+--       desc = 'This command initializes a runtime for the current buffer.',
+--     },
+--     {
+--       '<leader>mo',
+--       '<cmd>MagmaEvaluateOperator<CR>',
+--       desc = 'Evaluate the text given by some operator.',
+--     },
+--     { '<leader>ml', '<cmd>MagmaEvaluateLine<CR>', desc = 'Evaluate the current line.' },
+--     { '<leader>mv', '<cmd>MagmaEvaluateVisual<CR>', desc = 'Evaluate the selected text.' },
+--     {
+--       '<leader>mc',
+--       '<cmd>MagmaEvaluateOperator<CR>',
+--       desc = 'Reevaluate the currently selected cell.',
+--     },
+--     {
+--       '<leader>mr',
+--       '<cmd>MagmaRestart!<CR>',
+--       desc = 'Shuts down and restarts the current kernel.',
+--     },
+--     {
+--       '<leader>mx',
+--       '<cmd>MagmaInterrupt<CR>',
+--       desc = 'Interrupts the currently running cell and does nothing if not cell is running.',
+--     },
+--   },
+-- })

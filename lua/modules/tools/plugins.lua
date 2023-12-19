@@ -17,24 +17,24 @@ return function(tools)
     },
     module = true,
   })
-  tools({
-    '3rd/image.nvim',
-    ft = { 'markdown', 'md', 'norg', 'org', 'jupyter' },
-    init = function()
-      -- stylua: ignore
-      package.path = package.path .. ";" .. vim.fn.expand("$HOME") .. "/.luarocks/share/lua/5.1/?/init.lua"
-      package.path = package.path
-        .. ';'
-        .. vim.fn.expand('$HOME')
-        .. '/.luarocks/share/lua/5.1/?.lua'
-    end,
-    opts = {},
-    dependencies = {
-      -- {
-      --   'theHamsta/nvim_rocks', -- not support fish
-      -- },
-    },
-  })
+  -- tools({
+  --   '3rd/image.nvim',
+  --   ft = { 'markdown', 'md', 'norg', 'org', 'jupyter' },
+  --   init = function()
+  --     -- stylua: ignore
+  --     package.path = package.path .. ";" .. vim.fn.expand("$HOME") .. "/.luarocks/share/lua/5.1/?/init.lua"
+  --     package.path = package.path
+  --       .. ';'
+  --       .. vim.fn.expand('$HOME')
+  --       .. '/.luarocks/share/lua/5.1/?.lua'
+  --   end,
+  --   opts = {},
+  --   dependencies = {
+  --     -- {
+  --     --   'theHamsta/nvim_rocks', -- not support fish
+  --     -- },
+  --   },
+  -- })
   tools({
     'nvim-telescope/telescope-fzf-native.nvim',
     build = 'make',
@@ -318,18 +318,10 @@ return function(tools)
       event = { 'FuncUndefined' },
       dependencies = {
         'tpope/vim-fugitive',
-        cmd = {
-          'Gvsplit',
-          'G',
-          'Gread',
-          'Git',
-          'Gedit',
-          'Gstatus',
-          'Gdiffsplit',
-          'Gvdiffsplit',
-        },
+        -- stylua: ignore
+        cmd = { 'Gvsplit', 'G', 'Gread', 'Git',
+          'Gedit', 'Gstatus', 'Gdiffsplit', 'Gvdiffsplit' },
         event = { 'CmdwinEnter', 'CmdlineEnter' },
-        -- fn = { 'FugitiveIsGitDir' },
       },
     })
   end

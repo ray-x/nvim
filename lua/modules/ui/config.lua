@@ -178,7 +178,6 @@ function config.aurora()
   -- vim.cmd("hi EndOfBuffer guibg=NONE ctermbg=NONE") -- remove background
 end
 
-function config.starry() end
 -- vim.g.starry_bold = false
 -- vim.g.starry_italic_comments = true
 -- vim.g.starry_italic_keywords = false

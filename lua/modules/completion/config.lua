@@ -258,15 +258,7 @@ function config.autopairs()
       javascript = { 'template_string' },
       java = false, -- don't check treesitter on java
     },
-    fast_wrap = {
-      map = '<M-e>',
-      chars = { '{', '[', '(', '"', "'", '`' },
-      pattern = string.gsub([[ [%'%"%`%+%)%>%]%)%}%,%s] ]], '%s+', ''),
-      end_key = '$',
-      keys = 'qwertyuiopzxcvbnmasdfghjkl',
-      check_comma = true,
-      hightlight = 'Search',
-    },
+    fast_wrap = {}, -- <M-e> $: add to end; q: move to end; qh (virtual text prompts)
   })
   npairs.add_rules({
     Rule(' ', ' '):with_pair(function(opts)

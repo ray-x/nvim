@@ -45,6 +45,19 @@ return function(use)
     end,
   })
 
+  use({
+    'RRethy/nvim-treesitter-endwise',
+    module = true,
+    event = 'InsertEnter',
+    config = function()
+      require('nvim-treesitter.configs').setup({
+        endwise = {
+          enable = true,
+        },
+      })
+    end,
+  })
+
   -- can not lazyload, it is also slow...
   use({
     'L3MON4D3/LuaSnip', -- need to be the first to load
@@ -104,7 +117,11 @@ return function(use)
         border = 'rounded', -- "shadow", --{"╭", "─" ,"╮", "│", "╯", "─", "╰", "│" },
       },
       hint_inline = function()
-        if vim.fn.has('nvim-0.10') == 1 then return "inline" else return "eol" end
+        if vim.fn.has('nvim-0.10') == 1 then
+          return 'inline'
+        else
+          return false
+        end
       end,
       max_height = 4,
       toggle_key = [[<M-x>]], -- toggle signature on and off in insert mode,  e.g. '<M-x>'
@@ -113,6 +130,11 @@ return function(use)
     },
   })
 
+  vim.g.copilot_filetypes = {
+    ['dap-repl'] = false,
+    -- NeogitCommitMessage = false,
+    -- gitcommit = false,
+  }
   use({
     'github/copilot.vim',
     lazy = true,
@@ -120,11 +142,10 @@ return function(use)
     init = function()
       -- vim.api.nvim_set_keymap("n", "<C-=>", [[copilot#Accept("\<CR>")]], { silent = true, script = true, expr = true })
       -- vim.api.nvim_set_keymap("i", "<C-=>", [[copilot#Accept("\<CR>")]], { silent = true, script = true, expr = true })
-
       vim.g.copilot_filetypes = {
-        ['*'] = true,
-        gitcommit = false,
-        NeogitCommitMessage = false,
+        ['dap-repl'] = false,
+        -- NeogitCommitMessage = false,
+        -- gitcommit = false,
       }
       vim.cmd([[imap <silent><script><expr> <C-J> copilot#Accept("\<CR>")]])
       -- vim.keymap.set('i', '<C-J>', function()

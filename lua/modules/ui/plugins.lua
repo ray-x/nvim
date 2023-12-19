@@ -21,7 +21,6 @@ return function(ui)
     'ray-x/starry.nvim',
     dev = (plugin_folder():find('github') ~= nil),
     lazy = true,
-    init = conf.starry,
     config = conf.starry_conf,
   })
   if vim.wo.diff then

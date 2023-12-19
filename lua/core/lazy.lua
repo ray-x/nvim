@@ -18,15 +18,10 @@ end
 lprint('I am lazy begin', vim.loop.now() - require('core.global').start)
 local loader = require('utils.helper').loader
 
-local fsize = vim.fn.getfsize(vim.fn.expand('%:p:f'))
-if fsize == nil or fsize < 0 then
-  fsize = 1
-end
-
 -- Create cache dir and subs dir
 local global = require('core.global')
 -- load module but not init/config it
-function setup()
+function setup(fsize)
   require('core.helper').init()
   local start = require('core.global').start
 
@@ -46,35 +41,39 @@ function setup()
     'defx',
   }
 
+  fsize = fsize or vim.fn.getfsize(vim.fn.expand('%:p:f'))
+  if fsize == nil or fsize < 0 then
+    fsize = 1
+  end
+
   local syn_on = not vim.tbl_contains(disable_ft, vim.bo.filetype)
 
   -- local fname = vim.fn.expand("%:p:f")
-  if fsize > 2 * 1024 * 1024 then
-    lprint('syntax off')
-    print('syntax off, enable it by :setlocal syntax=on')
-    vim.cmd([[syntax off]])
-  else
-    if not syn_on then
-      vim.cmd([[syntax manual]])
-    end
-  end
+  -- if fsize > 2 * 1024 * 1024 then
+  --   lprint('syntax off')
+  --   print('syntax off, enable it by :setlocal syntax=on')
+  --   vim.cmd([[syntax off]])
+  -- else
+  --   if not syn_on then
+  --     vim.cmd([[syntax manual]])
+  --   end
+  -- end
   lprint('syntax', vim.uv.now() - start)
 
   vim.g.vimsyn_embed = 'lPr'
 
-  vim.cmd([[autocmd FileType vista,guihua,guihua_rust setlocal syntax=on]])
-  vim.cmd(
-    [[autocmd FileType * silent! lua if vim.fn.wordcount()['bytes'] > 2048000 then print("syntax off") vim.cmd("setlocal syntax=off") end]]
-  )
+  -- vim.cmd([[autocmd FileType vista,guihua,guihua_rust setlocal syntax=on]])
+  -- vim.cmd(
+  --   [[autocmd FileType * silent! lua if vim.fn.wordcount()['bytes'] > 2048000 then print("syntax off") vim.cmd("setlocal syntax=off") end]]
+  -- )
   vim.cmd([[doautocmd User LoadLazyPlugin]])
   vim.cmd('tabdo windo set relativenumber')
-  vim.cmd('highlight clear ColorColumn')
+  -- vim.cmd('highlight clear ColorColumn')
   vim.cmd("command! Gram lua require'modules.tools.config'.grammcheck()")
   lprint('lazy colorscheme loaded', vim.uv.now() - start)
 end
 
 local lazy_timer = 20
-setup()
 
 --
 
@@ -125,3 +124,4 @@ vim.defer_fn(function()
     end
   end
 end, lazy_timer)
+return { setup = setup }

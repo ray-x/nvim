@@ -98,7 +98,7 @@ function config.vim_dadbod_ui()
   vim.g.db_ui_use_nerd_fonts = 1
   vim.g.db_ui_winwidth = 35
   -- vim.g.db_ui_save_location = require('core.global').home .. '/.cache/vim/db_ui_queries'
-  vim.g.db_ui_save_location =  vim.fn.getcwd() .. sep .. 'db'
+  vim.g.db_ui_save_location = vim.fn.getcwd() .. sep .. 'db'
   vim.cmd([[
   set shiftwidth=2
   " set tabstop=2
@@ -176,34 +176,12 @@ function config.gitsigns()
     numhl = false,
     word_diff = true,
     on_attach = function(bufnr)
-      local gs = package.loaded.gitsigns
 
       local function map(mode, l, r, opts)
         opts = opts or {}
         opts.buffer = bufnr
         vim.keymap.set(mode, l, r, opts)
       end
-
-      -- Navigation
-      map('n', ']c', function()
-        if vim.wo.diff then
-          return ']c'
-        end
-        vim.schedule(function()
-          gs.next_hunk()
-        end)
-        return '<Ignore>'
-      end, { expr = true })
-
-      map('n', '[c', function()
-        if vim.wo.diff then
-          return '[c'
-        end
-        vim.schedule(function()
-          gs.prev_hunk()
-        end)
-        return '<Ignore>'
-      end, { expr = true })
     end,
 
     watch_gitdir = { interval = 1000, follow_files = true },

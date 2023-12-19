@@ -270,11 +270,12 @@ return function(editor)
     'chaoren/vim-wordmotion',
     lazy = true,
     keys = { '<Plug>WordMotion_w', '<Plug>WordMotion_b' },
+    event = { 'CursorHold', 'CursorMoved' },
     init = function()
       -- stylua: ignore
-      vim.g.wordmotion_spaces = { '-', '_', '/', '.', ':', "'", '"', '=', '#', ',', '.', ';', '<', '>', '(', ')', '{', '}' }
-      vim.g.wordmotion_uppercase_spaces =
-        { '/', '.', ':', "'", '"', '=', '#', ',', '.', ';', '<', '>', '(', ')', '{', '}' }
+      -- vim.g.wordmotion_spaces = { '-', '_', '/', '.', ':', "'", '"', '=', '#', ',', '.', ';', '<', '>', '(', ')', '{', '}' }
+      vim.g.wordmotion_uppercase_spaces = { "'", '"', '=', ',', ';', '<', '>', '(', ')', '{', '}' }
+        -- { '/', '.', ':', "'", '"', '=', '#', ',', '.', ';', '<', '>', '(', ')', '{', '}' }
     end,
     -- keys = {'w','W', 'gE', 'aW'}
   })

@@ -11,7 +11,7 @@ local treesitter = function()
     return
   end
   local lines = vim.fn.line('$')
-  if lines > 20000 then -- skip some settings for large file
+  if lines > 100000 then -- skip some settings for large file
     vim.cmd([[syntax manual]])
     print('skip treesitter')
     return
@@ -20,7 +20,7 @@ local treesitter = function()
   if lines > 10000 then
     enable = true
     langtree = false
-    vim.cmd([[syntax on]])
+    -- vim.cmd([[syntax on]])
     lprint('ts disabled')
   else
     enable = true
@@ -76,13 +76,13 @@ local treesitter_obj = function()
         goto_next_start = {
           [']m'] = '@function.outer',
           [']['] = '@class.outer',
-          [']o'] = '@loop.*',
+          [']o'] = {query = { '@loop.*', '@scope.*', '@loop.*', '@conditional.*' }, desc = 'next scop'},
           [']s'] = { query = '@scope', query_group = 'locals', desc = 'Next scope' },
         },
         goto_next_end = { [']M'] = '@function.outer', [']]'] = '@class.outer' },
         goto_previous_start = {
-          ['[m'] = { query = { '@function.inner', '@function.outer' }, desc = 'previous func' },
-          ['[['] = { query = { '@class.inner', '@class.outer' }, desc = 'class inner/outer' },
+          ['[m'] = { query = { '@function.outer' }, desc = 'nearest func outer' },
+          ['[['] = { query = { '@function.inner', '@class.inner', '@class.outer' }, desc = 'func inner; class inner/outer' },
           ['[o'] = {
             --stylua: ignore
             query = {
@@ -265,10 +265,10 @@ vim.api.nvim_create_autocmd({ 'FileType' }, {
     end
     -- in case ts not installed
 
-    local fsize = vim.fn.getfsize(vim.fn.expand('%:p:f')) or 1
-    if fsize < 100000 then
-      vim.cmd('syntax on')
-    end
+    -- local fsize = vim.fn.getfsize(vim.fn.expand('%:p:f')) or 1
+    -- if fsize < 100000 then
+    --   vim.cmd('syntax on')
+    -- end
   end,
 })
 return {

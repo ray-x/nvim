@@ -94,7 +94,6 @@ local function load_options()
     listchars      = "tab:┊ ,nbsp:+,trail:·,extends:→,precedes:←"; -- tab:»·,
     pumblend       = 10;
     winblend       = 10;
-    syntax         = "off";
     title          = true;
 
     background     = "dark";
@@ -258,10 +257,9 @@ end
 if vim.wo.diff then
   vim.o.cursorline = true
 end
-
+vim.cmd('set path+=**')
 -- stylua: ignore end
 
-vim.cmd([[syntax off]])
 
 vim.cmd([[autocmd TermOpen * setlocal nospell]])
 vim.cmd([[autocmd TermOpen,BufEnter term://* startinsert]])
