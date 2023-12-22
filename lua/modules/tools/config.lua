@@ -176,7 +176,6 @@ function config.gitsigns()
     numhl = false,
     word_diff = true,
     on_attach = function(bufnr)
-
       local function map(mode, l, r, opts)
         opts = opts or {}
         opts.buffer = bufnr
@@ -194,6 +193,36 @@ function config.gitsigns()
       delay = 2000,
       virt_text_priority = 20, -- maybe the last thing I would like to see
     },
+    current_line_blame_formatter = function(name, blame_info)
+      -- print(vim.inspect(blame_info) .. vim.inspect(name))
+      local au = blame_info.author:sub(1, 6)
+      if blame_info.author == name then
+        au = ''
+      end
+      -- get current year
+      local seconds = os.time()
+      local now = os.date('%y-%m-%d', tonumber(seconds))
+      local year = now:sub(1, 3)
+      local d = os.date('%y-%m-%d', tonumber(blame_info['author_time']))
+      local commit_year = d:sub(1, 3)
+      local text = ''
+      if blame_info.author == 'Not Committed Yet' then
+        text = 'WIP'
+      else
+        -- truncate user to 6 chars
+        local au = string.sub(blame_info.author, 1, 6)
+        local summary = string.sub(blame_info.summary, 1, 40)
+        -- date in NLP format relative to current time
+        -- local relative =
+        -- require('gitsigns.util').get_relative_time(tonumber(blame_info['author_time']))
+        if commit_year == year then
+          d = d:sub(4, 10)
+        end
+        text = string.format('%s', blame_info.summary)
+      end
+      -- stylua: ignore
+      return { { au, 'Ignore' }, { string.format('[%s]', d), 'LineNrBelow' }, { text, 'GitSignsCurrentLineBlame' } }
+    end,
     diff_opts = { internal = true },
   })
 

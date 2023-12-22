@@ -102,7 +102,7 @@ function register_key()
   -- Define the custom keymap settings for Telescope
   local telescope_keymap = {
     f = {
-      name = '+git', -- Group name
+      name = '+telescope', -- Group name
       -- stylua: ignore start
       g = { ':Telescope git_files<CR>', 'Git Files' },
       r = { ':Telescope registers<CR>', 'Registers' },
@@ -125,7 +125,8 @@ function register_key()
       l = { require('telescope.builtin').current_buffer_fuzzy_find, 'Current Buffer Fuzzy Find' },
       s = { ':Telescope colorscheme<CR>', '🌈' },
       M = { require('telescope.builtin').marks, '🔖' },
-      y = { ':Telescope neoclip<CR>', 'Neo📎' },
+      -- y = { ':Telescope neoclip<CR>', 'Neo📎' },
+      d = { function() require('telescope').extensions.file_browser.file_browser() end , 'folder🗂️' },
       ['<CR>'] = { '<cmd>Telescope<CR>', '🔭' },
       --stylua: ignore end
     },
@@ -150,8 +151,30 @@ function register_key()
       },
     },
   }
-
   wk.register(telescope_keymap, { prefix = '<Space>' })
+  -- go.nvim
+  local go = {
+    G = {
+      name = 'go.nvim',
+      r = { '<cmd>GoRun<CR>', 'Run' },
+      b = { '<cmd>GoBuild<CR>', 'Build' },
+      t = { '<cmd>GoTestFunc<CR>', 'Test' },
+      T = { '<cmd>GoTestFile<CR>', 'TestFile' },
+      p = { '<cmd>GoTestPkg<CR>', 'Test pkg' },
+      d = { '<cmd>GoDoc<CR>', 'Doc' },
+      f = { '<cmd>GoFillStruct<CR>', 'Fill Struct' },
+      D = { '<cmd>GoDebug -t<CR>', 'Debug test' },
+      i = { '<cmd>GoImport<CR>', 'Import' },
+      F = { '<cmd>GoFmt<CR>', 'Format' },
+      a = { '<cmd>GoAddTest<CR>', 'Add Test' },
+      g = { '<cmd>GoAddTag<CR>', 'Add Tag' },
+      I = { '<cmd>GoImpl<CR', 'Impl' },
+      e = { '<cmd>GoIfErr<CR>', 'Err return' },
+      R = { '<cmd>GoGenReturn<CR>', 'Gen return' },
+      L = { '<cmd>GoToggleInlay<CR>', 'Toggle Inlay' },
+    },
+  }
+  wk.register(go, { prefix = '<Space>' })
 end
 
 -- stylua: ignore end
