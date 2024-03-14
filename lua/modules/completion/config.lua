@@ -26,7 +26,14 @@ function config.nvim_cmp()
   end
 
   local sources = {
-    { name = 'nvim_lsp' },
+    {
+      name = 'nvim_lsp',
+      option = {
+        markdown_oxide = {
+          keyword_pattern = [[\(\k\| \|\/\|#\)\+]],
+        },
+      },
+    },
     { name = 'luasnip' },
     { name = 'treesitter', keyword_length = 2 },
 
@@ -54,6 +61,8 @@ function config.nvim_cmp()
     table.insert(sources, { name = 'spell' })
     -- table.insert(sources, { name = 'look' })
     table.insert(sources, { name = 'latex_symbols' })
+    table.insert(sources, { name = 'emoji' })
+    -- table.insert(sources, { name = 'mkdnflow' })
   end
   if vim.o.ft == 'lua' then
     table.insert(sources, { name = 'nvim_lua' })
@@ -116,11 +125,6 @@ function config.nvim_cmp()
         if cmp.visible() then
           cmp.abort()
           cmp.close()
-          -- vim.api.nvim_feedkeys(
-          --   vim.api.nvim_replace_termcodes('<C-e>', true, true, true),
-          --   'n',
-          --   true
-          -- )
         else
           vim.api.nvim_feedkeys(
             vim.api.nvim_replace_termcodes('<End>', true, true, true),

@@ -112,8 +112,8 @@ local def_map = {
   -- Vim map
   ['n|<C-x>k'] = map_cmd('Bd'):with_noremap():with_silent(),
   ['n|<C-S-y>'] = map_cmd('%y +'), -- yank file
-  ['n|]b'] = map_cmd('bp'):with_noremap(),
-  ['n|[b'] = map_cmd('bn'):with_noremap(),
+  ['n|]b'] = map_cmd('BufferLineCycleNext'):with_noremap(),
+  ['n|[b'] = map_cmd('BufferLineCyclePrev'):with_noremap(),
   -- ["n|<Space>cw"] = map_cmd([[silent! keeppatterns %substitute/\s\+$//e]]):with_noremap():with_silent(),
   ['n|<A-[>'] = map_cmd('vertical resize -5'):with_silent(),
   ['n|<A-]>'] = map_cmd('vertical resize +5'):with_silent(),
@@ -193,7 +193,7 @@ local plug_keys = {
   --
   ["n|<F13>"] = map_cmd("NvimTreeToggle"),
   ["n|<S-F1>"] = map_cmd("NvimTreeToggle"),
-  ["n|<Leader>s"] = map_func(function() require("flash").toggle(true) end),
+  ["n|<Leader>S"] = map_func(function() require("flash").toggle(true) end),
   ["n|<F9>"] = map_func(function()
     if vim.o.ft == 'go' then
       return vim.cmd('GoBreakToggle')
@@ -377,7 +377,7 @@ bind.nvim_load_mapping(def_map)
 local keymap = vim.keymap
 keymap.amend = require('keymap.amend')
 
-keymap.amend('n', '<Esc>', function(original)
+keymap.amend('n', '<ESC>', function(original)
   if vim.v.hlsearch and vim.v.hlsearch == 1 then
     vim.cmd('nohlsearch')
   end
@@ -403,6 +403,8 @@ keymap.amend('n', '[c', function()
     end)
   end
 end, { desc = 'prevdiff/hunk' })
+
+vim.keymap.set('n', '<leader>u',  require('utils.markdown').fetch_and_paste_url_title, {desc = 'Fetch and paste URL title'})
 
 return { keymap = def_map }
 

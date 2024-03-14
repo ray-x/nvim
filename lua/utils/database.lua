@@ -69,7 +69,10 @@ local function load_dbs()
     local db_name = key
     dbs[db_name] = value
     lprint(db_name, value)
-    table.insert(connections, parsePostgresURL(value))
+    local url = parsePostgresURL(value)
+    if url then
+    table.insert(connections, url )
+  end
   end
   dbs = vim.tbl_extend('force', dbs, env_dbs)
   dbs = vim.tbl_extend('force', vim.g.dbs, dbs)

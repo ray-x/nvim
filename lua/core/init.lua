@@ -55,6 +55,7 @@ local load_core = function()
     require('core.colorscheme').load_colorscheme()
   end
   if vim.wo.diff then
+    vim.wo.wrap = true
     return
   end
   require('core.commands')
@@ -62,6 +63,7 @@ local load_core = function()
 
   require('core.lazy').setup(fsz)
   lprint('lazy done', uv.now() - start)
+  require('utils.markdown')
 end
 
 load_core()

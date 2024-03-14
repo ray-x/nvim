@@ -44,6 +44,26 @@ return function(tools)
       { 'nvim-telescope/telescope.nvim' },
     },
   })
+  tools({
+    'crispgm/telescope-heading.nvim',
+    cond = cond,
+    ft = { 'markdown', 'md', 'norg', 'org' },
+    dependencies = {
+      { 'nvim-telescope/telescope.nvim' },
+    },
+  })
+  -- tools({
+  --   'renerocksai/telekasten.nvim',
+  --   cond = cond,
+  --   ft = { 'markdown', 'md', 'wiki' },
+  --   event = { 'CmdlineEnter', 'CursorHold' },
+  --   dependencies = {
+  --     { 'nvim-telescope/telescope.nvim' },
+  --   },
+  --   opts = {
+  --     home = vim.fn.expand('~/worknotes'), -- Put the name of your notes directory here
+  --   },
+  -- })
 
   tools({
     'nvim-telescope/telescope-live-grep-args.nvim',
@@ -77,11 +97,6 @@ return function(tools)
       { 'nvim-telescope/telescope.nvim' },
     },
     event = { 'CmdlineEnter' },
-    -- config = function()
-    --   local t = require('telescope')
-    --   t.load_extension('ast_grep')
-    --   t.load_extension('dumb_jump')
-    -- end,
   })
   tools({
     'kristijanhusak/vim-dadbod-ui',
@@ -182,7 +197,9 @@ return function(tools)
     cmd = { 'MarkdownPreview' },
     cond = cond,
     init = conf.mkdp,
-    build = cmd,
+    build = function()
+      vim.fn['mkdp#util#install']()
+    end,
   })
 
   -- Note mini has similar function but lacking features
@@ -428,21 +445,6 @@ return function(tools)
   tools()
 end
 
--- tools({ 'rmagatti/auto-session', config = conf.session, lazy = true })
-
--- tools({
---   'rmagatti/session-lens',
---   cmd = 'SearchSession',
---   config = function()
---     require('utils.helper').loader('telescope.nvim')
---     require('telescope').load_extension('session-lens')
---     require('session-lens').setup({
---       path_display = { 'shorten' },
---       theme_conf = { border = true },
---       previewer = true,
---     })
---   end,
--- })
 
 -- tools({
 --   'jvgrootveld/telescope-zoxide',
@@ -506,7 +508,6 @@ end
 --   end,
 -- })
 -- end
-
 
 -- tools({ -- spend hours but still failed to get it work, can not set sources dynamically, also seems the repo is not maintained for months
 --   'kndndrj/nvim-dbee',

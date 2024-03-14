@@ -28,5 +28,26 @@ M.setup = function()
   require('lspconfig').grammarly.setup({
     filetypes = { 'markdown', 'text', 'html', 'latex', 'org' },
   })
+  -- configs["markdown_oxide"] = {
+  --   default_config = {
+  --     -- root_dir = function() return vim.fn.getcwd() end,
+  --     root_dir = lspconfig.util.root_pattern('.git', vim.fn.getcwd()),
+  --     filetypes = {"markdown"},
+  --     -- cmd = {(function()
+  --     --   if vim.env.MOXIDE_DEBUG then
+  --     --     return "/home/felix/coding/LargerIdeas/ObsidianLS/obsidian-ls/target/debug/markdown-oxide"
+  --     --   else
+  --     --     return "/home/felix/coding/LargerIdeas/ObsidianLS/obsidian-ls/target/release/markdown-oxide"
+  --     --   end
+  --     -- end)()}
+  --   },
+  --   on_attach = on_attach,
+  --   capabilities = capabilities,
+  -- }
+  require("lspconfig").markdown_oxide.setup({
+      -- root_dir = function() return vim.fn.getcwd() end,
+      root_dir = lspconfig.util.root_pattern('.marksman.toml','.git', vim.fn.getcwd()),
+      filetypes = {"markdown"}
+  })
 end
 return M

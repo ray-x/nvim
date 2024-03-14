@@ -35,7 +35,8 @@ return function(use)
       { 'ray-x/cmp-treesitter', dev = (plugin_folder():find('github') ~= nil), lazy = true },
       { 'hrsh7th/cmp-nvim-lsp', lazy = true },
       { 'saadparwaiz1/cmp_luasnip', lazy = true },
-      { 'kdheepak/cmp-latex-symbols' },
+      { 'kdheepak/cmp-latex-symbols', lazy = true, ft = {'markdown'} },
+      { 'hrsh7th/cmp-emoji' },
       { 'windwp/nvim-autopairs', event = 'InsertEnter', module = true, config = function()  require('modules.completion.config').autopairs() end },
     },
     -- stylua: ignore end
@@ -158,13 +159,11 @@ return function(use)
       vim.g.copilot_no_tab_map = true
     end,
   })
-  use({
-    'hinell/lsp-timeout.nvim', -- reset lsp from time to time
-    dependencies = { 'neovim/nvim-lspconfig' },
-    event = 'InsertEnter',
-  })
+  -- use({
+  --   'hinell/lsp-timeout.nvim', -- reset lsp from time to time
+  --   dependencies = { 'neovim/nvim-lspconfig' },
+  --   event = 'InsertEnter',
+  -- })
 end
 
--- { 'hrsh7th/cmp-calc', lazy = true },
--- { 'hrsh7th/cmp-emoji', lazy = true },
--- { 'tzachar/cmp-fuzzy-buffer', lazy = true, dependencies = { 'tzachar/fuzzy.nvim' } },
+

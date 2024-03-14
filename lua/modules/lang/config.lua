@@ -230,7 +230,7 @@ function config.navigator()
       -- clangd = { filetypes = {} }, -- using clangd
 
       jedi_language_server = { filetypes = {} }, --another way to disable lsp
-      servers = { 'terraform_lsp', 'vuels', 'tailwindcss' },
+      servers = { 'terraform_lsp', 'vuels', 'tailwindcss', 'grammarly'} -- , 'marksman' },
     },
   }
   nav_cfg.lsp.sqlls = function()
@@ -301,6 +301,7 @@ function config.go()
     log_path = vim.fn.expand('$HOME') .. '/tmp/gonvim.log',
     lsp_codelens = false, -- use navigator
     dap_debug = true,
+    gofmt = 'gopls',
     goimport = 'gopls',
     dap_debug_vt = true,
     dap_debug_gui = true,
@@ -332,6 +333,13 @@ function config.go()
     vim.cmd('au FileType go command! Gts :TestSuite -v -tags=integration')
     vim.cmd('ab dt GoDebug -t')
     vim.cmd('augroup END')
+
+    vim.keymap.set(
+    'v',
+    '<leader>gc',
+    require"go.gopls".change_signature,
+    { noremap = true, silent = true }
+    )
   end, 1)
 end
 
@@ -430,11 +438,7 @@ function config.symbol_usage()
 
   -- hl-groups can have any name
   vim.api.nvim_set_hl(0, 'SymbolUsageRounding', { fg = h('CursorLine').bg, italic = true })
-  vim.api.nvim_set_hl(
-    0,
-    'SymbolUsageContent',
-    { fg = h('Comment').fg, italic = true }
-  )
+  vim.api.nvim_set_hl(0, 'SymbolUsageContent', { fg = h('Comment').fg, italic = true })
   vim.api.nvim_set_hl(
     0,
     'SymbolUsageRef',

@@ -42,6 +42,15 @@ return function(lang)
     'chrisgrieser/nvim-various-textobjs',
     event = { 'CursorHold', 'CursorHoldI' },
     opts = { useDefaultKeymaps = true, disabledKeymaps = {} },
+    config = function()
+      require('various-textobjs').setup({
+        lookForwardSmall = 5,
+        lookForwardBig = 10,
+        useDefaultKeymaps = false,
+        disabledKeymaps = { 'gc' },
+      })
+      vim.keymap.set({ 'o', 'x' }, 'gC', require('various-textobjs').multiCommentedLines)
+    end,
   })
   -- -- use flash.nvim
   -- -- lang({
@@ -55,12 +64,6 @@ return function(lang)
     'andersevenrud/nvim_context_vt',
     cmd = { 'NvimContextVtToggle', 'NvimContextVtEnable' },
     config = conf.context_vt,
-  })
-
-  lang({
-    'nvim-treesitter/nvim-treesitter-refactor',
-    config = ts.treesitter_ref, -- let the last loaded config treesitter
-    event = { 'CursorHold' },
   })
 
   local jsft =
@@ -111,8 +114,15 @@ return function(lang)
     lang({
       'benlubas/molten-nvim',
       ft = 'python',
-      cmd = { 'MoltenLoad', 'MoltenInit', 'MoltenInfo', 'MoltenEvaluateVisual', 'MoltenEvaluateLine', 'MoltenReevaluateCell' },
-      opts = {}
+      cmd = {
+        'MoltenLoad',
+        'MoltenInit',
+        'MoltenInfo',
+        'MoltenEvaluateVisual',
+        'MoltenEvaluateLine',
+        'MoltenReevaluateCell',
+      },
+      opts = {},
     })
     lang({ 'metakirby5/codi.vim', ft = { 'python', 'javascript' }, cmd = { 'Codi', 'CodiNew' } })
     lang({ 'Vigemus/iron.nvim', ft = 'python', config = conf.iron })
@@ -173,7 +183,7 @@ return function(lang)
       'GoGet',
       'GoModifyTags',
     },
-    ft = { 'go', 'gomod' },
+    ft = { 'go', 'gomod', 'gosum', 'gotmpl', 'gohtmltmpl', 'gotexttmpl' },
     config = conf.go,
   })
 
@@ -346,7 +356,7 @@ return function(lang)
 
       vim.keymap.set('n', '[C', function()
         require('treesitter-context').go_to_context()
-      end, { silent = true })
+      end, { silent = true, desc = 'go to context' })
     end,
   })
 
@@ -395,6 +405,9 @@ return function(lang)
 
   lang({
     'nvimtools/none-ls.nvim',
+    dependencies = {
+      'nvimtools/none-ls-extras.nvim',
+    },
     config = require('modules.lang.null-ls').config,
     event = { 'BufWritePre', 'TextChanged', 'TextChangedI', 'CmdlineEnter' },
   })
@@ -457,48 +470,3 @@ end
 --     },
 --   })
 -- end
-
--- lang({
---   'dccsillag/magma-nvim',
---   ft = 'python',
---   build = 'UpdateRemotePlugins',
---   lazy = false,
---   cmd = {
---     'MagmaRun',
---     'MagmaRunCell',
---     'MagmaRunCellAndMove',
---     'MagmaRunCellAndStay',
---     'MagmaRunCellAndInsert',
---     'MagmaRunCel',
---     'MagmaInit',
---   },
---   keys = {
---     {
---       '<leader>mi',
---       '<cmd>MagmaInit python3<CR>',
---       desc = 'This command initializes a runtime for the current buffer.',
---     },
---     {
---       '<leader>mo',
---       '<cmd>MagmaEvaluateOperator<CR>',
---       desc = 'Evaluate the text given by some operator.',
---     },
---     { '<leader>ml', '<cmd>MagmaEvaluateLine<CR>', desc = 'Evaluate the current line.' },
---     { '<leader>mv', '<cmd>MagmaEvaluateVisual<CR>', desc = 'Evaluate the selected text.' },
---     {
---       '<leader>mc',
---       '<cmd>MagmaEvaluateOperator<CR>',
---       desc = 'Reevaluate the currently selected cell.',
---     },
---     {
---       '<leader>mr',
---       '<cmd>MagmaRestart!<CR>',
---       desc = 'Shuts down and restarts the current kernel.',
---     },
---     {
---       '<leader>mx',
---       '<cmd>MagmaInterrupt<CR>',
---       desc = 'Interrupts the currently running cell and does nothing if not cell is running.',
---     },
---   },
--- })

@@ -59,6 +59,9 @@ return function(editor)
       if fsize > 500000 then
         enabled = 0
       end
+      if vim.tbl_contains({ 'markdown', 'txt', 'help' }, vim.bo.filetype) then
+        enabled = 0
+      end
       vim.g.matchup_enabled = enabled
       vim.g.matchup_surround_enabled = enabled
       vim.g.matchup_transmute_enabled = 0
@@ -66,6 +69,14 @@ return function(editor)
       vim.g.matchup_matchparen_hi_surround_always = enabled
       vim.g.matchup_matchparen_offscreen = { method = 'popup' }
       vim.cmd([[nnoremap <c-s-k> :<c-u>MatchupWhereAmI?<cr>]])
+
+      require('nvim-treesitter.configs').setup({
+        matchup = {
+          enable = enabled, -- mandatory, false will disable the whole extension
+          disable = { 'typescript', 'javascript', 'help', 'txt', 'markdown' }, -- optional, list of language that will be disabled
+          include_match_words = true,
+        },
+      })
     end,
   })
 
@@ -126,7 +137,7 @@ return function(editor)
       { "S", mode = { "n", "o", "x" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
       -- { "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
       { "R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
-      -- { "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
+      { "<leader>s", mode = { "n" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
     },
   })
 
@@ -275,7 +286,7 @@ return function(editor)
       -- stylua: ignore
       -- vim.g.wordmotion_spaces = { '-', '_', '/', '.', ':', "'", '"', '=', '#', ',', '.', ';', '<', '>', '(', ')', '{', '}' }
       vim.g.wordmotion_uppercase_spaces = { "'", '"', '=', ',', ';', '<', '>', '(', ')', '{', '}' }
-        -- { '/', '.', ':', "'", '"', '=', '#', ',', '.', ';', '<', '>', '(', ')', '{', '}' }
+      -- { '/', '.', ':', "'", '"', '=', '#', ',', '.', ';', '<', '>', '(', ')', '{', '}' }
     end,
     -- keys = {'w','W', 'gE', 'aW'}
   })
@@ -293,24 +304,69 @@ return function(editor)
   })
 
   editor({
-    'nvim-orgmode/orgmode',
-    lazy = true,
-    config = conf.orgmode,
-    ft = 'org',
-    dependencies = {
-      'akinsho/org-bullets.nvim',
-      lazy = true,
-      config = function()
-        require('org-bullets').setup()
-      end,
-    },
-  })
-  editor({
     'lukas-reineke/headlines.nvim',
     ft = { 'org', 'norg', 'markdown' },
     config = conf.headline,
     cond = cond,
   })
+
+  editor({
+    'jakewvincent/mkdnflow.nvim',
+    ft = { 'markdown' },
+    opts = {
+      links = {
+        transform_explicit = function(text)
+          -- Make lowercase, remove spaces, and reverse the string
+          return string.lower(text:gsub(' ', ''))
+        end,
+      },
+    },
+  })
+
+  -- zk cli
+  -- Zk[Index|New|Notes|Backlinks|Links|Tags|InsertLink]
+  editor({
+    'zk-org/zk-nvim',
+    ft = { 'markdown', 'vimwiki' },
+    cmd = { 'ZkIndex', 'ZkNew', 'ZkNotes', 'ZkBacklinks', 'ZkLinks', 'ZkTags', 'ZkInsertLink' },
+    config = function()
+      require('zk').setup({
+        picker = 'telescope',
+      })
+    end,
+  })
+  -- Zk[New|Hover|Browse] conflict with zk-nvim
+  editor({
+    'epwalsh/obsidian.nvim',
+    version = '*', -- recommended, use latest release instead of latest commit
+    lazy = true,
+    ft = 'markdown',
+    -- Replace the above line with this if you only want to load obsidian.nvim for markdown files in your vault:
+    -- event = {
+    --   -- If you want to use the home shortcut '~' here you need to call 'vim.fn.expand'.
+    --   -- E.g. "BufReadPre " .. vim.fn.expand "~" .. "/my-vault/**.md"
+    --   "BufReadPre path/to/my-vault/**.md",
+    --   "BufNewFile path/to/my-vault/**.md",
+    -- },
+    dependencies = {
+      -- Required.
+      'nvim-lua/plenary.nvim',
+    },
+    opts = {
+      disable_frontmatter = true,
+      workspaces = {
+        {
+          name = 'vault',
+          path = '~/Library/CloudStorage/Dropbox/obsidian',
+        },
+        {
+          name = 'daily',
+          path = '~/Library/CloudStorage/Dropbox/obsidian/journal',
+        },
+      },
+    },
+  })
+  --
   editor(
     {
       'echasnovski/mini.nvim',
@@ -336,6 +392,31 @@ return function(editor)
       require('iswap').setup({})
     end,
   })
+end
+
+
+  -- editor({
+  --   'nvim-orgmode/orgmode',
+  --   lazy = true,
+  --   config = conf.orgmode,
+  --   ft = 'org',
+  --   dependencies = {
+  --     'akinsho/org-bullets.nvim',
+  --     lazy = true,
+  --     config = function()
+  --       require('org-bullets').setup()
+  --     end,
+  --   },
+  -- })
+
+  -- editor({
+  --   'Furkanzmc/zettelkasten.nvim',
+  --   ft = { 'markdown', 'vimwiki' },
+  --   cmd = { 'ZkNew', 'ZkHover', 'ZkBrowse', 'Telekasten' },
+  --   opts = {
+  --     home = vim.fn.expand('~/zknotes'),
+  --   },
+  -- })
   -- editor({
   --   'chentoast/marks.nvim',
   --   lazy = true,
@@ -385,4 +466,3 @@ return function(editor)
   --     end, {})
   --   end,
   -- })
-end

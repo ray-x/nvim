@@ -568,6 +568,17 @@ M.setup = function(_)
     loader('telescope-orgmode.nvim')
     telescope.load_extension('orgmode')
   end
+  if vim.o.ft == 'markdown' then
+    loader('telescope-heading.nvim')
+    telescope.load_extension('heading')
+  end
+  telescope.setup({
+    extensions = {
+      heading = {
+        treesitter = true,
+      },
+    },
+  })
   -- telescope.load_extension("smart_history")
 end
 

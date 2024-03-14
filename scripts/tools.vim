@@ -127,7 +127,6 @@ command! -bar LF call LF()
 
 " Create a mapping (e.g. in your .vimrc) like this:
 
-" command! Bd bp\|bd \#
 
 " inoremap (; (<CR>);<C-c>O
 " inoremap (, (<CR>),<C-c>O

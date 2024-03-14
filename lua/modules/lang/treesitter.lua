@@ -27,16 +27,31 @@ local treesitter = function()
     langtree = true
     lprint('ts enable')
   end
+  local disable_ft = nil
+  if vim.fn.has('nvim-0.10') == 1 then
+    disable_ft = {
+      'vimdoc'
+    }
+  end
 
   require('nvim-treesitter.configs').setup({
     highlight = {
       enable = enable, -- false will disable the whole extension
       additional_vim_regex_highlighting = { 'org' }, -- unless not supported by ts
-      disable = { 'elm' }, -- list of language that will be disabled
+      disable = disable_ft, -- list of language that will be disabled
       use_languagetree = langtree,
       custom_captures = { todo = 'Todo' },
     },
   })
+  local parser_config = require('nvim-treesitter.parsers').get_parser_configs()
+  parser_config.gotmpl = {
+    install_info = {
+      url = 'https://github.com/ngalaiko/tree-sitter-go-template',
+      files = { 'src/parser.c' },
+    },
+    filetype = 'gotmpl',
+    used_by = { 'gohtmltmpl', 'gotexttmpl', 'gotmpl', 'yaml' },
+  }
 end
 
 local treesitter_obj = function()
@@ -76,13 +91,19 @@ local treesitter_obj = function()
         goto_next_start = {
           [']m'] = '@function.outer',
           [']['] = '@class.outer',
-          [']o'] = {query = { '@loop.*', '@scope.*', '@loop.*', '@conditional.*' }, desc = 'next scop'},
+          [']o'] = {
+            query = { '@loop.*', '@scope.*', '@loop.*', '@conditional.*' },
+            desc = 'next scop',
+          },
           [']s'] = { query = '@scope', query_group = 'locals', desc = 'Next scope' },
         },
         goto_next_end = { [']M'] = '@function.outer', [']]'] = '@class.outer' },
         goto_previous_start = {
           ['[m'] = { query = { '@function.outer' }, desc = 'nearest func outer' },
-          ['[['] = { query = { '@function.inner', '@class.inner', '@class.outer' }, desc = 'func inner; class inner/outer' },
+          ['[['] = {
+            query = { '@function.inner', '@class.inner', '@class.outer' },
+            desc = 'func inner; class inner/outer',
+          },
           ['[o'] = {
             --stylua: ignore
             query = {
@@ -153,22 +174,6 @@ local treesitter_ref = function()
   -- print('load treesitter refactor', vim.fn.line('$'))
 
   require('nvim-treesitter.configs').setup({
-    refactor = {
-      highlight_definitions = { enable = enable },
-      highlight_current_scope = { enable = false }, -- prefer black-line
-      smart_rename = {
-        enable = false, -- prefer lsp rename
-      },
-      navigation = {
-        enable = false, -- use navigator
-      },
-    },
-    matchup = {
-      enable = enable, -- mandatory, false will disable the whole extension
-      -- disable = { 'ruby' }, -- optional, list of language that will be disabled
-      -- disable_virtual_text = { 'python' },
-      include_match_words = true,
-    },
     autopairs = { enable = enable },
     autotag = { enable = enable },
   })
