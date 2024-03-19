@@ -60,17 +60,6 @@ M.git_files = function(opts)
     :find()
 end
 
--- require('telescope').extensions.orgmode.search_headings
--- require('telescope').extensions.orgmode.refile_heading
-
-vim.api.nvim_create_user_command('RgHeading', function(opts)
-  require('telescope').extensions.orgmode.search_headings()
-end, { nargs = '*', desc = 'Search org heading' })
-
-vim.api.nvim_create_user_command('RgRefile', function(opts)
-  require('telescope').extensions.orgmode.refile_heading()
-end, { nargs = '*', desc = 'Search fo refile' })
-
 vim.api.nvim_create_user_command('RgHead', function(opts)
   local w = vim.fn.expand('<cword>')
   local pwd = vim.fn.expand('~/Library/CloudStorage/Dropbox/Logseq')
@@ -501,6 +490,8 @@ M.setup = function(_)
       -- n<C-u/d> pageup/down in preview
       -- i <C-_> help keymap
       -- n ? which key
+      -- check https://github.com/nvim-telescope/telescope.nvim/blob/master/README.md#default-mappings for default
+      -- mappings
       mappings = {
         n = {
           ['<esc>'] = actions.close,
@@ -564,10 +555,6 @@ M.setup = function(_)
   -- telescope.load_extension('smart_history')
   telescope.load_extension('dumb_jump')
 
-  if vim.o.ft == 'org' then
-    loader('telescope-orgmode.nvim')
-    telescope.load_extension('orgmode')
-  end
   if vim.o.ft == 'markdown' then
     loader('telescope-heading.nvim')
     telescope.load_extension('heading')
