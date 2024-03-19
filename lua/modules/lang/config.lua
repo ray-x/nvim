@@ -251,21 +251,10 @@ function config.navigator()
   end
   nav_cfg.lsp.gopls = function()
     if vim.tbl_contains({ 'go', 'gomod' }, vim.bo.filetype) then
-      local go = pcall(require, 'go')
-      if go then
-        local cfg = require('go.lsp').config()
-        local att = cfg.on_attach
-        cfg.on_attach = function(client, bufnr)
-          -- print('gopls on_attach')
-          client.server_capabilities.documentFormattingProvider = false -- efm/null-ls
-          att(client, bufnr)
-        end
-        return cfg
-      else
-        return {}
+      if pcall(require, 'go') then
+        return require('go.lsp').config()
       end
     end
-    return {}
   end
 
   table.insert(nav_cfg.lsp.disable_lsp, 'efm')
@@ -320,10 +309,11 @@ function config.go()
     vim.cmd('autocmd FileType go nmap <leader>gb  :GoBuild')
     --  Show by default 4 spaces for a tab')
     vim.cmd('autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4')
+    vim.cmd('autocmd BufWritePre *.go :silent! lua require("go.format").goimport()')
     --  :GoBuild and :GoTestCompile')
     -- vim.cmd('autocmd FileType go nmap <leader><leader>gb :<C-u>call <SID>build_go_files()<CR>')
     --  :GoTest')
-    vim.cmd('autocmd FileType go nmap <leader>gt  GoTest')
+    vim.cmd('autocmd FileType go nmap <leader>gt GoTest')
     --  :GoRun
 
     vim.cmd('autocmd FileType go nmap <Leader>l GoLint')

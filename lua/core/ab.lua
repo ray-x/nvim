@@ -1,4 +1,3 @@
-vim.cmd('ab ng Neogit')
 if vim.o.ft == 'go' then
   vim.cmd('ab gb GoBuild')
   vim.cmd('cab gt GoTest')

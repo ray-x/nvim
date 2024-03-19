@@ -87,7 +87,6 @@ function register_key()
       e = { function() require('gitsigns').toggle_deleted() end, 'Toggle Deleted', desc = 'Show Deleted' },
       l = { 'Flogsplit<CR>', 'Flog Split' },
       m = { ':Git mergetool<CR>', 'Git Mergetool' },
-      ['<Cr>'] = { ':Neogit<CR>', 'Git Mergetool' },
       Z = { ':LG<CR>', 'Lazygit' },
       c = { ':GitConflictListQf<CR>', 'Git Conflict List' },
       ['/'] = { function() require('gitsigns').show() end, 'Show Base of File' },

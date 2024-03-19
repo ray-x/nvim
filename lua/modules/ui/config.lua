@@ -149,8 +149,8 @@ function config.cat()
   require('catppuccin').setup({
     flavor = vim.g.catppuccin_flavour,
     lsp_trouble = true,
-    neogit = true,
-    hop = true,
+    -- neogit = true,
+    -- hop = true,
     transparent_background = true,
     dim_inactive = { enabled = true },
   })

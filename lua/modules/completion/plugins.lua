@@ -133,7 +133,6 @@ return function(use)
 
   vim.g.copilot_filetypes = {
     ['dap-repl'] = false,
-    -- NeogitCommitMessage = false,
     -- gitcommit = false,
   }
   use({

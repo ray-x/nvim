@@ -346,7 +346,6 @@ local plug_keys = {
 
   ['n|<Leader>do'] = map_cmd('DiffviewOpen'):with_noremap():with_silent(),
   ['n|<Leader>dc'] = map_cmd('DiffviewClose'):with_noremap():with_silent(),
-  ['n|<Leader>ng'] = map_cmd('Neogit'):with_noremap():with_silent(),
 
   -- Plugin QuickRun
   -- Plugin Vista

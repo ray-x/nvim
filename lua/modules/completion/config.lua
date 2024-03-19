@@ -41,16 +41,12 @@ function config.nvim_cmp()
     { name = 'emoji' },
     { name = 'path' },
     -- { name = 'copilot' },
-    { name = 'orgmode' },
     { name = 'buffer' },
   }
   if vim.o.ft == 'sql' then
     table.insert(sources, { name = 'vim-dadbod-completion' })
   end
 
-  if vim.o.ft == 'org' then
-    table.insert(sources, { name = 'orgmode' })
-  end
   if
     vim.o.ft == 'markdown'
     or vim.o.ft == 'txt'

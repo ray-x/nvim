@@ -291,14 +291,12 @@ return function(tools)
       lazy = false,
     })
 
-    tools({ 'TimUntersberger/neogit', cmd = { 'Neogit' }, config = conf.neogit })
-
-    tools({
-      'ThePrimeagen/git-worktree.nvim',
-      event = { 'VeryLazy' },
-      cond = cond,
-      config = conf.worktree,
-    })
+    -- tools({
+    --   'ThePrimeagen/git-worktree.nvim',
+    --   event = { 'VeryLazy' },
+    --   cond = cond,
+    --   config = conf.worktree,
+    -- })
     tools({
       'ray-x/forgit.nvim',
       dev = (plugin_folder():find('github') ~= nil),
@@ -384,11 +382,6 @@ return function(tools)
         { noremap = true, silent = true }
       )
     end,
-  })
-  tools({
-    'joaomsa/telescope-orgmode.nvim',
-    cond = cond,
-    event = { 'CmdlineEnter', 'CursorHold' },
   })
   --The linediff plugin provides a simple command, :Linediff, which is used to diff two separate blocks of text.
   tools({ 'AndrewRadev/linediff.vim', cmd = { 'Linediff' } }) -- , "'<,'>Linediff"

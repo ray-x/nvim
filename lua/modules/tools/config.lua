@@ -1,15 +1,4 @@
 local config = {}
--- function config.session()
---   local opts = {
---     bypass_session_save_file_types = {
---       'dashboard',
---       'startify',
---       'NeogitStatus',
---       'NvimTree',
---       'fugitive',
---     },
---   }
--- end
 
 function config.worktree()
   local function git_worktree(arg)
@@ -122,21 +111,6 @@ function config.project()
   require('telescope').load_extension('projects')
 end
 
-function config.neogit()
-  local loader = require('utils.helper').loader
-  loader('diffview.nvim')
-  require('neogit').setup({
-    signs = {
-      section = { '', '' },
-      item = { '', '' },
-      hunk = { '', '' },
-    },
-    integrations = {
-      diffview = true,
-    },
-  })
-end
-
 function config.gitsigns()
   require('gitsigns').setup({
     signs = {
@@ -186,7 +160,7 @@ function config.gitsigns()
     watch_gitdir = { interval = 1000, follow_files = true },
     status_formatter = nil, -- Use default
     debug_mode = false,
-    current_line_blame = false,  -- sometime block texts
+    current_line_blame = false, -- sometime block texts
     current_line_blame_opts = {
       virt_text = true,
       virt_text_pos = 'right_align', -- 'eol' | 'overlay' | 'right_align'

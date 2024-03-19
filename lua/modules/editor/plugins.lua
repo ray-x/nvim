@@ -396,20 +396,6 @@ end
 
 
   -- editor({
-  --   'nvim-orgmode/orgmode',
-  --   lazy = true,
-  --   config = conf.orgmode,
-  --   ft = 'org',
-  --   dependencies = {
-  --     'akinsho/org-bullets.nvim',
-  --     lazy = true,
-  --     config = function()
-  --       require('org-bullets').setup()
-  --     end,
-  --   },
-  -- })
-
-  -- editor({
   --   'Furkanzmc/zettelkasten.nvim',
   --   ft = { 'markdown', 'vimwiki' },
   --   cmd = { 'ZkNew', 'ZkHover', 'ZkBrowse', 'Telekasten' },

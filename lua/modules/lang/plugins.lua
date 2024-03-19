@@ -90,14 +90,14 @@ return function(lang)
     config = conf.symbol_usage,
   })
 
-  if typecheck({ 'md', 'org', 'norg' }) then
+  if typecheck({ 'json', 'js', 'javascript', 'javascriptreact' }) then
     lang({
       'danymat/neogen',
       lazy = true,
       config = function()
         require('neogen').setup({ snippet_engine = 'luasnip' })
       end,
-      ft = { 'norg' },
+      ft = { 'js', 'html', 'javascript', 'javascriptreact', 'json' },
     })
   end
 
