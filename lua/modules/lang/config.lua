@@ -1,37 +1,5 @@
 local config = {}
 
--- function config.refactor()
---   local refactor = require('refactoring')
---   refactor.setup({})
---
---   lprint('refactor')
---   _G.ts_refactors = function()
---     -- telescope refactoring helper
---     local function _refactor(prompt_bufnr)
---       local content = require('telescope.actions.state').get_selected_entry(prompt_bufnr)
---       require('telescope.actions').close(prompt_bufnr)
---       require('refactoring').refactor(content.value)
---     end
---
---     local opts = require('telescope.themes').get_cursor() -- set personal telescope options
---     require('telescope.pickers')
---       .new(opts, {
---         prompt_title = 'refactors',
---         finder = require('telescope.finders').new_table({
---           results = require('refactoring').get_refactors(),
---         }),
---         sorter = require('telescope.config').values.generic_sorter(opts),
---         attach_mappings = function(_, map)
---           map('i', '<CR>', _refactor)
---           map('n', '<CR>', _refactor)
---           return true
---         end,
---       })
---       :find()
---   end
--- end
---
-
 function config.iron()
   local view = require('iron.view')
   local iron = require('iron.core')
@@ -182,10 +150,9 @@ function config.navigator()
     lsp = {
       diagnostic = { enable = false },
       -- diagnostic_scrollbar_sign = false,
-      format_on_save = { disable = { 'vue' } }, -- set to false to disasble lsp code format on save (if you are using prettier/efm/formater etc)
+      format_on_save = { disable = { 'vue', 'go' } }, -- set to false to disasble lsp code format on save (if you are using prettier/efm/formater etc)
       disable_format_cap = {
         'sqls',
-        'gopls',
         'jsonls',
         'sumneko_lua',
         'lua_ls',
@@ -230,7 +197,7 @@ function config.navigator()
       -- clangd = { filetypes = {} }, -- using clangd
 
       jedi_language_server = { filetypes = {} }, --another way to disable lsp
-      servers = { 'terraform_lsp', 'vuels', 'tailwindcss', 'grammarly'} -- , 'marksman' },
+      servers = { 'terraform_lsp', 'vuels', 'tailwindcss', 'grammarly' }, -- , 'marksman' },
     },
   }
   nav_cfg.lsp.sqlls = function()
@@ -285,13 +252,13 @@ end
 function config.go()
   require('go').setup({
     verbose = plugin_debug(), -- enable for debug
-    -- goimport = 'goimports', -- 'gopls'
     fillstruct = 'gopls',
     log_path = vim.fn.expand('$HOME') .. '/tmp/gonvim.log',
     lsp_codelens = false, -- use navigator
+    lsp_gofumpt = true,
     dap_debug = true,
     gofmt = 'gopls',
-    goimport = 'gopls',
+    goimports = 'gopls',
     dap_debug_vt = true,
     dap_debug_gui = true,
     test_runner = 'go', -- richgo, go test, richgo, dlv, ginkgo
@@ -304,12 +271,12 @@ function config.go()
   })
 
   vim.defer_fn(function()
-    vim.cmd('augroup go')
+    vim.cmd('augroup gonvim')
     vim.cmd('autocmd!')
     vim.cmd('autocmd FileType go nmap <leader>gb  :GoBuild')
     --  Show by default 4 spaces for a tab')
     vim.cmd('autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4')
-    vim.cmd('autocmd BufWritePre *.go :silent! lua require("go.format").goimport()')
+    vim.cmd('autocmd BufWritePre *.go :lua require("go.format").goimports()')
     --  :GoBuild and :GoTestCompile')
     -- vim.cmd('autocmd FileType go nmap <leader><leader>gb :<C-u>call <SID>build_go_files()<CR>')
     --  :GoTest')
@@ -325,10 +292,10 @@ function config.go()
     vim.cmd('augroup END')
 
     vim.keymap.set(
-    'v',
-    '<leader>gc',
-    require"go.gopls".change_signature,
-    { noremap = true, silent = true }
+      'v',
+      '<leader>gc',
+      require('go.gopls').change_signature,
+      { noremap = true, silent = true }
     )
   end, 1)
 end

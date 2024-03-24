@@ -146,7 +146,7 @@ function config.gitsigns()
       },
     },
     -- sign_priority = 6,
-    update_debounce = 400,
+    update_debounce = 500,
     numhl = false,
     word_diff = true,
     on_attach = function(bufnr)
@@ -160,7 +160,7 @@ function config.gitsigns()
     watch_gitdir = { interval = 1000, follow_files = true },
     status_formatter = nil, -- Use default
     debug_mode = false,
-    current_line_blame = false, -- sometime block texts
+    current_line_blame = true, -- set to false if sometime block texts
     current_line_blame_opts = {
       virt_text = true,
       virt_text_pos = 'right_align', -- 'eol' | 'overlay' | 'right_align'

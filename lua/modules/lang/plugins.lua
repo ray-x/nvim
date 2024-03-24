@@ -231,7 +231,7 @@ return function(lang)
 
   lang({
     'rcarriga/nvim-dap-ui',
-    -- dependencies = {"mfussenegger/nvim-dap"},
+    dependencies = { 'mfussenegger/nvim-dap', 'nvim-neotest/nvim-nio' },
     config = conf.dapui,
     lazy = true,
     module = true,
