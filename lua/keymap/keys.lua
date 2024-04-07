@@ -366,6 +366,12 @@ local plug_keys = {
 
   -- hop
   -- ["inx|[s"] = map_func(jump_ts):with_silent(),
+
+  -- w e b motion
+  -- ['nox|w'] = map_func(function() require('spider').motion('w') end):with_desc('spider w motion'),
+  -- ['nox|e'] = map_func(function() require('spider').motion('e') end):with_desc('spider e motion'),
+  -- ['nox|b'] = map_func(function() require('spider').motion('b') end):with_desc('spider e motion'),
+  -- ['nox|ge'] = map_func(function() require('spider').motion('ge') end):with_desc('spider ge motion'),
 }
 
 def_map = vim.tbl_extend('keep', def_map, os_map)

@@ -3,7 +3,9 @@ local filetypes = { 'html', 'css', 'javascript', 'java', 'javascriptreact', 'vue
 }
 -- stylua: ignore end
 
+
 return function(use)
+  local dev = plugin_folder():find('github') ~= nil or plugin_folder():find('ray') ~= nil
   use({
     'neovim/nvim-lspconfig',
     config = function()
@@ -97,7 +99,7 @@ return function(use)
   -- note: part of the code is used in navigator
   use({
     'ray-x/lsp_signature.nvim',
-    dev = (plugin_folder():find('github') ~= nil),
+    dev = dev,
     event = { 'InsertEnter' },
     opts = {
       debug = plugin_debug(), -- log output

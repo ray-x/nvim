@@ -13,7 +13,7 @@ local ns = vim.api.nvim_create_namespace('user-kitty')
 local group = vim.api.nvim_create_augroup('user-kitty', { clear = true })
 
 local has_kitty
-local function has_support()
+kitty.has_support = function()
   if has_kitty ~= nil then
     return has_kitty
   end
@@ -29,6 +29,8 @@ local function has_support()
   has_kitty = (vim.fn.executable('kitty') == 1) -- return vim.fn.executable("kitty") and vim.fn.system("kitty @ ls > /dev/null && printf 'ok'") == "ok"
   return has_kitty
 end
+
+local has_support=kitty.has_support
 if has_kitty == nil then
   if has_support() == false then
     return { change_bg = function(...) end }
@@ -197,8 +199,7 @@ local change_background = function(color)
     on_stdout = function(code, data, event)
       lprint('kitty set bgcolor on stdout', code, data, event, color)
     end,
-  }
-)
+  })
 end
 
 local function on_leave(color)

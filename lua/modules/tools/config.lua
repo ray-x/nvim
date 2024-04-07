@@ -8,7 +8,6 @@ function config.worktree()
       require('telescope').extensions.git_worktree.git_worktrees()
     end
   end
-
   require('git-worktree').setup({})
   vim.api.nvim_create_user_command(
     'Worktree',
@@ -163,8 +162,8 @@ function config.gitsigns()
     current_line_blame = true, -- set to false if sometime block texts
     current_line_blame_opts = {
       virt_text = true,
-      virt_text_pos = 'right_align', -- 'eol' | 'overlay' | 'right_align'
-      delay = 2000,
+      -- virt_text_pos = 'right_align', -- 'eol' | 'overlay' | 'right_align'
+      delay = 1000,
       virt_text_priority = 20, -- maybe the last thing I would like to see
     },
     current_line_blame_formatter = function(name, blame_info)
@@ -194,8 +193,8 @@ function config.gitsigns()
         end
         text = string.format('%s', blame_info.summary)
       end
-      -- stylua: ignore
-      return { { au, 'Ignore' }, { string.format('[%s]', d), 'LineNrBelow' }, { text, 'GitSignsCurrentLineBlame' } }
+        -- stylua: ignore
+        return { { au, 'Ignore' }, { string.format('[%s]', d), 'LineNrBelow' }, { text, 'GitSignsCurrentLineBlame' } }
     end,
     diff_opts = { internal = true },
   })

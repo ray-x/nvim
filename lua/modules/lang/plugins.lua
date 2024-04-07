@@ -198,25 +198,12 @@ return function(lang)
   lang({
     'ray-x/web-tools.nvim',
     dev = dev,
-    ft = { 'html', 'javascript', 'hurl', 'http' },
-    cmd = { 'HurlRun', 'BrowserOpen' },
+    ft = { 'html', 'javascript', 'hurl', 'http', 'svelte' },
+    cmd = { 'HurlRun', 'BrowserOpen', 'Npm', 'Yarn', 'Prettier', 'ESLint', 'Tsc', 'TscWatch' },
     lazy = true,
     config = function()
       require('web-tools').setup({ debug = true })
     end,
-  })
-  lang({
-    'glepnir/lspsaga.nvim',
-    lazy = true,
-    cmd = {
-      'Lspsaga',
-    },
-    opts = {
-      border_style = 'rounded',
-      code_action_lightbulb = {
-        enable = false,
-      },
-    },
   })
 
   lang({

@@ -11,6 +11,23 @@ function daylight()
 end
 
 local day = daylight()
+-- local term
+-- local change_bg
+
+-- set term and change_bg to config meta table
+
+setmetatable(config, {
+  __index = function(t, key)
+    if key == 'change_bg' then
+      local term = os.getenv('TERM_PROGRAM') or os.getenv('TERM')
+      if term:find('kitty') then
+        return require('utils.kitty').change_bg
+      else
+        return require('utils.wezterm').change_bg
+      end
+    end
+  end,
+})
 
 function config.notify()
   require('notify').setup({
@@ -134,16 +151,17 @@ function config.default()
 end
 
 function config.cat()
+  -- if not kitty use xterm control code
   local opt = { 'frappe', 'mocha', 'macchiato' }
   local v = math.random(1, #opt)
   vim.g.catppuccin_flavour = opt[v]
 
   if vim.g.catppuccin_flavour == 'frappe' then
-    require('utils.kitty').change_bg('#303446')
+    config.change_bg('#303446')
   elseif vim.g.catppuccin_flavour == 'mocha' then
-    require('utils.kitty').change_bg('#1e1e2e')
+    config.change_bg('#1e1e2e')
   else
-    require('utils.kitty').change_bg('#24273A')
+    config.change_bg('#24273A')
   end
   lprint(vim.g.catppuccin_flavour)
   require('catppuccin').setup({
@@ -167,11 +185,12 @@ function config.aurora()
       day = 'dark'
     end
   end
+
   if day == 'dark' then
     vim.g.aurora_darker = 1
-    require('utils.kitty').change_bg('#141020')
+    config.change_bg('#141020')
   else
-    require('utils.kitty').change_bg('#211c2f')
+    config.change_bg('#211c2f')
   end
   vim.cmd('colorscheme aurora')
   -- vim.cmd("hi Normal guibg=NONE ctermbg=NONE") -- remove background
@@ -258,7 +277,7 @@ function config.starry_conf()
   --   vim.api.nvim_set_hl(0, 'Normal', { bg = bg })
   --   return
   -- end
-  require('utils.kitty').change_bg(bg)
+  config.change_bg(bg)
 end
 
 vim.api.nvim_create_user_command('Transparent', function(opts)
@@ -277,11 +296,11 @@ function config.tokyonight()
     transparent = true,
   })
   if v == 'storm' then
-    require('utils.kitty').change_bg('#24283b')
+    config.change_bg('#24283b')
   elseif v == 'moon' then
-    require('utils.kitty').change_bg('#222436')
+    config.change_bg('#222436')
   else
-    require('utils.kitty').change_bg('#1a1b26')
+    config.change_bg('#1a1b26')
   end
   vim.cmd([[colorscheme tokyonight]])
 end
@@ -344,7 +363,6 @@ function config.blankline()
         'packer',
         'guihua',
         'NvimTree',
-        'sidekick',
       },
     },
   })
@@ -355,20 +373,6 @@ function config.indentguides()
     -- put your options in here
     indent_soft_pattern = '\\s',
   })
-end
-
-function config.minimap()
-  vim.cmd([[nmap <F14> :MinimapToggle<CR>]])
-  local w = vim.api.nvim_call_function('winwidth', { 0 })
-  if w > 180 then
-    vim.g.minimap_width = 12
-  elseif w > 120 then
-    vim.g.minimap_width = 10
-  elseif w > 80 then
-    vim.g.minimap_width = 7
-  else
-    vim.g.minimap_width = 2
-  end
 end
 
 function config.neotree()

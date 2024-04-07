@@ -279,30 +279,18 @@ return function(editor)
 
   editor({
     'chaoren/vim-wordmotion',
-    lazy = true,
     keys = { '<Plug>WordMotion_w', '<Plug>WordMotion_b' },
     event = { 'CursorHold', 'CursorMoved' },
     init = function()
       -- stylua: ignore
       -- vim.g.wordmotion_spaces = { '-', '_', '/', '.', ':', "'", '"', '=', '#', ',', '.', ';', '<', '>', '(', ')', '{', '}' }
-      vim.g.wordmotion_uppercase_spaces = { "'", '"', '=', ',', ';', '<', '>', '(', ')', '{', '}' }
+      vim.g.wordmotion_uppercase_spaces = { "'", '"', '=', ',', ';', '<', '>', '(', ')', '{', '}', '[', ']', ' ', ':',
+      '.', '/', '\\' }
       -- { '/', '.', ':', "'", '"', '=', '#', ',', '.', ';', '<', '>', '(', ')', '{', '}' }
     end,
     -- keys = {'w','W', 'gE', 'aW'}
   })
-
-  editor({
-    'Pocco81/true-zen.nvim',
-    lazy = true,
-    cmd = { 'TZAtaraxis', 'TZMinimalist', 'TZNarrow', 'TZFocus' },
-    cond = function()
-      return not vim.g.vscode and not vim.wo.diff
-    end,
-    config = function()
-      require('true-zen').setup({})
-    end,
-  })
-
+  -- editor({ 'chrisgrieser/nvim-spider', module = true })
   editor({
     'lukas-reineke/headlines.nvim',
     ft = { 'org', 'norg', 'markdown' },
@@ -394,61 +382,60 @@ return function(editor)
   })
 end
 
+-- editor({
+--   'Furkanzmc/zettelkasten.nvim',
+--   ft = { 'markdown', 'vimwiki' },
+--   cmd = { 'ZkNew', 'ZkHover', 'ZkBrowse', 'Telekasten' },
+--   opts = {
+--     home = vim.fn.expand('~/zknotes'),
+--   },
+-- })
+-- editor({
+--   'chentoast/marks.nvim',
+--   lazy = true,
+--   cmd = { 'MarksToggleSigns' },
+--   config = function()
+--     require('marks').setup({})
+--   end,
+--   keys = { 'm', '<Plug>(Marks-set)', '<Plug>(Marks-toggle)' },
+-- })
+-- opt to which key
+-- editor({
+--   'tversteeg/registers.nvim',
+--   name = 'registers',
+--   keys = {
+--     { '"', mode = { 'n', 'v' } },
+--     { '<C-R>', mode = 'i' },
+--   },
+--   cmd = 'Registers',
+--   config = function()
+--     require('registers').setup({
+--       show = '*"%01234abcpwy:',
+--       -- Show a line at the bottom with registers that aren't filled
+--       show_empty = false,
+--     })
+--   end,
+-- })
 
-  -- editor({
-  --   'Furkanzmc/zettelkasten.nvim',
-  --   ft = { 'markdown', 'vimwiki' },
-  --   cmd = { 'ZkNew', 'ZkHover', 'ZkBrowse', 'Telekasten' },
-  --   opts = {
-  --     home = vim.fn.expand('~/zknotes'),
-  --   },
-  -- })
-  -- editor({
-  --   'chentoast/marks.nvim',
-  --   lazy = true,
-  --   cmd = { 'MarksToggleSigns' },
-  --   config = function()
-  --     require('marks').setup({})
-  --   end,
-  --   keys = { 'm', '<Plug>(Marks-set)', '<Plug>(Marks-toggle)' },
-  -- })
-  -- opt to which key
-  -- editor({
-  --   'tversteeg/registers.nvim',
-  --   name = 'registers',
-  --   keys = {
-  --     { '"', mode = { 'n', 'v' } },
-  --     { '<C-R>', mode = 'i' },
-  --   },
-  --   cmd = 'Registers',
-  --   config = function()
-  --     require('registers').setup({
-  --       show = '*"%01234abcpwy:',
-  --       -- Show a line at the bottom with registers that aren't filled
-  --       show_empty = false,
-  --     })
-  --   end,
-  -- })
-
-  -- editor({
-  --   'rainbowhxch/accelerated-jk.nvim',
-  --   keys = { 'j', 'k', 'h', 'l', '<Up>', '<Down>', '<Left>', '<Right>' },
-  --   config = function()
-  --     require('accelerated-jk').setup({
-  --       mode = 'time_driven',
-  --       acceleration_motions = { 'h', 'l', 'e', 'b' },
-  --       acceleration_limit = 150,
-  --       acceleration_table = { 7, 12, 17, 21, 24, 26, 28, 30 },
-  --       enable_deceleration = false,
-  --       deceleration_table = { { 150, 9999 } },
-  --     })
-  --     vim.keymap.set('n', '<Down>', '<Plug>(accelerated_jk_j)', {})
-  --     vim.keymap.set('n', '<Up>', '<Plug>(accelerated_jk_k)', {})
-  --     vim.keymap.set('n', '<Left>', function()
-  --       require('accelerated-jk').move_to('h')
-  --     end, {})
-  --     vim.keymap.set('n', '<Right>', function()
-  --       require('accelerated-jk').move_to('l')
-  --     end, {})
-  --   end,
-  -- })
+-- editor({
+--   'rainbowhxch/accelerated-jk.nvim',
+--   keys = { 'j', 'k', 'h', 'l', '<Up>', '<Down>', '<Left>', '<Right>' },
+--   config = function()
+--     require('accelerated-jk').setup({
+--       mode = 'time_driven',
+--       acceleration_motions = { 'h', 'l', 'e', 'b' },
+--       acceleration_limit = 150,
+--       acceleration_table = { 7, 12, 17, 21, 24, 26, 28, 30 },
+--       enable_deceleration = false,
+--       deceleration_table = { { 150, 9999 } },
+--     })
+--     vim.keymap.set('n', '<Down>', '<Plug>(accelerated_jk_j)', {})
+--     vim.keymap.set('n', '<Up>', '<Plug>(accelerated_jk_k)', {})
+--     vim.keymap.set('n', '<Left>', function()
+--       require('accelerated-jk').move_to('h')
+--     end, {})
+--     vim.keymap.set('n', '<Right>', function()
+--       require('accelerated-jk').move_to('l')
+--     end, {})
+--   end,
+-- })

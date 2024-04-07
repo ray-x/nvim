@@ -3,12 +3,13 @@
 --   return vim.api.nvim_call_function("winwidth", { 0 })
 -- end
 return function(ui)
+  local dev = plugin_folder():find('github') ~= nil or plugin_folder():find('ray') ~= nil
   local conf = require('modules.ui.config')
   ui({ 'nvim-tree/nvim-web-devicons', lazy = true })
   ui({ 'lambdalisue/glyph-palette.vim' })
   ui({
     'ray-x/aurora',
-    dev = (plugin_folder():find('github') ~= nil),
+    dev = dev,
     lazy = true,
     init = function()
       vim.g.aurora_italic = 1
@@ -19,7 +20,7 @@ return function(ui)
   })
   ui({
     'ray-x/starry.nvim',
-    dev = (plugin_folder():find('github') ~= nil),
+    dev = dev,
     lazy = true,
     config = conf.starry_conf,
   })
@@ -87,8 +88,8 @@ return function(ui)
   ui({
     'lukas-reineke/indent-blankline.nvim',
     lazy = true,
-    -- event = { 'CursorMoved', 'CursorMovedI' },
-    cmd = { 'IndentToggle', 'IndentEnable' },
+    event = { 'CursorHold' },
+    cmd = { 'IBLToggle', 'IBLEnable' },
     module = true,
     config = conf.blankline,
   }) -- after="nvim-treesitter",
@@ -143,27 +144,48 @@ return function(ui)
     lazy = true,
     config = conf.tokyonight,
   })
+  ui({
+    'folke/twilight.nvim',
+    opts = {
+      dimming = {
+        alpha = 0.33, -- amount of dimming
+        -- we try to get the foreground from the highlight groups or fallback color
+        color = { 'Normal', '#E0EFFF' },
+        term_bg = '#131320', -- if guibg=NONE, this will be used to calculate text color
+        inactive = false, -- when true, other windows will be fully dimmed (unless they contain the same buffer)
+      },
+      context = 12,
+      expand = { -- for treesitter, we we always try to expand to the top-most ancestor with these types
+        'function',
+        'method',
+        'block',
+        vim.o.ft == 'lua' and 'table' or nil,
+        'scope',
+      },
+    },
+
+    cmd = { 'Twilight', 'TwilightEnable' },
+  })
 
   ui({ 'catppuccin/nvim', lazy = true, name = 'catppuccin', config = conf.cat })
   ui({ 'stevearc/dressing.nvim', lazy = true })
-
 end
 
-  -- ui({
-  --   'nvim-neo-tree/neo-tree.nvim',
-  --   branch = 'main',
-  --   cmd = {
-  --     'Neotree',
-  --     'NeoTreeShowToggle',
-  --     'NeoTreeFocusToggle',
-  --     'NeoTreeRevealToggle',
-  --     'NeoTreeFloat',
-  --     'NeoTreeFloatToggle',
-  --   },
-  --   event = 'VeryLazy',
-  --   lazy = true,
-  --   config = conf.neotree,
-  -- })
+-- ui({
+--   'nvim-neo-tree/neo-tree.nvim',
+--   branch = 'main',
+--   cmd = {
+--     'Neotree',
+--     'NeoTreeShowToggle',
+--     'NeoTreeFocusToggle',
+--     'NeoTreeRevealToggle',
+--     'NeoTreeFloat',
+--     'NeoTreeFloatToggle',
+--   },
+--   event = 'VeryLazy',
+--   lazy = true,
+--   config = conf.neotree,
+-- })
 -- feel a bit laggy
 -- ui({
 --   'folke/noice.nvim',

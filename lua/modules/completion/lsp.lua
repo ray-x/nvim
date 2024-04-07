@@ -44,10 +44,13 @@ M.setup = function()
   --   on_attach = on_attach,
   --   capabilities = capabilities,
   -- }
-  require("lspconfig").markdown_oxide.setup({
-      -- root_dir = function() return vim.fn.getcwd() end,
-      root_dir = lspconfig.util.root_pattern('.marksman.toml','.git', vim.fn.getcwd()),
-      filetypes = {"markdown"}
+  require('lspconfig').markdown_oxide.setup({
+    -- root_dir = function() return vim.fn.getcwd() end,
+    -- root_dir = lspconfig.util.root_pattern('.git', vim.uv.cwd()),
+    root_dir = function()
+      return lspconfig.util.root_pattern('.git', '.markdownlint.json')(vim.uv.cwd())
+    end,
+    filetypes = { 'markdown' },
   })
 end
 return M

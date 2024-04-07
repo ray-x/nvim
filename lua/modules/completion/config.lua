@@ -77,7 +77,6 @@ function config.nvim_cmp()
     },
     completion = {
       autocomplete = { require('cmp.types').cmp.TriggerEvent.TextChanged },
-      completeopt = 'menu,menuone,noselect',
     },
     formatting = {
       format = function(entry, vim_item)

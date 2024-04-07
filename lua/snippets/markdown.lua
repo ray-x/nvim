@@ -33,6 +33,34 @@ ls.add_snippets('markdown', {
       ls.i(0),
     })
   ), --}}}
+
+  ls.s( -- Image {{{
+    {
+      trig = 'img',
+      name = 'Insert image',
+      dscr = 'Select text, press <C-s>, type img.',
+    },
+    fmt('![{}]({})\n{}', {
+      ls.i(1),
+      ls.i(2),
+      ls.i(0),
+    })
+  ), --}}}
+
+  ---frontmatter
+  ls.s( -- frontmatter {{{
+    {
+      trig = '---',
+      name = 'frontmatter',
+      dscr = 'Select text, press <C-s>, type frontmatter.',
+    },
+    fmt('---\ntitle: {}\nauther: Ray\nlayout: post\ntags:\n  - {}\ndate: {}\ntype: post\n---\n', {
+      ls.i(0, vim.fn.expand('%:t:r')),
+      ls.i(1, ''),
+      ls.i(2, os.date('%Y-%m-%d %H:%M:%S')),
+    })
+  ), --}}}
+
   ls.s( -- Codeblock {{{
     {
       trig = 'py',

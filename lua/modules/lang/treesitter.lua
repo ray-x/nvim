@@ -30,7 +30,7 @@ local treesitter = function()
   local disable_ft = nil
   if vim.fn.has('nvim-0.10') == 1 then
     disable_ft = {
-      'vimdoc'
+      'vimdoc',
     }
   end
 
@@ -69,12 +69,12 @@ local treesitter_obj = function()
   require('nvim-treesitter.configs').setup({
     -- indent = { enable = enable },
     incremental_selection = {
-      enable = true, -- use textobjects
+      enable = enable, -- use textobjects
       -- disable = {"elm"},
       keymaps = {
         -- mappings for incremental selection (visual mappings)
-        init_selection = 'gnn', -- maps in normal mode to init the node/scope selection
-        scope_incremental = 'gnn', -- increment to the upper scope (as defined in locals.scm)
+        init_selection = 'gn', -- maps in normal mode to init the node/scope selection
+        scope_incremental = 'gn', -- increment to the upper scope (as defined in locals.scm)
         node_incremental = '<TAB>', -- increment to the upper named parent
         node_decremental = '<S-TAB>', -- decrement to the previous node
       },
@@ -86,34 +86,35 @@ local treesitter_obj = function()
         peek_definition_code = { ['DF'] = '@function.outer', ['CF'] = '@class.outer' },
       },
       move = {
-        enable = true,
-        set_jumps = true, -- whether to set jumps in the jumplist
+        enable = enable,
+        set_jumps = enable, -- whether to set jumps in the jumplist
         goto_next_start = {
-          [']m'] = '@function.outer',
-          [']['] = '@class.outer',
-          [']o'] = {
-            query = { '@loop.*', '@scope.*', '@loop.*', '@conditional.*' },
-            desc = 'next scop',
+          [']m'] = { query = { '@function.outer' } },
+          [']s'] = {
+            query = { '@conditional.*', 'class.*', '@loop.*', '@scope' },
+            desc = 'next cond/loop/class',
           },
-          [']s'] = { query = '@scope', query_group = 'locals', desc = 'Next scope' },
+          [']]'] = {
+            query = { '@class.outer', '@function.*' },
+            desc = 'nearest block',
+          },
         },
-        goto_next_end = { [']M'] = '@function.outer', [']]'] = '@class.outer' },
-        goto_previous_start = {
-          ['[m'] = { query = { '@function.outer' }, desc = 'nearest func outer' },
-          ['[['] = {
-            query = { '@function.inner', '@class.inner', '@class.outer' },
-            desc = 'func inner; class inner/outer',
+        goto_next_end = {
+          [']M'] = '@function.outer',
+          [']C'] = {
+            query = { '@loop.outer', '@conditional.outer', '@class.outer' },
+            desc = 'next scope',
           },
-          ['[o'] = {
-            --stylua: ignore
-            query = {
-              '@conditional.inner', '@conditional.outer',
-              '@loop.inner', '@loop.outer',
-              -- '@block.inner', '@block.outer',
-              '@function.innner', '@function.outer',
-              '@class.innner', '@class.outer',
-            },
-            desc = 'previous scope',
+        },
+        goto_previous_start = {
+          ['[m'] = { query = { '@function.outer' }, desc = 'nearest func' },
+          ['[['] = {
+            query = { '@function.*', '@class.*' },
+            desc = 'prev func ; class ',
+          },
+          ['[s'] = {
+            query = { '@loop.inner', '@conditional.inner', '@class.inner', '@scope.*' },
+            desc = 'prev loop/cond/class start',
           },
         },
         goto_previous_end = {
@@ -128,8 +129,8 @@ local treesitter_obj = function()
         },
       },
       select = {
-        enable = true,
-        lookahead = true,
+        enable = enable,
+        lookahead = enable,
         keymaps = {
           -- You can use the capture groups defined in textobjects.scm
           ['af'] = { query = '@function.outer', desc = 'select inner class' },

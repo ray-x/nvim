@@ -197,7 +197,7 @@ function config.navigator()
       -- clangd = { filetypes = {} }, -- using clangd
 
       jedi_language_server = { filetypes = {} }, --another way to disable lsp
-      servers = { 'terraform_lsp', 'vuels', 'tailwindcss', 'grammarly' }, -- , 'marksman' },
+      servers = { 'terraform_lsp', 'vuels', 'tailwindcss', 'grammarly', 'htmx', 'html', 'svelte', 'cssls' }, -- , 'marksman' },
     },
   }
   nav_cfg.lsp.sqlls = function()

@@ -68,10 +68,10 @@ local function load_options()
     switchbuf      = "useopen,usetab";
     backspace      = "indent,eol,start";
     diffopt        = "filler,iwhite,internal,algorithm:patience";
-    completeopt    = "menuone,noselect,noinsert", -- Show popup menu, even if there is one entry  menuone?
+    completeopt    = "menu,menuone,noselect", -- Show popup menu, even if there is one entry  menuone?
     jumpoptions    = "stack";
     showmode       = false;
-    shortmess      = "aotTIcF";
+    shortmess      = "aotTIcFC";
     scrolloff      = 2;
     sidescrolloff  = 5;
     foldlevel      = 99;
@@ -105,7 +105,7 @@ local function load_options()
     textwidth      = 120, -- wrap lines at 120 chars. 80 is somewaht antiquated with nowadays displays.
     hlsearch       = true, -- Highlight found searches
     -- showcmd     = false;
-    cmdheight   = 0,
+    cmdheight      = 1,
     autowrite      = true, -- Automatically save before :next, :make etc.
     autoread       = true, -- Automatically read changed files
     breakindent    = true, -- Make it so that long lines wrap smartly
@@ -197,14 +197,12 @@ local function load_options()
     foldmethod = "expr",
     foldenable = true,
     foldcolumn = "1",  -- I feel the fold column is distracting
-    -- foldexpr = "v:lua.vim.treesitter.foldexpr()",  -- will be overwrite by navigator
+    foldexpr = "v:lua.vim.treesitter.foldexpr()",  -- will be overwrite by navigator
     -- alternatives = ⣿ ░ ─
     -- stylua: ignore
     fillchars = { foldclose = "", foldopen = "", vert = "│", fold = " ", diff = "░", msgsep = "", foldsep = "│" , eob = ' '},
   }
-  if vim.treesitter.foldtext then
-    opts.foldtext = "v:lua.vim.treesitter.foldtext()"
-  end
+  opts.foldtext = ""
   for n, v in pairs(opts) do
     vim.opt[n] = v
   end
@@ -249,8 +247,8 @@ function _G.column()
   return table.concat(components, "")
 end
 
-if vim.fn.has("nvim-0.9.0") == 1 then
-  vim.opt.shortmess = "aotTIcFC";
+if vim.fn.has("nvim-0.10.0") == 1 then
+  vim.opt.completeopt    = "menu,menuone,popup" -- Show popup menu, even if there is one entry  menuone?
   -- vim.opt.statuscolumn = [[%!v:lua.column()]]
 end
 
@@ -259,7 +257,6 @@ if vim.wo.diff then
 end
 vim.cmd('set path+=**')
 -- stylua: ignore end
-
 
 vim.cmd([[autocmd TermOpen * setlocal nospell]])
 vim.cmd([[autocmd TermOpen,BufEnter term://* startinsert]])

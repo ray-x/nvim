@@ -1,9 +1,11 @@
 local conf = require('modules.tools.config')
-cond = not vim.g.vscode and not vim.wo.diff
+local cond = not vim.g.vscode and not vim.wo.diff
+plugin_folder = plugin_folder
 return function(tools)
   local is_win = require('core.global').is_windows
-  local gitrepo = vim.fn.isdirectory('.git/index')
+  -- local gitrepo = vim.fn.isdirectory('.git/index')
 
+  local dev = plugin_folder():find('github') ~= nil or plugin_folder():find('ray') ~= nil
   tools({
     'nvim-telescope/telescope.nvim',
     cmd = 'Telescope',
@@ -16,6 +18,12 @@ return function(tools)
       { 'nvim-lua/plenary.nvim', lazy = true, module = true },
     },
     module = true,
+  })
+  tools({
+    'hakonharnes/img-clip.nvim',
+    cond = cond,
+    cmd = { 'ImgClip' },
+    ft = { 'markdown', 'md', 'norg', 'org' },
   })
   -- tools({
   --   '3rd/image.nvim',
@@ -64,6 +72,23 @@ return function(tools)
   --     home = vim.fn.expand('~/worknotes'), -- Put the name of your notes directory here
   --   },
   -- })
+  tools({
+    'ray-x/mkdn.nvim',
+    dev = true,
+    ft = { 'markdown', 'md', 'norg', 'org' },
+    lazy = false,
+    module = true,
+    config = function()
+      require('mkdn').setup({
+        debug = true,
+        templates = {
+          daily = {
+            path = 'journal/2024/',
+          },
+        },
+      })
+    end,
+  })
 
   tools({
     'nvim-telescope/telescope-live-grep-args.nvim',
@@ -92,7 +117,7 @@ return function(tools)
   tools({
     'ray-x/telescope-ast-grep.nvim',
     cond = cond,
-    dev = (plugin_folder():find('github') ~= nil),
+    dev = dev,
     dependencies = {
       { 'nvim-telescope/telescope.nvim' },
     },
@@ -177,14 +202,14 @@ return function(tools)
     init = conf.grammarous,
   })
 
-  tools({
-    'plasticboy/vim-markdown',
-    ft = 'markdown',
-    cond = cond,
-    dependencies = { 'godlygeek/tabular' },
-    cmd = { 'Toc' },
-    init = conf.markdown,
-  })
+  -- tools({
+  --   'preservim/vim-markdown',
+  --   ft = 'markdown',
+  --   cond = cond,
+  --   dependencies = { 'godlygeek/tabular' },
+  --   cmd = { 'Toc' },
+  --   init = conf.markdown,
+  -- })
 
   local cmd = [[sh -c "cd app && yarn install"]]
   if is_win then
@@ -237,7 +262,7 @@ return function(tools)
   --   cmd = { 'RestRun', 'RestPreview', 'RestLast' },
   --   config = conf.rest,
   -- })
-  --
+  --conf.rest
   -- tools({ 'nanotee/zoxide.vim', cmd = { 'Z', 'Lz', 'Zi' } })
 
   cmd = 'bash install.sh'
@@ -255,7 +280,7 @@ return function(tools)
 
   tools({
     'ray-x/sad.nvim',
-    dev = (plugin_folder():find('github') ~= nil),
+    dev = dev,
     cond = cond,
     cmd = { 'Sad' },
     config = function()
@@ -271,7 +296,7 @@ return function(tools)
 
   tools({
     'ray-x/viewdoc.nvim',
-    dev = (plugin_folder():find('github') ~= nil),
+    dev = dev,
     cmd = { 'Viewdoc' },
     cond = cond,
     config = function()
@@ -281,65 +306,63 @@ return function(tools)
       })
     end,
   })
-  if gitrepo then
-    tools({
-      'lewis6991/gitsigns.nvim',
-      cond = cond,
-      config = conf.gitsigns,
-      -- keys = {']c', '[c'},  -- load by lazy.lua
-      event = { 'VeryLazy' },
-      lazy = false,
-    })
+  tools({
+    'lewis6991/gitsigns.nvim',
+    cond = cond,
+    config = conf.gitsigns,
+    -- keys = {']c', '[c'},  -- load by lazy.lua
+    event = { 'CmdlineEnter' },
+    lazy = false,
+  })
 
-    -- tools({
-    --   'ThePrimeagen/git-worktree.nvim',
-    --   event = { 'VeryLazy' },
-    --   cond = cond,
-    --   config = conf.worktree,
-    -- })
-    tools({
-      'ray-x/forgit.nvim',
-      dev = (plugin_folder():find('github') ~= nil),
-      cmd = { 'Ga', 'Gaa', 'Gd', 'Glo', 'Gs', 'Gc', 'Gpl', 'Gps' },
-      event = { 'CmdwinEnter', 'CmdlineEnter' },
-      dependencies = {
-        { 'junegunn/fzf', build = './install --bin' },
-      },
-      config = function()
-        require('forgit').setup({
-          debug = true,
-          log_path = vim.fn.expand('$HOME') .. '/.cache/nvim/nvim_debug.log',
-          vsplit = false,
-          height_ratio = 0.8,
-        })
-      end,
-    })
+  -- tools({
+  --   'ThePrimeagen/git-worktree.nvim',
+  --   event = { 'VeryLazy' },
+  --   cond = cond,
+  --   config = conf.worktree,
+  -- })
+  tools({
+    'ray-x/forgit.nvim',
+    dev = dev,
+    cmd = { 'Ga', 'Gaa', 'Gd', 'Glo', 'Gs', 'Gc', 'Gpl', 'Gps' },
+    event = { 'CmdwinEnter', 'CmdlineEnter' },
+    dependencies = {
+      { 'junegunn/fzf', build = './install --bin' },
+    },
+    config = function()
+      require('forgit').setup({
+        debug = true,
+        log_path = vim.fn.expand('$HOME') .. '/.cache/nvim/nvim_debug.log',
+        vsplit = false,
+        height_ratio = 0.8,
+      })
+    end,
+  })
 
-    tools({
-      'akinsho/git-conflict.nvim',
-      cmd = {
-        'GitConflictListQf',
-        'GitConflictChooseOurs',
-        'GitConflictChooseTheirs',
-        'GitConflictChooseBoth',
-        'GitConflictNextConflict',
-      },
-      config = conf.git_conflict,
-    })
+  tools({
+    'akinsho/git-conflict.nvim',
+    cmd = {
+      'GitConflictListQf',
+      'GitConflictChooseOurs',
+      'GitConflictChooseTheirs',
+      'GitConflictChooseBoth',
+      'GitConflictNextConflict',
+    },
+    config = conf.git_conflict,
+  })
 
-    tools({
-      'rbong/vim-flog',
-      cmd = { 'Flog', 'Flogsplit', 'Flg', 'Flgs' },
-      event = { 'FuncUndefined' },
-      dependencies = {
-        'tpope/vim-fugitive',
+  tools({
+    'rbong/vim-flog',
+    cmd = { 'Flog', 'Flogsplit', 'Flg', 'Flgs' },
+    event = { 'FuncUndefined' },
+    dependencies = {
+      'tpope/vim-fugitive',
         -- stylua: ignore
         cmd = { 'Gvsplit', 'G', 'Gread', 'Git',
           'Gedit', 'Gstatus', 'Gdiffsplit', 'Gvdiffsplit' },
-        event = { 'CmdwinEnter', 'CmdlineEnter' },
-      },
-    })
-  end
+      event = { 'CmdwinEnter', 'CmdlineEnter' },
+    },
+  })
   tools({
     'kevinhwang91/nvim-bqf',
     event = { 'CmdlineEnter', 'QuickfixCmdPre' },
@@ -437,7 +460,6 @@ return function(tools)
 
   tools()
 end
-
 
 -- tools({
 --   'jvgrootveld/telescope-zoxide',

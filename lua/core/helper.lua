@@ -111,7 +111,7 @@ local helper = {
     _G.FindRoot = function()
       local root = vim.fn.system({ 'git', 'rev-parse', '--show-toplevel' })
       if root:find('fatal') then
-        root = workspace_folder()
+        root = _G.workspace_folder()
       end
 
       -- stylua: ignore start
@@ -123,7 +123,7 @@ local helper = {
 
       if #root == 0 then
         for _, k in ipairs(list) do
-          local r = FindProjectRoot(k)
+          local r = _G.FindProjectRoot(k)
           if #r > 0 then
             return r
           end
