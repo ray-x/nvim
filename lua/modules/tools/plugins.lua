@@ -60,18 +60,6 @@ return function(tools)
       { 'nvim-telescope/telescope.nvim' },
     },
   })
-  -- tools({
-  --   'renerocksai/telekasten.nvim',
-  --   cond = cond,
-  --   ft = { 'markdown', 'md', 'wiki' },
-  --   event = { 'CmdlineEnter', 'CursorHold' },
-  --   dependencies = {
-  --     { 'nvim-telescope/telescope.nvim' },
-  --   },
-  --   opts = {
-  --     home = vim.fn.expand('~/worknotes'), -- Put the name of your notes directory here
-  --   },
-  -- })
   tools({
     'ray-x/mkdn.nvim',
     dev = true,
