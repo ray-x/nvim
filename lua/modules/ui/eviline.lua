@@ -146,14 +146,38 @@ local current_function = function(width)
   local path = fn.fnamemodify(fn.expand('%'), ':~:.')
   local title = path
   if ts and #ts > 1 then
-    title = title .. ' -> ' .. ts
+    title = title .. '->' .. ts
   end
 
   if not state.disable_title_update and running % 5 == 1 then
     set_title(title)
   end
   running = running + 1
-  return string.sub(' ' .. ts, 1, width)
+  -- split the contex with '->' and use different colors
+  local parts = vim.split(ts, '->')
+  local length = 0
+  local result = {{'🥖', 'green'}}
+  for i, part in ipairs(parts) do
+    part = part:gsub('function', '󰡱')
+    part = part:gsub('func', '󰡱')
+    part = part:gsub('method', '')
+    part = part:gsub('class', '')
+    part = part:gsub('interface', '')
+    part = part:gsub('table', '󰠵')
+    -- trim spaces on the left and right
+    part = part:gsub('^%s*(.-)%s*$', '%1')
+    length = length + #part
+    if length > width then
+      break
+    end
+    if #result > 1 then
+      result[#result + 1] = { '>', 'blue_light'}
+    end
+    result[#result + 1] = { part, 'green'}
+
+  end
+  -- return string.sub(' ' .. ts, 1, width)
+  return result
 end
 
 local current_signature = function(width)
@@ -487,10 +511,11 @@ basic.funcname = {
     white = { 'white', 'black' },
     green = { 'green_b', 'NormalBg' },
     green_light = { 'green_light', 'NormalBg' },
+    blue_light = { 'blue_light', 'NormalBg' },
   },
   -- text = function(_, winnr, width, is_float)
   text = function(_, _, width, _)
-    return { { ' ', 'default' }, { current_function(width), 'green' }, { ' ', 'default' } }
+    return current_function(width)
   end,
 }
 
