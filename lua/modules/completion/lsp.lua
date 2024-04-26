@@ -22,28 +22,20 @@ M.setup = function()
       },
     }
   end
+  -- if not lspconfig.goxls then
+  --   configs.goxls= {
+  --     default_config = {
+  --       cmd = { 'goxls' },
+  --       filetypes = { 'gop' },
+  --       root_dir = function(fname)
+  --         return vim.loop.cwd()
+  --       end,
+  --       settings = {},
+  --     },
+  --   }
+  -- end
 
   lspconfig.emmet_ls.setup({ capabilities = capabilities })
-  -- grammarly
-  require('lspconfig').grammarly.setup({
-    filetypes = { 'markdown', 'text', 'html', 'latex', 'org' },
-  })
-  -- configs["markdown_oxide"] = {
-  --   default_config = {
-  --     -- root_dir = function() return vim.fn.getcwd() end,
-  --     root_dir = lspconfig.util.root_pattern('.git', vim.fn.getcwd()),
-  --     filetypes = {"markdown"},
-  --     -- cmd = {(function()
-  --     --   if vim.env.MOXIDE_DEBUG then
-  --     --     return "/home/felix/coding/LargerIdeas/ObsidianLS/obsidian-ls/target/debug/markdown-oxide"
-  --     --   else
-  --     --     return "/home/felix/coding/LargerIdeas/ObsidianLS/obsidian-ls/target/release/markdown-oxide"
-  --     --   end
-  --     -- end)()}
-  --   },
-  --   on_attach = on_attach,
-  --   capabilities = capabilities,
-  -- }
   require('lspconfig').markdown_oxide.setup({
     -- root_dir = function() return vim.fn.getcwd() end,
     -- root_dir = lspconfig.util.root_pattern('.git', vim.uv.cwd()),

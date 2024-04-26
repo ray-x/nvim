@@ -105,6 +105,7 @@ local function load_options()
     textwidth      = 120, -- wrap lines at 120 chars. 80 is somewaht antiquated with nowadays displays.
     hlsearch       = true, -- Highlight found searches
     -- showcmd     = false;
+    mousemoveevent = true,
     cmdheight      = 1,
     autowrite      = true, -- Automatically save before :next, :make etc.
     autoread       = true, -- Automatically read changed files

@@ -20,29 +20,23 @@ return function(tools)
     module = true,
   })
   tools({
-    'hakonharnes/img-clip.nvim',
-    cond = cond,
-    cmd = { 'ImgClip' },
-    ft = { 'markdown', 'md', 'norg', 'org' },
+    '3rd/image.nvim',
+    ft = { 'markdown', 'md', 'jupyter' },
+    init = function()
+      -- stylua: ignore
+      package.path = package.path .. ";" .. vim.fn.expand("$HOME") .. "/.luarocks/share/lua/5.1/?/init.lua"
+      package.path = package.path
+        .. ';'
+        .. vim.fn.expand('$HOME')
+        .. '/.luarocks/share/lua/5.1/?.lua'
+    end,
+    opts = {},
+    dependencies = {
+      -- {
+      --   'theHamsta/nvim_rocks', -- not support fish
+      -- },
+    },
   })
-  -- tools({
-  --   '3rd/image.nvim',
-  --   ft = { 'markdown', 'md', 'norg', 'org', 'jupyter' },
-  --   init = function()
-  --     -- stylua: ignore
-  --     package.path = package.path .. ";" .. vim.fn.expand("$HOME") .. "/.luarocks/share/lua/5.1/?/init.lua"
-  --     package.path = package.path
-  --       .. ';'
-  --       .. vim.fn.expand('$HOME')
-  --       .. '/.luarocks/share/lua/5.1/?.lua'
-  --   end,
-  --   opts = {},
-  --   dependencies = {
-  --     -- {
-  --     --   'theHamsta/nvim_rocks', -- not support fish
-  --     -- },
-  --   },
-  -- })
   tools({
     'nvim-telescope/telescope-fzf-native.nvim',
     build = 'make',
@@ -66,9 +60,39 @@ return function(tools)
     ft = { 'markdown', 'md', 'norg', 'org' },
     lazy = false,
     module = true,
+    dependencies = {
+      {
+        'HakonHarnes/img-clip.nvim',
+        module = true,
+        command = { 'PasteImage' },
+        opts = {
+          relative_to_current_file = true,
+          copy_images = true,
+          download_images = true,
+          filetypes = {
+            markdown = {
+              download_images = true, ---@type boolean
+            },
+          },
+        },
+      },
+    },
     config = function()
       require('mkdn').setup({
         debug = true,
+        paste_link = function()
+          vim.keymap.set({ 'n', 'x' }, '<leader>p', function()
+            if not require('mkdn.lnk').fetch_and_paste_url() then
+              -- paste image contents
+              require('img-clip').paste_image()
+            end
+          end, {
+            noremap = true,
+            desc = 'Fetch the title of the URL under the cursor and paste it as a Markdown link',
+          })
+        end,
+        internal_features = true,
+        notes_root = os.getenv('HOME') .. '/Library/CloudStorage/Dropbox/obsidian/',
         templates = {
           daily = {
             path = 'journal/2024/',
@@ -76,6 +100,12 @@ return function(tools)
         },
       })
     end,
+  })
+
+  tools({
+    'chrisgrieser/nvim-early-retirement',
+    config = true,
+    event = 'VeryLazy',
   })
 
   tools({
@@ -344,11 +374,27 @@ return function(tools)
     cmd = { 'Flog', 'Flogsplit', 'Flg', 'Flgs' },
     event = { 'FuncUndefined' },
     dependencies = {
-      'tpope/vim-fugitive',
+      {
+        'tpope/vim-rhubarb',
+        cmd = { 'GBrowse' },
+        config = function()
+          vim.api.nvim_create_user_command('Browse', function(opts)
+            local url = opts.fargs[1]
+            -- for github append #Llinenumber
+            if url:find('github') then
+              url = url .. '#L' .. vim.fn.line('.')
+            end
+            vim.ui.open(url)
+          end, { nargs = 1 })
+        end,
+      },
+      {
+        'tpope/vim-fugitive',
         -- stylua: ignore
         cmd = { 'Gvsplit', 'G', 'Gread', 'Git',
           'Gedit', 'Gstatus', 'Gdiffsplit', 'Gvdiffsplit' },
-      event = { 'CmdwinEnter', 'CmdlineEnter' },
+        event = { 'CmdwinEnter', 'CmdlineEnter' },
+      },
     },
   })
   tools({
@@ -445,7 +491,18 @@ return function(tools)
       'nvim-telescope/telescope.nvim',
     },
   })
-
+  tools({
+    'mikesmithgh/kitty-scrollback.nvim',
+    enabled = true,
+    lazy = true,
+    cmd = { 'KittyScrollbackGenerateKittens', 'KittyScrollbackCheckHealth' },
+    event = { 'User KittyScrollbackLaunch' },
+    -- version = '*', -- latest stable version, may have breaking changes if major version changed
+    -- version = '^4.0.0', -- pin major version, include fixes and features that do not have breaking changes
+    config = function()
+      require('kitty-scrollback').setup()
+    end,
+  })
   tools()
 end
 

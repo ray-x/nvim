@@ -14,6 +14,15 @@ vim.api.nvim_create_user_command('DiffDir', function(opts)
   end
 end, { nargs = '+', complete = 'dir' })
 
+
+-- Tmp is a command to create a temporary file
+vim.api.nvim_create_user_command('Tmp', function(opts)
+  local path = vim.fn.tempname()
+  vim.cmd('e ' .. path)
+  -- delete the file when the buffer is closed
+  vim.cmd('au BufDelete <buffer> !rm -f ' .. path)
+end, { nargs = '*' })
+
 vim.api.nvim_create_user_command('CompareDir', function(opts)
   -- for compareDir command
   local cmpdir_group = api.nvim_create_augroup('CompareDir', {})
@@ -77,6 +86,7 @@ vim.api.nvim_create_user_command('Opsort', function()
     local cmd = ' source ' .. vim_path .. path_sep .. 'scripts' .. path_sep .. 'sort.vim'
     vim.cmd(cmd)
   end
+  vim.cmd([[command! -nargs=* Sort execute 'normal! <Plug>Opsort']])
   vim.fn.feedkeys(':call <SID>Opsort()<CR>')
 end, { nargs = '+', complete = 'dir' })
 

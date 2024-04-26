@@ -388,36 +388,6 @@ local function find_link_under_cursor()
   return nil
 end
 
-local function follow_link()
-  local word = find_word_under_cursor()
-  local link = find_link_under_cursor() -- matches []() links only
-  if link and link.url then
-    if link.url:match('^https?://') then
-      -- a link
-      vim.ui.open(link.url)
-    elseif link.url:match('^#') then
-      -- an anchor
-      vim.fn.search('^#* ' .. link.url:sub(2))
-    else
-      -- a file
-      vim.cmd('e ' .. link.url)
-    end
-  elseif word then
-    if word.text:match('^https?://') then
-      -- Bare url i.e without link syntax
-      vim.ui.open(word.text)
-    else
-      -- create a link
-      local filename = string.lower(word.text:gsub('%s', '_') .. '.md')
-      vim.cmd('norm! "_ciW[' .. word.text .. '](' .. filename .. ')')
-    end
-  end
-end
-
-vim.keymap.set('n', 'gx', function()
-  follow_link()
-end, { expr = true, noremap = true })
-
 -- local test_telescope = function()
 -- md_grep_telescope({
 --   search_files = {

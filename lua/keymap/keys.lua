@@ -409,7 +409,6 @@ keymap.amend('n', '[c', function()
   end
 end, { desc = 'prevdiff/hunk' })
 
-vim.keymap.set('n', '<leader>u',  require('utils.markdown').fetch_and_paste_url_title, {desc = 'Fetch and paste URL title'})
 
 return { keymap = def_map }
 

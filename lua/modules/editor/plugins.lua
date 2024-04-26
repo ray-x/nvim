@@ -301,60 +301,77 @@ return function(editor)
   editor({
     'jakewvincent/mkdnflow.nvim',
     ft = { 'markdown' },
-    opts = {
-      links = {
-        transform_explicit = function(text)
-          -- Make lowercase, remove spaces, and reverse the string
-          return string.lower(text:gsub(' ', ''))
-        end,
-      },
-    },
+  })
+
+  -- scientific notes latex
+  editor({
+    'jbyuki/nabla.nvim',
+    ft = { 'markdown' },
+    config = function()
+      require('nabla').enable_virt()
+      vim.keymap.set('n', '<leader>u', function()
+        require('nabla').popup()
+      end, {
+      buffer = vim.api.nvim_get_current_buf(),
+      desc = 'nabla'
+    })
+    end,
   })
 
   -- zk cli
   -- Zk[Index|New|Notes|Backlinks|Links|Tags|InsertLink]
+  -- editor({
+  --   'zk-org/zk-nvim',
+  --   ft = { 'markdown', 'vimwiki' },
+  --   cmd = { 'ZkIndex', 'ZkNew', 'ZkNotes', 'ZkBacklinks', 'ZkLinks', 'ZkTags', 'ZkInsertLink' },
+  --   config = function()
+  --     require('zk').setup({
+  --       picker = 'telescope',
+  --     })
+  --   end,
+  -- })
+  -- Zk[New|Hover|Browse] conflict with zk-nvim
+  -- editor({
+  --   'epwalsh/obsidian.nvim',
+  --   version = '*', -- recommended, use latest release instead of latest commit
+  --   lazy = true,
+  --   ft = 'markdown',
+  --   -- Replace the above line with this if you only want to load obsidian.nvim for markdown files in your vault:
+  --   -- event = {
+  --   --   -- If you want to use the home shortcut '~' here you need to call 'vim.fn.expand'.
+  --   --   -- E.g. "BufReadPre " .. vim.fn.expand "~" .. "/my-vault/**.md"
+  --   --   "BufReadPre path/to/my-vault/**.md",
+  --   --   "BufNewFile path/to/my-vault/**.md",
+  --   -- },
+  --   dependencies = {
+  --     -- Required.
+  --     'nvim-lua/plenary.nvim',
+  --   },
+  --   opts = {
+  --     disable_frontmatter = true,
+  --     workspaces = {
+  --       {
+  --         name = 'vault',
+  --         path = '~/Library/CloudStorage/Dropbox/obsidian',
+  --       },
+  --       {
+  --         name = 'daily',
+  --         path = '~/Library/CloudStorage/Dropbox/obsidian/journal',
+  --       },
+  --     },
+  --   },
+  -- })
+  --
+
+  -- draw due date and parse date
   editor({
-    'zk-org/zk-nvim',
-    ft = { 'markdown', 'vimwiki' },
-    cmd = { 'ZkIndex', 'ZkNew', 'ZkNotes', 'ZkBacklinks', 'ZkLinks', 'ZkTags', 'ZkInsertLink' },
+    'NFrid/due.nvim',
+    ft = { 'markkdown' },
     config = function()
-      require('zk').setup({
-        picker = 'telescope',
-      })
+      require('due_nvim').setup({})
     end,
   })
-  -- Zk[New|Hover|Browse] conflict with zk-nvim
-  editor({
-    'epwalsh/obsidian.nvim',
-    version = '*', -- recommended, use latest release instead of latest commit
-    lazy = true,
-    ft = 'markdown',
-    -- Replace the above line with this if you only want to load obsidian.nvim for markdown files in your vault:
-    -- event = {
-    --   -- If you want to use the home shortcut '~' here you need to call 'vim.fn.expand'.
-    --   -- E.g. "BufReadPre " .. vim.fn.expand "~" .. "/my-vault/**.md"
-    --   "BufReadPre path/to/my-vault/**.md",
-    --   "BufNewFile path/to/my-vault/**.md",
-    -- },
-    dependencies = {
-      -- Required.
-      'nvim-lua/plenary.nvim',
-    },
-    opts = {
-      disable_frontmatter = true,
-      workspaces = {
-        {
-          name = 'vault',
-          path = '~/Library/CloudStorage/Dropbox/obsidian',
-        },
-        {
-          name = 'daily',
-          path = '~/Library/CloudStorage/Dropbox/obsidian/journal',
-        },
-      },
-    },
-  })
-  --
+
   editor(
     {
       'echasnovski/mini.nvim',
