@@ -64,6 +64,7 @@ local basic = {}
 local breakpoint_width = 100
 local medium_width = 80
 local large_width = 100
+
 basic.divider = { b_components.divider, '' }
 basic.bg = { ' ', 'StatusLine' }
 
@@ -125,14 +126,12 @@ local current_function = function(width)
     end
     return ''
   end
-  if width < 140 then
+  if width - #lsp_label2 < 140 then
     width = math.max((80 - #lsp_label1 - #lsp_label2) * 0.5, 20)
-  end
-  if width >= 140 then
-    width = math.max(width / 3, 30)
-  end
-  if width > 200 then
-    width = math.max(width / 2, 60)
+  elseif width - #lsp_label2 < 200 then
+    width = math.max((width - #lsp_label1) / 1.5, 30)
+  elseif width - #lsp_label2 >= 200 then
+    width = math.max((width - #lsp_label1) / 1.3, 40)
   end
   if running % 5 == 1 and not state.disable_title_update then
     ok, ts = pcall(treesitter_context, 400)
@@ -156,25 +155,38 @@ local current_function = function(width)
   -- split the contex with '->' and use different colors
   local parts = vim.split(ts, '->')
   local length = 0
-  local result = {{'🥖', 'green'}}
+  local result = { { '🥖', 'green' } }
   for i, part in ipairs(parts) do
     part = part:gsub('function', '󰡱')
     part = part:gsub('func', '󰡱')
     part = part:gsub('method', '')
     part = part:gsub('class', '')
+    part = part:gsub('struct', '')
+    part = part:gsub('string', '')
+    part = part:gsub('int64', '󱂋')
+    part = part:gsub('int', '󱂋')
+    part = part:gsub('float64', '')
+    part = part:gsub('float', '')
+    part = part:gsub('error', '')
     part = part:gsub('interface', '')
     part = part:gsub('table', '󰠵')
     -- trim spaces on the left and right
     part = part:gsub('^%s*(.-)%s*$', '%1')
     length = length + #part
-    if length > width then
-      break
+
+    if length >= width then
+      local oldlen = length - #part
+      local remain = width - oldlen + 4
+      -- trim part longer than remain
+      part = part:sub(1, remain)
     end
     if #result > 1 then
-      result[#result + 1] = { '>', 'blue_light'}
+      result[#result + 1] = { '>', 'blue_light' }
     end
-    result[#result + 1] = { part, 'green'}
-
+    result[#result + 1] = { part, 'green' }
+    if length >= width then
+      break
+    end
   end
   -- return string.sub(' ' .. ts, 1, width)
   return result
