@@ -38,7 +38,6 @@ function config.nvim_cmp()
     { name = 'treesitter', keyword_length = 2 },
 
     -- { name = "cmp_tabnine", keyword_length = 0 },
-    { name = 'emoji' },
     { name = 'path' },
     -- { name = 'copilot' },
     { name = 'buffer' },
@@ -68,6 +67,7 @@ function config.nvim_cmp()
     table.insert(sources, { name = 'buffer', keyword_length = 3 })
     table.insert(sources, { name = 'calc' })
   end
+
   local compare = require('cmp.config.compare')
   cmp.setup({
     snippet = {
@@ -99,6 +99,7 @@ function config.nvim_cmp()
           spell = '󰓆',
           emoji = '󰞅',
           latex_symbols = '󰿉',
+          ['vim-dadbod-completion'] = '',
           -- copilot = '🤖',
           -- cmp_tabnine = '🤖',
           look = '',
