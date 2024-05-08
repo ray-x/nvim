@@ -362,4 +362,32 @@ function M.substitute(from, to, style)
   return cmd
 end
 
+-- work a file tree
+local function get_filetype(folder, ft)
+  local uv = vim.loop
+  local sd = uv.fs_scandir(folder)
+  local files = {}
+  while true do
+    local name, type = uv.fs_scandir_next(sd)
+    if name == nil then
+      break
+    end
+    if type == 'directory' then
+      local nested_path = folder .. '/' .. name
+      local nested_sd = uv.fs_scandir(nested_path)
+      while true do
+        local nested_name, _ = uv.fs_scandir_next(nested_sd)
+        if nested_name == nil then
+          break
+        end
+        -- file name ends with ft
+        if nested_name:match(ft .. '$') then
+          table.insert(files, nested_path .. '/' .. nested_name)
+        end
+      end
+    end
+  end
+end
+
+
 return M

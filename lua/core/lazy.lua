@@ -69,7 +69,7 @@ function setup(fsize)
   vim.cmd([[doautocmd User LoadLazyPlugin]])
   vim.cmd('tabdo windo set relativenumber')
   -- vim.cmd('highlight clear ColorColumn')
-  vim.cmd("command! Gram lua require'modules.tools.config'.grammcheck()")
+  -- vim.cmd("command! Gram lua require'modules.tools.config'.grammcheck()")
   lprint('lazy colorscheme loaded', vim.uv.now() - start)
 end
 

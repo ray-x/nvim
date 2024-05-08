@@ -79,14 +79,11 @@ end
 function config.vim_dadbod_ui()
   -- require('utils.helper').loader('vim-dadbod')
 
-  local sep = require('core.global').path_sep
   vim.g.db_ui_show_help = 0
-  vim.g.db_ui_execute_on_save = 0 -- use <leader>S to save
+  -- vim.g.db_ui_execute_on_save = 0 -- use <leader>S to save
   vim.g.db_ui_win_position = 'left'
   vim.g.db_ui_use_nerd_fonts = 1
   vim.g.db_ui_winwidth = 35
-  -- vim.g.db_ui_save_location = require('core.global').home .. '/.cache/vim/db_ui_queries'
-  vim.g.db_ui_save_location = vim.fn.getcwd() .. sep .. 'db'
   vim.cmd([[
   set shiftwidth=2
   " set tabstop=2
@@ -503,11 +500,11 @@ function config.spellcheck()
   vim.fn['spelunker#check']()
 end
 
-function config.grammcheck()
-  -- body
-  require('utils.helper').loader('vim-grammarous')
-  vim.cmd([[GrammarousCheck]])
-end
+-- function config.grammcheck()
+--   -- body
+--   require('utils.helper').loader('vim-grammarous')
+--   vim.cmd([[GrammarousCheck]])
+-- end
 function config.vim_test()
   vim.g['test#strategy'] = { nearest = 'neovim', file = 'neovim', suite = 'kitty' }
   vim.g['test#neovim#term_position'] = 'vert botright 60'

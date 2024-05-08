@@ -1,4 +1,4 @@
-local lazypath = vim.fn.expand('$HOME') .. '/tmp/lazy/lazy.nvim'
+loca lazypath = vim.fn.expand('$HOME') .. '/tmp/lazy/lazy.nvim'
 if not vim.loop.fs_stat(lazypath) then
   vim.fn.system({
     'git',

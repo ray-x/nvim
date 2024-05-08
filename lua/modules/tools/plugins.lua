@@ -20,24 +20,6 @@ return function(tools)
     module = true,
   })
   tools({
-    '3rd/image.nvim',
-    ft = { 'markdown', 'md', 'jupyter' },
-    init = function()
-      -- stylua: ignore
-      package.path = package.path .. ";" .. vim.fn.expand("$HOME") .. "/.luarocks/share/lua/5.1/?/init.lua"
-      package.path = package.path
-        .. ';'
-        .. vim.fn.expand('$HOME')
-        .. '/.luarocks/share/lua/5.1/?.lua'
-    end,
-    opts = {},
-    dependencies = {
-      -- {
-      --   'theHamsta/nvim_rocks', -- not support fish
-      -- },
-    },
-  })
-  tools({
     'nvim-telescope/telescope-fzf-native.nvim',
     build = 'make',
     cond = cond,
@@ -57,8 +39,9 @@ return function(tools)
   tools({
     'ray-x/mkdn.nvim',
     dev = true,
-    ft = { 'markdown', 'md', 'norg', 'org' },
-    lazy = false,
+    ft = { 'markdown', 'md' },
+    cmd = { 'MkdnNew', 'MkdnDaily', 'MkdnNewDaily', 'GtdStart' },
+    -- lazy = false,
     module = true,
     dependencies = {
       {
@@ -77,29 +60,27 @@ return function(tools)
         },
       },
     },
-    config = function()
-      require('mkdn').setup({
-        debug = true,
-        paste_link = function()
-          vim.keymap.set({ 'n', 'x' }, '<leader>p', function()
-            if not require('mkdn.lnk').fetch_and_paste_url() then
-              -- paste image contents
-              require('img-clip').paste_image()
-            end
-          end, {
-            noremap = true,
-            desc = 'Fetch the title of the URL under the cursor and paste it as a Markdown link',
-          })
-        end,
-        internal_features = true,
-        notes_root = os.getenv('HOME') .. '/Library/CloudStorage/Dropbox/obsidian/',
-        templates = {
-          daily = {
-            path = 'journal/2024/',
-          },
+    opts = {
+      debug = true,
+      paste_link = function()
+        vim.keymap.set({ 'n', 'x' }, '<leader>p', function()
+          if not require('mkdn.lnk').fetch_and_paste_url() then
+            -- paste image contents
+            require('img-clip').paste_image()
+          end
+        end, {
+          noremap = true,
+          desc = 'Fetch the title of the URL under the cursor and paste it as a Markdown link',
+        })
+      end,
+      internal_features = true,
+      notes_root = os.getenv('HOME') .. '/Library/CloudStorage/Dropbox/obsidian',
+      templates = {
+        daily = {
+          path = 'journal/2024',
         },
-      })
-    end,
+      },
+    },
   })
 
   tools({
@@ -141,6 +122,8 @@ return function(tools)
     },
     event = { 'CmdlineEnter' },
   })
+
+  vim.g.db_ui_save_location = '~/data/db_ui_queries'
   tools({
     'kristijanhusak/vim-dadbod-ui',
     cond = cond,
@@ -153,10 +136,19 @@ return function(tools)
       'DB',
     },
     config = conf.vim_dadbod_ui,
-    dependencies = { 'tpope/vim-dadbod', ft = { 'sql' }, cmd = { 'DB' } },
+    dependencies = {
+      { 'tpope/vim-dadbod', ft = { 'sql' } },
+    },
     init = function()
-      vim.g.dbs = { local_pg = 'postgres://postgres:password@localhost:5432/postgres' }
+      vim.g.db_ui_default_query = 'select * from "{table}" limit 20'
+      -- vim.g.db_ui_save_location = require('core.global').home .. '/.cache/vim/db_ui_queries'
+      -- vim.g.db_ui_save_location = vim.fn.getcwd() .. sep .. 'db'
+      vim.g.db_ui_auto_execute_table_helpers = 1
+      vim.g.dbs = { local_pg = 'postgres://postgres:postgres@localhost:5432/postgres' }
       vim.g.db_ui_use_nerd_fonts = 1
+      -- vim.g.catalog = os.getenv('$CATALOGUE_DATABASE_URL')
+      -- vim.g.history = os.getenv('$HISTORY_DATABASE_URL')
+      -- vim.g.rec = os.getenv('$RECENGINE_DATABASE_URL')
     end,
   })
   -- tools({ 'mattn/webapi-vim', lazy = true })
@@ -213,12 +205,12 @@ return function(tools)
     init = conf.spelunker,
     config = conf.spellcheck,
   })
-  tools({
-    'rhysd/vim-grammarous',
-    cmd = { 'GrammarousCheck' },
-    ft = { 'markdown', 'txt' },
-    init = conf.grammarous,
-  })
+  -- tools({
+  --   'rhysd/vim-grammarous',
+  --   cmd = { 'GrammarousCheck' },
+  --   ft = { 'markdown', 'txt' },
+  --   init = conf.grammarous,
+  -- })
 
   -- tools({
   --   'preservim/vim-markdown',

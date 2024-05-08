@@ -254,7 +254,6 @@ local treesitter_context = function(width)
     type_patterns = type_patterns,
   })
   local context = string.format('%s', f) -- convert to string, it may be a empty ts node
-
   -- lprint(context)
   if context == 'vim.NIL' then
     return ' '

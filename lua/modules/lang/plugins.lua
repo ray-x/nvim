@@ -23,6 +23,13 @@ return function(lang)
     dev = dev,
     module = true,
     config = function()
+      require('guihua').setup({
+        icons = {
+          syntax = {
+            namespace = '',
+          },
+        },
+      })
       vim.ui.select = require('guihua.gui').select
       vim.ui.input = require('guihua.gui').input
     end,
@@ -112,6 +119,7 @@ return function(lang)
 
   if typecheck({ 'python', 'javascript', 'py', 'ts', 'tsx', 'js', 'jsx' }) then
     lang({
+      -- running code interactively with the jupyter kernel
       'benlubas/molten-nvim',
       ft = 'python',
       cmd = {
@@ -122,7 +130,6 @@ return function(lang)
         'MoltenEvaluateLine',
         'MoltenReevaluateCell',
       },
-      opts = {},
     })
     lang({ 'metakirby5/codi.vim', ft = { 'python', 'javascript' }, cmd = { 'Codi', 'CodiNew' } })
     lang({ 'Vigemus/iron.nvim', ft = 'python', config = conf.iron })
@@ -415,38 +422,57 @@ return function(lang)
     -- cmd = { 'AwkWard' },
   })
   lang({
+    'chrisbra/csv.vim',
+    ft = { 'csv', 'tsv', 'dat', 'csv_pipe', 'dbout' },
+    cmd = {
+      'WhatColumn',
+      'CSVWhatColumn',
+      'HiColumn',
+      'CSVHiColumn',
+      'CSVHiColumn',
+      'ArrangeColumn',
+      'DeleteColumn',
+      'CSVDeleteColumn',
+      'CSVDeleteColumn',
+    },
+    init = function()
+      vim.cmd('auto BufReadPost *.csv,*.tsv,*.dat,*.csv_pipe,*.dbout setlocal filetype=csv')
+    end,
+  })
+  lang({
     'mechatroner/rainbow_csv',
-    ft = { 'csv', 'tsv', 'dat' },
+    ft = { 'csv', 'tsv', 'dat', 'csv_pipe', 'dbout' },
     cmd = { 'RainbowDelim', 'RainbowMultiDelim', 'Select', 'CSVLint' },
   })
 end
 
 -- lang({
---   'rafcamlet/nvim-luapad',
---   lazy = true,
---   cmd = { 'Lua', 'Luapad' },
---   config = conf.luapad,
--- })
-
--- if vim.fn.has('nvim-0.11') == 1 then
---   lang({
---     'Bekaboo/dropbar.nvim',
---     -- optional, but required for fuzzy finder support
---     dependencies = {
---       'nvim-telescope/telescope-fzf-native.nvim',
---     },
---     event = { 'WinScrolled' },
---     opts = {
---       ---@type boolean|fun(buf: integer, win: integer, info: table?): boolean
+--   'Bekaboo/dropbar.nvim',
+--   -- optional, but required for fuzzy finder support
+--   dependencies = {
+--     'nvim-telescope/telescope-fzf-native.nvim',
+--   },
+--   -- event = { 'WinScrolled' },
+--   opts = {
+--     general = {
 --       enable = function(buf, win, _)
---         return not vim.api.nvim_win_get_config(win).zindex
---           and not vim.bo[buf].buftype == ''
---           and (not vim.tbl_contains(
---             { 'help', 'guihua', 'terminal', 'markdown' },
---             vim.bo[buf].buftype
---           ))
---           and vim.api.nvim_buf_get_name(buf) ~= ''
---           and not vim.wo[win].diff
+--         if not vim.fn.has('nvim-0.10') then
+--           return false
+--         end
+--         return vim.fn.win_gettype(win) == ''
+--           and vim.wo[win].winbar == ''
+--           and vim.bo[buf].bt == ''
+--           and (not vim.tbl_contains({ 'help', 'guihua', 'terminal' }, vim.bo[buf].buftype))
+--           and (
+--             vim.bo[buf].ft == 'markdown'
+--             or (
+--               buf
+--                 and vim.api.nvim_buf_is_valid(buf)
+--                 and (pcall(vim.treesitter.get_parser, buf, vim.bo[buf].ft))
+--                 and true
+--               or false
+--             )
+--           )
 --       end,
 --       attach_events = {
 --         'OptionSet',
@@ -455,5 +481,12 @@ end
 --         'WinScrolled',
 --       },
 --     },
---   })
--- end
+--   },
+-- })
+
+-- lang({
+--   'rafcamlet/nvim-luapad',
+--   lazy = true,
+--   cmd = { 'Lua', 'Luapad' },
+--   config = conf.luapad,
+-- })

@@ -1,7 +1,7 @@
 local function load_env(envfile)
-  envfile = envfile or {}
   -- load env from `env` output
-  if vim.fn.executable('env') == 0 then
+  envfile = envfile or {}
+  if vim.fn.executable('env') == 0 and vim.fn.empty(envfile) == 1 then
     return
   end
   -- print('calling loadenv')
@@ -11,7 +11,10 @@ local function load_env(envfile)
   env = vim.list_extend(envfile, env)
   for _, item in pairs(env) do
     if vim.fn.stridx(item, 'DATABASE_URL') >= 0 then
-      local db_name = vim.fn.split(item, '_')[1]:lower()
+      -- remove DATABASE_URL from string
+      local db_name = vim.fn.split(item, '=')[1]
+      db_name = string.gsub(db_name, '_DATABASE_URL', ''):lower()
+      -- local db_name = vim.fn.split(item, '_')[1]:lower()
       -- print(db_name)
       dbs[db_name] = vim.fn.split(item, '=')[2]
     end
@@ -71,14 +74,83 @@ local function load_dbs()
     lprint(db_name, value)
     local url = parsePostgresURL(value)
     if url then
-    table.insert(connections, url )
-  end
+      table.insert(connections, url)
+    end
   end
   dbs = vim.tbl_extend('force', dbs, env_dbs)
   dbs = vim.tbl_extend('force', vim.g.dbs, dbs)
   vim.g.dbs = dbs
   vim.g.connections = connections
   lprint(env_dbs, dbs, connections)
+end
+
+local function open_saved_query(opts)
+  opts = {}
+  local uv = vim.uv
+  local folder = string.gsub(vim.g.db_ui_save_location, '~', uv.os_homedir())
+  local saved_queries = function(dir)
+    local list = {}
+    local global = require('core.global')
+    local p = io.popen('rg --files ' .. dir)
+    for file in p:lines() do
+      table.insert(list, file)
+    end
+    return list
+  end
+  local pickers = require('telescope.pickers')
+  local previewers = require('telescope.previewers')
+  local finders = require('telescope.finders')
+  local conf = require('telescope.config').values
+  local actions = require('telescope.actions')
+  local putils = require('telescope.previewers.utils')
+
+  pickers
+    .new(opts, {
+      prompt_title = '  Dadbod queries',
+      finder = finders.new_table({
+        results = saved_queries(folder),
+        entry_maker = function(val)
+          local entry = {}
+          entry.value = folder .. '/' .. val
+          entry.ordinal = val
+          entry.display = val
+          return entry
+        end,
+      }),
+      previewer = previewers.new_buffer_previewer({
+        title = '   󰑷  ',
+        get_buffer_by_name = function(_, entry)
+          return entry.value
+        end,
+
+        define_preview = function(self, entry)
+          conf.buffer_previewer_maker(entry.value, self.state.bufnr, {
+            bufname = self.state.bufname,
+            winid = self.state.winid,
+            callback = function(bufnr)
+              putils.highlighter(bufnr, 'sql')
+            end,
+          })
+        end,
+      }),
+      sorter = conf.generic_sorter(opts),
+      attach_mappings = function(_, map)
+        local Path = require('plenary.path')
+        map('i', '<C-CR>', function(prompt_bufnr)
+          local filename = require('telescope.actions.state').get_selected_entry(prompt_bufnr).value
+          actions.close(prompt_bufnr)
+          -- read file and set to clipboard
+          vim.fn.setreg('+', Path.new(filename):read())
+        end)
+        map('i', '<C-o>', function(prompt_bufnr)
+          local filename = require('telescope.actions.state').get_selected_entry(prompt_bufnr).value
+          -- open with dbeaver
+          vim.fn.jobstart({ 'open', Path.new(filename):parent().filename })
+        end)
+        return true
+      end,
+    })
+    :find()
 end
 
 return {

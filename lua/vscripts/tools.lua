@@ -37,4 +37,3 @@ augroup CompareDir
 augroup END
 ]])
 
-vim.cmd([[command! -nargs=* Sort execute 'normal! <Plug>Opsort']])
