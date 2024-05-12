@@ -14,9 +14,10 @@ local function load_env(envfile)
       -- remove DATABASE_URL from string
       local db_name = vim.fn.split(item, '=')[1]
       db_name = string.gsub(db_name, '_DATABASE_URL', ''):lower()
-      -- local db_name = vim.fn.split(item, '_')[1]:lower()
-      -- print(db_name)
-      dbs[db_name] = vim.fn.split(item, '=')[2]
+      local pos = string.find(item, '=')
+      if pos > 0 then
+        dbs[db_name] = string.sub(item, pos + 1)
+      end
     end
   end
   return dbs
