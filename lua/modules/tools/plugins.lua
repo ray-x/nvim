@@ -378,6 +378,13 @@ return function(tools)
             end
             vim.ui.open(url)
           end, { nargs = 1 })
+          vim.keymap.set(
+            { 'n' },
+            '<leader>gb',
+            '<Cmd>Browse<CR>',
+            { noremap = true, silent = true }
+          )
+          vim.keymap.set({ 'x' }, 'gy', [['<,'>GBrowse!<CR>]], { noremap = true, silent = true })
         end,
       },
       {

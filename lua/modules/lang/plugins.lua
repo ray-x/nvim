@@ -378,6 +378,17 @@ return function(lang)
           'RainbowDelimiterViolet',
           'RainbowDelimiterCyan',
         },
+        blacklist = {
+          'markdown',
+          'help',
+        },
+      })
+      vim.api.nvim_create_user_command('RainbowToggle', function()
+        local bufnr = vim.api.nvim_get_current_buf()
+        require('rainbow-delimiters').toggle(bufnr)
+      end, {
+        bar = true,
+        nargs = 0,
       })
     end,
   })

@@ -1,4 +1,4 @@
- vim as a programming IDE
+ NeoVim as a programming IDE
 
 ## 🏎 🏎 🏎 Need for speed! 🏎 🏎 🏎
 
