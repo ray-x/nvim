@@ -14,6 +14,8 @@ local function exists(file)
   end
   return ok
 end
+
+Plugin_folder = nil
 local helper = {
   init = function()
     -- https://www.reddit.com/r/neovim/comments/sg919r/diff_with_clipboard/
@@ -94,7 +96,6 @@ local helper = {
         vim.cmd([[Jsonfmt]]) -- :%!jq .
       end
     end
-
     _G.plugin_folder = function()
       if Plugin_folder then
         return Plugin_folder
@@ -107,7 +108,9 @@ local helper = {
       end
       return Plugin_folder
     end
-
+    _G.is_dev = function()
+      return vim.fn.expand('$USER'):find('ray') or _G.plugin_folder() == [[~/github/ray-x/]]
+    end
     _G.FindRoot = function()
       local root = vim.fn.system({ 'git', 'rev-parse', '--show-toplevel' })
       if root:find('fatal') then

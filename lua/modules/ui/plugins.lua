@@ -3,7 +3,7 @@
 --   return vim.api.nvim_call_function("winwidth", { 0 })
 -- end
 return function(ui)
-  local dev = plugin_folder():find('github') ~= nil or plugin_folder():find('ray') ~= nil
+  local dev = _G.is_dev()
   local conf = require('modules.ui.config')
   ui({ 'nvim-tree/nvim-web-devicons', lazy = true })
   ui({ 'lambdalisue/glyph-palette.vim' })

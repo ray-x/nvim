@@ -12,7 +12,7 @@ end
 
 return function(lang)
   local conf = require('modules.lang.config')
-  local dev = plugin_folder():find('github') ~= nil or plugin_folder():find('ray') ~= nil
+  local dev = _G.is_dev()
   local ts = require('modules.lang.treesitter')
 
   lang({ 'nvim-treesitter/nvim-treesitter', config = ts.treesitter, module = true })

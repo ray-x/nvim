@@ -5,7 +5,7 @@ return function(tools)
   local is_win = require('core.global').is_windows
   -- local gitrepo = vim.fn.isdirectory('.git/index')
 
-  local dev = plugin_folder():find('github') ~= nil or plugin_folder():find('ray') ~= nil
+  local dev = _G.is_dev()
   tools({
     'nvim-telescope/telescope.nvim',
     cmd = 'Telescope',
@@ -130,10 +130,7 @@ return function(tools)
     cmd = {
       'DBUIToggle',
       'DBUIAddConnection',
-      'DBUI',
-      'DBUIFindBuffer',
-      'DBUIRenameBuffer',
-      'DB',
+      'DBUI'
     },
     config = conf.vim_dadbod_ui,
     dependencies = {

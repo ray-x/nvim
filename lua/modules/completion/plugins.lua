@@ -3,9 +3,8 @@ local filetypes = { 'html', 'css', 'javascript', 'java', 'javascriptreact', 'vue
 }
 -- stylua: ignore end
 
-
 return function(use)
-  local dev = plugin_folder():find('github') ~= nil or plugin_folder():find('ray') ~= nil
+  local dev = _G.is_dev()
   use({
     'neovim/nvim-lspconfig',
     config = function()
@@ -34,7 +33,7 @@ return function(use)
       { 'hrsh7th/cmp-cmdline', lazy = true },
       { 'dmitmel/cmp-cmdline-history', lazy = true },
       -- { 'hrsh7th/cmp-copilot', lazy = true },
-      { 'ray-x/cmp-treesitter', dev = (plugin_folder():find('github') ~= nil), lazy = true },
+      { 'ray-x/cmp-treesitter', dev = _G.is_dev(), lazy = true },
       { 'hrsh7th/cmp-nvim-lsp', lazy = true },
       { 'saadparwaiz1/cmp_luasnip', lazy = true },
       { 'kdheepak/cmp-latex-symbols', lazy = true, ft = {'markdown'} },
@@ -47,7 +46,6 @@ return function(use)
       conf.nvim_cmp()
     end,
   })
-
   use({
     'RRethy/nvim-treesitter-endwise',
     module = true,
@@ -95,7 +93,6 @@ return function(use)
       conf.emmet()
     end,
   })
-
   -- note: part of the code is used in navigator
   use({
     'ray-x/lsp_signature.nvim',
