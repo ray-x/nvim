@@ -29,8 +29,10 @@ local log = function(...)
   for i, v in ipairs(arg) do
     if type(v) == 'table' then
       str = str .. ' |' .. tostring(i) .. ': ' .. vim.inspect(v) .. '\n'
+    elseif v == nil then
+      str = str .. ' |' .. tostring(i) .. ': nil\n'
     else
-      str = str .. ' |' .. tostring(i) .. ': ' .. tostring(v or 'nil') .. '\n'
+      str = str .. ' |' .. tostring(i) .. ': ' .. tostring(v) .. '\n'
     end
   end
   if #str > 2 then

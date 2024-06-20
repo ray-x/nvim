@@ -6,7 +6,7 @@ function M.make()
   local winnr = vim.fn.win_getid()
   local bufnr = vim.api.nvim_win_get_buf(winnr)
 
-  local makeprg = vim.api.nvim_buf_get_option(bufnr, 'GoBuild')
+  local makeprg = vim.api.nvim_get_option_value('GoBuild', {buf = bufnr})
   if not makeprg then
     return
   end
@@ -24,7 +24,7 @@ function M.make()
       vim.fn.setqflist({}, ' ', {
         title = cmd,
         lines = lines,
-        efm = vim.api.nvim_buf_get_option(bufnr, 'errorformat'),
+        efm = vim.api.nvim_get_option_value('errorformat', {buf = bufnr}),
       })
       vim.api.nvim_command('doautocmd QuickFixCmdPost')
     end

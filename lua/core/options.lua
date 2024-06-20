@@ -67,7 +67,7 @@ local function load_options()
     splitright     = true;
     switchbuf      = "useopen,usetab";
     backspace      = "indent,eol,start";
-    diffopt        = "filler,iwhite,internal,algorithm:patience";
+    diffopt        = "filler,iwhite,internal,followwrap,algorithm:histogram,context:3,indent-heuristic";
     completeopt    = "menu,menuone,noselect", -- Show popup menu, even if there is one entry  menuone?
     jumpoptions    = "stack";
     showmode       = false;
@@ -149,7 +149,14 @@ local function load_options()
       },
       cache_enabled = 0
     }
-    vim.g.python3_host_prog = '/opt/homebrew/bin/python3'
+    -- conda install
+    if  vim.fn.executable('brew')  == 1 then
+      if vim.fn.executable('conda') == 1 then
+        vim.g.python3_host_prog = '/opt/homebrew/Caskroom/miniconda/base/bin/python'
+      else
+        vim.g.python3_host_prog = '/opt/homebrew/bin/python3'
+      end
+    end
   elseif global.is_linux then
     vim.g.python3_host_prog = '/usr/bin/python3'
   elseif global.is_mingw then

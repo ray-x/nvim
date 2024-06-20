@@ -148,7 +148,7 @@ function config.navigator()
     --     keymaps = { { mode = 'i', key = '<M-k>', func = 'signature_help()' },
     -- { key = "<c-i>", func = "signature_help()" } },
     lsp = {
-      diagnostic = { enable = false },
+      diagnostic = { enable = true },
       -- diagnostic_scrollbar_sign = false,
       format_on_save = { disable = { 'vue', 'go' } }, -- set to false to disasble lsp code format on save (if you are using prettier/efm/formater etc)
       disable_format_cap = {
@@ -165,12 +165,16 @@ function config.navigator()
       disply_diagnostic_qf = false, -- update diagnostic in quickfix window
       denols = { filetypes = {} },
       rename = { style = 'floating-preview' },
-      lua_ls = {
-        before_init = function()
-          require('neodev').setup({})
-          require('neodev.lsp').before_init({}, { settings = { Lua = {} } })
-        end,
-      },
+      -- lua_ls = {
+      --   before_init = function()
+      --     require('lazydev').setup({
+      --       library = {
+      --         { path = 'luvit-meta/library', words = { 'vim%.uv' } },
+      --       },
+      --     })
+      --     require('neodev.lsp').before_init({}, { settings = { Lua = {} } })
+      --   end,
+      -- },
       tsserver = {
         filetypes = {
           'javascript',
@@ -187,12 +191,13 @@ function config.navigator()
       },
       flow = { autostart = false },
 
-      sqlls = {},
-      sqls = {
-        on_attach = function(client)
-          client.server_capabilities.documentFormattingProvider = false -- efm
-        end,
-      },
+      -- sqlls = {},
+      -- sqls = {
+      --   on_attach = function(client, bufnr)
+      --     client.server_capabilities.documentFormattingProvider = false -- efm
+      --     require('sqls').on_attach(client, bufnr)
+      --   end,
+      -- },
       -- ccls = { filetypes = {} }, -- using clangd
       -- clangd = { filetypes = {} }, -- using clangd
 
@@ -209,22 +214,41 @@ function config.navigator()
       }, -- , 'marksman' },
     },
   }
-  nav_cfg.lsp.sqlls = function()
-    if vim.fn.exists('g:connections') ~= 1 then
-      require('utils.database').load_dbs()
-    end
-    -- if database not detected
-    if vim.fn.empty(vim.g.connections) == 1 then
-      return {}
-    end
-    local conns = {}
-    return {
-      connections = vim.g.connections,
-      on_attach = function(client, bufnr)
-        require('sqls').on_attach(client, bufnr)
-      end,
-    }
-  end
+  -- nav_cfg.lsp.sqlls = function()
+  --   if vim.fn.exists('g:connections') ~= 1 then
+  --     require('utils.database').load_dbs()
+  --   end
+  --   -- if database not detected
+  --   if vim.fn.empty(vim.g.connections) == 1 then
+  --     return {}
+  --   end
+  --   return {
+  --     connections = vim.g.connections,
+  --     -- on_attach = function(client, bufnr)
+  --     --   require('sqls').on_attach(client, bufnr)
+  --     -- end,
+  --   }
+  -- end
+  -- nav_cfg.lsp.sqls = function()
+  --   if vim.fn.exists('g:connections') ~= 1 then
+  --     require('utils.database').load_dbs()
+  --   end
+  --   -- if database not detected
+  --   if vim.fn.empty(vim.g.connections) == 1 then
+  --     return {}
+  --   end
+  --   require('lspconfig').sqls.setup({
+  --     on_attach = function(client, bufnr)
+  --       require('sqls').on_attach(client, bufnr)
+  --     end,
+  --     settings = {
+  --       sqls = {
+  --         connections = vim.g.sqls_db,
+  --       },
+  --     },
+  --   })
+  -- end
+
   nav_cfg.lsp.gopls = function()
     if vim.tbl_contains({ 'go', 'gomod' }, vim.bo.filetype) then
       if pcall(require, 'go') then
@@ -270,9 +294,50 @@ function config.go()
     goimports = 'gopls',
     dap_debug_vt = true,
     dap_debug_gui = true,
-    test_runner = 'go', -- richgo, go test, richgo, dlv, ginkgo
+    diagnostic = {
+      signs = {
+        text = { '🚑', '🔧', '🪛', '🪠' },
+      },
+      update_in_insert = false,
+    },
+    -- diagnostic = { -- set diagnostic to false to disable vim.diagnostic setup
+    --   hdlr = true, -- hook lsp diag handler and send diag to quickfix
+    --   underline = true,
+    --   -- virtual text setup
+    --   virtual_text = { spacing = 0, prefix = '■' },
+    --   signs = true,
+    --   update_in_insert = true,
+    -- },
+    test_runner = 'go', -- go test, dlv, ginkgo
     -- run_in_floaterm = true, -- set to true to run in float window.
     lsp_document_formatting = true,
+    preludes = {
+      default = function()
+        return { 'AWS_PROFILE=test' }
+      end,
+      GoRun = function()
+        local pwd = vim.fn.getcwd()
+        local cmdl = { 'watchexec', '--restart', '-v', '-e', 'go' }
+        -- if current folder contains sub folder with name pattern .\w+-env
+        -- list all subfolders see if match .\w+-env
+        local hasenv = false
+        for _, v in ipairs(vim.fn.readdir(pwd)) do
+          if string.match(v, '%p%a+%p*env') then
+            hasenv = true
+            break
+          end
+        end
+
+        if hasenv then
+          local cwdl = vim.split(pwd, '/')
+          local cwd = cwdl[#cwdl]
+          local cwdp = vim.split(cwd, '-')
+          local cwdps = cwdp[#cwdp]
+          return vim.list_extend(cmdl, { 'awsenv', cwdps })
+        end
+        return {}
+      end,
+    },
     luasnip = true,
     -- lsp_on_attach = require("navigator.lspclient.attach").on_attach,
     -- lsp_cfg = true,

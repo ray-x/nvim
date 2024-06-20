@@ -130,7 +130,7 @@ return function(tools)
     cmd = {
       'DBUIToggle',
       'DBUIAddConnection',
-      'DBUI'
+      'DBUI',
     },
     config = conf.vim_dadbod_ui,
     dependencies = {
@@ -400,12 +400,12 @@ return function(tools)
   })
 
   -- lua require'telescope'.extensions.project.project{ display_type = 'full' }
-  tools({
-    'ahmedkhalf/project.nvim',
-    cond = cond,
-    config = conf.project,
-    event = { 'CmdlineEnter' },
-  })
+  -- tools({
+  --   'ahmedkhalf/project.nvim',
+  --   cond = cond,
+  --   config = conf.project,
+  --   event = { 'CmdlineEnter' },
+  -- })
 
   tools({
     'ThePrimeagen/harpoon',
@@ -465,8 +465,8 @@ return function(tools)
   -- keybindings for chatgpt https://github.com/jackMort/ChatGPT.nvim/tree/main#interactive-popup
   tools({
     'jackMort/ChatGPT.nvim',
-    event = { 'CmdlineEnter', 'CursorHold' },
-    cond = cond,
+    event = { 'CmdlineEnter' },
+    -- cond = cond,
     opts = {
       popup_window = { border = {
         text = {
@@ -499,7 +499,34 @@ return function(tools)
       require('kitty-scrollback').setup()
     end,
   })
-  tools()
+
+  tools({
+    'm4xshen/hardtime.nvim',
+    event = { 'CursorMoved', 'CursorMovedI' },
+    opts = {
+      max_count = 10,
+      enabled = true,
+      disable_mouse = false,
+      restriction_mode = "hint", -- block or hint
+      restricted_keys = {
+        ['h'] = {}, -- dont restrict
+        ['j'] = {},
+        ['k'] = {},
+        ['l'] = {},
+
+        ['<Up>'] = {'n'},
+        ['<Down>'] = {'n'},
+        ['<Left>'] = {'n'},
+        ['<Right>'] = {'n'},
+      },
+      disabled_keys = {
+        ['<Up>'] = {},
+        ['<Down>'] = {},
+        ['<Left>'] = {},
+        ['<Right>'] = {},
+      }, -- no default disabled keys
+    },
+  })
 end
 
 -- tools({

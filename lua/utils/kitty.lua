@@ -30,7 +30,7 @@ kitty.has_support = function()
   return has_kitty
 end
 
-local has_support=kitty.has_support
+local has_support = kitty.has_support
 if has_kitty == nil then
   if has_support() == false then
     return { change_bg = function(...) end }
@@ -172,9 +172,15 @@ kitty.get_kitty_background = function(opts)
       if #data < 4 then
         return
       end
-      color = split(data[4])[2]
-      lprint('kitty get color on stdout', color)
-      vim.g.ORIGINAL_KITTY_BG_COLOR = color
+      for i, c in ipairs(data) do
+        local name, color = c[1], c[2]
+        lprint('name', name, 'c', color, c)
+        if name == 'background' then
+          lprint('******** kitty get color on stdout', color)
+          vim.g.ORIGINAL_KITTY_BG_COLOR = color
+        end
+      end
+      -- color = split(data[4])[2]
     end,
   })
 end
@@ -186,15 +192,27 @@ end
 local autocmd = vim.api.nvim_create_autocmd
 local autogroup = vim.api.nvim_create_augroup
 
+local change_background_sync = function(color)
+  if not has_support() then
+    return ''
+  end
+  if not color then
+    return
+  end
+  lprint('change background', color)
+  vim.fn.systemlist({ 'kitty', '@', 'set-colors', 'background=' .. color })
+end
+
 local change_background = function(color)
   if not has_support() then
     return ''
   end
-
+  lprint('change background', color)
   vim.fn.jobstart({ 'kitty', '@', 'set-colors', 'background=' .. color }, {
     cwd = '/usr/bin/',
+    detach = true,
     on_exit = function(code, data, event)
-      lprint('kitty set bgcolor on exit', code, data, event, color)
+      lprint('kitty cmd exit set bgcolor on exit', code, data, event, color)
     end,
     on_stdout = function(code, data, event)
       lprint('kitty set bgcolor on stdout', code, data, event, color)
@@ -205,10 +223,8 @@ end
 local function on_leave(color)
   autocmd('VimLeavePre', {
     callback = function()
-      local cl = color or vim.g.ORIGINAL_KITTY_BG_COLOR
-      if cl then
-        change_background(cl)
-      end
+      lprint('onleave')
+      change_background(color or vim.g.ORIGINAL_KITTY_BG_COLOR)
     end,
     group = autogroup('BackgroundRestore', { clear = true }),
   })

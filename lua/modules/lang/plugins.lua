@@ -54,9 +54,7 @@ return function(lang)
         lookForwardSmall = 5,
         lookForwardBig = 10,
         useDefaultKeymaps = false,
-        disabledKeymaps = { 'gc' },
       })
-      vim.keymap.set({ 'o', 'x' }, 'gC', require('various-textobjs').multiCommentedLines)
     end,
   })
   -- -- use flash.nvim
@@ -97,26 +95,6 @@ return function(lang)
     config = conf.symbol_usage,
   })
 
-  if typecheck({ 'json', 'js', 'javascript', 'javascriptreact' }) then
-    lang({
-      'danymat/neogen',
-      lazy = true,
-      config = function()
-        require('neogen').setup({ snippet_engine = 'luasnip' })
-      end,
-      ft = { 'js', 'html', 'javascript', 'javascriptreact', 'json' },
-    })
-  end
-
-  -- -- lang({ 'ThePrimeagen/refactoring.nvim', config = conf.refactor })
-
-  -- -- Automatically convert strings to f-strings or template strings and back
-  -- -- lang({
-  -- --   'chrisgrieser/nvim-puppeteer',
-  -- --   lazy = true,
-  -- -- })
-  -- -- ipython
-
   if typecheck({ 'python', 'javascript', 'py', 'ts', 'tsx', 'js', 'jsx' }) then
     lang({
       -- running code interactively with the jupyter kernel
@@ -141,13 +119,11 @@ return function(lang)
     })
   end
 
-  -- lang['scalameta/nvim-metals'] = {dependencies = {"nvim-lua/plenary.nvim"}}
-  -- lang { "lifepillar/pgsql.vim",ft = {"sql", "pgsql"}}
-  lang({
-    'nanotee/sqls.nvim',
-    ft = { 'sql', 'pgsql' },
-    module = true,
-  })
+  -- lang({
+  --   'nanotee/sqls.nvim',
+  --   ft = { 'sql', 'pgsql', 'mysql' },
+  --   module = true,
+  -- })
 
   lang({
     'simrat39/rust-tools.nvim',
@@ -313,15 +289,19 @@ return function(lang)
       end,
     },
   })
-  if typecheck({ 'lua', 'md', 'markdown' }) then
-    lang({
-      'folke/neodev.nvim',
-      ft = { 'lua' },
-      event = 'VeryLazy',
-      module = true,
-      opts = {},
-    })
-  end
+  lang({
+    'folke/lazydev.nvim',
+    ft = 'lua', -- only load on lua files
+    opts = {
+      library = {
+        -- See the configuration section for more details
+        -- Load luvit types when the `vim.uv` word is found
+        { path = 'luvit-meta/library', words = { 'vim%.uv' } },
+      },
+    },
+  })
+
+  lang({ 'Bilal2453/luvit-meta', lazy = true })
 
   lang({
     'nvim-treesitter/nvim-treesitter-context',
@@ -501,3 +481,23 @@ end
 --   cmd = { 'Lua', 'Luapad' },
 --   config = conf.luapad,
 -- })
+
+  -- if typecheck({ 'json', 'js', 'javascript', 'javascriptreact' }) then
+  --   lang({
+  --     'danymat/neogen',
+  --     lazy = true,
+  --     config = function()
+  --       require('neogen').setup({ snippet_engine = 'luasnip' })
+  --     end,
+  --     ft = { 'js', 'html', 'javascript', 'javascriptreact', 'json' },
+  --   })
+  -- end
+
+  -- -- lang({ 'ThePrimeagen/refactoring.nvim', config = conf.refactor })
+
+  -- -- Automatically convert strings to f-strings or template strings and back
+  -- -- lang({
+  -- --   'chrisgrieser/nvim-puppeteer',
+  -- --   lazy = true,
+  -- -- })
+  -- -- ipython

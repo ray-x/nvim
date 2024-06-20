@@ -280,7 +280,7 @@ function! <SID>DirDiff(srcA, srcB)
     "setlocal buftype=nofile
     "setlocal bufhidden=delete
     setlocal bufhidden=hide
-    setlocal nowrap
+    setlocal wrap
 
     " Set up local key bindings
     " 'n' actually messes with the search next pattern, I think using \dj and

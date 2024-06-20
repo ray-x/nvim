@@ -398,7 +398,7 @@ M.setup = function(_)
   local win = global.is_windows
   loader('telescope-live-grep-args.nvim')
   loader('telescope-file-browser.nvim')
-  loader('project.nvim')
+  -- loader('project.nvim')
 
   local ext = {
     file_browser = {
@@ -441,7 +441,7 @@ M.setup = function(_)
           local height = vim.api.nvim_win_get_height(opts.winid) * 3 / 2
           local lines = vim.split(path:head(height), '[\r]?\n')
           vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, lines)
-          vim.api.nvim_buf_set_option(bufnr, 'ft', opts.ft)
+          vim.api.nvim_set_option_value('ft', opts.ft, {buf = bufnr})
         end,
         timeout_hook = function(filepath, bufnr, opts)
           local path = require('plenary.path'):new(filepath)

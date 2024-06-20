@@ -213,7 +213,7 @@ end
 -- Initialize some module level variables for cat mode.
 local function init()
   -- Get the value of &termguicolors from neovim.
-  colors_24_bit = nvim.nvim_get_option('termguicolors')
+  colors_24_bit = nvim.nvim_get_option_value('termguicolors', {scope = 'global'})
   -- Select the correct coloe escaping function.
   if colors_24_bit then
     color2escape = color2escape_24bit

@@ -22,6 +22,13 @@ map <M-l> guiww
 " just one space on the line, preserving indent
 map <M-Space> m`:s/\S\+\zs \+/ /g<CR>``:nohl<CR>]])
 
+vim.cmd([[
+nnoremap <C-u> <C-u>zz
+nnoremap <C-d> <C-d>zz
+nnoremap <C-b> <PageUp>H0
+nnoremap <C-f> <PageDown>L0
+]])
+
 --
 vim.cmd([[imap <M-V> <C-R>+
 imap <C-V> <C-R>*

@@ -1,11 +1,11 @@
 -- Neovim defines this object but luacheck doesn't know it.  So we define a
 -- shortcut and tell luacheck to ignore it.
-local vim = vim      -- luacheck: ignore
+local vim = vim -- luacheck: ignore
 local nvim = vim.api -- luacheck: ignore
 
-local pager = require("pager/options")
-local util = require("pager/util")
-local ansi2highlight = require("pager/ansi2hl")
+local pager = require('pager/options')
+local util = require('pager/util')
+local ansi2highlight = require('pager/ansi2hl')
 
 local follow_timer = nil
 local function toggle_follow()
@@ -13,13 +13,10 @@ local function toggle_follow()
     vim.fn.timer_pause(follow_timer, pager.follow)
     pager.follow = not pager.follow
   else
-    follow_timer = vim.fn.timer_start(
-      pager.follow_interval,
-      function()
-	nvim.nvim_command("silent checktime")
-	nvim.nvim_command("silent $")
-      end,
-      { ["repeat"] = -1 })
+    follow_timer = vim.fn.timer_start(pager.follow_interval, function()
+      nvim.nvim_command('silent checktime')
+      nvim.nvim_command('silent $')
+    end, { ['repeat'] = -1 })
     pager.follow = true
   end
 end
@@ -46,17 +43,19 @@ end
 -- Setup function for the VimEnter autocmd.
 -- This function will be called for each buffer once
 local function pager_mode()
+  local bufnr = nvim.nvim_get_current_buf()
+  local winnr = nvim.nvim_get_current_win()
   if util.check_escape_sequences() then
     -- Try to highlight ansi escape sequences.
     ansi2highlight.run()
     -- Lines with concealed ansi esc sequences seem shorter than they are (by
     -- character count) so it looks like they wrap to early and the concealing
     -- of escape sequences only works for the first &synmaxcol chars.
-    nvim.nvim_buf_set_option(0, "synmaxcol", 0) -- unlimited
-    nvim.nvim_win_set_option(0, "wrap", false)
+    nvim.nvim_set_option_value('synmaxcol', 0, { buf = bufnr }) -- unlimited
+    nvim.nvim_set_option_value('wrap', false, { win = winnr })
   end
-  nvim.nvim_buf_set_option(0, 'modifiable', false)
-  nvim.nvim_buf_set_option(0, 'modified', false)
+  nvim.nvim_set_option_value('modifiable', false, { buf = bufnr })
+  nvim.nvim_set_option_value('modified', false, { buf = bufnr })
   if pager.maps then
     -- if this is done in VimEnter it will override any settings in the user
     -- config, if we do it globally we are not overwriting the mappings from

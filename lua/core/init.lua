@@ -56,6 +56,8 @@ local load_core = function()
   end
   if vim.wo.diff then
     vim.wo.wrap = true
+    -- default colorschem for diff
+    require('modules.ui.galaxy').shine()
     return
   end
   require('core.commands')
@@ -63,7 +65,7 @@ local load_core = function()
 
   require('core.lazy').setup(fsz)
   lprint('lazy done', uv.now() - start)
-  require('utils.markdown')
+  -- require('utils.markdown')
 end
 
 load_core()

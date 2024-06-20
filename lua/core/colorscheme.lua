@@ -27,8 +27,11 @@ local function randomscheme()
   end
 
   -- themes = { "starry.nvim", "starry.nvim", "aurora", "galaxy", "catppuccin", "tokyonight.nvim" }
-  themes = { 'starry.nvim', 'aurora', 'galaxy' }
+  -- themes = { 'starry.nvim', 'aurora', 'galaxy' }
+  themes = { 'starry.nvim' }
+  -- themes = { 'aurora' }
   -- themes = { 'galaxy' }
+  -- themes = { 'catppuccin' }
   local v = math.random(1, #themes)
 
   loading_theme = themes[v]
@@ -44,7 +47,9 @@ local function load_colorscheme(theme)
     require('modules.ui.galaxy').shine()
   else
     require('lazy').load({ plugins = { theme } })
+    vim.api.nvim_set_hl(0, 'ColorColumn', {})
   end
+  -- vim.api.nvim_set_hl(0, '@lsp.type.string.go', { fg = 'NONE' })
 end
 
 return {

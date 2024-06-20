@@ -196,17 +196,17 @@ local Usual = {
       sp = '#2284a1',
     },
     DiffChange = {
-      fg = c.purple_two,
-      bg = c.background_three,
+      -- fg = c.purple_two,
+      bg = c.background_two,
       bold = true,
       underdotted = true,
-      sp = '#269616',
+      sp = '#265646',
     },
     DiffText = {
-      fg = c.white,
-      bg = c.background_three,
+      fg = c.purple_four,
       bold = true,
-      undercurl = true,
+      underdotted = true,
+      reverse = true,
       sp = '#269616',
     },
     DiffDelete = {

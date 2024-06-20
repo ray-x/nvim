@@ -407,5 +407,5 @@ return {
   parseFrontmatter = parseFrontmatter,
   md_search = md_search,
   md_files = md_files,
-  follow_link = follow_link,
+  -- follow_link = follow_link,
 }

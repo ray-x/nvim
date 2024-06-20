@@ -33,6 +33,13 @@ About 150 plugins and 14000 lines of lua and vim code.
 - Gd: gitdiff(with fzf and delta)
 - Rg: ripgrep with telescope
 
+## Pager
+The config can be used for pager
+
+## Difftool and mergetool
+
+It has essential tools for `git difftool`
+
 ## Neovim Plugins
 
 There are lots of amazing plugins,

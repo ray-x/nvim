@@ -49,6 +49,8 @@ return function(editor)
     init = function()
       vim.g.matchup_matchparen_deferred = 1
       vim.g.matchup_matchparen_hi_surround_always = 1
+      vim.g.matchup_matchparen_deferred_show_delay = 100
+      vim.g.matchup_matchparen_deferred_hide_delay = 1000
     end,
     config = function()
       local fsize = vim.fn.getfsize(vim.fn.expand('%:p:f'))
@@ -250,20 +252,27 @@ return function(editor)
     end,
   })
 
+  -- editor({ -- prefer undotree seems it more popular
+  --   'simnalamburt/vim-mundo',
+  --   lazy = true,
+  --   cmd = { 'MundoToggle', 'MundoShow', 'MundoHide' },
+  --   build = function()
+  --     vim.cmd([[packadd vim-mundo]])
+  --     vim.cmd([[UpdateRemotePlugins]])
+  --   end,
+  --   init = function()
+  --     -- body
+  --     vim.g.mundo_prefer_python3 = 1
+  --   end,
+  -- })
+
+  -- the undo file need to store so enable plugin before file save
   editor({
-    'simnalamburt/vim-mundo',
+    'mbbill/undotree',
     lazy = true,
-    cmd = { 'MundoToggle', 'MundoShow', 'MundoHide' },
-    build = function()
-      vim.cmd([[packadd vim-mundo]])
-      vim.cmd([[UpdateRemotePlugins]])
-    end,
-    init = function()
-      -- body
-      vim.g.mundo_prefer_python3 = 1
-    end,
+    cmd = { 'UndotreeToggle', 'UndotreeShow' },
+    event = { 'BufWritePre' },
   })
-  editor({ 'mbbill/undotree', lazy = true, cmd = { 'UndotreeToggle' } })
 
   editor({
     'Wansmer/treesj',
@@ -284,18 +293,63 @@ return function(editor)
     init = function()
       -- stylua: ignore
       -- vim.g.wordmotion_spaces = { '-', '_', '/', '.', ':', "'", '"', '=', '#', ',', '.', ';', '<', '>', '(', ')', '{', '}' }
-      vim.g.wordmotion_uppercase_spaces = { "'", '"', '=', ',', ';', '<', '>', '(', ')', '{', '}', '[', ']', ' ', ':',
-      '.', '/', '\\' }
+      vim.g.wordmotion_uppercase_spaces = { ' ', "'", '"', '=', ',', ';', ':', '.', '/', '\\' }
       -- { '/', '.', ':', "'", '"', '=', '#', ',', '.', ';', '<', '>', '(', ')', '{', '}' }
     end,
-    -- keys = {'w','W', 'gE', 'aW'}
   })
-  -- editor({ 'chrisgrieser/nvim-spider', module = true })
+
+  -- word motion
+  -- editor({
+  --   'chrisgrieser/nvim-spider',
+  --   module = true,
+  --   event = { 'CursorHold', 'CursorMoved' },
+  --   config = function()
+  --     local pattern = "[%q'=,;<>%(%){}%[%]%s+:%./\\]"
+  --     require('spider').setup({
+  --       skipInsignificantPunctuation = true,
+  --       subwordMovement = true,
+  --     })
+  --
+  --     vim.keymap.set('n', 'W', function() require('spider').motion('w', {customPattern = {pattern}}) end, {desc = 'spider w'})
+  --
+  --     vim.keymap.set('x', 'W', function()
+  --       require('spider').motion('w', {customPattern = {pattern}})
+  --     end)
+  --     vim.keymap.set('o', 'W', function()
+  --       require('spider').motion('w', {customPattern = {pattern}})
+  --     end)
+  --     vim.keymap.set('n', 'cW', 'ce', { remap = true })
+  --     vim.keymap.set("n", "cW", "c<cmd>lua require('spider').motion('e')<CR>")
+  --
+  --     vim.keymap.set('n', 'w', "<cmd>lua require('spider').motion('w')<CR>")
+  --     vim.keymap.set('o', 'w', "<cmd>lua require('spider').motion('w')<CR>")
+  --     vim.keymap.set("n", "cw", "c<cmd>lua require('spider').motion('e')<CR>")
+  --     vim.keymap.set("i", "<C-f>", "<Esc>l<cmd>lua require('spider').motion('w')<CR>i")
+  --     vim.keymap.set("i", "<C-b>", "<Esc><cmd>lua require('spider').motion('b')<CR>i")
+  --   end,
+  -- })
   editor({
     'lukas-reineke/headlines.nvim',
     ft = { 'org', 'norg', 'markdown' },
     config = conf.headline,
     cond = cond,
+  })
+
+  -- luarocks --local --lua-version=5.1 install magick
+  editor({
+    '3rd/image.nvim',
+    -- ft = { 'markdown', 'md', 'jupyter' },
+    init = function()
+      -- stylua: ignore start
+      package.path = package.path .. ";" .. vim.fn.expand("$HOME") .. "/.luarocks/share/lua/5.1/?/init.lua"
+      package.path = package.path .. ';' .. vim.fn.expand('$HOME') .. '/.luarocks/share/lua/5.1/?.lua'
+      -- stylua: ignore end
+    end,
+    opts = {
+      backend = 'kitty',
+      max_width_window_percentage = 40,
+      max_height_window_percentage = 40,
+    },
   })
 
   editor({
@@ -312,9 +366,9 @@ return function(editor)
       vim.keymap.set('n', '<leader>u', function()
         require('nabla').popup()
       end, {
-      buffer = vim.api.nvim_get_current_buf(),
-      desc = 'nabla'
-    })
+        buffer = vim.api.nvim_get_current_buf(),
+        desc = 'nabla',
+      })
     end,
   })
 

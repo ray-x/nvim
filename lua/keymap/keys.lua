@@ -113,6 +113,7 @@ local def_map = {
   ['n|<C-x>k'] = map_cmd('Bd'):with_noremap():with_silent(),
   ['n|<C-S-y>'] = map_cmd('%y +'), -- yank file
   ['n|]b'] = map_cmd('BufferLineCycleNext'):with_noremap(),
+  ['n|<Leader>bp'] = map_cmd('BufferLinePick'):with_noremap():with_silent(),
   ['n|[b'] = map_cmd('BufferLineCyclePrev'):with_noremap(),
   -- ["n|<Space>cw"] = map_cmd([[silent! keeppatterns %substitute/\s\+$//e]]):with_noremap():with_silent(),
   ['n|<A-[>'] = map_cmd('vertical resize -5'):with_silent(),
@@ -177,12 +178,13 @@ local plug_keys = {
     end)
     :with_expr()
     :with_desc("run or test"),
+
+  ["n|<F6>"] = map_cmd('UndotreeToggle'):with_silent():with_desc("toggle undotree"),
   ["n|<Leader>r"] = map_func(function() return _G.test_or_run() end):with_expr():with_desc("run or test"),
   ["v|<Leader>r"] = map_func(function() _G.test_or_run() end):with_expr():with_desc("run or test"),
   ["n|<Leader>R"] = map_func(function() _G.test_or_run(true) end):with_expr():with_desc("run or test"),
   ["v|<Leader>R"] = map_func(function() _G.test_or_run(true) end):with_expr():with_desc("run or test"),
 
-  ["n|<Leader>bp"] = map_cmd("BufferLinePick"):with_noremap():with_silent(),
   ["n|<C-k>"] = map_cmd("v:lua.ctrl_k()"):with_silent():with_expr(),
   -- Plugin QuickRun
   -- Plugin SplitJoin
@@ -295,7 +297,7 @@ local plug_keys = {
     options = { noremap = true, silent = true, desc = "toggle concelcursor" },
   },
 
-  ['n|<Leader>nf'] = map_func(function() require('neogen').generate() end):with_desc('neogen'):with_noremap():with_silent(),
+  -- ['n|<Leader>nf'] = map_func(function() require('neogen').generate() end):with_desc('neogen'):with_noremap():with_silent(),
   --
   -- -- Add selection to search then replace
   -- vim.keymap.set('x', '<Leader>j', [[let @/=substitute(escape(@", '/'), '\n', '\\n', 'g')"_cgn]])
@@ -317,12 +319,11 @@ local plug_keys = {
   ['n|<Leader>od'] = map_cmd('DBUIToggle'):with_noremap():with_silent(),
   -- Plugin Telescope
   ['i|<M-r>'] = map_cmd('Telescope registers'):with_noremap():with_silent(),
-  -- ['n|<M-P>'] = map_func(function()
-  --   require('telescope').extensions.frecency.frecency({
-  --     sorter = require('telescope').extensions.fzf.native_fzf_sorter(),
-  --     default_text = ':CWD:',
-  --   })
-  -- end):with_silent(),
+
+  ["n|<Space>M"] = map_cmd([[lua require("harpoon.mark").toggle_file()]]),
+  ["n|<Space>n"] = map_cmd([[lua require("harpoon.ui").nav_next()]]),
+  ["n|<Space>p"] = map_cmd([[lua require("harpoon.ui").nav_prev()]]),
+  ["n|<Space>m"] = map_cmd([[Telescope harpoon marks ]]),
 
   ['in|<d-p>'] = map_cmd('Telescope find_files'):with_noremap():with_silent(),
   ['in|<M-p>'] = map_cmd('Telescope find_files'):with_noremap():with_silent() or map_cmd('FzfLua files'):with_noremap():with_silent(),
@@ -409,7 +410,6 @@ keymap.amend('n', '[c', function()
   end
 end, { desc = 'prevdiff/hunk' })
 
-
 return { keymap = def_map }
 
 -- no longer used
@@ -452,11 +452,14 @@ return { keymap = def_map }
 -- ["v|<M-s>"] = map_cmd("lua require'hop'.hint_char1()"):with_silent():with_expr(),
 -- ["n|<Space>s"] = map_cmd("HopChar2"),
 
--- ["n|<Space>M"] = map_cmd([[lua require("harpoon.mark").toggle_file()]]),
--- ["n|<Space>n"] = map_cmd([[lua require("harpoon.ui").nav_next()]]),
--- ["n|<Space>p"] = map_cmd([[lua require("harpoon.ui").nav_prev()]]),
--- ["n|<Space>m"] = map_cmd([[Telescope harpoon marks ]]),
 -- ["in|<d-T>"] = map_cu("Telescope"):with_noremap():with_silent(),
 -- vim.cmd('Clap dumb_jump ++query=<cword> | startinsert')
 -- ["n|<Leader>F"] = map_cmd('NvimTreeFindFile'):with_noremap():with_silent(),
 -- ["n|<Leader>c<Space>"] = map_cmd("<CMD>lua require'Comment.api'.toggle_linewise_op()<CR>"):with_silent(),
+
+-- ['n|<M-P>'] = map_func(function()
+--   require('telescope').extensions.frecency.frecency({
+--     sorter = require('telescope').extensions.fzf.native_fzf_sorter(),
+--     default_text = ':CWD:',
+--   })
+-- end):with_silent(),

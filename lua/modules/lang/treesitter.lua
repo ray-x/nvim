@@ -89,18 +89,21 @@ local treesitter_obj = function()
         enable = enable,
         set_jumps = enable, -- whether to set jumps in the jumplist
         goto_next_start = {
-          [']m'] = { query = { '@function.outer' } },
+          [']m'] = { query = { '@function.outer' } }, -- use system default
+          -- query = { '@scope', 'class.*', '@loop.*', '@conditional' },
           [']s'] = {
-            query = { '@conditional.*', 'class.*', '@loop.*', '@scope' },
-            desc = 'next cond/loop/class',
+            query = { '@loop.*', '@conditional' },
+            query_group = 'locals',
+            desc = 'Next scope',
           },
           [']]'] = {
-            query = { '@class.outer', '@function.*' },
+            query = { '@class.outer', '@function.*', 'block.outer' },
             desc = 'nearest block',
           },
+          -- default ]z [z fold jump; [s/]s scope jump
         },
         goto_next_end = {
-          [']M'] = '@function.outer',
+          [']M'] = '@function.outer', -- use nvim 0.11 default
           [']C'] = {
             query = { '@loop.outer', '@conditional.outer', '@class.outer' },
             desc = 'next scope',
@@ -109,12 +112,13 @@ local treesitter_obj = function()
         goto_previous_start = {
           ['[m'] = { query = { '@function.outer' }, desc = 'nearest func' },
           ['[['] = {
-            query = { '@function.*', '@class.*' },
+            query = { '@function.*', '@class.outer', 'block.outer' },
             desc = 'prev func ; class ',
           },
-          ['[s'] = {
-            query = { '@loop.inner', '@conditional.inner', '@class.inner', '@scope.*' },
-            desc = 'prev loop/cond/class start',
+          [']s'] = {
+            query = { '@class.*', '@loop.*', '@conditional' },
+            query_group = 'locals',
+            desc = 'Previous scope',
           },
         },
         goto_previous_end = {
@@ -239,7 +243,7 @@ local treesitter_context = function(width)
     'for_statement',
     'for_in_statement',
     'call_expression',
-    'comment',
+    -- 'comment',
   }
 
   if vim.o.ft == 'json' then

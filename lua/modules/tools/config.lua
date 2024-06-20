@@ -50,6 +50,13 @@ function config.diffview()
         width = 35, -- Only applies when position is 'left' or 'right'
       },
     },
+    view = {
+      merge_tool = {
+        layout = "diff3_mixed",
+        disable_diagnostics = true,
+        winbar_info = true,
+      },
+    },
     key_bindings = {
       -- The `view` bindings are active in the diff buffers, only when the current
       -- tabpage is a Diffview.
@@ -591,13 +598,13 @@ end
 
 vim.api.nvim_create_user_command('LspClients', function(opts)
   if opts.fargs ~= nil then
-    for _, client in pairs(vim.lsp.get_active_clients()) do
+    for _, client in pairs(vim.lsp.get_clients()) do
       if client.name == opts.fargs[1] then
         lprint(client)
       end
     end
   else
-    lprint(vim.lsp.get_active_clients())
+    lprint(vim.lsp.get_clients())
   end
 end, { nargs = '*' })
 

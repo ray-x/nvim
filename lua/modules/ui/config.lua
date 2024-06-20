@@ -11,19 +11,18 @@ function daylight()
 end
 
 local day = daylight()
--- local term
--- local change_bg
 
 -- set term and change_bg to config meta table
 
 setmetatable(config, {
   __index = function(t, key)
     if key == 'change_bg' then
-      local term = os.getenv('TERM_PROGRAM') or os.getenv('TERM')
-      if term:find('kitty') then
+      if string.find(os.getenv('TERM') or '', 'kitty') then
         return require('utils.kitty').change_bg
-      else
+      elseif os.getenv('TERM_PROGRAM') == 'WezTerm' then
         return require('utils.wezterm').change_bg
+      else
+        lprint('no term found')
       end
     end
   end,
@@ -197,25 +196,6 @@ function config.aurora()
   -- vim.cmd("hi EndOfBuffer guibg=NONE ctermbg=NONE") -- remove background
 end
 
--- vim.g.starry_bold = false
--- vim.g.starry_italic_comments = true
--- vim.g.starry_italic_keywords = false
--- vim.g.starry_italic_functions = false
--- vim.g.starry_italic_variables = false
--- vim.g.starry_italic_string = false
--- vim.g.starry_contrast = true
--- vim.g.starry_borders = true
--- -- vim.g.starry_deep_black = true --"OLED deep black
--- vim.g.starry_daylight_switch = true
--- vim.g.starry_set_hl = true
--- vim.g.starry_style = "earlysummer" -- 'moonlight' emerald middlenight_blue earlysummer
--- vim.g.starry_style = "dracula" -- "mariana" --  emerald middlenight_blue earlysummer
--- vim.g.starry_style = "oceanic" -- 'moonlight' emerald middlenight_blue earlysummer -- vim.g.starry_style = "dark_solar" -- 'moonlight' emerald middlenight_blue earlysummer
--- vim.g.starry_style = "mariana"
--- vim.g.starry_style_fix = true
--- config.default()
--- vim.g.starry_disable_background = true
-
 function config.starry_conf()
   local opt = {
     'oceanic',
@@ -244,14 +224,18 @@ function config.starry_conf()
     style = {
       name = 'earlysummer',
     },
+    italics = {
+      comments = true,
+      -- keywords = false,
+      -- functions = false,
+      -- variables = false,
+      -- strings = false,
+    },
 
     -- add following to make sure those settings wont break
     -- custom_colors = {
     --   line_numbers = '#973799',
     -- },
-    custom_highlights = {
-      LineNr = { fg = '#973797' },
-    },
   })
 
   if starry_style == 'limestone' then
@@ -263,6 +247,7 @@ function config.starry_conf()
     require('starry').clear()
     require('starry').set('limestone')
   end, { nargs = '*' })
+
   require('starry').clear()
   require('starry').set(starry_style)
   local colors = require('starry.colors').color_table()

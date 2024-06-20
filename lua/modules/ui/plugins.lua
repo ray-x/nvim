@@ -108,12 +108,12 @@ return function(ui)
     config = function()
       require('tint').setup({
         bg = true, -- Tint background portions of highlight groups
-        amt = -30, -- Darken colors, use a positive value to brighten
+        amt = 3, -- Darken colors, use a positive value to brighten
         ignore = { 'WinSeparator', 'Status.*' }, -- Highlight group patterns to ignore, see `string.find`
         ignorefunc = function(winid)
           local buf = vim.api.nvim_win_get_buf(winid)
           local buftype
-          vim.api.nvim_buf_get_option(buf, 'buftype')
+          vim.api.nvim_get_option_value('buftype', {buf = buf})
 
           if buftype == 'terminal' or buftype == 'guihua' then
             -- Do not tint `terminal`-type buffers

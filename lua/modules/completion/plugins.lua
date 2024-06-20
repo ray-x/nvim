@@ -34,6 +34,7 @@ return function(use)
       { 'dmitmel/cmp-cmdline-history', lazy = true },
       -- { 'hrsh7th/cmp-copilot', lazy = true },
       { 'ray-x/cmp-treesitter', dev = _G.is_dev(), lazy = true },
+      { 'ray-x/cmp-sql', dev = _G.is_dev(), ft = {'sql', 'psql'} },
       { 'hrsh7th/cmp-nvim-lsp', lazy = true },
       { 'saadparwaiz1/cmp_luasnip', lazy = true },
       { 'kdheepak/cmp-latex-symbols', lazy = true, ft = {'markdown'} },
@@ -75,9 +76,9 @@ return function(use)
     ft = { 'sql' },
     init = function()
       -- vim.cmd([[autocmd FileType sql setlocal omnifunc=vim_dadbod_completion#omni]])
-      vim.cmd(
-        [[autocmd FileType sql,mysql,plsql lua require('cmp').setup.buffer({ sources = {{ name = 'vim-dadbod-completion' }, {name = 'buffer'}, {name = 'treesitter'}} })]]
-      )
+      -- vim.cmd(
+      --   [[autocmd FileType sql,mysql,plsql lua require('cmp').setup.buffer({ sources = {{ name = 'vim-dadbod-completion' }, {name = 'buffer'}, {name = 'treesitter'}} })]]
+      -- )
     end,
   })
 
@@ -104,7 +105,7 @@ return function(use)
       bind = true,
       -- doc_lines = 4,
       floating_window = true,
-      floating_window_above_cur_line = true,
+      -- floating_window_above_cur_line = false,
       hint_enable = true,
       fix_pos = false,
       -- floating_window_above_first = true,
@@ -116,17 +117,24 @@ return function(use)
       handler_opts = {
         border = 'rounded', -- "shadow", --{"╭", "─" ,"╮", "│", "╯", "─", "╰", "│" },
       },
-      hint_inline = function()
-        if vim.fn.has('nvim-0.10') == 1 then
-          return 'inline'
-        else
-          return false
-        end
-      end,
+      -- hint_prefix = {
+      --   inlay = '',
+      --   above = '↙ ', -- when the hint is on the line above the current line
+      --   current = '← ', -- when the hint is on the same line
+      --   below = '↖ ', -- when the hint is on the line below the current line
+      -- },
+      -- hint_inline = function()
+      --   if vim.fn.has('nvim-0.10') == 1 then
+      --     return 'inline'
+      --   else
+      --     return false
+      --   end
+      -- end,
       max_height = 4,
       toggle_key = [[<M-x>]], -- toggle signature on and off in insert mode,  e.g. '<M-x>'
       -- select_signature_key = [[<M-n>]], -- toggle signature on and off in insert mode,  e.g. '<M-x>'
       select_signature_key = [[<M-c>]], -- toggle signature on and off in insert mode,  e.g. '<M-x>'
+      move_cursor_key = [[<M-n>]], -- toggle signature on and off in insert mode,  e.g. '<M-x>'
     },
   })
 
@@ -163,5 +171,3 @@ return function(use)
   --   event = 'InsertEnter',
   -- })
 end
-
-

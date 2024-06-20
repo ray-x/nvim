@@ -14,14 +14,40 @@ local function load_env(envfile)
       -- remove DATABASE_URL from string
       local db_name = vim.fn.split(item, '=')[1]
       db_name = string.gsub(db_name, '_DATABASE_URL', ''):lower()
+      if #db_name > 10 then
+        db_name = db_name:sub(1, 10)
+      end
+      db_name = db_name
       local pos = string.find(item, '=')
       if pos > 0 then
-        dbs[db_name] = string.sub(item, pos + 1)
+        local url = string.sub(item, pos + 1)
+        if url ~= '' then
+          dbs[db_name] = url
+        end
       end
     end
   end
   return dbs
 end
+
+-- local function reload_sqls()
+--   require'lspconfig'.sqls.setup{
+--     on_attach = function(client, bufnr)
+--       require('sqls').on_attach(client, bufnr) -- require sqls.nvim
+--     end,
+--     settings = {
+--       sqls = {
+--         connections = {
+--           {
+--             driver = 'postgresql',
+--             dataSourceName = 'host=127.0.0.1 port=5432 user=postgres password=postgres dbname=catalogue_test sslmode=disable',
+--             --catalogue_test
+--           },
+--         },
+--       },
+--     },
+--   }
+-- end
 
 local function load_env_file()
   local env_file = require('core.global').home .. require('core.global').path_sep .. '.env'
@@ -38,29 +64,47 @@ local function load_env_file()
   return env_contents
 end
 
-function parsePostgresURL(url)
-  local pattern = 'postgres://([^:]+):([^@]+)@([^:]+):(%d+)/([^/]+)'
-  local username, password, hostname, port, dbname = url:match(pattern)
+function parse_pgURL(url)
+  -- local pattern = "postgres://([^:]+):([^@]+)@([^:]+):(%d+)/([^%?]+)%??([^=]*)=([^&]*)"
+  --     local user, password, host, port, dbname, ssl_key, ssl_value = string.match(uri, pattern)
+  local pattern = 'postgres://([^:]+):([^@]+)@([^:]+):(%d+)/([^?]+)(%??[^=]*=?[^&]*)'
+  local username, password, hostname, port, dbname, ssl_key, ssl_val = url:match(pattern)
+  local sslmode = ''
 
-  lprint(url, username, password, hostname, port, dbname)
-  if username and password and hostname and port and dbname then
-    return {
-      adapter = 'postgres',
-      user = username,
-      password = password,
-      host = hostname,
-      port = tonumber(port),
-      name = dbname,
-      database = dbname,
-      -- dbee
-      id = dbname,
-      url = url,
-      type = 'postgres',
-    }
-    -- else
-    --   error('Invalid PostgreSQL URL format')
+  if ssl_key and ssl_val then
+    sslmode = ' ' .. ssl_key .. '=' .. ssl_val
   end
+  local sqls_str = nil
+  if not (username and password and hostname and port and dbname) then
+    return
+  end
+  sqls_str = string.format(
+    'host=%s port=%s user=%s password=%s dbname=%s%s',
+    hostname,
+    port,
+    username,
+    password,
+    dbname,
+    sslmode
+  )
+
+  return {
+    adapter = 'postgres',
+    user = username,
+    password = password,
+    host = hostname,
+    port = tonumber(port),
+    name = dbname,
+    database = dbname,
+    -- dbee
+    id = dbname,
+    url = url,
+    type = 'postgres',
+  }, { driver = 'postgresql', dataSourceName = sqls_str }
 end
+
+--     local pattern = "postgres://([^:]+):([^@]+)@([^:]+):(%d+)/([^%?]+)%??([^=]*)=([^&]*)"
+--     local user, password, host, port, dbname, ssl_key, ssl_value = string.match(uri, pattern)
 
 local function load_dbs()
   local env_contents = load_env_file() or {}
@@ -68,20 +112,23 @@ local function load_dbs()
   -- lprint(env_dbs, env_contents)
   -- lprint(env_contents)
   local dbs = env_dbs
+  local sqls = {}
   local connections = {}
   for key, value in pairs(env_dbs) do
     local db_name = key
     dbs[db_name] = value
     lprint(db_name, value)
-    local url = parsePostgresURL(value)
-    if url then
+    local url, sqls_db = parse_pgURL(value)
+    if url and url ~= '' then
       table.insert(connections, url)
+      table.insert(sqls, sqls_db)
     end
   end
   dbs = vim.tbl_extend('force', dbs, env_dbs)
   dbs = vim.tbl_extend('force', vim.g.dbs, dbs)
   vim.g.dbs = dbs
   vim.g.connections = connections
+  -- vim.g.sqls_db = sqls
   lprint(env_dbs, dbs, connections)
 end
 
@@ -156,4 +203,5 @@ end
 
 return {
   load_dbs = load_dbs,
+  -- reload_sqls = reload_sqls,
 }

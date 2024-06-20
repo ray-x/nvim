@@ -56,7 +56,7 @@ local hl_list = {
   NormalBg = { 'NormalFg', 'NormalBg' },
   White = { 'black', 'white' },
   Normal = { 'NormalFg', 'NormalBg' },
-  Inactive = { 'InactiveFg', 'InactiveBg' },
+  Inaevactive = { 'InactiveFg', 'InactiveBg' },
   Active = { 'ActiveFg', 'ActiveBg' },
 }
 local basic = {}
@@ -211,11 +211,12 @@ end
 
 local on_hover = function()
   local params = vim.lsp.util.make_position_params()
-  local clients = vim.lsp.buf_get_clients()
+  -- local clients = vim.lsp.buf_get_clients()
+  local clients = vim.lsp.get_clients()
   local hoverProvider = false
   for _, client in ipairs(clients) do
     -- lprint(client.name, client.server_capabilities.hoverProvider)
-    if client.server_capabilities.hoverProvider == true and client.name ~= 'null-ls' then
+    if client.server_capabilities.hoverProvider == true and client.name ~= 'null-ls' and client.name ~= 'GitHub' then
       lprint('hover enabled for ', client.name)
       hoverProvider = true
     end
@@ -259,7 +260,8 @@ end
 
 local should_show = function()
   -- body
-  local ft = vim.api.nvim_buf_get_option(0, 'filetype')
+  local bufnr = vim.api.nvim_get_current_buf()
+  local ft = vim.api.nvim_get_option_value('filetype', {buf = bufnr})
   if vim.tbl_contains({}, ft) or winwidth() < 100 then
     return false
   end

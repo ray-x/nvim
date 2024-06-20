@@ -49,17 +49,18 @@ vim.api.nvim_create_user_command('CompareDir', function(opts)
       if is_set == 0 then
         return
       end
+      local bufnr = vim.api.nvim_get_current_buf()
 
       if vim.bo.bt == '' then
-        vim.api.nvim_buf_set_option(0, 'diff', true)
-        vim.api.nvim_buf_set_option(0, 'cursorbind', true)
-        vim.api.nvim_buf_set_option(0, 'scrollbind', true)
-        vim.api.nvim_buf_set_option(0, 'foldmethod', 'diff')
-        vim.api.nvim_buf_set_option(0, 'foldlevel', 0)
+        vim.api.nvim_set_option_value('diff', true, {buf = bufnr})
+        vim.api.nvim_set_option_value('cursorbind', true, {buf = bufnr})
+        vim.api.nvim_set_option_value('scrollbind', true, {buf = bufnr})
+        vim.api.nvim_set_option_value('foldmethod', 'diff', {buf = bufnr})
+        vim.api.nvim_set_option_value('foldlevel', 0, {buf = bufnr})
       else
-        vim.api.nvim_buf_set_option(0, 'diff', false)
-        vim.api.nvim_buf_set_option(0, 'cursorbind', false)
-        vim.api.nvim_buf_set_option(0, 'scrollbind', false)
+        vim.api.nvim_set_option_value('diff', false, {buf = bufnr})
+        vim.api.nvim_set_option_value('cursorbind', false, {buf = bufnr})
+        vim.api.nvim_set_option_value('scrollbind', false, {buf = bufnr})
       end
     end,
   })

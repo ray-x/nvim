@@ -39,10 +39,12 @@ function config.nvim_cmp()
 
     -- { name = "cmp_tabnine", keyword_length = 0 },
     { name = 'path' },
-    -- { name = 'copilot' },
     { name = 'buffer' },
+    { name = 'sql' },
   }
-  if vim.o.ft == 'sql' then
+
+  if vim.o.ft == 'sql' or vim.o.ft == 'pgsql' then
+    lprint('sql cmp source insert')
     table.insert(sources, { name = 'vim-dadbod-completion' })
   end
 
@@ -59,8 +61,12 @@ function config.nvim_cmp()
     table.insert(sources, { name = 'emoji' })
     -- table.insert(sources, { name = 'mkdnflow' })
   end
+
   if vim.o.ft == 'lua' then
-    table.insert(sources, { name = 'nvim_lua' })
+    table.insert(sources, {
+      name = 'lazydev',
+      group_index = 0, -- set group index to 0 to skip loading LuaLS completions
+    })
   end
 
   if vim.o.ft == 'zsh' or vim.o.ft == 'sh' or vim.o.ft == 'fish' or vim.o.ft == 'proto' then
@@ -98,6 +104,7 @@ function config.nvim_cmp()
           nvim_lua = ' ',
           spell = '󰓆',
           emoji = '󰞅',
+          sql = '',
           latex_symbols = '󰿉',
           ['vim-dadbod-completion'] = '',
           -- copilot = '🤖',

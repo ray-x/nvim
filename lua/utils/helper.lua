@@ -169,9 +169,9 @@ function M.handleGlobalVariable(var, opts)
   end
 end
 
-function M.setFiletype(buffer, type)
-  vim.api.nvim_buf_set_option(buffer, 'filetype', type)
-end
+-- function M.setFiletype(buffer, type)
+--   vim.api.nvim_set_option('filetype', type, { buf = buffer })
+-- end
 
 -- add log to you lsp.log
 function M.log(...)
@@ -233,7 +233,7 @@ function M.printError(msg)
 end
 
 function M.reload()
-  vim.lsp.stop_client(vim.lsp.get_active_clients())
+  vim.lsp.stop_client(vim.lsp.get_clients())
   vim.cmd([[edit]])
 end
 
