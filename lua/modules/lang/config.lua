@@ -263,7 +263,6 @@ function config.navigator()
   -- require"navigator".setup(nav_cfg)
   require('navigator').setup(nav_cfg)
 end
-
 function config.luapad()
   require('luapad').setup({
     count_limit = 150000,

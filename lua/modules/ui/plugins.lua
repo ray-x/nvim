@@ -97,6 +97,9 @@ return function(ui)
   ui({
     'akinsho/bufferline.nvim',
     config = conf.nvim_bufferline,
+    cond = function()
+      return not vim.wo.diff
+    end,
     event = 'VeryLazy',
     -- after = {"aurora"}
     -- dependencies = {'kyazdani42/nvim-web-devicons'}

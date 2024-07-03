@@ -43,6 +43,9 @@ return function(tools)
     cmd = { 'MkdnNew', 'MkdnDaily', 'MkdnNewDaily', 'GtdStart' },
     -- lazy = false,
     module = true,
+    cond = function()
+      return vim.wo.diff
+    end,
     dependencies = {
       {
         'HakonHarnes/img-clip.nvim',
@@ -286,6 +289,19 @@ return function(tools)
   })
 
   tools({
+    'rickhowe/diffchar.vim',
+    cond = function()
+      return vim.wo.diff
+    end,
+    init = function()
+      -- vim.g.DiffColors=3
+      vim.g.DiffUnit='Char'
+    end,
+    event = {'BufEnter'},
+    cmd = {'DiffviewOpen'}
+  })
+
+  tools({
     'ray-x/sad.nvim',
     dev = dev,
     cond = cond,
@@ -466,6 +482,9 @@ return function(tools)
   tools({
     'jackMort/ChatGPT.nvim',
     event = { 'CmdlineEnter' },
+    cond = function()
+      return vim.wo.diff
+    end,
     -- cond = cond,
     opts = {
       popup_window = { border = {
@@ -507,17 +526,17 @@ return function(tools)
       max_count = 10,
       enabled = true,
       disable_mouse = false,
-      restriction_mode = "hint", -- block or hint
+      restriction_mode = 'hint', -- block or hint
       restricted_keys = {
         ['h'] = {}, -- dont restrict
         ['j'] = {},
         ['k'] = {},
         ['l'] = {},
 
-        ['<Up>'] = {'n'},
-        ['<Down>'] = {'n'},
-        ['<Left>'] = {'n'},
-        ['<Right>'] = {'n'},
+        ['<Up>'] = { 'n' },
+        ['<Down>'] = { 'n' },
+        ['<Left>'] = { 'n' },
+        ['<Right>'] = { 'n' },
       },
       disabled_keys = {
         ['<Up>'] = {},
