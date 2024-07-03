@@ -401,12 +401,14 @@ keymap.amend('n', ']c', function(original)
   end
 end, { desc = 'nextdiff/hunk' })
 
-keymap.amend('n', '[c', function()
+keymap.amend('n', '[c', function(original)
   if not vim.wo.diff then
     vim.schedule(function()
       local gs = package.loaded.gitsigns
       gs.prev_hunk()
     end)
+  else
+    original()
   end
 end, { desc = 'prevdiff/hunk' })
 

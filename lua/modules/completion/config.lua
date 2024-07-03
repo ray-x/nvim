@@ -195,6 +195,7 @@ function config.nvim_cmp()
     mapping = cmp.mapping.preset.cmdline(),
     sources = {
       { name = 'buffer' },
+      { name = 'nvim_lsp_document_symbol' },
       -- { name = 'cmdline_history' },
       -- { name = 'rg', keyword_length = 4 },  -- slow
       -- {
