@@ -64,6 +64,7 @@ local c = {
   background = '#121825',
   background_one = '#1d2e38',
   background_two = '#2e2f3f',
+  background_g = '#1e321f',
   background_three = '#323e43',
   background_four = '#445462',
 
@@ -191,7 +192,7 @@ local Usual = {
   Diff = {
     DiffAdd = {
       fg = c.green_two,
-      bg = c.background_two,
+      bg = c.background_g,
       bold = true,
       underdotted = true,
       sp = '#2284a1',
