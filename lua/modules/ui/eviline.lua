@@ -187,7 +187,7 @@ local current_function = function(width)
       break
     end
   end
-  lprint(result, width, parts, #lsp_label1, #lsp_label2)
+  -- lprint(result, width, parts, #lsp_label1, #lsp_label2)
   -- return string.sub(' ' .. ts, 1, width)
   -- lprint(result)
   return result
@@ -306,7 +306,7 @@ local TrimmedDirectory = function(dir)
     p3, _ = string.gsub(p3, 'github.com', '')
   end
 
-  lprint('folder', p1, p2, p3)
+  -- lprint('folder', p1, p2, p3)
   local pc = ''
   if p3 ~= nil then
     pc = string.sub(p3, 1, 4) .. '/' .. string.sub(p2, 0, 8) .. '/' .. string.sub(p1, 0, 10)
