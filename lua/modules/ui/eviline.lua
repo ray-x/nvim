@@ -61,9 +61,9 @@ local hl_list = {
 }
 local basic = {}
 
-local breakpoint_width = 100
+local breakpoint_width = 120
 local medium_width = 80
-local large_width = 100
+local large_width = 160
 
 basic.divider = { b_components.divider, '' }
 basic.bg = { ' ', 'StatusLine' }
@@ -114,24 +114,18 @@ local err
 local job_utils = require('wlanimation.components.loading')
 
 local current_function = function(width)
+  -- lprint('current_function width', width)
   -- local wwidth = winwidth()
-  if width < 50 then
+  if width < 100 then
     return ''
-  end
-
-  width = width
-  if width < 80 and #lsp_label1 > 50 then
-    if not state.disable_title_update and running % 5 == 1 then
-      set_title(lsp_label1)
-    end
-    return ''
-  end
-  if width - #lsp_label2 < 140 then
-    width = math.max((80 - #lsp_label1 - #lsp_label2) * 0.5, 20)
+  elseif width < 120 then
+    width = width / 3.2
+  elseif width - #lsp_label2 < 140 then
+    width = math.max((80 - #lsp_label1 - #lsp_label2) / 2, 30)
   elseif width - #lsp_label2 < 200 then
-    width = math.max((width - #lsp_label1) / 1.5, 30)
+    width = math.max((width - #lsp_label1) / 2, 50)
   elseif width - #lsp_label2 >= 200 then
-    width = math.max((width - #lsp_label1) / 1.3, 40)
+    width = math.max((width - #lsp_label1) / 1.5, 80)
   end
   if running % 5 == 1 and not state.disable_title_update then
     ok, ts = pcall(treesitter_context, 400)
@@ -183,12 +177,19 @@ local current_function = function(width)
     if #result > 1 then
       result[#result + 1] = { '>', 'blue_light' }
     end
+
     result[#result + 1] = { part, 'green' }
-    if length >= width then
+    if length > width then
+      -- lprint(length, width)
+      local truncate = length - width
+      part = string.sub(part, 1, #result[#result] - truncate)
+      result[#result] = { part, 'green' }
       break
     end
   end
+  lprint(result, width, parts, #lsp_label1, #lsp_label2)
   -- return string.sub(' ' .. ts, 1, width)
+  -- lprint(result)
   return result
 end
 
@@ -216,8 +217,12 @@ local on_hover = function()
   local hoverProvider = false
   for _, client in ipairs(clients) do
     -- lprint(client.name, client.server_capabilities.hoverProvider)
-    if client.server_capabilities.hoverProvider == true and client.name ~= 'null-ls' and client.name ~= 'GitHub' then
-      lprint('hover enabled for ', client.name)
+    if
+      client.server_capabilities.hoverProvider == true
+      and client.name ~= 'null-ls'
+      and client.name ~= 'GitHub'
+    then
+      -- lprint('hover enabled for ', client.name)
       hoverProvider = true
     end
   end
@@ -258,10 +263,12 @@ local on_hover = function()
   end)
 end
 
-local should_show = function()
-  -- body
+local should_show = function(width)
+  if width < large_width then
+    return false
+  end
   local bufnr = vim.api.nvim_get_current_buf()
-  local ft = vim.api.nvim_get_option_value('filetype', {buf = bufnr})
+  local ft = vim.api.nvim_get_option_value('filetype', { buf = bufnr })
   if vim.tbl_contains({}, ft) or winwidth() < 100 then
     return false
   end
@@ -285,25 +292,26 @@ local TrimmedDirectory = function(dir)
   local pa = split_path(dir)
   local p1 = getEntryFromEnd(pa, 1)
   if p1 then
-    p1, _ = string.gsub(p1, 'github%-', 'g')
-    p1, _ = string.gsub(p1, 'bitbucket%-', 'b')
+    p1, _ = string.gsub(p1, 'stream%w*', '󱒐')
+    p1, _ = string.gsub(p1, 'github.com', 'g')
+    -- p1, _ = string.gsub(p1, 'bitbucket%-', 'b')
   end
   local p2 = getEntryFromEnd(pa, 2)
   if p2 then
-    p2, _ = string.gsub(p2, 'mtribes%-', 'm')
-    p2, _ = string.gsub(p2, 'bitbucket%-', 'b')
+    p2, _ = string.gsub(p2, 'stream%w*', '󱒐')
+    p2, _ = string.gsub(p2, 'github.com', '')
   end
   local p3 = getEntryFromEnd(pa, 3)
   if p3 then
-    p3, _ = string.gsub(p3, 'mtribes%-', 'm')
-    p3, _ = string.gsub(p3, 'bitbucket%-', 'b')
+    p3, _ = string.gsub(p3, 'github.com', '')
   end
 
+  lprint('folder', p1, p2, p3)
   local pc = ''
   if p3 ~= nil then
-    pc = string.sub(p3, 0, 4) .. '/' .. string.sub(p2, 0, 4) .. '/' .. string.sub(p1, 0, 5)
+    pc = string.sub(p3, 1, 4) .. '/' .. string.sub(p2, 0, 8) .. '/' .. string.sub(p1, 0, 10)
   elseif p2 ~= nil then
-    pc = string.sub(p2, 0, 5) .. '/' .. string.sub(p1, 0, 6)
+    pc = string.sub(p2, 1, 8) .. '/' .. string.sub(p1, 0, 10)
   else
     pc = ''
   end
@@ -504,8 +512,9 @@ basic.folder = {
     white = { 'white', 'black' },
     blue = { 'blue', 'NormalBg' },
   },
-  text = function(_)
-    if should_show() then
+  width = large_width,
+  text = function(_, _, width, _)
+    if should_show(width) then
       return {
         { ' ', 'default' },
         {
@@ -527,6 +536,7 @@ basic.funcname = {
     green_light = { 'green_light', 'NormalBg' },
     blue_light = { 'blue_light', 'NormalBg' },
   },
+  -- width = 100,
   -- text = function(_, winnr, width, is_float)
   text = function(_, _, width, _)
     return current_function(width)
@@ -543,6 +553,9 @@ basic.lsp_info = {
     yellow = { 'yellow', 'NormalBg' },
   },
   text = function(_, winnr, width, is_float)
+    if width < breakpoint_width then
+      return {}
+    end
     local label, sig = current_signature(width)
     -- if there is signature help info, show signature help, otherwise show
     if sig == nil or sig.label == nil or sig.range == nil then
@@ -585,14 +598,17 @@ basic.file_right = {
     magenta = { 'magenta', 'NormalBg' },
   },
   text = function(_, winnr, width, is_float)
+    if width < medium_width then
+      return { '', '' }
+    end
     if width < breakpoint_width then
+      return { { b_components.line_col_lua, 'white' } }
+    else
       return {
         { b_components.line_col_lua, 'white' },
         { b_components.progress_lua, '' },
         { ' ', '' },
       }
-    else
-      return { { b_components.line_col_lua, 'white' } }
     end
   end,
 }
@@ -649,6 +665,18 @@ basic.git = {
   end,
 }
 
+local function get_git_branch()
+  return function(bufnr)
+    local branch = git_comps.git_branch()(bufnr)
+    -- split with '/' and get the last part
+    branch = split(branch, '/')[#split(branch, '/')]
+    if string.len(branch) > 16 then
+      branch = string.sub(branch, 1, 14) .. ''
+    end
+    return '  ' .. branch
+  end
+end
+
 basic.git_branch = {
   name = 'git_branch',
   hl_colors = hl_list.NormalBg,
@@ -656,7 +684,7 @@ basic.git_branch = {
   text = function(bufnr)
     if git_comps.is_git(bufnr) then
       return {
-        { git_comps.git_branch(), hl_list.NormalBg, large_width },
+        { get_git_branch(), hl_list.NormalBg, large_width },
         {
           git_rev_components.git_rev(),
           hl_list.default,
@@ -719,7 +747,7 @@ local default = {
     basic.file_right,
     basic.offset,
     basic.scrollbar_right,
-    { lsp_comps.lsp_name(), { 'magenta', 'NormalBg' }, breakpoint_width },
+    -- { lsp_comps.lsp_name(), { 'magenta', 'NormalBg' }, breakpoint_width },
     basic.git,
     basic.folder,
     basic.job_spinner,
@@ -778,6 +806,7 @@ windline.setup({
     return colors
   end,
   statuslines = { default, quickfix, explorer },
+  hide_server_names = { 'null-ls', 'GitHub Copilot' },
 })
 
 -- vim.o.winbar = "%{%v:lua.require'modules.ui.winbar'.eval()%}"
