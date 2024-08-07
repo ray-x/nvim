@@ -49,6 +49,8 @@ local function load_colorscheme(theme)
     require('lazy').load({ plugins = { theme } })
     vim.api.nvim_set_hl(0, 'ColorColumn', {})
   end
+
+  vim.api.nvim_set_hl(0, '@lsp.type.variable.go', {}) -- use treesitter
   -- vim.api.nvim_set_hl(0, '@lsp.type.string.go', { fg = 'NONE' })
 end
 
