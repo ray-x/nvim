@@ -109,7 +109,7 @@ local helper = {
       return Plugin_folder
     end
     _G.is_dev = function()
-      return vim.fn.expand('$USER'):find('ray') or _G.plugin_folder() == [[~/github/ray-x/]]
+      return vim.fn.expand('$USER'):find('ray') ~= nil or _G.plugin_folder() == [[~/github/ray-x/]]
     end
     _G.FindRoot = function()
       local root = vim.fn.system({ 'git', 'rev-parse', '--show-toplevel' })

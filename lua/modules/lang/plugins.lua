@@ -412,24 +412,19 @@ return function(lang)
     ft = 'awk',
     -- cmd = { 'AwkWard' },
   })
-  lang({
-    'chrisbra/csv.vim',
-    ft = { 'csv', 'tsv', 'dat', 'csv_pipe', 'dbout' },
-    cmd = {
-      'WhatColumn',
-      'CSVWhatColumn',
-      'HiColumn',
-      'CSVHiColumn',
-      'CSVHiColumn',
-      'ArrangeColumn',
-      'DeleteColumn',
-      'CSVDeleteColumn',
-      'CSVDeleteColumn',
-    },
-    init = function()
-      vim.cmd('auto BufReadPost *.csv,*.tsv,*.dat,*.csv_pipe,*.dbout setlocal filetype=csv')
-    end,
-  })
+
+  -- if vim.bo.ft == 'csv' then
+  -- it can not be lazy loaded
+  if 'csv' == vim.fn.expand('%:e') then
+    lang({
+      'chrisbra/csv.vim',
+      lazy = false,
+      init = function()
+        -- vim.cmd('auto BufReadPost *.csv,*.tsv,*.dat,*.csv_pipe,*.dbout setlocal filetype=csv')
+        vim.g.csv_delim_test = ',;|'
+      end,
+    })
+  end
   lang({
     'mechatroner/rainbow_csv',
     ft = { 'csv', 'tsv', 'dat', 'csv_pipe', 'dbout' },
@@ -482,22 +477,22 @@ end
 --   config = conf.luapad,
 -- })
 
-  -- if typecheck({ 'json', 'js', 'javascript', 'javascriptreact' }) then
-  --   lang({
-  --     'danymat/neogen',
-  --     lazy = true,
-  --     config = function()
-  --       require('neogen').setup({ snippet_engine = 'luasnip' })
-  --     end,
-  --     ft = { 'js', 'html', 'javascript', 'javascriptreact', 'json' },
-  --   })
-  -- end
+-- if typecheck({ 'json', 'js', 'javascript', 'javascriptreact' }) then
+--   lang({
+--     'danymat/neogen',
+--     lazy = true,
+--     config = function()
+--       require('neogen').setup({ snippet_engine = 'luasnip' })
+--     end,
+--     ft = { 'js', 'html', 'javascript', 'javascriptreact', 'json' },
+--   })
+-- end
 
-  -- -- lang({ 'ThePrimeagen/refactoring.nvim', config = conf.refactor })
+-- -- lang({ 'ThePrimeagen/refactoring.nvim', config = conf.refactor })
 
-  -- -- Automatically convert strings to f-strings or template strings and back
-  -- -- lang({
-  -- --   'chrisgrieser/nvim-puppeteer',
-  -- --   lazy = true,
-  -- -- })
-  -- -- ipython
+-- -- Automatically convert strings to f-strings or template strings and back
+-- -- lang({
+-- --   'chrisgrieser/nvim-puppeteer',
+-- --   lazy = true,
+-- -- })
+-- -- ipython

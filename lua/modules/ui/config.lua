@@ -133,7 +133,7 @@ function config.scrollview()
   require('scrollview').setup({
     -- column = 0,
     blend = 50,
-    signs_on_startup = { 'marks' }, -- {'all'}
+    signs_on_startup = { }, -- {'all'}
   })
 end
 

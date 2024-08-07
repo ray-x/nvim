@@ -10,6 +10,17 @@ local kitty = {}
 local pid = vim.fn.getpid()
 local ns = vim.api.nvim_create_namespace('user-kitty')
 
+if not lprint then
+  lprint = function(...)
+    local arg = { ... }
+    local str = ''
+    for i, v in ipairs(arg) do
+      str = str .. tostring(v) .. ' '
+    end
+    print(str)
+  end
+end
+
 local group = vim.api.nvim_create_augroup('user-kitty', { clear = true })
 
 local has_kitty

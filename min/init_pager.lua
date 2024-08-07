@@ -58,4 +58,4 @@ local opts = {
 
 require('lazy').setup(load_plugins(), opts)
 require('pager')
-vim.cmd('colorscheme murphy')
+vim.g.csv_delim_test = ',;|'

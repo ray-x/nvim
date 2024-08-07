@@ -116,7 +116,7 @@ return function(ui)
         ignorefunc = function(winid)
           local buf = vim.api.nvim_win_get_buf(winid)
           local buftype
-          vim.api.nvim_get_option_value('buftype', {buf = buf})
+          vim.api.nvim_get_option_value('buftype', { buf = buf })
 
           if buftype == 'terminal' or buftype == 'guihua' then
             -- Do not tint `terminal`-type buffers
