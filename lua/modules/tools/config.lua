@@ -52,7 +52,7 @@ function config.diffview()
     },
     view = {
       merge_tool = {
-        layout = "diff4_mixed",
+        layout = 'diff4_mixed',
         disable_diagnostics = true,
         winbar_info = true,
       },
@@ -101,51 +101,37 @@ function config.vim_dadbod_ui()
   end
 end
 
-function config.project()
-  require('project_nvim').setup({
-    datapath = vim.fn.stdpath('data'),
-    ignore_lsp = { 'efm' },
-    exclude_dirs = { '~/.cargo/*' },
-    silent_chdir = true,
-    -- your configuration comes here
-    -- or leave it empty to use the default settings
-    -- refer to the configuration section below
-  })
-  require('telescope').load_extension('projects')
-end
+-- function config.project()
+--   require('project_nvim').setup({
+--     datapath = vim.fn.stdpath('data'),
+--     ignore_lsp = { 'efm' },
+--     exclude_dirs = { '~/.cargo/*' },
+--     silent_chdir = true,
+--     -- your configuration comes here
+--     -- or leave it empty to use the default settings
+--     -- refer to the configuration section below
+--   })
+--   require('telescope').load_extension('projects')
+-- end
 
 function config.gitsigns()
   require('gitsigns').setup({
     signs = {
       add = {
-        hl = 'GitGutterAdd',
+        -- hl = 'GitGutterAdd',
         text = '│',
-        numhl = 'GitSignsAddNr',
-        linehl = 'GitSignsAddLn',
       },
       change = {
-        hl = 'GitGutterChange',
         text = '│',
-        numhl = 'GitSignsChangeNr',
-        linehl = 'GitSignsChangeLn',
       },
       delete = {
-        hl = 'GitGutterDelete',
         text = 'ﬠ',
-        numhl = 'GitSignsDeleteNr',
-        linehl = 'GitSignsDeleteLn',
       },
       topdelete = {
-        hl = 'GitGutterDelete',
         text = 'ﬢ',
-        numhl = 'GitSignsDeleteNr',
-        linehl = 'GitSignsDeleteLn',
       },
       changedelete = {
-        hl = 'GitGutterChangeDelete',
         text = '┊',
-        numhl = 'GitSignsChangeNr',
-        linehl = 'GitSignsChangeLn',
       },
     },
     -- sign_priority = 6,
