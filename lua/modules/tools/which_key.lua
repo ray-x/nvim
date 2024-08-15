@@ -125,7 +125,7 @@ function register_key()
       {'<Space>fr', ':Telescope registers<CR>',desc= 'Registers' },
       {'<Space>fb', ':Telescope buffers<CR>',desc= 'Buffers' },
       {'<Space>fj', ":lua require'utils.telescope'.jump()<CR>",desc= 'Jump' },
-      {'<Space>fp', function() require('telescope.extensions.projects').projects() end,desc= 'Projects' },
+      -- {'<Space>fp', function() require('telescope.extensions.projects').projects() end,desc= 'Projects' },
       {'<Space>fF', ":lua require'utils.telescope'.folder_search()<CR>",desc= 'Folder Search' },
       {'<Space>ff', ':Telescope find_files<CR>',desc= '🔭Files' },
       {'<Space>fw', ':Telescope grep_string<CR>',desc= 'Grep ' },
@@ -159,28 +159,28 @@ function register_key()
       { '<Space>Cx', '<cmd>ChatGPTRun explain_code<CR>', desc = 'Explain Code', mode = { 'n', 'v' } },
       { '<Space>Cr', '<cmd>ChatGPTRun roxygen_edit<CR>', desc = 'Roxygen Edit', mode = { 'n', 'v' } },
       { '<Space>Cl', '<cmd>ChatGPTRun code_readability_analysis<CR>', desc = 'Code Readability Analysis', mode = { 'n', 'v' } },
-      -- stylua: ignore end
+    -- stylua: ignore end
   }
   wk.add(telescope_keymap)
   -- go.nvim
   local go = {
     { '<Space>G', group = 'go.nvim' },
-    { '<Space>Gr', '<cmd>GoRun<CR>', desc= 'Run' },
-    { '<Space>Gb', '<cmd>GoBuild<CR>', desc= 'Build' },
-    { '<Space>Gt', '<cmd>GoTestFunc<CR>', desc= 'Test' },
-    { '<Space>GT', '<cmd>GoTestFile<CR>', desc= 'TestFile' },
-    { '<Space>Gp', '<cmd>GoTestPkg<CR>', desc= 'Test pkg' },
-    { '<Space>Gd', '<cmd>GoDoc<CR>', desc= 'Doc' },
-    { '<Space>Gf', '<cmd>GoFillStruct<CR>', desc= 'Fill Struct' },
-    { '<Space>GD', '<cmd>GoDebug -t<CR>', desc= 'Debug test' },
-    { '<Space>Gi', '<cmd>GoImport<CR>', desc= 'Import' },
-    { '<Space>GF', '<cmd>GoFmt<CR>', desc= 'Format' },
-    { '<Space>Ga', '<cmd>GoAddTest<CR>', desc= 'Add Test' },
-    { '<Space>Gg', '<cmd>GoAddTag<CR>', desc= 'Add Tag' },
-    { '<Space>GI', '<cmd>GoImpl<CR', desc= 'Impl' },
-    { '<Space>Ge', '<cmd>GoIfErr<CR>', desc= 'Err return' },
-    { '<Space>GR', '<cmd>GoGenReturn<CR>', desc= 'Gen return' },
-    { '<Space>GL', '<cmd>GoToggleInlay<CR>', desc= 'Toggle Inlay' },
+    { '<Space>Gr', '<cmd>GoRun<CR>', desc = 'Run' },
+    { '<Space>Gb', '<cmd>GoBuild<CR>', desc = 'Build' },
+    { '<Space>Gt', '<cmd>GoTestFunc<CR>', desc = 'Test' },
+    { '<Space>GT', '<cmd>GoTestFile<CR>', desc = 'TestFile' },
+    { '<Space>Gp', '<cmd>GoTestPkg<CR>', desc = 'Test pkg' },
+    { '<Space>Gd', '<cmd>GoDoc<CR>', desc = 'Doc' },
+    { '<Space>Gf', '<cmd>GoFillStruct<CR>', desc = 'Fill Struct' },
+    { '<Space>GD', '<cmd>GoDebug -t<CR>', desc = 'Debug test' },
+    { '<Space>Gi', '<cmd>GoImport<CR>', desc = 'Import' },
+    { '<Space>GF', '<cmd>GoFmt<CR>', desc = 'Format' },
+    { '<Space>Ga', '<cmd>GoAddTest<CR>', desc = 'Add Test' },
+    { '<Space>Gg', '<cmd>GoAddTag<CR>', desc = 'Add Tag' },
+    { '<Space>GI', '<cmd>GoImpl<CR', desc = 'Impl' },
+    { '<Space>Ge', '<cmd>GoIfErr<CR>', desc = 'Err return' },
+    { '<Space>GR', '<cmd>GoGenReturn<CR>', desc = 'Gen return' },
+    { '<Space>GL', '<cmd>GoToggleInlay<CR>', desc = 'Toggle Inlay' },
   }
   wk.add(go)
 end

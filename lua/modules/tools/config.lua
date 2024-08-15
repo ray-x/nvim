@@ -349,7 +349,25 @@ function config.floaterm()
     },
   })
   local Terminal = require('toggleterm.terminal').Terminal
-  local lazygit = Terminal:new({ cmd = 'lazygit', hidden = true })
+  local lazygit = Terminal:new({
+    cmd = 'lazygit',
+    hidden = true,
+    direction = 'float',
+    on_open = function(term)
+      vim.api.nvim_buf_set_keymap(
+        term.bufnr,
+        'n',
+        'q',
+        '<cmd>close<CR>',
+        { noremap = true, silent = true }
+      )
+      vim.keymap.set('t', '<Esc>', '<Esc>',  { buffer= term.bufnr })
+      vim.cmd('startinsert!')
+    end,
+    on_close = function(term)
+      vim.keymap.del('t', '<Esc>',  { buffer= term.bufnr })
+    end,
+  })
   local lazydocker = Terminal:new({ cmd = 'lazydocker', hidden = true })
 
   local function _lazygit_toggle()

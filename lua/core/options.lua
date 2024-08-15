@@ -266,7 +266,6 @@ end
 vim.cmd('set path+=**')
 -- stylua: ignore end
 
-vim.cmd([[autocmd TermOpen * setlocal nospell]])
 vim.cmd([[autocmd TermOpen,BufEnter term://* startinsert]])
 vim.cmd([[tnoremap <Esc>q <C-\><C-n>]])
 if vim.g.neovide then
