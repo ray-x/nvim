@@ -38,13 +38,12 @@ return function(tools)
   })
   tools({
     'ray-x/mkdn.nvim',
-    dev = true,
+    dev = _G.is_dev(),
     ft = { 'markdown', 'md' },
     cmd = { 'MkdnNew', 'MkdnDaily', 'MkdnNewDaily', 'GtdStart' },
-    -- lazy = false,
-    module = true,
+    -- module = true,
     cond = function()
-      return vim.wo.diff
+      return not vim.wo.diff
     end,
     dependencies = {
       {
@@ -295,10 +294,10 @@ return function(tools)
     end,
     init = function()
       -- vim.g.DiffColors=3
-      vim.g.DiffUnit='Char'
+      vim.g.DiffUnit = 'Char'
     end,
-    event = {'BufEnter'},
-    cmd = {'DiffviewOpen'}
+    event = { 'BufEnter' },
+    cmd = { 'DiffviewOpen' },
   })
 
   tools({
