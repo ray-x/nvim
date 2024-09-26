@@ -119,18 +119,6 @@ function config.comment()
 end
 
 --
--- function config.move()
---   require('gomove').setup({
---     -- whether or not to map default key bindings, (true/false)
---     map_defaults = true,
---     -- what method to use for reindenting, ("vim-move" / "simple" / ("none"/nil))
---     reindent_mode = 'vim-move',
---     -- whether to not to move past line when moving blocks horizontally, (true/false)
---     move_past_line = false,
---     -- whether or not to ignore indent when duplicating lines horizontally, (true/false)
---     ignore_indent_lh_dup = true,
---   })
--- end
 
 function config.hlslens()
   -- body
@@ -174,33 +162,48 @@ function config.vmulti()
   vim.g.VM_show_warnings = 1
   vim.g.VM_default_mappings = 1
 
-  vim.cmd([[
-    let g:VM_maps                      = {}
-    let g:VM_maps['Select All']        = '<C-M-n>'
-    let g:VM_maps["Add Cursor Down"]   = '<M-Down>'
-    let g:VM_maps["Add Cursor Up"]     = "<M-Up>"
-    let g:VM_maps["Mouse Cursor"]      = "<M-LeftMouse>"
-    let g:VM_maps["Mouse Word"]        = "<M-RightMouse>"
-    let g:VM_maps["Add Cursor At Pos"] = '<M-i>'
-  ]])
+  vim.g.VM_maps = {
+    ['Select All'] = '<C-M-n>',
+    ['Add Cursor Down'] = '<M-Down>', -- <C-Down/Up> in mac is used
+    ['Add Cursor Up'] = '<M-Up>',
+    ['Mouse Cursor'] = '<M-LeftMouse>',
+    ['Mouse Word'] = '<M-RightMouse>',
+    -- ['Add Cursor At Pos'] = '<M-i>',
+    -- ['Find Under'] = '<M-n>',
+    -- ['Find Subword Under'] = '<M-n>',
+    -- ['Start Regex Search'] = '<Leader>/',
+  }
 end
 
 config.mini = function()
   require('modules.editor.mini').setup()
 end
 
-config.headline = function()
-  vim.cmd([[highlight Headline1 guibg=NONE gui=bold]])
-  vim.cmd([[highlight Headline2 guibg=NONE gui=bold]])
-  -- vim.cmd([[highlight link Headline2 Function]])
-  -- vim.cmd([[highlight CodeBlock guibg=NONE]])
-  vim.cmd([[highlight Dash gui=bold]])
-  require('headlines').setup({
-    markdown = { fat_headlines = false, headline_highlights = { 'Headline1', 'Headline2' } },
-    org = { fat_headlines = false, headline_highlights = { 'Headline1', 'Headline2' } },
-    dash_string = "",
-    doubledash_string = "󱋰",
-  })
-end
-
 return config
+
+-- config.headline = function()
+--   -- vim.cmd([[highlight Headline1 guibg=NONE gui=bold]])
+--   -- vim.cmd([[highlight Headline2 guibg=NONE gui=bold]])
+--   -- vim.cmd([[highlight link Headline2 Function]])
+--   -- vim.cmd([[highlight CodeBlock guibg=NONE]])
+--   -- vim.cmd([[highlight Dash gui=bold]])
+--   require('headlines').setup({
+--     -- markdown = { fat_headlines = false, headline_highlights = { 'Headline1', 'Headline2' } },
+--     -- org = { fat_headlines = false, headline_highlights = { 'Headline1', 'Headline2' } },
+--     -- dash_string = "",
+--     -- doubledash_string = "󱋰",
+--   })
+-- end
+
+-- function config.move()
+--   require('gomove').setup({
+--     -- whether or not to map default key bindings, (true/false)
+--     map_defaults = true,
+--     -- what method to use for reindenting, ("vim-move" / "simple" / ("none"/nil))
+--     reindent_mode = 'vim-move',
+--     -- whether to not to move past line when moving blocks horizontally, (true/false)
+--     move_past_line = false,
+--     -- whether or not to ignore indent when duplicating lines horizontally, (true/false)
+--     ignore_indent_lh_dup = true,
+--   })
+-- end

@@ -120,22 +120,22 @@ function config.nvim_tree()
 end
 -- '▋''▘'
 
-function config.scrollview()
-  if vim.wo.diff then
-    return
-  end
-  local w = vim.api.nvim_call_function('winwidth', { 0 })
-  if w < 70 then
-    return
-  end
-  -- vim.api.nvim_set_hl(0, 'ScrollView', { fg = '#8343a3', bg = '#8343a3' })
-  vim.g.scrollview_column = 1
-  require('scrollview').setup({
-    -- column = 0,
-    blend = 50,
-    signs_on_startup = { }, -- {'all'}
-  })
-end
+-- function config.scrollview()
+--   if vim.wo.diff then
+--     return
+--   end
+--   local w = vim.api.nvim_call_function('winwidth', { 0 })
+--   if w < 70 then
+--     return
+--   end
+--   -- vim.api.nvim_set_hl(0, 'ScrollView', { fg = '#8343a3', bg = '#8343a3' })
+--   vim.g.scrollview_column = 1
+--   require('scrollview').setup({
+--     -- column = 0,
+--     blend = 50,
+--     signs_on_startup = { }, -- {'all'}
+--   })
+-- end
 
 function config.default()
   vim.cmd('set cursorcolumn')

@@ -197,7 +197,24 @@ function nvimpager.stage1()
   -- be set in stage2() but that would overwrite user settings from the init
   -- file.
   nvim.nvim_set_option_value('mouse', 'a', { scope = 'global' })
+  nvim.nvim_set_option_value('clipboard', 'unnamedplus', { scope = 'global' })
   nvim.nvim_set_option_value('laststatus', 0, { scope = 'global' })
+
+  local global = require('core.global')
+  if global.is_mac then
+    vim.g.clipboard = {
+      name = "macOS-clipboard",
+      copy = {
+        ["+"] = "pbcopy",
+        ["*"] = "pbcopy",
+      },
+      paste = {
+        ["+"] = "pbpaste",
+        ["*"] = "pbpaste",
+      },
+      cache_enabled = 0
+    }
+  end
 end
 
 -- Set up autocomands to start the correct mode after startup or for each

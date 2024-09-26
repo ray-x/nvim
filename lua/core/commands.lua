@@ -196,3 +196,17 @@ vim.api.nvim_create_user_command('ResetWorkspace', function(opts)
     end
   end
 end, { nargs = '*', bang = true })
+
+
+-- call godotenv to load env file
+vim.api.nvim_create_user_command('Godotenv', function(opts)
+  local env = opts.fargs[1] or '.env'
+  local cmd = '!godotenv ' .. env
+  vim.cmd(cmd)
+end, { nargs = '*' })
+
+vim.api.nvim_create_user_command('Dotenv', function(opts)
+  local env = opts.fargs[1] or '.env'
+  local cmd = '!dotenv ' .. env
+  vim.cmd(cmd)
+end, { nargs = '*' })

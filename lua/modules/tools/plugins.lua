@@ -204,21 +204,6 @@ return function(tools)
     init = conf.spelunker,
     config = conf.spellcheck,
   })
-  -- tools({
-  --   'rhysd/vim-grammarous',
-  --   cmd = { 'GrammarousCheck' },
-  --   ft = { 'markdown', 'txt' },
-  --   init = conf.grammarous,
-  -- })
-
-  -- tools({
-  --   'preservim/vim-markdown',
-  --   ft = 'markdown',
-  --   cond = cond,
-  --   dependencies = { 'godlygeek/tabular' },
-  --   cmd = { 'Toc' },
-  --   init = conf.markdown,
-  -- })
 
   local cmd = [[sh -c "cd app && yarn install"]]
   if is_win then
@@ -264,15 +249,6 @@ return function(tools)
     config = conf.floaterm,
   })
 
-  -- tools({
-  --   'NTBBloodbath/rest.nvim',
-  --     --   ft = { 'http', 'rest' },
-  --   keys = { '<Plug>RestNvim', '<Plug>RestNvimPreview', '<Plug>RestNvimLast' },
-  --   cmd = { 'RestRun', 'RestPreview', 'RestLast' },
-  --   config = conf.rest,
-  -- })
-  --conf.rest
-  -- tools({ 'nanotee/zoxide.vim', cmd = { 'Z', 'Lz', 'Zi' } })
 
   cmd = 'bash install.sh'
   tools({
@@ -305,15 +281,13 @@ return function(tools)
     dev = dev,
     cond = cond,
     cmd = { 'Sad' },
-    config = function()
-      require('sad').setup({
-        debug = true,
-        log_path = vim.fn.expand('$HOME') .. '/.cache/nvim/nvim_debug.log',
-        vsplit = false,
-        height_ratio = 0.8,
-        autoclose = false,
-      })
-    end,
+    opts = {
+      debug = true,
+      log_path = vim.fn.expand('$HOME') .. '/.cache/nvim/nvim_debug.log',
+      vsplit = false,
+      height_ratio = 0.8,
+      autoclose = false,
+    },
   })
 
   tools({
@@ -414,14 +388,6 @@ return function(tools)
     config = conf.bqf,
   })
 
-  -- lua require'telescope'.extensions.project.project{ display_type = 'full' }
-  -- tools({
-  --   'ahmedkhalf/project.nvim',
-  --   cond = cond,
-  --   config = conf.project,
-  --   event = { 'CmdlineEnter' },
-  -- })
-
   tools({
     'ThePrimeagen/harpoon',
     cmd = { 'HarpoonTerm', 'HarpoonSend', 'HarpoonSendLine' },
@@ -463,18 +429,7 @@ return function(tools)
       dependencies = {
         { 'junegunn/fzf', build = './install --bin' },
       },
-      config = function()
-        require('fzf-lua').setup({
-          -- winopts = {
-          --   preview = {
-          --     default = 'bat_native',
-          --   },
-          --   on_create = function()
-          --     vim.opt_local.buflisted = false
-          --   end,
-          -- },
-        })
-      end,
+      opts = {},
     })
   end
   -- keybindings for chatgpt https://github.com/jackMort/ChatGPT.nvim/tree/main#interactive-popup
@@ -546,6 +501,33 @@ return function(tools)
     },
   })
 end
+
+
+-- tools({
+--   'NTBBloodbath/rest.nvim',
+--     --   ft = { 'http', 'rest' },
+--   keys = { '<Plug>RestNvim', '<Plug>RestNvimPreview', '<Plug>RestNvimLast' },
+--   cmd = { 'RestRun', 'RestPreview', 'RestLast' },
+--   config = conf.rest,
+-- })
+--conf.rest
+-- tools({ 'nanotee/zoxide.vim', cmd = { 'Z', 'Lz', 'Zi' } })
+
+-- tools({
+--   'rhysd/vim-grammarous',
+--   cmd = { 'GrammarousCheck' },
+--   ft = { 'markdown', 'txt' },
+--   init = conf.grammarous,
+-- })
+
+-- tools({
+--   'preservim/vim-markdown',
+--   ft = 'markdown',
+--   cond = cond,
+--   dependencies = { 'godlygeek/tabular' },
+--   cmd = { 'Toc' },
+--   init = conf.markdown,
+-- })
 
 -- tools({
 --   'jvgrootveld/telescope-zoxide',

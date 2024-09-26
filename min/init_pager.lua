@@ -1,3 +1,5 @@
+-- used for pager, e.g. pgsql output
+
 local plugin_folder = function()
   local host = os.getenv('HOST_NAME')
   if host and (host:find('Ray') or host:find('ray')) then
@@ -6,7 +8,7 @@ local plugin_folder = function()
     return ''
   end
 end
-local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
 if not vim.loop.fs_stat(lazypath) then
   vim.fn.system({
     'git',

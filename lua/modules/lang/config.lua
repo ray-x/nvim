@@ -175,7 +175,7 @@ function config.navigator()
       --     require('neodev.lsp').before_init({}, { settings = { Lua = {} } })
       --   end,
       -- },
-      tsserver = {
+      ts_ls = {
         filetypes = {
           'javascript',
           'javascriptreact',
@@ -293,9 +293,14 @@ function config.go()
     goimports = 'gopls',
     dap_debug_vt = true,
     dap_debug_gui = true,
+    null_ls = {
+      golangci_lint = {
+        severity = vim.diagnostic.severity.HINT, -- severity level of the diagnostics
+      },
+    },
     diagnostic = {
       signs = {
-        text = { '🚑', '🔧', '🪛', '🪠' },
+        text = { '🚑', '🔧', '🪛', '🧹' },
       },
       update_in_insert = false,
     },
@@ -336,6 +341,9 @@ function config.go()
         end
         return {}
       end,
+    },
+    comment = {
+      highlight = true,
     },
     luasnip = true,
     -- lsp_on_attach = require("navigator.lspclient.attach").on_attach,

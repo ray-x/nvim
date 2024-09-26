@@ -113,9 +113,33 @@ local err
 
 local job_utils = require('wlanimation.components.loading')
 
-local current_function = function(width)
+local update_title = function(width)
+  width = width or vim.o.columns
+  if width < 50 then
+    return ''
+  end
+  width = width * 0.8
+  ok, ts = pcall(treesitter_context, width)
+  if not ok or not ts or string.len(ts) < 3 then
+    return ''
+  end
+
+  -- cut of nerdfont+space in begining of the ts
+  -- split ts with space
+  local tslist = vim.split(ts, ' ')
+  -- remove 1st element
+  table.remove(tslist, 1)
+  ts = table.concat(tslist, ' ')
+
+  local path = fn.fnamemodify(fn.expand('%'), ':~:.')
+  ts = path .. ' | ' .. string.gsub(ts, '[\n\r]+', ' ')
+  set_title(ts)
+end
+
+local current_function = function(w)
   -- lprint('current_function width', width)
   -- local wwidth = winwidth()
+  local width = w
   if width < 100 then
     return ''
   elseif width < 120 then
@@ -143,7 +167,7 @@ local current_function = function(width)
   end
 
   if not state.disable_title_update and running % 5 == 1 then
-    set_title(title)
+    update_title()
   end
   running = running + 1
   -- split the contex with '->' and use different colors

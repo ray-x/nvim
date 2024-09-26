@@ -54,6 +54,11 @@ local load_core = function()
   if fsz < 10 * 1024 * 1024 then
     require('core.colorscheme').load_colorscheme()
   end
+  -- get file size
+  local fsize = vim.fn.getfsize(vim.fn.expand('%:p:f')) or 1
+  if fsize >= 10 * 1024 * 1024 then
+    return
+  end
   if vim.wo.diff then
     vim.wo.wrap = true
     -- default colorschem for diff

@@ -48,18 +48,6 @@ return function(use)
       conf.nvim_cmp()
     end,
   })
-  use({
-    'RRethy/nvim-treesitter-endwise',
-    module = true,
-    event = 'InsertEnter',
-    config = function()
-      require('nvim-treesitter.configs').setup({
-        endwise = {
-          enable = true,
-        },
-      })
-    end,
-  })
 
   -- can not lazyload, it is also slow...
   use({
@@ -172,3 +160,4 @@ return function(use)
   --   event = 'InsertEnter',
   -- })
 end
+

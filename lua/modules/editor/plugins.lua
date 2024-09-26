@@ -11,6 +11,13 @@ return function(editor)
     config = conf.substitute,
     lazy = true,
   })
+
+  editor({
+    'ray-x/yamlmatter.nvim',
+    ft = 'markdown',
+    opts = {},
+    dev = true,
+  })
   -- n|x "Cr"
   editor({
     'tpope/vim-abolish',
@@ -148,27 +155,22 @@ return function(editor)
     lazy = true,
     -- opt for sandwitch for now until some issue been addressed
     event = { 'CursorMoved', 'CursorMovedI', 'CursorHold' },
-    config = function()
-      require('nvim-surround').setup({
-        -- Configuration here, or leave empty to use defaults
-        -- surround  cs, ds, yss
-        -- default
-        -- keymaps = {
-        --   -- default
-        --   insert = '<C-g>s',
-        --   insert_line = '<C-g>S',
-        --   normal = 'ys', -- e.g. ysiw"
-        --   normal_cur = 'yss',
-        --   normal_line = 'yS', -- e.g ySiw"
-        --   normal_cur_line = 'ySS',
-        --   visual = 'ys',
-        --   visual_cur = 'yss',
-        --   visual_line = 'yS',
-        --   delete = 'ds',
-        --   change = 'cs',
-        -- },
-      })
-    end,
+    opts = {},
+    -- default
+    -- keymaps = {
+    --   -- default
+    --   insert = '<C-g>s',
+    --   insert_line = '<C-g>S',
+    --   normal = 'ys', -- e.g. ysiw"
+    --   normal_cur = 'yss',
+    --   normal_line = 'yS', -- e.g ySiw"
+    --   normal_cur_line = 'ySS',
+    --   visual = 'ys',
+    --   visual_cur = 'yss',
+    --   visual_line = 'yS',
+    --   delete = 'ds',
+    --   change = 'cs',
+    -- },
   })
 
   -- nvim-colorizer replacement
@@ -208,12 +210,13 @@ return function(editor)
   editor({
     'mg979/vim-visual-multi',
     -- stylua: ignore
-    keys = { '<C-n>', '<C-N>', '<M-n>', '<S-Down>', '<S-Up>', '<M-Left>',
-      '<M-i>', '<M-Right>', '<M-D>', '<M-Down>', '<C-d>', '<C-Down>',
-      '<C-Up>', '<S-Right>', '<C-LeftMouse>', '<M-LeftMouse>', '<M-C-RightMouse>',
-    },
-    lazy = true,
+    -- keys = { '<C-n>', '<C-N>', '<M-n>', '<S-Down>', '<S-Up>', '<M-Left>',
+    --   '<M-i>', '<M-Right>', '<M-D>', '<M-Down>', '<C-d>', '<C-Down>',
+    --   '<C-Up>', '<S-Right>', '<C-LeftMouse>', '<M-LeftMouse>', '<M-C-RightMouse>',
+    -- },
+    -- lazy = true,
     cond = cond,
+    event = { 'CursorMoved', 'CursorHold' },
     init = conf.vmulti,
   })
 
@@ -252,20 +255,6 @@ return function(editor)
     end,
   })
 
-  -- editor({ -- prefer undotree seems it more popular
-  --   'simnalamburt/vim-mundo',
-  --   lazy = true,
-  --   cmd = { 'MundoToggle', 'MundoShow', 'MundoHide' },
-  --   build = function()
-  --     vim.cmd([[packadd vim-mundo]])
-  --     vim.cmd([[UpdateRemotePlugins]])
-  --   end,
-  --   init = function()
-  --     -- body
-  --     vim.g.mundo_prefer_python3 = 1
-  --   end,
-  -- })
-
   -- the undo file need to store so enable plugin before file save
   editor({
     'mbbill/undotree',
@@ -298,41 +287,66 @@ return function(editor)
     end,
   })
 
-  -- word motion
-  -- editor({
-  --   'chrisgrieser/nvim-spider',
-  --   module = true,
-  --   event = { 'CursorHold', 'CursorMoved' },
-  --   config = function()
-  --     local pattern = "[%q'=,;<>%(%){}%[%]%s+:%./\\]"
-  --     require('spider').setup({
-  --       skipInsignificantPunctuation = true,
-  --       subwordMovement = true,
-  --     })
-  --
-  --     vim.keymap.set('n', 'W', function() require('spider').motion('w', {customPattern = {pattern}}) end, {desc = 'spider w'})
-  --
-  --     vim.keymap.set('x', 'W', function()
-  --       require('spider').motion('w', {customPattern = {pattern}})
-  --     end)
-  --     vim.keymap.set('o', 'W', function()
-  --       require('spider').motion('w', {customPattern = {pattern}})
-  --     end)
-  --     vim.keymap.set('n', 'cW', 'ce', { remap = true })
-  --     vim.keymap.set("n", "cW", "c<cmd>lua require('spider').motion('e')<CR>")
-  --
-  --     vim.keymap.set('n', 'w', "<cmd>lua require('spider').motion('w')<CR>")
-  --     vim.keymap.set('o', 'w', "<cmd>lua require('spider').motion('w')<CR>")
-  --     vim.keymap.set("n", "cw", "c<cmd>lua require('spider').motion('e')<CR>")
-  --     vim.keymap.set("i", "<C-f>", "<Esc>l<cmd>lua require('spider').motion('w')<CR>i")
-  --     vim.keymap.set("i", "<C-b>", "<Esc><cmd>lua require('spider').motion('b')<CR>i")
-  --   end,
-  -- })
   editor({
-    'lukas-reineke/headlines.nvim',
-    ft = { 'org', 'norg', 'markdown' },
-    config = conf.headline,
-    cond = cond,
+    'MeanderingProgrammer/render-markdown.nvim',
+    ft = { 'markdown' },
+    opts = {
+      render_modes = { 'n', 'no', 'i', 'v', 'V', '^V', 'r', 'x', 'c' },
+      file_types = { 'markdown', 'quarto', 'rmd' },
+
+      code = {
+        sign = true,
+        style = 'full',
+        width = 'block',
+        position = 'right', --  icon on right
+        min_width = 60,
+        left_pad = 2,
+        language_pad = 2,
+        below = ' ', --''─',
+        enabled = true,
+      },
+      heading = {
+        -- Turn on / off heading icon & background rendering
+        enabled = true,
+        -- Turn on / off any sign column related rendering
+        sign = true,
+        -- Width of the heading background:
+        --  block: width of the heading text
+        --  full: full width of the window
+        width = 'block',
+        -- Determines how the icon fills the available space:
+        --  inline: underlying '#'s are concealed resulting in a left aligned icon
+        --  overlay: result is left padded with spaces to hide any additional '#'
+        position = 'overlay',
+        -- Replaces '#+' of 'atx_h._marker'
+        -- The number of '#' in the heading determines the 'level'
+        -- The 'level' is used to index into the array using a cycle
+        -- The result is left padded with spaces to hide any additional '#'
+        -- Highlight for the heading icon and extends through the entire line
+      },
+      bullet = {
+        enabled = true,
+        right_pad = 0,
+      },
+
+      overrides = {
+        buftype = {
+          -- Particularly for LSP hover
+          nofile = {
+            code = {
+              enabled = true,
+              sign = false,
+              style = 'normal',
+              width = 'full',
+              left_pad = 0,
+              right_pad = 0,
+              border = 'thick',
+              highlight = 'RenderMarkdownCodeNoFile',
+            },
+          },
+        },
+      },
+    },
   })
 
   -- luarocks --local --lua-version=5.1 install magick
@@ -372,58 +386,46 @@ return function(editor)
     end,
   })
 
-  -- zk cli
-  -- Zk[Index|New|Notes|Backlinks|Links|Tags|InsertLink]
-  -- editor({
-  --   'zk-org/zk-nvim',
-  --   ft = { 'markdown', 'vimwiki' },
-  --   cmd = { 'ZkIndex', 'ZkNew', 'ZkNotes', 'ZkBacklinks', 'ZkLinks', 'ZkTags', 'ZkInsertLink' },
-  --   config = function()
-  --     require('zk').setup({
-  --       picker = 'telescope',
-  --     })
-  --   end,
-  -- })
-  -- Zk[New|Hover|Browse] conflict with zk-nvim
-  -- editor({
-  --   'epwalsh/obsidian.nvim',
-  --   version = '*', -- recommended, use latest release instead of latest commit
-  --   lazy = true,
-  --   ft = 'markdown',
-  --   -- Replace the above line with this if you only want to load obsidian.nvim for markdown files in your vault:
-  --   -- event = {
-  --   --   -- If you want to use the home shortcut '~' here you need to call 'vim.fn.expand'.
-  --   --   -- E.g. "BufReadPre " .. vim.fn.expand "~" .. "/my-vault/**.md"
-  --   --   "BufReadPre path/to/my-vault/**.md",
-  --   --   "BufNewFile path/to/my-vault/**.md",
-  --   -- },
-  --   dependencies = {
-  --     -- Required.
-  --     'nvim-lua/plenary.nvim',
-  --   },
-  --   opts = {
-  --     disable_frontmatter = true,
-  --     workspaces = {
-  --       {
-  --         name = 'vault',
-  --         path = '~/Library/CloudStorage/Dropbox/obsidian',
-  --       },
-  --       {
-  --         name = 'daily',
-  --         path = '~/Library/CloudStorage/Dropbox/obsidian/journal',
-  --       },
-  --     },
-  --   },
-  -- })
-  --
+  editor({
+    'epwalsh/obsidian.nvim',
+    version = '*', -- recommended, use latest release instead of latest commit
+    lazy = true,
+    ft = 'markdown',
+    -- Replace the above line with this if you only want to load obsidian.nvim for markdown files in your vault:
+    -- event = {
+    --   -- If you want to use the home shortcut '~' here you need to call 'vim.fn.expand'.
+    --   -- E.g. "BufReadPre " .. vim.fn.expand "~" .. "/my-vault/**.md"
+    --   "BufReadPre path/to/my-vault/**.md",
+    --   "BufNewFile path/to/my-vault/**.md",
+    -- },
+    dependencies = {
+      -- Required.
+      'nvim-lua/plenary.nvim',
+    },
+    opts = {
+      disable_frontmatter = true,
+      dir = '~/Library/CloudStorage/Dropbox/obsidian',
+      completion = {
+        nvim_cmp = true,
+      },
+      workspaces = {
+        {
+          name = 'vault',
+          path = '~/Library/CloudStorage/Dropbox/obsidian',
+        },
+        {
+          name = 'daily',
+          path = '~/Library/CloudStorage/Dropbox/obsidian/journal',
+        },
+      },
+    },
+  })
 
   -- draw due date and parse date
   editor({
     'NFrid/due.nvim',
     ft = { 'markkdown' },
-    config = function()
-      require('due_nvim').setup({})
-    end,
+    opts = {},
   })
 
   editor(
@@ -447,9 +449,7 @@ return function(editor)
     'mizlan/iswap.nvim',
     lazy = true,
     cmd = { 'ISwap', 'ISwapWith', 'ISwapNode', 'ISwapNodeWith' },
-    config = function()
-      require('iswap').setup({})
-    end,
+    opts = {},
   })
 end
 
@@ -510,3 +510,85 @@ end
 --     end, {})
 --   end,
 -- })
+
+-- word motion
+-- editor({
+--   'chrisgrieser/nvim-spider',
+--   module = true,
+--   event = { 'CursorHold', 'CursorMoved' },
+--   config = function()
+--     local pattern = "[%q'=,;<>%(%){}%[%]%s+:%./\\]"
+--     require('spider').setup({
+--       skipInsignificantPunctuation = true,
+--       subwordMovement = true,
+--     })
+--
+--     vim.keymap.set('n', 'W', function() require('spider').motion('w', {customPattern = {pattern}}) end, {desc = 'spider w'})
+--
+--     vim.keymap.set('x', 'W', function()
+--       require('spider').motion('w', {customPattern = {pattern}})
+--     end)
+--     vim.keymap.set('o', 'W', function()
+--       require('spider').motion('w', {customPattern = {pattern}})
+--     end)
+--     vim.keymap.set('n', 'cW', 'ce', { remap = true })
+--     vim.keymap.set("n", "cW", "c<cmd>lua require('spider').motion('e')<CR>")
+--
+--     vim.keymap.set('n', 'w', "<cmd>lua require('spider').motion('w')<CR>")
+--     vim.keymap.set('o', 'w', "<cmd>lua require('spider').motion('w')<CR>")
+--     vim.keymap.set("n", "cw", "c<cmd>lua require('spider').motion('e')<CR>")
+--     vim.keymap.set("i", "<C-f>", "<Esc>l<cmd>lua require('spider').motion('w')<CR>i")
+--     vim.keymap.set("i", "<C-b>", "<Esc><cmd>lua require('spider').motion('b')<CR>i")
+--   end,
+-- })
+-- editor({
+--   'lukas-reineke/headlines.nvim',
+--   ft = { 'org', 'norg', 'markdown' },
+--   config = conf.headline,
+--   cond = cond,
+-- })
+
+-- zk cli
+-- Zk[Index|New|Notes|Backlinks|Links|Tags|InsertLink]
+-- editor({
+--   'zk-org/zk-nvim',
+--   ft = { 'markdown', 'vimwiki' },
+--   cmd = { 'ZkIndex', 'ZkNew', 'ZkNotes', 'ZkBacklinks', 'ZkLinks', 'ZkTags', 'ZkInsertLink' },
+--   config = function()
+--     require('zk').setup({
+--       picker = 'telescope',
+--     })
+--   end,
+-- })
+-- Zk[New|Hover|Browse] conflict with zk-nvim
+-- editor({
+--   'epwalsh/obsidian.nvim',
+--   version = '*', -- recommended, use latest release instead of latest commit
+--   lazy = true,
+--   ft = 'markdown',
+--   -- Replace the above line with this if you only want to load obsidian.nvim for markdown files in your vault:
+--   -- event = {
+--   --   -- If you want to use the home shortcut '~' here you need to call 'vim.fn.expand'.
+--   --   -- E.g. "BufReadPre " .. vim.fn.expand "~" .. "/my-vault/**.md"
+--   --   "BufReadPre path/to/my-vault/**.md",
+--   --   "BufNewFile path/to/my-vault/**.md",
+--   -- },
+--   dependencies = {
+--     -- Required.
+--     'nvim-lua/plenary.nvim',
+--   },
+--   opts = {
+--     disable_frontmatter = true,
+--     workspaces = {
+--       {
+--         name = 'vault',
+--         path = '~/Library/CloudStorage/Dropbox/obsidian',
+--       },
+--       {
+--         name = 'daily',
+--         path = '~/Library/CloudStorage/Dropbox/obsidian/journal',
+--       },
+--     },
+--   },
+-- })
+--

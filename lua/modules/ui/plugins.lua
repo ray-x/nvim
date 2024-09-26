@@ -28,11 +28,42 @@ return function(ui)
     return
   end
 
+  -- ui({
+  --   'dstein64/nvim-scrollview',
+  --   cmd = { 'ScrollViewEnable', 'ScrollViewToggle' },
+  --   event = { 'CursorMoved', 'CursorMovedI' },
+  --   config = conf.scrollview,
+  -- })
   ui({
-    'dstein64/nvim-scrollview',
-    cmd = { 'ScrollViewEnable', 'ScrollViewToggle' },
+    'Xuyuanp/scrollbar.nvim',
     event = { 'CursorMoved', 'CursorMovedI' },
-    config = conf.scrollview,
+    config = function()
+      -- create auto group for scrollbar
+      local autogroup = vim.api.nvim_create_augroup
+      local bar_grp = autogroup('Scrollbar', { clear = true })
+      vim.api.nvim_create_autocmd({
+        'WinScrolled',
+        'VimResized',
+        'FocusGained',
+        'WinEnter',
+      }, {
+        group = bar_grp,
+        callback = function()
+          require('scrollbar').show()
+        end,
+        desc = 'scrollview',
+      })
+      vim.api.nvim_create_autocmd(
+        { 'WinLeave', 'BufLeave', 'BufWinLeave', 'FocusLost', 'CursorHold', 'CursorHoldI' },
+        {
+          group = bar_grp,
+          callback = function()
+            require('scrollbar').clear()
+          end,
+          desc = 'scrollview',
+        }
+      )
+    end,
   })
   ui({
     'rcarriga/nvim-notify',
@@ -108,39 +139,34 @@ return function(ui)
   ui({ 'MunifTanjim/nui.nvim', lazy = true })
   ui({
     'levouh/tint.nvim',
-    config = function()
-      require('tint').setup({
-        bg = true, -- Tint background portions of highlight groups
-        amt = 3, -- Darken colors, use a positive value to brighten
-        ignore = { 'WinSeparator', 'Status.*' }, -- Highlight group patterns to ignore, see `string.find`
-        ignorefunc = function(winid)
-          local buf = vim.api.nvim_win_get_buf(winid)
-          local buftype
-          vim.api.nvim_get_option_value('buftype', { buf = buf })
+    opts = {
+      bg = true, -- Tint background portions of highlight groups
+      amt = 3, -- Darken colors, use a positive value to brighten
+      ignore = { 'WinSeparator', 'Status.*' }, -- Highlight group patterns to ignore, see `string.find`
+      ignorefunc = function(winid)
+        local buf = vim.api.nvim_win_get_buf(winid)
+        local buftype
+        vim.api.nvim_get_option_value('buftype', { buf = buf })
 
-          if buftype == 'terminal' or buftype == 'guihua' then
-            -- Do not tint `terminal`-type buffers
-            return true
-          end
+        if buftype == 'terminal' or buftype == 'guihua' then
+          -- Do not tint `terminal`-type buffers
+          return true
+        end
 
-          -- Tint the window
-          return false
-        end,
-      })
-    end,
-
+        -- Tint the window
+        return false
+      end,
+    },
     event = { 'CmdwinEnter', 'CmdlineEnter' },
   })
   ui({
     -- 'xiyaowong/virtcolumn.nvim',
     'lukas-reineke/virt-column.nvim',
     event = { 'CursorMoved', 'CursorMovedI' },
-    config = function()
-      require('virt-column').setup({
-        char = '▕',
-        higlight = 'LineNr',
-      }) -- char to display the line
-    end,
+    opts = {
+      char = '▕',
+      higlight = 'LineNr',
+    }, -- char to display the line
   })
   ui({
     'folke/tokyonight.nvim',

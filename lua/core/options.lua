@@ -120,7 +120,7 @@ local function load_options()
     colorcolumn    = "110";
     foldenable     = true;
     signcolumn     = "auto:1";  --auto auto:2  "number"
-    cursorline     = false;
+    cursorline     = true;
     number         = true;
     splitkeep      = "screen";
   }

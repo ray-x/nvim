@@ -91,10 +91,15 @@ local treesitter_obj = function()
         goto_next_start = {
           [']m'] = { query = { '@function.outer' } }, -- use system default
           -- query = { '@scope', 'class.*', '@loop.*', '@conditional' },
-          [']s'] = {
-            query = { '@loop.*', '@conditional' },
-            query_group = 'locals',
-            desc = 'Next scope',
+          -- [']s'] = {
+          --   query = { '@scope', '@class.*', '@loop.*', '@conditional' },
+          --   query_group = 'locals',
+          --   desc = 'Next scope',
+          -- },
+          [']z'] = {
+            query = { '@fold' },
+            query_group = 'folds',
+            desc = 'Next fold',
           },
           [']]'] = {
             query = { '@class.outer', '@function.*', 'block.outer' },
@@ -115,10 +120,20 @@ local treesitter_obj = function()
             query = { '@function.*', '@class.outer', 'block.outer' },
             desc = 'prev func ; class ',
           },
-          [']s'] = {
-            query = { '@class.*', '@loop.*', '@conditional' },
-            query_group = 'locals',
-            desc = 'Previous scope',
+          -- [']s'] = {
+          --   query = { '@class.*', '@loop.*', '@conditional' },
+          --   query_group = 'locals',
+          --   desc = 'Previous scope',
+          -- },
+          -- ['[s'] = {
+          --   query = { '@scope', '@class.*', '@loop.*', '@conditional' },
+          --   query_group = 'locals',
+          --   desc = 'Next scope',
+          -- },
+          ['[z'] = {
+            query = { '@fold' },
+            query_group = 'folds',
+            desc = 'Next fold',
           },
         },
         goto_previous_end = {
