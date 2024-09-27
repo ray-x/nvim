@@ -39,7 +39,7 @@ end
 
 function config.diffview()
   local cb = require('diffview.config').diffview_callback
-  require('diffview').setup({
+  return {
     diff_binaries = false, -- Show diffs for binaries
     use_icons = true, -- Requires nvim-web-devicons
     enhanced_diff_hl = true, -- See ':h diffview-config-enhanced_diff_hl'
@@ -80,7 +80,7 @@ function config.diffview()
         ['<leader>b'] = cb('toggle_files'),
       },
     },
-  })
+  }
 end
 
 function config.vim_dadbod_ui()
@@ -361,11 +361,11 @@ function config.floaterm()
         '<cmd>close<CR>',
         { noremap = true, silent = true }
       )
-      vim.keymap.set('t', '<Esc>', '<Esc>',  { buffer= term.bufnr })
+      vim.keymap.set('t', '<Esc>', '<Esc>', { buffer = term.bufnr })
       vim.cmd('startinsert!')
     end,
     on_close = function(term)
-      vim.keymap.del('t', '<Esc>',  { buffer= term.bufnr })
+      vim.keymap.del('t', '<Esc>', { buffer = term.bufnr })
     end,
   })
   local lazydocker = Terminal:new({ cmd = 'lazydocker', hidden = true })
@@ -529,7 +529,16 @@ function config.vim_test()
 end
 
 function config.neotest()
-  require('neotest').setup({
+  vim.api.nvim_create_user_command('Neotest', function()
+    require('neotest').run.run()
+  end, { nargs = '*' })
+  vim.api.nvim_create_user_command('NeotestFile', function()
+    require('neotest').run.run(vim.fn.expand('%'))
+  end, { nargs = '*' })
+  vim.api.nvim_create_user_command('NeoResult', function()
+    require('neotest').output_panel.toggle()
+  end, { nargs = '*' })
+  return {
     adapters = {
       require('neotest-python')({
         dap = { justMyCode = false },
@@ -554,16 +563,7 @@ function config.neotest()
         vim.cmd('Trouble quickfix')
       end,
     },
-  })
-  vim.api.nvim_create_user_command('Neotest', function()
-    require('neotest').run.run()
-  end, { nargs = '*' })
-  vim.api.nvim_create_user_command('NeotestFile', function()
-    require('neotest').run.run(vim.fn.expand('%'))
-  end, { nargs = '*' })
-  vim.api.nvim_create_user_command('NeoResult', function()
-    require('neotest').output_panel.toggle()
-  end, { nargs = '*' })
+  }
 end
 
 function config.mkdp()

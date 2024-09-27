@@ -69,25 +69,8 @@ function config.yanky()
   vim.api.nvim_set_hl(0, 'YankyYanked', { link = 'Search' })
 end
 
--- <Space>siw replace word
--- x mode <Space>s replace virtual select.
--- dot operator  repeat
--- space-s
-function config.substitute()
-  require('substitute').setup({
-    -- yank_substituted_text = true,
-    range = {
-      prefix = 'S',
-      prompt_current_text = true,
-    },
-    on_substitute = function(event)
-      require('yanky').init_ring('p', event.register, event.count, event.vmode:match('[vV]'))
-    end,
-  })
-end
-
 function config.comment()
-  require('Comment').setup({
+  return {
     extended = true,
     pre_hook = function(ctx)
       -- print("ctx", vim.inspect(ctx))
@@ -115,7 +98,7 @@ function config.comment()
         end
       end
     end,
-  })
+  }
 end
 
 --

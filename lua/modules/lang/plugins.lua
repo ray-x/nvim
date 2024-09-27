@@ -22,16 +22,16 @@ return function(lang)
     build = 'cd lua/fzy && make',
     dev = dev,
     module = true,
-    config = function()
-      require('guihua').setup({
+    opts = function()
+      vim.ui.select = require('guihua.gui').select
+      vim.ui.input = require('guihua.gui').input
+      return {
         icons = {
           syntax = {
             namespace = '',
           },
         },
-      })
-      vim.ui.select = require('guihua.gui').select
-      vim.ui.input = require('guihua.gui').input
+      }
     end,
   })
   if vim.wo.diff then

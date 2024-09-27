@@ -87,7 +87,8 @@ return function(tools)
 
   tools({
     'chrisgrieser/nvim-early-retirement',
-    config = true,
+    -- config = true,
+    opts = {},
     event = 'VeryLazy',
   })
 
@@ -249,7 +250,6 @@ return function(tools)
     config = conf.floaterm,
   })
 
-
   cmd = 'bash install.sh'
   tools({
     'sindrets/diffview.nvim',
@@ -260,7 +260,7 @@ return function(tools)
       'DiffviewToggleFiles',
       'DiffviewRefresh',
     },
-    config = conf.diffview,
+    opts = conf.diffview,
   })
 
   tools({
@@ -501,7 +501,6 @@ return function(tools)
     },
   })
 end
-
 
 -- tools({
 --   'NTBBloodbath/rest.nvim',

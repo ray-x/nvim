@@ -8,7 +8,16 @@ return function(editor)
   editor({ -- save 1~2 key strokes when replace with paste
     'gbprod/substitute.nvim',
     event = { 'CmdlineEnter', 'TextYankPost', 'CursorHold' },
-    config = conf.substitute,
+    opts = {
+      -- yank_substituted_text = true,
+      range = {
+        prefix = 'S',
+        prompt_current_text = true,
+      },
+      on_substitute = function(event)
+        require('yanky').init_ring('p', event.register, event.count, event.vmode:match('[vV]'))
+      end,
+    },
     lazy = true,
   })
 
@@ -199,14 +208,6 @@ return function(editor)
     config = conf.hlslens,
   })
 
-  -- not working well with navigator
-  -- editor({
-  --   'kevinhwang91/nvim-ufo',
-  --   event = 'VeryLazy',
-  --   dependencies = { 'kevinhwang91/promise-async' },
-  --   config = require('modules.editor.ufo').config,
-  -- })
-
   editor({
     'mg979/vim-visual-multi',
     -- stylua: ignore
@@ -226,7 +227,7 @@ return function(editor)
     event = { 'ModeChanged' },
     module = true,
     cond = cond,
-    config = conf.comment,
+    opts = conf.comment,
   })
 
   -- copy paste failed in block mode when clipboard = unnameplus"
@@ -250,9 +251,7 @@ return function(editor)
     'norcalli/nvim-terminal.lua',
     lazy = true,
     ft = { 'log', 'terminal' },
-    config = function()
-      require('terminal').setup()
-    end,
+    opts = {},
   })
 
   -- the undo file need to store so enable plugin before file save
@@ -268,11 +267,9 @@ return function(editor)
     lazy = true,
     cmd = { 'TSJToggle', 'TSJJoin', 'TSJSplit' },
     module = true,
-    config = function()
-      require('treesj').setup({
-        use_default_keymaps = false,
-      })
-    end,
+    opts = {
+      user_default_keymaps = false,
+    },
   })
 
   editor({
@@ -592,3 +589,11 @@ end
 --   },
 -- })
 --
+
+-- not working well with navigator
+-- editor({
+--   'kevinhwang91/nvim-ufo',
+--   event = 'VeryLazy',
+--   dependencies = { 'kevinhwang91/promise-async' },
+--   config = require('modules.editor.ufo').config,
+-- })
