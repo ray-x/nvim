@@ -282,7 +282,35 @@ function config.luapad()
   })
 end
 function config.go()
-  require('go').setup({
+  vim.defer_fn(function()
+    vim.cmd('augroup gonvim')
+    vim.cmd('autocmd!')
+    vim.cmd('autocmd FileType go nmap <leader>gb  :GoBuild')
+    --  Show by default 4 spaces for a tab')
+    vim.cmd('autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4')
+    vim.cmd('autocmd BufWritePre *.go :lua require("go.format").goimports()')
+    --  :GoBuild and :GoTestCompile')
+    -- vim.cmd('autocmd FileType go nmap <leader><leader>gb :<C-u>call <SID>build_go_files()<CR>')
+    --  :GoTest')
+    vim.cmd('autocmd FileType go nmap <leader>gt GoTest')
+    --  :GoRun
+
+    vim.cmd('autocmd FileType go nmap <Leader>l GoLint')
+    vim.cmd("autocmd FileType go nmap <Leader>gc :lua require('go.comment').gen()")
+
+    vim.cmd('au FileType go command! Gtn :TestNearest -v -tags=integration')
+    vim.cmd('au FileType go command! Gts :TestSuite -v -tags=integration')
+    vim.cmd('ab dt GoDebug -t')
+    vim.cmd('augroup END')
+
+    vim.keymap.set(
+      'v',
+      '<leader>gc',
+      require('go.gopls').change_signature,
+      { noremap = true, silent = true }
+    )
+  end, 1)
+  return {
     verbose = plugin_debug(), -- enable for debug
     fillstruct = 'gopls',
     log_path = vim.fn.expand('$HOME') .. '/tmp/gonvim.log',
@@ -315,6 +343,8 @@ function config.go()
     test_runner = 'go', -- go test, dlv, ginkgo
     -- run_in_floaterm = true, -- set to true to run in float window.
     lsp_document_formatting = true,
+    lsp_semantic_highlight = true,
+    lsp_semantic_highlights_priority = 99,
     preludes = {
       default = function()
         return { 'AWS_PROFILE=test' }
@@ -349,36 +379,7 @@ function config.go()
     -- lsp_on_attach = require("navigator.lspclient.attach").on_attach,
     -- lsp_cfg = true,
     -- test_efm = true, -- errorfomat for quickfix, default mix mode, set to true will be efm only
-  })
-
-  vim.defer_fn(function()
-    vim.cmd('augroup gonvim')
-    vim.cmd('autocmd!')
-    vim.cmd('autocmd FileType go nmap <leader>gb  :GoBuild')
-    --  Show by default 4 spaces for a tab')
-    vim.cmd('autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4')
-    vim.cmd('autocmd BufWritePre *.go :lua require("go.format").goimports()')
-    --  :GoBuild and :GoTestCompile')
-    -- vim.cmd('autocmd FileType go nmap <leader><leader>gb :<C-u>call <SID>build_go_files()<CR>')
-    --  :GoTest')
-    vim.cmd('autocmd FileType go nmap <leader>gt GoTest')
-    --  :GoRun
-
-    vim.cmd('autocmd FileType go nmap <Leader>l GoLint')
-    vim.cmd("autocmd FileType go nmap <Leader>gc :lua require('go.comment').gen()")
-
-    vim.cmd('au FileType go command! Gtn :TestNearest -v -tags=integration')
-    vim.cmd('au FileType go command! Gts :TestSuite -v -tags=integration')
-    vim.cmd('ab dt GoDebug -t')
-    vim.cmd('augroup END')
-
-    vim.keymap.set(
-      'v',
-      '<leader>gc',
-      require('go.gopls').change_signature,
-      { noremap = true, silent = true }
-    )
-  end, 1)
+  }
 end
 
 function config.ssr()

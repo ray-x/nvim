@@ -46,27 +46,14 @@ return function(lang)
   })
 
   lang({
-    'drybalka/tree-climber.nvim',
-    dependencies = { 'nvim-treesitter' },
-    module = true,
-    keys = { 'H', 'J', 'K', 'L', '<c-k>', '<c-j>', '<c-h>', 'in' },
-    init = function()
-      local keyopts = { noremap = true, silent = true }
-      -- TODO: I need to reset those keys
-      vim.keymap.set({ 'n', 'v', 'o' }, '[s', require('tree-climber').goto_parent, keyopts)
-      -- vim.keymap.set({'n', 'v', 'o'}, 'L', require('tree-climber').goto_child, keyopts)
-      vim.keymap.set({ 'n', 'v', 'o' }, ']s', require('tree-climber').goto_next, keyopts)
-      -- vim.keymap.set({'n', 'v', 'o'}, 'K', require('tree-climber').goto_prev, keyopts)
-      -- vim.keymap.set({'v', 'o'}, 'in', require('tree-climber').select_node, keyopts)
-      -- vim.keymap.set('n', '<c-k>', require('tree-climber').swap_prev, keyopts)
-      -- vim.keymap.set('n', '<c-j>', require('tree-climber').swap_next, keyopts)
-      -- vim.keymap.set('n', '<c-h>', require('tree-climber').highlight_node, keyopts)
-    end,
-  })
-  lang({
     'chrisgrieser/nvim-various-textobjs',
     event = { 'CursorHold', 'CursorHoldI' },
-    opts = { useDefaultKeymaps = true, disabledKeymaps = {}, lookForwardSmall = 5, lookForwardBig = 10 },
+    opts = {
+      useDefaultKeymaps = true,
+      disabledKeymaps = {},
+      lookForwardSmall = 5,
+      lookForwardBig = 10,
+    },
     -- config = function()
     --   require('various-textobjs').setup({
     --     lookForwardSmall = 5,
@@ -92,11 +79,12 @@ return function(lang)
   local jsft =
     { 'typescript', 'typescriptreact', 'javascript', 'javascriptreact', 'js', 'jsx', 'ts', 'tsx' }
   if typecheck(jsft) then
-    lang({
-      'jose-elias-alvarez/typescript.nvim',
-      event = 'VeryLazy',
-      opts = {},
-    })
+    -- deprecated
+    -- lang({
+    --   'jose-elias-alvarez/typescript.nvim',
+    --   event = 'VeryLazy',
+    --   opts = {},
+    -- })
   end
   lang({
     'bennypowers/nvim-regexplainer',
@@ -199,15 +187,9 @@ return function(lang)
     ft = { 'html', 'javascript', 'hurl', 'http', 'svelte' },
     cmd = { 'HurlRun', 'BrowserOpen', 'Npm', 'Yarn', 'Prettier', 'ESLint', 'Tsc', 'TscWatch' },
     lazy = true,
-    opts = {debug=true},
+    opts = { debug = true },
   })
 
-  lang({
-    'simrat39/symbols-outline.nvim',
-    lazy = true,
-    cmd = { 'SymbolsOutline', 'SymbolsOutlineOpen' },
-    opts = {},
-  })
   lang({ 'mfussenegger/nvim-dap', config = conf.dap })
 
   lang({ 'JoosepAlviste/nvim-ts-context-commentstring', event = 'CursorHold' })
@@ -509,3 +491,29 @@ end
 -- --   lazy = true,
 -- -- })
 -- -- ipython
+
+-- lang({
+--   'simrat39/symbols-outline.nvim',
+--   lazy = true,
+--   cmd = { 'SymbolsOutline', 'SymbolsOutlineOpen' },
+--   opts = {},
+-- })
+
+-- lang({
+--   'drybalka/tree-climber.nvim',
+--   dependencies = { 'nvim-treesitter' },
+--   module = true,
+--   keys = { 'H', 'J', 'K', 'L', '<c-k>', '<c-j>', '<c-h>', 'in' },
+--   init = function()
+--     local keyopts = { noremap = true, silent = true }
+--     -- TODO: I need to reset those keys
+--     vim.keymap.set({ 'n', 'v', 'o' }, '[s', require('tree-climber').goto_parent, keyopts)
+--     -- vim.keymap.set({'n', 'v', 'o'}, 'L', require('tree-climber').goto_child, keyopts)
+--     vim.keymap.set({ 'n', 'v', 'o' }, ']s', require('tree-climber').goto_next, keyopts)
+--     -- vim.keymap.set({'n', 'v', 'o'}, 'K', require('tree-climber').goto_prev, keyopts)
+--     -- vim.keymap.set({'v', 'o'}, 'in', require('tree-climber').select_node, keyopts)
+--     -- vim.keymap.set('n', '<c-k>', require('tree-climber').swap_prev, keyopts)
+--     -- vim.keymap.set('n', '<c-j>', require('tree-climber').swap_next, keyopts)
+--     -- vim.keymap.set('n', '<c-h>', require('tree-climber').highlight_node, keyopts)
+--   end,
+-- })
