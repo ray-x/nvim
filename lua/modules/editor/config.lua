@@ -151,6 +151,8 @@ function config.vmulti()
     ['Add Cursor Up'] = '<M-Up>',
     ['Mouse Cursor'] = '<M-LeftMouse>',
     ['Mouse Word'] = '<M-RightMouse>',
+    ['Undo'] = 'u',
+    ['Redo'] = '<C-r>',
     -- ['Add Cursor At Pos'] = '<M-i>',
     -- ['Find Under'] = '<M-n>',
     -- ['Find Subword Under'] = '<M-n>',

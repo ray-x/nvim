@@ -25,7 +25,7 @@ return function(editor)
     'ray-x/yamlmatter.nvim',
     ft = 'markdown',
     opts = {},
-    dev = true,
+    dev = dev,
   })
   -- n|x "Cr"
   editor({
@@ -111,7 +111,7 @@ return function(editor)
       modes = {
         search = { enabled = false },
         char = {
-          enabled = false, -- turned off when and waiting for #183
+          enabled = true,
           -- dynamic configuration for ftFT motions
           config = function(opts)
             -- autohide flash when in operator-pending mode
@@ -286,12 +286,13 @@ return function(editor)
 
   editor({
     'MeanderingProgrammer/render-markdown.nvim',
-    ft = { 'markdown' },
+    ft = { 'markdown', 'md', 'jupyter', 'quarto' },
     opts = {
-      render_modes = { 'n', 'no', 'i', 'v', 'V', '^V', 'r', 'x', 'c' },
+      render_modes = { 'n', 'no', 'c' },
       file_types = { 'markdown', 'quarto', 'rmd' },
 
       code = {
+        enabled = true,
         sign = true,
         style = 'full',
         width = 'block',
@@ -300,7 +301,6 @@ return function(editor)
         left_pad = 2,
         language_pad = 2,
         below = ' ', --''─',
-        enabled = true,
       },
       heading = {
         -- Turn on / off heading icon & background rendering
@@ -325,13 +325,22 @@ return function(editor)
         enabled = true,
         right_pad = 0,
       },
-
+      -- -- Window options to use that change between rendered and raw view
+      win_options = {
+        -- See :h 'conceallevel'
+        conceallevel = {
+          -- Used when not being rendered, get user setting
+          default = vim.api.nvim_get_option_value('conceallevel', {}),
+          -- Used when being rendered, concealed text is completely hidden
+          rendered = 2,
+        },
+      },
       overrides = {
         buftype = {
           -- Particularly for LSP hover
           nofile = {
             code = {
-              enabled = true,
+              enabled = false,
               sign = false,
               style = 'normal',
               width = 'full',
@@ -366,21 +375,6 @@ return function(editor)
   editor({
     'jakewvincent/mkdnflow.nvim',
     ft = { 'markdown' },
-  })
-
-  -- scientific notes latex
-  editor({
-    'jbyuki/nabla.nvim',
-    ft = { 'markdown' },
-    config = function()
-      require('nabla').enable_virt()
-      vim.keymap.set('n', '<leader>u', function()
-        require('nabla').popup()
-      end, {
-        buffer = vim.api.nvim_get_current_buf(),
-        desc = 'nabla',
-      })
-    end,
   })
 
   editor({
@@ -596,4 +590,19 @@ end
 --   event = 'VeryLazy',
 --   dependencies = { 'kevinhwang91/promise-async' },
 --   config = require('modules.editor.ufo').config,
+-- })
+
+-- scientific notes latex
+-- editor({
+--   'jbyuki/nabla.nvim',
+--   ft = { 'markdown' },
+--   config = function()
+--     require('nabla').enable_virt()
+--     vim.keymap.set('n', '<leader>u', function()
+--       require('nabla').popup()
+--     end, {
+--       buffer = vim.api.nvim_get_current_buf(),
+--       desc = 'nabla',
+--     })
+--   end,
 -- })

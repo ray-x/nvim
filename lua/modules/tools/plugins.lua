@@ -429,7 +429,9 @@ return function(tools)
       dependencies = {
         { 'junegunn/fzf', build = './install --bin' },
       },
-      opts = {},
+      opts = {
+        hls = { border = "TelescopeBorder", preview_border = "TelescopePreviewBorder" }
+      },
     })
   end
   -- keybindings for chatgpt https://github.com/jackMort/ChatGPT.nvim/tree/main#interactive-popup

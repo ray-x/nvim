@@ -319,14 +319,13 @@ local plug_keys = {
   ['n|<Leader>od'] = map_cmd('DBUIToggle'):with_noremap():with_silent(),
   -- Plugin Telescope
   ['i|<M-r>'] = map_cmd('Telescope registers'):with_noremap():with_silent(),
+  -- ["n|<Space>M"] = map_cmd([[lua require("harpoon.mark").toggle_file()]]),
+  -- ["n|<Space>n"] = map_cmd([[lua require("harpoon.ui").nav_next()]]),
+  -- ["n|<Space>p"] = map_cmd([[lua require("harpoon.ui").nav_prev()]]),
+  -- ["n|<Space>m"] = map_cmd([[Telescope harpoon marks ]]),
 
-  ["n|<Space>M"] = map_cmd([[lua require("harpoon.mark").toggle_file()]]),
-  ["n|<Space>n"] = map_cmd([[lua require("harpoon.ui").nav_next()]]),
-  ["n|<Space>p"] = map_cmd([[lua require("harpoon.ui").nav_prev()]]),
-  ["n|<Space>m"] = map_cmd([[Telescope harpoon marks ]]),
-
-  ['in|<d-p>'] = map_cmd('Telescope find_files'):with_noremap():with_silent(),
-  ['in|<M-p>'] = map_cmd('Telescope find_files'):with_noremap():with_silent() or map_cmd('FzfLua files'):with_noremap():with_silent(),
+  ['in|<d-p>'] = map_cmd('Telescope find_filles'):with_noremap():with_silent(),
+  ['in|<M-p>'] = map_cmd('FzfLua files'):with_noremap():with_silent(),
   ['inx|<d-f>'] = map_func(function() require('utils.telescope').grep_string_cursor_raw() end):with_desc('grep_string_cursor_raw'),
   ['in|<d-F>'] = map_func(function() require('utils.telescope').grep_string_cursor() end):with_desc('grep_string_cursor'),
   ['in|<M-F>'] = map_func(function() require('utils.telescope').grep_string_cursor() end):with_desc('grep_string_cursor'),
@@ -343,7 +342,7 @@ local plug_keys = {
   ['in|<d-f>'] = map_func(function() require('utils.telescope').grep_string_cursor_raw() end):with_desc('grep_string_cursor_raw'),
   ['v|<d-f>'] = map_func(function() require('utils.telescope').grep_string_visual_raw() end):with_desc('grep_string_cursor_raw'),
   ['v|<m-f>'] = map_func(function() require('utils.telescope').grep_string_visual_raw() end):with_desc('grep_string_cursor_raw'),
-  ['n|w'] = map_func(function() return '<Plug>WordMotion_w' end):with_expr(),
+  ['n|w'] = map_plug('<Plug>WordMotion_w'):with_expr(),
 
   ['n|<Leader>do'] = map_cmd('DiffviewOpen'):with_noremap():with_silent(),
   ['n|<Leader>dc'] = map_cmd('DiffviewClose'):with_noremap():with_silent(),
@@ -360,7 +359,6 @@ local plug_keys = {
   ['i|<d-/>'] = map_func(linewise):with_silent(),
 
   ['n|<m-/>'] = map_func(linewise):with_silent(),
-  ['i|<m-/>'] = map_func(linewise):with_silent(),
 
   ['x|<d-/>'] = map_func(blockwise):with_silent(),
   ['x|<m-/>'] = map_func(blockwise):with_silent(),

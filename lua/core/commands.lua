@@ -210,3 +210,21 @@ vim.api.nvim_create_user_command('Dotenv', function(opts)
   local cmd = '!dotenv ' .. env
   vim.cmd(cmd)
 end, { nargs = '*' })
+
+vim.api.nvim_create_user_command('WinBar', function(opts)
+  -- toggle the window bar when bang
+  -- otherwise show the window bar
+  require('dropbar')
+  if opts.bang then
+    -- check if winbar is set
+    local wb = vim.api.nvim_get_option_value('winbar', { scope = 'local' })
+    if vim.fn.empty(wb) == 0 then
+      vim.api.nvim_set_option_value('winbar', "", { scope = 'local' })
+    else
+      vim.api.nvim_set_option_value('winbar', "%{%v:lua.dropbar.get_dropbar_str()%}", { scope = 'local' })
+    end
+  else
+    vim.api.nvim_set_option_value('winbar', "%{%v:lua.dropbar.get_dropbar_str()%}", { scope = 'local' })
+  end
+
+end, {bang=true})

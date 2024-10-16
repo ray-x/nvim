@@ -338,7 +338,7 @@ return function(lang)
       require('rainbow-delimiters.setup').setup({
         strategy = {
           [''] = rainbow_delimiters.strategy['global'],
-          vim = rainbow_delimiters.strategy['local'],
+          -- vim = rainbow_delimiters.strategy['local'],
         },
         query = {
           [''] = 'rainbow-delimiters',
@@ -425,45 +425,39 @@ return function(lang)
     ft = { 'csv', 'tsv', 'dat', 'csv_pipe', 'dbout' },
     cmd = { 'RainbowDelim', 'RainbowMultiDelim', 'Select', 'CSVLint' },
   })
+  lang({
+    'Bekaboo/dropbar.nvim',
+    opts = {
+      general = {
+        enable = function(buf, win, _)
+          if not vim.fn.has('nvim-0.10') then
+            return false
+          end
+          return vim.fn.win_gettype(win) == ''
+            and vim.wo[win].winbar == ''
+            and vim.bo[buf].bt == ''
+            and (not vim.tbl_contains({ 'help', 'guihua', 'terminal' }, vim.bo[buf].buftype))
+            and (
+              vim.bo[buf].ft == 'markdown'
+              or (
+                buf
+                  and vim.api.nvim_buf_is_valid(buf)
+                  and (pcall(vim.treesitter.get_parser, buf, vim.bo[buf].ft))
+                  and true
+                or false
+              )
+            )
+        end,
+        attach_events = {
+          'OptionSet',
+          'BufWinEnter',
+          'BufWritePost',
+          'WinScrolled',
+        },
+      },
+    },
+  })
 end
-
--- lang({
---   'Bekaboo/dropbar.nvim',
---   -- optional, but required for fuzzy finder support
---   dependencies = {
---     'nvim-telescope/telescope-fzf-native.nvim',
---   },
---   -- event = { 'WinScrolled' },
---   opts = {
---     general = {
---       enable = function(buf, win, _)
---         if not vim.fn.has('nvim-0.10') then
---           return false
---         end
---         return vim.fn.win_gettype(win) == ''
---           and vim.wo[win].winbar == ''
---           and vim.bo[buf].bt == ''
---           and (not vim.tbl_contains({ 'help', 'guihua', 'terminal' }, vim.bo[buf].buftype))
---           and (
---             vim.bo[buf].ft == 'markdown'
---             or (
---               buf
---                 and vim.api.nvim_buf_is_valid(buf)
---                 and (pcall(vim.treesitter.get_parser, buf, vim.bo[buf].ft))
---                 and true
---               or false
---             )
---           )
---       end,
---       attach_events = {
---         'OptionSet',
---         'BufWinEnter',
---         'BufWritePost',
---         'WinScrolled',
---       },
---     },
---   },
--- })
 
 -- lang({
 --   'rafcamlet/nvim-luapad',

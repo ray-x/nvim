@@ -1,5 +1,4 @@
 -- note: default mapping https://github.com/nvim-telescope/telescope.nvim/blob/master/lua/telescope/mappings.lua
-local a = vim.api
 
 local loader = require('utils.helper').loader
 local telescope = require('telescope')
@@ -115,14 +114,12 @@ vim.api.nvim_create_user_command('GoRg', function(opts)
     w = opts.fargs[1]
   end
 
-  lprint(w)
   local var = ''
   -- local var = string.format('\\s*\\b%s\\s*=[^=\\n]+|\\s*\\b%s\\s*:=\\s*', w, w)
   -- var = var .. string.format('func\\s+\\([^\\)]*\\)\\s+%s\\s*\\(', w)
   var = var .. string.format('func\\s+')
   -- var = var .. string.format('|func\\s+%s\\s*\\\\(', w)
   -- var = var .. string.format("type\\s+%s\\s+struct\\s+\\\\{", w)
-  lprint(var)
   pwd = pwd .. ' --type ' .. vim.o.ft .. ' '
   vim.fn.setreg('p', pwd)
   require('telescope.builtin').grep_string({
