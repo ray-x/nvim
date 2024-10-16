@@ -324,7 +324,7 @@ local plug_keys = {
   -- ["n|<Space>p"] = map_cmd([[lua require("harpoon.ui").nav_prev()]]),
   -- ["n|<Space>m"] = map_cmd([[Telescope harpoon marks ]]),
 
-  ['in|<d-p>'] = map_cmd('Telescope find_filles'):with_noremap():with_silent(),
+  ['in|<d-p>'] = map_cmd('Telescope find_files'):with_noremap():with_silent(),
   ['in|<M-p>'] = map_cmd('FzfLua files'):with_noremap():with_silent(),
   ['inx|<d-f>'] = map_func(function() require('utils.telescope').grep_string_cursor_raw() end):with_desc('grep_string_cursor_raw'),
   ['in|<d-F>'] = map_func(function() require('utils.telescope').grep_string_cursor() end):with_desc('grep_string_cursor'),
