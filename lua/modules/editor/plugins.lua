@@ -3,6 +3,7 @@ local cond = function()
   return not vim.g.vscode and not vim.wo.diff
 end
 
+local dev = _G.is_dev()
 return function(editor)
   -- refer to keymap file nmap<Space>s|S   xmap <Leader>x
   editor({ -- save 1~2 key strokes when replace with paste
@@ -20,6 +21,13 @@ return function(editor)
     },
     lazy = true,
   })
+
+  -- editor({
+  --   'ray-x/code_annotation.nvim',
+  --   event = { 'CursorHold', 'CursorHoldI' },
+  --   opts = {},
+  --   dev = dev,
+  -- })
 
   editor({
     'ray-x/yamlmatter.nvim',
@@ -154,7 +162,7 @@ return function(editor)
       { "s", mode = { "n", "o", "x" }, function() require("flash").jump() end, desc = "Flash" },
       { "S", mode = { "n", "o", "x" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
       -- { "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
-      { "R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
+      { "<F3>", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
       { "<leader>s", mode = { "n" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
     },
   })
@@ -221,14 +229,15 @@ return function(editor)
     init = conf.vmulti,
   })
 
-  editor({
-    'numToStr/Comment.nvim',
-    keys = { 'g', '<ESC>', 'v', 'V', '<c-v>' },
-    event = { 'ModeChanged' },
-    module = true,
-    cond = cond,
-    opts = conf.comment,
-  })
+  -- nvim nightly integrated mini.comment and has most of the feature
+  -- editor({
+  --   'numToStr/Comment.nvim',
+  --   keys = { 'g', '<ESC>', 'v', 'V', '<c-v>' },
+  --   event = { 'ModeChanged' },
+  --   module = true,
+  --   cond = cond,
+  --   opts = conf.comment,
+  -- })
 
   -- copy paste failed in block mode when clipboard = unnameplus"
   editor({
@@ -325,6 +334,9 @@ return function(editor)
         enabled = true,
         right_pad = 0,
       },
+      latex = {
+        enabled = false,
+      },
       -- -- Window options to use that change between rendered and raw view
       win_options = {
         -- See :h 'conceallevel'
@@ -332,7 +344,7 @@ return function(editor)
           -- Used when not being rendered, get user setting
           default = vim.api.nvim_get_option_value('conceallevel', {}),
           -- Used when being rendered, concealed text is completely hidden
-          rendered = 2,
+          -- rendered = 2,
         },
       },
       overrides = {

@@ -124,6 +124,7 @@ return function(use)
       -- select_signature_key = [[<M-n>]], -- toggle signature on and off in insert mode,  e.g. '<M-x>'
       select_signature_key = [[<M-c>]], -- toggle signature on and off in insert mode,  e.g. '<M-x>'
       move_cursor_key = [[<M-n>]], -- toggle signature on and off in insert mode,  e.g. '<M-x>'
+      move_signature_window_key = {'<M-Up>', '<M-Down>'},
     },
   })
 

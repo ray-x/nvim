@@ -69,37 +69,37 @@ function config.yanky()
   vim.api.nvim_set_hl(0, 'YankyYanked', { link = 'Search' })
 end
 
-function config.comment()
-  return {
-    extended = true,
-    pre_hook = function(ctx)
-      -- print("ctx", vim.inspect(ctx))
-      -- Only update commentstring for tsx filetypes
-      -- stylua: ignore
-      if vim.tbl_contains( { 'typescriptreact', 'typescript', 'javascript', 'css', 'html', 'scss', 'svelte', 'uve', 'graphql' }, vim.bo.filetype ) then
-        local hook = require('ts_context_commentstring.integrations.comment_nvim').create_pre_hook()
-        hook(ctx)
-      end
-    end,
-    post_hook = function(ctx)
-      -- lprint(ctx)
-      if ctx.range.scol == -1 then
-        -- do something with the current line
-      else
-        -- print(vim.inspect(ctx), ctx.range.srow, ctx.range.erow, ctx.range.scol, ctx.range.ecol)
-        if ctx.range.ecol > 400 then
-          ctx.range.ecol = 1
-        end
-        if ctx.cmotion > 1 then
-          -- 322 324 0 2147483647
-          vim.fn.setpos("'<", { 0, ctx.range.srow, ctx.range.scol })
-          vim.fn.setpos("'>", { 0, ctx.range.erow, ctx.range.ecol })
-          vim.cmd([[exe "norm! gv"]])
-        end
-      end
-    end,
-  }
-end
+-- function config.comment()
+--   return {
+--     extended = true,
+--     pre_hook = function(ctx)
+--       -- print("ctx", vim.inspect(ctx))
+--       -- Only update commentstring for tsx filetypes
+--       -- stylua: ignore
+--       if vim.tbl_contains( { 'typescriptreact', 'typescript', 'javascript', 'css', 'html', 'scss', 'svelte', 'uve', 'graphql' }, vim.bo.filetype ) then
+--         local hook = require('ts_context_commentstring.integrations.comment_nvim').create_pre_hook()
+--         hook(ctx)
+--       end
+--     end,
+--     post_hook = function(ctx)
+--       -- lprint(ctx)
+--       if ctx.range.scol == -1 then
+--         -- do something with the current line
+--       else
+--         -- print(vim.inspect(ctx), ctx.range.srow, ctx.range.erow, ctx.range.scol, ctx.range.ecol)
+--         if ctx.range.ecol > 400 then
+--           ctx.range.ecol = 1
+--         end
+--         if ctx.cmotion > 1 then
+--           -- 322 324 0 2147483647
+--           vim.fn.setpos("'<", { 0, ctx.range.srow, ctx.range.scol })
+--           vim.fn.setpos("'>", { 0, ctx.range.erow, ctx.range.ecol })
+--           vim.cmd([[exe "norm! gv"]])
+--         end
+--       end
+--     end,
+--   }
+-- end
 
 --
 

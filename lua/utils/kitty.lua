@@ -185,7 +185,7 @@ kitty.get_kitty_background = function(opts)
       end
       for i, c in ipairs(data) do
         local name, color = c[1], c[2]
-        lprint('name', name, 'c', color, c)
+        -- lprint('name', name, 'c', color, c)
         if name == 'background' then
           lprint('******** kitty get color on stdout', color)
           vim.g.ORIGINAL_KITTY_BG_COLOR = color

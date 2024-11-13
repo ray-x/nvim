@@ -4,20 +4,21 @@ local map_func = bind.map_func
 local map_key = bind.map_key
 local map_plug = bind.map_plug
 local map_cu = bind.map_cu
+local map_cr = bind.map_cr
 local win = require('core.global').is_windows
 
-local function linewise()
-  local api = require('Comment.api')
-  -- local config = require("Comment.config"):get()
-  api.toggle.linewise.current()
-end
-
-local function blockwise()
-  local api = require('Comment.api')
-  local esc = vim.api.nvim_replace_termcodes('<ESC>', true, false, true)
-  vim.api.nvim_feedkeys(esc, 'nx', false)
-  api.toggle.linewise(vim.fn.visualmode())
-end
+-- local function linewise()
+--   local api = require('Comment.api')
+--   -- local config = require("Comment.config"):get()
+--   api.toggle.linewise.current()
+-- end
+--
+-- local function blockwise()
+--   local api = require('Comment.api')
+--   local esc = vim.api.nvim_replace_termcodes('<ESC>', true, false, true)
+--   vim.api.nvim_feedkeys(esc, 'nx', false)
+--   api.toggle.linewise(vim.fn.visualmode())
+-- end
 
 local jump_ts = function()
   local function get_ast_nodes()
@@ -353,15 +354,13 @@ local plug_keys = {
   ['n|<Leader>v'] = map_cmd('LspSymbols'):with_noremap():with_silent(),
   ['n|<F8>'] = map_cmd('LspSymbols'):with_silent(),
 
-  ['x|<Leader>c<Space>'] = map_key('gc'),
-  ['n|<Leader>c<Space>'] = map_key('gcc'),
-  ['n|<d-/>'] = map_func(linewise):with_silent(),
-  ['i|<d-/>'] = map_func(linewise):with_silent(),
+  -- ['x|<Leader>c<Space>'] = map_key('gc'),
+  -- ['n|<Leader>c<Space>'] = map_key('gcc'),
 
-  ['n|<m-/>'] = map_func(linewise):with_silent(),
+  ['nx|<d-/>'] = map_cr('normal gcc'):with_noremap():with_silent(),
+  ['nx|<m-/>'] = map_cr('normal gcc'):with_noremap():with_silent(),
+  ['i|<d-/>'] = map_cr('normal gcc'):with_noremap():with_silent(),
 
-  ['x|<d-/>'] = map_func(blockwise):with_silent(),
-  ['x|<m-/>'] = map_func(blockwise):with_silent(),
 
   -- hop
   -- ["inx|[s"] = map_func(jump_ts):with_silent(),
