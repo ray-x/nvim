@@ -1,0 +1,9 @@
+vim.opt.autoindent = true
+vim.opt.conceallevel = 1
+vim.opt.concealcursor = ''
+vim.opt.expandtab = true
+vim.opt.foldmethod = 'expr'
+vim.opt.formatoptions = 'tcq2l'
+vim.opt.shiftwidth = 2
+vim.opt.softtabstop = 2
+vim.opt.tabstop = 2

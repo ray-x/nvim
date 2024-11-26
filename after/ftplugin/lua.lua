@@ -1,0 +1,19 @@
+-- setlocal autoindent
+-- setlocal conceallevel=1
+-- setlocal concealcursor=""
+-- setlocal expandtab
+-- setlocal foldmethod=expr
+-- setlocal formatoptions=tcq2l
+-- setlocal shiftwidth=2
+-- setlocal softtabstop=2
+-- setlocal tabstop=2
+
+vim.opt.autoindent = true
+vim.opt.conceallevel = 1
+vim.opt.concealcursor = ''
+vim.opt.expandtab = true
+vim.opt.foldmethod = 'expr'
+vim.opt.formatoptions = 'tcq2l'
+vim.opt.shiftwidth = 2
+vim.opt.softtabstop = 2
+vim.opt.tabstop = 2
