@@ -67,7 +67,7 @@ return function(editor)
   --  text objects i% and a%
   editor({
     'andymass/vim-matchup',
-    event = { 'CursorHold', 'CursorHoldI', 'VeryLazy' },
+    -- event = { 'CursorHold', 'CursorHoldI', 'VeryLazy' },
     keys = { '%', '[' }, -- {, '<Plug>(matchup-%)', '<Plug>(matchup-g%)' },
     cmd = { 'MatchupWhereAmI' }, --
     init = function()
@@ -295,21 +295,25 @@ return function(editor)
 
   editor({
     'MeanderingProgrammer/render-markdown.nvim',
-    ft = { 'markdown', 'md', 'jupyter', 'quarto' },
+    -- ft = { 'markdown', 'md', 'jupyter', 'quarto' },
+    cmd = { 'RenderMarkdown', 'RenderMarkdownToggle' },
     opts = {
       render_modes = { 'n', 'no', 'c' },
       file_types = { 'markdown', 'quarto', 'rmd' },
 
       code = {
         enabled = true,
-        sign = true,
-        style = 'full',
+        -- sign = true,
+        sign = false,
+        -- style = 'full',
+        style = 'normal',
         width = 'block',
         position = 'right', --  icon on right
         min_width = 60,
         left_pad = 2,
         language_pad = 2,
-        below = ' ', --''─',
+        below = '', --''─',
+        above = '', --''─', '-'' '▀', '󱋰'
       },
       heading = {
         -- Turn on / off heading icon & background rendering

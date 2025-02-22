@@ -69,8 +69,11 @@ local load_core = function()
   lprint('load compiled and lazy', uv.now() - start)
 
   require('core.lazy').setup(fsz)
+
   lprint('lazy done', uv.now() - start)
   -- require('utils.markdown')
+
 end
 
 load_core()
+

@@ -49,6 +49,21 @@ return function(use)
     end,
   })
 
+  use({
+    'olimorris/codecompanion.nvim',
+    event = 'InsertEnter',
+    opts = {
+      strategies = {
+        --NOTE: Change the adapter as required
+        chat = { adapter = 'copilot' },
+        inline = { adapter = 'copilot' },
+      },
+      opts = {
+        log_level = 'DEBUG',
+      },
+    },
+  })
+
   -- can not lazyload, it is also slow...
   use({
     'L3MON4D3/LuaSnip', -- need to be the first to load
@@ -124,7 +139,8 @@ return function(use)
       -- select_signature_key = [[<M-n>]], -- toggle signature on and off in insert mode,  e.g. '<M-x>'
       select_signature_key = [[<M-c>]], -- toggle signature on and off in insert mode,  e.g. '<M-x>'
       move_cursor_key = [[<M-n>]], -- toggle signature on and off in insert mode,  e.g. '<M-x>'
-      move_signature_window_key = {'<M-Up>', '<M-Down>'},
+      move_signature_window_key = { '<M-Up>', '<M-Down>' },
+      show_struct = { enable = true },
     },
   })
 
@@ -161,4 +177,3 @@ return function(use)
   --   event = 'InsertEnter',
   -- })
 end
-

@@ -123,5 +123,6 @@ vim.defer_fn(function()
       require('mini.sessions').write(folder)
     end
   end
+
 end, lazy_timer)
 return { setup = setup }

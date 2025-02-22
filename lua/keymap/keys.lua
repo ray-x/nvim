@@ -442,9 +442,7 @@ return { keymap = def_map }
 -- ["inxo|<C-S-S>"] = map_plug("leap-backward-to"):with_silent(),
 -- ["nxo|gs"] = map_plug("leap-forward-to"):with_silent(),
 -- ["nxo|gS"] = map_plug("leap-cross-window"):with_silent(),
--- ["nxo|<Leader>T"] = map_func(function()require("leap-ast").leap()
--- end),
--- ["xo|x"] = map_plug("leap-forward-until"):with_silent(),
+-- ["nxo|<Leader>T"] = map_func(function()require("leap-ast").leanvim-neoclip.lua -- ["xo|x"] = map_plug("leap-forward-until"):with_silent(),
 -- ["xo|X"] = map_plug("leap-backward-until"):with_silent(),
 -- ["x|s"] = map_cmd("lua hop1(1)"):with_silent(),
 -- ["x|S"] = map_cmd("lua hop1()"):with_silent(),

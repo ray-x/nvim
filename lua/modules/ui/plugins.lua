@@ -118,6 +118,7 @@ return function(ui)
 
   ui({
     'lukas-reineke/indent-blankline.nvim',
+    tag = 'v3.8.2',
     lazy = true,
     event = { 'CursorHold' },
     cmd = { 'IBLToggle', 'IBLEnable' },

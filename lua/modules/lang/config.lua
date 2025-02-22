@@ -214,40 +214,6 @@ function config.navigator()
       }, -- , 'marksman' },
     },
   }
-  -- nav_cfg.lsp.sqlls = function()
-  --   if vim.fn.exists('g:connections') ~= 1 then
-  --     require('utils.database').load_dbs()
-  --   end
-  --   -- if database not detected
-  --   if vim.fn.empty(vim.g.connections) == 1 then
-  --     return {}
-  --   end
-  --   return {
-  --     connections = vim.g.connections,
-  --     -- on_attach = function(client, bufnr)
-  --     --   require('sqls').on_attach(client, bufnr)
-  --     -- end,
-  --   }
-  -- end
-  -- nav_cfg.lsp.sqls = function()
-  --   if vim.fn.exists('g:connections') ~= 1 then
-  --     require('utils.database').load_dbs()
-  --   end
-  --   -- if database not detected
-  --   if vim.fn.empty(vim.g.connections) == 1 then
-  --     return {}
-  --   end
-  --   require('lspconfig').sqls.setup({
-  --     on_attach = function(client, bufnr)
-  --       require('sqls').on_attach(client, bufnr)
-  --     end,
-  --     settings = {
-  --       sqls = {
-  --         connections = vim.g.sqls_db,
-  --       },
-  --     },
-  --   })
-  -- end
 
   nav_cfg.lsp.gopls = function()
     if vim.tbl_contains({ 'go', 'gomod' }, vim.bo.filetype) then
@@ -261,7 +227,7 @@ function config.navigator()
 
   vim.lsp.set_log_level('error') -- error debug info
   -- require"navigator".setup(nav_cfg)
-  require('navigator').setup(nav_cfg)
+  return nav_cfg
 end
 function config.luapad()
   require('luapad').setup({
@@ -319,6 +285,8 @@ function config.go()
     dap_debug = true,
     gofmt = 'gopls',
     goimports = 'gopls',
+    -- goimports = "golines",
+    -- gofmt = "golines",
     dap_debug_vt = true,
     dap_debug_gui = true,
     null_ls = {
@@ -326,25 +294,32 @@ function config.go()
         severity = vim.diagnostic.severity.HINT, -- severity level of the diagnostics
       },
     },
-    diagnostic = {
-      signs = {
-        text = { '🚑', '🔧', '🪛', '🧹' },
-      },
-      update_in_insert = false,
+    lsp_impl = {
+      enable = true,
+      loadfile = true,
     },
+    diagnostic = false,
+    -- diagnostic = {
+    --   signs = {
+    --     text = { '🚑', '🔧', '🪛', '🧹' },
+    --   },
+    --   update_in_insert = false,
+    -- },
     -- diagnostic = { -- set diagnostic to false to disable vim.diagnostic setup
     --   hdlr = true, -- hook lsp diag handler and send diag to quickfix
     --   underline = true,
     --   -- virtual text setup
     --   virtual_text = { spacing = 0, prefix = '■' },
     --   signs = true,
-    --   update_in_insert = true,
     -- },
     test_runner = 'go', -- go test, dlv, ginkgo
     -- run_in_floaterm = true, -- set to true to run in float window.
     lsp_document_formatting = true,
-    lsp_semantic_highlight = true,
+    lsp_semantic_highlights = false,
     lsp_semantic_highlights_priority = 99,
+    -- lsp_inlay_hints = {
+    --   enable = true,
+    -- },
     preludes = {
       default = function()
         return { 'AWS_PROFILE=test' }
@@ -408,10 +383,9 @@ function config.dap()
 end
 
 function config.clangd()
-  vim.defer_fn(function()
     local capabilities = vim.lsp.protocol.make_client_capabilities()
     capabilities.offsetEncoding = { 'utf-16' }
-    require('clangd_extensions').setup({
+    return {
       server = {
         capabilities = capabilities,
         on_attach = function(client, bufnr)
@@ -421,8 +395,7 @@ function config.clangd()
           -- otherwise, you can define your own commands to call navigator functions
         end,
       },
-    })
-  end, 100)
+    }
 end
 
 function config.context_vt()

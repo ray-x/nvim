@@ -53,9 +53,16 @@ function autocmd.load_autocmds()
         'BufReadPre', '*',
         'if getfsize(expand("%")) > 1000000 | set eventignore+=FileType | setlocal noswapfile bufhidden=unload buftype=nowrite undolevels=-1 foldmethod=indent | else | set eventignore-=FileType | endif',
       },
+
+      {
+        'BufReadPre', '*',
+        'if getfsize(expand("%")) > 1000000 | set eventignore+=FileType | setlocal noswapfile bufhidden=unload buftype=nowrite undolevels=-1 foldmethod=indent | else | set eventignore-=FileType | endif',
+      },
+
+     -- {'BufReadPre', 'go', ":slilent! :lua vim.treesitter.query.set('go', 'injections', '')"},
       -- {"UIEnter", "*", ":silent! :lua require('modules.lang.config').syntax_folding()"},
       -- { 'BufReadPre', '*', ":silent! :lua require('modules.lang.config').nvim_treesitter()" },
-      { 'BufWritePre', '*', function() MiniTrailspace.trim() end, },
+      { 'BufWritePre', '*', function() if MiniTrailspace then MiniTrailspace.trim() end end, },
       -- { 'BufWritePost', '*', ":silent! :lua require('harpoon.mark').add_file()" },
       -- stylua: ignore end
     },

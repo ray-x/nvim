@@ -37,7 +37,6 @@ function config.nvim_cmp()
     { name = 'luasnip' },
     { name = 'treesitter', keyword_length = 2 },
 
-    -- { name = "cmp_tabnine", keyword_length = 0 },
     { name = 'path' },
     { name = 'buffer' },
     { name = 'sql' },
@@ -147,8 +146,8 @@ function config.nvim_cmp()
           cmp.select_next_item()
         elseif luasnip.expand_or_jumpable() then
           luasnip.expand_or_jump()
-        elseif has_words_before() then
-          cmp.complete()
+        -- elseif has_words_before() then
+        --   cmp.complete()
         else
           -- local copilot_keys = vim.fn["copilot#Accept"]()
           -- if copilot_keys ~= "" then

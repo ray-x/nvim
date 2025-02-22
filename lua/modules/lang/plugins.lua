@@ -49,26 +49,15 @@ return function(lang)
     'chrisgrieser/nvim-various-textobjs',
     event = { 'CursorHold', 'CursorHoldI' },
     opts = {
-      useDefaultKeymaps = true,
-      disabledKeymaps = {},
-      lookForwardSmall = 5,
-      lookForwardBig = 10,
+      keymap = {
+        useDefault = true,
+      },
+      forwardLooking = {
+        big = 10,
+        small = 5,
+      },
     },
-    -- config = function()
-    --   require('various-textobjs').setup({
-    --     lookForwardSmall = 5,
-    --     lookForwardBig = 10,
-    --     useDefaultKeymaps = false,
-    --   })
-    -- end,
   })
-  -- -- use flash.nvim
-  -- -- lang({
-  -- --   'RRethy/nvim-treesitter-textsubjects',
-  -- --   config = ts.textsubjects,
-  -- --   -- module = true,
-  -- --   event = { 'CursorHold' },
-  -- -- })
 
   lang({
     'andersevenrud/nvim_context_vt',
@@ -79,12 +68,11 @@ return function(lang)
   local jsft =
     { 'typescript', 'typescriptreact', 'javascript', 'javascriptreact', 'js', 'jsx', 'ts', 'tsx' }
   if typecheck(jsft) then
-    -- deprecated
-    -- lang({
-    --   'jose-elias-alvarez/typescript.nvim',
-    --   event = 'VeryLazy',
-    --   opts = {},
-    -- })
+    lang({
+      'pmizio/typescript-tools.nvim',
+      event = 'VeryLazy',
+      opts = {},
+    })
   end
   lang({
     'bennypowers/nvim-regexplainer',
@@ -122,12 +110,6 @@ return function(lang)
     })
   end
 
-  -- lang({
-  --   'nanotee/sqls.nvim',
-  --   ft = { 'sql', 'pgsql', 'mysql' },
-  --   module = true,
-  -- })
-
   lang({
     'simrat39/rust-tools.nvim',
     ft = { 'rust' },
@@ -147,7 +129,7 @@ return function(lang)
   lang({
     'ray-x/go.nvim',
     dev = dev,
-    lazy = true,
+    -- lazy = false,
     cmd = {
       'Go',
       'GoModInit',
@@ -176,7 +158,7 @@ return function(lang)
   lang({
     'ray-x/navigator.lua',
     dev = dev,
-    config = conf.navigator,
+    opts = conf.navigator,
     module = true,
     event = { 'VeryLazy' },
   })
@@ -388,7 +370,7 @@ return function(lang)
     dependencies = {
       'nvimtools/none-ls-extras.nvim',
     },
-    config = require('modules.lang.null-ls').config,
+    opts = require('modules.lang.null-ls').config,
     event = { 'BufWritePre', 'TextChanged', 'TextChangedI', 'CmdlineEnter' },
   })
 
@@ -399,7 +381,7 @@ return function(lang)
   lang({
     'p00f/clangd_extensions.nvim',
     ft = { 'c', 'cpp', 'objc', 'objcpp', 'h', 'hpp' },
-    config = conf.clangd,
+    opts = conf.clangd,
   })
 
   lang({
@@ -410,16 +392,16 @@ return function(lang)
 
   -- if vim.bo.ft == 'csv' then
   -- it can not be lazy loaded
-  if 'csv' == vim.fn.expand('%:e') then
-    lang({
-      'chrisbra/csv.vim',
-      lazy = false,
-      init = function()
-        -- vim.cmd('auto BufReadPost *.csv,*.tsv,*.dat,*.csv_pipe,*.dbout setlocal filetype=csv')
-        vim.g.csv_delim_test = ',;|'
-      end,
-    })
-  end
+  -- if 'csv' == vim.fn.expand('%:e') then
+  lang({
+    'chrisbra/csv.vim',
+    lazy = not 'csv' == vim.fn.expand('%:e'),
+    init = function()
+      -- vim.cmd('auto BufReadPost *.csv,*.tsv,*.dat,*.csv_pipe,*.dbout setlocal filetype=csv')
+      vim.g.csv_delim_test = ',;|'
+    end,
+  })
+  -- end
   lang({
     'mechatroner/rainbow_csv',
     ft = { 'csv', 'tsv', 'dat', 'csv_pipe', 'dbout' },
@@ -460,12 +442,10 @@ return function(lang)
 end
 
 -- lang({
---   'rafcamlet/nvim-luapad',
---   lazy = true,
---   cmd = { 'Lua', 'Luapad' },
---   config = conf.luapad,
+--   'nanotee/sqls.nvim',
+--   ft = { 'sql', 'pgsql', 'mysql' },
+--   module = true,
 -- })
-
 -- if typecheck({ 'json', 'js', 'javascript', 'javascriptreact' }) then
 --   lang({
 --     'danymat/neogen',
@@ -485,29 +465,3 @@ end
 -- --   lazy = true,
 -- -- })
 -- -- ipython
-
--- lang({
---   'simrat39/symbols-outline.nvim',
---   lazy = true,
---   cmd = { 'SymbolsOutline', 'SymbolsOutlineOpen' },
---   opts = {},
--- })
-
--- lang({
---   'drybalka/tree-climber.nvim',
---   dependencies = { 'nvim-treesitter' },
---   module = true,
---   keys = { 'H', 'J', 'K', 'L', '<c-k>', '<c-j>', '<c-h>', 'in' },
---   init = function()
---     local keyopts = { noremap = true, silent = true }
---     -- TODO: I need to reset those keys
---     vim.keymap.set({ 'n', 'v', 'o' }, '[s', require('tree-climber').goto_parent, keyopts)
---     -- vim.keymap.set({'n', 'v', 'o'}, 'L', require('tree-climber').goto_child, keyopts)
---     vim.keymap.set({ 'n', 'v', 'o' }, ']s', require('tree-climber').goto_next, keyopts)
---     -- vim.keymap.set({'n', 'v', 'o'}, 'K', require('tree-climber').goto_prev, keyopts)
---     -- vim.keymap.set({'v', 'o'}, 'in', require('tree-climber').select_node, keyopts)
---     -- vim.keymap.set('n', '<c-k>', require('tree-climber').swap_prev, keyopts)
---     -- vim.keymap.set('n', '<c-j>', require('tree-climber').swap_next, keyopts)
---     -- vim.keymap.set('n', '<c-h>', require('tree-climber').highlight_node, keyopts)
---   end,
--- })
