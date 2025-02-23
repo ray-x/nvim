@@ -145,20 +145,14 @@ function register_key()
       {'<Space>fM', require('telescope.builtin').marks,desc= '🔖' },
       {'<Space>fd', function() require('telescope').extensions.file_browser.file_browser() end ,desc= 'folder🗂️' },
       {'<Space>f<CR>',  '<cmd>Telescope<CR>', desc = '🔭' },
-      { '<Space>C', group = 'ChatGPT' }, -- Group name
-      { '<Space>Cc', '<cmd>ChatGPT<CR>', desc = 'ChatGPT' },
-      { '<Space>Ce', '<cmd>ChatGPTEditWithInstruction<CR>', desc = 'Edit with instruction', mode = { 'n', 'v' }, },
-      { '<Space>Cg', '<cmd>ChatGPTRun grammar_correction<CR>', desc = 'Grammar Correction', mode = { 'n', 'v' } },
-      { '<Space>Ct', '<cmd>ChatGPTRun translate<CR>', desc = 'Translate', mode = { 'n', 'v' } },
-      { '<Space>Ck', '<cmd>ChatGPTRun keywords<CR>', desc = 'Keywords', mode = { 'n', 'v' } },
-      { '<Space>Cd', '<cmd>ChatGPTRun docstring<CR>', desc = 'Docstring', mode = { 'n', 'v' } },
-      { '<Space>Ca', '<cmd>ChatGPTRun add_tests<CR>', desc = 'Add Tests', mode = { 'n', 'v' } },
-      { '<Space>Co', '<cmd>ChatGPTRun optimize_code<CR>', desc = 'Optimize Code', mode = { 'n', 'v' } },
-      { '<Space>Cs', '<cmd>ChatGPTRun summarize<CR>', desc = 'Summarize', mode = { 'n', 'v' } },
-      { '<Space>Cf', '<cmd>ChatGPTRun fix_bugs<CR>', desc = 'Fix Bugs', mode = { 'n', 'v' } },
-      { '<Space>Cx', '<cmd>ChatGPTRun explain_code<CR>', desc = 'Explain Code', mode = { 'n', 'v' } },
-      { '<Space>Cr', '<cmd>ChatGPTRun roxygen_edit<CR>', desc = 'Roxygen Edit', mode = { 'n', 'v' } },
-      { '<Space>Cl', '<cmd>ChatGPTRun code_readability_analysis<CR>', desc = 'Code Readability Analysis', mode = { 'n', 'v' } },
+
+      { '<Space>C', group = 'CodeCompanion' }, -- Group name
+      { '<Space>Cc', '<cmd>CodeCompanionChat<CR>', desc = 'Code chat' },
+      { '<Space>Ca', '<cmd>CodeCompanionActions<CR>', desc = 'code companion actions'},
+      { '<Space>Cm', '<cmd>CodeCompanionCmd<CR>', desc = 'code companion commands', mode = { 'n', 'v' } },
+      { '<Space>Cs', '<cmd>CodeCompanion #buffer summarize code<CR>', desc = 'Summarize', mode = { 'n', 'v' } },
+      { '<Space>Cf', '<cmd>CodeCompanionAction fix_bugs<CR>', desc = 'Fix Bugs', mode = { 'n', 'v' } },
+      { '<Space>Cl', '<cmd>CodeCompanionRun code_readability_analysis<CR>', desc = 'Code Readability Analysis', mode = { 'n', 'v' } },
     -- stylua: ignore end
   }
   wk.add(telescope_keymap)
