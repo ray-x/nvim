@@ -57,6 +57,7 @@ return function(use)
         --NOTE: Change the adapter as required
         chat = { adapter = 'copilot' },
         inline = { adapter = 'copilot' },
+        agent = { adapter = 'copilot' },
       },
       opts = {
         log_level = 'DEBUG',

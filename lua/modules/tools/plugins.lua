@@ -434,34 +434,6 @@ return function(tools)
       },
     })
   end
-  -- keybindings for chatgpt https://github.com/jackMort/ChatGPT.nvim/tree/main#interactive-popup
-  tools({
-    'jackMort/ChatGPT.nvim',
-    event = { 'CmdlineEnter' },
-    cond = function()
-      return vim.wo.diff
-    end,
-    -- cond = cond,
-    opts = {
-      popup_window = { border = {
-        text = {
-          top = 'wisper',
-        },
-      } },
-      openai_params = {
-        model = 'gpt-3.5-turbo',
-      },
-      openai_edit_params = {
-        model = 'gpt-3.5-turbo',
-      },
-    },
-
-    dependencies = {
-      'MunifTanjim/nui.nvim',
-      'nvim-lua/plenary.nvim',
-      'nvim-telescope/telescope.nvim',
-    },
-  })
   tools({
     'mikesmithgh/kitty-scrollback.nvim',
     enabled = true,
