@@ -15,3 +15,4 @@ end
 vim.cmd('cab sudo w !sudo tee %')
 vim.cmd('cab DO DiffviewOpen')
 vim.cmd('cab DC DiffviewClose')
+vim.cmd([[cab cc CodeCompanion]])

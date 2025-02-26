@@ -23,6 +23,7 @@ setmetatable(config, {
         return require('utils.wezterm').change_bg
       else
         lprint('no term found')
+        return function(...) print('failed to set ' .. vim.inspect(...)) end
       end
     end
   end,

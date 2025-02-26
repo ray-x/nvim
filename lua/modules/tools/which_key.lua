@@ -147,7 +147,8 @@ function register_key()
       {'<Space>f<CR>',  '<cmd>Telescope<CR>', desc = '🔭' },
 
       { '<Space>C', group = 'CodeCompanion' }, -- Group name
-      { '<Space>Cc', '<cmd>CodeCompanionChat<CR>', desc = 'Code chat' },
+      { '<Space>Cc', '<cmd>CodeCompanionChat Toggle<CR>', desc = 'Code chat' },
+      { '<Space>CA', '<cmd>CodeCompanionChat Add<CR>', desc = 'Code chat' , mode = {'n', 'v'}},
       { '<Space>Ca', '<cmd>CodeCompanionActions<CR>', desc = 'code companion actions'},
       { '<Space>Cm', '<cmd>CodeCompanionCmd<CR>', desc = 'code companion commands', mode = { 'n', 'v' } },
       { '<Space>Cs', '<cmd>CodeCompanion #buffer summarize code<CR>', desc = 'Summarize', mode = { 'n', 'v' } },
