@@ -79,7 +79,7 @@ return function(tools)
       notes_root = os.getenv('HOME') .. '/Library/CloudStorage/Dropbox/obsidian',
       templates = {
         daily = {
-          path = 'journal/2024',
+          path = 'journal/2025',
         },
       },
     },
