@@ -110,21 +110,21 @@ return function(lang)
     })
   end
 
-  lang({
-    'simrat39/rust-tools.nvim',
-    ft = { 'rust' },
-    config = function()
-      vim.defer_fn(function()
-        require('rust-tools').setup({
-          server = {
-            on_attach = function(c, b)
-              require('navigator.lspclient.mapping').setup({ client = c, bufnr = b })
-            end,
-          },
-        })
-      end, 200)
-    end,
-  })
+  -- lang({
+    -- 'simrat39/rust-tools.nvim',
+    -- ft = { 'rust' },
+    -- config = function()
+      -- vim.defer_fn(function()
+        -- require('rust-tools').setup({
+          -- server = {
+            -- on_attach = function(c, b)
+              -- require('navigator.lspclient.mapping').setup({ client = c, bufnr = b })
+            -- end,
+          -- },
+        -- })
+      -- end, 200)
+    -- end,
+  -- })
 
   lang({
     'ray-x/go.nvim',
@@ -278,7 +278,7 @@ return function(lang)
     },
   })
 
-  lang({ 'Bilal2453/luvit-meta', lazy = true })
+  -- lang({ 'Bilal2453/luvit-meta', lazy = true })
 
   lang({
     'nvim-treesitter/nvim-treesitter-context',
