@@ -51,8 +51,26 @@ return function(use)
 
   use({
     'olimorris/codecompanion.nvim',
-    event = 'InsertEnter',
+    event = { 'InsertEnter', 'CmdlineEnter' },
     opts = {
+      adapters = {
+        copilot = function()
+          return require('codecompanion.adapters').extend('copilot', {
+            schema = {
+              model = {
+                -- default = 'claude-3-7-sonnet-20250219', -- do not work
+                -- default = 'claude-3-7-sonnet-20250219-v1:0', -- do not work
+                default = 'claude-3.7-sonnet',
+                -- default = 'claude-3.5-sonnet',
+                -- default = 'o1',  -- not tested
+                -- default = 'o3-mini' -- not tested
+                -- default = 'claude-3.7-sonnet-thought',
+                -- default = 'gemini-2.0-flash'
+              },
+            },
+          })
+        end,
+      },
       strategies = {
         --NOTE: Change the adapter as required
         chat = { adapter = 'copilot' },
