@@ -57,6 +57,16 @@ local function load_colorscheme(theme)
 
   vim.api.nvim_set_hl(0, '@lsp.type.variable.go', {}) -- use treesitter
   -- vim.api.nvim_set_hl(0, '@lsp.type.string.go', { fg = 'NONE' })
+
+  -- override default colorscheme
+  -- incase you want transparent background but the colorscheme does not allow you to do so
+  -- vim.api.nvim_set_hl(0, 'StatusLine', { bg = 'None' })
+  -- vim.api.nvim_set_hl(0, 'StatusLineNC', { bg = 'None' })
+  -- vim.api.nvim_set_hl(0, 'Normal', { bg = 'None' })
+  -- vim.api.nvim_set_hl(0, 'Pmenu', { bg = 'None' })
+  -- vim.api.nvim_set_hl(0, 'SignColumn', { bg = 'None' })
+  -- vim.api.nvim_set_hl(0, 'FoldColumn', { bg = 'None' })
+  ---
 end
 
 return {

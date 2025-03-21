@@ -37,12 +37,29 @@ return function(lang)
     end,
   })
   if vim.wo.diff then
-    lang({ 'nvim-treesitter/nvim-treesitter', event = {'BufReadPre'}, opts = { highlight = { enable = true } } })
-
-    print('diff')
+    lang({
+      'nvim-treesitter/nvim-treesitter',
+      event = { 'BufReadPre' },
+      config = function()
+        require('nvim-treesitter.configs').setup({
+          highlight = {
+            enable = true,
+          },
+          indent = {
+            enable = true,
+          },
+        })
+      end,
+      module = true,
+    })
     return
   end
-  lang({ 'nvim-treesitter/nvim-treesitter', event = {'VeryLazy'}, config=ts.treesitter, module = true})
+  lang({
+    'nvim-treesitter/nvim-treesitter',
+    event = { 'VeryLazy' },
+    config = ts.treesitter,
+    module = true,
+  })
 
   lang({
     'nvim-treesitter/nvim-treesitter-textobjects',
@@ -68,7 +85,6 @@ return function(lang)
     },
   })
 
-  if dev then return end
   lang({
     'andersevenrud/nvim_context_vt',
     cmd = { 'NvimContextVtToggle' },
@@ -119,7 +135,6 @@ return function(lang)
       event = { 'CmdlineEnter' },
     })
   end
-
 
   lang({
     'ray-x/go.nvim',
@@ -460,17 +475,17 @@ end
 -- -- ipython
 
 -- lang({
-  -- 'simrat39/rust-tools.nvim',
-  -- ft = { 'rust' },
-  -- config = function()
-    -- vim.defer_fn(function()
-      -- require('rust-tools').setup({
-        -- server = {
-          -- on_attach = function(c, b)
-            -- require('navigator.lspclient.mapping').setup({ client = c, bufnr = b })
-          -- end,
-        -- },
-      -- })
-    -- end, 200)
-  -- end,
+-- 'simrat39/rust-tools.nvim',
+-- ft = { 'rust' },
+-- config = function()
+-- vim.defer_fn(function()
+-- require('rust-tools').setup({
+-- server = {
+-- on_attach = function(c, b)
+-- require('navigator.lspclient.mapping').setup({ client = c, bufnr = b })
+-- end,
+-- },
+-- })
+-- end, 200)
+-- end,
 -- })
