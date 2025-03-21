@@ -15,7 +15,9 @@ return function(lang)
   local dev = _G.is_dev()
   local ts = require('modules.lang.treesitter')
 
-  lang({ 'nvim-treesitter/nvim-treesitter', config = ts.treesitter, module = true })
+  -- lang({ 'nvim-treesitter/nvim-treesitter', config = ts.treesitter, module = true })
+
+  --
   --
   lang({
     'ray-x/guihua.lua',
@@ -35,8 +37,13 @@ return function(lang)
     end,
   })
   if vim.wo.diff then
+    lang({ 'nvim-treesitter/nvim-treesitter', event = {'BufReadPre'}, opts = { highlight = { enable = true } } })
+
+    print('diff')
     return
   end
+  lang({ 'nvim-treesitter/nvim-treesitter', event = {'VeryLazy'}, config=ts.treesitter, module = true})
+
   lang({
     'nvim-treesitter/nvim-treesitter-textobjects',
     dependencies = { 'nvim-treesitter' },
@@ -44,6 +51,8 @@ return function(lang)
     -- module = true,
     event = { 'CursorHold', 'CursorHoldI' },
   })
+
+  lang({ 'JoosepAlviste/nvim-ts-context-commentstring', event = 'CursorHold' })
 
   lang({
     'chrisgrieser/nvim-various-textobjs',
@@ -59,6 +68,7 @@ return function(lang)
     },
   })
 
+  if dev then return end
   lang({
     'andersevenrud/nvim_context_vt',
     cmd = { 'NvimContextVtToggle' },
@@ -110,21 +120,6 @@ return function(lang)
     })
   end
 
-  -- lang({
-    -- 'simrat39/rust-tools.nvim',
-    -- ft = { 'rust' },
-    -- config = function()
-      -- vim.defer_fn(function()
-        -- require('rust-tools').setup({
-          -- server = {
-            -- on_attach = function(c, b)
-              -- require('navigator.lspclient.mapping').setup({ client = c, bufnr = b })
-            -- end,
-          -- },
-        -- })
-      -- end, 200)
-    -- end,
-  -- })
 
   lang({
     'ray-x/go.nvim',
@@ -173,8 +168,6 @@ return function(lang)
   })
 
   lang({ 'mfussenegger/nvim-dap', config = conf.dap })
-
-  lang({ 'JoosepAlviste/nvim-ts-context-commentstring', event = 'CursorHold' })
 
   lang({
     'rcarriga/nvim-dap-ui',
@@ -465,3 +458,19 @@ end
 -- --   lazy = true,
 -- -- })
 -- -- ipython
+
+-- lang({
+  -- 'simrat39/rust-tools.nvim',
+  -- ft = { 'rust' },
+  -- config = function()
+    -- vim.defer_fn(function()
+      -- require('rust-tools').setup({
+        -- server = {
+          -- on_attach = function(c, b)
+            -- require('navigator.lspclient.mapping').setup({ client = c, bufnr = b })
+          -- end,
+        -- },
+      -- })
+    -- end, 200)
+  -- end,
+-- })

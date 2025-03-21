@@ -128,7 +128,7 @@ local def_map = {
   ['i|<C-b>'] = map_key('<Left>'):with_noremap(),
   ['i|<C-f>'] = map_key('<Right>'):with_noremap(),
   ['i|<C-a>'] = map_key('<ESC>^i'):with_noremap(),
-  ['i|<C-j>'] = map_key('<Esc>o'):with_noremap(),
+  -- ['i|<C-j>'] = map_key('<Esc>o'):with_noremap(),
   ['i|<C-e>'] = map_cmd([[pumvisible() ? "\<C-e>" : "\<End>"]]):with_noremap():with_expr(),
   -- command line
   ['c|<C-b>'] = map_key('<Left>'):with_noremap(),

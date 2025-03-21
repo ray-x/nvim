@@ -67,7 +67,8 @@ local function load_options()
     splitright     = true;
     switchbuf      = "useopen,usetab";
     backspace      = "indent,eol,start";
-    diffopt        = "filler,iwhite,internal,followwrap,algorithm:histogram,context:3,indent-heuristic";
+    diffopt        =
+    "filler,iwhite,internal,followwrap,algorithm:histogram,context:2,indent-heuristic,linematch:50";
     completeopt    = "menu,menuone,noselect", -- Show popup menu, even if there is one entry  menuone?
     jumpoptions    = "stack";
     showmode       = false;
@@ -190,7 +191,7 @@ local function load_options()
 
   if vim.opt.diff:get() then
     global_local = vim.tbl_extend('force', global_local, {
-      foldmethod = "diff", diffopt = 'context:0', foldlevel = 10, mouse = 'a'
+      foldmethod = "diff", foldlevel = 10, mouse = 'a'
     })
   end
 

@@ -40,6 +40,7 @@ function config.nvim_cmp()
     { name = 'path' },
     { name = 'buffer' },
     { name = 'sql' },
+    { name = 'shellcmds_history' },
   }
 
   if vim.o.ft == 'sql' or vim.o.ft == 'pgsql' then
@@ -182,6 +183,13 @@ function config.nvim_cmp()
       { name = 'path' },
     }, {
       { name = 'cmdline_history' },
+      {
+        name = 'shellcmds_history',
+        option = {
+          default_interval = 9000,
+          kind_text = '󱆃',
+        },
+      },
       {
         name = 'cmdline',
         option = {

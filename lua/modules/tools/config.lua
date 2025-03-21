@@ -101,19 +101,6 @@ function config.vim_dadbod_ui()
   end
 end
 
--- function config.project()
---   require('project_nvim').setup({
---     datapath = vim.fn.stdpath('data'),
---     ignore_lsp = { 'efm' },
---     exclude_dirs = { '~/.cargo/*' },
---     silent_chdir = true,
---     -- your configuration comes here
---     -- or leave it empty to use the default settings
---     -- refer to the configuration section below
---   })
---   require('telescope').load_extension('projects')
--- end
-
 function config.gitsigns()
   require('gitsigns').setup({
     signs = {
@@ -259,27 +246,7 @@ function config.dapui()
   })
 end
 
-function config.markdown()
-  vim.g.vim_markdown_frontmatter = 1
-  vim.g.vim_markdown_strikethrough = 1
-  vim.g.vim_markdown_folding_level = 6
-  vim.g.vim_markdown_override_foldtext = 1
-  vim.g.vim_markdown_folding_style_pythonic = 1
-  vim.g.vim_markdown_conceal = 1
-  vim.g.vim_markdown_conceal_code_blocks = 1
-  vim.g.vim_markdown_new_list_item_indent = 0
-  vim.g.vim_markdown_toc_autofit = 0
-  vim.g.vim_markdown_edit_url_in = 'vsplit'
-  vim.g.vim_markdown_strikethrough = 1
-  vim.g.vim_markdown_fenced_languages = {
-    'c++=javascript',
-    'js=javascript',
-    'json=javascript',
-    'jsx=javascript',
-    'tsx=javascript',
-  }
-end
-
+--
 --[[
 Use `git ls-files` for git files, use `find ./ *` for all files under work directory.
 ]]
@@ -635,3 +602,37 @@ config.hurl = function()
 end
 
 return config
+
+-- function config.markdown()
+--   vim.g.vim_markdown_frontmatter = 1
+--   vim.g.vim_markdown_strikethrough = 1
+--   vim.g.vim_markdown_folding_level = 6
+--   vim.g.vim_markdown_override_foldtext = 1
+--   vim.g.vim_markdown_folding_style_pythonic = 1
+--   vim.g.vim_markdown_conceal = 1
+--   vim.g.vim_markdown_conceal_code_blocks = 1
+--   vim.g.vim_markdown_new_list_item_indent = 0
+--   vim.g.vim_markdown_toc_autofit = 0
+--   vim.g.vim_markdown_edit_url_in = 'vsplit'
+--   vim.g.vim_markdown_strikethrough = 1
+--   vim.g.vim_markdown_fenced_languages = {
+--     'c++=javascript',
+--     'js=javascript',
+--     'json=javascript',
+--     'jsx=javascript',
+--     'tsx=javascript',
+--   }
+-- end
+
+-- function config.project()
+--   require('project_nvim').setup({
+--     datapath = vim.fn.stdpath('data'),
+--     ignore_lsp = { 'efm' },
+--     exclude_dirs = { '~/.cargo/*' },
+--     silent_chdir = true,
+--     -- your configuration comes here
+--     -- or leave it empty to use the default settings
+--     -- refer to the configuration section below
+--   })
+--   require('telescope').load_extension('projects')
+-- end

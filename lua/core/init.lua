@@ -37,23 +37,12 @@ local load_core = function()
   disable_distribution_plugins()
   leader_map()
 
-  -- override default colorscheme
-  vim.api.nvim_set_hl(0, 'StatusLine', { bg = 'None' })
-  vim.api.nvim_set_hl(0, 'StatusLineNC', { bg = 'None' })
-  vim.api.nvim_set_hl(0, 'Normal', { bg = 'None' })
-  vim.api.nvim_set_hl(0, 'Pmenu', { bg = 'None' })
-  vim.api.nvim_set_hl(0, 'SignColumn', { bg = 'None' })
-  vim.api.nvim_set_hl(0, 'FoldColumn', { bg = 'None' })
   require('core.options')
   -- require('core.mapping')
   require('core.runner')
-  require('keymap')
   require('core.event')
   _G.lprint = require('utils.log').lprint
   local fsz = require('core.lazy_nvim'):boot_strap() or 1024
-  if fsz < 10 * 1024 * 1024 then
-    require('core.colorscheme').load_colorscheme()
-  end
   -- get file size
   local fsize = vim.fn.getfsize(vim.fn.expand('%:p:f')) or 1
   if fsize >= 10 * 1024 * 1024 then
@@ -65,6 +54,12 @@ local load_core = function()
     require('modules.ui.galaxy').shine()
     return
   end
+
+  if fsz < 10 * 1024 * 1024 then
+    require('core.colorscheme').load_colorscheme()
+  end
+
+  require('keymap')
   require('core.commands')
   lprint('load compiled and lazy', uv.now() - start)
 
@@ -72,8 +67,6 @@ local load_core = function()
 
   lprint('lazy done', uv.now() - start)
   -- require('utils.markdown')
-
 end
 
 load_core()
-

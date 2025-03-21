@@ -6,6 +6,99 @@ return function(tools)
   -- local gitrepo = vim.fn.isdirectory('.git/index')
 
   local dev = _G.is_dev()
+
+  tools({
+    'sindrets/diffview.nvim',
+    cmd = {
+      'DiffviewOpen',
+      'DiffviewFilepistory',
+      'DiffviewFocusFiles',
+      'DiffviewToggleFiles',
+      'DiffviewRefresh',
+    },
+    opts = conf.diffview,
+  })
+
+  tools({
+    'lewis6991/gitsigns.nvim',
+    cond = cond,
+    config = conf.gitsigns,
+    -- keys = {']c', '[c'},  -- load by lazy.lua
+    event = { 'CmdlineEnter' },
+    lazy = false,
+  })
+
+  tools({
+    'ray-x/forgit.nvim',
+    dev = dev,
+    cmd = { 'Ga', 'Gaa', 'Gd', 'Glo', 'Gs', 'Gc', 'Gpl', 'Gps' },
+    event = { 'CmdwinEnter', 'CmdlineEnter' },
+    dependencies = {
+      { 'junegunn/fzf', build = './install --bin' },
+    },
+    config = function()
+      require('forgit').setup({
+        debug = true,
+        log_path = vim.fn.expand('$HOME') .. '/.cache/nvim/nvim_debug.log',
+        vsplit = false,
+        height_ratio = 0.8,
+      })
+    end,
+  })
+
+  tools({
+    'akinsho/git-conflict.nvim',
+    cmd = {
+      'GitConflictListQf',
+      'GitConflictChooseOurs',
+      'GitConflictChooseTheirs',
+      'GitConflictChooseBoth',
+      'GitConflictNextConflict',
+    },
+    config = conf.git_conflict,
+  })
+
+  tools({
+    'rbong/vim-flog',
+    cmd = { 'Flog', 'Flogsplit', 'Flg', 'Flgs' },
+    event = { 'FuncUndefined' },
+    dependencies = {
+      {
+        'tpope/vim-rhubarb',
+        cmd = { 'GBrowse' },
+        config = function()
+          vim.api.nvim_create_user_command('Browse', function(opts)
+            local url = opts.fargs[1]
+            -- for github append #Llinenumber
+            if url:find('github') then
+              url = url .. '#L' .. vim.fn.line('.')
+            end
+            vim.ui.open(url)
+          end, { nargs = 1 })
+          vim.keymap.set(
+            { 'n' },
+            '<leader>gb',
+            '<Cmd>Browse<CR>',
+            { noremap = true, silent = true }
+          )
+          vim.keymap.set({ 'x' }, 'gy', [['<,'>GBrowse!<CR>]], { noremap = true, silent = true })
+        end,
+      },
+      {
+        'tpope/vim-fugitive',
+        -- stylua: ignore
+        cmd = { 'Gvsplit', 'G', 'Gread', 'Git',
+          'Gedit', 'Gstatus', 'Gdiffsplit', 'Gvdiffsplit' },
+        event = { 'CmdwinEnter', 'CmdlineEnter' },
+      },
+    },
+  })
+
+  -- skip
+  if vim.o.diff then
+    return
+  end
+
   tools({
     'nvim-telescope/telescope.nvim',
     cmd = 'Telescope',
@@ -36,6 +129,7 @@ return function(tools)
       { 'nvim-telescope/telescope.nvim' },
     },
   })
+
   tools({
     'ray-x/mkdn.nvim',
     dev = _G.is_dev(),
@@ -251,30 +345,6 @@ return function(tools)
   })
 
   cmd = 'bash install.sh'
-  tools({
-    'sindrets/diffview.nvim',
-    cmd = {
-      'DiffviewOpen',
-      'DiffviewFilepistory',
-      'DiffviewFocusFiles',
-      'DiffviewToggleFiles',
-      'DiffviewRefresh',
-    },
-    opts = conf.diffview,
-  })
-
-  tools({
-    'rickhowe/diffchar.vim',
-    cond = function()
-      return vim.wo.diff
-    end,
-    init = function()
-      -- vim.g.DiffColors=3
-      vim.g.DiffUnit = 'Char'
-    end,
-    event = { 'BufEnter' },
-    cmd = { 'DiffviewOpen' },
-  })
 
   tools({
     'ray-x/sad.nvim',
@@ -301,86 +371,6 @@ return function(tools)
         log_path = vim.fn.expand('$HOME') .. '/.cache/nvim/nvim_debug.log',
       })
     end,
-  })
-  tools({
-    'lewis6991/gitsigns.nvim',
-    cond = cond,
-    config = conf.gitsigns,
-    -- keys = {']c', '[c'},  -- load by lazy.lua
-    event = { 'CmdlineEnter' },
-    lazy = false,
-  })
-
-  -- tools({
-  --   'ThePrimeagen/git-worktree.nvim',
-  --   event = { 'VeryLazy' },
-  --   cond = cond,
-  --   config = conf.worktree,
-  -- })
-  tools({
-    'ray-x/forgit.nvim',
-    dev = dev,
-    cmd = { 'Ga', 'Gaa', 'Gd', 'Glo', 'Gs', 'Gc', 'Gpl', 'Gps' },
-    event = { 'CmdwinEnter', 'CmdlineEnter' },
-    dependencies = {
-      { 'junegunn/fzf', build = './install --bin' },
-    },
-    config = function()
-      require('forgit').setup({
-        debug = true,
-        log_path = vim.fn.expand('$HOME') .. '/.cache/nvim/nvim_debug.log',
-        vsplit = false,
-        height_ratio = 0.8,
-      })
-    end,
-  })
-
-  tools({
-    'akinsho/git-conflict.nvim',
-    cmd = {
-      'GitConflictListQf',
-      'GitConflictChooseOurs',
-      'GitConflictChooseTheirs',
-      'GitConflictChooseBoth',
-      'GitConflictNextConflict',
-    },
-    config = conf.git_conflict,
-  })
-
-  tools({
-    'rbong/vim-flog',
-    cmd = { 'Flog', 'Flogsplit', 'Flg', 'Flgs' },
-    event = { 'FuncUndefined' },
-    dependencies = {
-      {
-        'tpope/vim-rhubarb',
-        cmd = { 'GBrowse' },
-        config = function()
-          vim.api.nvim_create_user_command('Browse', function(opts)
-            local url = opts.fargs[1]
-            -- for github append #Llinenumber
-            if url:find('github') then
-              url = url .. '#L' .. vim.fn.line('.')
-            end
-            vim.ui.open(url)
-          end, { nargs = 1 })
-          vim.keymap.set(
-            { 'n' },
-            '<leader>gb',
-            '<Cmd>Browse<CR>',
-            { noremap = true, silent = true }
-          )
-          vim.keymap.set({ 'x' }, 'gy', [['<,'>GBrowse!<CR>]], { noremap = true, silent = true })
-        end,
-      },
-      {
-        'tpope/vim-fugitive',
-        -- stylua: ignore
-        cmd = { 'Gvsplit', 'G', 'Gread', 'Git',
-          'Gedit', 'Gstatus', 'Gdiffsplit', 'Gvdiffsplit' },
-        event = { 'CmdwinEnter', 'CmdlineEnter' },
-      },
-    },
   })
   tools({
     'kevinhwang91/nvim-bqf',
@@ -430,7 +420,7 @@ return function(tools)
         { 'junegunn/fzf', build = './install --bin' },
       },
       opts = {
-        hls = { border = "TelescopeBorder", preview_border = "TelescopePreviewBorder" }
+        hls = { border = 'TelescopeBorder', preview_border = 'TelescopePreviewBorder' },
       },
     })
   end
@@ -447,33 +437,6 @@ return function(tools)
     end,
   })
 
-  tools({
-    'm4xshen/hardtime.nvim',
-    event = { 'CursorMoved', 'CursorMovedI' },
-    opts = {
-      max_count = 10,
-      enabled = true,
-      disable_mouse = false,
-      restriction_mode = 'hint', -- block or hint
-      restricted_keys = {
-        ['h'] = {}, -- dont restrict
-        ['j'] = {},
-        ['k'] = {},
-        ['l'] = {},
-
-        ['<Up>'] = { 'n' },
-        ['<Down>'] = { 'n' },
-        ['<Left>'] = { 'n' },
-        ['<Right>'] = { 'n' },
-      },
-      disabled_keys = {
-        ['<Up>'] = {},
-        ['<Down>'] = {},
-        ['<Left>'] = {},
-        ['<Right>'] = {},
-      }, -- no default disabled keys
-    },
-  })
 end
 
 -- tools({
@@ -582,4 +545,51 @@ end
 --     vim.env.DBEE_CONNECTIONS = vim.inspect(vim.g.connections)
 --     require('dbee').setup()
 --   end,
+-- })
+
+-- tools({
+--   'rickhowe/diffchar.vim',
+--   cond = function()
+--     return vim.wo.diff
+--   end,
+--   init = function()
+--     -- vim.g.DiffColors=3
+--     vim.g.DiffUnit = 'Char'
+--   end,
+--   event = { 'BufEnter' },
+--   cmd = { 'DiffviewOpen' },
+-- })
+-- tools({
+--   'ThePrimeagen/git-worktree.nvim',
+--   event = { 'VeryLazy' },
+--   cond = cond,
+--   config = conf.worktree,
+-- })
+--
+-- tools({
+--   'm4xshen/hardtime.nvim',
+--   event = { 'CursorMoved', 'CursorMovedI' },
+--   opts = {
+--     max_count = 10,
+--     enabled = true,
+--     disable_mouse = false,
+--     restriction_mode = 'hint', -- block or hint
+--     restricted_keys = {
+--       ['h'] = {}, -- dont restrict
+--       ['j'] = {},
+--       ['k'] = {},
+--       ['l'] = {},
+--
+--       ['<Up>'] = { 'n' },
+--       ['<Down>'] = { 'n' },
+--       ['<Left>'] = { 'n' },
+--       ['<Right>'] = { 'n' },
+--     },
+--     disabled_keys = {
+--       ['<Up>'] = {},
+--       ['<Down>'] = {},
+--       ['<Left>'] = {},
+--       ['<Right>'] = {},
+--     }, -- no default disabled keys
+--   },
 -- })

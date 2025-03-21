@@ -291,9 +291,12 @@ function config.go()
     dap_debug_gui = true,
     null_ls = {
       golangci_lint = {
+      enable = {'govet', 'ineffassign','revive'}, -- linters to enable; empty by default
         severity = vim.diagnostic.severity.HINT, -- severity level of the diagnostics
       },
     },
+
+
     lsp_impl = {
       enable = true,
       loadfile = true,

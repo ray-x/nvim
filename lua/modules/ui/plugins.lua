@@ -3,6 +3,9 @@
 --   return vim.api.nvim_call_function("winwidth", { 0 })
 -- end
 return function(ui)
+  if vim.wo.diff then
+    return
+  end
   local dev = _G.is_dev()
   local conf = require('modules.ui.config')
   ui({ 'nvim-tree/nvim-web-devicons', lazy = true })
@@ -24,9 +27,6 @@ return function(ui)
     lazy = true,
     config = conf.starry_conf,
   })
-  if vim.wo.diff then
-    return
-  end
 
   -- ui({
   --   'dstein64/nvim-scrollview',

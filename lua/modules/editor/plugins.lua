@@ -296,7 +296,7 @@ return function(editor)
   editor({
     'MeanderingProgrammer/render-markdown.nvim',
     -- ft = { 'markdown', 'md', 'jupyter', 'quarto' },
-    ft = {'codecompanion'},
+    -- ft = {'codecompanion'},
     cmd = { 'RenderMarkdown', 'RenderMarkdownToggle' },
     opts = {
       render_modes = { 'n', 'no', 'c' },

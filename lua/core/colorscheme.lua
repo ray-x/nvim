@@ -1,3 +1,9 @@
+local loading_theme
+if vim.o.diff then
+  loading_theme = 'default'
+  return
+end
+
 local function daylight()
   local h = tonumber(os.date('%H'))
   if h > 8 and h < 17 then
@@ -7,7 +13,6 @@ local function daylight()
   end
 end
 
-local loading_theme
 
 local function randomscheme()
   math.randomseed(os.time())

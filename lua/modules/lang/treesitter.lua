@@ -1,6 +1,6 @@
 local langtree = false
 -- stylua: ignore start
-local ts_ensure_installed = { "go", "css", "html", "javascript", "typescript", "json", "c", "java", "toml", "tsx", "lua", "cpp", "python", "rust", "yaml", "vue", "vim", "org"}
+local ts_ensure_installed = { "go", "css", "html", "javascript", "typescript", "json", "c", "java", "toml", "tsx", "lua", "cpp", "python", "rust", "yaml", "vue", "vim", "markdown", "markdown_inline"}
 -- stylua: ignore end
 
 local treesitter = function()
@@ -112,10 +112,10 @@ local treesitter_obj = function()
         },
         goto_next_end = {
           [']M'] = '@function.outer', -- use nvim 0.11 default
-          [']c'] = {
-            query = { '@loop.outer', '@conditional.outer', '@class.outer' },
-            desc = 'next scope',
-          },
+          -- [']c'] = {
+          -- query = { '@loop.outer', '@conditional.outer', '@class.outer' },
+          -- desc = 'next scope',
+          -- },
         },
         goto_previous_start = {
           ['[m'] = { query = { '@function.outer' }, desc = 'nearest func' },
@@ -141,12 +141,12 @@ local treesitter_obj = function()
           ['[M'] = { query = '@function.outer', desc = 'previous func' },
           ['[]'] = { query = '@class.outer', desc = 'previous class' },
         },
-        goto_next = {
-          [']d'] = { query = '@conditional.outer', desc = 'next conditional' },
-        },
-        goto_previous = {
-          ['[d'] = { query = '@conditional.outer', desc = 'previous conditional' },
-        },
+        -- goto_next = {
+        --   [']d'] = { query = '@conditional.outer', desc = 'next conditional' },
+        -- },
+        -- goto_previous = {
+        -- ['[d'] = { query = '@conditional.outer', desc = 'previous conditional' },
+        -- },
       },
       select = {
         enable = enable,
@@ -181,22 +181,22 @@ local treesitter_obj = function()
     enable = enable,
     enable_autocmd = false,
   })
-  local ts_repeat_move = require "nvim-treesitter.textobjects.repeatable_move"
+  local ts_repeat_move = require('nvim-treesitter.textobjects.repeatable_move')
 
--- Repeat movement with ; and ,
--- ensure ; goes forward and , goes backward regardless of the last direction
--- vim.keymap.set({ "n", "x", "o" }, ";", ts_repeat_move.repeat_last_move_next)
--- vim.keymap.set({ "n", "x", "o" }, ",", ts_repeat_move.repeat_last_move_previous)
+  -- Repeat movement with ; and ,
+  -- ensure ; goes forward and , goes backward regardless of the last direction
+  -- vim.keymap.set({ "n", "x", "o" }, ";", ts_repeat_move.repeat_last_move_next)
+  -- vim.keymap.set({ "n", "x", "o" }, ",", ts_repeat_move.repeat_last_move_previous)
 
--- vim way: ; goes to the direction you were moving.
-vim.keymap.set({ "n", "x", "o" }, ";", ts_repeat_move.repeat_last_move)
-vim.keymap.set({ "n", "x", "o" }, ",", ts_repeat_move.repeat_last_move_opposite)
+  -- vim way: ; goes to the direction you were moving.
+  vim.keymap.set({ 'n', 'x', 'o' }, ';', ts_repeat_move.repeat_last_move)
+  vim.keymap.set({ 'n', 'x', 'o' }, ',', ts_repeat_move.repeat_last_move_opposite)
 
--- Optionally, make builtin f, F, t, T also repeatable with ; and ,
-vim.keymap.set({ "n", "x", "o" }, "f", ts_repeat_move.builtin_f_expr, { expr = true })
-vim.keymap.set({ "n", "x", "o" }, "F", ts_repeat_move.builtin_F_expr, { expr = true })
-vim.keymap.set({ "n", "x", "o" }, "t", ts_repeat_move.builtin_t_expr, { expr = true })
-vim.keymap.set({ "n", "x", "o" }, "T", ts_repeat_move.builtin_T_expr, { expr = true })
+  -- Optionally, make builtin f, F, t, T also repeatable with ; and ,
+  vim.keymap.set({ 'n', 'x', 'o' }, 'f', ts_repeat_move.builtin_f_expr, { expr = true })
+  vim.keymap.set({ 'n', 'x', 'o' }, 'F', ts_repeat_move.builtin_F_expr, { expr = true })
+  vim.keymap.set({ 'n', 'x', 'o' }, 't', ts_repeat_move.builtin_t_expr, { expr = true })
+  vim.keymap.set({ 'n', 'x', 'o' }, 'T', ts_repeat_move.builtin_T_expr, { expr = true })
 end
 
 local treesitter_ref = function()

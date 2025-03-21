@@ -8,7 +8,7 @@ end
 -- https://github.com/nvim-treesitter/nvim-treesitter/blob/master/doc/nvim-treesitter.txt#L450
 
 local c = {
-  black = '#101010',
+  black = '#101015',
   black_two = '#282828',
   white = '#EFEFFF',
   white_two = '#CECECE',
@@ -65,6 +65,7 @@ local c = {
   background_one = '#1d2e38',
   background_two = '#2e2f3f',
   background_g = '#1e321f',
+  background_b = '#1e123f',
   background_three = '#323e43',
   background_four = '#445462',
 
@@ -76,7 +77,7 @@ local back = nil
 
 local Usual = {
   UsualHighlights = {
-    Normal = { fg = c.white },
+    Normal = { fg = c.white, bg = c.black },
     NormalFloat = { fg = c.white_two },
     Type = { fg = c.blue_three }, -- int, long, char, etc.
     StorageClass = { fg = c.blue_five }, -- static, register, volatile, etc.
@@ -115,7 +116,7 @@ local Usual = {
     NonText = { fg = c.gray_two },
     LineNr = { fg = c.gray_two },
     SignColumn = { bg = 'None' },
-    CursorLine = { fg = c.gray_one, bg = c.background_one },
+    CursorLine = { bg = c.background_one, bold = true },
     CursorColumn = { bg = c.purple_four },
     CursorLineNr = { fg = c.yellow_one, bold = true, underline = true },
     StatusLine = { fg = c.white_two, bg = c.background_three },
@@ -192,20 +193,22 @@ local Usual = {
   Diff = {
     DiffAdd = {
       fg = c.green_two,
-      bg = c.background_g,
+      bg = c.background_b,
       bold = true,
-      underdotted = true,
+      undercurl = true,
       sp = '#2284a1',
     },
     DiffChange = {
       bg = c.background_two,
+      -- fg = c.yellow,
       bold = true,
       underdotted = true,
-      sp = '#265646',
+      sp = c.yellow_one,
     },
     DiffText = {
       reverse = true,
       bg = c.green_seven,
+      undercurl = true,
     },
     DiffDelete = {
       fg = c.background_four,

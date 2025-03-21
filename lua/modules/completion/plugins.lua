@@ -36,6 +36,7 @@ return function(use)
       -- { 'hrsh7th/cmp-copilot' },
       { 'ray-x/cmp-treesitter', dev = _G.is_dev() },
       { 'ray-x/cmp-sql', dev = _G.is_dev(), ft = {'sql', 'psql'} },
+      { 'ray-x/cmp-shellcmds-history', dev = _G.is_dev() },
       { 'hrsh7th/cmp-nvim-lsp' },
       { 'saadparwaiz1/cmp_luasnip' },
       { 'kdheepak/cmp-latex-symbols', ft = {'markdown'} },
@@ -53,6 +54,83 @@ return function(use)
     'olimorris/codecompanion.nvim',
     event = { 'InsertEnter', 'CmdlineEnter' },
     opts = {
+      prompt_library = {
+        ['Code Expert'] = {
+          strategy = 'chat',
+          description = 'Get some special advice for your code',
+          opts = {
+            mapping = '<LocalLeader>ce',
+            modes = { 'v' },
+            short_name = 'expert',
+            auto_submit = true,
+            stop_context_insertion = true,
+            user_prompt = true,
+          },
+          prompts = {
+            {
+              role = 'system',
+              content = function(context)
+                return 'I want you to act as a senior '
+                  .. context.filetype
+                  .. ' developer. I will ask you specific questions and I want you to return concise explanations and codeblock examples.'
+              end,
+            },
+            {
+              role = 'user',
+              content = function(context)
+                local text = require('codecompanion.helpers.actions').get_code(
+                  context.start_line,
+                  context.end_line
+                )
+
+                return 'I have the following code:\n\n```'
+                  .. context.filetype
+                  .. '\n'
+                  .. text
+                  .. '\n```\n\n'
+              end,
+              opts = {
+                contains_code = true,
+              },
+            },
+          },
+        },
+        ['techwriter'] = {
+          strategy = 'chat',
+          description = 'Get advice of my writing',
+          opts = {
+            mapping = '<LocalLeader>tw',
+            modes = { 'v' },
+            short_name = 'techwriter',
+            auto_submit = true,
+            stop_context_insertion = true,
+            user_prompt = true,
+          },
+          prompts = {
+            {
+              role = 'system',
+              content = function(context)
+                return 'I want you to act as a technical writer. I will ask you to return rephrased paragraph for me.'
+              end,
+            },
+            {
+              role = 'user',
+              content = function(context)
+                local text = require('codecompanion.helpers.actions').get_code(
+                  context.start_line,
+                  context.end_line
+                )
+                return 'I have the following pragraph:\n\n```'
+                  .. 'txt'
+                  .. '\n'
+                  .. text
+                  .. '\n```\n\n'
+              end,
+              opts = {},
+            },
+          },
+        },
+      },
       adapters = {
         copilot = function()
           return require('codecompanion.adapters').extend('copilot', {

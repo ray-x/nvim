@@ -235,7 +235,8 @@ local function split_lines(value)
 end
 
 local on_hover = function()
-  local params = vim.lsp.util.make_position_params()
+  local params
+
   -- local clients = vim.lsp.buf_get_clients()
   local clients = vim.lsp.get_clients()
   local hoverProvider = false
@@ -248,9 +249,10 @@ local on_hover = function()
     then
       -- lprint('hover enabled for ', client.name)
       hoverProvider = true
+      params = vim.lsp.util.make_position_params(0, client.offset_encoding)
     end
   end
-  if hoverProvider == false then
+  if hoverProvider == false or params == nil then
     return ''
   end
   vim.lsp.buf_request(0, 'textDocument/hover', params, function(err, result, ctx, config)
