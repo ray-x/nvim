@@ -22,13 +22,9 @@ return function(editor)
     lazy = true,
   })
 
-  -- editor({
-  --   'ray-x/code_annotation.nvim',
-  --   event = { 'CursorHold', 'CursorHoldI' },
-  --   opts = {},
-  --   dev = dev,
-  -- })
-
+  if vim.o.diff then
+    return
+  end
   editor({
     'ray-x/yamlmatter.nvim',
     ft = 'markdown',
@@ -67,25 +63,18 @@ return function(editor)
   --  text objects i% and a%
   editor({
     'andymass/vim-matchup',
-    -- event = { 'CursorHold', 'CursorHoldI', 'VeryLazy' },
-    keys = { '%', '[' }, -- {, '<Plug>(matchup-%)', '<Plug>(matchup-g%)' },
+    event = { 'CursorHold', 'CursorHoldI', 'VeryLazy' },
+    keys = { '<Plug>(matchup-%)', '<Plug>(matchup-g%)' },
     cmd = { 'MatchupWhereAmI' }, --
     init = function()
-      vim.g.matchup_matchparen_deferred = 1
+      -- vim.g.matchup_matchparen_deferred = 1
       vim.g.matchup_matchparen_hi_surround_always = 1
       vim.g.matchup_matchparen_deferred_show_delay = 100
       vim.g.matchup_matchparen_deferred_hide_delay = 1000
     end,
     config = function()
-      local fsize = vim.fn.getfsize(vim.fn.expand('%:p:f'))
-      if fsize == nil or fsize < 0 then
-        fsize = 1
-      end
       local enabled = 1
-      if fsize > 500000 then
-        enabled = 0
-      end
-      if vim.tbl_contains({ 'markdown', 'txt', 'help' }, vim.bo.filetype) then
+      if vim.g.large_file or vim.tbl_contains({ 'txt' }, vim.bo.filetype) then
         enabled = 0
       end
       vim.g.matchup_enabled = enabled
@@ -95,14 +84,6 @@ return function(editor)
       vim.g.matchup_matchparen_hi_surround_always = enabled
       vim.g.matchup_matchparen_offscreen = { method = 'popup' }
       vim.cmd([[nnoremap <c-s-k> :<c-u>MatchupWhereAmI?<cr>]])
-
-      require('nvim-treesitter.configs').setup({
-        matchup = {
-          enable = enabled, -- mandatory, false will disable the whole extension
-          disable = { 'typescript', 'javascript', 'help', 'txt', 'markdown' }, -- optional, list of language that will be disabled
-          include_match_words = true,
-        },
-      })
     end,
   })
 
@@ -622,4 +603,11 @@ end
 --       desc = 'nabla',
 --     })
 --   end,
+-- })
+
+-- editor({
+--   'ray-x/code_annotation.nvim',
+--   event = { 'CursorHold', 'CursorHoldI' },
+--   opts = {},
+--   dev = dev,
 -- })

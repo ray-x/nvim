@@ -3,8 +3,8 @@ local langtree = false
 local ts_ensure_installed = { "go", "css", "html", "javascript", "typescript", "json", "c", "java", "toml", "tsx", "lua", "cpp", "python", "rust", "yaml", "vue", "vim", "markdown", "markdown_inline"}
 -- stylua: ignore end
 
+local enable = false
 local treesitter = function()
-  local enable = false
   local has_ts = pcall(require, 'nvim-treesitter.configs')
   if not has_ts then
     vim.notify('ts not installed')
@@ -172,6 +172,12 @@ local treesitter_obj = function()
         -- swap_previous = { ["<leader>A"] = "@parameter.inner" },
       },
     },
+
+    matchup = {
+      enable = enabled, -- mandatory, false will disable the whole extension
+      disable = { 'help', 'txt' }, -- optional, list of language that will be disabled
+      include_match_words = true,
+    },
     -- ensure_installed = "maintained"
     ensure_installed = ts_ensure_installed,
   })
@@ -199,23 +205,13 @@ local treesitter_obj = function()
   vim.keymap.set({ 'n', 'x', 'o' }, 'T', ts_repeat_move.builtin_T_expr, { expr = true })
 end
 
-local treesitter_ref = function()
-  local enable
-  if vim.fn.line('$') > 5000 then -- skip for large file
-    lprint('skip treesitter')
-    enable = false
-  else
-    enable = true
-  end
-
-  -- print('load treesitter refactor', vim.fn.line('$'))
-
-  require('nvim-treesitter.configs').setup({
-    autopairs = { enable = enable },
-    autotag = { enable = enable },
-  })
-  local parser_config = require('nvim-treesitter.parsers').get_parser_configs()
-end
+-- local treesitter_ref = function()
+-- require('nvim-treesitter.configs').setup({
+-- autopairs = { enable = enable },
+-- autotag = { enable = enable },
+-- })
+-- local parser_config = require('nvim-treesitter.parsers').get_parser_configs()
+-- end
 
 -- function textsubjects()
 --   local enable = true
@@ -239,15 +235,11 @@ end
 
 local treesitter_context = function(width)
   local ok, ts = pcall(require, 'nvim-treesitter')
-  if not ok or not ts then
+  if not ok or not ts or vim.g.large_file then
     return ' '
   end
   local en_context = true
 
-  if vim.fn.line('$') > 10000 then -- skip for large file
-    -- lprint('skip treesitter')
-    return ' '
-  end
   local disable_ft = {
     'NvimTree',
     'neo-tree',
@@ -257,7 +249,6 @@ local treesitter_context = function(width)
     'clap_input',
     'clap_spinner',
     'TelescopePrompt',
-    'csv',
     'txt',
     'defx',
   }
@@ -304,12 +295,6 @@ vim.api.nvim_create_autocmd({ 'FileType' }, {
     if vim.tbl_contains(ts_ensure_installed, ft) then
       return
     end
-    -- in case ts not installed
-
-    -- local fsize = vim.fn.getfsize(vim.fn.expand('%:p:f')) or 1
-    -- if fsize < 100000 then
-    --   vim.cmd('syntax on')
-    -- end
   end,
 })
 return {

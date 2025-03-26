@@ -102,7 +102,7 @@ function config.vim_dadbod_ui()
 end
 
 function config.gitsigns()
-  require('gitsigns').setup({
+  opts = {
     signs = {
       add = {
         -- hl = 'GitGutterAdd',
@@ -174,7 +174,7 @@ function config.gitsigns()
         return { { au, 'Ignore' }, { string.format('[%s]', d), 'LineNrBelow' }, { text, 'GitSignsCurrentLineBlame' } }
     end,
     diff_opts = { internal = true },
-  })
+  }
 
   vim.api.nvim_set_hl(0, 'GitSignsAddInline', { underdotted = true, default = true, sp = 'green' }) -- diff mode: Deleted line |diff.txt|
   vim.api.nvim_set_hl(
@@ -188,6 +188,7 @@ function config.gitsigns()
     { undercurl = true, default = true, sp = 'darkcyan' }
   ) -- diff mode: Deleted line |diff.txt|
   vim.api.nvim_create_user_command('Stage', "'<,'>Gitsigns stage_hunk", { range = true })
+  return opts
 end
 
 local function round(x)

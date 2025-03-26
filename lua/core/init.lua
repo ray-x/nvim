@@ -42,7 +42,7 @@ local load_core = function()
   require('core.runner')
   require('core.event')
   _G.lprint = require('utils.log').lprint
-  local fsz = require('core.lazy_nvim'):boot_strap() or 1024
+  local fsz = require('core.lazy_nvim'):boot_strap()
   -- get file size
   local fsize = vim.fn.getfsize(vim.fn.expand('%:p:f')) or 1
   if fsize >= 10 * 1024 * 1024 then
@@ -55,18 +55,25 @@ local load_core = function()
     return
   end
 
-  if fsz < 10 * 1024 * 1024 then
-    require('core.colorscheme').load_colorscheme()
-  end
-
+  require('core.colorscheme').load_colorscheme()
   require('keymap')
   require('core.commands')
   lprint('load compiled and lazy', uv.now() - start)
 
+  if fsz >= 1 * 1024 * 1024 then
+    vim.g.large_file = true
+  end
+  if fsz >= 4 * 1024 * 1024 then
+    g.huge_file = true
+  end
   require('core.lazy').setup(fsz)
 
   lprint('lazy done', uv.now() - start)
-  -- require('utils.markdown')
 end
+
+local packer = os.getenv('PACKER_DIR')
+-- if packer then
+--   return
+-- end
 
 load_core()

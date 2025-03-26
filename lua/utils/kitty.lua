@@ -214,11 +214,7 @@ local change_background_sync = function(color)
   vim.fn.systemlist({ 'kitty', '@', 'set-colors', 'background=' .. color })
 end
 
-local change_background = function(color)
-  if not has_support() then
-    return ''
-  end
-  lprint('change background', color)
+local change_background_async = function(color)
   vim.fn.jobstart({ 'kitty', '@', 'set-colors', 'background=' .. color }, {
     cwd = '/usr/bin/',
     detach = true,
@@ -229,6 +225,18 @@ local change_background = function(color)
       lprint('kitty set bgcolor on stdout', code, data, event, color)
     end,
   })
+end
+
+local change_background = function(color, async)
+  if not has_support() then
+    lprint('change bg no support')
+    return ''
+  end
+  lprint('change background', color)
+  if async then
+    return change_background_async(color)
+  end
+  change_background_sync(color)
 end
 
 local function on_leave(color)
@@ -245,7 +253,7 @@ kitty.change_bg = function(color)
   kitty.get_kitty_background({
     color = color,
     callback = function(c)
-      change_background(c)
+      change_background(c, true)
     end,
   })
   on_leave()

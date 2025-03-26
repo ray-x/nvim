@@ -400,10 +400,14 @@ end, { desc = 'nextdiff/hunk' })
 
 keymap.amend('n', '[c', function(original)
   if not vim.wo.diff then
-    vim.schedule(function()
-      local gs = package.loaded.gitsigns
-      gs.prev_hunk()
-    end)
+    if vim.b.gitsigns_status and vim.b.gitsigns_status ~= '' then
+      vim.schedule(function()
+        local gs = package.loaded.gitsigns
+        gs.prev_hunk()
+      end)
+    else
+      require('treesitter-context').go_to_context(vim.v.count1)
+    end
   else
     original()
   end

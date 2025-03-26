@@ -291,11 +291,13 @@ return function(lang)
   lang({
     'nvim-treesitter/nvim-treesitter-context',
     dependencies = { 'nvim-treesitter' },
-    event = { 'WinScrolled', 'CmdlineEnter' },
-    config = function()
-      require('treesitter-context').setup({
-        enable = false, -- Enable this plugin (Can be enabled/disabled later via commands)
-        max_lines = 2, -- How many lines the window should span. Values <= 0 mean no limit.
+    -- event = { 'WinScrolled', 'CmdlineEnter' },
+    event = 'VeryLazy',
+    opts = function()
+      return {
+        enable = true, -- Enable this plugin (Can be enabled/disabled later via commands)
+        max_lines = 0, -- How many lines the window should span. Values <= 0 mean no limit.
+        min_win_height = 0, -- Minimum height of the window, content will be truncated if necessary.
         trim_scope = 'outer', -- Which context lines to discard if `max_lines` is exceeded. Choices: 'inner', 'outer'
         mode = 'topline', -- Line used to calculate context. Choices: 'cursor', 'topline'
         patterns = { -- Match patterns for TS nodes. These get wrapped to match at word boundaries.
@@ -311,15 +313,10 @@ return function(lang)
             'case',
           },
         },
-      })
-
-      vim.keymap.set('n', '[C', function()
-        require('treesitter-context').go_to_context()
-      end, { silent = true, desc = 'go to context' })
+      }
     end,
   })
 
-  --   'HiPhish/nvim-ts-rainbow2',
   lang({
     'hiphish/rainbow-delimiters.nvim',
     event = 'VeryLazy',

@@ -22,7 +22,7 @@ return function(tools)
   tools({
     'lewis6991/gitsigns.nvim',
     cond = cond,
-    config = conf.gitsigns,
+    opts = conf.gitsigns,
     -- keys = {']c', '[c'},  -- load by lazy.lua
     event = { 'CmdlineEnter' },
     lazy = false,
@@ -36,14 +36,12 @@ return function(tools)
     dependencies = {
       { 'junegunn/fzf', build = './install --bin' },
     },
-    config = function()
-      require('forgit').setup({
-        debug = true,
-        log_path = vim.fn.expand('$HOME') .. '/.cache/nvim/nvim_debug.log',
-        vsplit = false,
-        height_ratio = 0.8,
-      })
-    end,
+    opts = {
+      debug = true,
+      log_path = vim.fn.expand('$HOME') .. '/.cache/nvim/nvim_debug.log',
+      vsplit = false,
+      height_ratio = 0.8,
+    },
   })
 
   tools({
@@ -432,11 +430,8 @@ return function(tools)
     event = { 'User KittyScrollbackLaunch' },
     -- version = '*', -- latest stable version, may have breaking changes if major version changed
     -- version = '^4.0.0', -- pin major version, include fixes and features that do not have breaking changes
-    config = function()
-      require('kitty-scrollback').setup()
-    end,
+    opts = {},
   })
-
 end
 
 -- tools({
