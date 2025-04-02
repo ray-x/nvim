@@ -1,6 +1,7 @@
 local langtree = false
 -- stylua: ignore start
-local ts_ensure_installed = { "go", "css", "html", "javascript", "typescript", "json", "c", "java", "toml", "tsx", "lua", "cpp", "python", "rust", "yaml", "vue", "vim", "markdown", "markdown_inline"}
+local ts_ensure_installed = { "go", "css", "html", "javascript", "typescript", "json", "c", "java", "toml", "tsx", "lua",
+  "cpp", "python", "rust", "yaml", "vue", "vim", "markdown", "markdown_inline" }
 -- stylua: ignore end
 
 local enable = false
@@ -12,8 +13,6 @@ local treesitter = function()
   end
   local lines = vim.fn.line('$')
   if lines > 100000 then -- skip some settings for large file
-    vim.cmd([[syntax manual]])
-    print('skip treesitter')
     return
   end
 

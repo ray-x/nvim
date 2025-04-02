@@ -282,6 +282,7 @@ return function(lang)
         -- See the configuration section for more details
         -- Load luvit types when the `vim.uv` word is found
         { path = 'luvit-meta/library', words = { 'vim%.uv' } },
+        { path = '${3rd}/luv/library', words = { 'vim%.uv' } },
       },
     },
   })
@@ -296,7 +297,7 @@ return function(lang)
     opts = function()
       return {
         enable = true, -- Enable this plugin (Can be enabled/disabled later via commands)
-        max_lines = 0, -- How many lines the window should span. Values <= 0 mean no limit.
+        max_lines = 2, -- How many lines the window should span. Values <= 0 mean no limit.
         min_win_height = 0, -- Minimum height of the window, content will be truncated if necessary.
         trim_scope = 'outer', -- Which context lines to discard if `max_lines` is exceeded. Choices: 'inner', 'outer'
         mode = 'topline', -- Line used to calculate context. Choices: 'cursor', 'topline'

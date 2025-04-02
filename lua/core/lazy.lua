@@ -41,31 +41,12 @@ function setup(fsize)
     'defx',
   }
 
-  fsize = fsize or vim.fn.getfsize(vim.fn.expand('%:p:f'))
   if fsize == nil or fsize < 0 then
-    fsize = 1
+    fsize = 2048
   end
-
-  local syn_on = not vim.tbl_contains(disable_ft, vim.bo.filetype)
-
-  -- local fname = vim.fn.expand("%:p:f")
-  -- if fsize > 2 * 1024 * 1024 then
-  --   lprint('syntax off')
-  --   print('syntax off, enable it by :setlocal syntax=on')
-  --   vim.cmd([[syntax off]])
-  -- else
-  --   if not syn_on then
-  --     vim.cmd([[syntax manual]])
-  --   end
-  -- end
-  lprint('syntax', vim.uv.now() - start)
 
   vim.g.vimsyn_embed = 'lPr'
 
-  -- vim.cmd([[autocmd FileType vista,guihua,guihua_rust setlocal syntax=on]])
-  -- vim.cmd(
-  --   [[autocmd FileType * silent! lua if vim.fn.wordcount()['bytes'] > 2048000 then print("syntax off") vim.cmd("setlocal syntax=off") end]]
-  -- )
   vim.cmd([[doautocmd User LoadLazyPlugin]])
   vim.cmd('tabdo windo set relativenumber')
   -- vim.cmd('highlight clear ColorColumn')
@@ -123,6 +104,5 @@ vim.defer_fn(function()
       require('mini.sessions').write(folder)
     end
   end
-
 end, lazy_timer)
 return { setup = setup }

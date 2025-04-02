@@ -33,20 +33,22 @@ end
 local load_core = function()
   require('core.helper').init()
 
+  _G.lprint = require('utils.log').lprint
   -- print(vim.inspect(debug.traceback()))
   disable_distribution_plugins()
   leader_map()
+  lprint('load core')
 
   require('core.options')
-  -- require('core.mapping')
   require('core.runner')
   require('core.event')
-  _G.lprint = require('utils.log').lprint
-  local fsz = require('core.lazy_nvim'):boot_strap()
+  local fsize = require('core.lazy_nvim'):boot_strap() or 10
   -- get file size
-  local fsize = vim.fn.getfsize(vim.fn.expand('%:p:f')) or 1
+  lprint('load core done', uv.now() - start)
+  local theme
   if fsize >= 10 * 1024 * 1024 then
-    return
+    lprint('file size too large, skip loading')
+    theme = 'galaxy'
   end
   if vim.wo.diff then
     vim.wo.wrap = true
@@ -55,25 +57,20 @@ local load_core = function()
     return
   end
 
-  require('core.colorscheme').load_colorscheme()
+  require('core.colorscheme').load_colorscheme(theme)
   require('keymap')
   require('core.commands')
   lprint('load compiled and lazy', uv.now() - start)
 
-  if fsz >= 1 * 1024 * 1024 then
+  if fsize >= 1 * 1024 * 1024 then
     vim.g.large_file = true
   end
-  if fsz >= 4 * 1024 * 1024 then
-    g.huge_file = true
+  if fsize >= 4 * 1024 * 1024 then
+    vim.g.huge_file = true
   end
-  require('core.lazy').setup(fsz)
+  require('core.lazy').setup(fsize)
 
   lprint('lazy done', uv.now() - start)
 end
-
-local packer = os.getenv('PACKER_DIR')
--- if packer then
---   return
--- end
 
 load_core()

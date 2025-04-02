@@ -438,7 +438,7 @@ M.setup = function(_)
           local height = vim.api.nvim_win_get_height(opts.winid) * 3 / 2
           local lines = vim.split(path:head(height), '[\r]?\n')
           vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, lines)
-          vim.api.nvim_set_option_value('ft', opts.ft, {buf = bufnr})
+          vim.api.nvim_set_option_value('ft', opts.ft, { buf = bufnr })
         end,
         timeout_hook = function(filepath, bufnr, opts)
           local path = require('plenary.path'):new(filepath)
@@ -551,6 +551,7 @@ M.setup = function(_)
   telescope.load_extension('gosource')
   -- telescope.load_extension('smart_history')
   telescope.load_extension('dumb_jump')
+  telescope.load_extension('shell_history')
 
   if vim.o.ft == 'markdown' then
     loader('telescope-heading.nvim')

@@ -36,7 +36,7 @@ return function(use)
       -- { 'hrsh7th/cmp-copilot' },
       { 'ray-x/cmp-treesitter', dev = _G.is_dev() },
       { 'ray-x/cmp-sql', dev = _G.is_dev(), ft = {'sql', 'psql'} },
-      { 'ray-x/cmp-shellcmds-history', dev = _G.is_dev() },
+      { 'ray-x/shell-history.nvim', dev = _G.is_dev() },
       { 'hrsh7th/cmp-nvim-lsp' },
       { 'saadparwaiz1/cmp_luasnip' },
       { 'kdheepak/cmp-latex-symbols', ft = {'markdown'} },

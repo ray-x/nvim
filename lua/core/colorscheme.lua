@@ -50,6 +50,8 @@ local function load_colorscheme(theme)
   lprint('loading theme: ' .. theme)
   if theme == 'galaxy' then
     require('modules.ui.galaxy').shine()
+  elseif theme == 'default' then
+    vim.cmd.colorscheme('default')
   else
     require('lazy').load({ plugins = { theme } })
     vim.api.nvim_set_hl(0, 'ColorColumn', {})

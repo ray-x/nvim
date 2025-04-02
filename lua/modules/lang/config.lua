@@ -291,11 +291,10 @@ function config.go()
     dap_debug_gui = true,
     null_ls = {
       golangci_lint = {
-      enable = {'govet', 'ineffassign','revive'}, -- linters to enable; empty by default
+        enable = { 'govet', 'ineffassign', 'revive' }, -- linters to enable; empty by default
         severity = vim.diagnostic.severity.HINT, -- severity level of the diagnostics
       },
     },
-
 
     lsp_impl = {
       enable = true,
@@ -386,19 +385,19 @@ function config.dap()
 end
 
 function config.clangd()
-    local capabilities = vim.lsp.protocol.make_client_capabilities()
-    capabilities.offsetEncoding = { 'utf-16' }
-    return {
-      server = {
-        capabilities = capabilities,
-        on_attach = function(client, bufnr)
-          require('navigator.lspclient.mapping').setup({ client = client, bufnr = bufnr }) -- setup navigator keymaps here,
-          require('navigator.dochighlight').documentHighlight(bufnr)
-          require('navigator.codeAction').code_action_prompt(bufnr)
-          -- otherwise, you can define your own commands to call navigator functions
-        end,
-      },
-    }
+  local capabilities = vim.lsp.protocol.make_client_capabilities()
+  capabilities.offsetEncoding = { 'utf-16' }
+  return {
+    server = {
+      capabilities = capabilities,
+      on_attach = function(client, bufnr)
+        require('navigator.lspclient.mapping').setup({ client = client, bufnr = bufnr }) -- setup navigator keymaps here,
+        require('navigator.dochighlight').documentHighlight(bufnr)
+        require('navigator.codeAction').code_action_prompt(bufnr)
+        -- otherwise, you can define your own commands to call navigator functions
+      end,
+    },
+  }
 end
 
 function config.context_vt()
