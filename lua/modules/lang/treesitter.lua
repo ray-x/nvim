@@ -173,7 +173,7 @@ local treesitter_obj = function()
     },
 
     matchup = {
-      enable = enabled, -- mandatory, false will disable the whole extension
+      enable = enable, -- mandatory, false will disable the whole extension
       disable = { 'help', 'txt' }, -- optional, list of language that will be disabled
       include_match_words = true,
     },
@@ -182,10 +182,6 @@ local treesitter_obj = function()
   })
 
   lprint('loading ts obj')
-  require('ts_context_commentstring').setup({
-    enable = enable,
-    enable_autocmd = false,
-  })
   local ts_repeat_move = require('nvim-treesitter.textobjects.repeatable_move')
 
   -- Repeat movement with ; and ,
