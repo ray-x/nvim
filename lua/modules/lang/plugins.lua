@@ -69,7 +69,6 @@ return function(lang)
     event = { 'CursorHold', 'CursorHoldI' },
   })
 
-  lang({ 'JoosepAlviste/nvim-ts-context-commentstring', event = 'CursorHold' })
 
   lang({
     'chrisgrieser/nvim-various-textobjs',
@@ -92,13 +91,30 @@ return function(lang)
   })
 
   local jsft =
-    { 'typescript', 'typescriptreact', 'javascript', 'javascriptreact', 'js', 'jsx', 'ts', 'tsx' }
+  { 'typescript', 'typescriptreact', 'javascript', 'javascriptreact', 'html', 'js', 'jsx', 'ts', 'tsx' }
+
+
   if typecheck(jsft) then
     lang({
       'pmizio/typescript-tools.nvim',
       event = 'VeryLazy',
+      ft = jsft,
       opts = {},
     })
+
+    lang({
+      'JoosepAlviste/nvim-ts-context-commentstring',
+      ft = jsft,
+      event = 'CursorHold',
+      config = function()
+        require('ts_context_commentstring').setup({
+          enable = true,
+          enable_autocmd = false,
+        })
+      end
+    })
+
+    lang({ 'yardnsm/vim-import-cost', ft = jsft, cmd = 'ImportCost' })
   end
   lang({
     'bennypowers/nvim-regexplainer',
@@ -128,13 +144,13 @@ return function(lang)
     })
     lang({ 'metakirby5/codi.vim', ft = { 'python', 'javascript' }, cmd = { 'Codi', 'CodiNew' } })
     lang({ 'Vigemus/iron.nvim', ft = 'python', config = conf.iron })
-    lang({ 'yardnsm/vim-import-cost', ft = { 'javascript' }, cmd = 'ImportCost' })
-    lang({
-      'mfussenegger/nvim-dap-python',
-      config = require('modules.lang.dap.py').config,
-      event = { 'CmdlineEnter' },
-    })
   end
+
+  lang({
+    'mfussenegger/nvim-dap-python',
+    ft = { 'python' },
+    config = require('modules.lang.dap.py').config,
+  })
 
   lang({
     'ray-x/go.nvim',
@@ -162,7 +178,8 @@ return function(lang)
       'GoModifyTags',
     },
     ft = { 'go', 'gomod', 'gosum', 'gotmpl', 'gohtmltmpl', 'gotexttmpl' },
-    opts = conf.go,
+    -- opts = conf.go,
+    config = conf.go,
   })
 
   lang({
@@ -296,12 +313,12 @@ return function(lang)
     event = 'VeryLazy',
     opts = function()
       return {
-        enable = true, -- Enable this plugin (Can be enabled/disabled later via commands)
-        max_lines = 2, -- How many lines the window should span. Values <= 0 mean no limit.
-        min_win_height = 0, -- Minimum height of the window, content will be truncated if necessary.
+        enable = true,        -- Enable this plugin (Can be enabled/disabled later via commands)
+        max_lines = 2,        -- How many lines the window should span. Values <= 0 mean no limit.
+        min_win_height = 0,   -- Minimum height of the window, content will be truncated if necessary.
         trim_scope = 'outer', -- Which context lines to discard if `max_lines` is exceeded. Choices: 'inner', 'outer'
-        mode = 'topline', -- Line used to calculate context. Choices: 'cursor', 'topline'
-        patterns = { -- Match patterns for TS nodes. These get wrapped to match at word boundaries.
+        mode = 'topline',     -- Line used to calculate context. Choices: 'cursor', 'topline'
+        patterns = {          -- Match patterns for TS nodes. These get wrapped to match at word boundaries.
           -- For all filetypes
           default = {
             'class',
@@ -422,19 +439,19 @@ return function(lang)
             return false
           end
           return vim.fn.win_gettype(win) == ''
-            and vim.wo[win].winbar == ''
-            and vim.bo[buf].bt == ''
-            and (not vim.tbl_contains({ 'help', 'guihua', 'terminal' }, vim.bo[buf].buftype))
-            and (
-              vim.bo[buf].ft == 'markdown'
-              or (
-                buf
+              and vim.wo[win].winbar == ''
+              and vim.bo[buf].bt == ''
+              and (not vim.tbl_contains({ 'help', 'guihua', 'terminal' }, vim.bo[buf].buftype))
+              and (
+                vim.bo[buf].ft == 'markdown'
+                or (
+                  buf
                   and vim.api.nvim_buf_is_valid(buf)
                   and (pcall(vim.treesitter.get_parser, buf, vim.bo[buf].ft))
                   and true
-                or false
+                  or false
+                )
               )
-            )
         end,
         attach_events = {
           'OptionSet',
