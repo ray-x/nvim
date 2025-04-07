@@ -86,25 +86,39 @@ local function printInfo(level, msg)
     icon = ''
     hl = 'ErrorMsg'
   elseif level == vim.log.levels.WARN then
+    icon = ''
     hl = 'WarningMsg'
   elseif level == vim.log.levels.DEBUG then
     hl = 'String'
   end
 
-  vim.cmd(string.format('echohl %s', hl))
   local msgs = vim.split(msg, '\n')
   msg = vim.fn.join(msgs, ' ')
-  -- lprint(msg)
-  vim.cmd('echohl ' .. hl)
 
-  local m = string.gsub(msg, [["]], [[']])
-  vim.cmd(string.format([[echomsg "%s  %s"]], icon, m))
-  vim.cmd('echohl None')
+  -- Wrap in pcall to prevent errors from crashing Neovim
+  local function safe_echo()
+    local ok, err = pcall(function()
+      api.nvim_echo({ { icon, hl }, {' '}, { msg, hl } }, true, {})
+    end)
+    if not ok then
+      lprint("Echo failed:", err)
+      -- Fallback to print if echo fails
+      print(icon .. " " .. msg)
+    end
+  end
+
+  if vim.in_fast_event() then
+    vim.schedule(function()
+      safe_echo()
+    end)
+  else
+    safe_echo()
+  end
 end
 
-vim.api.nvim_set_hl(0, 'NotifyBackground', { fg = '#8fafef', bg = '#101118' })
+-- vim.api.nvim_set_hl(0, 'NotifyBackground', { fg = '#8fafef', bg = '#101118' })
 -- local msg = [[go test -run \'^TestFetchEntityRisks$\' ./internal/store/risk succeed ]]
--- printInfo( 2, msg)
+-- printInfo( 3, msg)
 
 local function notify(msg, level, opts, no_cache)
   if level == vim.NIL or level == nil then
@@ -115,13 +129,13 @@ local function notify(msg, level, opts, no_cache)
     level = vim.log.levels[level:upper()] or vim.log.levels.INFO
   end
   opts = opts or {}
+  lprint('msg: ', msg, level, opts)
   if level >= (config.min_level or vim.log.levels.INFO) then
     StatusModule.push('nvim', { mandat = msg, title = opts.title, icon = opts.icon })
     if not no_cache then
       table.insert(notify_msg_cache, { msg = msg, level = level, opts = opts })
     end
   end
-  -- lprint(msg, level, opts)
   if level > vim.log.levels.WARN and not vim.g.vscode and not vim.wo.diff then
     if vim.in_fast_event() then
       vim.schedule(function()
@@ -131,13 +145,7 @@ local function notify(msg, level, opts, no_cache)
       require('notify').notify(msg, level, opts)
     end
   else
-    if vim.in_fast_event() then
-      vim.schedule(function()
-        printInfo(level, msg)
-      end)
-    else
-      printInfo(level, msg)
-    end
+    printInfo(level, msg)
   end
 end
 
