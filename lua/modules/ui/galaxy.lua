@@ -195,20 +195,16 @@ local Usual = {
       fg = c.green_two,
       bg = c.background_b,
       bold = true,
-      undercurl = true,
       sp = '#2284a1',
     },
     DiffChange = {
       bg = c.background_two,
       -- fg = c.yellow,
       bold = true,
-      underdotted = true,
-      sp = c.yellow_one,
     },
     DiffText = {
       reverse = true,
       bg = c.green_seven,
-      undercurl = true,
     },
     DiffDelete = {
       fg = c.background_four,
