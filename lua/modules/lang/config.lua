@@ -159,10 +159,10 @@ function config.navigator()
         'tflint',
         'terraform_lsp',
         'terraformls',
-      }, -- a list of lsp not enable auto-format (e.g. if you using efm or vim-codeformat etc)
+      },                                 -- a list of lsp not enable auto-format (e.g. if you using efm or vim-codeformat etc)
       disable_lsp = { 'rust_analyzer' }, --e.g {denols} , use typescript.nvim
       -- code_lens = true,
-      disply_diagnostic_qf = false, -- update diagnostic in quickfix window
+      disply_diagnostic_qf = false,      -- update diagnostic in quickfix window
       denols = { filetypes = {} },
       rename = { style = 'floating-preview' },
       -- lua_ls = {
@@ -229,6 +229,7 @@ function config.navigator()
   -- require"navigator".setup(nav_cfg)
   return nav_cfg
 end
+
 function config.luapad()
   require('luapad').setup({
     count_limit = 150000,
@@ -247,6 +248,7 @@ function config.luapad()
     },
   })
 end
+
 function config.go()
   vim.defer_fn(function()
     vim.cmd('augroup gonvim')
@@ -289,9 +291,11 @@ function config.go()
     -- gofmt = "golines",
     dap_debug_vt = true,
     dap_debug_gui = true,
+    golangci_lint = {
+      disable = { 'unused' },            -- linters to enable; empty by default
+    },
     null_ls = {
       golangci_lint = {
-        enable = { 'govet', 'revive' }, -- linters to enable; empty by default
         severity = vim.diagnostic.severity.HINT, -- severity level of the diagnostics
       },
     },

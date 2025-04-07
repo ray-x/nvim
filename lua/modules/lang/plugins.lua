@@ -178,8 +178,9 @@ return function(lang)
       'GoModifyTags',
     },
     ft = { 'go', 'gomod', 'gosum', 'gotmpl', 'gohtmltmpl', 'gotexttmpl' },
+    event = { 'VeryLazy' },
     -- opts = conf.go,
-    config = conf.go,
+    opts = conf.go,
   })
 
   lang({
