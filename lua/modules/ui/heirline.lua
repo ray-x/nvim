@@ -1,6 +1,6 @@
 local fn = vim.fn
 local api = vim.api
-local state = {disable_title_update = false}
+local state = { disable_title_update = false }
 local ts = ''
 local uv = vim.uv
 local treesitter_context = require('modules.lang.treesitter').context
@@ -39,17 +39,12 @@ local function set_title(str)
 
   -- vim.cmd("set titlestring+=%{substitute(getcwd(), $HOME, '~', '')}")
 end
-local update_title = function(width)
+local update_title = function(ts, width)
   width = width or vim.o.columns
   if width < 50 then
     return ''
   end
   width = width * 0.8
-  local ok
-  ok, ts = pcall(treesitter_context, width)
-  if not ok or not ts or string.len(ts) < 3 then
-    return ''
-  end
 
   -- cut of nerdfont+space in begining of the ts
   -- split ts with space
@@ -72,12 +67,12 @@ end
 local current_function = function()
   -- lprint('current_function width', width)
   local wwidth = winwidth()
-  width = wwidth * 0.5
+  width = wwidth * 0.8
   local ok
   if running % 5 == 1 and not state.disable_title_update then
     ok, ts = pcall(treesitter_context, 400)
-    if not ok or not ts or string.len(ts) < 3 then
-      return ' '
+    if not ok or not ts or string.len(ts) < 5 then
+      return {{' ', 'green'}}
     end
   end
 
@@ -89,10 +84,13 @@ local current_function = function()
     title = title .. '->' .. ts
   end
 
-  if not state.disable_title_update and running % 5 == 1 then
-    update_title()
+  local ok
+  ok, ts = pcall(treesitter_context, width)
+  if not ok or not ts or string.len(ts) < 3 then
+    return {{' ', 'green'}}
   end
-  running = running + 1
+  update_title(ts)
+  path = vim.fn.pathshorten(path)
   -- split the contex with '->' and use different colors
   local parts = vim.split(ts, '->')
   local length = 0
@@ -104,12 +102,12 @@ local current_function = function()
     part = part:gsub('class', '')
     part = part:gsub('struct', '')
     part = part:gsub('string', '')
-    part = part:gsub('int64', '󱂋')
-    part = part:gsub('int', '󱂋')
     part = part:gsub('float64', '')
     part = part:gsub('float', '')
     part = part:gsub('error', '')
     part = part:gsub('interface', '')
+    part = part:gsub('int64', '󱂋')
+    part = part:gsub('int', '󱂋')
     part = part:gsub('table', '󰠵')
     -- trim spaces on the left and right
     part = part:gsub('^%s*(.-)%s*$', '%1')
@@ -134,7 +132,7 @@ local current_function = function()
       break
     end
   end
-  -- lprint(result, width, parts, #lsp_label1, #lsp_label2)
+  lprint(result, width, parts)
   -- return string.sub(' ' .. ts, 1, width)
   -- lprint(result)
   return result
@@ -261,15 +259,15 @@ local on_hover = function()
 end
 
 return function()
-  local conditions = require('heirline.conditions')
   local utils = require('heirline.utils')
+  local conditions = require('heirline.conditions')
   local workdir = {
     provider = function()
       -- local icon = (vim.fn.haslocaldir(0) == 1 and 'l' or 'g') .. ' ' .. ' '
       local icon = ' '
       local cwd = vim.fn.getcwd(0)
       cwd = vim.fn.fnamemodify(cwd, ':~')
-      if not conditions.width_percent_below(#cwd, 0.25) then
+      if not conditions.width_percent_below(#cwd, 0.25) or hover_info ~= '' then
         cwd = vim.fn.pathshorten(cwd)
       end
       local trail = cwd:sub(-1) == '/' and '' or '/'
@@ -368,34 +366,31 @@ return function()
 
   local disable_hover = false -- if signature is valid disable hover
 
+  local debouncer = require('core.timer').debounce_leading
+  local debounce_hover = debouncer(on_hover, 200)
   local hover = {
     condition = function()
       local width = api.nvim_win_get_width(0)
       if width < 80 then
         return false
       end
-      if disable_hover then
+      if disable_hover or vim.fn.mode(1) ~= 'n' then
         return false
       end
       return true
     end,
     init = function(self)
-      api.nvim_create_autocmd(
-        { 'CursorMoved', 'CursorMovedI', 'CursorHold' },
-        {
-          group = api.nvim_create_augroup('heirline_hover', { clear = true }),
-          callback = function()
-            local debouncer = require('core.timer').debounce_leading
-            local debounce_hover = debouncer(on_hover, 200)
-            debounce_hover()
-          end,
-        }
-      )
+      api.nvim_create_autocmd({ 'CursorHold' }, {
+        group = api.nvim_create_augroup('heirline_hover', { clear = true }),
+        callback = function()
+          debounce_hover()
+        end,
+      })
     end,
     provider = function()
       return hover_info
     end,
-    update = {'CursorMoved', 'CursorMovedI', 'CursorHold'},
+    update = { 'CursorMoved', 'CursorMovedI', 'CursorHold' },
   }
   local signature = {
     condition = function()
@@ -419,7 +414,7 @@ return function()
       end
       return sig
     end,
-    update = {'CursorMoved', 'CursorMovedI', 'CursorHold'},
+    update = { 'CursorMoved', 'CursorMovedI', 'CursorHold' },
   }
   local current_func = {
     condition = function()
@@ -432,21 +427,35 @@ return function()
     init = function(self)
       local curfun = debounced_current_function(200) or {}
       local children = {}
+      if vim.fn.empty(curfun) == 1 then
+        lprint('current_func empty')
+        return
+      end
+      local total_len = 0
       for i, v in ipairs(curfun) do
+        lprint(v)
         local child = {
           provider = v[1],
           hl = { fg = v[2], bg = 'bg' },
         }
-        table.insert(children, child)
+        total_len = total_len + #v[1]
+        if conditions.width_percent_below(total_len, 0.8) then
+          table.insert(children, child)
+        else
+          lprint('current_func too long', total_len, v[1])
+          break
+        end
       end
       self.child = self:new(children, 1)
+      lprint(children, total_len)
+      total_len = 0
     end,
     provider = function(self)
       return self.child:eval()
       -- return current_function()
     end,
     hl = 'Keyword',
-    update = {'CursorMoved', 'CursorMovedI', 'CursorHold'},
+    update = { 'CursorMoved', 'CursorMovedI', 'CursorHold' },
   }
   local lib = require('heirline-components.all')
   return {
@@ -463,8 +472,7 @@ return function()
       }),
       lib.component.git_diff(),
       lib.component.diagnostics(),
-      lib.component.fill(),
-      utils.surround({ "", ">" }, "#448444", current_func),
+      utils.surround({ '', '>' }, '#448444', current_func),
       -- current_func,
       hover,
       signature,
@@ -474,9 +482,6 @@ return function()
       lib.component.lsp({
         lsp_client_names = false,
       }),
-      -- lib.component.file_encoding({
-    -- }),
-      lib.component.compiler_state(),
       lib.component.virtual_env(),
       lib.component.nav(),
       lib.component.mode({ surround = { separator = 'right' } }),
