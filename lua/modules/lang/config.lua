@@ -132,9 +132,6 @@ function config.navigator()
     debug = plugin_debug(), -- uncomment for logs
     width = 0.7,
     -- icons = {icons = false}, -- disable all icons
-    on_attach = function(client, bufnr)
-      -- require'aerial'.on_attach(client, bufnr)
-    end,
     border = single, -- "single",
     ts_fold = {
       enable = true,
@@ -175,21 +172,6 @@ function config.navigator()
       --     require('neodev.lsp').before_init({}, { settings = { Lua = {} } })
       --   end,
       -- },
-      ts_ls = {
-        filetypes = {
-          'javascript',
-          'javascriptreact',
-          'javascript.jsx',
-          'typescript',
-          'typescriptreact',
-          'typescript.tsx',
-        },
-        on_attach = function(client, bufnr, opts)
-          client.server_capabilities.documentFormattingProvider = false -- allow efm to format
-          -- require("aerial").on_attach(client, bufnr, opts)
-        end,
-      },
-      flow = { autostart = false },
 
       -- sqlls = {},
       -- sqls = {

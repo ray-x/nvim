@@ -98,15 +98,50 @@ return function(ui)
     end,
   })
   ui({
-    'windwp/windline.nvim',
-    -- event = "UIEntwindlineer",
+    'rebelot/heirline.nvim',
+    dependencies = { 'zeioth/heirline-components.nvim' },
     event = 'VeryLazy',
-    config = function()
-      require('modules.ui.eviline')
+    opts = require('modules.ui.heirline'),
+    config = function(_, opts)
+      local heirline = require('heirline')
+      local heirline_components = require('heirline-components.all')
+
+      -- Setup
+      heirline_components.init.subscribe_to_events()
+      heirline.load_colors(heirline_components.hl.get_colors())
+      heirline.setup(opts)
     end,
-    -- dependencies = {'kyazdani42/nvim-web-devicons'},
-    lazy = true,
   })
+  -- ui({
+  -- "rebelot/heirline.nvim",
+  -- dependencies = { "Zeioth/heirline-components.nvim", 'nvim-tree/nvim-web-devicons' },
+  -- opts = {},
+  --   config = function(_, opts)
+  --     local heirline = require "heirline"
+  --     local heirline_components = require "heirline-components.all"
+  --
+  --     -- Setup
+  --     heirline_components.init.subscribe_to_events()
+  --     heirline.load_colors(heirline_components.hl.get_colors())
+  --     heirline.setup(opts)
+  --   end,
+  -- })
+  -- ui({
+  -- 'windwp/windline.nvim',
+  -- event = 'VeryLazy',
+  -- config = function()
+  -- require('modules.ui.eviline')
+  -- end,
+  -- lazy = true,
+  -- })
+  -- ui({
+  -- 'nvim-lualine/lualine.nvim',
+  -- event = 'VeryLazy',
+  -- config = conf.lualine,
+  -- dependencies = { 'nvim-tree/nvim-web-devicons' },
+  -- lazy = true,
+  -- opts = require('modules.ui.evil_lualine'),
+  -- })
 
   ui({
     'nvim-tree/nvim-tree.lua',
