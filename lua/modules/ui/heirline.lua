@@ -72,7 +72,7 @@ local current_function = function()
   if running % 5 == 1 and not state.disable_title_update then
     ok, ts = pcall(treesitter_context, 400)
     if not ok or not ts or string.len(ts) < 5 then
-      return {{' ', 'green'}}
+      return { { ' ', 'green' } }
     end
   end
 
@@ -87,7 +87,7 @@ local current_function = function()
   local ok
   ok, ts = pcall(treesitter_context, width)
   if not ok or not ts or string.len(ts) < 3 then
-    return {{' ', 'green'}}
+    return { { ' ', 'green' } }
   end
   update_title(ts)
   path = vim.fn.pathshorten(path)
@@ -120,15 +120,15 @@ local current_function = function()
       part = part:sub(1, remain)
     end
     if #result > 1 then
-      result[#result + 1] = { '>', '#3354E9' }
+      result[#result + 1] = { '>', '#5364E9' }
     end
 
-    result[#result + 1] = { part, '#339944' }
+    result[#result + 1] = { part, '#539964' }
     if length > width then
       -- lprint(length, width)
       local truncate = length - width
       part = string.sub(part, 1, #result[#result] - truncate)
-      result[#result] = { part, '#339944' }
+      result[#result] = { part, '#539964' }
       break
     end
   end
@@ -201,9 +201,9 @@ local on_hover = function()
   for _, client in ipairs(clients) do
     -- lprint(client.name, client.server_capabilities.hoverProvider)
     if
-      client.server_capabilities.hoverProvider == true
-      and client.name ~= 'null-ls'
-      and client.name ~= 'GitHub'
+        client.server_capabilities.hoverProvider == true
+        and client.name ~= 'null-ls'
+        and client.name ~= 'GitHub'
     then
       -- lprint('hover enabled for ', client.name)
       hoverProvider = true
@@ -213,16 +213,21 @@ local on_hover = function()
   if hoverProvider == false or params == nil then
     return ''
   end
+  -- disable for file types
+  local filetype = vim.bo.filetype
+  if vim.tbl_contains({ 'help', 'gitcommit', 'nvimtree', 'fugitive' }, filetype) then
+    return ''
+  end
   vim.lsp.buf_request(0, 'textDocument/hover', params, function(err, result, ctx, config)
     config = config or {}
     if err then
-      lprint(result, ctx, config)
+      -- lprint(result, ctx, config)
       hover_info = nil
       return
     end
     config.focus_id = ctx.method
     if
-      not (result and result.contents and result.contents.value and #result.contents.value > 0)
+        not (result and result.contents and result.contents.value and #result.contents.value > 0)
     then
       hover_info = nil
       return
@@ -428,12 +433,12 @@ return function()
       local curfun = debounced_current_function(200) or {}
       local children = {}
       if vim.fn.empty(curfun) == 1 then
-        lprint('current_func empty')
+        -- lprint('current_func empty')
         return
       end
       local total_len = 0
       for i, v in ipairs(curfun) do
-        lprint(v)
+        -- lprint(v)
         local child = {
           provider = v[1],
           hl = { fg = v[2], bg = 'bg' },
@@ -447,7 +452,7 @@ return function()
         end
       end
       self.child = self:new(children, 1)
-      lprint(children, total_len)
+      -- lprint(children, total_len)
       total_len = 0
     end,
     provider = function(self)
@@ -472,7 +477,7 @@ return function()
       }),
       lib.component.git_diff(),
       lib.component.diagnostics(),
-      utils.surround({ '', '>' }, '#448444', current_func),
+      utils.surround({ '', '>' }, '#549444', current_func),
       -- current_func,
       hover,
       signature,
