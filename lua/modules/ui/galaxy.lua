@@ -25,7 +25,7 @@ local c = {
   green_four = '#8ABB26',
   green_five = '#59DE73',
   green_six = '#3AF8B7',
-  green_seven = '#105017',
+  green_seven = '#407F40',
 
   blue = '#4572E5',
   blue_one = '#5582E5',
@@ -192,19 +192,17 @@ local Usual = {
   },
   Diff = {
     DiffAdd = {
-      fg = c.green_two,
       bg = c.background_b,
       bold = true,
       sp = '#2284a1',
     },
     DiffChange = {
       bg = c.background_two,
-      -- fg = c.yellow,
       bold = true,
     },
     DiffText = {
-      reverse = true,
       bg = c.green_seven,
+      bold = true,
     },
     DiffDelete = {
       fg = c.background_four,

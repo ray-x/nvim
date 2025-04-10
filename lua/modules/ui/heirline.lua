@@ -215,7 +215,7 @@ local on_hover = function()
   end
   -- disable for file types
   local filetype = vim.bo.filetype
-  if vim.tbl_contains({ 'help', 'gitcommit', 'nvimtree', 'fugitive' }, filetype) then
+  if vim.tbl_contains({ 'help', 'gitcommit', 'nvimtree', 'fugitive', 'codecompanion' }, filetype) then
     return ''
   end
   vim.lsp.buf_request(0, 'textDocument/hover', params, function(err, result, ctx, config)

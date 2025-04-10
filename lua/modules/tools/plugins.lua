@@ -38,7 +38,7 @@ return function(tools)
     },
     opts = {
       debug = true,
-      log_path = vim.fn.expand('$HOME') .. '/.cache/nvim/nvim_debug.log',
+      log_path = vim.fn.expand('$HOME') .. '/.cache/nvim/forgit.log',
       vsplit = false,
       height_ratio = 0.8,
     },
