@@ -196,8 +196,13 @@ local function split_lines(value)
 end
 local on_hover = function()
   local params
-  local clients = vim.lsp.get_clients()
+  local bufnr = vim.api.nvim_get_current_buf()
+  local clients = vim.lsp.get_clients({bufnr = bufnr})
   local hoverProvider = false
+  local filetype = vim.bo.filetype
+  if vim.tbl_contains({ 'help', 'gitcommit', 'nvimtree', 'fugitive', 'codecompanion' }, filetype) then
+    return ''
+  end
   for _, client in ipairs(clients) do
     -- lprint(client.name, client.server_capabilities.hoverProvider)
     if
@@ -214,10 +219,6 @@ local on_hover = function()
     return ''
   end
   -- disable for file types
-  local filetype = vim.bo.filetype
-  if vim.tbl_contains({ 'help', 'gitcommit', 'nvimtree', 'fugitive', 'codecompanion' }, filetype) then
-    return ''
-  end
   vim.lsp.buf_request(0, 'textDocument/hover', params, function(err, result, ctx, config)
     config = config or {}
     if err then
