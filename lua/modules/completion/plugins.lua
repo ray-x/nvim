@@ -231,7 +231,7 @@ return function(use)
       --     return false
       --   end
       -- end,
-      max_height = 4,
+      max_height = 6,
       toggle_key = [[<M-x>]], -- toggle signature on and off in insert mode,  e.g. '<M-x>'
       -- select_signature_key = [[<M-n>]], -- toggle signature on and off in insert mode,  e.g. '<M-x>'
       select_signature_key = [[<M-c>]], -- toggle signature on and off in insert mode,  e.g. '<M-x>'

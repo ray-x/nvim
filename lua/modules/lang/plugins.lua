@@ -220,25 +220,25 @@ return function(lang)
 
   lang({ 'mtdl9/vim-log-highlighting', ft = { 'text', 'txt', 'log' } })
 
-  lang({
-    'michaelb/sniprun',
-    build = 'bash install.sh',
-    cmd = { 'SnipRun', 'SnipReset' },
-    config = function()
-      require('sniprun').setup({
-        -- selected_interpreters = {},     --" use those instead of the default for the current filetype
-        -- repl_enable = {},               --" enable REPL-like behavior for the given interpreters
-        -- repl_disable = {},              --" disable REPL-like behavior for the given interpreters
-        inline_messages = 1, --" inline_message (0/1) is a one-line way to display messages
-        --" to workaround sniprun not being able to display anything
-      })
-      if require('core.global').is_windows then
-        if vim.fn.executable('bash') == 0 then
-          vim.notify('failed to install sniprun, bash is not installed')
-        end
-      end
-    end,
-  })
+  -- lang({
+  --   'michaelb/sniprun',
+  --   build = 'bash install.sh',
+  --   cmd = { 'SnipRun', 'SnipReset' },
+  --   config = function()
+  --     require('sniprun').setup({
+  --       -- selected_interpreters = {},     --" use those instead of the default for the current filetype
+  --       -- repl_enable = {},               --" enable REPL-like behavior for the given interpreters
+  --       -- repl_disable = {},              --" disable REPL-like behavior for the given interpreters
+  --       inline_messages = 1, --" inline_message (0/1) is a one-line way to display messages
+  --       --" to workaround sniprun not being able to display anything
+  --     })
+  --     if require('core.global').is_windows then
+  --       if vim.fn.executable('bash') == 0 then
+  --         vim.notify('failed to install sniprun, bash is not installed')
+  --       end
+  --     end
+  --   end,
+  -- })
   -- JqxList and JqxQuery json browsing, format
   lang({ 'gennaro-tedesco/nvim-jqx', cmd = { 'JqxList', 'JqxQuery' } })
   lang({

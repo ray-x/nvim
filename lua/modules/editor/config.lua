@@ -20,17 +20,12 @@ function config.hexokinase()
 end
 
 function config.yanky()
-  require('yanky').setup({
-    highlight = {
-      on_put = true,
-      on_yank = true,
-      timer = 500,
-    },
-  })
   local utils = require('yanky.utils')
   local mapping = require('yanky.telescope.mapping')
   require('telescope').load_extension('yank_history')
-  require('yanky').setup({
+  vim.api.nvim_set_hl(0, 'YankyPut', { link = 'Search' })
+  vim.api.nvim_set_hl(0, 'YankyYanked', { link = 'Search' })
+  return {
     highlight = {
       on_put = true,
       on_yank = true,
@@ -63,10 +58,8 @@ function config.yanky()
         },
       },
     },
-  })
+  }
 
-  vim.api.nvim_set_hl(0, 'YankyPut', { link = 'Search' })
-  vim.api.nvim_set_hl(0, 'YankyYanked', { link = 'Search' })
 end
 
 -- function config.comment()

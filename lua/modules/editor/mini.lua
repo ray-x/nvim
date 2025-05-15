@@ -105,7 +105,7 @@ return {
     local gen_action = function(seq)
       local edge = ({ ['['] = 'left', [']'] = 'right' })[seq:sub(1, 1)]
       local ai_type = seq:sub(2, 2)
-      local prev_next = ({ l = 'prev', n = 'next' })[seq:sub(3, 3)]
+      local prev_next = ({l = 'prev', n = 'next'})[seq:sub(3, 3)]
       vim.keymap.set({ 'n', 'v' }, seq, function()
         jump_textobject(prev_next, edge, ai_type)
       end, {
@@ -129,12 +129,19 @@ return {
     require('mini.sessions').setup({
       force = {
         read = true,
+        yank = true,
         write = true,
         delete = true,
       },
     })
+    require('mini.diff').setup({})
+    require('mini.splitjoin').setup({
+      mappings = {
+        toggle = '<space>j',
+      },
+    })
 
-    -- booperlv/nvim-gomove
+    -- replace booperlv/nvim-gomove
     -- <A-k>   Move current line/selection up
     -- <A-j>   Move current line/selection down
     -- <A-h>   Move current character/selection left

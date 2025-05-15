@@ -128,7 +128,7 @@ function config.navigator()
   local single = { '╭', '─', '╮', '│', '╯', '─', '╰', '│' }
 
   -- loader('aerial.nvim')
-  local nav_cfg = {
+  local navigator_cfg = {
     debug = plugin_debug(), -- uncomment for logs
     width = 0.7,
     -- icons = {icons = false}, -- disable all icons
@@ -156,10 +156,10 @@ function config.navigator()
         'tflint',
         'terraform_lsp',
         'terraformls',
-      },                                 -- a list of lsp not enable auto-format (e.g. if you using efm or vim-codeformat etc)
-      disable_lsp = { 'rust_analyzer' }, --e.g {denols} , use typescript.nvim
+      }, -- a list of lsp not enable auto-format (e.g. if you using efm or vim-codeformat etc)
+      disable_lsp = { 'rust_analyzer', 'sqlls' }, --e.g {denols} , use typescript.nvim
       -- code_lens = true,
-      disply_diagnostic_qf = false,      -- update diagnostic in quickfix window
+      disply_diagnostic_qf = false, -- update diagnostic in quickfix window
       denols = { filetypes = {} },
       rename = { style = 'floating-preview' },
       -- lua_ls = {
@@ -197,7 +197,7 @@ function config.navigator()
     },
   }
 
-  nav_cfg.lsp.gopls = function()
+  navigator_cfg.lsp.gopls = function()
     if vim.tbl_contains({ 'go', 'gomod' }, vim.bo.filetype) then
       if pcall(require, 'go') then
         return require('go.lsp').config()
@@ -205,11 +205,11 @@ function config.navigator()
     end
   end
 
-  table.insert(nav_cfg.lsp.disable_lsp, 'efm')
+  table.insert(navigator_cfg.lsp.disable_lsp, 'efm')
 
   vim.lsp.set_log_level('error') -- error debug info
   -- require"navigator".setup(nav_cfg)
-  return nav_cfg
+  return navigator_cfg
 end
 
 function config.luapad()
@@ -274,7 +274,7 @@ function config.go()
     dap_debug_vt = true,
     dap_debug_gui = true,
     golangci_lint = {
-      disable = { 'unused' },            -- linters to enable; empty by default
+      disable = { 'unused' }, -- linters to enable; empty by default
     },
     null_ls = {
       golangci_lint = {
@@ -304,7 +304,7 @@ function config.go()
     -- run_in_floaterm = true, -- set to true to run in float window.
     lsp_document_formatting = true,
     lsp_semantic_highlights = false,
-    lsp_semantic_highlights_priority = 99,
+    lsp_semantic_highlights_priority = 100,
     -- lsp_inlay_hints = {
     --   enable = true,
     -- },

@@ -14,96 +14,97 @@ end
 -- stylua: ignore start
 local function load_options()
   local global_local = {
-    termguicolors  = true;
-    errorbells     = false;
-    visualbell     = true;
-    hidden         = true;
-    fileformats    = "unix,mac,dos";
+    termguicolors  = true,
+    errorbells     = false,
+    visualbell     = true,
+    hidden         = true,
+    fileformats    = "unix,mac,dos",
     -- fileformat    = "unix";
     -- magic          = true; -- already default
-    virtualedit    = "onemore";
-    encoding       = "utf-8";
-    viewoptions    = "folds,cursor,curdir,slash,unix";
-    sessionoptions = "curdir,help,tabpages,winsize";
-    clipboard      = "unnamedplus";
-    wildignorecase = true;
-    wildignore     = ".git/**,.hg,.svn,*.pyc,*.o,*.out,*.jpg,*.jpeg,*.png,*.gif,*.zip,**/tmp/**,*.DS_Store,**/node_modules/**,**/bower_modules/**";
-    backup         = true;
-    writebackup    = true;
-    undofile       = true;
-    swapfile       = false;
-    directory      = global.cache_dir .. sep .. "swag" .. sep;
-    undodir        = global.cache_dir .. sep .. "undo" .. sep;
-    backupdir      = global.cache_dir .. sep .. "backup" .. sep;
-    viewdir        = global.cache_dir .. sep .. "view" .. sep;
+    virtualedit    = "onemore",
+    encoding       = "utf-8",
+    viewoptions    = "folds,cursor,curdir,slash,unix",
+    sessionoptions = "curdir,help,tabpages,winsize",
+    clipboard      = "unnamedplus",
+    wildignorecase = true,
+    wildignore     =
+    ".git/**,.hg,.svn,*.pyc,*.o,*.out,*.jpg,*.jpeg,*.png,*.gif,*.zip,**/tmp/**,*.DS_Store,**/node_modules/**,**/bower_modules/**",
+    backup         = true,
+    writebackup    = true,
+    undofile       = true,
+    swapfile       = false,
+    directory      = global.cache_dir .. sep .. "swag" .. sep,
+    undodir        = global.cache_dir .. sep .. "undo" .. sep,
+    backupdir      = global.cache_dir .. sep .. "backup" .. sep,
+    viewdir        = global.cache_dir .. sep .. "view" .. sep,
     -- spellfile      = global.cache_dir .. sep .. "spell" .. sep .. "en.uft-8.add";
-    history        = 4000;
-    shada          = "!,'1000,f1,<500,@100,/100,:100,s10,h";
-    backupskip     = "/tmp/*,$TMPDIR/*,$TMP/*,$TEMP/*,*/shm/*,/private/var/*,.vault.vim";
+    history        = 4000,
+    shada          = "!,'1000,f1,<500,@100,/100,:100,s10,h",
+    backupskip     = "/tmp/*,$TMPDIR/*,$TMP/*,$TEMP/*,*/shm/*,/private/var/*,.vault.vim",
     -- smarttab       = true;
-    smartindent    = true;
-    shiftround     = true;
+    smartindent    = true,
+    shiftround     = true,
     -- lazyredraw     = true;
-    timeout        = true;
+    timeout        = true,
     -- ttimeout       = true;
-    timeoutlen     = 500;
-    ttimeoutlen    = 10;
-    updatetime     = 500;
-    redrawtime     = 100;
-    ignorecase     = true;
-    smartcase      = true;
-    infercase      = true;
+    timeoutlen     = 500,
+    ttimeoutlen    = 10,
+    updatetime     = 500,
+    redrawtime     = 100,
+    ignorecase     = true,
+    smartcase      = true,
+    infercase      = true,
     incsearch      = true, -- Shows the match while typing
-    wrap           = true;
-    wrapscan       = true;
-    complete       = ".,w,b,k";
-    inccommand     = "nosplit";  --split
+    wrap           = true,
+    wrapscan       = true,
+    complete       = ".,w,b,k",
+    inccommand     = "nosplit",                        --split
     grepformat     = "%f:%l:%m,%m\\ %f\\ match%ts,%f", -- "%f:%l:%c:%m";
-    grepprg        = 'rg --hidden --vimgrep --smart-case --glob "!{.git,node_modules,*~}/*" --';
-    breakat        = [[\ \	;:,!?]];
-    startofline    = false;
-    whichwrap      = "h,l,<,>,[,],~";
-    splitbelow     = true;
-    splitright     = true;
-    switchbuf      = "useopen,usetab";
-    backspace      = "indent,eol,start";
+    grepprg        = 'rg --hidden --vimgrep --smart-case --glob "!{.git,node_modules,*~}/*" --',
+    breakat        = [[\ \	;:,!?]],
+    startofline    = false,
+    whichwrap      = "h,l,<,>,[,],~",
+    splitbelow     = true,
+    splitright     = true,
+    switchbuf      = "useopen,usetab",
+    backspace      = "indent,eol,start",
     diffopt        =
-    "filler,iwhite,internal,followwrap,algorithm:histogram,context:2,indent-heuristic,linematch:50";
+    "filler,iwhite,internal,followwrap,algorithm:histogram,context:2,indent-heuristic,linematch:50",
     completeopt    = "menu,menuone,noselect", -- Show popup menu, even if there is one entry  menuone?
-    jumpoptions    = "stack";
-    showmode       = false;
-    shortmess      = "aotTIcFC";
-    scrolloff      = 2;
-    sidescrolloff  = 5;
-    foldlevel      = 99;
-    foldlevelstart = 99;
-    ruler          = false;
-    list           = true;
-    showtabline    = 1;
-    winwidth       = 30;
-    winminwidth    = 10;
-    pumheight      = 15;
-    helpheight     = 12;
-    previewheight  = 12;
-    showcmd        = true;
-    showcmdloc     = 'statusline';
-    cmdwinheight   = 5;
-    equalalways    = false;
-    laststatus     = 3;
-    display        = "lastline";
-    showbreak      = "󱞩";
-    listchars      = "tab:┊ ,nbsp:+,trail:·,extends:→,precedes:←"; -- tab:»·,
-    pumblend       = 10;
-    winblend       = 10;
-    title          = true;
+    jumpoptions    = "stack",
+    showmode       = false,
+    shortmess      = "aotTIcFC",
+    scrolloff      = 2,
+    sidescrolloff  = 5,
+    foldlevel      = 99,
+    foldlevelstart = 99,
+    ruler          = false,
+    list           = true,
+    showtabline    = 1,
+    winwidth       = 30,
+    winminwidth    = 10,
+    pumheight      = 15,
+    helpheight     = 12,
+    previewheight  = 12,
+    showcmd        = true,
+    showcmdloc     = 'statusline',
+    cmdwinheight   = 5,
+    equalalways    = false,
+    laststatus     = 3,
+    display        = "lastline",
+    showbreak      = "󱞩",
+    listchars      = "tab:┊ ,nbsp:+,trail:·,extends:→,precedes:←", -- tab:»·,
+    pumblend       = 10,
+    winblend       = 10,
+    title          = true,
 
-    background     = "dark";
-    mousemodel     = "extend";
--- --------------------------------------
+    background     = "dark",
+    mousemodel     = "extend",
+    -- --------------------------------------
     ttyfast        = true, -- Indicate fast terminal conn for faster redraw
     fileencoding   = "utf-8",
     mouse          = "a",
-    textwidth      = 120, -- wrap lines at 120 chars. 80 is somewaht antiquated with nowadays displays.
+    textwidth      = 120,  -- wrap lines at 120 chars. 80 is somewaht antiquated with nowadays displays.
     hlsearch       = true, -- Highlight found searches
     -- showcmd     = false;
     mousemoveevent = true,
@@ -111,30 +112,30 @@ local function load_options()
     autowrite      = true, -- Automatically save before :next, :make etc.
     autoread       = true, -- Automatically read changed files
     breakindent    = true, -- Make it so that long lines wrap smartly
-    breakindentopt = "shift:2,min:20";
+    breakindentopt = "shift:2,min:20",
     showmatch      = true, -- highlight matching braces
     numberwidth    = 3,
     relativenumber = true,
-    conceallevel   = 2;
-    concealcursor  = "niv";
-    linebreak      = true;
-    colorcolumn    = "110";
-    foldenable     = true;
-    signcolumn     = "auto:1";  --auto auto:2  "number"
-    cursorline     = true;
-    number         = true;
-    splitkeep      = "screen";
+    conceallevel   = 2,
+    concealcursor  = "niv",
+    linebreak      = true,
+    colorcolumn    = "110",
+    foldenable     = true,
+    signcolumn     = "auto:1", --auto auto:2  "number"
+    cursorline     = true,
+    number         = true,
+    splitkeep      = "screen",
   }
 
-  local bw_local  = {
-    synmaxcol = 2000, -- handle long lines, esp html
-    formatoptions  = "1jcroql";
-    textwidth = 120,
-    expandtab      = true;
-    autoindent     = true;
-    tabstop        = 2;
-    shiftwidth     = 2;
-    softtabstop    = -1;
+  local bw_local     = {
+    synmaxcol     = 2000, -- handle long lines, esp html
+    formatoptions = "1jcroql",
+    textwidth     = 120,
+    expandtab     = true,
+    autoindent    = true,
+    tabstop       = 2,
+    shiftwidth    = 2,
+    softtabstop   = -1,
   }
 
   if global.is_mac then
@@ -151,7 +152,7 @@ local function load_options()
       cache_enabled = 0
     }
     -- conda install
-    if  vim.fn.executable('brew')  == 1 then
+    if vim.fn.executable('brew') == 1 then
       if vim.fn.executable('conda') == 1 then
         vim.g.python3_host_prog = '/opt/homebrew/Caskroom/miniconda/base/bin/python'
       else
@@ -165,7 +166,7 @@ local function load_options()
   else
     -- windows
     vim.g.python3_host_prog = 'C:\\Python312\\python.exe'
-    if vim.fn.executable(vim.g.python3_host_prog)  == 0 then
+    if vim.fn.executable(vim.g.python3_host_prog) == 0 then
       local p = vim.fn.system('where python')
       if p ~= '' then
         p = vim.fn.split(p, '\n')[1]
@@ -183,11 +184,11 @@ local function load_options()
     vim.o[name] = value
   end
   local window_local = {
-      foldmethod = "expr",
-      relativenumber = true,
-      number = true,
-      foldenable = true,
-    }
+    foldmethod = "expr",
+    relativenumber = true,
+    number = true,
+    foldenable = true,
+  }
 
   if vim.opt.diff:get() then
     global_local = vim.tbl_extend('force', global_local, {
@@ -205,11 +206,11 @@ local function load_options()
   local opts = {
     foldmethod = "expr",
     foldenable = true,
-    foldcolumn = "1",  -- I feel the fold column is distracting
-    foldexpr = "v:lua.vim.treesitter.foldexpr()",  -- will be overwrite by navigator
+    foldcolumn = "1",                             -- I feel the fold column is distracting
+    foldexpr = "v:lua.vim.treesitter.foldexpr()", -- will be overwrite by navigator
     -- alternatives = ⣿ ░ ─
     -- stylua: ignore
-    fillchars = { foldclose = "", foldopen = "", vert = "│", fold = " ", diff = "░", msgsep = "", foldsep = "│" , eob = ' '},
+    fillchars = { foldclose = "", foldopen = "", vert = "│", fold = " ", diff = "░", msgsep = "", foldsep = "│", eob = ' ' },
   }
   opts.foldtext = ""
   for n, v in pairs(opts) do
@@ -257,8 +258,11 @@ function _G.column()
 end
 
 if vim.fn.has("nvim-0.10.0") == 1 then
-  vim.opt.completeopt    = "menu,menuone,popup" -- Show popup menu, even if there is one entry  menuone?
+  vim.opt.completeopt = "menu,menuone,popup" -- Show popup menu, even if there is one entry  menuone?
   -- vim.opt.statuscolumn = [[%!v:lua.column()]]
+end
+if vim.fn.has('nvim-0.11') == 1 then  -- and vim.o.ft == 'go'
+  vim.g._ts_force_sync_parsing = true -- disable ts async parsing because of #32660 for Go
 end
 
 if vim.wo.diff then

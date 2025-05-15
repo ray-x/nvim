@@ -225,13 +225,14 @@ return function(editor)
     'gbprod/yanky.nvim',
     event = { 'TextYankPost' },
     keys = {
+      -- keys
       '<Plug>(YankyPutAfter)',
       '<Plug>(YankyPutBefore)',
       '<Plug>(YankyGPutBefore)',
       '<Plug>(YankyGPutAfter)',
     },
     lazy = true,
-    config = conf.yanky,
+    opts = conf.yanky,
   })
 
   editor({ 'dhruvasagar/vim-table-mode', cmd = { 'TableModeToggle' } })
@@ -250,16 +251,6 @@ return function(editor)
     lazy = true,
     cmd = { 'UndotreeToggle', 'UndotreeShow' },
     event = { 'BufWritePre' },
-  })
-
-  editor({
-    'Wansmer/treesj',
-    lazy = true,
-    cmd = { 'TSJToggle', 'TSJJoin', 'TSJSplit' },
-    module = true,
-    opts = {
-      user_default_keymaps = false,
-    },
   })
 
   editor({
@@ -605,9 +596,20 @@ end
 --   end,
 -- })
 
+-- replace with mini splitjoin
+-- editor({
+-- 'Wansmer/treesj',
+-- lazy = true,
+-- cmd = { 'TSJToggle', 'TSJJoin', 'TSJSplit' },
+-- module = true,
+-- opts = {
+  -- user_default_keymaps = false,
+-- },
+-- })
 -- editor({
 --   'ray-x/code_annotation.nvim',
 --   event = { 'CursorHold', 'CursorHoldI' },
 --   opts = {},
 --   dev = dev,
 -- })
+

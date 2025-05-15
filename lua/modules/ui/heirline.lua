@@ -94,7 +94,7 @@ local current_function = function()
   -- split the contex with '->' and use different colors
   local parts = vim.split(ts, '->')
   local length = 0
-  local result = { { '🥖', 'green' } }
+  local result = {} -- { '🥖', 'green' }
   for i, part in ipairs(parts) do
     part = part:gsub('function', '󰡱')
     part = part:gsub('func', '󰡱')
@@ -132,7 +132,7 @@ local current_function = function()
       break
     end
   end
-  lprint(result, width, parts)
+  -- lprint(result, width, parts)
   -- return string.sub(' ' .. ts, 1, width)
   -- lprint(result)
   return result
@@ -197,18 +197,20 @@ end
 local on_hover = function()
   local params
   local bufnr = vim.api.nvim_get_current_buf()
-  local clients = vim.lsp.get_clients({bufnr = bufnr})
+  local clients = vim.lsp.get_clients({ bufnr = bufnr })
   local hoverProvider = false
   local filetype = vim.bo.filetype
-  if vim.tbl_contains({ 'help', 'gitcommit', 'nvimtree', 'fugitive', 'codecompanion' }, filetype) then
+  if
+    vim.tbl_contains({ 'help', 'gitcommit', 'nvimtree', 'fugitive', 'codecompanion' }, filetype)
+  then
     return ''
   end
   for _, client in ipairs(clients) do
     -- lprint(client.name, client.server_capabilities.hoverProvider)
     if
-        client.server_capabilities.hoverProvider == true
-        and client.name ~= 'null-ls'
-        and client.name ~= 'GitHub'
+      client.server_capabilities.hoverProvider == true
+      and client.name ~= 'null-ls'
+      and client.name ~= 'GitHub'
     then
       -- lprint('hover enabled for ', client.name)
       hoverProvider = true
@@ -228,7 +230,7 @@ local on_hover = function()
     end
     config.focus_id = ctx.method
     if
-        not (result and result.contents and result.contents.value and #result.contents.value > 0)
+      not (result and result.contents and result.contents.value and #result.contents.value > 0)
     then
       hover_info = nil
       return

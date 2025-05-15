@@ -175,10 +175,10 @@ local plug_keys = {
   ["n|<M-w>"] = map_cmd("wqa!"):with_noremap():with_silent(),
 
   ["n|<F5>"] = map_func(function()
-      return _G.test_or_run(true)
-    end)
-    :with_expr()
-    :with_desc("run or test"),
+        return _G.test_or_run(true)
+      end)
+      :with_expr()
+      :with_desc("run or test"),
 
   ["n|<F6>"] = map_cmd('UndotreeToggle'):with_silent():with_desc("toggle undotree"),
   ["n|<Leader>r"] = map_func(function() return _G.test_or_run() end):with_expr():with_desc("run or test"),
@@ -188,11 +188,11 @@ local plug_keys = {
 
   ["n|<C-k>"] = map_cmd("v:lua.ctrl_k()"):with_silent():with_expr(),
   -- Plugin QuickRun
-  -- Plugin SplitJoin
-  ['n|<Space>j'] = map_func(function() require("treesj").toggle() end ):with_desc("SplitJoinToggle"),
   -- abolish , e.g. Crs: snake case, Crc: Camel case, Crm: mix case, Cru: upper case, Cr-: dash case, Cr.: dot case, Cr<Space>: space case, Crt: titlecase
-  ["n|Cr"] = map_plug("abolish-coerce-word"):with_noremap():with_silent():with_desc('s:snake, c:Camel,m:mix,u:upper,-:dash,.:dot,<Spc>:space case, t:titlecase'),
-  ["v|Cr"] = map_plug("abolish-coerce"):with_noremap():with_silent():with_desc('s:snake, c:Camel,m:mix,u:upper,-:dash,.:dot,<Spc>:space case, t:titlecase'),
+  ["n|Cr"] = map_plug("abolish-coerce-word"):with_noremap():with_silent():with_desc(
+    's:snake, c:Camel,m:mix,u:upper,-:dash,.:dot,<Spc>:space case, t:titlecase'),
+  ["v|Cr"] = map_plug("abolish-coerce"):with_noremap():with_silent():with_desc(
+    's:snake, c:Camel,m:mix,u:upper,-:dash,.:dot,<Spc>:space case, t:titlecase'),
   --
   ["n|<F13>"] = map_cmd("NvimTreeToggle"),
   ["n|<S-F1>"] = map_cmd("NvimTreeToggle"),
@@ -234,17 +234,28 @@ local plug_keys = {
 
   ['n|<Leader>ts'] = map_plug('TranslateW'),
   ['v|<Leader>ts'] = map_plug('TranslateWV'),
-
+  -- yanky map_plug('<Plug>WordMotion_w'):with_expr(),
+  ['nx|p'] = map_plug('YankyPutAfter'),
+  ['nx|P'] = map_plug('YankyPutBefore'),
+  ['nx|gp'] = map_plug('YankyGPutAfter'),
+  ['nx|gP'] = map_plug('YankyGPutBefore'),
+  ['n|<c-p>'] = map_plug('YankyPreviousEntry'),
+  ['n|<c-n>'] = map_plug('YankyNextEntry'),
   -- substitute
-  ['n|<Space>s'] = map_func(function() require('substitute').operator() end ):with_desc('operator substitute motion e.g. <spc>siw, <spc>sip'):with_noremap(),
-  ['n|<Space>S'] = map_func(function() require('substitute').line() end ):with_desc('operator substitute line'):with_noremap(),
-  ['x|<Space>s'] = map_func(function() require('substitute').visual() end ):with_desc('substitute visual'):with_noremap(),
-  ['x|<Leader>x'] = map_func(function() require('substitute.exchange').visual() end ):with_desc('substitute exchange two word visual'):with_noremap(),
+  ['n|<Space>s'] = map_func(function() require('substitute').operator() end):with_desc(
+    'operator substitute motion e.g. <spc>siw, <spc>sip'):with_noremap(),
+  ['n|<Space>S'] = map_func(function() require('substitute').line() end):with_desc('operator substitute line')
+      :with_noremap(),
+  ['x|<Space>s'] = map_func(function() require('substitute').visual() end):with_desc('substitute visual'):with_noremap(),
+  ['x|<Leader>x'] = map_func(function() require('substitute.exchange').visual() end):with_desc(
+    'substitute exchange two word visual'):with_noremap(),
   ['xn|<Leader>s'] = map_func(function()
-    vim.api.nvim_feedkeys(require('utils.helper').substitute(), 'mi', true) end
+    vim.api.nvim_feedkeys(require('utils.helper').substitute(), 'mi', true)
+  end
   ):with_desc('substitute visual s/yanked/yanked_tobereplace/g  '):with_noremap(),
   ['xn|<Leader>S'] = map_func(function()
-    vim.api.nvim_feedkeys(require('utils.helper').substitute(nil, nil, 'S'), 'mi', true) end
+    vim.api.nvim_feedkeys(require('utils.helper').substitute(nil, nil, 'S'), 'mi', true)
+  end
   ):with_desc('substitute visual with Abolish S/yanked/yanked_tobereplace/g  '):with_noremap(),
 
   -- substitute range operation is not as useful
@@ -262,31 +273,33 @@ local plug_keys = {
       end
     end)
     return ":noh<CR>"
-      end):with_desc('last search to quickfix'):with_expr(),
+  end):with_desc('last search to quickfix'):with_expr(),
 
 
-  ["n|<C-M-n>"] = {options = { desc = "vmulti select all" }},
-  ["n|<M-Down>"] = {options = { desc = "Add Cursor Down" }},
-  ["n|<M-Up>"] = {options = { desc = "Add Cursor Up" }},
-  ["n|<M-i>"] = {options = { desc = "Add Cursor at pos" }},
-  ["n|<C-n>"] = {options = { desc = "Add Cursor word at pos" }},
+  ["n|<C-M-n>"] = { options = { desc = "vmulti select all" } },
+  ["n|<M-Down>"] = { options = { desc = "Add Cursor Down" } },
+  ["n|<M-Up>"] = { options = { desc = "Add Cursor Up" } },
+  ["n|<M-i>"] = { options = { desc = "Add Cursor at pos" } },
+  ["n|<C-n>"] = { options = { desc = "Add Cursor word at pos" } },
 
   -- multi
-  ["n|<A-k>"] = {options = { desc = "move lines up" }},
-  ["n|<A-j>"] = {options = { desc = "move lines down" }},
-  ["n|<A-h>"] = {options = { desc = "move lines left" }},
-  ["n|<A-l>"] = {options = { desc = "move lines right" }},
+  ["n|<A-k>"] = { options = { desc = "move lines up" } },
+  ["n|<A-j>"] = { options = { desc = "move lines down" } },
+  ["n|<A-h>"] = { options = { desc = "move lines left" } },
+  ["n|<A-l>"] = { options = { desc = "move lines right" } },
 
   -- git signs
   ['nv|<Leader>hs'] = map_cmd('GitSigns stage_hunk'),
   ['nv|<Leader>hr'] = map_cmd('GitSigns reset_hunk'),
-  ['nv|<Leader>tb'] = map_func(function() require('gitsigns').toggle_current_line_blame() end):with_desc('toggle line blame'),
+  ['nv|<Leader>tb'] = map_func(function() require('gitsigns').toggle_current_line_blame() end):with_desc(
+    'toggle line blame'),
   ['nv|<Leader>hd'] = map_func(function() require('gitsigns').diffthis() end):with_desc('diff this'),
   ['nv|<Leader>hD'] = map_func(function() require('gitsigns').diffthis('~') end):with_desc('diff ~'),
+  ['nv|<Leader>dT'] = map_func(function() MiniDiff.toggle_overlay() end):with_desc('mini diff toggle'),
   ['ox|ih'] = map_cu('GitSigns select_hunk'),
 
 
-  ['n|<Leader>gR'] = {options = { desc = "regexplainer" }},
+  ['n|<Leader>gR'] = { options = { desc = "regexplainer" } },
   ["n|<F11>"] = {
     cmd = function()
       if vim.o.concealcursor == "n" then
@@ -302,10 +315,10 @@ local plug_keys = {
   --
   -- -- Add selection to search then replace
   -- vim.keymap.set('x', '<Leader>j', [[let @/=substitute(escape(@", '/'), '\n', '\\n', 'g')"_cgn]])
-  ['i|<TAB>'] = map_func(function() return _G.tab_complete() end) :with_expr() :with_silent(),
-  ['i|<S-TAB>'] = map_func(function() return _G.s_tab_complete() end) :with_expr() :with_silent(),
-  ['s|<TAB>'] = map_func(function() return _G.tab_complete() end) :with_expr() :with_silent(),
-  ['s|<S-TAB>'] = map_func(function() return _G.s_tab_complete() end) :with_expr() :with_silent(),
+  ['i|<TAB>'] = map_func(function() return _G.tab_complete() end):with_expr():with_silent(),
+  ['i|<S-TAB>'] = map_func(function() return _G.s_tab_complete() end):with_expr():with_silent(),
+  ['s|<TAB>'] = map_func(function() return _G.tab_complete() end):with_expr():with_silent(),
+  ['s|<S-TAB>'] = map_func(function() return _G.s_tab_complete() end):with_expr():with_silent(),
 
   -- person keymap
   ['n|<leader>li'] = map_cmd('LspInfo'):with_noremap():with_silent():with_nowait(),
@@ -313,7 +326,8 @@ local plug_keys = {
   ['n|<leader>lr'] = map_cmd('LspRestart'):with_noremap():with_silent():with_nowait(),
   ['n|<Space>wa'] = map_func(function() vim.lsp.buf.add_workspace_folder() end):with_desc('Add workspace folder'),
   ['n|<Space>wr'] = map_func(function() vim.lsp.buf.add_workspace_folder() end):with_desc('remove workspace folder'),
-  ['n|<Space>wl'] = map_func(function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end):with_desc('list workspace folder'),
+  ['n|<Space>wl'] = map_func(function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end):with_desc(
+    'list workspace folder'),
   -- Plugin MarkdownPreview
   ['n|<Leader>om'] = map_cmd('MarkdownPreview'):with_noremap():with_silent(),
   -- Plugin DadbodUI
@@ -327,7 +341,8 @@ local plug_keys = {
 
   ['in|<d-p>'] = map_cmd('Telescope find_files'):with_noremap():with_silent(),
   ['in|<M-p>'] = map_cmd('FzfLua files'):with_noremap():with_silent(),
-  ['inx|<d-f>'] = map_func(function() require('utils.telescope').grep_string_cursor_raw() end):with_desc('grep_string_cursor_raw'),
+  ['inx|<d-f>'] = map_func(function() require('utils.telescope').grep_string_cursor_raw() end):with_desc(
+    'grep_string_cursor_raw'),
   ['in|<d-F>'] = map_func(function() require('utils.telescope').grep_string_cursor() end):with_desc('grep_string_cursor'),
   ['in|<M-F>'] = map_func(function() require('utils.telescope').grep_string_cursor() end):with_desc('grep_string_cursor'),
   ['ixn|<d-s>'] = map_func(function() vim.cmd('w') end):with_desc('grep_string_cursor'),
@@ -340,10 +355,13 @@ local plug_keys = {
   end):with_desc('grep_string_cursor'),
   ['x|<d-F>'] = map_func(function() require('utils.telescope').grep_string_visual() end):with_desc('grep_string_visual'),
   ['v|<m-F>'] = map_func(function() require('utils.telescope').grep_string_visual() end):with_desc('grep_string_visual'),
-  ['in|<d-f>'] = map_func(function() require('utils.telescope').grep_string_cursor_raw() end):with_desc('grep_string_cursor_raw'),
-  ['v|<d-f>'] = map_func(function() require('utils.telescope').grep_string_visual_raw() end):with_desc('grep_string_cursor_raw'),
-  ['v|<m-f>'] = map_func(function() require('utils.telescope').grep_string_visual_raw() end):with_desc('grep_string_cursor_raw'),
-  ['n|w'] = map_plug('<Plug>WordMotion_w'):with_expr(),
+  ['in|<d-f>'] = map_func(function() require('utils.telescope').grep_string_cursor_raw() end):with_desc(
+    'grep_string_cursor_raw'),
+  ['v|<d-f>'] = map_func(function() require('utils.telescope').grep_string_visual_raw() end):with_desc(
+    'grep_string_cursor_raw'),
+  ['v|<m-f>'] = map_func(function() require('utils.telescope').grep_string_visual_raw() end):with_desc(
+    'grep_string_cursor_raw'),
+  ['n|w'] = map_plug('WordMotion_w'):with_expr(),
 
   ['n|<Leader>do'] = map_cmd('DiffviewOpen'):with_noremap():with_silent(),
   ['n|<Leader>dc'] = map_cmd('DiffviewClose'):with_noremap():with_silent(),

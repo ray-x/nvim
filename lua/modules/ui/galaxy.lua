@@ -64,8 +64,10 @@ local c = {
   background = '#121825',
   background_one = '#1d2e38',
   background_two = '#2e2f3f',
-  background_g = '#1e321f',
+  background_g = '#1e4210',
   background_b = '#1e123f',
+  background_b_four = '#3e324f',
+  background_b_three = '#2e023f',
   background_three = '#323e43',
   background_four = '#445462',
 
@@ -192,9 +194,8 @@ local Usual = {
   },
   Diff = {
     DiffAdd = {
-      bg = c.background_b,
+      bg = c.background_g,
       bold = true,
-      sp = '#2284a1',
     },
     DiffChange = {
       bg = c.background_two,
@@ -205,7 +206,7 @@ local Usual = {
       bold = true,
     },
     DiffDelete = {
-      fg = c.background_four,
+      fg = c.background_three,
       bold = true,
       strikethrough = true,
       sp = c.white,
