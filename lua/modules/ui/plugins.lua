@@ -53,16 +53,13 @@ return function(ui)
         end,
         desc = 'scrollview',
       })
-      vim.api.nvim_create_autocmd(
-        { 'WinLeave', 'BufLeave', 'BufWinLeave', 'FocusLost', 'CursorHold', 'CursorHoldI' },
-        {
-          group = bar_grp,
-          callback = function()
-            require('scrollbar').clear()
-          end,
-          desc = 'scrollview',
-        }
-      )
+      vim.api.nvim_create_autocmd({ 'WinLeave', 'BufLeave', 'BufWinLeave', 'FocusLost', 'CursorHold', 'CursorHoldI' }, {
+        group = bar_grp,
+        callback = function()
+          require('scrollbar').clear()
+        end,
+        desc = 'scrollview',
+      })
     end,
   })
   ui({
@@ -153,7 +150,7 @@ return function(ui)
 
   ui({
     'lukas-reineke/indent-blankline.nvim',
-    tag = 'v3.8.2',
+    -- tag = 'v3.8.2',
     lazy = true,
     event = { 'CursorHold' },
     cmd = { 'IBLToggle', 'IBLEnable' },

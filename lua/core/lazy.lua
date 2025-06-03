@@ -42,10 +42,26 @@ function setup(fsize)
   }
 
   if fsize == nil or fsize < 0 then
-    fsize = 2048
+    fsize = 4096
   end
 
   vim.g.vimsyn_embed = 'lPr'
+  if fsize >= 1024 * 1024 then
+    vim.opt_local.swapfile = false
+    vim.opt_local.foldmethod = 'manual'
+    vim.opt_local.undolevels = -1
+    vim.opt_local.undoreload = 0
+    vim.opt_local.list = false
+    vim.opt_local.spell = false
+    -- vim.g.disable_plugins = {'indent_blankline','nvim-tree','nvim-web-devicons','telescope.nvim','telescope-file-browser.nvim','mini.sessions','nvim-treesitter','nvim-treesitter-textobjects','nvim-treesitter-context','nvim-ts-rainbow','nvim-ts-autotag','nvim-ts-rainbow2','nvim-ts-context-commentstring','mini.surround','mini.comment','mini.pairs','mini.indentscope','mini.trailspace','navigator'}
+    vim.g.disable_plugins = {'nvim-tree/nvim-tree.lua', 'lukas-reineke/indent-blankline.nvim',
+    'nvim-treesitter/nvim-treesitter', 'nvim-treesitter/nvim-treesitter-textobjects',
+    'nvim-treesitter/nvim-treesitter-context', 'nvim-treesitter/nvim-ts-rainbow', 'nvim-treesitter/nvim-ts-autotag',
+    'nvim-treesitter/nvim-ts-rainbow2', 'nvim-treesitter/nvim-ts-context-commentstring', 'echasnovski/mini.surround',
+    'echasnovski/mini.comment', 'echasnovski/mini.pairs', 'echasnovski/mini.indentscope',
+    'echasnovski/mini.trailspace', 'telescope-nvim/telescope.nvim', 'akinsho/bufferline.nvim',}
+    vim.g.disable_modules = 'completion,tools'
+  end
 
   vim.cmd([[doautocmd User LoadLazyPlugin]])
   vim.cmd('tabdo windo set relativenumber')

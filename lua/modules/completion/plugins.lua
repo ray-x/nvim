@@ -1,5 +1,6 @@
 -- stylua: ignore start
-local filetypes = { 'html', 'css', 'javascript', 'java', 'javascriptreact', 'vue', 'typescript', 'typescriptreact', 'go', 'lua', 'cpp', 'c', 'markdown', 'makefile', 'python', 'bash', 'sh', 'php', 'yaml', 'json', 'sql', 'vim', 'sh',
+local filetypes = { 'html', 'css', 'javascript', 'java', 'javascriptreact', 'vue', 'typescript', 'typescriptreact', 'go',
+  'lua', 'cpp', 'c', 'markdown', 'makefile', 'python', 'bash', 'sh', 'php', 'yaml', 'json', 'sql', 'vim', 'sh',
 }
 -- stylua: ignore end
 
@@ -32,16 +33,17 @@ return function(use)
       { 'f3fora/cmp-spell' },
       { 'hrsh7th/cmp-cmdline' },
       { 'dmitmel/cmp-cmdline-history' },
-      { 'hrsh7th/cmp-nvim-lsp-document-symbol', event = 'CmdLineEnter'},
+      { 'hrsh7th/cmp-nvim-lsp-document-symbol', event = 'CmdLineEnter' },
       -- { 'hrsh7th/cmp-copilot' },
-      { 'ray-x/cmp-treesitter', dev = _G.is_dev() },
-      { 'ray-x/cmp-sql', dev = _G.is_dev(), ft = {'sql', 'psql'} },
-      { 'ray-x/shell-history.nvim', dev = _G.is_dev() },
+      { 'ray-x/cmp-treesitter',                 dev = _G.is_dev() },
+      { 'ray-x/cmp-sql',                        dev = _G.is_dev(),     ft = { 'sql', 'psql' } },
+      { 'ray-x/shell-history.nvim',             dev = _G.is_dev() },
       { 'hrsh7th/cmp-nvim-lsp' },
       { 'saadparwaiz1/cmp_luasnip' },
-      { 'kdheepak/cmp-latex-symbols', ft = {'markdown'} },
+      { 'kdheepak/cmp-latex-symbols',           ft = { 'markdown' } },
       { 'hrsh7th/cmp-emoji' },
-      { 'windwp/nvim-autopairs', event = 'InsertEnter', module = true, config = function()  require('modules.completion.config').autopairs() end },
+      { 'windwp/nvim-autopairs',                event = 'InsertEnter', module = true,       config = function() require(
+        'modules.completion.config').autopairs() end },
     },
     -- stylua: ignore end
     config = function()
@@ -78,16 +80,9 @@ return function(use)
             {
               role = 'user',
               content = function(context)
-                local text = require('codecompanion.helpers.actions').get_code(
-                  context.start_line,
-                  context.end_line
-                )
+                local text = require('codecompanion.helpers.actions').get_code(context.start_line, context.end_line)
 
-                return 'I have the following code:\n\n```'
-                  .. context.filetype
-                  .. '\n'
-                  .. text
-                  .. '\n```\n\n'
+                return 'I have the following code:\n\n```' .. context.filetype .. '\n' .. text .. '\n```\n\n'
               end,
               opts = {
                 contains_code = true,
@@ -116,15 +111,8 @@ return function(use)
             {
               role = 'user',
               content = function(context)
-                local text = require('codecompanion.helpers.actions').get_code(
-                  context.start_line,
-                  context.end_line
-                )
-                return 'I have the following pragraph:\n\n```'
-                  .. 'txt'
-                  .. '\n'
-                  .. text
-                  .. '\n```\n\n'
+                local text = require('codecompanion.helpers.actions').get_code(context.start_line, context.end_line)
+                return 'I have the following pragraph:\n\n```' .. 'txt' .. '\n' .. text .. '\n```\n\n'
               end,
               opts = {},
             },
@@ -232,7 +220,8 @@ return function(use)
       --   end
       -- end,
       max_height = 6,
-      toggle_key = [[<M-x>]], -- toggle signature on and off in insert mode,  e.g. '<M-x>'
+      -- toggle_key = [[<M-x>]], -- toggle signature on and off in insert mode,  e.g. '<M-x>'
+      toggle_key = [[<D-x>]], -- toggle signature on and off in insert mode,  e.g. '<M-x>'
       -- select_signature_key = [[<M-n>]], -- toggle signature on and off in insert mode,  e.g. '<M-x>'
       select_signature_key = [[<M-c>]], -- toggle signature on and off in insert mode,  e.g. '<M-x>'
       move_cursor_key = [[<M-n>]], -- toggle signature on and off in insert mode,  e.g. '<M-x>'

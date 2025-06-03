@@ -46,10 +46,6 @@ local load_core = function()
   -- get file size
   lprint('load core done', uv.now() - start)
   local theme
-  if fsize >= 10 * 1024 * 1024 then
-    lprint('file size too large, skip loading')
-    theme = 'galaxy'
-  end
   if vim.wo.diff then
     vim.wo.wrap = true
     -- default colorschem for diff
@@ -57,17 +53,18 @@ local load_core = function()
     return
   end
 
-  require('core.colorscheme').load_colorscheme(theme)
-  require('keymap')
-  require('core.commands')
-  lprint('load compiled and lazy', uv.now() - start)
-
   if fsize >= 1 * 1024 * 1024 then
+    theme = 'galaxy'
     vim.g.large_file = true
   end
   if fsize >= 4 * 1024 * 1024 then
     vim.g.huge_file = true
   end
+  require('core.colorscheme').load_colorscheme(theme)
+  require('keymap')
+  require('core.commands')
+  lprint('load compiled and lazy', uv.now() - start)
+
   require('core.lazy').setup(fsize)
 
   lprint('lazy done', uv.now() - start)
