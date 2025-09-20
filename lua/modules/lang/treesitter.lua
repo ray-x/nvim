@@ -6,7 +6,7 @@ local ts_ensure_installed = { "go", "css", "html", "javascript", "typescript", "
 
 local enable = false
 local treesitter = function()
-  local has_ts = pcall(require, 'nvim-treesitter.configs')
+  local has_ts = pcall(require, 'nvim-treesitter')
   if not has_ts then
     vim.notify('ts not installed')
     return
@@ -27,13 +27,56 @@ local treesitter = function()
     lprint('ts enable')
   end
   local disable_ft = nil
-  if vim.fn.has('nvim-0.10') == 1 then
+  if vim.fn.has('nvim-0.11') == 1 then
     disable_ft = {
       'vimdoc',
     }
   end
 
-  require('nvim-treesitter.configs').setup({
+  vim.api.nvim_create_autocmd('FileType', {
+    pattern = {
+      'go',
+      'gohtmltmpl',
+      'gotexttmpl',
+      'gomod',
+      'gowork',
+      'c',
+      'cpp',
+      'java',
+      'python',
+      'lua',
+      'javascript',
+      'typescript',
+      'json',
+      'yaml',
+      'html',
+      'css',
+      'markdown',
+      'markdown_inline',
+      'vim',
+      'tsx',
+      'vue',
+    },
+    callback = function()
+      vim.treesitter.start()
+    end,
+  })
+  vim.api.nvim_create_autocmd('User', {
+    pattern = 'TSUpdate',
+    callback = function()
+      require('nvim-treesitter.parsers').gotmpl = {
+        install_info = {
+          url = 'https://github.com/ngalaiko/tree-sitter-go-template',
+          location = 'parser', -- only needed if the parser is in subdirectory of a "monorepo"
+          generate = true, -- only needed if repo does not contain pre-generated `src/parser.c`
+          generate_from_json = false, -- only needed if repo does not contain `src/grammar.json` either
+          queries = 'queries/neovim', -- also install queries from given directory
+        },
+      }
+    end,
+  })
+  return {
+    install_dir = vim.fn.stdpath('data') .. '/site',
     highlight = {
       enable = enable, -- false will disable the whole extension
       additional_vim_regex_highlighting = { 'org' }, -- unless not supported by ts
@@ -41,15 +84,6 @@ local treesitter = function()
       use_languagetree = langtree,
       custom_captures = { todo = 'Todo' },
     },
-  })
-  local parser_config = require('nvim-treesitter.parsers').get_parser_configs()
-  parser_config.gotmpl = {
-    install_info = {
-      url = 'https://github.com/ngalaiko/tree-sitter-go-template',
-      files = { 'src/parser.c' },
-    },
-    filetype = 'gotmpl',
-    used_by = { 'gohtmltmpl', 'gotexttmpl', 'gotmpl', 'yaml' },
   }
 end
 
@@ -65,7 +99,7 @@ local treesitter_obj = function()
     enable = false
   end
   -- lprint('ts obj', enable)
-  require('nvim-treesitter.configs').setup({
+  require('nvim-treesitter').setup({
     -- indent = { enable = enable },
     incremental_selection = {
       enable = enable, -- use textobjects
@@ -174,7 +208,7 @@ local treesitter_obj = function()
 
     matchup = {
       enable = enable, -- mandatory, false will disable the whole extension
-      disable = { 'help', 'txt' }, -- optional, list of language that will be disabled
+      disable = { 'help', 'txt', 'go' }, -- optional, list of language that will be disabled
       include_match_words = true,
     },
     -- ensure_installed = "maintained"
@@ -182,7 +216,7 @@ local treesitter_obj = function()
   })
 
   lprint('loading ts obj')
-  local ts_repeat_move = require('nvim-treesitter.textobjects.repeatable_move')
+  local ts_repeat_move = require('nvim-treesitter-textobjects.repeatable_move')
 
   -- Repeat movement with ; and ,
   -- ensure ; goes forward and , goes backward regardless of the last direction

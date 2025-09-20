@@ -40,35 +40,36 @@ return function(lang)
     lang({
       'nvim-treesitter/nvim-treesitter',
       event = { 'BufReadPre' },
-      config = function()
-        require('nvim-treesitter.configs').setup({
-          highlight = {
-            enable = true,
-          },
-          indent = {
-            enable = true,
-          },
-        })
-      end,
+      branch = 'main',
       module = true,
+      opts = {
+        highlight = {
+          enable = true,
+        },
+        indent = {
+          enable = true,
+        },
+      },
     })
     return
+  else
+    lang({
+      'nvim-treesitter/nvim-treesitter',
+      event = { 'VeryLazy' },
+      opts = ts.treesitter(),
+      branch = 'main',
+      module = true,
+    })
   end
-  lang({
-    'nvim-treesitter/nvim-treesitter',
-    event = { 'VeryLazy' },
-    config = ts.treesitter,
-    module = true,
-  })
 
   lang({
     'nvim-treesitter/nvim-treesitter-textobjects',
     dependencies = { 'nvim-treesitter' },
     config = ts.treesitter_obj,
+    branch = 'main',
     -- module = true,
     event = { 'CursorHold', 'CursorHoldI' },
   })
-
 
   lang({
     'chrisgrieser/nvim-various-textobjs',
@@ -90,9 +91,7 @@ return function(lang)
     config = conf.context_vt,
   })
 
-  local jsft =
-  { 'typescript', 'typescriptreact', 'javascript', 'javascriptreact', 'html', 'js', 'jsx', 'ts', 'tsx' }
-
+  local jsft = { 'typescript', 'typescriptreact', 'javascript', 'javascriptreact', 'html', 'js', 'jsx', 'ts', 'tsx' }
 
   if typecheck(jsft) then
     lang({
@@ -111,7 +110,7 @@ return function(lang)
           enable = true,
           enable_autocmd = false,
         })
-      end
+      end,
     })
 
     lang({ 'yardnsm/vim-import-cost', ft = jsft, cmd = 'ImportCost' })
@@ -176,6 +175,7 @@ return function(lang)
       'GoCoverag',
       'GoGet',
       'GoModifyTags',
+      'GoTool',
     },
     ft = { 'go', 'gomod', 'gosum', 'gotmpl', 'gohtmltmpl', 'gotexttmpl' },
     event = { 'VeryLazy' },
@@ -285,10 +285,10 @@ return function(lang)
         if filetype == '' then
           return true
         end
-        local parsers = require('nvim-treesitter.parsers')
-        local buflang = parsers.ft_to_lang(filetype)
+        -- local parsers = require('nvim-treesitter.parsers')
+        -- local buflang = parsers.ft_to_lang(filetype)
         -- lprint(buflang, filetype,  vim.tbl_contains(excluded_filetype, buflang))
-        return vim.tbl_contains(excluded_filetype, buflang)
+        -- return vim.tbl_contains(excluded_filetype, buflang)
       end,
     },
   })
@@ -314,12 +314,12 @@ return function(lang)
     event = 'VeryLazy',
     opts = function()
       return {
-        enable = true,        -- Enable this plugin (Can be enabled/disabled later via commands)
-        max_lines = 2,        -- How many lines the window should span. Values <= 0 mean no limit.
-        min_win_height = 0,   -- Minimum height of the window, content will be truncated if necessary.
+        enable = true, -- Enable this plugin (Can be enabled/disabled later via commands)
+        max_lines = 2, -- How many lines the window should span. Values <= 0 mean no limit.
+        min_win_height = 0, -- Minimum height of the window, content will be truncated if necessary.
         trim_scope = 'outer', -- Which context lines to discard if `max_lines` is exceeded. Choices: 'inner', 'outer'
-        mode = 'topline',     -- Line used to calculate context. Choices: 'cursor', 'topline'
-        patterns = {          -- Match patterns for TS nodes. These get wrapped to match at word boundaries.
+        mode = 'topline', -- Line used to calculate context. Choices: 'cursor', 'topline'
+        patterns = { -- Match patterns for TS nodes. These get wrapped to match at word boundaries.
           -- For all filetypes
           default = {
             'class',
@@ -440,19 +440,19 @@ return function(lang)
             return false
           end
           return vim.fn.win_gettype(win) == ''
-              and vim.wo[win].winbar == ''
-              and vim.bo[buf].bt == ''
-              and (not vim.tbl_contains({ 'help', 'guihua', 'terminal' }, vim.bo[buf].buftype))
-              and (
-                vim.bo[buf].ft == 'markdown'
-                or (
-                  buf
+            and vim.wo[win].winbar == ''
+            and vim.bo[buf].bt == ''
+            and (not vim.tbl_contains({ 'help', 'guihua', 'terminal' }, vim.bo[buf].buftype))
+            and (
+              vim.bo[buf].ft == 'markdown'
+              or (
+                buf
                   and vim.api.nvim_buf_is_valid(buf)
                   and (pcall(vim.treesitter.get_parser, buf, vim.bo[buf].ft))
                   and true
-                  or false
-                )
+                or false
               )
+            )
         end,
         attach_events = {
           'OptionSet',

@@ -253,15 +253,13 @@ function config.go()
     vim.cmd('ab dt GoDebug -t')
     vim.cmd('augroup END')
 
-    vim.keymap.set(
-      'v',
-      '<leader>gc',
-      require('go.gopls').change_signature,
-      { noremap = true, silent = true }
-    )
+    vim.keymap.set('v', '<leader>gc', require('go.gopls').change_signature, { noremap = true, silent = true })
   end, 1)
+  if true then
+    return { disable_defaults = false }
+  end
   return {
-    verbose = plugin_debug(), -- enable for debug
+    verbose = true,  --_G.plugin_debug(), -- enable for debug
     fillstruct = 'gopls',
     log_path = vim.fn.expand('$HOME') .. '/tmp/gonvim.log',
     lsp_codelens = false, -- use navigator
@@ -305,9 +303,9 @@ function config.go()
     lsp_document_formatting = true,
     lsp_semantic_highlights = false,
     lsp_semantic_highlights_priority = 100,
-    -- lsp_inlay_hints = {
-    --   enable = true,
-    -- },
+    lsp_inlay_hints = {
+      enable = false,
+    },
     preludes = {
       default = function()
         return { 'AWS_PROFILE=test' }
@@ -439,21 +437,9 @@ function config.symbol_usage()
   -- hl-groups can have any name
   vim.api.nvim_set_hl(0, 'SymbolUsageRounding', { fg = h('CursorLine').bg, italic = true })
   vim.api.nvim_set_hl(0, 'SymbolUsageContent', { fg = h('Comment').fg, italic = true })
-  vim.api.nvim_set_hl(
-    0,
-    'SymbolUsageRef',
-    { fg = h('Ignore').fg, bg = h('Comment').bg, italic = true }
-  )
-  vim.api.nvim_set_hl(
-    0,
-    'SymbolUsageDef',
-    { fg = h('Ignore').fg, bg = h('Comment').bg, italic = true }
-  )
-  vim.api.nvim_set_hl(
-    0,
-    'SymbolUsageImpl',
-    { fg = h('Ignore').fg, bg = h('Comment').bg, italic = true }
-  )
+  vim.api.nvim_set_hl(0, 'SymbolUsageRef', { fg = h('Ignore').fg, bg = h('Comment').bg, italic = true })
+  vim.api.nvim_set_hl(0, 'SymbolUsageDef', { fg = h('Ignore').fg, bg = h('Comment').bg, italic = true })
+  vim.api.nvim_set_hl(0, 'SymbolUsageImpl', { fg = h('Ignore').fg, bg = h('Comment').bg, italic = true })
 
   local function text_format(symbol)
     local res = {}
