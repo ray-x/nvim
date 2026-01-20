@@ -3,7 +3,7 @@
 -- first wrote by https://github.com/RishabhRD/nvim-lsputils
 
 local M = {
-  log_path = vim.lsp.get_log_path(),
+  log_path = vim.lsp.log.get_filename(),
 }
 function M.loader(modules)
   -- lazy loading
@@ -238,7 +238,7 @@ function M.reload()
 end
 
 function M.open_log()
-  local path = vim.lsp.get_log_path()
+  local path = vim.lsp.log.get_filename()
   vim.cmd('edit ' .. path)
 end
 
@@ -344,7 +344,7 @@ function M.substitute(from, to, style)
     if l == 1 then -- single line range, it possible selected a word
       from = w
       to = to or from
-      cmd = string.format(":%s/%s/%s/g", style, from, to)
+      cmd = string.format(':%s/%s/%s/g', style, from, to)
     else -- a range specified
       from = vim.fn.getreg('"')
       to = to or from
@@ -388,6 +388,5 @@ local function get_filetype(folder, ft)
     end
   end
 end
-
 
 return M

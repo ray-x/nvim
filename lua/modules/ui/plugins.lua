@@ -34,34 +34,34 @@ return function(ui)
   --   event = { 'CursorMoved', 'CursorMovedI' },
   --   config = conf.scrollview,
   -- })
-  ui({
-    'Xuyuanp/scrollbar.nvim',
-    event = { 'CursorMoved', 'CursorMovedI' },
-    config = function()
-      -- create auto group for scrollbar
-      local autogroup = vim.api.nvim_create_augroup
-      local bar_grp = autogroup('Scrollbar', { clear = true })
-      vim.api.nvim_create_autocmd({
-        'WinScrolled',
-        'VimResized',
-        'FocusGained',
-        'WinEnter',
-      }, {
-        group = bar_grp,
-        callback = function()
-          require('scrollbar').show()
-        end,
-        desc = 'scrollview',
-      })
-      vim.api.nvim_create_autocmd({ 'WinLeave', 'BufLeave', 'BufWinLeave', 'FocusLost', 'CursorHold', 'CursorHoldI' }, {
-        group = bar_grp,
-        callback = function()
-          require('scrollbar').clear()
-        end,
-        desc = 'scrollview',
-      })
-    end,
-  })
+  -- ui({
+  -- 'Xuyuanp/scrollbar.nvim',
+  -- event = { 'CursorMoved', 'CursorMovedI' },
+  -- config = function()
+  -- create auto group for scrollbar
+  -- local autogroup = vim.api.nvim_create_augroup
+  -- local bar_grp = autogroup('Scrollbar', { clear = true })
+  -- vim.api.nvim_create_autocmd({
+  -- 'WinScrolled',
+  -- 'VimResized',
+  -- 'FocusGained',
+  -- 'WinEnter',
+  -- }, {
+  -- group = bar_grp,
+  -- callback = function()
+  -- require('scrollbar').show()
+  -- end,
+  -- desc = 'scrollview',
+  -- })
+  -- vim.api.nvim_create_autocmd({ 'WinLeave', 'BufLeave', 'BufWinLeave', 'FocusLost', 'CursorHold', 'CursorHoldI' }, {
+  -- group = bar_grp,
+  -- callback = function()
+  -- require('scrollbar').clear()
+  -- end,
+  -- desc = 'scrollview',
+  -- })
+  -- end,
+  -- })
   ui({
     'rcarriga/nvim-notify',
     event = 'VeryLazy',

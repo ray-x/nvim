@@ -42,8 +42,15 @@ return function(use)
       { 'saadparwaiz1/cmp_luasnip' },
       { 'kdheepak/cmp-latex-symbols',           ft = { 'markdown' } },
       { 'hrsh7th/cmp-emoji' },
-      { 'windwp/nvim-autopairs',                event = 'InsertEnter', module = true,       config = function() require(
-        'modules.completion.config').autopairs() end },
+      {
+        'windwp/nvim-autopairs',
+        event = 'InsertEnter',
+        module = true,
+        config = function()
+          require(
+            'modules.completion.config').autopairs()
+        end
+      },
     },
     -- stylua: ignore end
     config = function()
@@ -53,7 +60,38 @@ return function(use)
   })
 
   use({
+    'CopilotC-Nvim/CopilotChat.nvim',
+    event = { 'InsertEnter', 'CmdlineEnter' },
+    opts = {
+      model = 'claude-opus-4.5', -- AI model to use
+      temperature = 0.2, -- Lower = focused, higher = creative
+      window = {
+        layout = 'vertical', -- 'vertical', 'horizontal', 'float'
+        width = 0.3, -- 50% of screen width
+      },
+      auto_insert_mode = true, -- Enter insert mode when opening
+    },
+  })
+
+  use({
     'olimorris/codecompanion.nvim',
+    dependencies = {
+      {
+        'ravitemer/mcphub.nvim',
+        opts = {
+          port = 37373,
+          config = os.getenv('HOME') .. '/.config/mcphub/servers.json',
+          extensions = {
+            copilotchat = {
+              enabled = true,
+              convert_tools_to_functions = true, -- Convert MCP tools to @functions
+              convert_resources_to_functions = true, -- Convert MCP resources to @functions
+              add_mcp_prefix = false, -- Add "mcp_" prefix to function names
+            },
+          },
+        },
+      },
+    },
     event = { 'InsertEnter', 'CmdlineEnter' },
     opts = {
       prompt_library = {
@@ -67,6 +105,16 @@ return function(use)
             auto_submit = true,
             stop_context_insertion = true,
             user_prompt = true,
+          },
+          extensions = {
+            mcphub = {
+              callback = 'mcphub.extensions.codecompanion',
+              opts = {
+                make_vars = true,
+                make_slash_commands = true,
+                show_result_in_chat = true,
+              },
+            },
           },
           prompts = {
             {
@@ -90,58 +138,12 @@ return function(use)
             },
           },
         },
-        ['techwriter'] = {
-          strategy = 'chat',
-          description = 'Get advice of my writing',
-          opts = {
-            mapping = '<LocalLeader>tw',
-            modes = { 'v' },
-            short_name = 'techwriter',
-            auto_submit = true,
-            stop_context_insertion = true,
-            user_prompt = true,
-          },
-          prompts = {
-            {
-              role = 'system',
-              content = function(context)
-                return 'I want you to act as a technical writer. I will ask you to return rephrased paragraph for me.'
-              end,
-            },
-            {
-              role = 'user',
-              content = function(context)
-                local text = require('codecompanion.helpers.actions').get_code(context.start_line, context.end_line)
-                return 'I have the following pragraph:\n\n```' .. 'txt' .. '\n' .. text .. '\n```\n\n'
-              end,
-              opts = {},
-            },
-          },
-        },
-      },
-      adapters = {
-        copilot = function()
-          return require('codecompanion.adapters').extend('copilot', {
-            schema = {
-              model = {
-                -- default = 'claude-3-7-sonnet-20250219', -- do not work
-                -- default = 'claude-3-7-sonnet-20250219-v1:0', -- do not work
-                default = 'claude-3.7-sonnet',
-                -- default = 'claude-3.5-sonnet',
-                -- default = 'o1',  -- not tested
-                -- default = 'o3-mini' -- not tested
-                -- default = 'claude-3.7-sonnet-thought',
-                -- default = 'gemini-2.0-flash'
-              },
-            },
-          })
-        end,
       },
       strategies = {
         --NOTE: Change the adapter as required
-        chat = { adapter = 'copilot' },
-        inline = { adapter = 'copilot' },
-        agent = { adapter = 'copilot' },
+        chat = { adapter = { name = 'copilot', model = 'gpt-5.2' } },
+        inline = { adapter = { name = 'copilot', model = 'claude-sonnet-4.5' } },
+        agent = { adapter = { name = 'copilot', model = 'claude-sonnet-4.5' } },
       },
       opts = {
         log_level = 'DEBUG',
@@ -239,27 +241,16 @@ return function(use)
     lazy = true,
     event = 'InsertEnter',
     init = function()
-      -- vim.api.nvim_set_keymap("n", "<C-=>", [[copilot#Accept("\<CR>")]], { silent = true, script = true, expr = true })
-      -- vim.api.nvim_set_keymap("i", "<C-=>", [[copilot#Accept("\<CR>")]], { silent = true, script = true, expr = true })
       vim.g.copilot_filetypes = {
         ['dap-repl'] = false,
         -- NeogitCommitMessage = false,
         -- gitcommit = false,
       }
-      vim.cmd([[imap <silent><script><expr> <C-J> copilot#Accept("\<CR>")]])
-      -- vim.keymap.set('i', '<C-J>', function()
-      --   vim.fn['copilot#Accept']('<CR>')
-      -- end, { desc = 'copilot accept', replace_keycodes = false })
-      -- vim.keymap.set('i', '<C-J>', 'copilot#Accept("\\<CR>")', {
-      --     expr = true,
-      --     replace_keycodes = false
-      --   })
+      vim.keymap.set('i', '<C-J>', 'copilot#Accept("\\<CR>")', {
+        expr = true,
+        replace_keycodes = false,
+      })
       vim.g.copilot_no_tab_map = true
     end,
   })
-  -- use({
-  --   'hinell/lsp-timeout.nvim', -- reset lsp from time to time
-  --   dependencies = { 'neovim/nvim-lspconfig' },
-  --   event = 'InsertEnter',
-  -- })
 end

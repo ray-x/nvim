@@ -207,7 +207,6 @@ function config.navigator()
 
   table.insert(navigator_cfg.lsp.disable_lsp, 'efm')
 
-  vim.lsp.set_log_level('error') -- error debug info
   -- require"navigator".setup(nav_cfg)
   return navigator_cfg
 end
@@ -259,7 +258,7 @@ function config.go()
     return { disable_defaults = false }
   end
   return {
-    verbose = true,  --_G.plugin_debug(), -- enable for debug
+    verbose = true, --_G.plugin_debug(), -- enable for debug
     fillstruct = 'gopls',
     log_path = vim.fn.expand('$HOME') .. '/tmp/gonvim.log',
     lsp_codelens = false, -- use navigator

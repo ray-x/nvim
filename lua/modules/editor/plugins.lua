@@ -60,21 +60,24 @@ return function(editor)
   -- I like this plugin, but 1) offscreen context is slow
   -- 2) it not friendly to lazyload and treesitter startup
   --  motions g%, [%, ]%, and z%.
-  --  text objects i% and a%
+  -- text objects i% and a%
   editor({
     'andymass/vim-matchup',
     event = { 'CursorHold', 'CursorHoldI', 'VeryLazy' },
     keys = { '<Plug>(matchup-%)', '<Plug>(matchup-g%)' },
     cmd = { 'MatchupWhereAmI' }, --
     init = function()
-      -- vim.g.matchup_matchparen_deferred = 1
+      vim.g.matchup_enabled = 0
+      vim.g.matchup_matchparen_deferred = 1
       vim.g.matchup_matchparen_hi_surround_always = 1
-      vim.g.matchup_matchparen_deferred_show_delay = 100
+      vim.g.matchup_matchparen_deferred_show_delay = 200
       vim.g.matchup_matchparen_deferred_hide_delay = 1000
+      vim.g.matchup_treesitter_stopline = 500
+      vim.g.matchup_treesitter_enabled = true
     end,
-    config = function()
+    opts = function()
       local enabled = 1
-      if vim.g.large_file or vim.tbl_contains({ 'txt' }, vim.bo.filetype) then
+      if vim.g.large_file or vim.tbl_contains({ 'txt', 'go' }, vim.bo.filetype) then
         enabled = 0
       end
       vim.g.matchup_enabled = enabled
@@ -84,6 +87,11 @@ return function(editor)
       vim.g.matchup_matchparen_hi_surround_always = enabled
       vim.g.matchup_matchparen_offscreen = { method = 'popup' }
       vim.cmd([[nnoremap <c-s-k> :<c-u>MatchupWhereAmI?<cr>]])
+      return {
+        treesitter = {
+          stopline = 500,
+        },
+      }
     end,
   })
 
@@ -104,8 +112,7 @@ return function(editor)
           -- dynamic configuration for ftFT motions
           config = function(opts)
             -- autohide flash when in operator-pending mode
-            opts.autohide = opts.autohide
-              or (vim.fn.mode(true):find('no') and vim.v.operator == 'y')
+            opts.autohide = opts.autohide or (vim.fn.mode(true):find('no') and vim.v.operator == 'y')
 
             -- disable jump labels when not enabled, when using a count,
             -- or when recording/executing registers
@@ -140,11 +147,11 @@ return function(editor)
     keys = {
 
       -- stylua: ignore start
-      { "s", mode = { "n", "o", "x" }, function() require("flash").jump() end, desc = "Flash" },
-      { "S", mode = { "n", "o", "x" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
+      { "s",         mode = { "n", "o", "x" }, function() require("flash").jump() end,              desc = "Flash" },
+      { "S",         mode = { "n", "o", "x" }, function() require("flash").treesitter() end,        desc = "Flash Treesitter" },
       -- { "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
-      { "<F3>", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
-      { "<leader>s", mode = { "n" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
+      { "<F3>",      mode = { "o", "x" },      function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
+      { "<leader>s", mode = { "n" },           function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
     },
   })
 
@@ -603,7 +610,7 @@ end
 -- cmd = { 'TSJToggle', 'TSJJoin', 'TSJSplit' },
 -- module = true,
 -- opts = {
-  -- user_default_keymaps = false,
+-- user_default_keymaps = false,
 -- },
 -- })
 -- editor({
@@ -612,4 +619,3 @@ end
 --   opts = {},
 --   dev = dev,
 -- })
-

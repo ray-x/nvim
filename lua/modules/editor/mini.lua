@@ -42,12 +42,7 @@ local function jump_textobject(prev_next, left_right, ai_type)
   end
 
   -- Jump!
-  ai.move_cursor(
-    left_right,
-    ai_type,
-    tobj_id,
-    { n_times = vim.v.count1, search_method = prev_next }
-  )
+  ai.move_cursor(left_right, ai_type, tobj_id, { n_times = vim.v.count1, search_method = prev_next })
 end
 return {
   setup = function()
@@ -55,10 +50,7 @@ return {
       custom_textobjects = {
         ['b'] = { { '%b()', '%b[]', '%b{}' }, '^.%s*().-()%s*.$' },
         -- seems not as useful
-        x = require('mini.ai').gen_spec.treesitter(
-          { a = '@comment.outer', i = '@comment.inner' },
-          {}
-        ),
+        x = require('mini.ai').gen_spec.treesitter({ a = '@comment.outer', i = '@comment.inner' }, {}),
         -- ts obj for following
         ['f'] = gen_spec.treesitter({ a = '@function.outer', i = '@function.inner' }), -- using ts
         ['a'] = gen_spec.treesitter({ a = '@parameter.outer', i = '@parameter.outer' }),
@@ -87,8 +79,7 @@ return {
             local first_non_blank = vim.fn.nextnonblank(1)
             local final_non_blank = vim.fn.prevnonblank(vim.fn.line('$'))
             local from = { line = first_non_blank, col = 1 }
-            local to =
-              { line = final_non_blank, col = math.max(vim.fn.getline(final_non_blank):len(), 1) }
+            local to = { line = final_non_blank, col = math.max(vim.fn.getline(final_non_blank):len(), 1) }
 
             return { from = from, to = to }
           elseif ai_type == 'a' then
@@ -105,7 +96,7 @@ return {
     local gen_action = function(seq)
       local edge = ({ ['['] = 'left', [']'] = 'right' })[seq:sub(1, 1)]
       local ai_type = seq:sub(2, 2)
-      local prev_next = ({l = 'prev', n = 'next'})[seq:sub(3, 3)]
+      local prev_next = ({ l = 'prev', n = 'next' })[seq:sub(3, 3)]
       vim.keymap.set({ 'n', 'v' }, seq, function()
         jump_textobject(prev_next, edge, ai_type)
       end, {
@@ -134,7 +125,9 @@ return {
         delete = true,
       },
     })
-    require('mini.diff').setup({})
+    require('mini.diff').setup({
+      source = require('mini.diff').gen_source.none(),
+    })
     require('mini.splitjoin').setup({
       mappings = {
         toggle = '<space>j',

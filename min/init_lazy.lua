@@ -28,9 +28,10 @@ local function load_plugins()
   return {
     {
       'nvim-treesitter/nvim-treesitter',
+      branch = 'main',
       config = function()
-        require('nvim-treesitter.configs').setup({
-          ensure_installed = { 'go' },
+        require('nvim-treesitter').setup({
+          ensure_installed = { 'go', 'gomod' },
           highlight = { enable = true },
         })
       end,
@@ -103,14 +104,8 @@ local function load_plugins()
             verbose = true,
             lsp_cfg = {
               handlers = {
-                ['textDocument/hover'] = vim.lsp.with(
-                  vim.lsp.handlers.hover,
-                  { border = 'double' }
-                ),
-                ['textDocument/signatureHelp'] = vim.lsp.with(
-                  vim.lsp.handlers.signature_help,
-                  { border = 'round' }
-                ),
+                ['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, { border = 'double' }),
+                ['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = 'round' }),
               },
             }, -- false: do nothing
           })

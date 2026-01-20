@@ -15,8 +15,6 @@ return function(lang)
   local dev = _G.is_dev()
   local ts = require('modules.lang.treesitter')
 
-  -- lang({ 'nvim-treesitter/nvim-treesitter', config = ts.treesitter, module = true })
-
   --
   --
   lang({
@@ -39,26 +37,37 @@ return function(lang)
   if vim.wo.diff then
     lang({
       'nvim-treesitter/nvim-treesitter',
-      event = { 'BufReadPre' },
+      -- event = { 'BufReadPre' },
+      lazy = false,
       branch = 'main',
       module = true,
-      opts = {
-        highlight = {
-          enable = true,
-        },
-        indent = {
-          enable = true,
-        },
-      },
+      opts = function()
+        vim.api.nvim_create_autocmd('FileType', {
+          pattern = {
+            'diff',
+          },
+          callback = function()
+            vim.treesitter.start()
+          end,
+        })
+
+        return {
+          highlight = {
+            enable = true,
+          },
+          indent = {
+            enable = true,
+          },
+        }
+      end,
     })
     return
   else
     lang({
       'nvim-treesitter/nvim-treesitter',
-      event = { 'VeryLazy' },
       opts = ts.treesitter(),
       branch = 'main',
-      module = true,
+      lazy = false,
     })
   end
 

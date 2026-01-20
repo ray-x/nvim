@@ -1,16 +1,11 @@
 local langtree = false
 -- stylua: ignore start
-local ts_ensure_installed = { "go", "css", "html", "javascript", "typescript", "json", "c", "java", "toml", "tsx", "lua",
-  "cpp", "python", "rust", "yaml", "vue", "vim", "markdown", "markdown_inline" }
+local ts_ensure_installed = { 'go', 'css', 'html', 'javascript', 'typescript', 'json', 'c', 'java', 'toml', 'tsx', 'lua',
+  'cpp', 'python', 'rust', 'yaml', 'vue', 'vim', 'markdown', 'markdown_inline', 'sql' }
 -- stylua: ignore end
 
 local enable = false
 local treesitter = function()
-  local has_ts = pcall(require, 'nvim-treesitter')
-  if not has_ts then
-    vim.notify('ts not installed')
-    return
-  end
   local lines = vim.fn.line('$')
   if lines > 100000 then -- skip some settings for large file
     return
@@ -27,40 +22,23 @@ local treesitter = function()
     lprint('ts enable')
   end
   local disable_ft = nil
-  if vim.fn.has('nvim-0.11') == 1 then
-    disable_ft = {
-      'vimdoc',
-    }
-  end
-
   vim.api.nvim_create_autocmd('FileType', {
-    pattern = {
-      'go',
-      'gohtmltmpl',
-      'gotexttmpl',
-      'gomod',
-      'gowork',
-      'c',
-      'cpp',
-      'java',
-      'python',
-      'lua',
-      'javascript',
-      'typescript',
-      'json',
-      'yaml',
-      'html',
-      'css',
-      'markdown',
-      'markdown_inline',
-      'vim',
-      'tsx',
-      'vue',
-    },
+    pattern = ts_ensure_installed,
     callback = function()
       vim.treesitter.start()
     end,
   })
+  vim.api.nvim_create_user_command('TSEnsureInstalled', function()
+    print(vim.inspect(require('nvim-treesitter').install({ ts_ensure_installed, force = true, summary = true })))
+  end, { nargs = 0 })
+
+  vim.api.nvim_create_user_command('TSEnsureUpdate', function()
+    print(vim.inspect(require('nvim-treesitter').update({ ts_ensure_installed, summary = true })))
+  end, { nargs = 0 })
+
+  vim.api.nvim_create_user_command('TSGetAvailable', function()
+    print(vim.inspect(require('nvim-treesitter').get_available()))
+  end, { nargs = 0 })
   vim.api.nvim_create_autocmd('User', {
     pattern = 'TSUpdate',
     callback = function()
@@ -79,7 +57,7 @@ local treesitter = function()
     install_dir = vim.fn.stdpath('data') .. '/site',
     highlight = {
       enable = enable, -- false will disable the whole extension
-      additional_vim_regex_highlighting = { 'org' }, -- unless not supported by ts
+      -- additional_vim_regex_highlighting = { 'org' }, -- unless not supported by ts
       disable = disable_ft, -- list of language that will be disabled
       use_languagetree = langtree,
       custom_captures = { todo = 'Todo' },
@@ -98,6 +76,85 @@ local treesitter_obj = function()
   if lines > 4000 then
     enable = false
   end
+
+  require('nvim-treesitter-textobjects').setup({
+
+    select = {
+      enable = enable,
+      lookahead = enable,
+      keymaps = {
+        -- You can use the capture groups defined in textobjects.scm
+        ['af'] = { query = '@function.outer', desc = 'select inner class' },
+        ['if'] = { query = '@function.inner', desc = 'select inner function' },
+        ['ac'] = { query = '@class.outer', desc = 'select outer class' },
+        ['ic'] = { query = '@class.inner', desc = 'select inner class' },
+        ['as'] = { query = '@scope', query_group = 'locals', desc = 'Select language scope' },
+      },
+      selection_modes = {
+        ['@parameter.outer'] = 'v', -- charwise
+        ['@function.outer'] = 'V', -- linewise
+        ['@class.outer'] = '<c-v>', -- blockwise
+      },
+      include_surrounding_whitespace = false,
+    },
+  })
+  local ts_maps = {
+    -- peek_definition_code = {
+    -- ['DF'] = { query = { '@function.outer' }, desc = 'peek function outter' },
+    -- ['CF'] = { query = { '@class.outer' }, desc = 'peek class outter' },
+    -- },
+
+    goto_next_start = {
+      [']m'] = { query = { '@function.outer' }, desc = 'go to next start' }, -- use system default
+      -- query = { '@scope', 'class.*', '@loop.*', '@conditional' },
+      [']s'] = {
+        query = { '@scope', '@class.*', '@loop.*', '@conditional' },
+        query_group = 'locals',
+        desc = 'Next scope',
+      },
+
+      [']z'] = {
+        query = { '@fold' },
+        query_group = 'folds',
+        desc = 'Next fold',
+      },
+      [']]'] = {
+        query = { '@class.outer', '@function.*', 'block.outer' },
+        desc = 'nearest block',
+      },
+    },
+
+    goto_next_end = {
+      [']M'] = '@function.outer', -- use nvim 0.11 default
+      -- [']c'] = {
+      -- query = { '@loop.outer', '@conditional.outer', '@class.outer' },
+      -- desc = 'next scope',
+      -- },
+    },
+    goto_previous_start = {
+      ['[m'] = { query = { '@function.outer' }, desc = 'nearest func' },
+      ['[['] = {
+        query = { '@function.*', '@class.outer', 'block.outer' },
+        desc = 'prev func ; class ',
+      },
+      ['[z'] = { query = { '@fold' }, query_group = 'folds', desc = 'Next fold' },
+      ['[o'] = '@loop.*',
+      ['[s'] = { query = '@local.scope', query_group = 'locals', desc = 'Next scope' },
+    },
+    goto_previous_end = {
+      ['[M'] = { query = '@function.outer', desc = 'previous func' },
+      ['[]'] = { query = '@class.outer', desc = 'previous class' },
+    },
+  }
+
+  for fun, cfg in pairs(ts_maps) do
+    for keys, map in pairs(cfg) do
+      vim.keymap.set({ 'n', 'x', 'o' }, keys, function()
+        require('nvim-treesitter-textobjects.move')[fun](map.query, map.query_group or 'textobjects')
+      end, { desc = map.desc })
+    end
+  end
+
   -- lprint('ts obj', enable)
   require('nvim-treesitter').setup({
     -- indent = { enable = enable },
@@ -208,11 +265,11 @@ local treesitter_obj = function()
 
     matchup = {
       enable = enable, -- mandatory, false will disable the whole extension
-      disable = { 'help', 'txt', 'go' }, -- optional, list of language that will be disabled
+      disable = { 'help', 'txt' }, -- optional, list of language that will be disabled
       include_match_words = true,
     },
     -- ensure_installed = "maintained"
-    ensure_installed = ts_ensure_installed,
+    -- ensure_installed = ts_ensure_installed,
   })
 
   lprint('loading ts obj')
