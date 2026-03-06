@@ -254,9 +254,6 @@ function config.go()
 
     vim.keymap.set('v', '<leader>gc', require('go.gopls').change_signature, { noremap = true, silent = true })
   end, 1)
-  if true then
-    return { disable_defaults = false }
-  end
   return {
     verbose = true, --_G.plugin_debug(), -- enable for debug
     fillstruct = 'gopls',
@@ -304,6 +301,14 @@ function config.go()
     lsp_semantic_highlights_priority = 100,
     lsp_inlay_hints = {
       enable = false,
+    },
+    ai = {
+      enable = true,
+      provider = 'copilot', -- copilot, codeium, custom
+    },
+    mcp = {
+      enable = true,
+      gopls_cmd = { 'gopls', 'mcp' },
     },
     preludes = {
       default = function()

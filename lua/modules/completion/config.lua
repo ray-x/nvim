@@ -11,8 +11,7 @@ function config.nvim_cmp()
 
   local has_words_before = function()
     local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-    return col ~= 0
-      and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match('%s') == nil
+    return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match('%s') == nil
   end
   local luasnip = require('luasnip')
 
@@ -41,6 +40,7 @@ function config.nvim_cmp()
     { name = 'buffer' },
     { name = 'sql' },
     { name = 'shell_history' },
+    { name = 'copilot', group_index = 2 },
   }
 
   if vim.o.ft == 'sql' or vim.o.ft == 'pgsql' then
@@ -108,6 +108,7 @@ function config.nvim_cmp()
           latex_symbols = '󰿉',
           ['vim-dadbod-completion'] = '',
           -- copilot = '🤖',
+          copilot = '',
           -- cmp_tabnine = '🤖',
           look = '',
         })[entry.source.name]
@@ -129,11 +130,7 @@ function config.nvim_cmp()
           cmp.abort()
           cmp.close()
         else
-          vim.api.nvim_feedkeys(
-            vim.api.nvim_replace_termcodes('<End>', true, true, true),
-            'i',
-            true
-          )
+          vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<End>', true, true, true), 'i', true)
         end
       end,
       ['<CR>'] = cmp.mapping.confirm({
@@ -147,8 +144,8 @@ function config.nvim_cmp()
           cmp.select_next_item()
         elseif luasnip.expand_or_jumpable() then
           luasnip.expand_or_jump()
-        -- elseif has_words_before() then
-        --   cmp.complete()
+          -- elseif has_words_before() then
+          --   cmp.complete()
         else
           -- local copilot_keys = vim.fn["copilot#Accept"]()
           -- if copilot_keys ~= "" then

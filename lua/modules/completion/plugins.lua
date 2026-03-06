@@ -43,6 +43,13 @@ return function(use)
       { 'kdheepak/cmp-latex-symbols',           ft = { 'markdown' } },
       { 'hrsh7th/cmp-emoji' },
       {
+        "zbirenbaum/copilot-cmp",
+        config = function()
+          require("copilot_cmp").setup({
+          })
+        end
+      },
+      {
         'windwp/nvim-autopairs',
         event = 'InsertEnter',
         module = true,
@@ -63,7 +70,7 @@ return function(use)
     'CopilotC-Nvim/CopilotChat.nvim',
     event = { 'InsertEnter', 'CmdlineEnter' },
     opts = {
-      model = 'claude-opus-4.5', -- AI model to use
+      model = 'claude-opus-4.6', -- AI model to use
       temperature = 0.2, -- Lower = focused, higher = creative
       window = {
         layout = 'vertical', -- 'vertical', 'horizontal', 'float'
@@ -142,8 +149,8 @@ return function(use)
       strategies = {
         --NOTE: Change the adapter as required
         chat = { adapter = { name = 'copilot', model = 'gpt-5.2' } },
-        inline = { adapter = { name = 'copilot', model = 'claude-sonnet-4.5' } },
-        agent = { adapter = { name = 'copilot', model = 'claude-sonnet-4.5' } },
+        inline = { adapter = { name = 'copilot', model = 'claude-opus-4.6' } },
+        agent = { adapter = { name = 'copilot', model = 'claude-opus-4.6' } },
       },
       opts = {
         log_level = 'DEBUG',
@@ -237,20 +244,61 @@ return function(use)
     -- gitcommit = false,
   }
   use({
-    'github/copilot.vim',
-    lazy = true,
+    'zbirenbaum/copilot.lua',
+    cmd = 'Copilot',
     event = 'InsertEnter',
-    init = function()
-      vim.g.copilot_filetypes = {
-        ['dap-repl'] = false,
-        -- NeogitCommitMessage = false,
-        -- gitcommit = false,
-      }
-      vim.keymap.set('i', '<C-J>', 'copilot#Accept("\\<CR>")', {
-        expr = true,
-        replace_keycodes = false,
+    config = function()
+      vim.g.copilot_proxy_strict_ssl = false
+      require('copilot').setup({
+        nes = {
+          enabled = false,
+        },
+
+        logger = {
+          file = vim.fn.stdpath('log') .. '/copilot-lua.log',
+          file_log_level = vim.log.levels.WARN,
+          print_log_level = vim.log.levels.ERROR,
+          trace_lsp = 'off', -- "off" | "debug" | "verbose"
+          trace_lsp_progress = true,
+          log_lsp_messages = true,
+        },
+        suggestion = {
+          enabled = true,
+          auto_trigger = true,
+          hide_during_completion = true,
+          debounce = 15,
+          trigger_on_accept = true,
+          keymap = {
+            accept = '<C-j>',
+            next = '<M-]>',
+            prev = '<M-[>',
+            dismiss = '<C-]>',
+          },
+        },
       })
-      vim.g.copilot_no_tab_map = true
     end,
+    dependencies = {
+      'copilotlsp-nvim/copilot-lsp', -- (optional) for NES functionality
+    },
   })
+  if false then
+    use({
+      'github/copilot.vim',
+      lazy = true,
+      event = 'InsertEnter',
+      init = function()
+        vim.g.copilot_filetypes = {
+          ['dap-repl'] = false,
+          NeogitCommitMessage = false,
+          gitcommit = false,
+        }
+
+        vim.keymap.set('i', '<C-J>', 'copilot#Accept("\\<CR>")', {
+          expr = true,
+          replace_keycodes = false,
+        })
+        vim.g.copilot_no_tab_map = true
+      end,
+    })
+  end
 end

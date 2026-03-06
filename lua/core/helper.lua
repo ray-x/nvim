@@ -16,6 +16,7 @@ local function exists(file)
 end
 
 Plugin_folder = nil
+Plugin_debug = nil
 local helper = {
   init = function()
     -- https://www.reddit.com/r/neovim/comments/sg919r/diff_with_clipboard/
@@ -38,6 +39,7 @@ local helper = {
     end
 
     _G.plugin_debug = function()
+      if true then return true end
       if Plugin_debug ~= nil then
         return Plugin_debug
       end
@@ -56,11 +58,8 @@ local helper = {
         s = vim.fn.expand('<cword>')
       end
       lprint('replace: ', s)
-      local n = s:gsub('%f[^%l]%u', '_%1')
-        :gsub('%f[^%a]%d', '_%1')
-        :gsub('%f[^%d]%a', '_%1')
-        :gsub('(%u)(%u%l)', '%1_%2')
-        :lower()
+      local n =
+        s:gsub('%f[^%l]%u', '_%1'):gsub('%f[^%a]%d', '_%1'):gsub('%f[^%d]%a', '_%1'):gsub('(%u)(%u%l)', '%1_%2'):lower()
       vim.fn.setreg('s', n)
       vim.cmd([[exe "norm! ciw\<C-R>s"]])
       lprint('newstr', n)
