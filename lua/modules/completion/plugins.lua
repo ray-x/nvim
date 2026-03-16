@@ -148,7 +148,7 @@ return function(use)
       },
       strategies = {
         --NOTE: Change the adapter as required
-        chat = { adapter = { name = 'copilot', model = 'gpt-5.2' } },
+        chat = { adapter = { name = 'copilot', model = 'gpt-5.4' } },
         inline = { adapter = { name = 'copilot', model = 'claude-opus-4.6' } },
         agent = { adapter = { name = 'copilot', model = 'claude-opus-4.6' } },
       },
