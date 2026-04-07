@@ -1,5 +1,5 @@
 local vim = vim
-local uv = vim.uv or vim.loop
+local uv = vim.uv
 local start = uv.now()
 
 local disable_distribution_plugins = function()
@@ -69,5 +69,24 @@ local load_core = function()
 
   lprint('lazy done', uv.now() - start)
 end
+
+-- create a thread to check network status
+
+local function check_network()
+  vim.g.network_status = false
+  local socket = uv.new_tcp()
+  socket:connect('8.8.8.8', 53, function(err)
+    if err then
+      vim.schedule(function()
+        print('Network Down: ' .. err)
+      end)
+    else
+      vim.g.network_status = true
+      socket:close()
+    end
+  end)
+end
+
+check_network()
 
 load_core()
