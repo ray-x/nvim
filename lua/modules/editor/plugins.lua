@@ -279,7 +279,7 @@ return function(editor)
     cmd = { 'RenderMarkdown', 'RenderMarkdownToggle' },
     opts = {
       render_modes = { 'n', 'no', 'c' },
-      file_types = { 'markdown', 'quarto', 'rmd' },
+      file_types = { 'markdown', 'quarto', 'rmd', 'copilot-chat' },
 
       code = {
         enabled = true,
@@ -429,7 +429,6 @@ return function(editor)
     -- 'AndrewRadev/switch.vim',
     'CKolkey/ts-node-action',
     event = { 'FuncUndefined', 'CursorHold' },
-    dependencies = { 'nvim-treesitter' },
     opts = {},
   })
   editor({
