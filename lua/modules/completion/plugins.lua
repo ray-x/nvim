@@ -69,6 +69,7 @@ return function(use)
   use({
     'CopilotC-Nvim/CopilotChat.nvim',
     event = { 'InsertEnter', 'CmdlineEnter' },
+    build = 'make tiktoken',
     opts = {
       model = 'claude-opus-4.6', -- AI model to use
       temperature = 0.2, -- Lower = focused, higher = creative
@@ -79,12 +80,15 @@ return function(use)
       auto_insert_mode = true, -- Enter insert mode when opening
     },
   })
-
   use({
     'olimorris/codecompanion.nvim',
+    -- cond = function()
+    --   return vim.g.network_status == true
+    -- end,
     dependencies = {
       {
         'ravitemer/mcphub.nvim',
+        build = 'npm install -g mcp-hub@latest',
         opts = {
           port = 37373,
           config = os.getenv('HOME') .. '/.config/mcphub/servers.json',
@@ -147,7 +151,6 @@ return function(use)
         },
       },
       strategies = {
-        --NOTE: Change the adapter as required
         chat = { adapter = { name = 'copilot', model = 'gpt-5.4' } },
         inline = { adapter = { name = 'copilot', model = 'claude-opus-4.6' } },
         agent = { adapter = { name = 'copilot', model = 'claude-opus-4.6' } },
@@ -157,7 +160,7 @@ return function(use)
       },
     },
   })
-
+  --
   -- can not lazyload, it is also slow...
   use({
     'L3MON4D3/LuaSnip', -- need to be the first to load
@@ -180,18 +183,20 @@ return function(use)
     end,
   })
 
-  use({
-    'mattn/emmet-vim',
-    event = 'InsertEnter',
-    -- stylua: ignore start
-    ft = { 'html', 'css', 'javascript', 'javascriptreact', 'vue', 'typescript', 'typescriptreact',
-      'scss', 'sass', 'less', 'jade', 'haml', 'elm', },
-    -- stylua: ignore end
-    init = function()
-      local conf = require('modules.completion.config')
-      conf.emmet()
-    end,
-  })
+  if false then
+    use({
+      'mattn/emmet-vim',
+      event = 'InsertEnter',
+      -- stylua: ignore start
+      ft = { 'html', 'css', 'javascript', 'javascriptreact', 'vue', 'typescript', 'typescriptreact',
+        'scss', 'sass', 'less', 'jade', 'haml', 'elm', },
+      -- stylua: ignore end
+      init = function()
+        local conf = require('modules.completion.config')
+        conf.emmet()
+      end,
+    })
+  end
   -- note: part of the code is used in navigator
   use({
     'ray-x/lsp_signature.nvim',
@@ -243,13 +248,221 @@ return function(use)
     ['dap-repl'] = false,
     -- gitcommit = false,
   }
+
+  use({
+    'carlos-algms/agentic.nvim',
+
+    event = { 'InsertEnter', 'CmdlineEnter' },
+    opts = {
+      -- Any ACP-compatible provider works. Built-in: "claude-agent-acp" | "gemini-acp" | "codex-acp" | "opencode-acp" | "cursor-acp" | "copilot-acp" | "auggie-acp" | "mistral-vibe-acp" | "cline-acp" | "goose-acp"
+      provider = 'copilot-acp', -- setting the name here is all you need to get started
+    },
+
+    -- these are just suggested keymaps; customize as desired
+    keys = {
+      {
+        '<C-\\>',
+        function()
+          require('agentic').toggle()
+        end,
+        mode = { 'n', 'v', 'i' },
+        desc = 'Toggle Agentic Chat',
+      },
+      {
+        "<C-'>",
+        function()
+          require('agentic').add_selection_or_file_to_context()
+        end,
+        mode = { 'n', 'v' },
+        desc = 'Add file or selection to Agentic to Context',
+      },
+      {
+        '<C-,>',
+        function()
+          require('agentic').new_session()
+        end,
+        mode = { 'n', 'v', 'i' },
+        desc = 'New Agentic Session',
+      },
+      {
+        '<A-i>r', -- ai Restore
+        function()
+          require('agentic').restore_session()
+        end,
+        desc = 'Agentic Restore session',
+        silent = true,
+        mode = { 'n', 'v', 'i' },
+      },
+      {
+        '<leader>ad', -- ai Diagnostics
+        function()
+          require('agentic').add_current_line_diagnostics()
+        end,
+        desc = 'Add current line diagnostic to Agentic',
+        mode = { 'n' },
+      },
+      {
+        '<leader>aD', -- ai all Diagnostics
+        function()
+          require('agentic').add_buffer_diagnostics()
+        end,
+        desc = 'Add all buffer diagnostics to Agentic',
+        mode = { 'n' },
+      },
+    },
+  })
+
+  use({
+    'ThePrimeagen/99',
+    event = { 'InsertEnter', 'CmdlineEnter', 'CursorHold' },
+    config = function()
+      local _99 = require('99')
+
+      local CopilotProvider = setmetatable({}, { __index = _99.Providers.BaseProvider })
+
+      function CopilotProvider._build_command(_, query, context)
+        return {
+          'copilot',
+          '-s',
+          '--stream',
+          'off',
+          '--no-color',
+          '--model',
+          context.model,
+          '-p',
+          query,
+        }
+      end
+
+      function CopilotProvider._get_provider_name()
+        return 'CopilotProvider'
+      end
+
+      function CopilotProvider._get_default_model()
+        return 'gpt-5.4'
+      end
+
+      function CopilotProvider.fetch_models(callback)
+        callback({ CopilotProvider._get_default_model() }, nil)
+      end
+
+      -- For logging that is to a file if you wish to trace through requests
+      -- for reporting bugs, i would not rely on this, but instead the provided
+      -- logging mechanisms within 99.  This is for more debugging purposes
+      local cwd = vim.uv.cwd()
+      local basename = vim.fs.basename(cwd)
+      _99.setup({
+        provider = CopilotProvider,
+        logger = {
+          level = _99.DEBUG,
+          path = '/tmp/' .. basename .. '.99.debug',
+          print_on_error = true,
+        },
+        -- When setting this to something that is not inside the CWD tools
+        -- such as claude code or opencode will have permission issues
+        -- and generation will fail refer to tool documentation to resolve
+        -- https://opencode.ai/docs/permissions/#external-directories
+        -- https://code.claude.com/docs/en/permissions#read-and-edit
+        tmp_dir = './tmp',
+
+        --- Completions: #rules and @files in the prompt buffer
+        completion = {
+          -- I am going to disable these until i understand the
+          -- problem better.  Inside of cursor rules there is also
+          -- application rules, which means i need to apply these
+          -- differently
+          -- cursor_rules = "<custom path to cursor rules>"
+
+          --- A list of folders where you have your own SKILL.md
+          --- Expected format:
+          --- /path/to/dir/<skill_name>/SKILL.md
+          ---
+          --- Example:
+          --- Input Path:
+          --- "scratch/custom_rules/"
+          ---
+          --- Output Rules:
+          --- {path = "scratch/custom_rules/vim/SKILL.md", name = "vim"},
+          --- ... the other rules in that dir ...
+          ---
+          custom_rules = {
+            'scratch/custom_rules/',
+          },
+
+          --- Configure @file completion (all fields optional, sensible defaults)
+          files = {
+            -- enabled = true,
+            -- max_file_size = 102400,     -- bytes, skip files larger than this
+            -- max_files = 5000,            -- cap on total discovered files
+            -- exclude = { ".env", ".env.*", "node_modules", ".git", ... },
+          },
+          --- File Discovery:
+          --- - In git repos: Uses `git ls-files` which automatically respects .gitignore
+          --- - Non-git repos: Falls back to filesystem scanning with manual excludes
+          --- - Both methods apply the configured `exclude` list on top of gitignore
+
+          --- What autocomplete engine to use. Defaults to native (built-in) if not specified.
+          source = 'native', -- "native" (default), "cmp", or "blink"
+        },
+
+        --- WARNING: if you change cwd then this is likely broken
+        --- ill likely fix this in a later change
+        ---
+        --- md_files is a list of files to look for and auto add based on the location
+        --- of the originating request.  That means if you are at /foo/bar/baz.lua
+        --- the system will automagically look for:
+        --- /foo/bar/AGENT.md
+        --- /foo/AGENT.md
+        --- assuming that /foo is project root (based on cwd)
+        md_files = {
+          'AGENT.md',
+        },
+      })
+    end,
+    keys = {
+      {
+        '<leader>9v',
+        function()
+          require('99').visual()
+        end,
+        mode = { 'v' },
+        desc = '99 Visual Request',
+      },
+      {
+        '<leader>9x',
+        function()
+          require('99').stop_all_requests()
+        end,
+        mode = { 'n' },
+        desc = '99 Stop All Requests',
+      },
+      {
+        '<leader>9s',
+        function()
+          require('99').search()
+        end,
+        mode = { 'n' },
+        desc = '99 Search',
+      },
+  }}
+)
+
+
   use({
     'zbirenbaum/copilot.lua',
     cmd = 'Copilot',
     event = 'InsertEnter',
-    config = function()
+    -- cond = function()
+    -- if vim.g.network_status == nil then
+    -- print('Network status unknown, skipping copilot')
+    -- check_network()
+    -- end
+    -- return vim.g.network_status == true
+    -- end,
+
+    opts = function()
       vim.g.copilot_proxy_strict_ssl = false
-      require('copilot').setup({
+      return {
         nes = {
           enabled = false,
         },
@@ -275,12 +488,26 @@ return function(use)
             dismiss = '<C-]>',
           },
         },
-      })
+      }
     end,
     dependencies = {
       'copilotlsp-nvim/copilot-lsp', -- (optional) for NES functionality
     },
   })
+  if false then
+    -- the plugin is very slow on bootup
+    use({
+      'cursortab/cursortab.nvim',
+      event = 'CursorHold',
+      -- lazy = false,
+      build = 'cd server && go build',
+      opts = {
+        provider = {
+          type = 'copilot',
+        },
+      },
+    })
+  end
   if false then
     use({
       'github/copilot.vim',
