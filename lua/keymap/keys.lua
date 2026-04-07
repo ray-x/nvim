@@ -25,7 +25,7 @@ local jump_ts = function()
     local ts_utils = require('nvim-treesitter.ts_utils')
     -- local wininfo = vim.fn.getwininfo(api.nvim_get_current_win())[1]
     -- Get current TS node.
-    local cur_node = ts_utils.get_node_at_cursor(0)
+    local cur_node = vim.treesitter.get_node({ bufnr = 0 })
     if not cur_node then
       return
     end
