@@ -84,7 +84,7 @@ wezterm.set_title_on_active = function(title)
     return ''
   end
   local win_id = vim.fn.expand('$WEZTERM_WINDOW_ID') -- environ()['KITTY_WINDOW_ID']
-  pid = tostring(vim.loop.os_getppid())
+  pid = tostring(vim.uv.os_getppid())
 
   local jq =
     "kitty @ls | jq '.[0].tabs.[] | select (.is_focused).windows[].foreground_processes[].pid'"

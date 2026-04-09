@@ -14,6 +14,7 @@ return function(lang)
   local conf = require('modules.lang.config')
   local dev = _G.is_dev()
   local ts = require('modules.lang.treesitter')
+  ts.treesitter()
 
   --
   --
@@ -35,45 +36,12 @@ return function(lang)
     end,
   })
   if vim.wo.diff then
-    lang({
-      'nvim-treesitter/nvim-treesitter',
-      -- event = { 'BufReadPre' },
-      lazy = false,
-      branch = 'main',
-      module = true,
-      opts = function()
-        vim.api.nvim_create_autocmd('FileType', {
-          pattern = {
-            'diff',
-          },
-          callback = function()
-            vim.treesitter.start()
-          end,
-        })
-
-        return {
-          highlight = {
-            enable = true,
-          },
-          indent = {
-            enable = true,
-          },
-        }
-      end,
-    })
     return
-  else
-    lang({
-      'nvim-treesitter/nvim-treesitter',
-      opts = ts.treesitter(),
-      branch = 'main',
-      lazy = false,
-    })
   end
 
   lang({
     'nvim-treesitter/nvim-treesitter-textobjects',
-    dependencies = { 'nvim-treesitter' },
+    -- dependencies = { 'nvim-treesitter' },
     config = ts.treesitter_obj,
     branch = 'main',
     -- module = true,
@@ -314,11 +282,17 @@ return function(lang)
     },
   })
 
-  -- lang({ 'Bilal2453/luvit-meta', lazy = true })
+  -- do not delete for now through it is deprecated, it still used when I need to Install parsers
+  lang({
+    'nvim-treesitter/nvim-treesitter',
+    branch = 'main',
+    lazy = false,
+    build = ':TSUpdate',
+    config = ts.treesitter, -- this enable highlight, indent, and other basic features, and also setup some keymaps
+  })
 
   lang({
     'nvim-treesitter/nvim-treesitter-context',
-    dependencies = { 'nvim-treesitter' },
     -- event = { 'WinScrolled', 'CmdlineEnter' },
     event = 'VeryLazy',
     opts = function()
@@ -344,7 +318,7 @@ return function(lang)
       }
     end,
   })
-
+  --[[
   lang({
     'hiphish/rainbow-delimiters.nvim',
     event = 'VeryLazy',
@@ -353,11 +327,13 @@ return function(lang)
       require('rainbow-delimiters.setup').setup({
         strategy = {
           [''] = rainbow_delimiters.strategy['global'],
-          -- vim = rainbow_delimiters.strategy['local'],
+          vim = rainbow_delimiters.strategy['local'],
+          go = rainbow_delimiters.strategy['local'],
         },
         query = {
           [''] = 'rainbow-delimiters',
           lua = 'rainbow-blocks',
+          go = 'rainbow-blocks',
         },
         highlight = {
           'RainbowDelimiterRed',
@@ -382,7 +358,8 @@ return function(lang)
       })
     end,
   })
-
+  ]]
+  --
   lang({
     'folke/trouble.nvim',
     cmd = { 'Trouble', 'TroubleToggle' },

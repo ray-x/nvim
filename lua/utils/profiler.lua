@@ -18,9 +18,9 @@ end
 
 local function get_timer_fn()
   return vim
-      and vim.loop
+      and vim.uv
       and (function()
-        local hrtime = vim.loop.hrtime
+        local hrtime = vim.uv.hrtime
         local start = hrtime()
         return function()
           return (hrtime() - start) / 1e6
@@ -172,7 +172,7 @@ return {
   --   -- return coroutine.wrap(function(...)
   --   --   local co = coroutine.running()
   --     local handle
-  --     handle = vim.loop.spawn("nvim", {
+  --     handle = vim.uv.spawn("nvim", {
   --       stdio = {nil, nil, 2};
   --       env = {
   --         "ASHKAN_PROFILER=1";

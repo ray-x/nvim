@@ -47,7 +47,7 @@ local get_smart_history = function()
     end,
     append = function(self, line, picker, no_reset)
       local title = picker.prompt_title
-      local cwd = picker.cwd or vim.loop.cwd()
+      local cwd = picker.cwd or vim.uv.cwd()
 
       if line ~= '' then
         ensure_content(self, title, cwd)
@@ -73,7 +73,7 @@ local get_smart_history = function()
       end
     end,
     pre_get = function(self, _, picker)
-      local cwd = picker.cwd or vim.loop.cwd()
+      local cwd = picker.cwd or vim.uv.cwd()
       ensure_content(self, picker.prompt_title, cwd)
     end,
   })

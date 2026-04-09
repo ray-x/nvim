@@ -1,5 +1,5 @@
 local api = vim.api
-local uv = vim.loop
+local uv = vim.uv
 local fs = {}
 -- Some path manipulation utilities
 local function is_dir(filename)
@@ -7,7 +7,7 @@ local function is_dir(filename)
   return stat and stat.type == 'directory' or false
 end
 
-local path_sep = vim.loop.os_uname().sysname == 'Windows' and '\\' or '/'
+local path_sep = vim.uv.os_uname().sysname == 'Windows' and '\\' or '/'
 -- Asumes filepath is a file.
 local function dirname(filepath)
   local is_changed = false

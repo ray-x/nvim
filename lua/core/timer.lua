@@ -8,16 +8,10 @@ M.add = function(fn)
 end
 --Validates args for `throttle()` and  `debounce()`.
 local function td_validate(fn, ms)
-  vim.validate({
-    fn = { fn, 'f' },
-    ms = {
-      ms,
-      function(ms)
-        return type(ms) == 'number' and ms > 0
-      end,
-      'number > 0',
-    },
-  })
+  vim.validate('fn', fn, 'function')
+  vim.validate('ms', ms, function(inner_ms)
+    return type(inner_ms) == 'number' and inner_ms > 0
+  end, false, 'number > 0')
 end
 
 --https://gist.github.com/runiq/31aa5c4bf00f8e0843cd267880117201
@@ -33,16 +27,10 @@ local M = {}
 
 ---Validates args for `throttle()` and  `debounce()`.
 local function td_validate(fn, ms)
-  vim.validate({
-    fn = { fn, 'f' },
-    ms = {
-      ms,
-      function(inner_ms)
-        return type(inner_ms) == 'number' and inner_ms > 0
-      end,
-      'number > 0',
-    },
-  })
+  vim.validate('fn', fn, 'function')
+  vim.validate('ms', ms, function(inner_ms)
+    return type(inner_ms) == 'number' and inner_ms > 0
+  end, false, 'number > 0')
 end
 
 --- Throttles a function on the leading edge. Automatically `schedule_wrap()`s.
@@ -53,7 +41,7 @@ end
 ---`timer:close()` at the end or you will leak memory!
 function M.throttle_leading(fn, ms)
   td_validate(fn, ms)
-  local timer = vim.loop.new_timer()
+  local timer = vim.uv.new_timer()
   local running = false
 
   local function wrapped_fn(...)
@@ -80,7 +68,7 @@ end
 ---`timer:close()` at the end or you will leak memory!
 function M.throttle_trailing(fn, ms, last)
   td_validate(fn, ms)
-  local timer = vim.loop.new_timer()
+  local timer = vim.uv.new_timer()
   local running = false
 
   local wrapped_fn
@@ -123,7 +111,7 @@ end
 ---`timer:close()` at the end or you will leak memory!
 function M.debounce_leading(fn, ms)
   td_validate(fn, ms)
-  local timer = vim.loop.new_timer()
+  local timer = vim.uv.new_timer()
   local running = false
 
   local function wrapped_fn(...)
@@ -151,7 +139,7 @@ end
 ---`timer:close()` at the end or you will leak memory!
 function M.debounce_trailing(fn, ms, first)
   td_validate(fn, ms)
-  local timer = vim.loop.new_timer()
+  local timer = vim.uv.new_timer()
   local wrapped_fn
 
   if not first then

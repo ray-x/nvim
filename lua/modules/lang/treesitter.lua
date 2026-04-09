@@ -28,31 +28,31 @@ local treesitter = function()
       vim.treesitter.start()
     end,
   })
-  vim.api.nvim_create_user_command('TSEnsureInstalled', function()
-    print(vim.inspect(require('nvim-treesitter').install({ ts_ensure_installed, force = true, summary = true })))
-  end, { nargs = 0 })
+  -- vim.api.nvim_create_user_command('TSEnsureInstalled', function()
+  -- print(vim.inspect(require('nvim-treesitter').install({ ts_ensure_installed, force = true, summary = true })))
+  -- end, { nargs = 0 })
 
-  vim.api.nvim_create_user_command('TSEnsureUpdate', function()
-    print(vim.inspect(require('nvim-treesitter').update({ ts_ensure_installed, summary = true })))
-  end, { nargs = 0 })
+  -- vim.api.nvim_create_user_command('TSEnsureUpdate', function()
+  -- print(vim.inspect(require('nvim-treesitter').update({ ts_ensure_installed, summary = true })))
+  -- end, { nargs = 0 })
 
-  vim.api.nvim_create_user_command('TSGetAvailable', function()
-    print(vim.inspect(require('nvim-treesitter').get_available()))
-  end, { nargs = 0 })
-  vim.api.nvim_create_autocmd('User', {
-    pattern = 'TSUpdate',
-    callback = function()
-      require('nvim-treesitter.parsers').gotmpl = {
-        install_info = {
-          url = 'https://github.com/ngalaiko/tree-sitter-go-template',
-          location = 'parser', -- only needed if the parser is in subdirectory of a "monorepo"
-          generate = true, -- only needed if repo does not contain pre-generated `src/parser.c`
-          generate_from_json = false, -- only needed if repo does not contain `src/grammar.json` either
-          queries = 'queries/neovim', -- also install queries from given directory
-        },
-      }
-    end,
-  })
+  -- vim.api.nvim_create_user_command('TSGetAvailable', function()
+  -- print(vim.inspect(require('nvim-treesitter').get_available()))
+  -- end, { nargs = 0 })
+  -- vim.api.nvim_create_autocmd('User', {
+  -- pattern = 'TSUpdate',
+  -- callback = function()
+  -- require('nvim-treesitter.parsers').gotmpl = {
+  -- install_info = {
+  -- url = 'https://github.com/ngalaiko/tree-sitter-go-template',
+  -- location = 'parser', -- only needed if the parser is in subdirectory of a "monorepo"
+  -- generate = true, -- only needed if repo does not contain pre-generated `src/parser.c`
+  -- generate_from_json = false, -- only needed if repo does not contain `src/grammar.json` either
+  -- queries = 'queries/neovim', -- also install queries from given directory
+  -- },
+  -- }
+  -- end,
+  -- })
   return {
     install_dir = vim.fn.stdpath('data') .. '/site',
     highlight = {
@@ -76,6 +76,7 @@ local treesitter_obj = function()
   if lines > 4000 then
     enable = false
   end
+  treesitter()
 
   require('nvim-treesitter-textobjects').setup({
 
@@ -156,121 +157,103 @@ local treesitter_obj = function()
   end
 
   -- lprint('ts obj', enable)
-  require('nvim-treesitter').setup({
+  require('nvim-treesitter-textobjects').setup({
     -- indent = { enable = enable },
-    incremental_selection = {
-      enable = enable, -- use textobjects
-      -- disable = {"elm"},
+    -- syntax-aware textobjects
+    lsp_interop = {
+      enable = false, -- use LSP
+      peek_definition_code = { ['DF'] = '@function.outer', ['CF'] = '@class.outer' },
+    },
+    move = {
+      enable = enable,
+      set_jumps = enable, -- whether to set jumps in the jumplist
+      goto_next_start = {
+        [']m'] = { query = { '@function.outer' } }, -- use system default
+        -- query = { '@scope', 'class.*', '@loop.*', '@conditional' },
+        -- [']s'] = {
+        --   query = { '@scope', '@class.*', '@loop.*', '@conditional' },
+        --   query_group = 'locals',
+        --   desc = 'Next scope',
+        -- },
+
+        [']z'] = {
+          query = { '@fold' },
+          query_group = 'folds',
+          desc = 'Next fold',
+        },
+        [']]'] = {
+          query = { '@class.outer', '@function.*', 'block.outer' },
+          desc = 'nearest block',
+        },
+        -- default ]z [z fold jump; [s/]s scope jump
+        -- ["]o"] = "@loop.*",
+        -- ["]s"] = { query = "@local.scope", query_group = "locals", desc = "Next scope" },
+      },
+      goto_next_end = {
+        [']M'] = '@function.outer', -- use nvim 0.11 default
+        -- [']c'] = {
+        -- query = { '@loop.outer', '@conditional.outer', '@class.outer' },
+        -- desc = 'next scope',
+        -- },
+      },
+      goto_previous_start = {
+        ['[m'] = { query = { '@function.outer' }, desc = 'nearest func' },
+        ['[['] = {
+          query = { '@function.*', '@class.outer', 'block.outer' },
+          desc = 'prev func ; class ',
+        },
+        -- [']s'] = {
+        --   query = { '@class.*', '@loop.*', '@conditional' },
+        --   query_group = 'locals',
+        --   desc = 'Previous scope',
+        -- },
+        -- ['[s'] = {
+        --   query = { '@scope', '@class.*', '@loop.*', '@conditional' },
+        --   query_group = 'locals',
+        --   desc = 'Next scope',
+        -- },
+        ['[z'] = { query = { '@fold' }, query_group = 'folds', desc = 'Next fold' },
+        ['[o'] = '@loop.*',
+        ['[s'] = { query = '@local.scope', query_group = 'locals', desc = 'Next scope' },
+      },
+      goto_previous_end = {
+        ['[M'] = { query = '@function.outer', desc = 'previous func' },
+        ['[]'] = { query = '@class.outer', desc = 'previous class' },
+      },
+      -- goto_next = {
+      --   [']d'] = { query = '@conditional.outer', desc = 'next conditional' },
+      -- },
+      -- goto_previous = {
+      -- ['[d'] = { query = '@conditional.outer', desc = 'previous conditional' },
+      -- },
+    },
+    select = {
+      enable = enable,
+      lookahead = enable,
       keymaps = {
-        -- mappings for incremental selection (visual mappings)
-        init_selection = 'gn', -- maps in normal mode to init the node/scope selection
-        scope_incremental = 'gn', -- increment to the upper scope (as defined in locals.scm)
-        node_incremental = '<TAB>', -- increment to the upper named parent
-        node_decremental = '<S-TAB>', -- decrement to the previous node
+        -- You can use the capture groups defined in textobjects.scm
+        ['af'] = { query = '@function.outer', desc = 'select inner class' },
+        ['if'] = { query = '@function.inner', desc = 'select inner function' },
+        ['ac'] = { query = '@class.outer', desc = 'select outer class' },
+        ['ic'] = { query = '@class.inner', desc = 'select inner class' },
+        ['as'] = { query = '@scope', query_group = 'locals', desc = 'Select language scope' },
       },
+      selection_modes = {
+        ['@parameter.outer'] = 'v', -- charwise
+        ['@function.outer'] = 'V', -- linewise
+        ['@class.outer'] = '<c-v>', -- blockwise
+      },
+      include_surrounding_whitespace = false,
     },
-    textobjects = {
-      -- syntax-aware textobjects
-      lsp_interop = {
-        enable = false, -- use LSP
-        peek_definition_code = { ['DF'] = '@function.outer', ['CF'] = '@class.outer' },
-      },
-      move = {
-        enable = enable,
-        set_jumps = enable, -- whether to set jumps in the jumplist
-        goto_next_start = {
-          [']m'] = { query = { '@function.outer' } }, -- use system default
-          -- query = { '@scope', 'class.*', '@loop.*', '@conditional' },
-          -- [']s'] = {
-          --   query = { '@scope', '@class.*', '@loop.*', '@conditional' },
-          --   query_group = 'locals',
-          --   desc = 'Next scope',
-          -- },
-
-          [']z'] = {
-            query = { '@fold' },
-            query_group = 'folds',
-            desc = 'Next fold',
-          },
-          [']]'] = {
-            query = { '@class.outer', '@function.*', 'block.outer' },
-            desc = 'nearest block',
-          },
-          -- default ]z [z fold jump; [s/]s scope jump
-          -- ["]o"] = "@loop.*",
-          -- ["]s"] = { query = "@local.scope", query_group = "locals", desc = "Next scope" },
-        },
-        goto_next_end = {
-          [']M'] = '@function.outer', -- use nvim 0.11 default
-          -- [']c'] = {
-          -- query = { '@loop.outer', '@conditional.outer', '@class.outer' },
-          -- desc = 'next scope',
-          -- },
-        },
-        goto_previous_start = {
-          ['[m'] = { query = { '@function.outer' }, desc = 'nearest func' },
-          ['[['] = {
-            query = { '@function.*', '@class.outer', 'block.outer' },
-            desc = 'prev func ; class ',
-          },
-          -- [']s'] = {
-          --   query = { '@class.*', '@loop.*', '@conditional' },
-          --   query_group = 'locals',
-          --   desc = 'Previous scope',
-          -- },
-          -- ['[s'] = {
-          --   query = { '@scope', '@class.*', '@loop.*', '@conditional' },
-          --   query_group = 'locals',
-          --   desc = 'Next scope',
-          -- },
-          ['[z'] = { query = { '@fold' }, query_group = 'folds', desc = 'Next fold' },
-          ['[o'] = '@loop.*',
-          ['[s'] = { query = '@local.scope', query_group = 'locals', desc = 'Next scope' },
-        },
-        goto_previous_end = {
-          ['[M'] = { query = '@function.outer', desc = 'previous func' },
-          ['[]'] = { query = '@class.outer', desc = 'previous class' },
-        },
-        -- goto_next = {
-        --   [']d'] = { query = '@conditional.outer', desc = 'next conditional' },
-        -- },
-        -- goto_previous = {
-        -- ['[d'] = { query = '@conditional.outer', desc = 'previous conditional' },
-        -- },
-      },
-      select = {
-        enable = enable,
-        lookahead = enable,
-        keymaps = {
-          -- You can use the capture groups defined in textobjects.scm
-          ['af'] = { query = '@function.outer', desc = 'select inner class' },
-          ['if'] = { query = '@function.inner', desc = 'select inner function' },
-          ['ac'] = { query = '@class.outer', desc = 'select outer class' },
-          ['ic'] = { query = '@class.inner', desc = 'select inner class' },
-          ['as'] = { query = '@scope', query_group = 'locals', desc = 'Select language scope' },
-        },
-        selection_modes = {
-          ['@parameter.outer'] = 'v', -- charwise
-          ['@function.outer'] = 'V', -- linewise
-          ['@class.outer'] = '<c-v>', -- blockwise
-        },
-        include_surrounding_whitespace = false,
-      },
-      swap = { -- use ISWAP
-        enable = false,
-        -- swap_next = { ["<leader>a"] = "@parameter.inner" },
-        -- swap_previous = { ["<leader>A"] = "@parameter.inner" },
-      },
+    swap = { -- use ISWAP
+      enable = false,
+      -- swap_next = { ["<leader>a"] = "@parameter.inner" },
+      -- swap_previous = { ["<leader>A"] = "@parameter.inner" },
     },
-
-    matchup = {
-      enable = enable, -- mandatory, false will disable the whole extension
-      disable = { 'help', 'txt' }, -- optional, list of language that will be disabled
-      include_match_words = true,
-    },
-    -- ensure_installed = "maintained"
-    -- ensure_installed = ts_ensure_installed,
   })
+
+  -- ensure_installed = "maintained"
+  -- ensure_installed = ts_ensure_installed,
 
   lprint('loading ts obj')
   local ts_repeat_move = require('nvim-treesitter-textobjects.repeatable_move')

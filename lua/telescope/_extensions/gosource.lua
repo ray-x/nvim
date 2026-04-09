@@ -3,7 +3,7 @@ local finders = require('telescope.finders')
 local pickers = require('telescope.pickers')
 local make_entry = require('telescope.make_entry')
 local conf = require('telescope.config').values
-local os_name = vim.loop.os_uname().sysname
+local os_name = vim.uv.os_uname().sysname
 local fn = vim.fn
 
 local golang_source = function()

@@ -305,6 +305,7 @@ function config.go()
     ai = {
       enable = true,
       provider = 'copilot', -- copilot, codeium, custom
+      model = 'gpt-5.3-codex', -- gpt-5.3-codex
     },
     mcp = {
       enable = true,

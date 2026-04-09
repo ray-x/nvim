@@ -1,6 +1,6 @@
 local global = require('core.global')
 local log_path = global.log_path
-local uv = vim.uv or vim.loop
+local uv = vim.uv
 
 local function fs_write(path, data)
   uv.fs_open(path, 'a', tonumber('644', 8), function(err, fd)

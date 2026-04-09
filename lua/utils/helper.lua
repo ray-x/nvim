@@ -364,7 +364,7 @@ end
 
 -- work a file tree
 local function get_filetype(folder, ft)
-  local uv = vim.loop
+  local uv = vim.uv
   local sd = uv.fs_scandir(folder)
   local files = {}
   while true do

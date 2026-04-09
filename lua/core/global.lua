@@ -2,7 +2,7 @@ local global = {}
 
 function global:load_variables()
   local home = os.getenv('HOME') or vim.fn.expand('$HOME')
-  local os_name = vim.loop.os_uname().sysname
+  local os_name = vim.uv.os_uname().sysname
   self.is_mac = os_name == 'Darwin'
   self.is_linux = os_name == 'Linux'
   self.is_windows = os_name:find('Windows') ~= nil or os_name:find('MINGW')

@@ -156,14 +156,14 @@ end
 
 local function searchMarkdownFiles(dir, N, criteria, matches)
   matches = matches or {}
-  local handle, err = vim.loop.fs_scandir(dir)
+  local handle, err = vim.uv.fs_scandir(dir)
   if not handle then
     print('Error opening directory: ' .. err)
     return matches
   end
   local match_all = criteria.match or 'all'
   while true do
-    local name, ftype = vim.loop.fs_scandir_next(handle)
+    local name, ftype = vim.uv.fs_scandir_next(handle)
     if not name then
       break
     end -- No more files or directories

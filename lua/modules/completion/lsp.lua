@@ -15,7 +15,7 @@ M.setup = function()
         cmd = { 'emmet-ls', '--stdio' },
         filetypes = { 'html', 'css', 'javascript', 'typescript', 'scss' },
         root_dir = function(fname)
-          return vim.loop.cwd()
+          return vim.uv.cwd()
         end,
         settings = {},
       },
@@ -27,7 +27,7 @@ M.setup = function()
   --       cmd = { 'goxls' },
   --       filetypes = { 'gop' },
   --       root_dir = function(fname)
-  --         return vim.loop.cwd()
+  --         return vim.uv.cwd()
   --       end,
   --       settings = {},
   --     },

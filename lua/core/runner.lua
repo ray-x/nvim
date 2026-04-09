@@ -1,4 +1,4 @@
-local uv, api = vim.loop, vim.api
+local uv, api = vim.uv, vim.api
 -- run command with loop
 local run = function(cmd, opts)
   _G.lprint = require('utils.log').lprint

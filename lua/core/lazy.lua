@@ -15,7 +15,7 @@ if argc > 0 then
   end
 end
 
-lprint('I am lazy begin', vim.loop.now() - require('core.global').start)
+lprint('I am lazy begin', vim.uv.now() - require('core.global').start)
 local loader = require('utils.helper').loader
 
 -- Create cache dir and subs dir
@@ -25,8 +25,8 @@ function setup(fsize)
   require('core.helper').init()
   local start = require('core.global').start
 
-  lprint('lazy core plugins start', vim.loop.now() - start)
-  lprint('I am lazy', vim.loop.now() - start)
+  lprint('lazy core plugins start', vim.uv.now() - start)
+  lprint('I am lazy', vim.uv.now() - start)
   local disable_ft = {
     'NvimTree',
     'guihua',
