@@ -1,3 +1,4 @@
 std="lua51+vim"
 [rules]
 multiple_statements="allow"
+mixed_table="allow"

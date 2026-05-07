@@ -100,16 +100,8 @@ function config.nvim_bufferline()
       },
     },
   })
-  vim.api.nvim_set_hl(
-    0,
-    'BufferLineBufferSelected',
-    { default = true, fg = '#ffffff', bold = true, underline = true }
-  )
-  vim.api.nvim_set_hl(
-    0,
-    'BufferLineInfoSelected',
-    { default = true, fg = '#ffffff', bold = true, underline = true }
-  )
+  vim.api.nvim_set_hl(0, 'BufferLineBufferSelected', { default = true, fg = '#ffffff', bold = true, underline = true })
+  vim.api.nvim_set_hl(0, 'BufferLineInfoSelected', { default = true, fg = '#ffffff', bold = true, underline = true })
 end
 
 function config.nvim_tree_setup()
@@ -117,13 +109,14 @@ function config.nvim_tree_setup()
 end
 
 function config.nvim_tree()
-  require('nvim-tree').setup({
+  vim.cmd([[autocmd Filetype NvimTree set cursorline | set statuscolumn=]])
+  return {
     update_focused_file = {
       enable = true,
       update_cwd = true,
       ignore_list = {},
     },
-  })
+  }
 end
 -- '▋''▘'
 
@@ -331,10 +324,7 @@ function config.blankline()
     if whitespace_tbl[1] == indent.whitespace.INDENT then
       whitespace_tbl[1] = indent.whitespace.SPACE
     end
-    if
-      whitespace_tbl[1] == indent.whitespace.TAB_START
-      or whitespace_tbl[1] == indent.whitespace.TAB_START_SINGLE
-    then
+    if whitespace_tbl[1] == indent.whitespace.TAB_START or whitespace_tbl[1] == indent.whitespace.TAB_START_SINGLE then
       whitespace_tbl[1] = indent.whitespace.TAB_FILL
     end
     return whitespace_tbl

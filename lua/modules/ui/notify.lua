@@ -75,7 +75,7 @@ end
 
 local notify_msg_cache = {}
 local config = {
-  min_level = vim.log.levels.INFO,
+  min_level = vim.log.levels.WARN,
   clear_time = 500,
 }
 
@@ -98,12 +98,12 @@ local function printInfo(level, msg)
   -- Wrap in pcall to prevent errors from crashing Neovim
   local function safe_echo()
     local ok, err = pcall(function()
-      api.nvim_echo({ { icon, hl }, {' '}, { msg, hl } }, true, {})
+      api.nvim_echo({ { icon, hl }, { ' ' }, { msg, hl } }, true, {})
     end)
     if not ok then
-      lprint("Echo failed:", err)
+      lprint('Echo failed:', err)
       -- Fallback to print if echo fails
-      print(icon .. " " .. msg)
+      print(icon .. ' ' .. msg)
     end
   end
 

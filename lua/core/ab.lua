@@ -13,6 +13,5 @@ if vim.o.ft == 'go' then
   -- vim.cmd('ab gg GoGet')
 end
 vim.cmd('cab sudo w !sudo tee %')
-vim.cmd('cab DO DiffviewOpen')
-vim.cmd('cab DC DiffviewClose')
-vim.cmd([[cab cc CodeCompanion]])
+vim.cmd('cab DO CodeDiff')
+vim.cmd('cab DC CodeDiff close')

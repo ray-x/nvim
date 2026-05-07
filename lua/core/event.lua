@@ -84,10 +84,13 @@ function autocmd.load_autocmds()
         'VimLeavePre',
         '*',
         function()
+          ok = pcall(require, 'close_buffers')
+          if not ok then return end
           require('close_buffers').delete({ type = 'hidden', force = true })
           require('close_buffers').delete({ regex = 'fugitive' })
           require('close_buffers').wipe({ type = 'nameless', force = true })
-          MiniTrailspace.trim()
+
+          -- MiniTrailspace.trim()
 
           -- write session
           -- if vim.v.this_session ~= '' then

@@ -13,7 +13,6 @@ local function daylight()
   end
 end
 
-
 local function randomscheme()
   math.randomseed(os.time())
   local themes = {
@@ -33,8 +32,8 @@ local function randomscheme()
 
   -- themes = { "starry.nvim", "starry.nvim", "aurora", "galaxy", "catppuccin", "tokyonight.nvim" }
   -- themes = { 'starry.nvim', 'aurora', 'galaxy' }
-  themes = { 'starry.nvim' }
-  -- themes = { 'aurora' }
+  -- themes = { 'starry.nvim' }
+  themes = { 'aurora' }
   -- themes = { 'galaxy' }
   -- themes = { 'catppuccin' }
   local v = math.random(1, #themes)

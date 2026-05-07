@@ -144,8 +144,8 @@ return function(ui)
     'nvim-tree/nvim-tree.lua',
     cmd = { 'NvimTreeToggle', 'NvimTreeOpen' },
     -- dependencies = {'kyazdani42/nvim-web-devicons'},
-    init = conf.nvim_tree_setup,
-    config = conf.nvim_tree,
+    -- init = conf.nvim_tree_setup,
+    opts = conf.nvim_tree,
   })
 
   ui({

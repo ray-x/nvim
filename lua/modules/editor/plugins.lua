@@ -116,10 +116,7 @@ return function(editor)
 
             -- disable jump labels when not enabled, when using a count,
             -- or when recording/executing registers
-            opts.jump_labels = opts.jump_labels
-              and vim.v.count == 0
-              and vim.fn.reg_executing() == ''
-              and vim.fn.reg_recording() == ''
+            opts.jump_labels = opts.jump_labels and vim.v.count == 0 and vim.fn.reg_executing() == '' and vim.fn.reg_recording() == ''
 
             -- Show jump labels only in operator-pending mode
             -- opts.jump_labels = vim.v.count == 0 and vim.fn.mode(true):find("o")
@@ -281,6 +278,10 @@ return function(editor)
       render_modes = { 'n', 'no', 'c' },
       file_types = { 'markdown', 'quarto', 'rmd', 'copilot-chat' },
 
+      injections = {
+        gitcommit = { enabled = true },
+      },
+
       code = {
         enabled = true,
         -- sign = true,
@@ -350,7 +351,6 @@ return function(editor)
       },
     },
   })
-
   -- luarocks --local --lua-version=5.1 install magick
   editor({
     '3rd/image.nvim',
@@ -373,6 +373,7 @@ return function(editor)
     ft = { 'markdown' },
   })
 
+  --[[
   editor({
     'epwalsh/obsidian.nvim',
     version = '*', -- recommended, use latest release instead of latest commit
@@ -407,7 +408,7 @@ return function(editor)
       },
     },
   })
-
+--]]
   -- draw due date and parse date
   editor({
     'NFrid/due.nvim',

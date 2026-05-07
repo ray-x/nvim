@@ -1,1 +1,6 @@
-std="lua51+vim"
+std = "vim"
+
+[rules]
+multiple_statements = "allow"
+incorrect_standard_library_use = "allow"
+mixd_table = "allow"

@@ -183,15 +183,15 @@ kitty.get_kitty_background = function(opts)
       if #data < 4 then
         return
       end
-      for i, c in ipairs(data) do
-        local name, color = c[1], c[2]
-        -- lprint('name', name, 'c', color, c)
-        if name == 'background' then
-          lprint('******** kitty get color on stdout', color)
-          vim.g.ORIGINAL_KITTY_BG_COLOR = color
+      for _, c in ipairs(data) do
+        local tokens = split(c)
+        if tokens and tokens[1] == 'background' and tokens[2] then
+          lprint('******** kitty get color on stdout', tokens[2])
+          if not vim.g.ORIGINAL_KITTY_BG_COLOR then
+            vim.g.ORIGINAL_KITTY_BG_COLOR = tokens[2]
+          end
         end
       end
-      -- color = split(data[4])[2]
     end,
   })
 end

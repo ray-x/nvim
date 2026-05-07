@@ -11,7 +11,7 @@ return {
       null_ls.builtins.code_actions.refactoring,
       null_ls.builtins.diagnostics.fish,
       null_ls.builtins.code_actions.ts_node_action,
-      require("none-ls.formatting.jq"),
+      require('none-ls.formatting.jq'),
       -- hover.dictionary,
     }
 
@@ -53,24 +53,33 @@ return {
       table.insert(sources, diagnostics.vale.with({ filetypes = { 'markdown', 'tex', 'txt', 'org' } }))
     end
     if exist('write_good') then
-      table.insert(sources, diagnostics.write_good.with({
-        filetypes = { 'markdown', 'tex', '', 'org' },
-        extra_filetypes = { 'txt', 'text' },
-        args = { '--text=$TEXT', '--parse' },
-        command = 'write-good',
-      }))
+      table.insert(
+        sources,
+        diagnostics.write_good.with({
+          filetypes = { 'markdown', 'tex', '', 'org' },
+          extra_filetypes = { 'txt', 'text' },
+          args = { '--text=$TEXT', '--parse' },
+          command = 'write-good',
+        })
+      )
     end
     if exist('proselint') then
-      table.insert(sources, diagnostics.proselint.with({
-        filetypes = { 'markdown', 'tex' },
-        extra_filetypes = { 'txt', 'text', 'org' },
-        command = 'proselint',
-      }))
-      table.insert(sources, actions.proselint.with({
-        filetypes = { 'markdown', 'tex' },
-        command = 'proselint',
-        args = { '--json' },
-      }))
+      table.insert(
+        sources,
+        diagnostics.proselint.with({
+          filetypes = { 'markdown', 'tex' },
+          extra_filetypes = { 'txt', 'text', 'org' },
+          command = 'proselint',
+        })
+      )
+      table.insert(
+        sources,
+        actions.proselint.with({
+          filetypes = { 'markdown', 'tex' },
+          command = 'proselint',
+          args = { '--json' },
+        })
+      )
     end
     -- stylua: ignore
     if exist('shfmt') then
@@ -111,13 +120,13 @@ return {
             '--indent-width',
             '2',
             '--column-width',
-            '120',
+            '200',
             -- '--collapse-simple-statement',
             -- 'FunctionOnly',
             '--quote-style',
             'AutoPreferSingle',
             'collapse_simple_statement',
-            'Never'
+            'Never',
           },
         })
       )
@@ -138,10 +147,7 @@ return {
           to_stdin = false,
           format = 'raw',
           from_stderr = true,
-          on_output = require('null-ls.helpers').diagnostics.from_errorformat(
-            [[%f:%l: %trror: %m]],
-            'java'
-          ),
+          on_output = require('null-ls.helpers').diagnostics.from_errorformat([[%f:%l: %trror: %m]], 'java'),
         },
         factory = require('null-ls.helpers').generator_factory,
       })

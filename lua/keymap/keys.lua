@@ -7,107 +7,6 @@ local map_cu = bind.map_cu
 local map_cr = bind.map_cr
 local win = require('core.global').is_windows
 
--- local function linewise()
---   local api = require('Comment.api')
---   -- local config = require("Comment.config"):get()
---   api.toggle.linewise.current()
--- end
---
--- local function blockwise()
---   local api = require('Comment.api')
---   local esc = vim.api.nvim_replace_termcodes('<ESC>', true, false, true)
---   vim.api.nvim_feedkeys(esc, 'nx', false)
---   api.toggle.linewise(vim.fn.visualmode())
--- end
-
-local jump_ts = function()
-  local function get_ast_nodes()
-    local ts_utils = require('nvim-treesitter.ts_utils')
-    -- local wininfo = vim.fn.getwininfo(api.nvim_get_current_win())[1]
-    -- Get current TS node.
-    local cur_node = vim.treesitter.get_node({ bufnr = 0 })
-    if not cur_node then
-      return
-    end
-    -- Get parent nodes recursively.
-    local nodes = { cur_node }
-    local parent = cur_node:parent()
-    while parent do
-      table.insert(nodes, parent)
-      parent = parent:parent()
-    end
-    local targets = {}
-    local cursor = vim.api.nvim_win_get_cursor(0)
-    local startline, startcol
-    for _, node in ipairs(nodes) do
-      startline, startcol, endline, endcol = node:range() -- (0,0)
-      if cursor[1] >= startline and cursor[1] <= endline then
-        local target = {
-          node = node,
-          pos = { startline + 1, startcol + 1 },
-          endpos = { endline + 1, endcol + 1 },
-        }
-        table.insert(targets, target)
-      end
-    end
-    if #targets >= 1 then
-      return targets
-    end
-  end
-  local Flash = require('flash')
-  local function format(opts)
-    return {
-      -- { opts.match.label1, 'FlashLabel' },
-      { opts.match.label, 'IncSearch' },
-    }
-  end
-
-  Flash.jump({
-    search = { mode = 'exact' },
-    label = {
-      after = false,
-      before = { 0, 0 },
-      uppercase = true,
-      format = format,
-      style = 'overlay',
-    },
-    -- label = { after = false, before = { 0, 0 } },
-    matcher = function(fwin, state)
-      local targets = get_ast_nodes()
-      local pos = {}
-      state.results = {}
-      for _, target in ipairs(targets or {}) do
-        -- print(vim.inspect(target))
-        local idx = tostring(target.pos[1] * 100 + target.pos[2])
-        if not pos[idx] then
-          table.insert(state.results, {
-            pos = { target.pos[1], target.pos[2] - 1 },
-            end_pos = { target.pos[1], target.pos[2] - 1 },
-          })
-        else
-          print('dup')
-        end
-        pos[idx] = true
-      end
-
-      return state.results
-    end,
-    action = function(match, state)
-      vim.api.nvim_win_set_cursor(match.win, match.pos) --match.pos
-      state:hide()
-    end,
-    labeler = function(matches, state)
-      local labels = state:labels()
-      for m, match in ipairs(matches) do
-        match.label1 = labels[m]
-        -- match.label2 = labels[m + 1]
-        match.label = labels[m + 10]
-      end
-      return matches
-    end,
-  })
-end
-
 -- default map
 local def_map = {
   -- Vim map
@@ -119,6 +18,8 @@ local def_map = {
   -- ["n|<Space>cw"] = map_cmd([[silent! keeppatterns %substitute/\s\+$//e]]):with_noremap():with_silent(),
   ['n|<A-[>'] = map_cmd('vertical resize -5'):with_silent(),
   ['n|<A-]>'] = map_cmd('vertical resize +5'):with_silent(),
+  ['n|<M-=>'] = map_cmd('resize +3'):with_noremap():with_silent(), -- well = is +
+  ['n|<M-->'] = map_cmd('resize -3'):with_noremap():with_silent(),
   ['n|<C-q>'] = map_cmd('wq'),
   -- Insert
   -- ["i|<C-w>"]      = map_cmd('<C-[>diwa'):with_noremap(),
@@ -363,8 +264,8 @@ local plug_keys = {
     'grep_string_cursor_raw'),
   ['n|w'] = map_plug('WordMotion_w'):with_expr(),
 
-  ['n|<Leader>do'] = map_cmd('DiffviewOpen'):with_noremap():with_silent(),
-  ['n|<Leader>dc'] = map_cmd('DiffviewClose'):with_noremap():with_silent(),
+  ['n|<Leader>do'] = map_cmd('CodeDiff'):with_noremap():with_silent(),
+  ['n|<Leader>dc'] = map_cmd('CodeDiff close'):with_noremap():with_silent(),
 
   -- Plugin QuickRun
   -- Plugin Vista

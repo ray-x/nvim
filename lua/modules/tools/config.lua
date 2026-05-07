@@ -9,16 +9,12 @@ function config.worktree()
     end
   end
   require('git-worktree').setup({})
-  vim.api.nvim_create_user_command(
-    'Worktree',
-    "lua require'modules.tools.config'.worktree()(<f-args>)",
-    {
-      nargs = '*',
-      complete = function()
-        return { 'create' }
-      end,
-    }
-  )
+  vim.api.nvim_create_user_command('Worktree', "lua require'modules.tools.config'.worktree()(<f-args>)", {
+    nargs = '*',
+    complete = function()
+      return { 'create' }
+    end,
+  })
 
   local Worktree = require('git-worktree')
   Worktree.on_tree_change(function(op, metadata)
@@ -37,50 +33,86 @@ function config.worktree()
   return { git_worktree = git_worktree }
 end
 
-function config.diffview()
-  local cb = require('diffview.config').diffview_callback
-  return {
-    diff_binaries = false, -- Show diffs for binaries
-    use_icons = true, -- Requires nvim-web-devicons
-    enhanced_diff_hl = true, -- See ':h diffview-config-enhanced_diff_hl'
-    signs = { fold_closed = '', fold_open = '' },
-    file_panel = {
-      win_config = {
-        position = 'left', -- One of 'left', 'right', 'top', 'bottom'
-        width = 35, -- Only applies when position is 'left' or 'right'
-      },
+local function create_codediff_command(name, cb, opts)
+  if vim.fn.exists(':' .. name) == 2 then
+    vim.api.nvim_del_user_command(name)
+  end
+  vim.api.nvim_create_user_command(name, cb, opts or {})
+end
+
+local function run_codediff(args)
+  local cmd = 'CodeDiff'
+  if args ~= nil and #args > 0 then
+    local escaped = vim.tbl_map(vim.fn.fnameescape, args)
+    cmd = cmd .. ' ' .. table.concat(escaped, ' ')
+  end
+  vim.cmd(cmd)
+end
+
+function config.codediff()
+  local layout = 'side-by-side'
+  if vim.o.columns < 120 then
+    layout = 'inline'
+  end
+  require('codediff').setup({
+    -- most default
+    diff = {
+      layout = layout, -- toggle by t
+      disable_inlay_hints = true,
+      jump_to_first_change = true,
     },
-    view = {
-      merge_tool = {
-        layout = 'diff4_mixed',
-        disable_diagnostics = true,
-        winbar_info = true,
-      },
+    explorer = {
+      position = 'left',
+      width = 35,
+      initial_focus = 'explorer',
     },
-    key_bindings = {
-      -- The `view` bindings are active in the diff buffers, only when the current
-      -- tabpage is a Diffview.
+    history = {
+      position = 'left',
+      width = 35,
+      initial_focus = 'history',
+    },
+    keymaps = {
       view = {
-        ['<tab>'] = cb('select_next_entry'), -- Open the diff for the next file
-        ['<s-tab>'] = cb('select_prev_entry'), -- Open the diff for the previous file
-        ['<leader>e'] = cb('focus_files'), -- Bring focus to the files panel
-        ['<leader>b'] = cb('toggle_files'), -- Toggle the files panel.
+        toggle_explorer = '<leader>b',
+        focus_explorer = '<leader>e',
+        next_file = '<tab>',
+        prev_file = '<s-tab>',
       },
-      file_panel = {
-        ['j'] = cb('next_entry'), -- Bring the cursor to the next file entry
-        ['<down>'] = cb('next_entry'),
-        ['k'] = cb('prev_entry'), -- Bring the cursor to the previous file entry.
-        ['<up>'] = cb('prev_entry'),
-        ['<cr>'] = cb('select_entry'), -- Open the diff for the selected entry.
-        ['o'] = cb('select_entry'),
-        ['R'] = cb('refresh_files'), -- Update stats and entries in the file list.
-        ['<tab>'] = cb('select_next_entry'),
-        ['<s-tab>'] = cb('select_prev_entry'),
-        ['<leader>e'] = cb('focus_files'),
-        ['<leader>b'] = cb('toggle_files'),
+      explorer = {
+        refresh = 'R',
+      },
+      history = {
+        refresh = 'R',
       },
     },
-  }
+  })
+
+  create_codediff_command('CodeDiffOpen', function(opts)
+    run_codediff(opts.fargs)
+  end, { nargs = '*', bang = true })
+
+  create_codediff_command('CodeDiffClose', function()
+    require('codediff.ui.lifecycle.cleanup').cleanup()
+    vim.cmd('tabclose')
+  end, {})
+
+  create_codediff_command('DiffviewOpen', function(opts)
+    run_codediff(opts.fargs)
+  end, { nargs = '*', bang = true })
+
+  create_codediff_command('DiffviewClose', function()
+    vim.cmd('CodeDiff close')
+  end, {})
+
+  create_codediff_command('DiffviewFileHistory', function(opts)
+    local args = { 'history' }
+    if #opts.fargs == 0 then
+      table.insert(args, '%')
+    else
+      vim.list_extend(args, opts.fargs)
+    end
+    run_codediff(args)
+  end, { nargs = '*', bang = true, range = true })
 end
 
 function config.vim_dadbod_ui()
@@ -177,16 +209,8 @@ function config.gitsigns()
   }
 
   vim.api.nvim_set_hl(0, 'GitSignsAddInline', { underdotted = true, default = true, sp = 'green' }) -- diff mode: Deleted line |diff.txt|
-  vim.api.nvim_set_hl(
-    0,
-    'GitSignsDeleteInline',
-    { strikethrough = true, default = true, sp = 'yellow' }
-  ) -- diff mode: Deleted line |diff.txt|
-  vim.api.nvim_set_hl(
-    0,
-    'GitSignsChangeInline',
-    { undercurl = true, default = true, sp = 'darkcyan' }
-  ) -- diff mode: Deleted line |diff.txt|
+  vim.api.nvim_set_hl(0, 'GitSignsDeleteInline', { strikethrough = true, default = true, sp = 'yellow' }) -- diff mode: Deleted line |diff.txt|
+  vim.api.nvim_set_hl(0, 'GitSignsChangeInline', { undercurl = true, default = true, sp = 'darkcyan' }) -- diff mode: Deleted line |diff.txt|
   vim.api.nvim_create_user_command('Stage', "'<,'>Gitsigns stage_hunk", { range = true })
   return opts
 end
@@ -322,13 +346,7 @@ function config.floaterm()
     hidden = true,
     direction = 'float',
     on_open = function(term)
-      vim.api.nvim_buf_set_keymap(
-        term.bufnr,
-        'n',
-        'q',
-        '<cmd>close<CR>',
-        { noremap = true, silent = true }
-      )
+      vim.api.nvim_buf_set_keymap(term.bufnr, 'n', 'q', '<cmd>close<CR>', { noremap = true, silent = true })
       vim.keymap.set('t', '<Esc>', '<Esc>', { buffer = term.bufnr })
       vim.cmd('startinsert!')
     end,
@@ -402,10 +420,7 @@ function config.floaterm()
   end
 
   local function _jest_test()
-    local cmd = 'npx vue-cli-service test:unit --testPathPattern='
-      .. [["]]
-      .. vim.fn.expand('%:t')
-      .. [["]]
+    local cmd = 'npx vue-cli-service test:unit --testPathPattern=' .. [["]] .. vim.fn.expand('%:t') .. [["]]
     local gd = Terminal:new({ cmd = cmd, hidden = true })
     gd:toggle()
   end
@@ -552,16 +567,8 @@ function config.rest()
   -- local rest = require("rest-nvim")
   -- local bufnr = tonumber(vim.fn.expand("<abuf>"), 10)
 
-  vim.api.nvim_create_user_command(
-    'RestRun',
-    "lua require('rest-nvim').run({verbose=false})",
-    { nargs = '*' }
-  )
-  vim.api.nvim_create_user_command(
-    'RestPreview',
-    "lua require('rest-nvim').run({verbose=true})",
-    { nargs = '*' }
-  )
+  vim.api.nvim_create_user_command('RestRun', "lua require('rest-nvim').run({verbose=false})", { nargs = '*' })
+  vim.api.nvim_create_user_command('RestPreview', "lua require('rest-nvim').run({verbose=true})", { nargs = '*' })
   vim.api.nvim_create_user_command('RestFile', function(_)
     require('rest-nvim').run_file(vim.fn.expand('%f:%h'), { verbose = true })
   end, { nargs = '*' })

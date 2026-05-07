@@ -28,11 +28,11 @@ local function diffmaster()
   local hash = vim.fn.systemlist(cmd)[1]
 
   if hash then
-    vim.notify('DiffviewOpen ' .. hash)
-    vim.cmd('DiffviewOpen ' .. hash)
+    vim.notify('CodeDiff ' .. hash)
+    vim.cmd('CodeDiff ' .. hash)
   else
-    vim.notify('DiffviewOpen ' .. branch)
-    vim.cmd('DiffviewOpen ' .. branch)
+    vim.notify('CodeDiff ' .. branch)
+    vim.cmd('CodeDiff ' .. branch)
   end
 end
 
@@ -89,9 +89,9 @@ function register_key()
   local git_keymap = {
     { '<Space>g', group = 'git' }, -- Group name
       -- stylua: ignore start
-      {'<Space>gd', ':DiffviewOpen<CR>',desc= 'Open Diff' },
+      {'<Space>gd', ':CodeDiff<CR>',desc= 'Open Diff' },
       {'<Space>gM', diffmaster,desc= 'Diff Master' },
-      {'<Space>gH', ':DiffviewFileHistory<CR>',desc= 'File History' },
+      {'<Space>gH', ':CodeDiff history<CR>',desc= 'File History' },
       {'<Space>gs', function() require('gitsigns').stage_hunk() end,desc= 'Stage Hunk' },
       {'<Space>gu', function() require('gitsigns').undo_stage_hunk() end,desc= 'Undo Stage Hunk' },
       {'<Space>gr', function() require('gitsigns').reset_buffer() end,desc= 'Reset Buffer' },

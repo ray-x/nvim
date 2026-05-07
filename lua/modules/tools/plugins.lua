@@ -8,15 +8,13 @@ return function(tools)
   local dev = _G.is_dev()
 
   tools({
-    'sindrets/diffview.nvim',
+    'esmuellert/codediff.nvim',
     cmd = {
-      'DiffviewOpen',
-      'DiffviewFilepistory',
-      'DiffviewFocusFiles',
-      'DiffviewToggleFiles',
-      'DiffviewRefresh',
+      'CodeDiff',
+      'CodeDiffOpen',
+      'CodeDiffClose',
     },
-    opts = conf.diffview,
+    config = conf.codediff,
   })
 
   tools({
@@ -57,6 +55,52 @@ return function(tools)
   })
 
   tools({
+    'dmtrKovalenko/fff.nvim',
+    build = function()
+      -- downloads a prebuilt binary or falls back to cargo build
+      require('fff.download').download_or_build_binary()
+    end,
+    -- for nixos:
+    -- build = "nix run .#release",
+    opts = {
+      debug = {
+        enabled = true,
+        show_scores = true,
+      },
+    },
+    lazy = false, -- the plugin lazy-initialises itself
+    keys = {
+      {
+        'ff',
+        function()
+          require('fff').find_files()
+        end,
+        desc = 'FFFind files',
+      },
+      {
+        'fg',
+        function()
+          require('fff').live_grep()
+        end,
+        desc = 'LiFFFe grep',
+      },
+      {
+        'fz',
+        function()
+          require('fff').live_grep({ grep = { modes = { 'fuzzy', 'plain' } } })
+        end,
+        desc = 'Live fffuzy grep',
+      },
+      {
+        'fc',
+        function()
+          require('fff').live_grep({ query = vim.fn.expand('<cword>') })
+        end,
+        desc = 'Search current word',
+      },
+    },
+  })
+  tools({
     'rbong/vim-flog',
     cmd = { 'Flog', 'Flogsplit', 'Flg', 'Flgs' },
     event = { 'FuncUndefined' },
@@ -73,12 +117,7 @@ return function(tools)
             end
             vim.ui.open(url)
           end, { nargs = 1 })
-          vim.keymap.set(
-            { 'n' },
-            '<leader>gb',
-            '<Cmd>Browse<CR>',
-            { noremap = true, silent = true }
-          )
+          vim.keymap.set({ 'n' }, '<leader>gb', '<Cmd>Browse<CR>', { noremap = true, silent = true })
           vim.keymap.set({ 'x' }, 'gy', [['<,'>GBrowse!<CR>]], { noremap = true, silent = true })
         end,
       },
@@ -314,6 +353,11 @@ return function(tools)
     end,
   })
 
+  tools({
+    'OXY2DEV/markview.nvim',
+    lazy = false,
+  })
+
   -- Note mini has similar function but lacking features
   --[[
     :BDelete! hidden
@@ -391,18 +435,8 @@ return function(tools)
     'voldikss/vim-translator',
     keys = { '<Plug>TranslateW', '<Plug>TranslateWV' },
     init = function()
-      vim.api.nvim_set_keymap(
-        'n',
-        '<Leader>ts',
-        '<Plug>TranslateW',
-        { noremap = true, silent = true }
-      )
-      vim.api.nvim_set_keymap(
-        'v',
-        '<Leader>ts',
-        '<Plug>TranslateWV',
-        { noremap = true, silent = true }
-      )
+      vim.api.nvim_set_keymap('n', '<Leader>ts', '<Plug>TranslateW', { noremap = true, silent = true })
+      vim.api.nvim_set_keymap('v', '<Leader>ts', '<Plug>TranslateWV', { noremap = true, silent = true })
     end,
   })
   --The linediff plugin provides a simple command, :Linediff, which is used to diff two separate blocks of text.
