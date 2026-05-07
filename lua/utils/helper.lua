@@ -6,13 +6,20 @@ local M = {
   log_path = vim.lsp.log.get_filename(),
 }
 function M.loader(modules)
-  -- lazy loading
-  -- assuming lazy.nvim is used
-  local lazy = require('lazy')
-  if type(modules) == 'string' then
-    modules = vim.fn.split(modules, ' ')
+  -- lazy loading with vim.pack
+  if type(modules) == "string" then
+    modules = vim.split(modules, " ", { trimempty = true })
   end
-  lazy.load({ plugins = modules })
+
+  for _, module in ipairs(modules) do
+    pcall(function()
+      local plugins = vim.pack.get({ module }, { info = false })
+      local plugin = plugins and plugins[1]
+      if plugin ~= nil and not plugin.active then
+        vim.pack.add({ plugin.spec }, { confirm = false, load = true })
+      end
+    end)
+  end
 end
 function M.get_data_from_file(filename, startLine)
   local displayLine

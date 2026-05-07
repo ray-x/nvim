@@ -27,6 +27,14 @@ end
 
 local M = {}
 
+local function load_extension(name, plugin)
+  if plugin ~= nil then
+    loader(plugin)
+  end
+
+  pcall(telescope.load_extension, name)
+end
+
 -- Looks for git files, but falls back to normal files
 M.git_files = function(opts)
   opts = opts or {}
@@ -544,18 +552,21 @@ M.setup = function(_)
   -- telescope.load_extension("notify")
 
   if not win then
-    telescope.load_extension('fzf')
+    local has_fzf = pcall(require, 'telescope._extensions.fzf')
+    if not has_fzf then
+      loader('telescope-fzf-native.nvim')
+    end
+    pcall(telescope.load_extension, 'fzf')
   end
 
   telescope.load_extension('dotfiles')
   telescope.load_extension('gosource')
   -- telescope.load_extension('smart_history')
-  telescope.load_extension('dumb_jump')
-  telescope.load_extension('shell_history')
+  load_extension('dumb_jump', 'telescope-ast-grep.nvim')
+  load_extension('shell_history', 'shell-history.nvim')
 
   if vim.o.ft == 'markdown' then
-    loader('telescope-heading.nvim')
-    telescope.load_extension('heading')
+    load_extension('heading', 'telescope-heading.nvim')
   end
   telescope.setup({
     extensions = {

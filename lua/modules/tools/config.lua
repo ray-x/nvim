@@ -482,7 +482,7 @@ function config.spelunker()
   vim.cmd('highlight def link SpelunkerComplexOrCompoundWord Rare')
   vim.fn['spelunker#check'] = function(...)
     vim.fn['spelunker#check'] = nil
-    require('lazy').load({ plugins = { 'spelunker.vim' } })
+    pcall(function() vim.cmd('packadd spelunker.vim') end)
     return vim.fn['spelunker#check'](...)
   end
 end

@@ -1,56 +1,44 @@
-local function typecheck(types)
-  if vim.tbl_contains(types, vim.bo.filetype) or vim.fn.argc() == 0 then
-    return true
-  end
-  -- vim.fn.argv[1]:find('lua')
-  for _, v in ipairs(types) do
-    if vim.fn.argv()[1]:find(v) then
-      return true
-    end
-  end
-end
-
 return function(lang)
-  local conf = require('modules.lang.config')
+  local conf = require("modules.lang.config")
   local dev = _G.is_dev()
-  local ts = require('modules.lang.treesitter')
+  local spec = require("modules.spec")
+  local ts = require("modules.lang.treesitter")
   ts.treesitter()
 
   --
   --
   lang({
-    'ray-x/guihua.lua',
-    build = 'cd lua/fzy && make',
+    "ray-x/guihua.lua",
+    build = "cd lua/fzy && make",
     dev = dev,
     module = true,
     opts = function()
-      vim.ui.select = require('guihua.gui').select
-      vim.ui.input = require('guihua.gui').input
+      vim.ui.select = require("guihua.gui").select
+      vim.ui.input = require("guihua.gui").input
       return {
         icons = {
           syntax = {
-            namespace = '',
+            namespace = "",
           },
         },
       }
     end,
   })
-  if vim.wo.diff then
-    return
-  end
+
+  lang = spec.wrap_register(lang, spec.not_diff)
 
   lang({
-    'nvim-treesitter/nvim-treesitter-textobjects',
+    "nvim-treesitter/nvim-treesitter-textobjects",
     -- dependencies = { 'nvim-treesitter' },
     config = ts.treesitter_obj,
-    branch = 'main',
+    branch = "main",
     -- module = true,
-    event = { 'CursorHold', 'CursorHoldI' },
+    event = { "CursorHold", "CursorHoldI" },
   })
 
   lang({
-    'chrisgrieser/nvim-various-textobjs',
-    event = { 'CursorHold', 'CursorHoldI' },
+    "chrisgrieser/nvim-various-textobjs",
+    event = { "CursorHold", "CursorHoldI" },
     opts = {
       keymap = {
         useDefault = true,
@@ -63,139 +51,136 @@ return function(lang)
   })
 
   lang({
-    'andersevenrud/nvim_context_vt',
-    cmd = { 'NvimContextVtToggle' },
+    "andersevenrud/nvim_context_vt",
+    cmd = { "NvimContextVtToggle" },
     config = conf.context_vt,
   })
 
-  local jsft = { 'typescript', 'typescriptreact', 'javascript', 'javascriptreact', 'html', 'js', 'jsx', 'ts', 'tsx' }
+  local jsft = { "typescript", "typescriptreact", "javascript", "javascriptreact", "html", "js", "jsx", "ts", "tsx" }
 
-  if typecheck(jsft) then
-    lang({
-      'pmizio/typescript-tools.nvim',
-      event = 'VeryLazy',
-      ft = jsft,
-      opts = {},
-    })
-
-    lang({
-      'JoosepAlviste/nvim-ts-context-commentstring',
-      ft = jsft,
-      event = 'CursorHold',
-      config = function()
-        require('ts_context_commentstring').setup({
-          enable = true,
-          enable_autocmd = false,
-        })
-      end,
-    })
-
-    lang({ 'yardnsm/vim-import-cost', ft = jsft, cmd = 'ImportCost' })
-  end
   lang({
-    'bennypowers/nvim-regexplainer',
-    cmd = { 'RegexplainerToggle', 'RegexplainerShow' },
+    "pmizio/typescript-tools.nvim",
+    event = "VeryLazy",
+    ft = jsft,
+    opts = {},
+  })
+
+  lang({
+    "JoosepAlviste/nvim-ts-context-commentstring",
+    ft = jsft,
+    event = "CursorHold",
+    config = function()
+      require("ts_context_commentstring").setup({
+        enable = true,
+        enable_autocmd = false,
+      })
+    end,
+  })
+
+  lang({ "yardnsm/vim-import-cost", ft = jsft, cmd = "ImportCost" })
+  lang({
+    "bennypowers/nvim-regexplainer",
+    cmd = { "RegexplainerToggle", "RegexplainerShow" },
     config = conf.regexplainer,
   })
 
   lang({
-    'Wansmer/symbol-usage.nvim', -- count symbol usage
-    event = { 'BufReadPre', 'LspAttach' },
+    "Wansmer/symbol-usage.nvim", -- count symbol usage
+    event = { "BufReadPre", "LspAttach" },
     config = conf.symbol_usage,
   })
 
-  if typecheck({ 'python', 'javascript', 'py', 'ts', 'tsx', 'js', 'jsx' }) then
-    lang({
-      -- running code interactively with the jupyter kernel
-      'benlubas/molten-nvim',
-      ft = 'python',
-      cmd = {
-        'MoltenLoad',
-        'MoltenInit',
-        'MoltenInfo',
-        'MoltenEvaluateVisual',
-        'MoltenEvaluateLine',
-        'MoltenReevaluateCell',
-      },
-    })
-    lang({ 'metakirby5/codi.vim', ft = { 'python', 'javascript' }, cmd = { 'Codi', 'CodiNew' } })
-    lang({ 'Vigemus/iron.nvim', ft = 'python', config = conf.iron })
-  end
+  lang({
+    -- running code interactively with the jupyter kernel
+    "benlubas/molten-nvim",
+    ft = "python",
+    cmd = {
+      "MoltenLoad",
+      "MoltenInit",
+      "MoltenInfo",
+      "MoltenEvaluateVisual",
+      "MoltenEvaluateLine",
+      "MoltenReevaluateCell",
+    },
+  })
+  lang({ "metakirby5/codi.vim", ft = { "python", "javascript" }, cmd = { "Codi", "CodiNew" } })
+  lang({ "Vigemus/iron.nvim", ft = "python", config = conf.iron })
 
   lang({
-    'mfussenegger/nvim-dap-python',
-    ft = { 'python' },
-    config = require('modules.lang.dap.py').config,
+    "mfussenegger/nvim-dap-python",
+    ft = { "python" },
+    config = require("modules.lang.dap.py").config,
   })
 
   lang({
-    'ray-x/go.nvim',
+    "ray-x/go.nvim",
     dev = dev,
     -- lazy = false,
     cmd = {
-      'Go',
-      'GoModInit',
-      'GoModTidy',
-      'GoNew',
-      'GoFmt',
-      'GoBuild',
-      'GoAlt',
-      'GoBreakToggle',
-      'GoImpl',
-      'GoRun',
-      'GoInstall',
-      'GoTest',
-      'GoTestFunc',
-      'GoTestCompile',
-      'GoCoverage',
-      'GoCoverageToggle',
-      'GoCoverag',
-      'GoGet',
-      'GoModifyTags',
-      'GoTool',
+      "Go",
+      "GoModInit",
+      "GoModTidy",
+      "GoNew",
+      "GoFmt",
+      "GoBuild",
+      "GoAlt",
+      "GoBreakToggle",
+      "GoImpl",
+      "GoRun",
+      "GoInstall",
+      "GoTest",
+      "GoTestFunc",
+      "GoTestCompile",
+      "GoCoverage",
+      "GoCoverageToggle",
+      "GoCoverag",
+      "GoGet",
+      "GoModifyTags",
+      "GoTool",
     },
-    ft = { 'go', 'gomod', 'gosum', 'gotmpl', 'gohtmltmpl', 'gotexttmpl' },
-    event = { 'VeryLazy' },
+    ft = { "go", "gomod", "gosum", "gotmpl", "gohtmltmpl", "gotexttmpl" },
+    event = { "VeryLazy" },
     -- opts = conf.go,
     opts = conf.go,
   })
 
   lang({
-    'ray-x/navigator.lua',
+    "ray-x/navigator.lua",
     dev = dev,
+    dependencies = { "ray-x/guihua.lua" },
     opts = conf.navigator,
     module = true,
-    event = { 'VeryLazy' },
+    event = { "BufReadPre", "BufNewFile" },
   })
 
   lang({
-    'ray-x/web-tools.nvim',
+    "ray-x/web-tools.nvim",
     dev = dev,
-    ft = { 'html', 'javascript', 'hurl', 'http', 'svelte' },
-    cmd = { 'HurlRun', 'BrowserOpen', 'Npm', 'Yarn', 'Prettier', 'ESLint', 'Tsc', 'TscWatch' },
+    ft = { "html", "javascript", "hurl", "http", "svelte" },
+    cmd = { "HurlRun", "BrowserOpen", "Npm", "Yarn", "Prettier", "ESLint", "Tsc", "TscWatch" },
     lazy = true,
     opts = { debug = true },
   })
 
-  lang({ 'mfussenegger/nvim-dap', config = conf.dap })
+  lang({ "mfussenegger/nvim-dap", config = conf.dap })
 
   lang({
-    'rcarriga/nvim-dap-ui',
-    dependencies = { 'mfussenegger/nvim-dap', 'nvim-neotest/nvim-nio' },
+    "rcarriga/nvim-dap-ui",
+    dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" },
     config = conf.dapui,
     lazy = true,
     module = true,
   })
 
-  lang({ 'theHamsta/nvim-dap-virtual-text', module = true })
+  lang({ "theHamsta/nvim-dap-virtual-text", module = true })
 
   lang({
-    'nvim-telescope/telescope-dap.nvim',
+    "nvim-telescope/telescope-dap.nvim",
     config = conf.dap,
-    event = { 'CmdlineEnter' },
+    event = { "CmdlineEnter" },
   })
 
-  lang({ 'mtdl9/vim-log-highlighting', ft = { 'text', 'txt', 'log' } })
+  lang({ "mtdl9/vim-log-highlighting", ft = { "text", "txt", "log" } })
 
   -- lang({
   --   'michaelb/sniprun',
@@ -217,49 +202,49 @@ return function(lang)
   --   end,
   -- })
   -- JqxList and JqxQuery json browsing, format
-  lang({ 'gennaro-tedesco/nvim-jqx', cmd = { 'JqxList', 'JqxQuery' } })
+  lang({ "gennaro-tedesco/nvim-jqx", cmd = { "JqxList", "JqxQuery" } })
   lang({
-    'bfrg/vim-jqplay',
-    ft = 'jq',
-    cmd = { 'Jqplay', 'JqplayScratch', 'JqplayScratchNoInput' },
+    "bfrg/vim-jqplay",
+    ft = "jq",
+    cmd = { "Jqplay", "JqplayScratch", "JqplayScratchNoInput" },
   })
 
   lang({
-    'windwp/nvim-ts-autotag',
+    "windwp/nvim-ts-autotag",
     config = function()
-      require('nvim-ts-autotag').setup({
-        filetypes = { 'html', 'javascript' },
+      require("nvim-ts-autotag").setup({
+        filetypes = { "html", "javascript" },
       })
     end,
     -- event = 'VeryLazy',
-    ft = { 'javascript', 'html' },
+    ft = { "javascript", "html" },
   })
   -- highlight your args with Treesitter
   lang({
-    'm-demare/hlargs.nvim',
+    "m-demare/hlargs.nvim",
     lazy = true,
-    event = { 'CursorMoved', 'CursorMovedI' },
+    event = { "CursorMoved", "CursorMovedI" },
     opts = {
       disable = function()
         local excluded_filetype = {
-          'TelescopePrompt',
-          'guihua',
-          'guihua_rust',
-          'clap_input',
-          'lua',
-          'rust',
-          'typescript',
-          'typescriptreact',
-          'javascript',
-          'javascriptreact',
+          "TelescopePrompt",
+          "guihua",
+          "guihua_rust",
+          "clap_input",
+          "lua",
+          "rust",
+          "typescript",
+          "typescriptreact",
+          "javascript",
+          "javascriptreact",
         }
         if vim.tbl_contains(excluded_filetype, vim.bo.filetype) then
           return true
         end
 
         local bufnr = vim.api.nvim_get_current_buf()
-        local filetype = vim.fn.getbufvar(bufnr, '&filetype')
-        if filetype == '' then
+        local filetype = vim.fn.getbufvar(bufnr, "&filetype")
+        if filetype == "" then
           return true
         end
         -- local parsers = require('nvim-treesitter.parsers')
@@ -270,49 +255,49 @@ return function(lang)
     },
   })
   lang({
-    'folke/lazydev.nvim',
-    ft = 'lua', -- only load on lua files
+    "folke/lazydev.nvim",
+    ft = "lua", -- only load on lua files
     opts = {
       library = {
         -- See the configuration section for more details
         -- Load luvit types when the `vim.uv` word is found
-        { path = 'luvit-meta/library', words = { 'vim%.uv' } },
-        { path = '${3rd}/luv/library', words = { 'vim%.uv' } },
+        { path = "luvit-meta/library", words = { "vim%.uv" } },
+        { path = "${3rd}/luv/library", words = { "vim%.uv" } },
       },
     },
   })
 
   -- do not delete for now through it is deprecated, it still used when I need to Install parsers
   lang({
-    'nvim-treesitter/nvim-treesitter',
-    branch = 'main',
+    "nvim-treesitter/nvim-treesitter",
+    branch = "main",
     lazy = false,
-    build = ':TSUpdate',
+    build = ":TSUpdate",
     config = ts.treesitter, -- this enable highlight, indent, and other basic features, and also setup some keymaps
   })
 
   lang({
-    'nvim-treesitter/nvim-treesitter-context',
+    "nvim-treesitter/nvim-treesitter-context",
     -- event = { 'WinScrolled', 'CmdlineEnter' },
-    event = 'VeryLazy',
+    event = "VeryLazy",
     opts = function()
       return {
         enable = true, -- Enable this plugin (Can be enabled/disabled later via commands)
         max_lines = 2, -- How many lines the window should span. Values <= 0 mean no limit.
         min_win_height = 0, -- Minimum height of the window, content will be truncated if necessary.
-        trim_scope = 'outer', -- Which context lines to discard if `max_lines` is exceeded. Choices: 'inner', 'outer'
-        mode = 'topline', -- Line used to calculate context. Choices: 'cursor', 'topline'
+        trim_scope = "outer", -- Which context lines to discard if `max_lines` is exceeded. Choices: 'inner', 'outer'
+        mode = "topline", -- Line used to calculate context. Choices: 'cursor', 'topline'
         patterns = { -- Match patterns for TS nodes. These get wrapped to match at word boundaries.
           -- For all filetypes
           default = {
-            'class',
-            'function',
-            'method',
-            'for', -- These won't appear in the context
-            'while',
-            'if',
-            'switch',
-            'case',
+            "class",
+            "function",
+            "method",
+            "for", -- These won't appear in the context
+            "while",
+            "if",
+            "switch",
+            "case",
           },
         },
       }
@@ -361,42 +346,62 @@ return function(lang)
   ]]
   --
   lang({
-    'folke/trouble.nvim',
-    cmd = { 'Trouble', 'TroubleToggle' },
+    "folke/trouble.nvim",
+    cmd = { "Trouble", "TroubleToggle" },
     config = function()
-      require('trouble').setup({})
+      require("trouble").setup({})
     end,
   })
 
   lang({
-    'hashivim/vim-terraform',
-    ft = { 'terraform' },
-    cmd = { 'Terraform', 'TerraformToggle' },
+    "hashivim/vim-terraform",
+    ft = { "terraform" },
+    cmd = { "Terraform", "TerraformToggle" },
     -- config = conf.terraform,
   })
 
   lang({
-    'nvimtools/none-ls.nvim',
+    "nvimtools/none-ls.nvim",
+    main = "null-ls",
     dependencies = {
-      'nvimtools/none-ls-extras.nvim',
+      "nvimtools/none-ls-extras.nvim",
     },
-    opts = require('modules.lang.null-ls').config,
-    event = { 'BufWritePre', 'TextChanged', 'TextChangedI', 'CmdlineEnter' },
+    opts = require("modules.lang.null-ls").config,
+    event = { "BufReadPre", "BufNewFile", "CmdlineEnter" },
   })
 
   -- structural search and replace
   -- put to lang as it depends on treesitter
-  lang({ 'cshuaimin/ssr.nvim', config = conf.ssr })
+  lang({ "cshuaimin/ssr.nvim", config = conf.ssr })
 
   lang({
-    'p00f/clangd_extensions.nvim',
-    ft = { 'c', 'cpp', 'objc', 'objcpp', 'h', 'hpp' },
+    "p00f/clangd_extensions.nvim",
+    ft = { "c", "cpp", "objc", "objcpp", "h", "hpp" },
     opts = conf.clangd,
   })
 
   lang({
-    'HiPhish/awk-ward.nvim',
-    ft = 'awk',
+    "sheng-tse/jupynvim",
+    build = function()
+      local core = vim.fn.stdpath("data") .. "/lazy/jupynvim/core"
+      vim.fn.system({
+        "cargo",
+        "build",
+        "--release",
+        "--manifest-path",
+        core .. "/Cargo.toml",
+      })
+    end,
+    opts = function()
+      return {
+        log_level = "info",
+        image_renderer = "kitty", -- "placeholder", "kitty", or "chafa"
+      }
+    end,
+  })
+  lang({
+    "HiPhish/awk-ward.nvim",
+    ft = "awk",
     -- cmd = { 'AwkWard' },
   })
 
@@ -404,33 +409,33 @@ return function(lang)
   -- it can not be lazy loaded
   -- if 'csv' == vim.fn.expand('%:e') then
   lang({
-    'chrisbra/csv.vim',
-    lazy = not 'csv' == vim.fn.expand('%:e'),
+    "chrisbra/csv.vim",
+    lazy = not "csv" == vim.fn.expand("%:e"),
     init = function()
       -- vim.cmd('auto BufReadPost *.csv,*.tsv,*.dat,*.csv_pipe,*.dbout setlocal filetype=csv')
-      vim.g.csv_delim_test = ',;|'
+      vim.g.csv_delim_test = ",;|"
     end,
   })
   -- end
   lang({
-    'mechatroner/rainbow_csv',
-    ft = { 'csv', 'tsv', 'dat', 'csv_pipe', 'dbout' },
-    cmd = { 'RainbowDelim', 'RainbowMultiDelim', 'Select', 'CSVLint' },
+    "mechatroner/rainbow_csv",
+    ft = { "csv", "tsv", "dat", "csv_pipe", "dbout" },
+    cmd = { "RainbowDelim", "RainbowMultiDelim", "Select", "CSVLint" },
   })
   lang({
-    'Bekaboo/dropbar.nvim',
+    "Bekaboo/dropbar.nvim",
     opts = {
       general = {
         enable = function(buf, win, _)
-          if not vim.fn.has('nvim-0.10') then
+          if not vim.fn.has("nvim-0.10") then
             return false
           end
-          return vim.fn.win_gettype(win) == ''
-            and vim.wo[win].winbar == ''
-            and vim.bo[buf].bt == ''
-            and (not vim.tbl_contains({ 'help', 'guihua', 'terminal' }, vim.bo[buf].buftype))
+          return vim.fn.win_gettype(win) == ""
+            and vim.wo[win].winbar == ""
+            and vim.bo[buf].bt == ""
+            and (not vim.tbl_contains({ "help", "guihua", "terminal" }, vim.bo[buf].buftype))
             and (
-              vim.bo[buf].ft == 'markdown'
+              vim.bo[buf].ft == "markdown"
               or (
                 buf
                   and vim.api.nvim_buf_is_valid(buf)
@@ -441,10 +446,10 @@ return function(lang)
             )
         end,
         attach_events = {
-          'OptionSet',
-          'BufWinEnter',
-          'BufWritePost',
-          'WinScrolled',
+          "OptionSet",
+          "BufWinEnter",
+          "BufWritePost",
+          "WinScrolled",
         },
       },
     },

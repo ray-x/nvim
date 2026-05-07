@@ -2,10 +2,11 @@
 -- local winwidth = function()
 --   return vim.api.nvim_call_function("winwidth", { 0 })
 -- end
+local spec = require('modules.spec')
+
 return function(ui)
-  if vim.wo.diff then
-    return
-  end
+  ui = spec.wrap_register(ui, spec.not_diff)
+
   local dev = _G.is_dev()
   local conf = require('modules.ui.config')
   ui({ 'nvim-tree/nvim-web-devicons', lazy = true })
@@ -13,7 +14,7 @@ return function(ui)
   ui({
     'ray-x/aurora',
     dev = dev,
-    lazy = true,
+    lazy = false,
     init = function()
       vim.g.aurora_italic = 1
       vim.g.aurora_transparent = 1
@@ -24,7 +25,7 @@ return function(ui)
   ui({
     'ray-x/starry.nvim',
     dev = dev,
-    lazy = true,
+    lazy = false,
     config = conf.starry_conf,
   })
 
@@ -66,7 +67,7 @@ return function(ui)
     'rcarriga/nvim-notify',
     event = 'VeryLazy',
     module = true,
-    -- event = "User LoadLazyPlugin",
+    -- event = "User LoadPackPlugin",
     config = conf.notify,
   })
 
@@ -252,7 +253,7 @@ end
 -- ui({
 --   'folke/noice.nvim',
 --   event = 'VeryLazy',
---   -- event = "User LoadLazyPlugin",
+--   -- event = "User LoadPackPlugin",
 --   dependencies = { 'MunifTanjim/nui.nvim', lazy = true },
 --   config = conf.noice,
 -- })

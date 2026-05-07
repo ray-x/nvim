@@ -42,7 +42,7 @@ local load_core = function()
   require('core.options')
   require('core.runner')
   require('core.event')
-  local fsize = require('core.lazy_nvim'):boot_strap() or 10
+  local fsize = require('core.pack'):boot_strap() or 10
   -- get file size
   lprint('load core done', uv.now() - start)
   local theme
@@ -63,11 +63,11 @@ local load_core = function()
   require('core.colorscheme').load_colorscheme(theme)
   require('keymap')
   require('core.commands')
-  lprint('load compiled and lazy', uv.now() - start)
+  lprint('load compiled and pack', uv.now() - start)
 
-  require('core.lazy').setup(fsize)
+  require('core.runtime').setup(fsize)
 
-  lprint('lazy done', uv.now() - start)
+  lprint('pack done', uv.now() - start)
 end
 
 -- create a thread to check network status

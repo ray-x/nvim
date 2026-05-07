@@ -1,151 +1,157 @@
-local rhs_options = {}
+local pbind = {}
 
-function rhs_options:new()
-  local instance = {
-    cmd = '',
+local DEFAULT_OPTS = {
+  -- Keep legacy remap behavior unless overridden per mapping.
+  noremap = false,
+  silent = true,
+  expr = false,
+  nowait = false,
+}
+
+local Builder = {}
+Builder.__index = Builder
+
+local function new_builder(rhs)
+  return setmetatable({
+    cmd = rhs,
     desc = '',
-    options = { noremap = false, silent = false, expr = false, nowait = false },
-  }
-  setmetatable(instance, self)
-  self.__index = self
-  return instance
+    args = nil,
+    options = vim.deepcopy(DEFAULT_OPTS),
+  }, Builder)
 end
 
-function rhs_options:map_cmd(cmd_string)
-  self.cmd = '<cmd>' .. cmd_string .. '<CR>'
-  return self
-end
-
-function rhs_options:map_func(func)
-  self.cmd = func
-  return self
-end
-
-function rhs_options:map_cr(cmd_string)
-  self.cmd = (':%s<CR>'):format(cmd_string)
-  return self
-end
-
-function rhs_options:map_plug(cmd_string)
-  self.cmd = ('<Plug>(%s)'):format(cmd_string)
-  return self
-end
-
-function rhs_options:map_cu(cmd_string)
-  self.cmd = ('<C-u><Cmd>%s<CR>'):format(cmd_string)
-  return self
-end
-
-function rhs_options:map_key(key_string)
-  self.cmd = ('%s'):format(key_string)
-  return self
-end
-
-function rhs_options:with_silent()
+function Builder:with_silent()
   self.options.silent = true
   return self
 end
 
-function rhs_options:with_args(...)
+function Builder:with_args(...)
+  -- Kept for backward compatibility.
   self.args = { ... }
   return self
 end
 
-function rhs_options:with_desc(desc)
+function Builder:with_desc(desc)
   self.desc = desc
   return self
 end
 
-function rhs_options:with_noremap()
+function Builder:with_noremap()
   self.options.noremap = true
   return self
 end
 
-function rhs_options:with_expr()
+function Builder:with_remap()
+  self.options.noremap = false
+  return self
+end
+
+function Builder:with_expr()
   self.options.expr = true
   return self
 end
 
-function rhs_options:with_nowait()
+function Builder:with_nowait()
   self.options.nowait = true
   return self
 end
 
-local pbind = {}
-
-function pbind.map_cr(cmd_string)
-  local ro = rhs_options:new()
-  return ro:map_cr(cmd_string)
+function pbind.map_cr(cmd)
+  return new_builder((':%s<CR>'):format(cmd))
 end
 
-function pbind.map_cmd(cmd_string)
-  local ro = rhs_options:new()
-  return ro:map_cmd(cmd_string)
+function pbind.map_cmd(cmd)
+  return new_builder('<cmd>' .. cmd .. '<CR>')
 end
 
-function pbind.map_func(func)
-  local ro = rhs_options:new()
-  return ro:map_func(func)
+function pbind.map_func(fn)
+  return new_builder(fn)
 end
 
-function pbind.map_cu(cmd_string)
-  local ro = rhs_options:new()
-  return ro:map_cu(cmd_string)
+function pbind.map_cu(cmd)
+  return new_builder(('<C-u><Cmd>%s<CR>'):format(cmd))
 end
 
-function pbind.map_plug(cmd_string)
-  local ro = rhs_options:new()
-  return ro:map_plug(cmd_string)
+function pbind.map_plug(name)
+  return new_builder(('<Plug>(%s)'):format(name))
 end
 
-function pbind.map_key(keystr)
-  local ro = rhs_options:new()
-  return ro:map_key(keystr)
+function pbind.map_key(keys)
+  return new_builder(tostring(keys))
 end
 
 pbind.all_keys = {}
+
+local function split_modes(mode)
+  if type(mode) ~= 'string' or mode == '' then
+    return { 'n' }
+  end
+  if #mode == 1 then
+    return { mode }
+  end
+
+  local modes = {}
+  for i = 1, #mode do
+    modes[#modes + 1] = mode:sub(i, i)
+  end
+  return modes
+end
+
+local function normalize_rhs(value)
+  local t = type(value)
+  if t == 'function' or t == 'string' then
+    return { cmd = value, options = {}, desc = '' }
+  end
+  if t == 'table' then
+    return {
+      cmd = value.cmd,
+      options = value.options or {},
+      desc = value.desc or '',
+    }
+  end
+  return nil
+end
+
+local function apply_one(mode, lhs, rhs_def, base_opts)
+  if not rhs_def then
+    return
+  end
+
+  local rhs = rhs_def.cmd
+  local opts = vim.tbl_deep_extend('force', {}, base_opts, rhs_def.options)
+  if rhs_def.desc ~= '' then
+    opts.desc = rhs_def.desc
+  end
+
+  if rhs ~= nil then
+    vim.keymap.set(split_modes(mode), lhs, rhs, opts)
+  end
+
+  local rhs_type = type(rhs)
+  local rhs_text = ''
+  if rhs_type == 'string' then
+    rhs_text = vim.trim(rhs)
+  elseif rhs_type == 'function' then
+    rhs_text = rhs_def.desc ~= '' and rhs_def.desc or 'lua func'
+  else
+    rhs_text = rhs_def.desc or ''
+  end
+  pbind.all_keys[#pbind.all_keys + 1] = mode .. ' | ' .. lhs .. ' : ' .. rhs_text
+end
+
 function pbind.nvim_load_mapping(mapping)
+  local base_opts = {}
+  if mapping.buffer then
+    base_opts.buffer = mapping.buffer
+  end
+
   for key, value in pairs(mapping) do
-    local mode, keymap = key:match('([^|]*)|?(.*)')
-
-    local models = {}
-    if #mode > 1 then
-      for i = 1, #mode do
-        table.insert(models, mode:sub(i, i))
-      end
+    local mode, lhs = key:match('([^|]*)|?(.*)')
+    local rhs_def = normalize_rhs(value)
+    if rhs_def then
+      apply_one(mode, lhs, rhs_def, base_opts)
     else
-      models = { mode }
-    end
-    if type(value) == 'function' then
-      local opts = {}
-      if mapping.buffer then
-        opts.buffer = { buffer = mapping.buffer }
-      end
-      vim.keymap.set(models, keymap, value, opts)
-    elseif type(value) == 'table' then
-      local rhs = value.cmd
-      local opts = value.options or {}
-
-      if rhs then
-        vim.keymap.set(models, keymap, rhs, opts)
-      end
-      if type(rhs) == 'string' then
-        rhs = vim.trim(rhs)
-        table.insert(pbind.all_keys, mode .. ' | ' .. keymap .. ' : ' .. rhs)
-      elseif type(rhs) == 'function' then
-        opts.desc = value.desc or 'map lua func'
-        -- lprint(opts, keymap, mode:sub(i,i))
-        vim.keymap.set(models, keymap, rhs, opts)
-        table.insert(pbind.all_keys, mode .. ' | ' .. keymap .. ' : ' .. (value.desc or ''))
-      else
-        table.insert(pbind.all_keys, mode .. ' | ' .. keymap .. ' : ' .. (value.desc or ''))
-      end
-    elseif type(value) == 'string' then
-      vim.keymap.set(models, keymap, value)
-      value = vim.trim(value)
-      table.insert(pbind.all_keys, mode .. ' | ' .. keymap .. ' : ' .. value)
-    else
-      print('unsupported type?: ' .. type(value) .. ' ' .. keymap)
+      vim.notify('Unsupported keymap type: ' .. type(value) .. ' for ' .. key, vim.log.levels.WARN)
     end
   end
 end

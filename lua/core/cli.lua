@@ -4,7 +4,8 @@ local helper = require('core.helper')
 function cli:env_init()
   self.module_path = self.config_path .. '/lua/modules'
   local data_dir = helper.get_data_path()
-  self.lazy_dir = data_dir .. '/lazy'
+  self.pack_site_dir = data_dir .. '/site/pack/ray-x'
+  self.pack_legacy_dir = data_dir .. '/pack/ray-x'
 
   package.path = package.path
     .. ';'
@@ -17,71 +18,27 @@ function cli:env_init()
 end
 
 function cli:get_all_repos()
-  local pack = require('core.lazy_nvim')
-  local p = io.popen('find "' .. cli.module_path .. '" -type f')
-  if not p then
-    return
-  end
-
-  for file in p:lines() do
-    if file:find('plugins.lua') then
-      local module = file:match(cli.module_path .. '/(.+).lua$')
-      require(module)
-    end
-  end
-  p:close()
-
-  return pack.repos
-end
-
-function cli:install_or_update(repo)
-  local repo_name = repo[1]
-  if repo.dev then
-    helper.pink('\t🥯 Skip local plugin ' .. repo_name)
-    return
-  end
-
-  local name = vim.split(repo_name, '/')[2]
-  local target = self.lazy_dir .. helper.path_sep .. name
-  local type = helper.isdir(target) and 'pull' or 'clone'
-  helper.run_git(target, type)
-end
-
-function cli:boot_strap()
-  helper.magenta('🔸 Search plugin management lazy.nvim in local')
-  if helper.isdir(self.lazy_dir) then
-    helper.green('🔸 Found lazy.nvim skip download')
-    return
-  end
-  helper.run_git('folke/lazy.nvim ' .. self.lazy_dir, 'clone')
-  helper.install_success('lazy.nvim')
+  local installer = require('core.pack_installer')
+  return installer.collect_all_plugins()
 end
 
 function cli.sync()
-  cli:boot_strap()
-
-  local all_repos = cli:get_all_repos()
-  helper.magenta('🔸 Sync plugins...')
-  for _, repo in pairs(all_repos or {}) do
-    cli:install_or_update(repo)
-    if repo.dependencies then
-      for _, v in pairs(repo.dependencies) do
-        if type(v) == 'string' then
-          v = { v }
-        end
-        cli:install_or_update(v)
-      end
-    end
-  end
-  helper.pink('🎉 Congratulations All Plugins Installed Success.')
+  local installer = require('core.pack_installer')
+  local pack_loader = require('core.pack_loader'):new()
+  pack_loader:create_directories()
+  helper.magenta('🔸 Sync plugins with vim.pack...')
+  local stats = installer.install_all_plugins(pack_loader.pack_dir, _G.is_dev and _G.is_dev() or false)
+  helper.green(string.format('🎉 Sync done. installed=%d dev=%d skipped=%d failed=%d',
+    stats.installed or 0, stats.dev or 0, stats.skipped or 0, stats.failed or 0))
 end
 
 function cli.clean()
-  os.execute('rm -rf ' .. cli.lazy_dir)
+  os.execute('rm -rf ' .. cli.pack_site_dir)
+  os.execute('rm -rf ' .. cli.pack_legacy_dir)
 end
 
 function cli.doctor()
-  local lazy_keyword = {
+  local load_keyword = {
     'keys',
     'ft',
     'cmd',
@@ -96,7 +53,7 @@ function cli.doctor()
 
     local check_lazy = function(t, data)
       vim.tbl_filter(function(k)
-        if vim.tbl_contains(lazy_keyword, k) then
+        if vim.tbl_contains(load_keyword, k) then
           data.load = type(t[k]) == 'table' and table.concat(t[k], ',') or t[k]
           return true
         end
@@ -126,7 +83,7 @@ function cli.doctor()
   local all_repos = cli:get_all_repos()
   local list = {}
   for _, data in pairs(all_repos or {}) do
-    if type(data) == string then
+    if type(data) == 'string' then
       data = { data }
     end
     generate_node(data, list)

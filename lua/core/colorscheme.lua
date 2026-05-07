@@ -52,7 +52,24 @@ local function load_colorscheme(theme)
   elseif theme == 'default' then
     vim.cmd.colorscheme('default')
   else
-    require('lazy').load({ plugins = { theme } })
+    local plugin_name = theme
+    local colorscheme_name = theme
+    if theme == 'starry.nvim' then
+      colorscheme_name = 'starry'
+    elseif theme == 'tokyonight.nvim' then
+      colorscheme_name = 'tokyonight'
+    elseif theme == 'catppuccin' then
+      plugin_name = 'nvim'
+      colorscheme_name = 'catppuccin'
+    end
+
+    -- Load theme plugin via vim.pack, then apply the colorscheme.
+    pcall(function()
+      vim.cmd('packadd ' .. plugin_name)
+    end)
+    pcall(function()
+      vim.cmd.colorscheme(colorscheme_name)
+    end)
     vim.api.nvim_set_hl(0, 'ColorColumn', {})
   end
 

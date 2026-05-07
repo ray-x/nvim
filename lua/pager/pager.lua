@@ -28,6 +28,7 @@ local function set_maps()
     -- local maps from the man plugin (and maybe others)
     vim.keymap.set(mode or 'n', lhs, rhs, { buffer = true })
   end
+
   -- map('q', '<CMD>quitall!<CR>')
   -- map('q', '<CMD>quitall!<CR>', 'v')
   map('<Space>', '<PageDown>')

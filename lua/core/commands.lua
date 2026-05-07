@@ -228,3 +228,39 @@ vim.api.nvim_create_user_command('WinBar', function(opts)
   end
 
 end, {bang=true})
+
+-- vim.pack management commands
+local pack_utils = require('core.pack_utils')
+
+vim.api.nvim_create_user_command('PackList', function()
+  local plugins = pack_utils.get_installed_plugins()
+  print('Installed plugins:')
+  for _, plugin in ipairs(plugins) do
+    print(string.format('  [%s] %s', plugin.type, plugin.name))
+  end
+end, {})
+
+vim.api.nvim_create_user_command('PackLoad', function(opts)
+  if #opts.fargs == 0 then
+    print('Usage: PackLoad <plugin_name>')
+    return
+  end
+  local plugin_name = opts.fargs[1]
+  pack_utils.load_plugin(plugin_name)
+  print('Loaded: ' .. plugin_name)
+end, { nargs = 1, complete = function()
+  local plugins = pack_utils.get_installed_plugins()
+  local completions = {}
+  for _, plugin in ipairs(plugins) do
+    if plugin.type == 'opt' then
+      table.insert(completions, plugin.name)
+    end
+  end
+  return completions
+end })
+
+vim.api.nvim_create_user_command('PackInstall', function()
+  print('Installing missing plugins...')
+  pack_utils.check_and_install()
+  print('Installation complete!')
+end, {})

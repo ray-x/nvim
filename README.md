@@ -1,10 +1,20 @@
- # NeoVim as a programming IDE
+# NeoVim as a programming IDE
 
 ## 🏎 🏎 🏎 Need for speed! 🏎 🏎 🏎
 
-This neovim configure file is highly optimized for the impatient. Super lazy loading + After syntax highlight rendering. Render multiple files with treesitter in less than 45ms with ~170 plugins installed
+This neovim configure file is highly optimized for the impatient. Super lazy loading + After syntax highlight rendering. Render multiple files with treesitter in less than 25ms with ~150 plugins installed
 (e.g. Open both util.lua(1686 loc) and lsp.lua(1538 loc) from neovim source code in 58.6ms)
 The setup set all plugins to be lazy loaded and trigger when it needed.
+
+## Current status
+
+- Plugin loading is now based on native vim.pack with custom loader/installer utilities.
+- Target runtime is Neovim 0.12 and 0.13.
+- Plugin specs are organized by domain under `lua/modules/*/plugins.lua`.
+- Shared spec helpers live in `lua/modules/spec.lua` (used for common `cond` wrapping logic).
+- Insert completion is now centered on Neovim 0.12 native completion, LuaSnip, autopairs, and LSP helpers instead of the old `nvim-cmp` stack.
+- Telescope is still the main picker, now backed by local extensions plus `fff.nvim`, `telescope-ast-grep.nvim`, and `shell-history.nvim`.
+- AI/editor experiments move quickly here; the actively used setup is `ray-x/copilot-agent.nvim` plus `github/copilot.vim`, while several older experiments are now parked.
 
 The `Packer` config locates in branch [Packer branch](https://github.com/ray-x/nvim/tree/packer)
 It serves as my personal nvim setup. I am using it as my daily driver. The structure can be messy so it is not a setup for beginner
@@ -34,6 +44,7 @@ About 150 plugins and 14000 lines of lua and vim code.
 - Rg: ripgrep with telescope
 
 ## Pager
+
 The config can be used for pager
 
 ## Difftool and mergetool
@@ -42,70 +53,37 @@ It has essential tools for `git difftool`
 
 ## Neovim Plugins
 
-There are lots of amazing plugins,
-I used following plugin a lots
+There are lots of amazing plugins, but the active branch has moved on quite a bit from the old `packer` / `cmp` / `null-ls` era.
 
-- `Plug` -> `Dein` -> `Lua-Packer` -> [lazy.nvim](https://github.com/folke/lazy.nvim)
+- `Plug` -> `Dein` -> `Lua-Packer` -> `lazy.nvim` -> `vim.pack`
 
-  I followed Glepnir https://github.com/glepnir/nvim dotfiles when I start this repo.
-  A.T.M. nvim-cmp as a completion engine with LSP, LSP saga. vim-multi-cursor, telescope. treesitter,
-  lazy load vim-go. So, other than module folder, I could copy/paste everything else from glepnir's configure file,
-  which make my life easier.
+  I followed Glepnir https://github.com/glepnir/nvim dotfiles when I started this repo, but the current setup is no longer a direct descendant of that stack. The daily-driver branch now focuses on native pack loading, Neovim 0.12+ features, and a smaller number of heavily lazy-loaded plugin groups.
 
-- Telescope + fzf
+- Completion / AI
 
-  One of the best plugin for search anything. I used it to replace fzf, leaderF, leaderP, defx, Ag/Ack/Rg, yank(ring), project management. undolist and many more. Telescope is awesome, only issue is performance.
+  Native Neovim completion via `neovim/nvim-lspconfig` + `vim.lsp.completion`, `L3MON4D3/LuaSnip`, `windwp/nvim-autopairs`, `ray-x/lsp_signature.nvim`, `kristijanhusak/vim-dadbod-completion`, `github/copilot.vim`, and `ray-x/copilot-agent.nvim`.
 
-- nvim-lsp with [navigator.lua](https://github.com/ray-x/navigator.lua)
+- Search / navigation
 
-  vim-go and coc add around 200ms time and some of the extensions
-  might crash when I using (but it hard to check which because ~4 node.js services coc forked)
-  Some useful script from TJ, and [glepnir](https://github.com/glepnir)
+  `nvim-telescope/telescope.nvim` remains the main search UI, with `telescope-fzf-native.nvim`, `telescope-file-browser.nvim`, `telescope-live-grep-args.nvim`, `telescope-heading.nvim`, `ray-x/telescope-ast-grep.nvim`, and `ray-x/shell-history.nvim`. I also use `dmtrKovalenko/fff.nvim`, `folke/flash.nvim`, `ThePrimeagen/harpoon`, and `stevearc/oil.nvim`.
 
-  nvim-tree: file-explorer (lightweight and fast)
-  hrsh7th/nvim-cmp: auto-complete
-  vsnip + luasnips: code snipts(Load snippet from VSCode extension). It is a full featured IDE.
+- Language / IDE support
+
+  `nvim-treesitter`, `ray-x/navigator.lua`, `ray-x/go.nvim`, `pmizio/typescript-tools.nvim`, `nvimtools/none-ls.nvim`, `mfussenegger/nvim-dap`, `rcarriga/nvim-dap-ui`, `nvim-telescope/telescope-dap.nvim`, `folke/lazydev.nvim`, `m-demare/hlargs.nvim`, `folke/trouble.nvim`, `benlubas/molten-nvim`, `Vigemus/iron.nvim`, and `metakirby5/codi.vim`.
 
   ![document symbol](https://github.com/ray-x/files/blob/master/img/navigator/doc_symbol.gif?raw=true)
 
-- ALE -> Efm -> null-ls
+- Markdown / notes / docs
 
-Lint and format moved to null-ls.
+  `ray-x/mkdn.nvim`, `MeanderingProgrammer/render-markdown.nvim`, `3rd/image.nvim`, `jakewvincent/mkdnflow.nvim`, `ray-x/yamlmatter.nvim`, `OXY2DEV/markview.nvim`, `NFrid/due.nvim`, and `iamcco/markdown-preview.nvim`.
 
-- Programming support:
-  Treesitter, nvim-lsp and [navigator.lua](https://github.com/ray-x/navigator.lua), for go, [go.nvim](https://github.com/ray-x/go.nvim)
+- UI / git / tools
 
-- Debug:
+  `ray-x/aurora`, `ray-x/starry.nvim`, `rebelot/heirline.nvim`, `luukvbaal/statuscol.nvim`, `akinsho/bufferline.nvim`, `nvim-tree/nvim-tree.lua`, `lewis6991/gitsigns.nvim`, `ray-x/forgit.nvim`, `rbong/vim-flog`, `tpope/vim-fugitive`, `esmuellert/codediff.nvim`, `akinsho/git-conflict.nvim`, `ray-x/sad.nvim`, `ray-x/viewdoc.nvim`, `folke/which-key.nvim`, `nvim-neotest/neotest`, `akinsho/toggleterm.nvim`, `ibhagwan/fzf-lua`, and `mikesmithgh/kitty-scrollback.nvim`.
 
-  dlv, nvim-dap
+- Editing helpers
 
-- Theme, look&feel:
-
-  home cooked Aurora, windline (lua), devicons(lua), blankline(indent), bufferline
-
-- Color:
-
-  Primary with treesitter from nvim nightly (nvim-lsp and this make it hard for me to turn back to vim), log-highlight, limelight, interestingwords,
-  hexokinase as a replacement for colorizer (display hex and color in highlight)
-
-- Git:
-
-  fugitive, nvimtree, gitsigns.nvim, diffview.nvim
-
-- Format:
-
-  tabular, lsp based code formating (or, sometimes prettier), auto-pair
-
-- Menu and tab:
-
-  - guihua.lua the UI I created for personal use
-  - nvim-bufferline.lua: Yes, with lua and neovim only
-
-- Tools: Toggleterm, scrollview
-
-- Move and Edit:
-
-  easymotion -> hop&lightspeed, vim-multi-cursor, navigator.lua (better treesitter folding), Sad for complex find and replace
+  `gbprod/substitute.nvim`, `gbprod/yanky.nvim`, `kylechui/nvim-surround`, `mg979/vim-visual-multi`, `andymass/vim-matchup`, `echasnovski/mini.nvim`, `CKolkey/ts-node-action`, `mizlan/iswap.nvim`, `mbbill/undotree`, and `chaoren/vim-wordmotion`.
 
 ## Install
 
@@ -132,8 +110,13 @@ Please install Nerd Fonts(I am using VictorMono) and kitty so font setting in GU
 
 Startup nvim
 
-If you saw error message "Error in packer_compiled: ..." Please press `Enter`, that will allow packer install the plugins.
-After all plugins install restart the nvim.
+Run `:PackInstall` in Neovim once after first startup to install missing plugins.
+
+Useful commands:
+
+- `:PackInstall` install missing plugins
+- `:PackList` list installed plugins
+- `:PackLoad <plugin>` load an optional plugin manually
 
 Note:
 The packages and data will be install to
@@ -141,7 +124,7 @@ The packages and data will be install to
 
 Please backup this folder if necessary
 
-The setup needs nvim0.8+. For earlier release, please check packer branch. A patched nerd font is needed. Also if you start nvim from terminal,
+The setup targets Neovim 0.12+. For earlier releases, please check older branches. A patched nerd font is needed. Also if you start nvim from terminal,
 make sure it support nerdfont and emoji
 
 ### missing sqlite, libsqlite3
@@ -156,9 +139,15 @@ following the instruction [here to install sqlite](https://github.com/kkharji/sq
 
 ## Configure
 
-If you would like to sync to my branch. You can add you own setup in lua/overwrite folder
+If you would like to sync to my branch, you can add your own setup in lua/overwrite folder.
 
-You can put your own plugins setup in `modules/user` folder
+You can put your own plugin specs in `lua/modules/user/plugins.lua`.
+
+Module conventions:
+
+- Keep specs in domain files (`completion`, `lang`, `ui`, `editor`, `tools`, `user`).
+- Prefer `ft`/`event`/`cmd` + dynamic `cond` function over startup-time gating.
+- Reuse `lua/modules/spec.lua` helpers for shared spec behavior.
 
 ## Shell
 
@@ -190,13 +179,11 @@ You may need to install following tools to make best of the setup
 
 ## Parking lots
 
-These tools are good, but due to confliction, less use, or, not suite to my workflow
+These tools are good, but due to conflicts, bitrot, overlap, or simply not fitting my workflow anymore, they are parked here instead of being treated as part of the active setup.
 
-- vim/gvim
-- YCM you complete me
-- easymotion
-- vim-clap
-- oh-my-zh, iterm2
-- zpreztor
-- defx
-- ALE
+- Old editor / shell workflow: vim/gvim, oh-my-zsh, iTerm2, zprezto
+- Old completion / lint stacks: YCM, coc.nvim, `hrsh7th/nvim-cmp`, ALE, efm, `null-ls`
+- Old navigation / picker / file-manager choices: easymotion, vim-clap, defx, leaderf/leaderp-style workflows
+- Older statusline / UI experiments: windline, lualine, scrollview, noice-style cmdline experiments
+- Disabled AI experiments in current specs: `olimorris/codecompanion.nvim`, `ravitemer/mcphub.nvim`, `carlos-algms/agentic.nvim`, `ThePrimeagen/99`, `cursortab/cursortab.nvim`, `zbirenbaum/copilot.lua`
+- Parked notes / markdown / misc experiments: `epwalsh/obsidian.nvim`, `Furkanzmc/zettelkasten.nvim`, `preservim/vim-markdown`, `AckslD/nvim-neoclip.lua`, `jvgrootveld/telescope-zoxide`, `NTBBloodbath/rest.nvim`, `rhysd/vim-grammarous`

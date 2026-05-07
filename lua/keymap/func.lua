@@ -39,8 +39,6 @@ _G.tab_complete = function()
     return t('<Tab>')
   elseif prequire('luasnip') and require('luasnip').expand_or_jumpable() then
     return t('<Plug>luasnip-expand-or-jump')
-  elseif prequire('cmp') and require('cmp').visible() then
-    return require('cmp').mapping.select_next_item()
   end
   return t('<Tab>')
 end
@@ -50,8 +48,6 @@ _G.s_tab_complete = function()
     return t('<C-p>')
   elseif prequire('luasnip') and prequire('luasnip').jumpable(-1) then
     return t('<Plug>luasnip-jump-prev')
-  elseif prequire('cmp') and require('cmp').visible() then
-    return require('cmp').mapping.select_prev_item()
   end
   return t('<S-Tab>')
 end

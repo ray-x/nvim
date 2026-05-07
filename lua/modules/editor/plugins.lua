@@ -1,4 +1,5 @@
 local conf = require('modules.editor.config')
+local spec = require('modules.spec')
 local cond = function()
   return not vim.g.vscode and not vim.wo.diff
 end
@@ -22,9 +23,8 @@ return function(editor)
     lazy = true,
   })
 
-  if vim.o.diff then
-    return
-  end
+  editor = spec.wrap_register(editor, spec.not_diff)
+
   editor({
     'ray-x/yamlmatter.nvim',
     ft = 'markdown',
@@ -50,7 +50,7 @@ return function(editor)
     init = function()
       vim.fn['repeat#set'] = function(...)
         vim.fn['repeat#set'] = nil
-        require('lazy').load({ plugins = { 'vim-repeat' } })
+        pcall(function() vim.cmd('packadd vim-repeat') end)
         return vim.fn['repeat#set'](...)
       end
     end,
@@ -420,7 +420,7 @@ return function(editor)
     {
       'echasnovski/mini.nvim',
       version = false,
-      event = { 'CursorHold', 'CursorHoldI', 'CursorMoved', 'CursorMovedI', 'ModeChanged' },
+      event = { 'VimEnter', 'CursorHold', 'CursorHoldI', 'CursorMoved', 'CursorMovedI', 'ModeChanged' },
       config = conf.mini,
     } -- mini.ai to replace targets
   )

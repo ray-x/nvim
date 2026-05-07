@@ -7,6 +7,11 @@ local map_cu = bind.map_cu
 local map_cr = bind.map_cr
 local win = require('core.global').is_windows
 
+-- Explicitly mark Plug targets as remapped mappings.
+local function plug(name)
+  return map_plug(name):with_remap():with_silent()
+end
+
 -- default map
 local def_map = {
   -- Vim map
@@ -73,6 +78,7 @@ end
 
 -- stylua: ignore
 local plug_keys = {
+  -- Core workflow
   ["n|<M-w>"] = map_cmd("wqa!"):with_noremap():with_silent(),
 
   ["n|<F5>"] = map_func(function()
@@ -90,11 +96,12 @@ local plug_keys = {
   ["n|<C-k>"] = map_cmd("v:lua.ctrl_k()"):with_silent():with_expr(),
   -- Plugin QuickRun
   -- abolish , e.g. Crs: snake case, Crc: Camel case, Crm: mix case, Cru: upper case, Cr-: dash case, Cr.: dot case, Cr<Space>: space case, Crt: titlecase
-  ["n|Cr"] = map_plug("abolish-coerce-word"):with_noremap():with_silent():with_desc(
+  ["n|Cr"] = plug("abolish-coerce-word"):with_desc(
     's:snake, c:Camel,m:mix,u:upper,-:dash,.:dot,<Spc>:space case, t:titlecase'),
-  ["v|Cr"] = map_plug("abolish-coerce"):with_noremap():with_silent():with_desc(
+  ["v|Cr"] = plug("abolish-coerce"):with_desc(
     's:snake, c:Camel,m:mix,u:upper,-:dash,.:dot,<Spc>:space case, t:titlecase'),
   --
+  -- Toggle helpers
   ["n|<F13>"] = map_cmd("NvimTreeToggle"),
   ["n|<S-F1>"] = map_cmd("NvimTreeToggle"),
   ["n|<Leader>S"] = map_func(function() require("flash").toggle(true) end),
@@ -111,6 +118,7 @@ local plug_keys = {
 
   ['n|<Space>k'] = map_func(function() require('ts-node-action').node_action() end):with_desc("switch node act"),
   -- session
+  -- Session/buffer helpers
   ["n|<Leader>ss"] = map_cu('SessionSave'):with_noremap(),
   ["n|<Leader>sl"] = map_cu('SessionLoad'):with_noremap(),
 
@@ -133,16 +141,18 @@ local plug_keys = {
     options = { noremap = true, silent = true, desc = "toggle concel" },
   },
 
-  ['n|<Leader>ts'] = map_plug('TranslateW'),
-  ['v|<Leader>ts'] = map_plug('TranslateWV'),
+  -- Translation / yank history
+  ['n|<Leader>ts'] = plug('TranslateW'),
+  ['v|<Leader>ts'] = plug('TranslateWV'),
   -- yanky map_plug('<Plug>WordMotion_w'):with_expr(),
-  ['nx|p'] = map_plug('YankyPutAfter'),
-  ['nx|P'] = map_plug('YankyPutBefore'),
-  ['nx|gp'] = map_plug('YankyGPutAfter'),
-  ['nx|gP'] = map_plug('YankyGPutBefore'),
-  ['n|<c-p>'] = map_plug('YankyPreviousEntry'),
-  ['n|<c-n>'] = map_plug('YankyNextEntry'),
+  ['nx|p'] = plug('YankyPutAfter'),
+  ['nx|P'] = plug('YankyPutBefore'),
+  ['nx|gp'] = plug('YankyGPutAfter'),
+  ['nx|gP'] = plug('YankyGPutBefore'),
+  ['n|<c-p>'] = plug('YankyPreviousEntry'),
+  ['n|<c-n>'] = plug('YankyNextEntry'),
   -- substitute
+  -- Substitute / exchange
   ['n|<Space>s'] = map_func(function() require('substitute').operator() end):with_desc(
     'operator substitute motion e.g. <spc>siw, <spc>sip'):with_noremap(),
   ['n|<Space>S'] = map_func(function() require('substitute').line() end):with_desc('operator substitute line')
@@ -177,6 +187,7 @@ local plug_keys = {
   end):with_desc('last search to quickfix'):with_expr(),
 
 
+  -- Visual-multi / movement placeholders (documented by plugin)
   ["n|<C-M-n>"] = { options = { desc = "vmulti select all" } },
   ["n|<M-Down>"] = { options = { desc = "Add Cursor Down" } },
   ["n|<M-Up>"] = { options = { desc = "Add Cursor Up" } },
@@ -190,6 +201,7 @@ local plug_keys = {
   ["n|<A-l>"] = { options = { desc = "move lines right" } },
 
   -- git signs
+  -- Git
   ['nv|<Leader>hs'] = map_cmd('GitSigns stage_hunk'),
   ['nv|<Leader>hr'] = map_cmd('GitSigns reset_hunk'),
   ['nv|<Leader>tb'] = map_func(function() require('gitsigns').toggle_current_line_blame() end):with_desc(
@@ -216,12 +228,14 @@ local plug_keys = {
   --
   -- -- Add selection to search then replace
   -- vim.keymap.set('x', '<Leader>j', [[let @/=substitute(escape(@", '/'), '\n', '\\n', 'g')"_cgn]])
+  -- Insert/snippet completion
   ['i|<TAB>'] = map_func(function() return _G.tab_complete() end):with_expr():with_silent(),
   ['i|<S-TAB>'] = map_func(function() return _G.s_tab_complete() end):with_expr():with_silent(),
   ['s|<TAB>'] = map_func(function() return _G.tab_complete() end):with_expr():with_silent(),
   ['s|<S-TAB>'] = map_func(function() return _G.s_tab_complete() end):with_expr():with_silent(),
 
   -- person keymap
+  -- LSP/UI
   ['n|<leader>li'] = map_cmd('LspInfo'):with_noremap():with_silent():with_nowait(),
   ['n|<leader>ll'] = map_cmd('LspLog'):with_noremap():with_silent():with_nowait(),
   ['n|<leader>lr'] = map_cmd('LspRestart'):with_noremap():with_silent():with_nowait(),
@@ -240,6 +254,7 @@ local plug_keys = {
   -- ["n|<Space>p"] = map_cmd([[lua require("harpoon.ui").nav_prev()]]),
   -- ["n|<Space>m"] = map_cmd([[Telescope harpoon marks ]]),
 
+  -- Find/grep
   ['in|<d-p>'] = map_cmd('Telescope find_files'):with_noremap():with_silent(),
   ['in|<M-p>'] = map_cmd('FzfLua files'):with_noremap():with_silent(),
   ['inx|<d-f>'] = map_func(function() require('utils.telescope').grep_string_cursor_raw() end):with_desc(
@@ -262,7 +277,8 @@ local plug_keys = {
     'grep_string_cursor_raw'),
   ['v|<m-f>'] = map_func(function() require('utils.telescope').grep_string_visual_raw() end):with_desc(
     'grep_string_cursor_raw'),
-  ['n|w'] = map_plug('WordMotion_w'):with_expr(),
+  -- Word motion replacement
+  ['n|w'] = plug('WordMotion_w'):with_expr(),
 
   ['n|<Leader>do'] = map_cmd('CodeDiff'):with_noremap():with_silent(),
   ['n|<Leader>dc'] = map_cmd('CodeDiff close'):with_noremap():with_silent(),

@@ -1,6 +1,8 @@
 local conf = require('modules.tools.config')
-local cond = not vim.g.vscode and not vim.wo.diff
-plugin_folder = plugin_folder
+local spec = require('modules.spec')
+local cond = function()
+  return not vim.g.vscode and not vim.wo.diff
+end
 return function(tools)
   local is_win = require('core.global').is_windows
   -- local gitrepo = vim.fn.isdirectory('.git/index')
@@ -123,18 +125,12 @@ return function(tools)
       },
       {
         'tpope/vim-fugitive',
-        -- stylua: ignore
-        cmd = { 'Gvsplit', 'G', 'Gread', 'Git',
-          'Gedit', 'Gstatus', 'Gdiffsplit', 'Gvdiffsplit' },
         event = { 'CmdwinEnter', 'CmdlineEnter' },
       },
     },
   })
 
-  -- skip
-  if vim.o.diff then
-    return
-  end
+  tools = spec.wrap_register(tools, spec.not_diff)
 
   tools({
     'nvim-telescope/telescope.nvim',
@@ -146,6 +142,8 @@ return function(tools)
     cond = cond,
     dependencies = {
       { 'nvim-lua/plenary.nvim', lazy = true, module = true },
+      { 'ray-x/telescope-ast-grep.nvim', dev = _G.is_dev() },
+      { 'ray-x/shell-history.nvim', dev = _G.is_dev() },
     },
     module = true,
   })
@@ -161,7 +159,7 @@ return function(tools)
   tools({
     'crispgm/telescope-heading.nvim',
     cond = cond,
-    ft = { 'markdown', 'md', 'norg', 'org' },
+    event = { 'CmdlineEnter', 'CursorHold' },
     dependencies = {
       { 'nvim-telescope/telescope.nvim' },
     },
@@ -177,6 +175,7 @@ return function(tools)
       return not vim.wo.diff
     end,
     dependencies = {
+      { 'nvim-telescope/telescope.nvim' },
       {
         'HakonHarnes/img-clip.nvim',
         module = true,
@@ -322,7 +321,7 @@ return function(tools)
     cmd = { 'Neotest', 'NeotestFile', 'NeoResult' },
   })
 
-  tools({ 'will133/vim-dirdiff', cmd = { 'DirDiff' } })
+  -- tools({ 'will133/vim-dirdiff', cmd = { 'DirDiff' } })
 
   tools({
     'editorconfig/editorconfig-vim',
@@ -355,7 +354,7 @@ return function(tools)
 
   tools({
     'OXY2DEV/markview.nvim',
-    lazy = false,
+    lazy = true,
   })
 
   -- Note mini has similar function but lacking features
