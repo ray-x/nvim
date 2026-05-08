@@ -153,6 +153,7 @@ local function merge_plugin_info(existing, incoming)
   existing.keys = existing.keys or incoming.keys
   existing.cond = incoming.cond ~= nil and incoming.cond or existing.cond
   existing.main = existing.main or incoming.main
+  existing.init = existing.init or incoming.init
   existing.opts = existing.opts or incoming.opts
   existing.config = existing.config or incoming.config
   existing.dependencies = existing.dependencies or incoming.dependencies
@@ -270,6 +271,7 @@ function pack_loader:register_plugin(spec)
     module = spec.module,
     cond = spec.cond,
     main = spec.main,
+    init = spec.init,
     opts = spec.opts,
     config = spec.config,
     dependencies = spec.dependencies,
@@ -568,8 +570,21 @@ function pack_loader:load_start_plugins()
   end
 end
 
+function pack_loader:run_init_hooks()
+  for _, plugin in ipairs(self.plugins) do
+    if not plugin.init_ran and cond_allows(plugin.cond, plugin.name) and type(plugin.init) == "function" then
+      plugin.init_ran = true
+      local ok, err = pcall(plugin.init, plugin)
+      if not ok then
+        pack_warn("pack init failed for " .. plugin.name .. ": " .. tostring(err))
+      end
+    end
+  end
+end
+
 -- Initialize all loaders
 function pack_loader:init()
+  self:run_init_hooks()
   self:setup_module_loaders()
   self:load_start_plugins()
   self:setup_event_loaders()

@@ -4,6 +4,52 @@ fn = vim.fn
 
 local global = require('core.global')
 local sep = global.path_sep
+local root_cache = {}
+-- stylua: ignore start
+local root_markers = {
+  '.git', 'go.mod', 'Makefile', 'CMakefile.txt', 'package.json', 'Cargo.toml', 'pom.xml',
+  'docker-compose.yml', 'Dockerfile', '.jsconfig', '.tsconfig', 'requirements.txt',
+}
+-- stylua: ignore end
+
+local function current_search_dir()
+  local bufname = vim.api.nvim_buf_get_name(0)
+  if bufname ~= '' then
+    local normalized = vim.fs.normalize(bufname)
+    local stat = vim.uv.fs_stat(normalized)
+    if stat ~= nil then
+      if stat.type == 'directory' then
+        return normalized
+      end
+      return vim.fs.dirname(normalized)
+    end
+  end
+
+  return vim.fs.normalize(vim.fn.getcwd())
+end
+
+local function cached_root(start_dir)
+  local cached = root_cache[start_dir]
+  if cached ~= nil then
+    return cached ~= false and cached or nil
+  end
+
+  local root = nil
+  if vim.fs.root ~= nil then
+    root = vim.fs.root(start_dir, root_markers)
+  end
+
+  if root == nil then
+    local match = vim.fs.find(root_markers, { path = start_dir, upward = true, limit = 1 })[1]
+    if match ~= nil then
+      root = vim.fs.dirname(match)
+    end
+  end
+
+  root = root and vim.fs.normalize(root) or false
+  root_cache[start_dir] = root
+  return root ~= false and root or nil
+end
 
 local function exists(file)
   local ok, _, code = os.rename(file, file)
@@ -39,7 +85,9 @@ local helper = {
     end
 
     _G.plugin_debug = function()
-      if true then return true end
+      if true then
+        return true
+      end
       if Plugin_debug ~= nil then
         return Plugin_debug
       end
@@ -58,8 +106,7 @@ local helper = {
         s = vim.fn.expand('<cword>')
       end
       lprint('replace: ', s)
-      local n =
-        s:gsub('%f[^%l]%u', '_%1'):gsub('%f[^%a]%d', '_%1'):gsub('%f[^%d]%a', '_%1'):gsub('(%u)(%u%l)', '%1_%2'):lower()
+      local n = s:gsub('%f[^%l]%u', '_%1'):gsub('%f[^%a]%d', '_%1'):gsub('%f[^%d]%a', '_%1'):gsub('(%u)(%u%l)', '%1_%2'):lower()
       vim.fn.setreg('s', n)
       vim.cmd([[exe "norm! ciw\<C-R>s"]])
       lprint('newstr', n)
@@ -108,33 +155,29 @@ local helper = {
       return Plugin_folder
     end
     _G.is_dev = function()
-      return vim.fn.expand('$USER'):find('ray') ~= nil or _G.plugin_folder() == [[~/github/ray-x/]]
+      return vim.env.USER:find('ray') ~= nil or _G.plugin_folder() == [[~/github/ray-x/]]
     end
-    _G.FindRoot = function()
-      local root = vim.fn.system({ 'git', 'rev-parse', '--show-toplevel' })
-      if root:find('fatal') then
-        root = _G.workspace_folder()
-      end
-
-      -- stylua: ignore start
-      local list = {
-        'go.mod', 'Makefile', 'CMakefile.txt', 'package.json', 'Cargo.toml', 'pom.xml',
-        'docker-compose.yml', 'Dockerfile', '.jsconfig', '.tsconfig', 'requirements.txt',
-      }
-      -- stylua: ignore end
-
-      if #root == 0 then
-        for _, k in ipairs(list) do
-          local r = _G.FindProjectRoot(k)
-          if #r > 0 then
-            return r
-          end
-        end
+    _G.plugin_path = function(plugin)
+      if _G.is_dev() then
+        return 'file://' .. vim.env.HOME .. sep .. 'github' .. sep .. plugin
       else
+        return plugin
+      end
+    end
+
+    _G.FindRoot = function()
+      local start_dir = current_search_dir()
+      local root = cached_root(start_dir)
+      if root ~= nil then
         return root
       end
 
-      return vim.fn.expand('%:p:h')
+      local workspace = _G.workspace_folder()
+      if workspace ~= nil and workspace ~= '' then
+        return workspace
+      end
+
+      return start_dir
     end
     _G.workspace_folder = function()
       -- lsp workspace folder
@@ -146,16 +189,9 @@ local helper = {
     end
 
     _G.FindProjectRoot = function(file)
-      local current_dir = vim.fn.expand('%:p:h')
-      local path = current_dir .. sep .. file
-      local l = 10
-      while #current_dir > 0 and vim.fn.isdirectory(current_dir) == 1 and l > 0 do
-        if vim.fn.filereadable(path) == 1 then
-          return current_dir
-        end
-        current_dir = vim.fn.fnamemodify(current_dir, ':h')
-        path = current_dir .. sep .. file
-        l = l - 1
+      local match = vim.fs.find(file, { path = current_search_dir(), upward = true, limit = 1 })[1]
+      if match ~= nil then
+        return vim.fs.dirname(vim.fs.normalize(match))
       end
       return ''
     end

@@ -29,8 +29,8 @@ return function(tools)
   })
 
   tools({
-    'ray-x/forgit.nvim',
-    dev = dev,
+    _G.plugin_path('ray-x/forgit.nvim'),
+
     cmd = { 'Ga', 'Gaa', 'Gd', 'Glo', 'Gs', 'Gc', 'Gpl', 'Gps' },
     event = { 'CmdwinEnter', 'CmdlineEnter' },
     dependencies = {
@@ -142,8 +142,8 @@ return function(tools)
     cond = cond,
     dependencies = {
       { 'nvim-lua/plenary.nvim', lazy = true, module = true },
-      { 'ray-x/telescope-ast-grep.nvim', dev = _G.is_dev() },
-      { 'ray-x/shell-history.nvim', dev = _G.is_dev() },
+      { _G.plugin_path('ray-x/telescope-ast-grep.nvim'), dev = _G.is_dev() },
+      { _G.plugin_path('ray-x/shell-history.nvim'), dev = _G.is_dev() },
     },
     module = true,
   })
@@ -166,7 +166,7 @@ return function(tools)
   })
 
   tools({
-    'ray-x/mkdn.nvim',
+    _G.plugin_path('ray-x/mkdn.nvim'),
     dev = _G.is_dev(),
     ft = { 'markdown', 'md' },
     cmd = { 'MkdnNew', 'MkdnDaily', 'MkdnNewDaily', 'GtdStart' },
@@ -215,12 +215,36 @@ return function(tools)
     },
   })
 
-  tools({
-    'chrisgrieser/nvim-early-retirement',
-    -- config = true,
-    opts = {},
-    event = 'VeryLazy',
-  })
+  if false then
+    tools({
+      'chrisgrieser/nvim-early-retirement',
+      -- config = true,
+      opts = {},
+      event = 'VeryLazy',
+    })
+
+    tools({
+      'vim-test/vim-test',
+      cond = cond,
+      cmd = { 'TestNearest', 'TestFile', 'TestSuite' },
+      init = conf.vim_test,
+    })
+
+    tools({
+      'nvim-neotest/neotest',
+      cond = cond,
+      dependencies = {
+        {
+          'haydenmeade/neotest-jest',
+          config = conf.neotest_jest,
+        },
+        { 'nvim-neotest/neotest-plenary' },
+        { 'nvim-neotest/neotest-python' },
+      },
+      config = conf.neotest,
+      cmd = { 'Neotest', 'NeotestFile', 'NeoResult' },
+    })
+  end
 
   tools({
     'nvim-telescope/telescope-live-grep-args.nvim',
@@ -247,9 +271,9 @@ return function(tools)
     cmd = { 'Oil' },
   })
   tools({
-    'ray-x/telescope-ast-grep.nvim',
+    _G.plugin_path('ray-x/telescope-ast-grep.nvim'),
     cond = cond,
-    dev = dev,
+
     dependencies = {
       { 'nvim-telescope/telescope.nvim' },
     },
@@ -291,12 +315,6 @@ return function(tools)
   })
 
   tools({
-    'vim-test/vim-test',
-    cond = cond,
-    cmd = { 'TestNearest', 'TestFile', 'TestSuite' },
-    init = conf.vim_test,
-  })
-  tools({
     cond = cond,
     'folke/which-key.nvim',
     event = { 'CmdlineEnter', 'ModeChanged', 'TextYankPost' },
@@ -304,21 +322,6 @@ return function(tools)
     config = function()
       require('modules.tools.which_key').init()
     end,
-  })
-
-  tools({
-    'nvim-neotest/neotest',
-    cond = cond,
-    dependencies = {
-      {
-        'haydenmeade/neotest-jest',
-        config = conf.neotest_jest,
-      },
-      { 'nvim-neotest/neotest-plenary' },
-      { 'nvim-neotest/neotest-python' },
-    },
-    config = conf.neotest,
-    cmd = { 'Neotest', 'NeotestFile', 'NeoResult' },
   })
 
   -- tools({ 'will133/vim-dirdiff', cmd = { 'DirDiff' } })
@@ -388,8 +391,8 @@ return function(tools)
   cmd = 'bash install.sh'
 
   tools({
-    'ray-x/sad.nvim',
-    dev = dev,
+    _G.plugin_path('ray-x/sad.nvim'),
+
     cond = cond,
     cmd = { 'Sad' },
     opts = {
@@ -402,8 +405,8 @@ return function(tools)
   })
 
   tools({
-    'ray-x/viewdoc.nvim',
-    dev = dev,
+    _G.plugin_path('ray-x/viewdoc.nvim'),
+
     cmd = { 'Viewdoc' },
     cond = cond,
     config = function()

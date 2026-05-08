@@ -81,22 +81,57 @@ end
 vim.cmd('set runtimepath+=/usr/share/vim/vimfiles')
 vim.cmd('runtime! plugin/fzf.vim')
 
-vim.defer_fn(function()
-  if vim.fn.empty(vim.fn.expand('%')) == 1 then
-    local folder = vim.fn.getcwd()
-    folder = require('utils.selfunc').convertPathToPercentString(folder) .. '.vim'
-    lprint('auto-session load', folder)
-    pcall(function()
-      local r = require('mini.sessions').read
-      r(folder)
-      lprint('auto-session loaded', folder, vim.fn.empty(folder))
-      if vim.fn.empty(vim.v.this_session) == 1 then
-        lprint('no session folder found')
-        lprint('save session to ' .. folder)
-        require('mini.sessions').write(folder)
-      end
-    end)
+local function current_session_name()
+  local root = _G.FindRoot and _G.FindRoot() or vim.fn.getcwd()
+  return require('utils.selfunc').convertPathToPercentString(root) .. '.vim'
+end
+
+local function should_restore_session()
+  if vim.fn.argc() > 0 then
+    return false
   end
-end, 100)
+
+  local listed_buffers = vim.tbl_filter(function(buf_id)
+    return vim.fn.buflisted(buf_id) == 1
+  end, vim.api.nvim_list_bufs())
+
+  if #listed_buffers > 1 then
+    return false
+  end
+
+  if #listed_buffers == 1 then
+    local buf_id = listed_buffers[1]
+    if vim.api.nvim_buf_get_name(buf_id) ~= '' or vim.bo[buf_id].modified then
+      return false
+    end
+  end
+
+  return true
+end
+
+vim.api.nvim_create_autocmd('VimEnter', {
+  once = true,
+  callback = function()
+    if not should_restore_session() then
+      return
+    end
+
+    local ok, sessions = pcall(require, 'mini.sessions')
+    if not ok then
+      return
+    end
+
+    local session_name = current_session_name()
+    local session_path = vim.fn.stdpath('data') .. '/session/' .. session_name
+
+    if vim.fn.filereadable(session_path) == 1 then
+      lprint('auto-session load', session_name)
+      sessions.read(session_name, { force = true })
+    else
+      lprint('auto-session create', session_name)
+      sessions.write(session_name, { force = true })
+    end
+  end,
+})
 
 return { setup = setup }

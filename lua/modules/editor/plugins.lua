@@ -26,10 +26,9 @@ return function(editor)
   editor = spec.wrap_register(editor, spec.not_diff)
 
   editor({
-    'ray-x/yamlmatter.nvim',
+    _G.plugin_path('ray-x/yamlmatter.nvim'),
     ft = 'markdown',
     opts = {},
-    dev = dev,
   })
   -- n|x "Cr"
   editor({
@@ -50,7 +49,9 @@ return function(editor)
     init = function()
       vim.fn['repeat#set'] = function(...)
         vim.fn['repeat#set'] = nil
-        pcall(function() vim.cmd('packadd vim-repeat') end)
+        pcall(function()
+          vim.cmd('packadd vim-repeat')
+        end)
         return vim.fn['repeat#set'](...)
       end
     end,
@@ -186,13 +187,15 @@ return function(editor)
     cmd = { 'HexokinaseTurnOn', 'HexokinaseToggle' },
   })
 
-  editor({
-    'chrisbra/Colorizer',
-    ft = { 'log', 'txt', 'text', 'css' },
-    lazy = true,
-    cond = cond,
-    cmd = { 'ColorHighlight', 'ColorUnhighlight' },
-  })
+  if false then
+    editor({
+      'chrisbra/Colorizer',
+      ft = { 'log', 'txt', 'text', 'css' },
+      lazy = true,
+      cond = cond,
+      cmd = { 'ColorHighlight', 'ColorUnhighlight' },
+    })
+  end
 
   editor({
     'kevinhwang91/nvim-hlslens',
@@ -200,9 +203,9 @@ return function(editor)
     lazy = true,
     config = conf.hlslens,
   })
-
-  editor({
-    'mg979/vim-visual-multi',
+  if false then
+    editor({
+      'mg979/vim-visual-multi',
     -- stylua: ignore
     -- keys = { '<C-n>', '<C-N>', '<M-n>', '<S-Down>', '<S-Up>', '<M-Left>',
     --   '<M-i>', '<M-Right>', '<M-D>', '<M-Down>', '<C-d>', '<C-Down>',
@@ -210,10 +213,10 @@ return function(editor)
     -- },
     -- lazy = true,
     cond = cond,
-    event = { 'CursorMoved', 'CursorHold' },
-    init = conf.vmulti,
-  })
-
+      event = { 'CursorMoved', 'CursorHold' },
+      init = conf.vmulti,
+    })
+  end
   -- nvim nightly integrated mini.comment and has most of the feature
   -- editor({
   --   'numToStr/Comment.nvim',
@@ -242,12 +245,14 @@ return function(editor)
   editor({ 'dhruvasagar/vim-table-mode', cmd = { 'TableModeToggle' } })
 
   -- fix terminal color
-  editor({
-    'norcalli/nvim-terminal.lua',
-    lazy = true,
-    ft = { 'log', 'terminal' },
-    opts = {},
-  })
+  if false then
+    editor({
+      'norcalli/nvim-terminal.lua',
+      lazy = true,
+      ft = { 'log', 'terminal' },
+      opts = {},
+    })
+  end
 
   -- the undo file need to store so enable plugin before file save
   editor({
@@ -352,82 +357,78 @@ return function(editor)
     },
   })
   -- luarocks --local --lua-version=5.1 install magick
-  editor({
-    '3rd/image.nvim',
-    -- ft = { 'markdown', 'md', 'jupyter' },
-    init = function()
+  if false then
+    editor({
+      '3rd/image.nvim',
+      -- ft = { 'markdown', 'md', 'jupyter' },
+      init = function()
       -- stylua: ignore start
       package.path = package.path .. ";" .. vim.fn.expand("$HOME") .. "/.luarocks/share/lua/5.1/?/init.lua"
       package.path = package.path .. ';' .. vim.fn.expand('$HOME') .. '/.luarocks/share/lua/5.1/?.lua'
-      -- stylua: ignore end
-    end,
-    opts = {
-      backend = 'kitty',
-      max_width_window_percentage = 40,
-      max_height_window_percentage = 40,
-    },
-  })
-
-  editor({
-    'jakewvincent/mkdnflow.nvim',
-    ft = { 'markdown' },
-  })
-
-  --[[
-  editor({
-    'epwalsh/obsidian.nvim',
-    version = '*', -- recommended, use latest release instead of latest commit
-    lazy = true,
-    ft = 'markdown',
-    -- Replace the above line with this if you only want to load obsidian.nvim for markdown files in your vault:
-    -- event = {
-    --   -- If you want to use the home shortcut '~' here you need to call 'vim.fn.expand'.
-    --   -- E.g. "BufReadPre " .. vim.fn.expand "~" .. "/my-vault/**.md"
-    --   "BufReadPre path/to/my-vault/**.md",
-    --   "BufNewFile path/to/my-vault/**.md",
-    -- },
-    dependencies = {
-      -- Required.
-      'nvim-lua/plenary.nvim',
-    },
-    opts = {
-      disable_frontmatter = true,
-      dir = '~/Library/CloudStorage/Dropbox/obsidian',
-      completion = {
-        nvim_cmp = true,
+        -- stylua: ignore end
+      end,
+      opts = {
+        backend = 'kitty',
+        max_width_window_percentage = 40,
+        max_height_window_percentage = 40,
       },
-      workspaces = {
-        {
-          name = 'vault',
-          path = '~/Library/CloudStorage/Dropbox/obsidian',
+    })
+    editor({
+      'jakewvincent/mkdnflow.nvim',
+      ft = { 'markdown' },
+    })
+    editor({
+      'epwalsh/obsidian.nvim',
+      version = '*', -- recommended, use latest release instead of latest commit
+      lazy = true,
+      ft = 'markdown',
+      -- Replace the above line with this if you only want to load obsidian.nvim for markdown files in your vault:
+      -- event = {
+      --   -- If you want to use the home shortcut '~' here you need to call 'vim.fn.expand'.
+      --   -- E.g. "BufReadPre " .. vim.fn.expand "~" .. "/my-vault/**.md"
+      --   "BufReadPre path/to/my-vault/**.md",
+      --   "BufNewFile path/to/my-vault/**.md",
+      -- },
+      dependencies = {
+        -- Required.
+        'nvim-lua/plenary.nvim',
+      },
+      opts = {
+        disable_frontmatter = true,
+        dir = '~/Library/CloudStorage/Dropbox/obsidian',
+        completion = {
+          nvim_cmp = true,
         },
-        {
-          name = 'daily',
-          path = '~/Library/CloudStorage/Dropbox/obsidian/journal',
+        workspaces = {
+          {
+            name = 'vault',
+            path = '~/Library/CloudStorage/Dropbox/obsidian',
+          },
+          {
+            name = 'daily',
+            path = '~/Library/CloudStorage/Dropbox/obsidian/journal',
+          },
         },
       },
-    },
-  })
---]]
-  -- draw due date and parse date
-  editor({
-    'NFrid/due.nvim',
-    ft = { 'markkdown' },
-    opts = {},
-  })
-
+    })
+    -- draw due date and parse date
+    editor({
+      'NFrid/due.nvim',
+      ft = { 'markkdown' },
+      opts = {},
+    })
+  end
   editor(
     {
       'echasnovski/mini.nvim',
       version = false,
-      event = { 'VimEnter', 'CursorHold', 'CursorHoldI', 'CursorMoved', 'CursorMovedI', 'ModeChanged' },
+      lazy = false,
       config = conf.mini,
     } -- mini.ai to replace targets
   )
 
   -- true <-> false <SPC>k
   editor({
-    -- 'AndrewRadev/switch.vim',
     'CKolkey/ts-node-action',
     event = { 'FuncUndefined', 'CursorHold' },
     opts = {},
@@ -614,8 +615,8 @@ end
 -- },
 -- })
 -- editor({
---   'ray-x/code_annotation.nvim',
+--   _G.plugin_path('ray-x/code_annotation.nvim'),
 --   event = { 'CursorHold', 'CursorHoldI' },
 --   opts = {},
---   dev = dev,
+--
 -- })

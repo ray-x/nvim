@@ -44,6 +44,27 @@ local function jump_textobject(prev_next, left_right, ai_type)
   -- Jump!
   ai.move_cursor(left_right, ai_type, tobj_id, { n_times = vim.v.count1, search_method = prev_next })
 end
+
+local function refresh_session_buffers()
+  for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+    if vim.api.nvim_buf_is_loaded(buf) and vim.bo[buf].buftype == '' then
+      local name = vim.api.nvim_buf_get_name(buf)
+      if name ~= '' and vim.bo[buf].filetype == '' then
+        local ft = vim.filetype.match({ buf = buf, filename = name })
+        if type(ft) == 'string' and ft ~= '' then
+          vim.api.nvim_buf_call(buf, function()
+            vim.bo.filetype = ft
+          end)
+        end
+      end
+
+      if vim.bo[buf].filetype ~= '' then
+        pcall(vim.treesitter.start, buf, vim.bo[buf].filetype)
+      end
+    end
+  end
+end
+
 return {
   setup = function()
     require('mini.ai').setup({
@@ -123,6 +144,13 @@ return {
         yank = true,
         write = true,
         delete = true,
+      },
+      hooks = {
+        post = {
+          read = function()
+            vim.schedule(refresh_session_buffers)
+          end,
+        },
       },
     })
     require('mini.diff').setup({

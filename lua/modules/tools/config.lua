@@ -87,24 +87,16 @@ function config.codediff()
     },
   })
 
-  create_codediff_command('CodeDiffOpen', function(opts)
+  create_codediff_command('DiffOpen', function(opts)
     run_codediff(opts.fargs)
   end, { nargs = '*', bang = true })
 
-  create_codediff_command('CodeDiffClose', function()
+  create_codediff_command('DiffClose', function()
     require('codediff.ui.lifecycle.cleanup').cleanup()
     vim.cmd('tabclose')
   end, {})
 
-  create_codediff_command('DiffviewOpen', function(opts)
-    run_codediff(opts.fargs)
-  end, { nargs = '*', bang = true })
-
-  create_codediff_command('DiffviewClose', function()
-    vim.cmd('CodeDiff close')
-  end, {})
-
-  create_codediff_command('DiffviewFileHistory', function(opts)
+  create_codediff_command('DiffFileHistory', function(opts)
     local args = { 'history' }
     if #opts.fargs == 0 then
       table.insert(args, '%')
@@ -278,6 +270,13 @@ Use `git ls-files` for git files, use `find ./ *` for all files under work direc
 --
 
 function config.close_buffers()
+  local function safe_delete(opts)
+    local ok, err = pcall(require('close_buffers').delete, opts)
+    if ok or not tostring(err):find('No buffers were deleted', 1, true) then
+      assert(ok, err)
+    end
+  end
+
   require('close_buffers').setup({
     preserve_window_layout = { 'this' },
     next_buffer_cmd = function(windows)
@@ -294,11 +293,11 @@ function config.close_buffers()
     local arg = opts.fargs[1] or ''
     local force = opts.bang or false
     if arg == 'a' then
-      require('close_buffers').delete({ type = 'all', force = force })
+      safe_delete({ type = 'all', force = force })
     elseif arg == 'o' then
-      require('close_buffers').delete({ type = 'other', force = force })
+      safe_delete({ type = 'other', force = force })
     else
-      require('close_buffers').delete({ type = 'this', force = force })
+      safe_delete({ type = 'this', force = force })
     end
   end, { range = true, nargs = '*', bang = true })
 end
@@ -482,7 +481,9 @@ function config.spelunker()
   vim.cmd('highlight def link SpelunkerComplexOrCompoundWord Rare')
   vim.fn['spelunker#check'] = function(...)
     vim.fn['spelunker#check'] = nil
-    pcall(function() vim.cmd('packadd spelunker.vim') end)
+    pcall(function()
+      vim.cmd('packadd spelunker.vim')
+    end)
     return vim.fn['spelunker#check'](...)
   end
 end

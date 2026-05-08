@@ -12,8 +12,8 @@ return function(ui)
   ui({ 'nvim-tree/nvim-web-devicons', lazy = true })
   ui({ 'lambdalisue/glyph-palette.vim' })
   ui({
-    'ray-x/aurora',
-    dev = dev,
+    _G.plugin_path('ray-x/aurora'),
+
     lazy = false,
     init = function()
       vim.g.aurora_italic = 1
@@ -23,8 +23,8 @@ return function(ui)
     config = conf.aurora,
   })
   ui({
-    'ray-x/starry.nvim',
-    dev = dev,
+    _G.plugin_path('ray-x/starry.nvim'),
+
     lazy = false,
     config = conf.starry_conf,
   })
