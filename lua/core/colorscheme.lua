@@ -67,9 +67,15 @@ local function load_colorscheme(theme)
     pcall(function()
       vim.cmd('packadd ' .. plugin_name)
     end)
-    pcall(function()
-      vim.cmd.colorscheme(colorscheme_name)
-    end)
+    if theme == 'starry.nvim' then
+      pcall(function()
+        require('modules.ui.config').starry_conf()
+      end)
+    else
+      pcall(function()
+        vim.cmd.colorscheme(colorscheme_name)
+      end)
+    end
     vim.api.nvim_set_hl(0, 'ColorColumn', {})
   end
 

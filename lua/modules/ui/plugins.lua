@@ -24,9 +24,7 @@ return function(ui)
   })
   ui({
     _G.plugin_path('ray-x/starry.nvim'),
-
-    lazy = false,
-    config = conf.starry_conf,
+    lazy = true,
   })
 
   -- ui({

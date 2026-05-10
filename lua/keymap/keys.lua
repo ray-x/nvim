@@ -35,7 +35,7 @@ local def_map = {
   ['i|<C-f>'] = map_key('<Right>'):with_noremap(),
   ['i|<C-a>'] = map_key('<ESC>^i'):with_noremap(),
   -- ['i|<C-j>'] = map_key('<Esc>o'):with_noremap(),
-  ['i|<C-e>'] = map_cmd([[pumvisible() ? "\<C-e>" : "\<End>"]]):with_noremap():with_expr(),
+  -- ['i|<C-e>'] = map_cmd([[pumvisible() ? "\<C-e>" : "\<End>"]]):with_noremap():with_expr(),
   -- command line
   ['c|<C-b>'] = map_key('<Left>'):with_noremap(),
   ['c|<C-f>'] = map_key('<Right>'):with_noremap(),
@@ -263,11 +263,7 @@ local plug_keys = {
   ['in|<M-F>'] = map_func(function() require('utils.telescope').grep_string_cursor() end):with_desc('grep_string_cursor'),
   ['ixn|<d-s>'] = map_func(function() vim.cmd('w') end):with_desc('grep_string_cursor'),
   ['ixn|<M-f>'] = map_func(function()
-    if win then
       return require('utils.telescope').grep_string_cursor_raw()
-    end
-    local w = require('utils.helper').getword()
-    require('fzf-lua').live_grep_native({ search = w })
   end):with_desc('grep_string_cursor'),
   ['x|<d-F>'] = map_func(function() require('utils.telescope').grep_string_visual() end):with_desc('grep_string_visual'),
   ['v|<m-F>'] = map_func(function() require('utils.telescope').grep_string_visual() end):with_desc('grep_string_visual'),

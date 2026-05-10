@@ -20,7 +20,8 @@ return function(lang)
           return
         end
         configured = true
-        pcall(vim.cmd, 'packadd guihua.lua')
+        -- pcall(vim.cmd, 'packadd guihua.lua')
+        -- vim.pack.add({'guihua.lua'})
         require('guihua').setup({
           icons = {
             syntax = {
@@ -166,7 +167,7 @@ return function(lang)
     dependencies = { _G.plugin_path('ray-x/guihua.lua') },
     opts = conf.navigator,
     module = true,
-    event = { 'BufReadPre', 'BufNewFile' },
+    event = { 'BufReadPre', 'BufNewFile', 'BufEnter', 'BufWinEnter' },
   })
 
   lang({

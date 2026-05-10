@@ -56,52 +56,54 @@ return function(tools)
     config = conf.git_conflict,
   })
 
-  tools({
-    'dmtrKovalenko/fff.nvim',
-    build = function()
-      -- downloads a prebuilt binary or falls back to cargo build
-      require('fff.download').download_or_build_binary()
-    end,
-    -- for nixos:
-    -- build = "nix run .#release",
-    opts = {
-      debug = {
-        enabled = true,
-        show_scores = true,
+  if false then
+    tools({
+      'dmtrKovalenko/fff.nvim',
+      build = function()
+        -- downloads a prebuilt binary or falls back to cargo build
+        require('fff.download').download_or_build_binary()
+      end,
+      -- for nixos:
+      -- build = "nix run .#release",
+      opts = {
+        debug = {
+          enabled = true,
+          show_scores = true,
+        },
       },
-    },
-    lazy = false, -- the plugin lazy-initialises itself
-    keys = {
-      {
-        'ff',
-        function()
-          require('fff').find_files()
-        end,
-        desc = 'FFFind files',
+      lazy = false, -- the plugin lazy-initialises itself
+      keys = {
+        {
+          'ff',
+          function()
+            require('fff').find_files()
+          end,
+          desc = 'FFFind files',
+        },
+        {
+          'fg',
+          function()
+            require('fff').live_grep()
+          end,
+          desc = 'LiFFFe grep',
+        },
+        {
+          'fz',
+          function()
+            require('fff').live_grep({ grep = { modes = { 'fuzzy', 'plain' } } })
+          end,
+          desc = 'Live fffuzy grep',
+        },
+        {
+          'fc',
+          function()
+            require('fff').live_grep({ query = vim.fn.expand('<cword>') })
+          end,
+          desc = 'Search current word',
+        },
       },
-      {
-        'fg',
-        function()
-          require('fff').live_grep()
-        end,
-        desc = 'LiFFFe grep',
-      },
-      {
-        'fz',
-        function()
-          require('fff').live_grep({ grep = { modes = { 'fuzzy', 'plain' } } })
-        end,
-        desc = 'Live fffuzy grep',
-      },
-      {
-        'fc',
-        function()
-          require('fff').live_grep({ query = vim.fn.expand('<cword>') })
-        end,
-        desc = 'Search current word',
-      },
-    },
-  })
+    })
+  end
   tools({
     'rbong/vim-flog',
     cmd = { 'Flog', 'Flogsplit', 'Flg', 'Flgs' },
@@ -445,19 +447,6 @@ return function(tools)
   tools({ 'AndrewRadev/linediff.vim', cmd = { 'Linediff' } }) -- , "'<,'>Linediff"
   --
 
-  if not require('core.global').is_windows then
-    tools({
-      'ibhagwan/fzf-lua',
-      cmd = { 'FzfLua' },
-      cond = cond,
-      dependencies = {
-        { 'junegunn/fzf', build = './install --bin' },
-      },
-      opts = {
-        hls = { border = 'TelescopeBorder', preview_border = 'TelescopePreviewBorder' },
-      },
-    })
-  end
   tools({
     'mikesmithgh/kitty-scrollback.nvim',
     enabled = true,
