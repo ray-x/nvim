@@ -43,7 +43,19 @@ return function(lang)
     end,
   })
 
+  lang({
+    'neovim-treesitter/nvim-treesitter',
+    branch = 'main',
+    lazy = false,
+    build = ':TSUpdate',
+    config = ts.treesitter,
+    dependencies = { 'neovim-treesitter/treesitter-parser-registry', lazy = false },
+  })
+
   lang = spec.wrap_register(lang, spec.not_diff)
+  if not spec.not_diff() then
+    return
+  end
 
   lang({
     'nvim-treesitter/nvim-treesitter-textobjects',
@@ -96,11 +108,6 @@ return function(lang)
   })
 
   lang({ 'yardnsm/vim-import-cost', ft = jsft, cmd = 'ImportCost' })
-  lang({
-    'bennypowers/nvim-regexplainer',
-    cmd = { 'RegexplainerToggle', 'RegexplainerShow' },
-    config = conf.regexplainer,
-  })
 
   lang({
     'Wansmer/symbol-usage.nvim', -- count symbol usage
@@ -108,22 +115,24 @@ return function(lang)
     config = conf.symbol_usage,
   })
 
-  lang({
-    -- running code interactively with the jupyter kernel
-    'benlubas/molten-nvim',
-    ft = 'python',
-    cmd = {
-      'MoltenLoad',
-      'MoltenInit',
-      'MoltenInfo',
-      'MoltenEvaluateVisual',
-      'MoltenEvaluateLine',
-      'MoltenReevaluateCell',
-    },
-  })
-  lang({ 'metakirby5/codi.vim', ft = { 'python', 'javascript' }, cmd = { 'Codi', 'CodiNew' } })
-  lang({ 'Vigemus/iron.nvim', ft = 'python', config = conf.iron })
-
+  if false then
+    -- python related live display values
+    lang({
+      -- running code interactively with the jupyter kernel
+      'benlubas/molten-nvim',
+      ft = 'python',
+      cmd = {
+        'MoltenLoad',
+        'MoltenInit',
+        'MoltenInfo',
+        'MoltenEvaluateVisual',
+        'MoltenEvaluateLine',
+        'MoltenReevaluateCell',
+      },
+    })
+    lang({ 'metakirby5/codi.vim', ft = { 'python', 'javascript' }, cmd = { 'Codi', 'CodiNew' } })
+    lang({ 'Vigemus/iron.nvim', ft = 'python', config = conf.iron })
+  end
   lang({
     'mfussenegger/nvim-dap-python',
     ft = { 'python' },
@@ -191,33 +200,8 @@ return function(lang)
 
   lang({ 'theHamsta/nvim-dap-virtual-text', module = true })
 
-  lang({
-    'nvim-telescope/telescope-dap.nvim',
-    config = conf.dap,
-    event = { 'CmdlineEnter' },
-  })
-
   lang({ 'mtdl9/vim-log-highlighting', ft = { 'text', 'txt', 'log' } })
 
-  -- lang({
-  --   'michaelb/sniprun',
-  --   build = 'bash install.sh',
-  --   cmd = { 'SnipRun', 'SnipReset' },
-  --   config = function()
-  --     require('sniprun').setup({
-  --       -- selected_interpreters = {},     --" use those instead of the default for the current filetype
-  --       -- repl_enable = {},               --" enable REPL-like behavior for the given interpreters
-  --       -- repl_disable = {},              --" disable REPL-like behavior for the given interpreters
-  --       inline_messages = 1, --" inline_message (0/1) is a one-line way to display messages
-  --       --" to workaround sniprun not being able to display anything
-  --     })
-  --     if require('core.global').is_windows then
-  --       if vim.fn.executable('bash') == 0 then
-  --         vim.notify('failed to install sniprun, bash is not installed')
-  --       end
-  --     end
-  --   end,
-  -- })
   -- JqxList and JqxQuery json browsing, format
   lang({ 'gennaro-tedesco/nvim-jqx', cmd = { 'JqxList', 'JqxQuery' } })
   lang({
@@ -233,7 +217,7 @@ return function(lang)
         filetypes = { 'html', 'javascript' },
       })
     end,
-    -- event = 'VeryLazy',
+    event = 'VeryLazy',
     ft = { 'javascript', 'html' },
   })
   -- highlight your args with Treesitter
@@ -284,15 +268,6 @@ return function(lang)
     },
   })
 
-  -- do not delete for now through it is deprecated, it still used when I need to Install parsers
-  lang({
-    'nvim-treesitter/nvim-treesitter',
-    branch = 'main',
-    lazy = false,
-    build = ':TSUpdate',
-    config = ts.treesitter, -- this enable highlight, indent, and other basic features, and also setup some keymaps
-  })
-
   lang({
     'nvim-treesitter/nvim-treesitter-context',
     -- event = { 'WinScrolled', 'CmdlineEnter' },
@@ -320,57 +295,6 @@ return function(lang)
       }
     end,
   })
-  --[[
-  lang({
-    'hiphish/rainbow-delimiters.nvim',
-    event = 'VeryLazy',
-    config = function()
-      local rainbow_delimiters = require('rainbow-delimiters')
-      require('rainbow-delimiters.setup').setup({
-        strategy = {
-          [''] = rainbow_delimiters.strategy['global'],
-          vim = rainbow_delimiters.strategy['local'],
-          go = rainbow_delimiters.strategy['local'],
-        },
-        query = {
-          [''] = 'rainbow-delimiters',
-          lua = 'rainbow-blocks',
-          go = 'rainbow-blocks',
-        },
-        highlight = {
-          'RainbowDelimiterRed',
-          'RainbowDelimiterYellow',
-          'RainbowDelimiterBlue',
-          'RainbowDelimiterOrange',
-          'RainbowDelimiterGreen',
-          'RainbowDelimiterViolet',
-          'RainbowDelimiterCyan',
-        },
-        blacklist = {
-          'markdown',
-          'help',
-        },
-      })
-      vim.api.nvim_create_user_command('RainbowToggle', function()
-        local bufnr = vim.api.nvim_get_current_buf()
-        require('rainbow-delimiters').toggle(bufnr)
-      end, {
-        bar = true,
-        nargs = 0,
-      })
-    end,
-  })
-  ]]
-  --
-  if false then
-    lang({
-      'folke/trouble.nvim',
-      cmd = { 'Trouble', 'TroubleToggle' },
-      config = function()
-        require('trouble').setup({})
-      end,
-    })
-  end
 
   lang({
     'hashivim/vim-terraform',
@@ -420,11 +344,6 @@ return function(lang)
       end,
     })
   end
-  lang({
-    'HiPhish/awk-ward.nvim',
-    ft = 'awk',
-    -- cmd = { 'AwkWard' },
-  })
 
   -- if vim.bo.ft == 'csv' then
   -- it can not be lazy loaded
@@ -437,20 +356,19 @@ return function(lang)
       vim.g.csv_delim_test = ',;|'
     end,
   })
-  -- end
   lang({
     'mechatroner/rainbow_csv',
     ft = { 'csv', 'tsv', 'dat', 'csv_pipe', 'dbout' },
     cmd = { 'RainbowDelim', 'RainbowMultiDelim', 'Select', 'CSVLint' },
   })
+end
+
+--[[
   lang({
     'Bekaboo/dropbar.nvim',
     opts = {
       general = {
         enable = function(buf, win, _)
-          if not vim.fn.has('nvim-0.10') then
-            return false
-          end
           return vim.fn.win_gettype(win) == ''
             and vim.wo[win].winbar == ''
             and vim.bo[buf].bt == ''
@@ -466,45 +384,4 @@ return function(lang)
       },
     },
   })
-end
-
--- lang({
---   'nanotee/sqls.nvim',
---   ft = { 'sql', 'pgsql', 'mysql' },
---   module = true,
--- })
--- if typecheck({ 'json', 'js', 'javascript', 'javascriptreact' }) then
---   lang({
---     'danymat/neogen',
---     lazy = true,
---     config = function()
---       require('neogen').setup({ snippet_engine = 'luasnip' })
---     end,
---     ft = { 'js', 'html', 'javascript', 'javascriptreact', 'json' },
---   })
--- end
-
--- -- lang({ 'ThePrimeagen/refactoring.nvim', config = conf.refactor })
-
--- -- Automatically convert strings to f-strings or template strings and back
--- -- lang({
--- --   'chrisgrieser/nvim-puppeteer',
--- --   lazy = true,
--- -- })
--- -- ipython
-
--- lang({
--- 'simrat39/rust-tools.nvim',
--- ft = { 'rust' },
--- config = function()
--- vim.defer_fn(function()
--- require('rust-tools').setup({
--- server = {
--- on_attach = function(c, b)
--- require('navigator.lspclient.mapping').setup({ client = c, bufnr = b })
--- end,
--- },
--- })
--- end, 200)
--- end,
--- })
+]]

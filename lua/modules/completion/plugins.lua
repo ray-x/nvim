@@ -41,102 +41,6 @@ return function(use)
     end,
   })
 
-  if false then
-    use({
-      'olimorris/codecompanion.nvim',
-      -- cond = function()
-      --   return vim.g.network_status == true
-      -- end,
-      dependencies = {
-        {
-          'ravitemer/mcphub.nvim',
-          build = 'npm install -g mcp-hub@latest',
-          opts = {
-            port = 37373,
-            config = os.getenv('HOME') .. '/.config/mcphub/servers.json',
-            extensions = {
-              copilotchat = {
-                enabled = true,
-                convert_tools_to_functions = true, -- Convert MCP tools to @functions
-                convert_resources_to_functions = true, -- Convert MCP resources to @functions
-                add_mcp_prefix = false, -- Add "mcp_" prefix to function names
-              },
-            },
-          },
-        },
-      },
-      event = { 'InsertEnter', 'CmdlineEnter' },
-      opts = {
-        prompt_library = {
-          ['Code Expert'] = {
-            strategy = 'chat',
-            description = 'Get some special advice for your code',
-            opts = {
-              mapping = '<LocalLeader>ce',
-              modes = { 'v' },
-              short_name = 'expert',
-              auto_submit = true,
-              stop_context_insertion = true,
-              user_prompt = true,
-            },
-            extensions = {
-              mcphub = {
-                callback = 'mcphub.extensions.codecompanion',
-                opts = {
-                  make_vars = true,
-                  make_slash_commands = true,
-                  show_result_in_chat = true,
-                },
-              },
-            },
-            prompts = {
-              {
-                role = 'system',
-                content = function(context)
-                  return 'I want you to act as a senior ' .. context.filetype .. ' developer. I will ask you specific questions and I want you to return concise explanations and codeblock examples.'
-                end,
-              },
-              {
-                role = 'user',
-                content = function(context)
-                  local text = require('codecompanion.helpers.actions').get_code(context.start_line, context.end_line)
-
-                  return 'I have the following code:\n\n```' .. context.filetype .. '\n' .. text .. '\n```\n\n'
-                end,
-                opts = {
-                  contains_code = true,
-                },
-              },
-            },
-          },
-        },
-        strategies = {
-          chat = { adapter = { name = 'copilot_acp', model = 'gpt-5.3-codex' } },
-          inline = { adapter = { name = 'copilot', model = 'claude-opus-4.6' } },
-          agent = { adapter = { name = 'copilot_acp', model = 'claude-opus-4.6' } },
-        },
-        adapters = {
-          acp = {
-            -- GitHub Copilot CLI (ACP agent). Preset is named `copilot_acp`
-            -- in codecompanion.nvim. Requires the `copilot` CLI installed and
-            -- authenticated (run `copilot` once to log in):
-            --   https://docs.github.com/en/copilot/how-tos/copilot-cli/set-up-copilot-cli/install-copilot-cli
-            copilot_acp = function()
-              return require('codecompanion.adapters').extend('copilot_acp', {
-                defaults = {
-                  timeout = 30000,
-                  mcpServers = 'inherit_from_config',
-                },
-              })
-            end,
-          },
-        },
-        opts = {
-          log_level = 'DEBUG',
-        },
-      },
-    })
-  end
   --
   -- can not lazyload, it is also slow...
   use({
@@ -180,20 +84,31 @@ return function(use)
     lazy = false,
 
     opts = function()
+      -- if true then
+      -- require('copilot_agent').setup({})
+      -- return {}
+      -- end
       return {
         -- base_url = 'http://127.0.0.1:8088',
-        client_name = 'nvim-copilot',
+        client_name = 'harness-agent',
         permission_mode = 'approve-all',
+        default_provider = 'copilot', -- 'claude', -- or 'copilot'
         file_log_level = 'DEBUG',
         service = {
           auto_start = true,
           command = { 'go', 'run', '.' },
+          log = {
+            enabled = true,
+          },
         },
         chat = {
           reasoning = { enabled = true, max_lines = 4 },
         },
+        lsp = {
+          enabled = true,
+        },
         session = {
-          model = 'gpt-5.4',
+          model = 'gpt-5.4-mini',
           working_directory = function()
             return vim.fn.getcwd()
           end,
@@ -254,23 +169,31 @@ return function(use)
     -- gitcommit = false,
   }
 
-  if false then
+  if true then
     use({
       'zbirenbaum/copilot.lua',
-      cmd = 'Copilot',
+      -- cmd = 'Copilot',
       event = 'InsertEnter',
+
+      -- version = vim.version.range('v2.0.0'),
 
       opts = function()
         vim.g.copilot_proxy_strict_ssl = false
         return {
           nes = {
             enabled = false,
+            -- auto_trigger = true,
+            -- keymap = {
+            -- accept = '<Enter>',
+            -- accept_and_goto = '<Tab>',
+            -- dismiss = '<Esc>',
+            -- },
           },
 
           logger = {
             file = vim.fn.stdpath('log') .. '/copilot-lua.log',
-            file_log_level = vim.log.levels.WARN,
-            print_log_level = vim.log.levels.ERROR,
+            file_log_level = vim.log.levels.INFO,
+            print_log_level = vim.log.levels.WARN,
             trace_lsp = 'off', -- "off" | "debug" | "verbose"
             trace_lsp_progress = true,
             log_lsp_messages = true,
@@ -285,28 +208,28 @@ return function(use)
               accept = '<C-j>',
               next = '<M-]>',
               prev = '<M-[>',
-              dismiss = '<C-]>',
+              dismiss = '<C-r>',
             },
           },
         }
       end,
-      dependencies = {
-        'copilotlsp-nvim/copilot-lsp', -- (optional) for NES functionality
-      },
+      -- dependencies = {
+      -- 'copilotlsp-nvim/copilot-lsp', -- (optional) for NES functionality
+      -- },
     })
   end
-  use({
-    'github/copilot.vim',
-    event = 'InsertEnter',
-    init = function()
-      vim.keymap.set('i', '<C-J>', 'copilot#Accept("\\<CR>")', {
-        expr = true,
-        replace_keycodes = false,
-      })
-      vim.g.copilot_no_tab_map = true
-    end,
-  })
   if false then
+    use({
+      'github/copilot.vim',
+      event = 'InsertEnter',
+      init = function()
+        vim.keymap.set('i', '<C-J>', 'copilot#Accept("\\<CR>")', {
+          expr = true,
+          replace_keycodes = false,
+        })
+        vim.g.copilot_no_tab_map = true
+      end,
+    })
     -- the plugin is very slow on bootup
     use({
       'cursortab/cursortab.nvim',

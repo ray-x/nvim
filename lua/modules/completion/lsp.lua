@@ -25,7 +25,13 @@ M.setup = function()
 
   -- Apply baseline completion capabilities for all servers on Neovim 0.12+.
   if vim.lsp and type(vim.lsp.config) == 'function' then
-    pcall(vim.lsp.config, '*', { capabilities = capabilities })
+    pcall(vim.lsp.config, '*', {
+      capabilities = capabilities,
+      flags = {
+        -- Prevent excessive didChange traffic on rapidly updating buffers.
+        debounce_text_changes = 300,
+      },
+    })
   end
 
   if not vim.lsp.config.emmet_ls then

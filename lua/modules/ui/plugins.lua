@@ -27,48 +27,6 @@ return function(ui)
     lazy = true,
   })
 
-  -- ui({
-  --   'dstein64/nvim-scrollview',
-  --   cmd = { 'ScrollViewEnable', 'ScrollViewToggle' },
-  --   event = { 'CursorMoved', 'CursorMovedI' },
-  --   config = conf.scrollview,
-  -- })
-  -- ui({
-  -- 'Xuyuanp/scrollbar.nvim',
-  -- event = { 'CursorMoved', 'CursorMovedI' },
-  -- config = function()
-  -- create auto group for scrollbar
-  -- local autogroup = vim.api.nvim_create_augroup
-  -- local bar_grp = autogroup('Scrollbar', { clear = true })
-  -- vim.api.nvim_create_autocmd({
-  -- 'WinScrolled',
-  -- 'VimResized',
-  -- 'FocusGained',
-  -- 'WinEnter',
-  -- }, {
-  -- group = bar_grp,
-  -- callback = function()
-  -- require('scrollbar').show()
-  -- end,
-  -- desc = 'scrollview',
-  -- })
-  -- vim.api.nvim_create_autocmd({ 'WinLeave', 'BufLeave', 'BufWinLeave', 'FocusLost', 'CursorHold', 'CursorHoldI' }, {
-  -- group = bar_grp,
-  -- callback = function()
-  -- require('scrollbar').clear()
-  -- end,
-  -- desc = 'scrollview',
-  -- })
-  -- end,
-  -- })
-  ui({
-    'rcarriga/nvim-notify',
-    event = 'VeryLazy',
-    module = true,
-    -- event = "User LoadPackPlugin",
-    config = conf.notify,
-  })
-
   ui({
     -- configured to use with gitsign
     'luukvbaal/statuscol.nvim',
@@ -108,36 +66,6 @@ return function(ui)
       heirline.setup(opts)
     end,
   })
-  -- ui({
-  -- "rebelot/heirline.nvim",
-  -- dependencies = { "Zeioth/heirline-components.nvim", 'nvim-tree/nvim-web-devicons' },
-  -- opts = {},
-  --   config = function(_, opts)
-  --     local heirline = require "heirline"
-  --     local heirline_components = require "heirline-components.all"
-  --
-  --     -- Setup
-  --     heirline_components.init.subscribe_to_events()
-  --     heirline.load_colors(heirline_components.hl.get_colors())
-  --     heirline.setup(opts)
-  --   end,
-  -- })
-  -- ui({
-  -- 'windwp/windline.nvim',
-  -- event = 'VeryLazy',
-  -- config = function()
-  -- require('modules.ui.eviline')
-  -- end,
-  -- lazy = true,
-  -- })
-  -- ui({
-  -- 'nvim-lualine/lualine.nvim',
-  -- event = 'VeryLazy',
-  -- config = conf.lualine,
-  -- dependencies = { 'nvim-tree/nvim-web-devicons' },
-  -- lazy = true,
-  -- opts = require('modules.ui.evil_lualine'),
-  -- })
 
   ui({
     'nvim-tree/nvim-tree.lua',
@@ -200,58 +128,23 @@ return function(ui)
       higlight = 'LineNr',
     }, -- char to display the line
   })
-  ui({
-    'folke/tokyonight.nvim',
-    lazy = true,
-    config = conf.tokyonight,
-  })
-  ui({
-    'folke/twilight.nvim',
-    opts = {
-      dimming = {
-        alpha = 0.33, -- amount of dimming
-        -- we try to get the foreground from the highlight groups or fallback color
-        color = { 'Normal', '#E0EFFF' },
-        term_bg = '#131320', -- if guibg=NONE, this will be used to calculate text color
-        inactive = false, -- when true, other windows will be fully dimmed (unless they contain the same buffer)
+  if false then
+    ui({
+      'dstein64/nvim-scrollview',
+      event = { 'CursorMoved', 'CursorMovedI' },
+      opts = {
+        exclude_filetypes = { 'NvimTree', 'Trouble', 'help', 'dashboard' },
+        current_only = true,
       },
-      context = 12,
-      expand = { -- for treesitter, we we always try to expand to the top-most ancestor with these types
-        'function',
-        'method',
-        'block',
-        vim.o.ft == 'lua' and 'table' or nil,
-        'scope',
-      },
-    },
+    })
+  end
+  if false then
+    ui({
+      'folke/tokyonight.nvim',
+      lazy = true,
+      config = conf.tokyonight,
+    })
 
-    cmd = { 'Twilight', 'TwilightEnable' },
-  })
-
-  ui({ 'catppuccin/nvim', lazy = true, name = 'catppuccin', config = conf.cat })
-  ui({ 'stevearc/dressing.nvim', lazy = true })
+    ui({ 'catppuccin/nvim', lazy = true, name = 'catppuccin', config = conf.cat })
+  end
 end
-
--- ui({
---   'nvim-neo-tree/neo-tree.nvim',
---   branch = 'main',
---   cmd = {
---     'Neotree',
---     'NeoTreeShowToggle',
---     'NeoTreeFocusToggle',
---     'NeoTreeRevealToggle',
---     'NeoTreeFloat',
---     'NeoTreeFloatToggle',
---   },
---   event = 'VeryLazy',
---   lazy = true,
---   config = conf.neotree,
--- })
--- feel a bit laggy
--- ui({
---   'folke/noice.nvim',
---   event = 'VeryLazy',
---   -- event = "User LoadPackPlugin",
---   dependencies = { 'MunifTanjim/nui.nvim', lazy = true },
---   config = conf.noice,
--- })

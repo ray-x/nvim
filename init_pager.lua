@@ -23,9 +23,10 @@ vim.opt.rtp:prepend(lazypath)
 local function load_plugins()
   return {
     {
-      'nvim-treesitter/nvim-treesitter',
+      'neovim-treesitter/nvim-treesitter',
       lazy = false,
       build = ':TSUpdate',
+      dependencies = { 'neovim-treesitter/treesitter-parser-registry', lazy = false },
     },
     {
       'mechatroner/rainbow_csv',

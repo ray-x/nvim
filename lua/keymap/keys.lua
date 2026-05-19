@@ -104,7 +104,7 @@ local plug_keys = {
   -- Toggle helpers
   ["n|<F13>"] = map_cmd("NvimTreeToggle"),
   ["n|<S-F1>"] = map_cmd("NvimTreeToggle"),
-  ["n|<Leader>S"] = map_func(function() require("flash").toggle(true) end),
+  -- ["n|<Leader>S"] = map_func(function() require("flash").toggle(true) end),
   ["n|<F9>"] = map_func(function()
     if vim.o.ft == 'go' then
       return vim.cmd('GoBreakToggle')
@@ -113,10 +113,10 @@ local plug_keys = {
   end),
 
   -- swap
-  ["n|<leader>a"] = map_cmd("ISwapWith"),
-  ["n|<leader>A"] = map_cmd("ISwapNodeWith"),
+  -- ["n|<leader>a"] = map_cmd("ISwapWith"),
+  -- ["n|<leader>A"] = map_cmd("ISwapNodeWith"),
 
-  ['n|<Space>k'] = map_func(function() require('ts-node-action').node_action() end):with_desc("switch node act"),
+  -- ['n|<Space>k'] = map_func(function() require('ts-node-action').node_action() end):with_desc("switch node act"),
   -- session
   -- Session/buffer helpers
   ["n|<Leader>ss"] = map_cu('SessionSave'):with_noremap(),
@@ -145,37 +145,37 @@ local plug_keys = {
   ['n|<Leader>ts'] = plug('TranslateW'),
   ['v|<Leader>ts'] = plug('TranslateWV'),
   -- yanky map_plug('<Plug>WordMotion_w'):with_expr(),
-  ['nx|p'] = plug('YankyPutAfter'),
-  ['nx|P'] = plug('YankyPutBefore'),
-  ['nx|gp'] = plug('YankyGPutAfter'),
-  ['nx|gP'] = plug('YankyGPutBefore'),
-  ['n|<c-p>'] = plug('YankyPreviousEntry'),
-  ['n|<c-n>'] = plug('YankyNextEntry'),
+  -- ['nx|p'] = plug('YankyPutAfter'),
+  -- ['nx|P'] = plug('YankyPutBefore'),
+  -- ['nx|gp'] = plug('YankyGPutAfter'),
+  -- ['nx|gP'] = plug('YankyGPutBefore'),
+  -- ['n|<c-p>'] = plug('YankyPreviousEntry'),
+  -- ['n|<c-n>'] = plug('YankyNextEntry'),
   -- substitute
   -- Substitute / exchange
-  ['n|<Space>s'] = map_func(function() require('substitute').operator() end):with_desc(
-    'operator substitute motion e.g. <spc>siw, <spc>sip'):with_noremap(),
-  ['n|<Space>S'] = map_func(function() require('substitute').line() end):with_desc('operator substitute line')
-      :with_noremap(),
-  ['x|<Space>s'] = map_func(function() require('substitute').visual() end):with_desc('substitute visual'):with_noremap(),
-  ['x|<Leader>x'] = map_func(function() require('substitute.exchange').visual() end):with_desc(
-    'substitute exchange two word visual'):with_noremap(),
-  ['xn|<Leader>s'] = map_func(function()
-    vim.api.nvim_feedkeys(require('utils.helper').substitute(), 'mi', true)
-  end
-  ):with_desc('substitute visual s/yanked/yanked_tobereplace/g  '):with_noremap(),
-  ['xn|<Leader>S'] = map_func(function()
-    vim.api.nvim_feedkeys(require('utils.helper').substitute(nil, nil, 'S'), 'mi', true)
-  end
-  ):with_desc('substitute visual with Abolish S/yanked/yanked_tobereplace/g  '):with_noremap(),
+  -- ['n|<Space>s'] = map_func(function() require('substitute').operator() end):with_desc(
+    -- 'operator substitute motion e.g. <spc>siw, <spc>sip'):with_noremap(),
+  -- ['n|<Space>S'] = map_func(function() require('substitute').line() end):with_desc('operator substitute line')
+      -- :with_noremap(),
+  -- ['x|<Space>s'] = map_func(function() require('substitute').visual() end):with_desc('substitute visual'):with_noremap(),
+  -- ['x|<Leader>x'] = map_func(function() require('substitute.exchange').visual() end):with_desc(
+    -- 'substitute exchange two word visual'):with_noremap(),
+  -- ['xn|<Leader>s'] = map_func(function()
+    -- vim.api.nvim_feedkeys(require('utils.helper').substitute(), 'mi', true)
+  -- end
+  -- ):with_desc('substitute visual s/yanked/yanked_tobereplace/g  '):with_noremap(),
+  -- ['xn|<Leader>S'] = map_func(function()
+    -- vim.api.nvim_feedkeys(require('utils.helper').substitute(nil, nil, 'S'), 'mi', true)
+  -- end
+  -- ):with_desc('substitute visual with Abolish S/yanked/yanked_tobereplace/g  '):with_noremap(),
 
   -- substitute range operation is not as useful
   -- ['x|<Leader>s'] = map_func(function() require('substitute.range').visual() end ):with_desc('substitute visual s/xxx/XXX/g with motion2 e.g. ap'):with_noremap(),
   -- ['n|<Leader>s'] = map_func(function() require('substitute.range').word() end ):with_desc('substitute motion s/xxx/XXX/g with motion1:ip' ):with_noremap(),
   -- ['n|<Leader>s'] = map_func(function() require('substitute.range').operator() end ):with_desc('substitute motion s/xxx/XXX/g with motion1:iw and motion2:ap ' ):with_noremap(),
   -- Swap / exchange
-  ['n|<Leader>x'] = map_cmd('ISwapWith'):with_desc('Swap exchange two ts node'):with_noremap(),
-  ['n|<Leader>X'] = map_cmd('ISwapNodeWith'):with_desc('Swap exchange two Node'):with_noremap(),
+  -- ['n|<Leader>x'] = map_cmd('ISwapWith'):with_desc('Swap exchange two ts node'):with_noremap(),
+  -- ['n|<Leader>X'] = map_cmd('ISwapNodeWith'):with_desc('Swap exchange two Node'):with_noremap(),
 
   ['nx|<Leader>L'] = map_func(function()
     vim.schedule(function()
@@ -273,6 +273,14 @@ local plug_keys = {
     'grep_string_cursor_raw'),
   ['v|<m-f>'] = map_func(function() require('utils.telescope').grep_string_visual_raw() end):with_desc(
     'grep_string_cursor_raw'),
+  -- Plugin FFF
+  ['n|ff'] = map_func(function() require('fff').find_files() end):with_desc('fff find files'),
+  ['n|fg'] = map_func(function() require('fff').live_grep() end):with_desc('fff live grep'),
+  ['n|fz'] = map_func(function()
+    require('fff').live_grep({ grep = { modes = { 'fuzzy', 'plain' } } })
+  end):with_desc('fff fuzzy/plain grep'),
+  ['n|fc'] = map_func(function() require('fff').live_grep({ query = vim.fn.expand('<cword>') }) end):with_desc(
+    'fff grep current word'),
   -- Word motion replacement
   ['n|w'] = plug('WordMotion_w'):with_expr(),
 

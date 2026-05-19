@@ -44,19 +44,7 @@ return function(tools)
     },
   })
 
-  tools({
-    'akinsho/git-conflict.nvim',
-    cmd = {
-      'GitConflictListQf',
-      'GitConflictChooseOurs',
-      'GitConflictChooseTheirs',
-      'GitConflictChooseBoth',
-      'GitConflictNextConflict',
-    },
-    config = conf.git_conflict,
-  })
-
-  if false then
+  if true then
     tools({
       'dmtrKovalenko/fff.nvim',
       build = function()
@@ -144,6 +132,8 @@ return function(tools)
     cond = cond,
     dependencies = {
       { 'nvim-lua/plenary.nvim', lazy = true, module = true },
+      { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
+      { 'nvim-telescope/telescope-live-grep-args.nvim' },
       { _G.plugin_path('ray-x/telescope-ast-grep.nvim'), dev = _G.is_dev() },
       { _G.plugin_path('ray-x/shell-history.nvim'), dev = _G.is_dev() },
     },
@@ -217,37 +207,6 @@ return function(tools)
     },
   })
 
-  if false then
-    tools({
-      'chrisgrieser/nvim-early-retirement',
-      -- config = true,
-      opts = {},
-      event = 'VeryLazy',
-    })
-
-    tools({
-      'vim-test/vim-test',
-      cond = cond,
-      cmd = { 'TestNearest', 'TestFile', 'TestSuite' },
-      init = conf.vim_test,
-    })
-
-    tools({
-      'nvim-neotest/neotest',
-      cond = cond,
-      dependencies = {
-        {
-          'haydenmeade/neotest-jest',
-          config = conf.neotest_jest,
-        },
-        { 'nvim-neotest/neotest-plenary' },
-        { 'nvim-neotest/neotest-python' },
-      },
-      config = conf.neotest,
-      cmd = { 'Neotest', 'NeotestFile', 'NeoResult' },
-    })
-  end
-
   tools({
     'nvim-telescope/telescope-live-grep-args.nvim',
     cond = cond,
@@ -256,22 +215,7 @@ return function(tools)
     },
     module = true,
   })
-  tools({
-    'nvim-telescope/telescope-file-browser.nvim',
-    cond = cond,
-    dependencies = {
-      { 'nvim-telescope/telescope.nvim' },
-    },
-    event = { 'CmdlineEnter', 'CursorHold' },
-  })
 
-  tools({
-    'stevearc/oil.nvim',
-    opts = {},
-    -- Optional dependencies
-    dependencies = { 'nvim-tree/nvim-web-devicons' },
-    cmd = { 'Oil' },
-  })
   tools({
     _G.plugin_path('ray-x/telescope-ast-grep.nvim'),
     cond = cond,
@@ -373,13 +317,14 @@ return function(tools)
     :BWipeout! all
     :BWipeout other
     :BWipeout hidden glob=*.lua
-  ]]
-  --
+
   tools({
     'kazhala/close-buffers.nvim',
     cmd = { 'BDelete', 'BWipeout', 'Bd' },
     config = conf.close_buffers,
   })
+  ]]
+  --
 
   -- nvim-toggleterm.lua ?
   tools({
@@ -390,7 +335,7 @@ return function(tools)
     config = conf.floaterm,
   })
 
-  cmd = 'bash install.sh'
+  -- cmd = 'bash install.sh'
 
   tools({
     _G.plugin_path('ray-x/sad.nvim'),
@@ -425,17 +370,6 @@ return function(tools)
   })
 
   tools({
-    'ThePrimeagen/harpoon',
-    cmd = { 'HarpoonTerm', 'HarpoonSend', 'HarpoonSendLine' },
-    event = { 'CmdlineEnter' },
-    cond = cond,
-    module = true,
-    opts = {
-      excluded_filetypes = { 'harpoon', 'guihua', 'term' },
-    },
-  })
-
-  tools({
     'voldikss/vim-translator',
     keys = { '<Plug>TranslateW', '<Plug>TranslateWV' },
     init = function()
@@ -459,157 +393,73 @@ return function(tools)
   })
 end
 
--- tools({
---   'NTBBloodbath/rest.nvim',
---     --   ft = { 'http', 'rest' },
---   keys = { '<Plug>RestNvim', '<Plug>RestNvimPreview', '<Plug>RestNvimLast' },
---   cmd = { 'RestRun', 'RestPreview', 'RestLast' },
---   config = conf.rest,
--- })
---conf.rest
--- tools({ 'nanotee/zoxide.vim', cmd = { 'Z', 'Lz', 'Zi' } })
+--[[
 
--- tools({
---   'rhysd/vim-grammarous',
---   cmd = { 'GrammarousCheck' },
---   ft = { 'markdown', 'txt' },
---   init = conf.grammarous,
--- })
+tools({ -- spend hours but still failed to get it work, can not set sources dynamically, also seems the repo is not maintained for months
+  'kndndrj/nvim-dbee',
+  dependencies = {
+    'MunifTanjim/nui.nvim',
+  },
+  event = { 'CmdlineEnter' },
+  ft = 'sql',
+  build = function()
+    require('dbee').install()
+  end,
+  config = function()
+    if vim.fn.empty(vim.g.connections) == 1 then
+      require('utils.database').load_dbs()
+    end
+    vim.env.DBEE_CONNECTIONS = vim.inspect(vim.g.connections)
+    require('dbee').setup()
+  end,
+})
 
--- tools({
---   'preservim/vim-markdown',
---   ft = 'markdown',
---   cond = cond,
---   dependencies = { 'godlygeek/tabular' },
---   cmd = { 'Toc' },
---   init = conf.markdown,
--- })
+tools({
+  'rickhowe/diffchar.vim',
+  cond = function()
+    return vim.wo.diff
+  end,
+  init = function()
+    -- vim.g.DiffColors=3
+    vim.g.DiffUnit = 'Char'
+  end,
+  event = { 'BufEnter' },
+  cmd = { 'DiffviewOpen' },
+})
+tools({
+  'ThePrimeagen/git-worktree.nvim',
+  event = { 'VeryLazy' },
+  cond = cond,
+  config = conf.worktree,
+})
+  tools({
+    'ThePrimeagen/harpoon',
+    cmd = { 'HarpoonTerm', 'HarpoonSend', 'HarpoonSendLine' },
+    event = { 'CmdlineEnter' },
+    cond = cond,
+    module = true,
+    opts = {
+      excluded_filetypes = { 'harpoon', 'guihua', 'term' },
+    },
+  })
 
--- tools({
---   'jvgrootveld/telescope-zoxide',
---     --   config = function()
---     local ok, telescope = pcall(require, 'telescope')
---     if not ok then
---       return
---     end
---     require('telescope').load_extension('zoxide')
---   end,
---   event = { 'CmdlineEnter', 'CursorHold' },
--- })
--- local dep
--- if not require('core.global').is_windows then
---   dep = { 'kkharji/sqlite.lua' }
--- end
--- tools({
---   'AckslD/nvim-neoclip.lua',
---   event = { 'CmdlineEnter' },
---   dependencies = dep,
---   cond = function()
---     return not vim.g.vscode
---   end,
---   config = function()
---     local db
---     if not require('core.global').is_windows then
---       db = vim.fn.stdpath('data') .. '/databases/neoclip.sqlite3'
---     end
---     require('neoclip').setup({
---       db_path = db,
---     })
---     require('telescope').load_extension('neoclip')
---   end,
--- })
--- tools({
---   'nvim-telescope/telescope-frecency.nvim',
---   -- cmd = {'Telescope'},
---   cond = cond,
---   event = { 'CmdlineEnter', 'CursorHold' },
---   config = function()
---     local telescope = require('telescope')
---     telescope.load_extension('frecency')
---     telescope.setup({
---       extensions = {
---         frecency = {
---           default_workspace = 'CWD',
---           show_scores = false,
---           show_unindexed = true,
---           ignore_patterns = { '*.git/*', '*/tmp/*' },
---           disable_devicons = false,
---           workspaces = {
---             -- ["conf"] = "/home/my_username/.config",
---             -- ["data"] = "/home/my_username/.local/share",
---             -- ["project"] = "/home/my_username/projects",
---             -- ["wiki"] = "/home/my_username/wiki"
---           },
---         },
---       },
---     })
---     -- vim.api.nvim_set_keymap("n", "<leader><leader>p", "<Cmd>lua require('telescope').extensions.frecency.frecency()<CR>", {noremap = true, silent = true})
---   end,
--- })
--- end
-
--- tools({ -- spend hours but still failed to get it work, can not set sources dynamically, also seems the repo is not maintained for months
---   'kndndrj/nvim-dbee',
---   dependencies = {
---     'MunifTanjim/nui.nvim',
---   },
---   event = { 'CmdlineEnter' },
---   ft = 'sql',
---   build = function()
---     require('dbee').install()
---   end,
---   config = function()
---     if vim.fn.empty(vim.g.connections) == 1 then
---       require('utils.database').load_dbs()
---     end
---     vim.env.DBEE_CONNECTIONS = vim.inspect(vim.g.connections)
---     require('dbee').setup()
---   end,
--- })
-
--- tools({
---   'rickhowe/diffchar.vim',
---   cond = function()
---     return vim.wo.diff
---   end,
---   init = function()
---     -- vim.g.DiffColors=3
---     vim.g.DiffUnit = 'Char'
---   end,
---   event = { 'BufEnter' },
---   cmd = { 'DiffviewOpen' },
--- })
--- tools({
---   'ThePrimeagen/git-worktree.nvim',
---   event = { 'VeryLazy' },
---   cond = cond,
---   config = conf.worktree,
--- })
+  tools({
+    'akinsho/git-conflict.nvim',
+    cmd = {
+      'GitConflictListQf',
+      'GitConflictChooseOurs',
+      'GitConflictChooseTheirs',
+      'GitConflictChooseBoth',
+      'GitConflictNextConflict',
+    },
+    config = conf.git_conflict,
+  })
+  tools({
+    'stevearc/oil.nvim',
+    opts = {},
+    -- Optional dependencies
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
+    cmd = { 'Oil' },
+  })
+  ]]
 --
--- tools({
---   'm4xshen/hardtime.nvim',
---   event = { 'CursorMoved', 'CursorMovedI' },
---   opts = {
---     max_count = 10,
---     enabled = true,
---     disable_mouse = false,
---     restriction_mode = 'hint', -- block or hint
---     restricted_keys = {
---       ['h'] = {}, -- dont restrict
---       ['j'] = {},
---       ['k'] = {},
---       ['l'] = {},
---
---       ['<Up>'] = { 'n' },
---       ['<Down>'] = { 'n' },
---       ['<Left>'] = { 'n' },
---       ['<Right>'] = { 'n' },
---     },
---     disabled_keys = {
---       ['<Up>'] = {},
---       ['<Down>'] = {},
---       ['<Left>'] = {},
---       ['<Right>'] = {},
---     }, -- no default disabled keys
---   },
--- })

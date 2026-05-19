@@ -266,8 +266,6 @@ end
 --
 --[[
 Use `git ls-files` for git files, use `find ./ *` for all files under work directory.
-]]
---
 
 function config.close_buffers()
   local function safe_delete(opts)
@@ -301,6 +299,8 @@ function config.close_buffers()
     end
   end, { range = true, nargs = '*', bang = true })
 end
+]]
+--
 
 function config.floaterm()
   -- Set floaterm window's background to black

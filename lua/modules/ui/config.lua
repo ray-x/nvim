@@ -192,6 +192,8 @@ function config.aurora()
     config.change_bg('#211c2f')
   end
   vim.cmd('colorscheme aurora')
+
+  vim.api.nvim_set_hl(0, 'MiniMapNormal', { fg = '#202045' , blend = 20, force = true})
   -- vim.cmd("hi Normal guibg=NONE ctermbg=NONE") -- remove background
   -- vim.cmd("hi EndOfBuffer guibg=NONE ctermbg=NONE") -- remove background
 end

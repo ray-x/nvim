@@ -1,9 +1,9 @@
 local fn = vim.fn
 local api = vim.api
 local state = { disable_title_update = false }
-local ts = ''
+local ts = ""
 local uv = vim.uv
-local treesitter_context = require('modules.lang.treesitter').context
+local treesitter_context = require("modules.lang.treesitter").context
 local function set_title(str)
   -- lprint(str)
   -- io.stdout:write("\27]0;" .. str .. "\7")
@@ -15,10 +15,10 @@ local function set_title(str)
   local dir = vim.fn.getcwd()
   local home = vim.env.HOME
   if dir == home then
-    return 'NVIM'
+    return "NVIM"
   end
-  local titlestring = ''
-  local _, i = dir:find(home .. '/', 1, true)
+  local titlestring = ""
+  local _, i = dir:find(home .. "/", 1, true)
   if i then
     dir = dir:sub(i + 1)
   end
@@ -30,10 +30,10 @@ local function set_title(str)
   end
   if branch then
     titlestring = titlestring .. dir
-    titlestring = titlestring .. ' - ' .. branch
+    titlestring = titlestring .. " - " .. branch
     branches[dir] = branch
   end
-  titlestring = titlestring .. ' ' .. str
+  titlestring = titlestring .. " " .. str
   vim.opt.titlestring = titlestring
   return titlestring
 
@@ -42,19 +42,19 @@ end
 local update_title = function(ts, width)
   width = width or vim.o.columns
   if width < 50 then
-    return ''
+    return ""
   end
   width = width * 0.8
 
   -- cut of nerdfont+space in begining of the ts
   -- split ts with space
-  local tslist = vim.split(ts, ' ')
+  local tslist = vim.split(ts, " ")
   -- remove 1st element
   table.remove(tslist, 1)
-  ts = table.concat(tslist, ' ')
+  ts = table.concat(tslist, " ")
 
-  local path = fn.fnamemodify(fn.expand('%'), ':~:.')
-  ts = path .. ' | ' .. string.gsub(ts, '[\n\r]+', ' ')
+  local path = fn.fnamemodify(fn.expand("%"), ":~:.")
+  ts = path .. " | " .. string.gsub(ts, "[\n\r]+", " ")
   set_title(ts)
 end
 
@@ -62,7 +62,7 @@ local running = 1
 
 local winwidth = function()
   -- body
-  return vim.api.nvim_call_function('winwidth', { 0 })
+  return vim.api.nvim_call_function("winwidth", { 0 })
 end
 local current_function = function()
   -- lprint('current_function width', width)
@@ -72,45 +72,45 @@ local current_function = function()
   if running % 5 == 1 and not state.disable_title_update then
     ok, ts = pcall(treesitter_context, 400)
     if not ok or not ts or string.len(ts) < 5 then
-      return { { ' ', 'green' } }
+      return { { " ", "green" } }
     end
   end
 
   -- lprint(ts)
-  ts = string.gsub(ts, '[\n\r]+', ' ')
-  local path = fn.fnamemodify(fn.expand('%'), ':~:.')
+  ts = string.gsub(ts, "[\n\r]+", " ")
+  local path = fn.fnamemodify(fn.expand("%"), ":~:.")
   local title = path
   if ts and #ts > 1 then
-    title = title .. '->' .. ts
+    title = title .. "->" .. ts
   end
 
   local ok
   ok, ts = pcall(treesitter_context, width)
   if not ok or not ts or string.len(ts) < 3 then
-    return { { ' ', 'green' } }
+    return { { " ", "green" } }
   end
   update_title(ts)
   path = vim.fn.pathshorten(path)
   -- split the contex with '->' and use different colors
-  local parts = vim.split(ts, '->')
+  local parts = vim.split(ts, "->")
   local length = 0
   local result = {} -- { '🥖', 'green' }
   for i, part in ipairs(parts) do
-    part = part:gsub('function', '󰡱')
-    part = part:gsub('func', '󰡱')
-    part = part:gsub('method', '')
-    part = part:gsub('class', '')
-    part = part:gsub('struct', '')
-    part = part:gsub('string', '')
-    part = part:gsub('float64', '')
-    part = part:gsub('float', '')
-    part = part:gsub('error', '')
-    part = part:gsub('interface', '')
-    part = part:gsub('int64', '󱂋')
-    part = part:gsub('int', '󱂋')
-    part = part:gsub('table', '󰠵')
+    part = part:gsub("function", "󰡱")
+    part = part:gsub("func", "󰡱")
+    part = part:gsub("method", "")
+    part = part:gsub("class", "")
+    part = part:gsub("struct", "")
+    part = part:gsub("string", "")
+    part = part:gsub("float64", "")
+    part = part:gsub("float", "")
+    part = part:gsub("error", "")
+    part = part:gsub("interface", "")
+    part = part:gsub("int64", "󱂋")
+    part = part:gsub("int", "󱂋")
+    part = part:gsub("table", "󰠵")
     -- trim spaces on the left and right
-    part = part:gsub('^%s*(.-)%s*$', '%1')
+    part = part:gsub("^%s*(.-)%s*$", "%1")
     length = length + #part
 
     if length >= width then
@@ -120,15 +120,15 @@ local current_function = function()
       part = part:sub(1, remain)
     end
     if #result > 1 then
-      result[#result + 1] = { '>', '#5364E9' }
+      result[#result + 1] = { ">", "#5364E9" }
     end
 
-    result[#result + 1] = { part, '#539964' }
+    result[#result + 1] = { part, "#539964" }
     if length > width then
       -- lprint(length, width)
       local truncate = length - width
       part = string.sub(part, 1, #result[#result] - truncate)
-      result[#result] = { part, '#539964' }
+      result[#result] = { part, "#539964" }
       break
     end
   end
@@ -174,25 +174,25 @@ end
 local debounced_current_function = debounce(current_function, 200)
 
 local current_signature = function(width)
-  local ok, lsp_signature = pcall(require, 'lsp_signature')
+  local ok, lsp_signature = pcall(require, "lsp_signature")
   if not ok then
     return
   end
   local sig = lsp_signature.status_line(width)
   signature_length = #sig.label
-  sig.label = sig.label:gsub('[\n\r]+', ' ')
-  sig.hint = sig.hint:gsub('[\n\r]+', ' ')
-  if sig.label == '' then
-    return ''
+  sig.label = sig.label:gsub("[\n\r]+", " ")
+  sig.hint = sig.hint:gsub("[\n\r]+", " ")
+  if sig.label == "" then
+    return ""
   end
 
-  return sig.label .. '🐼' .. sig.hint, sig
+  return sig.label .. "🐼" .. sig.hint, sig
 end
 
 local debounced_signature = debounce(current_signature, 200)
 
 local function split_lines(value)
-  return vim.split(value, '\n', true)
+  return vim.split(value, "\n", true)
 end
 local on_hover = function()
   local params
@@ -200,28 +200,22 @@ local on_hover = function()
   local clients = vim.lsp.get_clients({ bufnr = bufnr })
   local hoverProvider = false
   local filetype = vim.bo.filetype
-  if
-    vim.tbl_contains({ 'help', 'gitcommit', 'nvimtree', 'fugitive', 'codecompanion' }, filetype)
-  then
-    return ''
+  if vim.tbl_contains({ "help", "gitcommit", "nvimtree", "fugitive", "codecompanion" }, filetype) then
+    return ""
   end
   for _, client in ipairs(clients) do
     -- lprint(client.name, client.server_capabilities.hoverProvider)
-    if
-      client.server_capabilities.hoverProvider == true
-      and client.name ~= 'null-ls'
-      and client.name ~= 'GitHub'
-    then
+    if client.server_capabilities.hoverProvider == true and client.name ~= "null-ls" and client.name ~= "GitHub" then
       -- lprint('hover enabled for ', client.name)
       hoverProvider = true
       params = vim.lsp.util.make_position_params(0, client.offset_encoding)
     end
   end
   if hoverProvider == false or params == nil then
-    return ''
+    return ""
   end
   -- disable for file types
-  vim.lsp.buf_request(0, 'textDocument/hover', params, function(err, result, ctx, config)
+  vim.lsp.buf_request(0, "textDocument/hover", params, function(err, result, ctx, config)
     config = config or {}
     if err then
       -- lprint(result, ctx, config)
@@ -229,9 +223,7 @@ local on_hover = function()
       return
     end
     config.focus_id = ctx.method
-    if
-      not (result and result.contents and result.contents.value and #result.contents.value > 0)
-    then
+    if not (result and result.contents and result.contents.value and #result.contents.value > 0) then
       hover_info = nil
       return
     end
@@ -239,26 +231,26 @@ local on_hover = function()
     local cnt_kind = result.contents.kind
     local val = result.contents.value
     val = split_lines(val)
-    if cnt_kind == 'markdown' then
+    if cnt_kind == "markdown" then
       table.remove(val, #val)
       table.remove(val, 1)
     end
     for idx, value in ipairs(val) do
       val[idx] = vim.fn.trim(value)
-      if val[idx]:find('^```') then
-        val[idx] = val[idx]:gsub('^```', '')
+      if val[idx]:find("^```") then
+        val[idx] = val[idx]:gsub("^```", "")
       end
-      if val[idx]:find('---') then
-        val[idx] = val[idx]:gsub('---', '')
+      if val[idx]:find("---") then
+        val[idx] = val[idx]:gsub("---", "")
       end
       -- remove spaces
-      val[idx] = val[idx]:gsub('^%s*(.-)%s*$', '%1')
+      val[idx] = val[idx]:gsub("^%s*(.-)%s*$", "%1")
     end
     if #val > 3 then
       -- truncate
       val = vim.list_slice(val, 1, 3)
     end
-    val = vim.fn.join(val, ' ')
+    val = vim.fn.join(val, " ")
     if #val > 1 then
       hover_info = val
     end
@@ -267,21 +259,21 @@ local on_hover = function()
 end
 
 return function()
-  local utils = require('heirline.utils')
-  local conditions = require('heirline.conditions')
+  local utils = require("heirline.utils")
+  local conditions = require("heirline.conditions")
   local workdir = {
     provider = function()
       -- local icon = (vim.fn.haslocaldir(0) == 1 and 'l' or 'g') .. ' ' .. ' '
-      local icon = ' '
+      local icon = " "
       local cwd = vim.fn.getcwd(0)
-      cwd = vim.fn.fnamemodify(cwd, ':~')
-      if not conditions.width_percent_below(#cwd, 0.25) or hover_info ~= '' then
+      cwd = vim.fn.fnamemodify(cwd, ":~")
+      if not conditions.width_percent_below(#cwd, 0.25) or hover_info ~= "" then
         cwd = vim.fn.pathshorten(cwd)
       end
-      local trail = cwd:sub(-1) == '/' and '' or '/'
+      local trail = cwd:sub(-1) == "/" and "" or "/"
       return icon .. cwd .. trail
     end,
-    hl = 'Directory',
+    hl = "Directory",
   }
   local ViMode = {
     -- get vim current mode, this information will be required by the provider
@@ -295,55 +287,55 @@ return function()
     -- them at initialisation time.
     static = {
       mode_names = { -- change the strings if you like it vvvvverbose!
-        n = 'N',
-        no = 'N?',
-        nov = 'N?',
-        noV = 'N?',
-        ['no\22'] = 'N?',
-        niI = 'Ni',
-        niR = 'Nr',
-        niV = 'Nv',
-        nt = 'Nt',
-        v = 'V',
-        vs = 'Vs',
-        V = 'V_',
-        Vs = 'Vs',
-        ['\22'] = '^V',
-        ['\22s'] = '^V',
-        s = 'S',
-        S = 'S_',
-        ['\19'] = '^S',
-        i = 'I',
-        ic = 'Ic',
-        ix = 'Ix',
-        R = 'R',
-        Rc = 'Rc',
-        Rx = 'Rx',
-        Rv = 'Rv',
-        Rvc = 'Rv',
-        Rvx = 'Rv',
-        c = 'C',
-        cv = 'Ex',
-        r = '...',
-        rm = 'M',
-        ['r?'] = '?',
-        ['!'] = '!',
-        t = 'T',
+        n = "N",
+        no = "N?",
+        nov = "N?",
+        noV = "N?",
+        ["no\22"] = "N?",
+        niI = "Ni",
+        niR = "Nr",
+        niV = "Nv",
+        nt = "Nt",
+        v = "V",
+        vs = "Vs",
+        V = "V_",
+        Vs = "Vs",
+        ["\22"] = "^V",
+        ["\22s"] = "^V",
+        s = "S",
+        S = "S_",
+        ["\19"] = "^S",
+        i = "I",
+        ic = "Ic",
+        ix = "Ix",
+        R = "R",
+        Rc = "Rc",
+        Rx = "Rx",
+        Rv = "Rv",
+        Rvc = "Rv",
+        Rvx = "Rv",
+        c = "C",
+        cv = "Ex",
+        r = "...",
+        rm = "M",
+        ["r?"] = "?",
+        ["!"] = "!",
+        t = "T",
       },
       mode_colors = {
-        n = 'red',
-        i = 'green',
-        v = 'cyan',
-        V = 'cyan',
-        ['\22'] = 'cyan',
-        c = 'orange',
-        s = 'purple',
-        S = 'purple',
-        ['\19'] = 'purple',
-        R = 'orange',
-        r = 'orange',
-        ['!'] = 'red',
-        t = 'red',
+        n = "red",
+        i = "green",
+        v = "cyan",
+        V = "cyan",
+        ["\22"] = "cyan",
+        c = "orange",
+        s = "purple",
+        S = "purple",
+        ["\19"] = "purple",
+        R = "orange",
+        r = "orange",
+        ["!"] = "red",
+        t = "red",
       },
     },
     -- We can now access the value of mode() that, by now, would have been
@@ -354,7 +346,7 @@ return function()
     -- control the padding and make sure our string is always at least 2
     -- characters long. Plus a nice Icon.
     provider = function(self)
-      return ' %2(' .. self.mode_names[self.mode] .. '%)'
+      return " %2(" .. self.mode_names[self.mode] .. "%)"
     end,
     -- Same goes for the highlight. Now the foreground will change according to the current mode.
     hl = function(self)
@@ -364,17 +356,17 @@ return function()
     -- Re-evaluate the component only on ModeChanged event!
     -- Also allows the statusline to be re-evaluated when entering operator-pending mode
     update = {
-      'ModeChanged',
-      pattern = '*:*',
+      "ModeChanged",
+      pattern = "*:*",
       callback = vim.schedule_wrap(function()
-        vim.cmd('redrawstatus')
+        vim.cmd("redrawstatus")
       end),
     },
   }
 
   local disable_hover = false -- if signature is valid disable hover
 
-  local debouncer = require('core.timer').debounce_leading
+  local debouncer = require("core.timer").debounce_leading
   local debounce_hover = debouncer(on_hover, 200)
   local hover = {
     condition = function()
@@ -382,14 +374,14 @@ return function()
       if width < 80 then
         return false
       end
-      if disable_hover or vim.fn.mode(1) ~= 'n' then
+      if disable_hover or vim.fn.mode(1) ~= "n" then
         return false
       end
       return true
     end,
     init = function(self)
-      api.nvim_create_autocmd({ 'CursorHold' }, {
-        group = api.nvim_create_augroup('heirline_hover', { clear = true }),
+      api.nvim_create_autocmd({ "CursorHold" }, {
+        group = api.nvim_create_augroup("heirline_hover", { clear = true }),
         callback = function()
           debounce_hover()
         end,
@@ -398,7 +390,7 @@ return function()
     provider = function()
       return hover_info
     end,
-    update = { 'CursorMoved', 'CursorMovedI', 'CursorHold' },
+    update = { "CursorMoved", "CursorMovedI", "CursorHold" },
   }
   local signature = {
     condition = function()
@@ -406,13 +398,13 @@ return function()
       if width < 80 then
         return false
       end
-      local ok = pcall(require, 'lsp_signature')
+      local ok = pcall(require, "lsp_signature")
       return ok
     end,
     provider = function(self)
       local sig, sig_info = debounced_signature(40)
       if not sig then
-        return ''
+        return ""
       end
       if #sig > 4 then
         hover_info = nil
@@ -422,7 +414,39 @@ return function()
       end
       return sig
     end,
-    update = { 'CursorMoved', 'CursorMovedI', 'CursorHold' },
+    update = { "CursorMoved", "CursorMovedI", "CursorHold" },
+  }
+  local lsp_status = {
+    condition = function()
+      return api.nvim_win_get_width(0) >= 80
+    end,
+    provider = function()
+      local clients = vim.lsp.get_clients({ bufnr = 0 })
+      if #clients == 0 then
+        return ""
+      end
+
+      local real_clients = {}
+      local seen = {}
+      for _, client in ipairs(clients) do
+        if client.name ~= "null-ls" and client.name ~= "none-ls" and not seen[client.name] then
+          seen[client.name] = true
+          table.insert(real_clients, client.name)
+        end
+      end
+
+      if #real_clients == 0 then
+        real_clients = { clients[1].name }
+      end
+
+      return string.format(" %s (%d)", table.concat(real_clients, ", "), #clients)
+    end,
+    hl = "Keyword",
+    update = {
+      "BufEnter",
+      "LspAttach",
+      "LspDetach",
+    },
   }
   local current_func = {
     condition = function()
@@ -444,13 +468,13 @@ return function()
         -- lprint(v)
         local child = {
           provider = v[1],
-          hl = { fg = v[2], bg = 'bg' },
+          hl = { fg = v[2], bg = "bg" },
         }
         total_len = total_len + #v[1]
         if conditions.width_percent_below(total_len, 0.8) then
           table.insert(children, child)
         else
-          lprint('current_func too long', total_len, v[1])
+          lprint("current_func too long", total_len, v[1])
           break
         end
       end
@@ -462,13 +486,13 @@ return function()
       return self.child:eval()
       -- return current_function()
     end,
-    hl = 'Keyword',
-    update = { 'CursorMoved', 'CursorMovedI', 'CursorHold' },
+    hl = "Keyword",
+    update = { "CursorMoved", "CursorMovedI", "CursorHold" },
   }
-  local lib = require('heirline-components.all')
+  local lib = require("heirline-components.all")
   return {
     statusline = { -- UI statusbar
-      hl = { fg = 'fg', bg = 'bg' },
+      hl = { fg = "fg", bg = "bg" },
       -- lib.component.mode({ mode_text = {} }),
       ViMode,
       lib.component.git_branch(),
@@ -480,19 +504,17 @@ return function()
       }),
       lib.component.git_diff(),
       lib.component.diagnostics(),
-      utils.surround({ '', '>' }, '#549444', current_func),
+      utils.surround({ "", ">" }, "#549444", current_func),
       -- current_func,
       hover,
       signature,
       -- hover_info,
       -- lib.component.cmd_info(),
       lib.component.fill(),
-      lib.component.lsp({
-        lsp_client_names = false,
-      }),
+      lsp_status,
       lib.component.virtual_env(),
       lib.component.nav(),
-      lib.component.mode({ surround = { separator = 'right' } }),
+      lib.component.mode({ surround = { separator = "right" } }),
     },
   }
 end

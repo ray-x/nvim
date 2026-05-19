@@ -40,7 +40,7 @@ function setup(fsize)
     vim.opt_local.list = false
     vim.opt_local.spell = false
     vim.g.disable_plugins = {'nvim-tree/nvim-tree.lua', 'lukas-reineke/indent-blankline.nvim',
-    'nvim-treesitter/nvim-treesitter', 'nvim-treesitter/nvim-treesitter-textobjects',
+    'neovim-treesitter/nvim-treesitter', 'nvim-treesitter/nvim-treesitter-textobjects',
     'nvim-treesitter/nvim-treesitter-context', 'nvim-treesitter/nvim-ts-rainbow', 'nvim-treesitter/nvim-ts-autotag',
     'nvim-treesitter/nvim-ts-rainbow2', 'nvim-treesitter/nvim-ts-context-commentstring', 'echasnovski/mini.surround',
     'echasnovski/mini.comment', 'echasnovski/mini.pairs', 'echasnovski/mini.indentscope',

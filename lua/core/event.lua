@@ -62,7 +62,10 @@ function autocmd.load_autocmds()
      -- {'BufReadPre', 'go', ":slilent! :lua vim.treesitter.query.set('go', 'injections', '')"},
       -- {"UIEnter", "*", ":silent! :lua require('modules.lang.config').syntax_folding()"},
       -- { 'BufReadPre', '*', ":silent! :lua require('modules.lang.config').nvim_treesitter()" },
-      { 'BufWritePre', '*', function() if MiniTrailspace then MiniTrailspace.trim() end end, },
+      { 'BufWritePre', '*', function()
+        if MiniTrailspace and vim.bo.filetype ~= 'go' then MiniTrailspace.trim() end
+      end, },
+      {'TextYankPost', '*', function() vim.highlight.on_yank({ timeout = 500 }) end },
       -- { 'BufWritePost', '*', ":silent! :lua require('harpoon.mark').add_file()" },
       -- stylua: ignore end
     },

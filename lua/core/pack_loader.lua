@@ -78,6 +78,58 @@ local function setup_module_candidates(plugin_info)
   return candidates
 end
 
+local extend_unique
+
+local function normalize_module_spec(module)
+  local spec = {
+    defined = module ~= nil,
+    enabled = module ~= nil and module ~= false,
+    auto = module == true,
+    names = {},
+  }
+
+  if type(module) == "string" then
+    spec.names = { module }
+  elseif type(module) == "table" then
+    spec.names = vim.deepcopy(module)
+  end
+
+  return spec
+end
+
+local function copy_module_spec(module_spec)
+  return {
+    defined = module_spec and module_spec.defined or false,
+    enabled = module_spec and module_spec.enabled or false,
+    auto = module_spec and module_spec.auto or false,
+    names = vim.deepcopy(module_spec and module_spec.names or {}),
+  }
+end
+
+local function merge_module_spec(existing, incoming)
+  if not incoming or not incoming.defined then
+    return copy_module_spec(existing)
+  end
+  if not existing or not existing.defined then
+    return copy_module_spec(incoming)
+  end
+  if not existing.enabled or not incoming.enabled then
+    return {
+      defined = true,
+      enabled = false,
+      auto = false,
+      names = {},
+    }
+  end
+
+  return {
+    defined = true,
+    enabled = true,
+    auto = existing.auto or incoming.auto,
+    names = extend_unique(vim.deepcopy(existing.names or {}), incoming.names or {}),
+  }
+end
+
 local function run_default_opts_setup(plugin_info, resolved_opts)
   local opts = resolved_opts
   if opts == nil then
@@ -118,8 +170,10 @@ local plugins_by_event = {}
 local plugins_by_command = {}
 local plugins_by_filetype = {}
 local plugins_by_module = {}
+local module_prefixes_by_plugin = {}
 local loaded_plugins = {}
 local loading_in_progress = {}
+local module_searcher_registered = false
 
 local function as_list(value)
   if value == nil then
@@ -128,7 +182,7 @@ local function as_list(value)
   return type(value) == "table" and value or { value }
 end
 
-local function extend_unique(dst, values)
+extend_unique = function(dst, values)
   local seen = {}
   for _, item in ipairs(as_list(dst)) do
     seen[item] = true
@@ -149,7 +203,7 @@ local function merge_plugin_info(existing, incoming)
   existing.event = extend_unique(as_list(existing.event), incoming.event)
   existing.cmd = extend_unique(as_list(existing.cmd), incoming.cmd)
   existing.ft = extend_unique(as_list(existing.ft), incoming.ft)
-  existing.module = extend_unique(as_list(existing.module), incoming.module)
+  existing.module = merge_module_spec(existing.module, incoming.module)
   existing.keys = existing.keys or incoming.keys
   existing.cond = incoming.cond ~= nil and incoming.cond or existing.cond
   existing.main = existing.main or incoming.main
@@ -160,41 +214,6 @@ local function merge_plugin_info(existing, incoming)
   existing.dev = existing.dev or incoming.dev
   existing.build = existing.build or incoming.build
   return existing
-end
-
-local function index_plugin(plugin_info)
-  for _, evt in ipairs(as_list(plugin_info.event)) do
-    if not plugins_by_event[evt] then
-      plugins_by_event[evt] = {}
-    end
-    if not vim.tbl_contains(plugins_by_event[evt], plugin_info) then
-      table.insert(plugins_by_event[evt], plugin_info)
-    end
-  end
-
-  for _, cmd in ipairs(as_list(plugin_info.cmd)) do
-    if not plugins_by_command[cmd] then
-      plugins_by_command[cmd] = {}
-    end
-    if not vim.tbl_contains(plugins_by_command[cmd], plugin_info) then
-      table.insert(plugins_by_command[cmd], plugin_info)
-    end
-  end
-
-  for _, ft in ipairs(as_list(plugin_info.ft)) do
-    if not plugins_by_filetype[ft] then
-      plugins_by_filetype[ft] = {}
-    end
-    if not vim.tbl_contains(plugins_by_filetype[ft], plugin_info) then
-      table.insert(plugins_by_filetype[ft], plugin_info)
-    end
-  end
-
-  for _, mod in ipairs(as_list(plugin_info.module)) do
-    if not plugins_by_module[mod] then
-      plugins_by_module[mod] = plugin_info
-    end
-  end
 end
 
 local function command_exists_exact(cmd)
@@ -221,6 +240,10 @@ local function cond_allows(cond, plugin_name)
   end
 
   return cond ~= false
+end
+
+local function module_matches(module_name, module_prefix)
+  return module_name == module_prefix or module_name:sub(1, #module_prefix + 1) == module_prefix .. "."
 end
 
 function pack_loader:new()
@@ -268,7 +291,7 @@ function pack_loader:register_plugin(spec)
     cmd = spec.cmd,
     ft = spec.ft,
     keys = spec.keys,
-    module = spec.module,
+    module = normalize_module_spec(spec.module),
     cond = spec.cond,
     main = spec.main,
     init = spec.init,
@@ -277,6 +300,10 @@ function pack_loader:register_plugin(spec)
     dependencies = spec.dependencies,
     dev = spec.dev,
     build = spec.build,
+    version = spec.version,
+    tag = spec.tag,
+    branch = spec.branch,
+    commit = spec.commit,
   }
 
   -- Disable check
@@ -297,7 +324,7 @@ function pack_loader:register_plugin(spec)
     self.plugins_by_name[name] = plugin_info
   end
 
-  index_plugin(plugin_info)
+  self:index_plugin(plugin_info)
 
   -- Register nested dependencies so their lazy-load triggers (cmd/event/ft/module)
   -- are available even when they are only referenced from a parent spec.
@@ -337,6 +364,102 @@ function pack_loader:get_plugin_path(plugin_info)
   end
 
   return plugin_path
+end
+
+function pack_loader:resolve_module_prefixes(plugin_info)
+  local module_spec = plugin_info.module
+  if type(module_spec) ~= "table" or not module_spec.enabled then
+    return {}
+  end
+
+  local prefixes = {}
+  local seen = {}
+  local function add(prefix)
+    if type(prefix) ~= "string" or prefix == "" or seen[prefix] then
+      return
+    end
+    seen[prefix] = true
+    table.insert(prefixes, prefix)
+  end
+
+  for _, prefix in ipairs(module_spec.names or {}) do
+    add(prefix)
+  end
+
+  if module_spec.auto then
+    add(plugin_info.main)
+    local plugin_path = self:get_plugin_path(plugin_info)
+    local lua_dir = plugin_path and (plugin_path .. sep .. "lua") or nil
+    if lua_dir and fn.isdirectory(lua_dir) == 1 then
+      for name, kind in vim.fs.dir(lua_dir) do
+        if kind == "directory" then
+          add(name)
+        elseif kind == "file" and name:sub(-4) == ".lua" then
+          add(name:sub(1, -5))
+        end
+      end
+    end
+  end
+
+  return prefixes
+end
+
+function pack_loader:index_plugin(plugin_info)
+  for _, evt in ipairs(as_list(plugin_info.event)) do
+    if not plugins_by_event[evt] then
+      plugins_by_event[evt] = {}
+    end
+    if not vim.tbl_contains(plugins_by_event[evt], plugin_info) then
+      table.insert(plugins_by_event[evt], plugin_info)
+    end
+  end
+
+  for _, cmd in ipairs(as_list(plugin_info.cmd)) do
+    if not plugins_by_command[cmd] then
+      plugins_by_command[cmd] = {}
+    end
+    if not vim.tbl_contains(plugins_by_command[cmd], plugin_info) then
+      table.insert(plugins_by_command[cmd], plugin_info)
+    end
+  end
+
+  for _, ft in ipairs(as_list(plugin_info.ft)) do
+    if not plugins_by_filetype[ft] then
+      plugins_by_filetype[ft] = {}
+    end
+    if not vim.tbl_contains(plugins_by_filetype[ft], plugin_info) then
+      table.insert(plugins_by_filetype[ft], plugin_info)
+    end
+  end
+
+  local existing_prefixes = module_prefixes_by_plugin[plugin_info.name] or {}
+  for _, prefix in ipairs(existing_prefixes) do
+    if plugins_by_module[prefix] == plugin_info then
+      plugins_by_module[prefix] = nil
+    end
+  end
+
+  local prefixes = self:resolve_module_prefixes(plugin_info)
+  module_prefixes_by_plugin[plugin_info.name] = prefixes
+  for _, prefix in ipairs(prefixes) do
+    if not plugins_by_module[prefix] then
+      plugins_by_module[prefix] = plugin_info
+    end
+  end
+end
+
+function pack_loader:clear_module_prefixes(plugin_info)
+  local prefixes = module_prefixes_by_plugin[plugin_info.name]
+  if not prefixes then
+    return
+  end
+
+  for _, prefix in ipairs(prefixes) do
+    if plugins_by_module[prefix] == plugin_info then
+      plugins_by_module[prefix] = nil
+    end
+  end
+  module_prefixes_by_plugin[plugin_info.name] = nil
 end
 
 function pack_loader:load_by_name(plugin_name, origin)
@@ -409,6 +532,7 @@ function pack_loader:ensure_loaded(plugin_info, origin)
   pcall(function()
     vim.cmd("packadd " .. plugin_info.name)
     loaded_plugins[plugin_info.name] = true
+    self:clear_module_prefixes(plugin_info)
     pack_log(
       "Loaded plugin: " .. plugin_info.name .. " (" .. origin .. ")",
       vim.uv.now() - require("core.global").start
@@ -545,18 +669,27 @@ end
 
 -- Set up module require interception
 function pack_loader:setup_module_loaders()
-  if next(plugins_by_module) then
-    local original_require = require
-    -- Override require to intercept module loading
-    _G.require = function(module_name)
-      if plugins_by_module[module_name] then
-        local plugin = plugins_by_module[module_name]
-        self:ensure_loaded(plugin, "module: " .. module_name)
-        plugins_by_module[module_name] = nil
-      end
-      return original_require(module_name)
-    end
+  if module_searcher_registered or not next(plugins_by_module) then
+    return
   end
+
+  module_searcher_registered = true
+  local searchers = package.searchers or package.loaders
+  table.insert(searchers, 1, function(module_name)
+    local matched_prefix, matched_plugin
+    for prefix, plugin in pairs(plugins_by_module) do
+      if module_matches(module_name, prefix) and (not matched_prefix or #prefix > #matched_prefix) then
+        matched_prefix = prefix
+        matched_plugin = plugin
+      end
+    end
+
+    if matched_plugin then
+      self:ensure_loaded(matched_plugin, "module: " .. module_name)
+    end
+
+    return nil
+  end)
 end
 
 -- Load non-lazy plugins immediately

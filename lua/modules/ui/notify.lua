@@ -80,9 +80,13 @@ local config = {
 }
 
 local function printInfo(level, msg)
-  local icon = ''
-  local hl = 'Title'
-  if level == vim.log.levels.ERROR then
+  local icon = '󰙎'
+  local hl = 'Normal'
+
+  if level == vim.log.levels.INFO then
+    icon = ''
+    hl = 'Title'
+  elseif level == vim.log.levels.ERROR then
     icon = ''
     hl = 'ErrorMsg'
   elseif level == vim.log.levels.WARN then
@@ -136,6 +140,10 @@ local function notify(msg, level, opts, no_cache)
       table.insert(notify_msg_cache, { msg = msg, level = level, opts = opts })
     end
   end
+  if true then
+    return printInfo(level, msg)
+  end
+  -- no longer use notify, a bit too annoying
   if level > vim.log.levels.WARN and not vim.g.vscode and not vim.wo.diff then
     if vim.in_fast_event() then
       vim.schedule(function()

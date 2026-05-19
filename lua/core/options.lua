@@ -69,7 +69,7 @@ local function load_options()
     switchbuf      = "useopen,usetab",
     backspace      = "indent,eol,start",
     diffopt        =
-    "filler,iwhite,internal,followwrap,algorithm:histogram,context:2,indent-heuristic,linematch:50",
+    "filler,iwhite,internal,followwrap,algorithm:histogram,context:2,indent-heuristic,inline:word,linematch:50",
     completeopt    = "menu,menuone,noselect", -- Show popup menu, even if there is one entry  menuone?
     jumpoptions    = "stack",
     showmode       = false,
@@ -125,6 +125,7 @@ local function load_options()
     cursorline     = true,
     number         = true,
     splitkeep      = "screen",
+
   }
 
   local bw_local     = {

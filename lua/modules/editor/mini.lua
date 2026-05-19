@@ -1,5 +1,4 @@
 local gen_spec = require('mini.ai').gen_spec
-local cache
 
 -- Jump between text objects
 local function user_textobject_id(ai_type)
@@ -29,8 +28,6 @@ local function user_textobject_id(ai_type)
 end
 
 local function jump_textobject(prev_next, left_right, ai_type)
-  cache = {}
-
   local ok, ai = pcall(require, 'mini.ai')
   if not ok then
     vim.notify('No mini-ai found')
@@ -49,11 +46,16 @@ local function refresh_session_buffers()
   for _, buf in ipairs(vim.api.nvim_list_bufs()) do
     if vim.api.nvim_buf_is_loaded(buf) and vim.bo[buf].buftype == '' then
       local name = vim.api.nvim_buf_get_name(buf)
-      if name ~= '' and vim.bo[buf].filetype == '' then
+      if name ~= '' then
         local ft = vim.filetype.match({ buf = buf, filename = name })
         if type(ft) == 'string' and ft ~= '' then
           vim.api.nvim_buf_call(buf, function()
+            vim.bo.filetype = ''
             vim.bo.filetype = ft
+          end)
+        else
+          vim.api.nvim_buf_call(buf, function()
+            vim.cmd('filetype detect')
           end)
         end
       end
@@ -169,5 +171,70 @@ return {
     -- <A-l>   Move current character/selection right
 
     require('mini.move').setup({})
+    require('mini.jump2d').setup({
+      view = { dim = true, n_steps_ahead = 3 },
+      allowed_lines = { cursor_at = false },
+      mappings = { start_jumping = 's' },
+    })
+    require('mini.bufremove').setup({})
+    -- Bd to delete buffer without messing up window layout
+    local complete = function(ArgLead, CmdLine, CursorPos)
+      -- Get a list of all loaded buffers
+      local buffers = vim.api.nvim_list_bufs()
+      local completions = {}
+
+      for _, buf in ipairs(buffers) do
+        -- Only include buffers that are valid and listed (actual files/documents)
+        if vim.api.nvim_buf_is_valid(buf) and vim.bo[buf].buflisted then
+          -- get name of the buffer and use it for completion
+          local name = vim.api.nvim_buf_get_name(buf)
+          -- get base name of the buffer (without path) for completion
+          local base_name = vim.fn.fnamemodify(name, ':t')
+          local buf_str = string.format('%d: %s', buf, base_name)
+          -- Filter completions based on what the user has typed so far (ArgLead)
+          if ArgLead == '' or buf_str:find('^' .. ArgLead) then
+            table.insert(completions, buf_str)
+          end
+        end
+      end
+
+      return completions
+    end
+    vim.api.nvim_create_user_command('Bd', function(opts)
+      local bufstr = opts.args and opts.args[1]
+      -- bufstr in format "123: filename", we need to extract the buffer number
+      local bufnr = 0
+      if bufstr then
+        bufnr = tonumber(bufstr:match('^(%d+):'))
+      end
+      require('mini.bufremove').delete(bufnr, opts.bang)
+    end, { nargs = '?', bang = true, complete = complete, desc = 'Delete buffer without messing up window layout' })
+    -- Bw to wipe a buffer
+    vim.api.nvim_create_user_command('Bw', function(opts)
+      local bufstr = opts.args and opts.args[1]
+      -- bufstr in format "123: filename", we need to extract the buffer number
+      local bufnr = 0
+      if bufstr then
+        bufnr = tonumber(bufstr:match('^(%d+):'))
+      end
+      require('mini.bufremove').wipeout(bufnr, opts.bang)
+    end, { nargs = '?', bang = true, complete = complete, desc = 'Wipe a buffer' })
+    require('mini.cmdline').setup({})
+    require('mini.jump').setup({})
+    require('mini.map').setup({
+      integrations = nil,
+      symbols = {
+        -- Encode symbols. See `:h MiniMap.config` for specification and
+        -- `:h MiniMap.gen_encode_symbols` for pre-built ones.
+        -- Default: solid blocks with 3x2 resolution.
+        encode = nil,
+
+        -- Scrollbar parts for view and line. Use empty string to disable any.
+        scroll_line = '█',
+        scroll_view = '┃',
+      },
+      width = 8,
+      winblend = 11,
+    })
   end,
 }

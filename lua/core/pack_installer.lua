@@ -2,8 +2,8 @@
 -- Downloads and manages plugins from GitHub
 -- Supports parallel cloning for faster installation
 local uv, fn = vim.uv, vim.fn
-local helper = require('core.helper')
-local global = require('core.global')
+local helper = require("core.helper")
+local global = require("core.global")
 local sep = global.path_sep
 
 local installer = {}
@@ -31,8 +31,123 @@ local function shellescape(path)
   return '"' .. tostring(path):gsub('"', '\\"') .. '"'
 end
 
+local function version_range_to_tag(version)
+  if type(version) == "string" then
+    if version == "" or version == "*" then
+      return nil
+    end
+    return version
+  end
+
+  if type(version) == "table" and version.from and version.to then
+    local from = version.from
+    local to = version.to
+    if from.major == to.major and from.minor == to.minor and from.patch == to.patch then
+      return string.format("v%d.%d.%d", from.major, from.minor, from.patch)
+    end
+  end
+
+  return nil
+end
+
+local function resolve_plugin_ref(spec)
+  if type(spec) ~= "table" then
+    return nil
+  end
+
+  if type(spec.commit) == "string" and spec.commit ~= "" then
+    return { kind = "commit", ref = spec.commit }
+  end
+
+  if type(spec.tag) == "string" and spec.tag ~= "" then
+    return { kind = "tag", ref = spec.tag }
+  end
+
+  if type(spec.branch) == "string" and spec.branch ~= "" then
+    return { kind = "branch", ref = spec.branch }
+  end
+
+  local version_tag = version_range_to_tag(spec.version)
+  if version_tag then
+    return { kind = "tag", ref = version_tag }
+  end
+
+  return nil
+end
+
 local function build_marker_path(plugin_dir)
-  return plugin_dir .. sep .. '.pack_build_done'
+  return plugin_dir .. sep .. ".pack_build_done"
+end
+
+local function ref_marker_path(plugin_dir)
+  return plugin_dir .. sep .. ".pack_ref_done"
+end
+
+local function ref_marker_value(ref_info)
+  if not ref_info or not ref_info.ref then
+    return nil
+  end
+
+  return ref_info.kind .. ":" .. ref_info.ref
+end
+
+local function read_marker(path)
+  if fn.filereadable(path) ~= 1 then
+    return nil
+  end
+
+  local lines = fn.readfile(path)
+  if type(lines) ~= "table" or #lines == 0 then
+    return nil
+  end
+
+  return lines[1]
+end
+
+local function write_marker(path, value)
+  local fh = io.open(path, "w")
+  if fh then
+    fh:write(value)
+    fh:close()
+  end
+end
+
+local function git_checkout_ref(plugin_dir, ref_info)
+  if not ref_info or not ref_info.ref then
+    return true
+  end
+
+  if fn.isdirectory(plugin_dir .. sep .. ".git") ~= 1 then
+    return false
+  end
+
+  local marker = ref_marker_path(plugin_dir)
+  local desired_marker = ref_marker_value(ref_info)
+  if desired_marker ~= nil and read_marker(marker) == desired_marker then
+    return true
+  end
+
+  local ref = ref_info.ref
+  local fetch_cmd
+  local checkout_target = ref
+
+  if ref_info.kind == "branch" or ref_info.kind == "commit" then
+    fetch_cmd = "git -C " .. shellescape(plugin_dir) .. " fetch --depth 1 origin " .. shellescape(ref)
+    checkout_target = "FETCH_HEAD"
+  else
+    fetch_cmd = "git -C " .. shellescape(plugin_dir) .. " fetch --tags --force origin"
+  end
+
+  if os.execute(fetch_cmd .. " >/dev/null 2>&1") ~= 0 then
+    return false
+  end
+
+  local checkout_cmd = "git -C " .. shellescape(plugin_dir) .. " checkout --force " .. shellescape(checkout_target)
+  local ok = os.execute(checkout_cmd .. " >/dev/null 2>&1") == 0
+  if ok and desired_marker ~= nil then
+    write_marker(marker, desired_marker)
+  end
+  return ok
 end
 
 local function run_build_for_spec(spec, plugin_dir)
@@ -46,54 +161,54 @@ local function run_build_for_spec(spec, plugin_dir)
     return true
   end
 
-  local plugin_name = spec[1] and spec[1]:match('[^/]+$') or plugin_dir:match('[^' .. sep .. ']+$')
-  pack_log('Running build for ' .. (plugin_name or plugin_dir))
+  local plugin_name = spec[1] and spec[1]:match("[^/]+$") or plugin_dir:match("[^" .. sep .. "]+$")
+  pack_log("Running build for " .. (plugin_name or plugin_dir))
 
   local ok = false
   local build_type = type(build)
 
-  if build_type == 'function' then
+  if build_type == "function" then
     -- Make plugin modules available for build callbacks like require('fff.download').
     if plugin_name then
       pcall(function()
-        vim.cmd('packadd ' .. plugin_name)
+        vim.cmd("packadd " .. plugin_name)
       end)
     end
     ok = pcall(build)
-  elseif build_type == 'string' then
-    if vim.startswith(build, ':') then
+  elseif build_type == "string" then
+    if vim.startswith(build, ":") then
       local cmd = build:sub(2)
       ok = pcall(function()
         if plugin_name then
-          vim.cmd('packadd ' .. plugin_name)
+          vim.cmd("packadd " .. plugin_name)
         end
         vim.cmd(cmd)
       end)
     else
-      local shell_cmd = 'cd ' .. shellescape(plugin_dir) .. ' && ' .. build
+      local shell_cmd = "cd " .. shellescape(plugin_dir) .. " && " .. build
       ok = os.execute(shell_cmd) == 0
     end
-  elseif build_type == 'table' then
+  elseif build_type == "table" then
     ok = true
     for _, item in ipairs(build) do
       local item_ok = true
-      if type(item) == 'string' then
-        if vim.startswith(item, ':') then
+      if type(item) == "string" then
+        if vim.startswith(item, ":") then
           local cmd = item:sub(2)
           item_ok = pcall(function()
             if plugin_name then
-              vim.cmd('packadd ' .. plugin_name)
+              vim.cmd("packadd " .. plugin_name)
             end
             vim.cmd(cmd)
           end)
         else
-          local shell_cmd = 'cd ' .. shellescape(plugin_dir) .. ' && ' .. item
+          local shell_cmd = "cd " .. shellescape(plugin_dir) .. " && " .. item
           item_ok = os.execute(shell_cmd) == 0
         end
-      elseif type(item) == 'function' then
+      elseif type(item) == "function" then
         if plugin_name then
           pcall(function()
-            vim.cmd('packadd ' .. plugin_name)
+            vim.cmd("packadd " .. plugin_name)
           end)
         end
         item_ok = pcall(item)
@@ -106,14 +221,14 @@ local function run_build_for_spec(spec, plugin_dir)
   end
 
   if ok then
-    local fh = io.open(marker, 'w')
+    local fh = io.open(marker, "w")
     if fh then
-      fh:write(os.date('!%Y-%m-%dT%H:%M:%SZ'))
+      fh:write(os.date("!%Y-%m-%dT%H:%M:%SZ"))
       fh:close()
     end
-    pack_log('Build finished for ' .. (plugin_name or plugin_dir))
+    pack_log("Build finished for " .. (plugin_name or plugin_dir))
   else
-    pack_warn('pack build failed: ' .. (plugin_name or plugin_dir))
+    pack_warn("pack build failed: " .. (plugin_name or plugin_dir))
   end
 
   return ok
@@ -122,19 +237,19 @@ end
 -- Collect all plugins from plugin files
 function installer.collect_all_plugins()
   local plugins = {}
-  local modules_dir = helper.get_config_path() .. sep .. 'lua' .. sep .. 'modules'
+  local modules_dir = helper.get_config_path() .. sep .. "lua" .. sep .. "modules"
 
   local plugins_list = {
-    modules_dir .. sep .. 'completion' .. sep .. 'plugins.lua',
-    modules_dir .. sep .. 'lang' .. sep .. 'plugins.lua',
-    modules_dir .. sep .. 'ui' .. sep .. 'plugins.lua',
-    modules_dir .. sep .. 'editor' .. sep .. 'plugins.lua',
-    modules_dir .. sep .. 'tools' .. sep .. 'plugins.lua',
+    modules_dir .. sep .. "completion" .. sep .. "plugins.lua",
+    modules_dir .. sep .. "lang" .. sep .. "plugins.lua",
+    modules_dir .. sep .. "ui" .. sep .. "plugins.lua",
+    modules_dir .. sep .. "editor" .. sep .. "plugins.lua",
+    modules_dir .. sep .. "tools" .. sep .. "plugins.lua",
   }
 
   local collected = {}
   local function add_plugin_spec(spec)
-    if type(spec) ~= 'table' or not spec[1] then
+    if type(spec) ~= "table" or not spec[1] then
       return
     end
 
@@ -145,15 +260,15 @@ function installer.collect_all_plugins()
 
     -- Also collect dependencies so they are installed and available for packadd.
     local deps = spec.dependencies
-    if type(deps) == 'table' then
+    if type(deps) == "table" then
       for _, dep in ipairs(deps) do
-        if type(dep) == 'string' then
+        if type(dep) == "string" then
           add_plugin_spec({ dep, lazy = true })
-        elseif type(dep) == 'table' and dep[1] then
+        elseif type(dep) == "table" and dep[1] then
           add_plugin_spec(dep)
         end
       end
-    elseif type(deps) == 'string' then
+    elseif type(deps) == "string" then
       add_plugin_spec({ deps, lazy = true })
     end
   end
@@ -161,8 +276,8 @@ function installer.collect_all_plugins()
   for _, plugin_file in ipairs(plugins_list) do
     if fn.filereadable(plugin_file) == 1 then
       -- Extract module name: modules/completion/plugins.lua -> modules.completion.plugins
-      local mod_name = plugin_file:match('modules[/\\]([^/\\]+)[/\\]plugins')
-      local module_plugins = require('modules.' .. mod_name .. '.plugins')
+      local mod_name = plugin_file:match("modules[/\\]([^/\\]+)[/\\]plugins")
+      local module_plugins = require("modules." .. mod_name .. ".plugins")
       module_plugins(add_plugin_spec)
     end
   end
@@ -173,15 +288,15 @@ end
 -- Clone a single plugin repository
 function installer.clone_plugin(repo, target_dir, dev_mode)
   if fn.isdirectory(target_dir) == 1 then
-    return true, 'exists'
+    return true, "exists"
   end
 
   -- Create parent directory
-  fn.mkdir(fn.fnamemodify(target_dir, ':h'), 'p')
+  fn.mkdir(fn.fnamemodify(target_dir, ":h"), "p")
 
-  if dev_mode and string.find(repo, 'ray-x') then
+  if dev_mode and string.find(repo, "ray-x") then
     -- For dev plugins, use ~/github/ray-x instead of cloning
-    local dev_path = vim.fn.expand('~/github/ray-x/' .. repo:match('[^/]+$'))
+    local dev_path = vim.fn.expand("~/github/ray-x/" .. repo:match("[^/]+$"))
     if fn.isdirectory(dev_path) == 1 then
       -- Create symlink for dev mode
       local is_windows = global.is_windows
@@ -194,40 +309,41 @@ function installer.clone_plugin(repo, target_dir, dev_mode)
         symlink_cmd = 'ln -s "' .. dev_path .. '" "' .. target_dir .. '"'
       end
       os.execute(symlink_cmd)
-      return true, 'dev'
+      return true, "dev"
     end
   end
 
-  local clone_cmd = 'git clone --depth 1 https://github.com/' .. repo .. ' "' .. target_dir .. '"'
-  local exit_code = os.execute(clone_cmd .. ' 2>/dev/null')
-  
+  local clone_cmd = "git clone --depth 1 https://github.com/" .. repo .. ' "' .. target_dir .. '"'
+  local exit_code = os.execute(clone_cmd .. " 2>/dev/null")
+
   if exit_code == 0 then
-    return true, 'cloned'
+    return true, "cloned"
   else
-    return false, 'failed'
+    return false, "failed"
   end
 end
 
 -- Install all plugins with parallel cloning
 function installer.install_all_plugins(pack_dir, dev_mode)
-  local start_dir = pack_dir .. sep .. 'start'
-  local opt_dir = pack_dir .. sep .. 'opt'
+  local start_dir = pack_dir .. sep .. "start"
+  local opt_dir = pack_dir .. sep .. "opt"
 
   -- Create directories
-  fn.mkdir(start_dir, 'p')
-  fn.mkdir(opt_dir, 'p')
+  fn.mkdir(start_dir, "p")
+  fn.mkdir(opt_dir, "p")
 
   local plugins = installer.collect_all_plugins()
-  local stats = { total = 0, installed = 0, skipped = 0, failed = 0, dev = 0, built = 0, build_failed = 0 }
-  
+  local stats = { total = 0, installed = 0, skipped = 0, failed = 0, dev = 0, built = 0, build_failed = 0, updated = 0 }
+
   -- Separate plugins into those that need cloning and those that exist
   local to_clone = {}
   local spec_locations = {}
-  
+
   for _, spec in ipairs(plugins) do
     stats.total = stats.total + 1
     local repo = spec[1]
-    local plugin_name = repo:match('[^/]+$')
+    local plugin_name = repo:match("[^/]+$")
+    local ref_info = resolve_plugin_ref(spec)
 
     -- Determine if plugin should be in start or opt
     local is_lazy = spec.lazy ~= false
@@ -241,7 +357,11 @@ function installer.install_all_plugins(pack_dir, dev_mode)
     end
 
     if fn.isdirectory(target_dir) == 1 then
-      stats.skipped = stats.skipped + 1
+      if ref_info and git_checkout_ref(target_dir, ref_info) then
+        stats.updated = stats.updated + 1
+      else
+        stats.skipped = stats.skipped + 1
+      end
       table.insert(spec_locations, { spec = spec, target_dir = target_dir })
     else
       local entry = {
@@ -249,7 +369,8 @@ function installer.install_all_plugins(pack_dir, dev_mode)
         repo = repo,
         target_dir = target_dir,
         plugin_name = plugin_name,
-        dev = dev_mode and string.find(repo, 'ray-x'),
+        dev = dev_mode and string.find(repo, "ray-x"),
+        ref = ref_info,
       }
       table.insert(to_clone, entry)
       table.insert(spec_locations, { spec = spec, target_dir = target_dir })
@@ -258,29 +379,39 @@ function installer.install_all_plugins(pack_dir, dev_mode)
 
   -- Create temp script for parallel cloning
   local function create_clone_script(items)
-    local script = vim.fn.tempname() .. '.sh'
-    local file = io.open(script, 'w')
-    if not file then return nil end
-    
-    file:write('#!/bin/bash\n')
-    file:write('set -e\n')
-    file:write(string.format('MAX_JOBS=%d\n', MAX_PARALLEL_CLONES))
-    file:write('ACTIVE_JOBS=0\n\n')
-    
+    local script = vim.fn.tempname() .. ".sh"
+    local file = io.open(script, "w")
+    if not file then
+      return nil
+    end
+
+    file:write("#!/bin/bash\n")
+    file:write("set -e\n")
+    file:write(string.format("MAX_JOBS=%d\n", MAX_PARALLEL_CLONES))
+    file:write("ACTIVE_JOBS=0\n\n")
+
     for _, item in ipairs(items) do
       if not item.dev then
-        file:write(string.format(
-          'git clone --depth 1 https://github.com/%s "%s" 2>/dev/null & \n' ..
-          'ACTIVE_JOBS=$((ACTIVE_JOBS + 1))\n' ..
-          'if [ $ACTIVE_JOBS -ge $MAX_JOBS ]; then wait -n; ACTIVE_JOBS=$((ACTIVE_JOBS - 1)); fi\n\n',
-          item.repo, item.target_dir
-        ))
+        local clone_opts = "--depth 1"
+        if item.ref and (item.ref.kind == "tag" or item.ref.kind == "branch") then
+          clone_opts = clone_opts .. ' --branch "' .. item.ref.ref .. '" --single-branch'
+        end
+        file:write(
+          string.format(
+            'git clone %s https://github.com/%s "%s" 2>/dev/null & \n'
+              .. "ACTIVE_JOBS=$((ACTIVE_JOBS + 1))\n"
+              .. "if [ $ACTIVE_JOBS -ge $MAX_JOBS ]; then wait -n; ACTIVE_JOBS=$((ACTIVE_JOBS - 1)); fi\n\n",
+            clone_opts,
+            item.repo,
+            item.target_dir
+          )
+        )
       end
     end
-    
-    file:write('wait\n')
+
+    file:write("wait\n")
     file:close()
-    os.execute('chmod +x ' .. script)
+    os.execute("chmod +x " .. script)
     return script
   end
 
@@ -290,10 +421,24 @@ function installer.install_all_plugins(pack_dir, dev_mode)
       local success, status = installer.clone_plugin(item.repo, item.target_dir, true)
       if success then
         stats.dev = stats.dev + 1
-        pack_log('✓ ' .. item.plugin_name .. ' (dev symlink)')
+        pack_log("✓ " .. item.plugin_name .. " (dev symlink)")
       else
         stats.failed = stats.failed + 1
-        pack_warn('pack dev symlink failed: ' .. item.plugin_name)
+        pack_warn("pack dev symlink failed: " .. item.plugin_name)
+      end
+    end
+
+    if item.ref and item.ref.kind ~= "commit" then
+      local marker = ref_marker_path(item.target_dir)
+      local desired_marker = ref_marker_value(item.ref)
+      if desired_marker ~= nil then
+        write_marker(marker, desired_marker)
+      end
+    elseif item.ref and item.ref.kind == "commit" then
+      if git_checkout_ref(item.target_dir, item.ref) then
+        stats.updated = stats.updated + 1
+      else
+        stats.build_failed = stats.build_failed + 1
       end
     end
   end
@@ -307,12 +452,13 @@ function installer.install_all_plugins(pack_dir, dev_mode)
   end
 
   if #git_clone_items > 0 then
-    pack_log(string.format('⟳ Cloning %d plugins in parallel (max %d concurrent)...',
-      #git_clone_items, MAX_PARALLEL_CLONES))
+    pack_log(
+      string.format("⟳ Cloning %d plugins in parallel (max %d concurrent)...", #git_clone_items, MAX_PARALLEL_CLONES)
+    )
 
     local script = create_clone_script(git_clone_items)
     if script then
-      os.execute('bash ' .. script)
+      os.execute("bash " .. script)
       os.remove(script)
     end
 
@@ -320,10 +466,10 @@ function installer.install_all_plugins(pack_dir, dev_mode)
     for _, item in ipairs(git_clone_items) do
       if fn.isdirectory(item.target_dir) == 1 then
         stats.installed = stats.installed + 1
-        pack_log('✓ ' .. item.plugin_name)
+        pack_log("✓ " .. item.plugin_name)
       else
         stats.failed = stats.failed + 1
-        pack_warn('pack clone failed: ' .. item.plugin_name)
+        pack_warn("pack clone failed: " .. item.plugin_name)
       end
     end
   end
@@ -343,11 +489,21 @@ function installer.install_all_plugins(pack_dir, dev_mode)
   local changed = stats.installed > 0 or stats.dev > 0 or stats.built > 0
   local has_failures = stats.failed > 0 or stats.build_failed > 0
   if pack_verbose() and (changed or has_failures) then
-    lprint(string.format('Installation summary: %d total, %d installed, %d dev, %d skipped, %d failed, %d built, %d build_failed',
-      stats.total, stats.installed, stats.dev, stats.skipped, stats.failed, stats.built, stats.build_failed))
+    lprint(
+      string.format(
+        "Installation summary: %d total, %d installed, %d dev, %d skipped, %d failed, %d built, %d build_failed",
+        stats.total,
+        stats.installed,
+        stats.dev,
+        stats.skipped,
+        stats.failed,
+        stats.built,
+        stats.build_failed
+      )
+    )
   end
   if has_failures then
-    pack_warn(string.format('pack install issues: clone_failed=%d build_failed=%d', stats.failed, stats.build_failed))
+    pack_warn(string.format("pack install issues: clone_failed=%d build_failed=%d", stats.failed, stats.build_failed))
   end
   return stats
 end
